@@ -162,24 +162,57 @@ export function applyEventRouterPatches({ sourceText, sourcePath }) {
   if (!queueIsPushedTo) fail(`nothing pushes to ${QUEUE} any more`);
 
   // Upstream's own fix has to deal with the queue before it applies the
-  // snapshot: by rewriting it or by flushing it. Either shows up as a use of
-  // the queue (or of its flush) earlier in the function that applies the
-  // snapshot. Today neither function touches the queue before that point.
+  // snapshot. Only two forms count, each as a statement of the same block that
+  // runs before the apply: reassigning the queue from a filter of itself, or
+  // calling its flush. Any other mention of the queue before that point (a
+  // read, a use inside a callback or another branch) is not evidence of a fix
+  // and not something this patch understands, so generation stops and a person
+  // decides. Today neither function touches the queue before the apply.
+  const isQueueFix = (candidate) => {
+    if (!ts.isExpressionStatement(candidate)) return false;
+    const expression = candidate.expression;
+    if (
+      ts.isBinaryExpression(expression) &&
+      expression.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      ts.isIdentifier(expression.left) &&
+      expression.left.text === QUEUE &&
+      ts.isCallExpression(expression.right) &&
+      ts.isPropertyAccessExpression(expression.right.expression) &&
+      ts.isIdentifier(expression.right.expression.expression) &&
+      expression.right.expression.expression.text === QUEUE &&
+      expression.right.expression.name.text === "filter"
+    ) {
+      return true;
+    }
+    return (
+      ts.isCallExpression(expression) &&
+      ts.isIdentifier(expression.expression) &&
+      expression.expression.text === QUEUE_FLUSH &&
+      expression.arguments.length === 0
+    );
+  };
   const handledUpstream = sites.map(({ statement }) => {
+    const siblings = statement.parent.statements;
+    const fixes = siblings.slice(0, siblings.indexOf(statement)).filter(isQueueFix);
     let owner = statement.parent;
     while (owner && !isFunctionLike(owner)) owner = owner.parent;
     if (!owner) fail(`${SNAPSHOT_APPLY} is not inside a function`);
-    let handled = false;
     const scan = (node) => {
-      if (handled || node.getStart(sourceFile) >= statement.getStart(sourceFile)) return;
-      if (ts.isIdentifier(node) && (node.text === QUEUE || node.text === QUEUE_FLUSH)) {
-        handled = true;
+      if (fixes.includes(node) || node.getStart(sourceFile) >= statement.getStart(sourceFile)) {
         return;
+      }
+      if (ts.isIdentifier(node) && (node.text === QUEUE || node.text === QUEUE_FLUSH)) {
+        fail(
+          `${sourcePath}:${lineOf(sourceFile, node.getStart(sourceFile))} uses ${node.text} before ` +
+            `${SNAPSHOT_APPLY} in a way this patch does not recognize; check whether upstream ` +
+            `now prevents the duplicate (eventRouter.generated.test.tsx without the patch) and ` +
+            `update or delete the patch`,
+        );
       }
       ts.forEachChild(node, scan);
     };
     scan(owner);
-    return handled;
+    return fixes.length > 0;
   });
   if (handledUpstream.every(Boolean)) {
     return { text: sourceText, applied: [], upstreamFixed: [QUEUED_EVENT_PATCH] };

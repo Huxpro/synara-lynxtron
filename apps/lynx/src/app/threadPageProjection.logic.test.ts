@@ -26,6 +26,36 @@ function threadWith(overrides: Partial<Thread>): Thread {
 }
 
 describe("projectThreadTranscriptRows", () => {
+  it("reuses the history-wide derivations while only message text changes", () => {
+    const cache = createThreadMarkdownCache();
+    const base = threadWith({
+      messages: [chatMessage("a", "user", "Question"), chatMessage("bb", "assistant", "Hi")],
+    });
+    projectThreadTranscriptRows(base, cache);
+    const workLog = cache.slices?.workLog?.value;
+    const turnDiffs = cache.slices?.turnDiffs?.value;
+    expect(workLog).toBeDefined();
+    expect(turnDiffs).toBeDefined();
+
+    // A streamed delta: new messages array, same activities and summaries.
+    projectThreadTranscriptRows(
+      { ...base, messages: [base.messages[0]!, { ...base.messages[1]!, text: "Hi there" }] },
+      cache,
+    );
+    expect(cache.slices?.workLog?.value).toBe(workLog);
+    expect(cache.slices?.turnDiffs?.value).toBe(turnDiffs);
+
+    // New activities rebuild the work log only; a new message rebuilds the maps.
+    projectThreadTranscriptRows({ ...base, activities: [...base.activities] }, cache);
+    expect(cache.slices?.workLog?.value).not.toBe(workLog);
+    expect(cache.slices?.turnDiffs?.value).toBe(turnDiffs);
+    projectThreadTranscriptRows(
+      { ...base, messages: [...base.messages, chatMessage("ccc", "user", "More")] },
+      cache,
+    );
+    expect(cache.slices?.turnDiffs?.value).not.toBe(turnDiffs);
+  });
+
   it("parses a message once and reuses its tree while the text is unchanged", () => {
     const cache = createThreadMarkdownCache();
     const first = threadWith({

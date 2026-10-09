@@ -69,31 +69,34 @@ export function useThreadPageData(threadId: string | null): ThreadPageRead {
   const markdownRef = useRef<{ threadId: string | null; cache: ThreadMarkdownCache } | null>(null);
   const previousDataRef = useRef<ThreadPageData | undefined>(undefined);
 
-  return useMemo(() => {
+  // The projection depends on the thread and its project only. Kept apart from
+  // the read state below so a transport or sync-state change does not rebuild
+  // the rows.
+  const projected = useMemo(() => {
+    if (!thread) return null;
     if (markdownRef.current?.threadId !== threadId) {
       markdownRef.current = { threadId, cache: createThreadMarkdownCache() };
     }
-    const markdown = markdownRef.current.cache;
+    return {
+      data: projectThreadTranscriptRows(thread, markdownRef.current.cache),
+      summary: projectThreadHeaderSummary(thread, project),
+    };
+  }, [project, thread, threadId]);
+
+  return useMemo(() => {
     const read = resolveThreadPageRead({
       threadsHydrated,
       thread,
       detailSyncState,
       transport,
-      project: () => {
-        // Guarded by `resolveThreadPageRead`: only called with a thread.
-        const current = thread!;
-        return {
-          data: projectThreadTranscriptRows(current, markdown),
-          summary: projectThreadHeaderSummary(current, project),
-        };
-      },
+      // Guarded by `resolveThreadPageRead`: only called with a thread.
+      project: () => projected!,
     });
     if (read.data === undefined) return read;
     // Unchanged rows keep their reference across store changes (what the query
-    // cache's structural sharing did for the polled snapshot), so a streamed
-    // delta re-renders one row of the transcript list, not all of them.
+    // cache's structural sharing did for the polled snapshot).
     const data = replaceEqualDeep(previousDataRef.current, read.data);
     previousDataRef.current = data;
     return data === read.data ? read : { ...read, data };
-  }, [detailSyncState, project, thread, threadId, threadsHydrated, transport]);
+  }, [detailSyncState, projected, thread, threadsHydrated, transport]);
 }

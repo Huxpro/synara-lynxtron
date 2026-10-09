@@ -462,6 +462,19 @@ test("the queued-event patch is applied to the upstream file and named in the ar
   assert.doesNotMatch(verbatim.text, /LYNX PATCH/);
 });
 
+test("the queued-event patch stops generation on a queue use it does not recognize", () => {
+  const before = (statement) =>
+    PATCH_FIXTURE.replaceAll(/^( *)(syncServerThreadDetailHotPath\()/gm, `$1${statement}\n$1$2`);
+  // A read is not a fix: stepping aside here would bring the duplicate back.
+  assert.throws(() => patch(before("void pendingDomainEvents.length;")), /does not recognize/);
+  // Neither is a flush that only runs in a callback or under a condition.
+  assert.throws(
+    () => patch(before("queueMicrotask(() => flushPendingDomainEvents());")),
+    /does not recognize/,
+  );
+  assert.throws(() => patch(before("if (keep) flushPendingDomainEvents();")), /does not recognize/);
+});
+
 test("the queued-event patch steps aside once upstream handles the queue itself", () => {
   // Upstream filters the queue before applying, in both paths.
   const filtered = PATCH_FIXTURE.replaceAll(

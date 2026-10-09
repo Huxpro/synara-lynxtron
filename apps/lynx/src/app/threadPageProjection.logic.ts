@@ -46,6 +46,36 @@ import type { TransportNoticeState } from "./transportRecovery.logic";
  */
 export interface ThreadMarkdownCache {
   trees: Map<string, { readonly text: string; readonly tree: MarkdownNode | null }>;
+  /**
+   * History-wide derivations of the previous projection, each with the inputs
+   * it was computed from. Streamed text changes `thread.messages` only, so the
+   * work log (from activities) and the checkpoint maps (from diff summaries and
+   * message identity) are reused instead of being rebuilt every flush.
+   */
+  slices?: {
+    workLog?: { readonly inputs: readonly unknown[]; readonly value: unknown };
+    turnDiffs?: { readonly inputs: readonly unknown[]; readonly value: unknown };
+  };
+}
+
+function reuseSlice<Value>(
+  cache: ThreadMarkdownCache,
+  name: "workLog" | "turnDiffs",
+  inputs: readonly unknown[],
+  compute: () => Value,
+): Value {
+  const slices = (cache.slices ??= {});
+  const previous = slices[name];
+  if (
+    previous &&
+    previous.inputs.length === inputs.length &&
+    previous.inputs.every((input, index) => Object.is(input, inputs[index]))
+  ) {
+    return previous.value as Value;
+  }
+  const value = compute();
+  slices[name] = { inputs, value };
+  return value;
 }
 
 export function createThreadMarkdownCache(): ThreadMarkdownCache {
@@ -85,10 +115,12 @@ export function projectThreadTranscriptRows(
   if (thread.latestTurn?.turnId) {
     visibleTurnIds.add(thread.latestTurn.turnId);
   }
-  const workEntries = deriveWorkLogEntries(
-    thread.activities,
-    thread.latestTurn?.turnId ?? undefined,
-    { visibleTurnIds },
+  const latestTurnId = thread.latestTurn?.turnId ?? undefined;
+  const workEntries = reuseSlice(
+    cache,
+    "workLog",
+    [thread.activities, latestTurnId, [...visibleTurnIds].join("\n")],
+    () => deriveWorkLogEntries(thread.activities, latestTurnId, { visibleTurnIds }),
   );
   const timelineEntries = deriveTimelineEntries(
     visibleMessages as Parameters<typeof deriveTimelineEntries>[0],
@@ -96,18 +128,30 @@ export function projectThreadTranscriptRows(
     workEntries,
   );
   const activeTurnInProgress = thread.latestTurn?.state === "running";
-  const turnDiffSummaryByAssistantMessageId = buildTurnDiffSummaryByAssistantMessageId({
-    turnDiffSummaries: thread.turnDiffSummaries,
-    messages: visibleMessages.map((message) => ({
-      id: message.id,
-      role: message.role,
-      turnId: message.turnId ?? null,
-    })),
-  });
-  const inferredCheckpointTurnCountByTurnId = Object.fromEntries(
-    [...thread.turnDiffSummaries]
-      .sort((left, right) => left.completedAt.localeCompare(right.completedAt))
-      .map((summary, index) => [summary.turnId, index + 1]),
+  const { turnDiffSummaryByAssistantMessageId, inferredCheckpointTurnCountByTurnId } = reuseSlice(
+    cache,
+    "turnDiffs",
+    [
+      thread.turnDiffSummaries,
+      visibleMessages
+        .map((message) => `${message.id}\t${message.role}\t${message.turnId ?? ""}`)
+        .join("\n"),
+    ],
+    () => ({
+      turnDiffSummaryByAssistantMessageId: buildTurnDiffSummaryByAssistantMessageId({
+        turnDiffSummaries: thread.turnDiffSummaries,
+        messages: visibleMessages.map((message) => ({
+          id: message.id,
+          role: message.role,
+          turnId: message.turnId ?? null,
+        })),
+      }),
+      inferredCheckpointTurnCountByTurnId: Object.fromEntries(
+        [...thread.turnDiffSummaries]
+          .sort((left, right) => left.completedAt.localeCompare(right.completedAt))
+          .map((summary, index) => [summary.turnId, index + 1]),
+      ),
+    }),
   );
   const revertTurnCountByUserMessageId = buildRevertTurnCountByUserMessageId({
     timelineEntries,

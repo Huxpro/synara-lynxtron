@@ -219,7 +219,8 @@ describe("thread page read path over the shared store", () => {
       rs.advanceTimersByTime(100);
     });
     expect(rowTexts()).toEqual(["Question", "Hello world"]);
-    // The untouched row is the same object, tree included: the list re-renders one cell.
+    // The untouched row is the same object, tree included. (Row identity only:
+    // whether the list skips rendering that row is the Transcript's concern.)
     expect(read.data!.data[0]).toBe(userRow);
 
     // A redelivered delta is dropped by sequence.
