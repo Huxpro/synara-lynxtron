@@ -27,6 +27,8 @@
     "audit:reuse": "node scripts/reuse-audit.mjs",
     "audit:reuse:check": "node scripts/generate-event-router.mjs --check && node scripts/reuse-audit.mjs --check",
     "audit:upstream-merge": "node scripts/upstream-merge-layer-report.mjs",
+    "audit:upstream-footprint": "node scripts/upstream-footprint.mjs",
+    "audit:upstream-footprint:check": "node scripts/upstream-footprint.mjs --check",
     "audit:component-lab": "bun scripts/component-lab-identity-audit.ts",
     "audit:component-lab:inventory": "bun scripts/component-lab-primitive-inventory.ts",
     "audit:style": "node scripts/style-audit.mjs",

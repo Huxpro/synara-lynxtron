@@ -1,0 +1,52 @@
+name: Lynx fork gates
+
+# Fork-only checks. Upstream's CI (ci.yml) is used unchanged and does not know
+# about apps/lynx; this workflow holds the gates the fork adds.
+on:
+  pull_request:
+  push:
+    branches:
+      - huxcx/lynxtron-port-current-state
+
+concurrency:
+  group: lynx-fork-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  footprint:
+    name: Upstream footprint (only shrinks)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout with history
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+
+      - name: Fork diff in upstream-owned paths must not grow
+        run: node apps/lynx/scripts/upstream-footprint.mjs --check
+
+  lynx:
+    name: Lynx typecheck, audits, build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup workspace
+        uses: ./.github/actions/setup-workspace
+
+      - name: Typecheck (includes the EventRouter generator check)
+        run: bun run --cwd apps/lynx typecheck
+
+      - name: Reuse audit and parallel-implementation ratchet
+        run: bun run --cwd apps/lynx audit:reuse:check
+
+      - name: Style ratchet
+        run: bun run --cwd apps/lynx audit:style:check
