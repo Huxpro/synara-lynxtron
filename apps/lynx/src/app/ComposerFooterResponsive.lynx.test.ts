@@ -67,8 +67,12 @@ describe("Native composer footer responsiveness", () => {
     expect(css).toMatch(
       /\.ComposerFooterLeadingLynx--compact\s*\{[^}]*min-width:\s*0;[^}]*flex:\s*1;[^}]*overflow:\s*hidden;/s,
     );
+    // Upstream's actions keep `gap-2` (the base 8px) at every width and never shrink.
     expect(css).toMatch(
-      /\.ComposerFooterRowLynx--compact \.ComposerFooterActionsLynx\s*\{[^}]*gap:\s*2px;/s,
+      /\.ComposerFooterRowLynx--compact \.ComposerFooterActionsLynx\s*\{[^}]*flex-shrink:\s*0;/s,
+    );
+    expect(css).not.toMatch(
+      /\.ComposerFooterRowLynx--compact \.ComposerFooterActionsLynx\s*\{[^}]*gap:/s,
     );
   });
 
