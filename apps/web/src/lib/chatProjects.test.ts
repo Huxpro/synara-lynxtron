@@ -5,7 +5,6 @@ import { ProjectId, type OrchestrationShellSnapshot } from "@synara/contracts";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { useStore } from "../store";
-import { setNativeApiForTest } from "../nativeApi";
 import { ensureHomeChatProject, isHomeChatContainerProject } from "./chatProjects";
 
 const NOW = "2026-06-26T21:00:00.000Z";
@@ -45,7 +44,6 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  setNativeApiForTest(undefined);
   vi.unstubAllGlobals();
   useStore.setState({
     projects: [],
@@ -152,7 +150,9 @@ describe("isHomeChatContainerProject", () => {
 
   it("waits for the shell snapshot before creating a Home chat project", async () => {
     const dispatchCommand = vi.fn(async (_command: { type: string }) => {});
-    setNativeApiForTest({ orchestration: { dispatchCommand, getShellSnapshot: vi.fn() } } as never);
+    vi.stubGlobal("window", {
+      nativeApi: { orchestration: { dispatchCommand, getShellSnapshot: vi.fn() } },
+    });
     useStore.setState({ projects: [], threadsHydrated: false });
 
     const projectPromise = ensureHomeChatProject({
@@ -186,7 +186,9 @@ describe("isHomeChatContainerProject", () => {
 
   it("deduplicates concurrent Home chat creation requests while hydration is pending", async () => {
     const dispatchCommand = vi.fn(async (_command: { type: string }) => {});
-    setNativeApiForTest({ orchestration: { dispatchCommand, getShellSnapshot: vi.fn() } } as never);
+    vi.stubGlobal("window", {
+      nativeApi: { orchestration: { dispatchCommand, getShellSnapshot: vi.fn() } },
+    });
     useStore.setState({ projects: [], threadsHydrated: false });
 
     const paths = {
@@ -225,12 +227,14 @@ describe("isHomeChatContainerProject", () => {
     const getShellSnapshot = vi.fn(async () =>
       makeShellSnapshot([makeShellProject({ id: existingProjectId })]),
     );
-    setNativeApiForTest({
-      orchestration: {
-        dispatchCommand,
-        getShellSnapshot,
+    vi.stubGlobal("window", {
+      nativeApi: {
+        orchestration: {
+          dispatchCommand,
+          getShellSnapshot,
+        },
       },
-    } as never);
+    });
 
     const projectId = await ensureHomeChatProject({
       homeDir: "/Users/tester",
@@ -270,12 +274,14 @@ describe("isHomeChatContainerProject", () => {
         }),
       ]),
     );
-    setNativeApiForTest({
-      orchestration: {
-        dispatchCommand,
-        getShellSnapshot,
+    vi.stubGlobal("window", {
+      nativeApi: {
+        orchestration: {
+          dispatchCommand,
+          getShellSnapshot,
+        },
       },
-    } as never);
+    });
 
     const projectId = await ensureHomeChatProject({
       homeDir: "/Users/tester",
@@ -312,12 +318,14 @@ describe("isHomeChatContainerProject", () => {
         }),
       ]),
     );
-    setNativeApiForTest({
-      orchestration: {
-        dispatchCommand,
-        getShellSnapshot,
+    vi.stubGlobal("window", {
+      nativeApi: {
+        orchestration: {
+          dispatchCommand,
+          getShellSnapshot,
+        },
       },
-    } as never);
+    });
 
     await expect(
       ensureHomeChatProject({
