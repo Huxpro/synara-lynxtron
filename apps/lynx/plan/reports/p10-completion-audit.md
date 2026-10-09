@@ -388,7 +388,7 @@ Projects/Studio roots own 6px padding, the empty state resolves to 12px/18px
 with 16px top padding, and Chats owns 4px/8px vertical padding. Web and
 Lynx-for-Web Projects root/header/state/Chats boxes match exactly; exact-owned
 Native preserves the same 4px header-to-state, 10px state-to-Chats, and 86px
-Projects-to-Chats distances. A concurrent t3code client on 8901 was rejected by
+Projects-to-Chats distances. A concurrent another-project client on 8901 was rejected by
 the PID-derived target gate during an intermediate valid capture; the owned
 Synara client was 8902/session 1. Final retained Native evidence additionally
 keeps the collapsed 4px disclosure body shell with zero children, matching the
@@ -834,7 +834,7 @@ as first bad and `99e2b46c` as good. Replacing that initializer with the
 equivalent static regex preserves the canonical allowlist and restores Native
 startup. Two exact-owned launches now retain all four Native General cells at
 both themes/sizes with the staged bundle, expected roles, and zero console
-messages. The unrelated `@t3tools/lynxtron` client was not used or touched.
+messages. The unrelated `another-project` client was not used or touched.
 The subsequent Landing current-state refresh is recorded in
 `shots/2026-08-10/landing-matrix-current/`. Web and Lynx-for-Web retain all
 four theme/size coordinates with mean absolute RGB differences from `0.9688`
@@ -1167,7 +1167,7 @@ Native runtime preflight used the exact staged
 `.synara-native-image-0811`, server `127.0.0.1:58090`, and a separate Lynx user
 data directory. Host logs prove the owned app loaded the isolated storage and
 connected through real `synaraRpc` calls. The interaction cell is not retained
-as PASS: the unrelated `@t3tools/lynxtron` client already owns Desktop DevTool
+as PASS: the unrelated `another-project` client already owns Desktop DevTool
 port 8901, while this Lynxtron runtime registered no second client on the
 CLI-scanned 8902–8910 range. Because the supported DevTool input domain can
 drive only LynxView touch and cannot inject a file into the macOS picker, the
@@ -1843,7 +1843,7 @@ matrix.
 
 The current-head Native Landing follow-up adds the first post-PR exact-owned
 Native cell. The published `0.0.9` host rendered but did not register DevTool
-while unrelated `@t3tools/lynxtron` owned 8901, so that diagnostic run was
+while unrelated `another-project` owned 8901, so that diagnostic run was
 rejected. The temporary published `0.0.9-dev` host uses the same main executable
 bytes and registered the workspace bundle on PID-derived
 `localhost:8902/session 1`; unrelated 8901 was untouched. The retained light
@@ -1861,7 +1861,7 @@ remaining routes are still unrecertified.
 The exact-owned Native refresh now also covers Settings General light/1280 via
 the real startup deep link `synara://settings/general`. PID-derived
 `localhost:8902/session 1` points to the staged workspace bundle, while
-unrelated `@t3tools/lynxtron` remains untouched on 8901. The Native frame is
+unrelated `another-project` remains untouched on 8901. The Native frame is
 2560x1640 for a logical 1280x820 root and has an empty exact-client console.
 Key route geometry matches current Web authority: the General heading begins
 at `(456,32)`, and the first provider control is exactly 176x32 at `(891,165)`

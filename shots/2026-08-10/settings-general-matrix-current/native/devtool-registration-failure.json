@@ -25,7 +25,7 @@
   "observedClientsBeforeAndAfter": [
     {
       "id": "localhost:8901",
-      "app": "@t3tools/lynxtron",
+      "app": "another-project",
       "ownership": "unrelated and untouched"
     }
   ],

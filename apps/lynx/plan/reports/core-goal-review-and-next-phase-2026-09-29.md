@@ -128,7 +128,7 @@ DS-179–184 最近证据主要是 dark/1079×803。历史 P10 完整矩阵针�
 - 不以新 DS 编号数作为进度。主进度：有效 harness runs、6 条工作流、24 基础 cell、声明状态增量、未关闭高优先级残差、发行包 smoke、原生验收清单。未执行为 unknown，不记 pass。
 - 对影响 shared CSS/token 的变更，自动列出受影响 consumers/cells；一个 dark 单节点通过不能继承 light 或别的 viewport。
 - 每个 coherent 工作包：量测 → 修复/最小共享抽取 → 必要 focused tests → 比例合适的 build → paired/Native evidence → ledger → 独立提交和推送。
-- 连续两次同类 harness 失败后转诊断，不做重复盲目启动；已知进程/session 要正常回收，不终止无关应用或 T3 Code。
+- 连续两次同类 harness 失败后转诊断，不做重复盲目启动；已知进程/session 要正常回收，不终止无关应用或 another-project。
 - 不使用子代理或 Codebase CLI；不运行 `bun test`；不自动运行 fmt/lint/typecheck；不保留新截图；不覆盖无关 dirty files。
 - 本次仅新增该计划文档，不修改产品源码或历史 ledger 状态，也不将计划写入用户 memory。
 

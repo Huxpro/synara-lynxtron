@@ -8,7 +8,7 @@
 - Isolated server snapshot SHA-256:
   `a209ba85773882b79b8147779c406fbb67a12dcb723ba7c4ea7ca3168e651cc8`.
 - Published `@lynx-js/lynxtron@0.0.9` rendered and connected but did not
-  register a DevTool listener while unrelated `@t3tools/lynxtron` owned 8901.
+  register a DevTool listener while unrelated `another-project` owned 8901.
   That run was rejected before evidence capture.
 - The temporary published `@lynx-js/lynxtron@0.0.9-dev` diagnostic host uses
   the same main executable bytes, registered the exact-owned process on
@@ -18,7 +18,7 @@
   - client `localhost:8902`, session `1`
   - session URL
     `file:///Users/bytedance/github/synara/apps/lynx/dist/desktop/main.lynx.bundle`
-  - unrelated `@t3tools/lynxtron` on 8901 was not touched.
+  - unrelated `another-project` on 8901 was not touched.
 - Runtime geometry:
   - root `1280x820`
   - banner `736x68 @ (400,58)`

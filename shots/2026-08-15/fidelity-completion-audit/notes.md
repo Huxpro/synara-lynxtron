@@ -1420,7 +1420,7 @@ former dynamic-event P1 is no longer a valid blocker.
   owned processes. No screenshots were retained; local count remained `100`.
 - Canonical cleanup returned zero visible definitions/runs and removed all
   isolated state/runtime/user directories. Owned ports `58090` and `8891` were
-  free. Port `8901` belonged to an unrelated t3code archaeology Lynxtron run
+  free. Port `8901` belonged to an unrelated another-project archaeology Lynxtron run
   (PID `78196`) started after this loop; it was not terminated and is classified
   as external port competition, not a Synara harness leak.
 
@@ -1482,7 +1482,7 @@ former dynamic-event P1 is no longer a valid blocker.
 - Cleanup removed the owned process, shim, and isolated directories. Ports were
   free, browser state returned to `sessions: []`, and screenshot count remained
   `100`.
-- Port `8901` was later occupied by an unrelated t3code archaeology verification
+- Port `8901` was later occupied by an unrelated another-project archaeology verification
   process (PID `44768`) started after this loop's cleanup. It was not terminated
   and is external contention, not a Synara leak.
 
@@ -1534,7 +1534,7 @@ former dynamic-event P1 is no longer a valid blocker.
 - Owned processes, fetch shim, and isolated directories were removed. Ports
   `58090`, `8891`, and `8901` were free; browser cleanup ended at
   `sessions: []` with zero owned processes.
-- Port `8901` was later occupied by an unrelated t3code archaeology verification
+- Port `8901` was later occupied by an unrelated another-project archaeology verification
   process (PID `73718`) started after cleanup. It was not terminated and is
   external contention, not a Synara leak.
 
@@ -1603,7 +1603,7 @@ former dynamic-event P1 is no longer a valid blocker.
 - Canonical cleanup returned zero visible definitions/runs; fixture state,
   runtime, and user-data directories were removed. Owned ports `58090` and
   `8891` were free.
-- Port `8901` belonged to an unrelated t3code Lynxtron process (PID `18721`);
+- Port `8901` belonged to an unrelated another-project Lynxtron process (PID `18721`);
   it was not terminated and is external contention, not a Synara leak.
 - No screenshots were retained; local count remained `100`.
 
@@ -1620,14 +1620,14 @@ former dynamic-event P1 is no longer a valid blocker.
   roundtrip while preserving cadence.
 - `native-automations-custom-interval-pause-resume`: missing coverage
   `1.00 -> 0.00`; product-loss contribution remained `0.00 -> 0.00`.
-- Owned Native DevTool used `localhost:8902` because unrelated t3code PID
+- Owned Native DevTool used `localhost:8902` because unrelated another-project PID
   `18721` owned `8901`; the external client was not touched.
 - Focused shared and Lynx suites passed `6/6` each; build and console passed.
 - Bundle SHA-256:
   `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
 - Canonical cleanup returned zero visible definitions/runs; fixture state,
   runtime, and user-data directories were removed. Owned ports were free; the
-  unrelated t3code client remained outside this run.
+  unrelated another-project client remained outside this run.
 - No screenshots were retained; local count remained `100`.
 
 ## 2026-08-16 Native Weekly schedule
@@ -1642,7 +1642,7 @@ former dynamic-event P1 is no longer a valid blocker.
   roundtrip while preserving all weekly fields.
 - `native-automations-weekly-pause-resume`: missing coverage `1.00 -> 0.00`;
   product-loss contribution remained `0.00 -> 0.00`.
-- Owned Native used PID-derived `localhost:8902`; unrelated t3code `8901` was
+- Owned Native used PID-derived `localhost:8902`; unrelated another-project `8901` was
   not touched.
 - Shared projection and Lynx route focused suites passed `6/6` each; build and
   console passed.
@@ -1650,7 +1650,7 @@ former dynamic-event P1 is no longer a valid blocker.
   `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
 - Canonical cleanup returned zero visible definitions/runs; fixture state,
   runtime, and user-data directories were removed. Owned ports were free; the
-  unrelated t3code client remained outside the run.
+  unrelated another-project client remained outside the run.
 - No screenshots were retained; local count remained `100`.
 
 ## 2026-08-16 Native Cron schedule
@@ -1667,7 +1667,7 @@ former dynamic-event P1 is no longer a valid blocker.
   roundtrip while preserving Cron data.
 - `native-automations-cron-pause-resume`: missing coverage `1.00 -> 0.00`;
   product-loss contribution remained `0.00 -> 0.00`.
-- Owned Native used PID-derived `localhost:8902`; unrelated t3code `8901` was
+- Owned Native used PID-derived `localhost:8902`; unrelated another-project `8901` was
   not touched.
 - Shared projection and Lynx route focused suites passed `6/6` each; build and
   console passed.
@@ -1675,7 +1675,7 @@ former dynamic-event P1 is no longer a valid blocker.
   `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
 - Canonical cleanup returned zero visible definitions/runs; fixture state,
   runtime, and user-data directories were removed. Owned ports were free; the
-  unrelated t3code client remained outside the run.
+  unrelated another-project client remained outside the run.
 - No screenshots were retained; local count remained `100`.
 
 ## 2026-08-16 Native Weekdays weekend boundary
@@ -1688,7 +1688,7 @@ former dynamic-event P1 is no longer a valid blocker.
   roundtrip while preserving all schedule fields.
 - `native-automations-weekdays-weekend-boundary`: missing coverage
   `1.00 -> 0.00`; product-loss contribution remained `0.00 -> 0.00`.
-- Owned Native used PID-derived `localhost:8902`; unrelated t3code `8901` was
+- Owned Native used PID-derived `localhost:8902`; unrelated another-project `8901` was
   not touched.
 - Shared projection and Lynx route focused suites passed `6/6` each; build and
   console passed.
@@ -1696,7 +1696,7 @@ former dynamic-event P1 is no longer a valid blocker.
   `652f681314935d4a6c4e1a7e94c8a006dfec5546d6a638b50e0d7f86330f685c`.
 - Canonical cleanup returned zero visible definitions/runs; fixture state,
   runtime, and user-data directories were removed. Owned ports were free; the
-  unrelated t3code client remained outside the run.
+  unrelated another-project client remained outside the run.
 - No screenshots were retained; local count remained `100`.
 
 ## 2026-08-16 Compact dark Provider Update labels
@@ -1730,7 +1730,7 @@ former dynamic-event P1 is no longer a valid blocker.
 - Entry cleanup passed. Exit returned `sessions: []`, zero agent-browser-owned
   processes, owned ports `58090/8891/8902` free, and no retained browser
   screenshot. Local screenshot count remained `100`.
-- Unrelated t3code PID `18721` on `8901` was not touched.
+- Unrelated another-project PID `18721` on `8901` was not touched.
 - Detailed evidence:
   `shots/2026-08-16/provider-update-label-compact/notes.md`.
 
@@ -2099,7 +2099,7 @@ former dynamic-event P1 is no longer a valid blocker.
 - PID-derived client `localhost:8903` was `@synara/lynx`, session 1, exact
   staged bundle. Wide Landing retained `984x46` header and `56x18` New Chat;
   warning/error console was empty.
-- Owned PID/state/server were removed; `8903` disappeared. Unrelated t3code
+- Owned PID/state/server were removed; `8903` disappeared. Unrelated another-project
   `8901` and iOS Explorer `8902` remained untouched. Browser gate returned
   `sessions: []` and zero owned processes.
 - Detailed evidence:
