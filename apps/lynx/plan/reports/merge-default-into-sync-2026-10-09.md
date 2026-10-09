@@ -1,0 +1,73 @@
+# Merge resolution report
+
+Merge: `huxcx/lynxtron-port-current-state` (DEFAULT) into `huxcc/shared-state-arch` (SYNC). Only working-tree files were edited; the index, HEAD, refs, and merge state were not changed. The pre-resolved `package.json`, `apps/lynx/package.json`, and `bun.lock` were not edited.
+
+## Conflicted files
+
+- `.gitignore` — Kept SYNC and re-applied DEFAULT's local P10 viewer exclusions (`/.p10-view/` and `/.p10-view-native/`).
+- `AGENTS.md` — Kept all SYNC/upstream policy and appended DEFAULT's newest “Web and Lynx verification harness” text, including the `--regular-app` path.
+- `apps/desktop/src/main.ts` — Kept the current upstream/SYNC desktop structure; DEFAULT's exact-optional/context-menu type cleanup was retained where still applicable (including the narrowed spellcheck replacement branch), while obsolete helper/type shapes were left behind because current upstream types no longer require them.
+- `apps/lynx/package.json` — Left the user's existing resolution untouched; it retains the DEFAULT ReactLynx/typecheck/test-script toolchain work.
+- `apps/lynx/src/adapters/KanbanCardCompositionElements.lynx.tsx` — Kept the SYNC adapter and re-applied DEFAULT's shared long-press offset handling plus valid Lynx `text-maxline` attributes.
+- `apps/lynx/src/app/Transcript.tsx` — Kept the SYNC transcript and re-applied DEFAULT's message-only trail projection, branded assistant selection ID, eager command dispatch imports, and non-interactive hidden/tooltip regions.
+- `apps/lynx/src/app/TranscriptAssistantReference.lynx.test.ts` — Kept SYNC's newer settled-turn footer contract; dropped DEFAULT's obsolete “Reference whole assistant message” source assertion because upstream removed that action, while preserving the branded selection behavior in `Transcript.tsx`.
+- `apps/lynx/src/app/WorkspacePage.lynx.tsx` — Kept SYNC's deletion. No merged source imports it, so DEFAULT's local `homeDir` narrowing targeted a removed Workspace surface and was dropped.
+- `apps/lynx/src/app/appSnapRouting.lynx.ts` — Kept SYNC routing and re-applied DEFAULT's provider-aware default model selection through the helper's new `src/lib` location.
+- `apps/lynx/src/app/appTheme.logic.ts` — Kept SYNC theme structure and re-applied DEFAULT's removal of the invalid `theme.card` sidebar override.
+- `apps/lynx/src/app/automationCreate.logic.ts` — Kept SYNC automation behavior and re-applied DEFAULT's provider-aware default model helper through its relocated module.
+- `apps/lynx/src/app/queries.ts` — Kept SYNC's current snapshot/query shapes and re-expressed DEFAULT's exact-optional fixes: current provider resolution, required timestamps, project-owned names, nullable path defaults, local env fallback, search-only truncation, and current pull-request error typing.
+- `apps/lynx/src/app/router.tsx` — Kept SYNC's current routes/docks and re-applied DEFAULT's branded IDs, current user-input answer type, removed obsolete diff props, corrected local error setter, narrowed composer interaction mode, current component-lab story source, and hidden-terminal tap suppression.
+- `apps/lynx/src/app/threadHandoff.lynx.test.ts` — Kept the current handoff fixture shape and re-applied DEFAULT's branded message ID and explicit current fields; removed marker-era fields because SYNC removed thread markers.
+- `apps/lynx/src/app/useNativeKanbanCardActions.lynx.tsx` — Kept SYNC's native action flow and re-applied valid `text-maxline` attributes.
+- `apps/lynx/src/components/composer/LandingComposer.lynx.tsx` — Kept SYNC's landing composer and re-applied branded command/project/thread IDs, the relocated provider default-model helper, and the home-project fallback for workspace/name data.
+- `apps/lynx/src/components/sidebar/SidebarPrimaryIcons.lynx.tsx` — Kept SYNC's current three-surface icon contract; dropped DEFAULT's `newWorkspace` icon because upstream removed that navigation surface (and search) from this component contract.
+- `apps/server/src/keybindings.ts` — Kept SYNC's overlapping implementation of `server.removeKeybinding`; verified there is exactly one service implementation and one WS route, with DEFAULT's tests retained.
+- `apps/server/src/localPdfPreview.ts` — Kept SYNC's overlapping current implementation, which already returns the first PDF page's width and height with page count; DEFAULT's behavior and tests remain represented once.
+- `apps/server/src/orchestration/Layers/ProviderCommandReactor.test.ts` — Kept the large SYNC suite and adapted DEFAULT's two first-event watchdog cases to SYNC's projection semantics (wait for provider dispatch, not a synthetic projected `running` state).
+- `apps/server/src/orchestration/Layers/ProviderCommandReactor.ts` — Kept SYNC's durable delivery architecture and re-applied DEFAULT's 15-second first-event watchdog. It tracks observed turn events, verifies the live provider still owns the acknowledged turn, runs in the reactor lifetime scope, stops a silent runtime, and surfaces an uncertain start failure without perturbing established-session projection behavior.
+- `apps/server/src/outboundHttp.test.ts` — Kept SYNC's newer pinned-DNS helper tests; they already cover both DEFAULT result shapes, so the older test arrangement was not duplicated.
+- `apps/server/src/provider/Layers/CodexAdapter.ts` — Kept SYNC's current adapter and retained DEFAULT's trimmed warning/deprecation text plus synchronous bounded callback ingress; the corresponding DEFAULT tests remain in the merged suite.
+- `apps/server/src/provider/Layers/ProviderService.ts` — Kept SYNC's supervised durable runtime-event pump and re-expressed DEFAULT's “one bad event must not kill the stream” intent through the pump's permanent-failure quarantine path. A local catch was rejected because it would swallow transient persistence failures and bypass SYNC's retry guarantees.
+- `apps/web/src/appNavigation.ts` — Kept upstream structure and re-applied DEFAULT's `getLocationHash()` use, eliminating direct `window.location.hash` access.
+- `apps/web/src/components/ComponentsLabStoryRenderer.tsx` — Kept the current upstream story structure; retained applicable current checkbox indeterminate semantics, while older model/space type workarounds were superseded by upstream types.
+- `apps/web/src/components/Sidebar.tsx` — Kept upstream/SYNC sidebar structure. DEFAULT's older explicit generic/branding workarounds are unnecessary under current helpers and its removed surface-icon wiring no longer matches upstream; current typecheck and sidebar tests validate the replacement.
+- `apps/web/src/components/SidebarPrimarySurfaceNavigation.tsx` — Kept SYNC's current navigation surface and dropped DEFAULT's old required `newWorkspace`/search icon contract because those upstream entry points no longer exist here.
+- `apps/web/src/components/SidebarSearchPalette.tsx` — Kept upstream palette UI and re-applied DEFAULT's structural keyboard event type so Web and Lynx inputs share the handler safely.
+- `apps/web/src/components/SidebarSegmentedPicker.tsx` — Kept SYNC's deletion. No merged source imports it; DEFAULT's timer typing targeted a component removed by the upstream sidebar redesign.
+- `apps/web/src/components/WorkspaceFilePreview.tsx` — Kept upstream preview structure. DEFAULT's toolbar `width` prop was dropped because the current `TranscriptSelectionAction` owns its fixed width internally; retaining the old prop failed current types.
+- `apps/web/src/components/chat/ComposerReferenceAttachmentsComposition.tsx` — Kept upstream composition and re-applied DEFAULT's platform-element-derived attachment/preview types so the Lynx aliases use native draft shapes.
+- `apps/web/src/components/chat/ProviderModelPicker.tsx` — Kept upstream's tabbed picker and re-applied DEFAULT's environment-neutral timer intent to the current selection-commit timer (`ReturnType<typeof setTimeout>` and global `setTimeout`, no `window` dependency).
+- `apps/web/src/hooks/useSidebarThreadActions.ts` — Kept upstream hook structure; DEFAULT's explicit generic workaround is superseded by the current branded helper signatures and was not reintroduced.
+- `apps/web/src/wsTransport.ts` — Kept upstream transport and retained DEFAULT's cross-runtime timer typing with `ReturnType<typeof setTimeout>`.
+- `bun.lock` — Left the user's existing resolution untouched; no lockfile edits were made.
+- `package.json` — Left the user's existing resolution untouched; no root manifest edits were made.
+- `packages/shared/src/browserSession.ts` — Kept SYNC's newer nullable favicon contract (`faviconUrl ?? null`), which supersedes DEFAULT's omit-undefined workaround while satisfying exact optional types.
+- `packages/shared/src/componentLabFixtures.test.ts` — Kept SYNC's current fixture/test shape; DEFAULT's extra Codex narrowing block is no longer needed by current discriminated types.
+- `packages/shared/src/model.ts` — Kept SYNC's current model definitions; DEFAULT's type-only `CodexReasoningEffort` import targeted an import that upstream removed.
+- `packages/shared/src/terminalTextProjection.ts` — Kept SYNC's newer terminal parser and retained DEFAULT's exact-optional intent through the current `withoutStyleKeys`/color helpers, which delete reset properties instead of assigning `undefined`.
+
+## Interaction-only compatibility edits
+
+The merged typecheck required small compatibility updates outside the unresolved set: removed the stale `SidebarSegmentedPickerElements` tsconfig alias and obsolete duplicate `defaultModelSelection.logic.ts`; aligned Lynx composer/debug-mode boundaries, branded test IDs, bridge payload generics, and Web-tree ambient types; applied the same structural search-key event type to the shared composition; and adapted current Web-only canvas typing for the Lynx checker. The auto-merged selection-toolbar width change was removed from `DiffPanel`, `WorkspaceFilePreview`, `chatSelectionActions`, and `useCodeSelectionAction` because upstream now owns the width inside `TranscriptSelectionAction`.
+
+## Verification
+
+- `grep -rIl '^<<<<<<< \|^>>>>>>> ' --exclude-dir=node_modules --exclude-dir=.git .` — PASS; no output.
+- `bun typecheck` — PASS; Turbo reported 8/8 packages successful. Effect diagnostics were suggestions only.
+- `bun lint` — PASS with 0 errors and 1,088 warnings. The anticipated five JSX-in-`.ts` parse errors did not occur with the merged toolchain, so there were no lint errors to compare.
+- `bun fmt --check` — PASS after formatting the resolved files and this report; all 7,934 checked files matched.
+- `cd apps/server && bunx vitest run src/provider/Layers/CodexAdapter.test.ts src/provider/Layers/ProviderService.test.ts src/orchestration/Layers/ProviderCommandReactor.test.ts src/keybindings.test.ts src/outboundHttp.test.ts` — PASS: 5 files, 549 tests.
+- `cd apps/web && bunx vitest run src/appNavigation.test.ts src/components/ComponentsLabStoryRenderer.test.ts src/components/Sidebar.logic.test.ts src/components/SidebarPrimaryActionRow.test.tsx src/components/SidebarSearchPalette.logic.test.ts src/components/SidebarSurfacePicker.logic.test.ts src/components/WorkspaceFilePreviewErrorState.test.tsx src/components/WorkspaceFilePreviewRecovery.test.ts src/components/chat/WorkspaceFilePreviewHeader.test.tsx src/components/chat/ComposerReferenceAttachmentsComposition.test.tsx src/hooks/useSidebarThreadActions.test.ts src/wsTransport.test.ts src/wsTransportEvents.test.ts` — PASS: 13 files, 218 passed, 10 skipped.
+- `cd packages/shared && bunx vitest run src/browserSession.test.ts src/componentLabFixtures.test.ts src/model.test.ts src/terminalTextProjection.test.ts` — PASS: 4 files, 137 tests.
+- `cd apps/lynx && bun run typecheck` — PASS: app, desktop host, web host, and tools TypeScript configs.
+- `cd apps/lynx && bunx rstest run src/adapters/KanbanCardCompositionElements.lynx.test.tsx src/app/TranscriptMarkdownWidth.lynx.test.ts src/app/TranscriptEdit.lynx.test.tsx src/app/TranscriptStatusIcons.lynx.test.tsx src/app/TranscriptRestoration.lynx.test.ts src/app/TranscriptAssistantReference.lynx.test.ts src/app/TranscriptAppearance.lynx.test.ts src/app/TranscriptJumpFeedback.lynx.test.ts src/app/appSnapRouting.lynx.test.ts src/app/appTheme.logic.test.ts src/app/automationCreate.logic.test.ts src/app/queries.lynx.test.ts src/app/routerHistory.logic.test.ts src/app/routerPersistenceFailure.test.ts src/app/threadHandoff.lynx.test.ts src/app/HiddenRegionInteraction.lynx.test.ts src/components/sidebar/SidebarPrimaryIcons.lynx.test.ts src/components/sidebar/SidebarActivityView.lynx.test.tsx src/main/bridgeRpcPayload.test.ts` — BLOCKED before test collection: Rstest attempted to listen on `::1:3000` and the sandbox returned `EPERM`. A second minimal attempt with `--browser.enabled=false` failed at the same listener. No Rstest result is claimed.
+- `bunx vitest run scripts/dev-electron-lynxtron.test.mjs` — 50 passed, 1 failed. The failing test (`copies Lynxtron to an exact-owned app path for desktop automation`) reached the sandboxed `ps -axo` inspection; `spawnSync` returned a nonzero result without `stderr`, and the error-reporting `.trim()` then threw. No app or comparison server was started, and no comparison script was run.
+- `cd apps/lynx && bun run build` — PASS. Lynx and desktop bundles built and native helpers staged. Reported warnings were the existing unsupported Lynx CSS properties and optional `bufferutil`/`utf-8-validate` modules.
+- Final deletion/import check — PASS: `WorkspacePage.lynx.tsx` and `SidebarSegmentedPicker.tsx` are absent and neither name is imported from `apps/lynx/src` or `apps/web/src`.
+
+During iteration, the first combined server run exposed three failures (one swallowed persistence retry and two watchdog lifetime/projection mismatches); those resolutions were corrected, and the required final server command passed 549/549. An initial root typecheck also caught the stale toolbar-width interaction and a test persistence return type; both were corrected before the final 8/8 pass.
+
+## Decisions with residual uncertainty
+
+- The first-event watchdog deliberately does not synthesize a `running` projection before an actual provider event. On current SYNC, it instead verifies after the timeout that the live provider session still owns the acknowledged turn, while accepting a projected `ready` or `running` state. This preserves DEFAULT's recovery guarantee without disturbing SYNC's established-session and durable-delivery behavior; the full 330-test reactor file passed as part of the final server run.
+- The Rstest and comparison-launcher gaps above are environment constraints, not claimed passes. They should be rerun in an environment that permits the test runner's loopback listener and `ps` process inspection.

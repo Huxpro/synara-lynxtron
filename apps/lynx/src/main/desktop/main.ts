@@ -685,16 +685,12 @@ function installWindowStatePersistence(w: LynxWindow, filePath: string): () => v
     if (timer) clearTimeout(timer);
     timer = setTimeout(persist, 150);
   };
-  for (const event of [
-    "move",
-    "resize",
-    "maximize",
-    "unmaximize",
-    "enter-full-screen",
-    "leave-full-screen",
-  ] as const) {
-    w.on(event, schedule);
-  }
+  w.on("move", schedule);
+  w.on("resize", schedule);
+  w.on("maximize", schedule);
+  w.on("unmaximize", schedule);
+  w.on("enter-full-screen", schedule);
+  w.on("leave-full-screen", schedule);
   return () => {
     if (timer) clearTimeout(timer);
     persist();
@@ -811,14 +807,11 @@ app.whenReady().then(() => {
     type: "renderer-reset",
   }).state;
   const flushWindowState = installWindowStatePersistence(w, shellPaths.windowState);
-  for (const event of [
-    "maximize",
-    "unmaximize",
-    "enter-full-screen",
-    "leave-full-screen",
-  ] as const) {
-    w.on(event, () => emitWindowState(w));
-  }
+  const emitCurrentWindowState = () => emitWindowState(w);
+  w.on("maximize", emitCurrentWindowState);
+  w.on("unmaximize", emitCurrentWindowState);
+  w.on("enter-full-screen", emitCurrentWindowState);
+  w.on("leave-full-screen", emitCurrentWindowState);
   w.on("resize", () => {
     const bounds = w.getContentBounds();
     w.sendGlobalEvent("viewport:resize", bounds.width, bounds.height);
@@ -1301,12 +1294,14 @@ app.whenReady().then(() => {
   } else if (windowPresentation.showAfterSetup) {
     w.show();
   }
-  if (process.env.SYNARA_BROWSER_VIEW_PROBE_URL?.trim()) {
+  const browserViewProbeUrl = process.env.SYNARA_BROWSER_VIEW_PROBE_URL?.trim();
+  if (browserViewProbeUrl) {
     setTimeout(() => {
       const attached =
         browserViewHost?.attach(
           { x: 448, y: 92, width: 416, height: 960 },
-          process.env.SYNARA_BROWSER_VIEW_PROBE_URL!.trim(),
+          "browser-tab-1",
+          browserViewProbeUrl,
         ) === true;
       appendShellLog(shellPaths.logFile, `browser view probe attached=${attached}`);
     }, 250);

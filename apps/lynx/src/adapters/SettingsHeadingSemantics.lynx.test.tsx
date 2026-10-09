@@ -19,7 +19,7 @@ import { SettingsRowTitleElement } from "./SettingsRowElements.lynx";
 import { SettingsSectionTitleElement } from "./SettingsSectionElements.lynx";
 
 function expectNativeHeading(selector: string) {
-  const headings = elementTree.root?.querySelectorAll(selector) ?? [];
+  const headings = Array.from(elementTree.root?.querySelectorAll(selector) ?? []);
   expect(headings.length).toBeGreaterThan(0);
   for (const heading of headings) {
     expect(heading.getAttribute("accessibility-element")).toBe("true");

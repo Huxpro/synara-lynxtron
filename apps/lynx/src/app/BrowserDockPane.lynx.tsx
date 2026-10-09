@@ -462,6 +462,8 @@ export function BrowserDockPane(props: {
       ref={paneRef}
       flatten={false}
       className={`BrowserDockPane${props.active ? "" : " BrowserDockPane--hidden"}`}
+      // Inactive browser panes stay mounted over the dock; refuse touch while hidden.
+      user-interaction-enabled={props.active}
     >
       <view className="BrowserDockToolbar chat-surface-divider">
         <Button

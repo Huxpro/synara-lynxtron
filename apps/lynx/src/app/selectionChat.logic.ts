@@ -1,13 +1,14 @@
 import type {
+  ChatAssistantSelectionAttachment,
   ClientOrchestrationCommand,
   ModelSelection,
   RuntimeMode,
   ThreadEnvironmentMode,
 } from "@synara/contracts";
+import { MessageId } from "@synara/contracts";
 import { TRANSCRIPT_SELECTION_ACTION_HEIGHT_PX } from "@synara/shared/selectionActionLayout";
 import type { TranscriptAssistantSelection } from "@synara-web/components/chat/chatSelectionActions";
 import { createAssistantSelectionAttachment } from "@synara-web/lib/assistantSelections";
-import type { ChatAssistantSelectionAttachment } from "@synara-web/types";
 
 /** Electron's selectionChat `requireSelection`: the attachment, or the reason there is none. */
 export function requireSelectionAttachment(
@@ -15,7 +16,10 @@ export function requireSelectionAttachment(
 ): ChatAssistantSelectionAttachment {
   const attachment = createAssistantSelectionAttachment(selection);
   if (!attachment) throw new Error("Select between 1 and 4,000 characters.");
-  return attachment;
+  return {
+    ...attachment,
+    assistantMessageId: MessageId.makeUnsafe(attachment.assistantMessageId),
+  };
 }
 
 /** The new chat a selection opens: a regular project thread, like a landing "New chat". */

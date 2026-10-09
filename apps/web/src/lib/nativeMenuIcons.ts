@@ -36,7 +36,12 @@ async function rasterizeMenuIcon(icon: string): Promise<string | null> {
   await image.decode();
 
   const size = NATIVE_MENU_ICON_POINTS * NATIVE_MENU_ICON_SCALE;
-  const canvas = getDocument()?.createElement("canvas");
+  // Lynx's DOM shim has no tag-name map, but this shared Web-only branch still
+  // needs its concrete canvas result when checked as part of the Lynx bundle.
+  const documentWithCanvas = getDocument() as {
+    createElement(tagName: "canvas"): HTMLCanvasElement;
+  } | null;
+  const canvas = documentWithCanvas?.createElement("canvas");
   if (!canvas) return null;
   canvas.width = size;
   canvas.height = size;

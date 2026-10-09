@@ -1,5 +1,5 @@
 import { newCommandId, newThreadId } from "@synara-web/lib/utils";
-import type { ChatAssistantSelectionAttachment } from "@synara-web/types";
+import type { ChatAssistantSelectionAttachment } from "@synara/contracts";
 
 import { useComposerDraftStore } from "../adapters/composerDraftStore.lynx";
 import { dispatchSynaraCommand } from "../data/synaraClient.lynx";

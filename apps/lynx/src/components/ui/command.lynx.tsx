@@ -11,6 +11,7 @@ import {
 import { resolveCommandNavigation } from "@synara/shared/commandNavigation";
 
 import { Dialog, DialogPopup } from "./dialog.lynx";
+import { toLynxInputKeyEvent, type LynxInputKeyEvent } from "./input.lynx";
 import { useLynxInteractiveState } from "./interactive-state.lynx";
 import { parseHostCommandKeyboardEvent } from "./commandHostNavigation.logic";
 import { cx, textContent } from "./shared.lynx";
@@ -202,7 +203,7 @@ export function CommandInput(props: {
   placeholder?: string;
   value?: string;
   onChange?: (event: { currentTarget: { value: string } }) => void;
-  onKeyDown?: (event: unknown) => void;
+  onKeyDown?: (event: LynxInputKeyEvent) => void;
   startAddon?: ReactNode;
 }) {
   const dialog = useContext(CommandDialogOpenContext);
@@ -229,7 +230,7 @@ export function CommandInput(props: {
   }, [props.value]);
   const handleKeyDown = (event: CommandKeyboardEvent) => {
     "background only";
-    props.onKeyDown?.(event);
+    props.onKeyDown?.(toLynxInputKeyEvent(event));
     command.handleKeyDown?.(event);
   };
 

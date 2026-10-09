@@ -687,7 +687,7 @@ export function AutomationDetailPage({
                   <InlineDetailTextInput
                     label="Heartbeat stop condition"
                     value={
-                      definition.completionPolicy.type === "ai-evaluated"
+                      definition.completionPolicy?.type === "ai-evaluated"
                         ? definition.completionPolicy.stopWhen
                         : ""
                     }

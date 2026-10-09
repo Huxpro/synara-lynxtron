@@ -11,7 +11,10 @@ import { ArchiveIcon } from "../lib/icons.lynx";
 import { dispatchSynaraCommand } from "../data/synaraClient.lynx";
 import { dialogs } from "../platform/dialogs";
 import { showContextMenu } from "../platform/contextMenu";
-import { resolveSecondaryPointerOffset } from "../components/sidebar/threadContextActions.logic";
+import {
+  resolveLongPressOffset,
+  resolveSecondaryPointerOffset,
+} from "../components/sidebar/threadContextActions.logic";
 import { focusLynxNode } from "../components/ui/focus.lynx";
 import { fetchSidebarSnapshot, queryClient } from "./queries";
 import {
@@ -60,12 +63,7 @@ function ArchivedThreadRow(props: {
         const offset = resolveSecondaryPointerOffset(event);
         if (offset) openAtOffset(offset);
       }}
-      bindlongpress={(event: { readonly x?: number; readonly y?: number }) =>
-        openAtOffset({
-          x: Number.isFinite(event.x) ? event.x! : 12,
-          y: Number.isFinite(event.y) ? event.y! : 12,
-        })
-      }
+      bindlongpress={(event) => openAtOffset(resolveLongPressOffset(event) ?? { x: 12, y: 12 })}
     >
       {props.children}
     </view>

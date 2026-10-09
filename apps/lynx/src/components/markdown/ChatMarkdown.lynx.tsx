@@ -30,6 +30,7 @@ import {
   resolveLynxInlineCodeFileReference,
   resolveLynxMarkdownFileReference,
 } from "./markdownFileReferences.logic";
+import { FileEntryIcon } from "../FileEntryIcon.lynx";
 import { ExternalLinkIcon } from "./ExternalLinkIcon.lynx";
 import { MarkdownFileReferenceToken } from "./MarkdownFileReferenceToken.lynx";
 import { highlightExplorerCode } from "../../data/synaraClient.lynx";
@@ -549,7 +550,7 @@ function MarkdownCodeBlock({
                         style={{
                           color: token.color,
                           ...(token.fontStyle & 1 ? { fontStyle: "italic" } : {}),
-                          ...(token.fontStyle & 2 ? { fontWeight: 700 } : {}),
+                          ...(token.fontStyle & 2 ? { fontWeight: "700" } : {}),
                           ...(token.fontStyle & 4 ? { textDecoration: "underline" } : {}),
                         }}
                       >

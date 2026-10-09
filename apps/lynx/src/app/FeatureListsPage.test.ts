@@ -9,8 +9,8 @@ import {
   selectKanbanProjectBoard,
 } from "./FeatureListsPage.logic";
 import type { KanbanBoard, KanbanProjectBoard } from "@synara-web/components/kanban/kanban.logic";
-import type { PullRequestListEntry } from "@synara/contracts";
-import type { SidebarSnapshot } from "./queries";
+import { ProjectId, type PullRequestListEntry } from "@synara/contracts";
+import type { PullRequestSnapshot, SidebarSnapshot } from "./queries";
 
 describe("buildCanonicalSliceKanbanBoard", () => {
   it("folds home chat containers into the trailing canonical Chats board", () => {
@@ -96,15 +96,15 @@ describe("buildCanonicalSliceKanbanBoard", () => {
 
 describe("selectKanbanProjectBoard", () => {
   it("returns the exact canonical project board without re-projecting cards", () => {
-    const project = {
-      projectId: "project-a",
+    const project: KanbanProjectBoard = {
+      projectId: ProjectId.makeUnsafe("project-a"),
       projectName: "Project A",
       projectKind: "project",
       draft: [],
       inProgress: [],
       done: [],
       totalCount: 0,
-    } as KanbanProjectBoard;
+    };
     const board: KanbanBoard = { projects: [project], totalCount: 0 };
 
     expect(selectKanbanProjectBoard(board, "project-a")).toBe(project);
@@ -123,14 +123,13 @@ describe("buildCanonicalSlicePullRequestList", () => {
   it("uses the canonical pinned-first grouping without rebuilding entries", () => {
     const regular = makePullRequest("regular", false, true);
     const pinned = makePullRequest("pinned", true, false);
-    const list = buildCanonicalSlicePullRequestList({
-      viewer: "viewer",
-      entries: [regular, pinned],
-    });
+    const list = buildCanonicalSlicePullRequestList(
+      makePullRequestSnapshot("viewer", [regular, pinned]),
+    );
 
     expect(list.entries).toEqual([pinned, regular]);
     expect(list.entries[0]?.mergeability).toBe("unknown");
-    expect(list.grouped.map((group) => group.label)).toEqual(["Pinned", "Review requested"]);
+    expect(list.grouped?.map((group) => group.label)).toEqual(["Pinned", "Review requested"]);
   });
 
   it("provides a stable empty fallback before the query resolves", () => {
@@ -139,13 +138,13 @@ describe("buildCanonicalSlicePullRequestList", () => {
 
   it("uses the canonical involvement filter and ungroups a scoped tab", () => {
     const requested = makePullRequest("requested", false, true);
-    const authored = {
+    const authored: PullRequestListEntry = {
       ...makePullRequest("authored", false, false),
-      author: { login: "viewer", name: "Viewer", avatarUrl: null },
+      author: { login: "viewer", name: "Viewer", url: null, avatarUrl: null },
     };
 
     const list = buildCanonicalSlicePullRequestList(
-      { viewer: "viewer", entries: [requested, authored] },
+      makePullRequestSnapshot("viewer", [requested, authored]),
       "authored",
     );
 
@@ -154,19 +153,16 @@ describe("buildCanonicalSlicePullRequestList", () => {
   });
 
   it("uses the shared free-text matcher without changing canonical ordering", () => {
-    const branchMatch = {
+    const branchMatch: PullRequestListEntry = {
       ...makePullRequest("unrelated title", false, false),
       headBranch: "feature/Search-Fidelity",
-      author: { login: "reviewer", name: "Reviewer", avatarUrl: null },
+      author: { login: "reviewer", name: "Reviewer", url: null, avatarUrl: null },
     };
-    const numberMatch = {
+    const numberMatch: PullRequestListEntry = {
       ...makePullRequest("number match", true, false),
       number: 350,
     };
-    const snapshot = {
-      viewer: "viewer",
-      entries: [branchMatch, numberMatch],
-    };
+    const snapshot = makePullRequestSnapshot("viewer", [branchMatch, numberMatch]);
 
     expect(
       buildCanonicalSlicePullRequestList(snapshot, "all", "  SEARCH-fidelity ").entries,
@@ -191,13 +187,20 @@ describe("createPullRequestActionGate", () => {
   });
 });
 
+function makePullRequestSnapshot(
+  viewer: string,
+  entries: readonly PullRequestListEntry[],
+): PullRequestSnapshot {
+  return { viewer, entries, errors: [], repositoryBatches: [] };
+}
+
 function makePullRequest(
   title: string,
   isPinned: boolean,
   viewerReviewRequested: boolean,
 ): PullRequestListEntry {
   return {
-    projectId: "project-a" as PullRequestListEntry["projectId"],
+    projectId: ProjectId.makeUnsafe("project-a"),
     projectTitle: "Project A",
     repository: `acme/${title}`,
     number: isPinned ? 1 : 2,
@@ -217,7 +220,7 @@ function makePullRequest(
     isPinned,
     projectContexts: [
       {
-        projectId: "project-a" as PullRequestListEntry["projectId"],
+        projectId: ProjectId.makeUnsafe("project-a"),
         projectTitle: "Project A",
         isPinned,
       },

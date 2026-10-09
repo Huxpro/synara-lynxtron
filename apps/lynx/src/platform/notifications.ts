@@ -14,6 +14,8 @@ export async function isSystemNotificationSupported(): Promise<boolean> {
 }
 
 export async function showSystemNotification(request: SystemNotificationRequest): Promise<boolean> {
-  const result = await bridgeCall<{ readonly shown?: boolean }>("notificationsShow", request);
+  const result = await bridgeCall<{ readonly shown?: boolean }>("notificationsShow", {
+    ...request,
+  });
   return result.shown === true;
 }

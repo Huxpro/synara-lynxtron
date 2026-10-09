@@ -6,6 +6,7 @@ import { fireEvent, render, waitFor } from "@lynx-js/react/testing-library";
 import { useComposerDraftStore } from "../adapters/composerDraftStore.lynx";
 import { KanbanNewTaskDialog } from "./KanbanNewTaskDialog.lynx";
 import type { ProjectSummary } from "./queries";
+import { makeProjectSummary } from "./queriesTestFixtures";
 
 beforeEach(() => {
   Object.assign(lynx, {
@@ -36,7 +37,7 @@ beforeEach(() => {
   });
 });
 
-const project: ProjectSummary = {
+const project: ProjectSummary = makeProjectSummary({
   id: "project-1",
   kind: "project",
   title: "Synara",
@@ -45,7 +46,7 @@ const project: ProjectSummary = {
     provider: "codex",
     model: "gpt-5.6-sol",
   },
-};
+});
 
 describe("Kanban new task project feedback", () => {
   it("separates branded selection from neutral hover and pressed states", () => {
@@ -82,17 +83,17 @@ function input(value: string) {
 }
 
 function buttons(): Element[] {
-  return elementTree.root?.querySelectorAll(".LxButton") ?? [];
+  return Array.from(elementTree.root?.querySelectorAll(".LxButton") ?? []);
 }
 
 function emptyShellSnapshot(): OrchestrationShellSnapshot {
   return {
     snapshotSequence: 1,
-    generatedAt: "2026-08-10T00:00:00.000Z",
+    updatedAt: "2026-08-10T00:00:00.000Z",
     spaces: [],
     projects: [],
     threads: [],
-  } as OrchestrationShellSnapshot;
+  };
 }
 
 describe("Lynx Kanban new task dialog", () => {

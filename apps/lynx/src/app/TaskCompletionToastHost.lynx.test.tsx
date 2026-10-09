@@ -3,10 +3,11 @@ import { describe, expect, it, rs } from "@rstest/core";
 import { readFileSync } from "node:fs";
 
 import type { ThreadSummary } from "./queries";
+import { makeThreadSummary } from "./queriesTestFixtures";
 import { TaskCompletionToastHost } from "./TaskCompletionToastHost.lynx";
 
 function summary(overrides: Partial<ThreadSummary> = {}): ThreadSummary {
-  return {
+  return makeThreadSummary({
     id: "thread-1",
     projectId: "project-1",
     project: "Synara",
@@ -17,7 +18,7 @@ function summary(overrides: Partial<ThreadSummary> = {}): ThreadSummary {
     hasPendingApprovals: false,
     hasPendingUserInput: false,
     ...overrides,
-  };
+  });
 }
 
 describe("Lynx task completion toast host", () => {

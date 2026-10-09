@@ -16,7 +16,14 @@ export function CollapsedWorkRootElement(props: ChildrenProps) {
   return <view className="SharedCollapsedWork">{props.children}</view>;
 }
 
-export function CollapsedWorkDisclosureElement(props: ChildrenProps) {
+export function CollapsedWorkDisclosureElement(
+  props: ChildrenProps & {
+    // Web's root is a stateful Collapsible; here the trigger and panel
+    // elements receive `open` directly, so the root only groups them.
+    readonly open: boolean;
+    readonly onOpenChange: (open: boolean) => void;
+  },
+) {
   return <view>{props.children}</view>;
 }
 

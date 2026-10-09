@@ -171,6 +171,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
       chatFontSize: 18,
       skipLynxDevtool: true,
       skipBuild: true,
+      regularApp: false,
     });
   });
 
@@ -842,6 +843,17 @@ describe("Electron and Lynxtron comparison launcher", () => {
         { encoding: "utf8" },
       ).stdout.trim(),
     ).toBe("true");
+
+    // --regular-app stages a regular application so Computer Use can find it.
+    expect(parseDesktopComparisonArgs(["--regular-app"]).regularApp).toBe(true);
+    prepareOwnedLynxtronRuntime(paths, { sign: false, regularApp: true });
+    expect(
+      spawnSync(
+        "plutil",
+        ["-extract", "LSUIElement", "raw", join(paths.ownedLynxtronApp, "Contents", "Info.plist")],
+        { encoding: "utf8" },
+      ).stdout.trim(),
+    ).toBe("false");
     if (platform() === "darwin") {
       const source = readFileSync(new URL("./dev-electron-lynxtron.mjs", import.meta.url), "utf8");
       expect(source).toContain(

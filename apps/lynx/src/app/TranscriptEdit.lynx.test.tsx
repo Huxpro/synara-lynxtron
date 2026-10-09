@@ -10,7 +10,9 @@ function editTextarea(): Element {
 }
 
 function editButtons(): Element[] {
-  return [...(elementTree.root?.querySelectorAll(".TranscriptUserEditActions .LxButton") ?? [])];
+  return Array.from(
+    elementTree.root?.querySelectorAll(".TranscriptUserEditActions .LxButton") ?? [],
+  );
 }
 
 describe("Lynx user-message edit form", () => {

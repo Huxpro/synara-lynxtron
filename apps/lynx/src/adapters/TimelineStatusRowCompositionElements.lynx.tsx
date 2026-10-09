@@ -41,7 +41,7 @@ export function TimelineStatusRowLabelElement(props: {
   return (
     <text
       className={`SharedTimelineStatusRowLabel${toneClass(props.tone)}`}
-      maxlines={1}
+      text-maxline="1"
       style={{ fontSize: `${props.fontSizePx}px` }}
     >
       {props.displayText}

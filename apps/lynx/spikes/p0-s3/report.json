@@ -1,0 +1,2040 @@
+{
+  "meta": {
+    "tool": "measure.cjs — Tailwind v3 + @lynx-js/tailwind-preset coverage measurement",
+    "timestamp": "2026-07-26T18:04:56.637Z",
+    "totalClasses": 500,
+    "totalWeighted": 15994,
+    "tailwindVersion": "3.4.19",
+    "presetVersion": "0.5.0"
+  },
+  "summary": {
+    "generated": {
+      "count": 330,
+      "weighted": 12815,
+      "pct": 66,
+      "weightedPct": 80.1
+    },
+    "notGenerated": {
+      "count": 170,
+      "weighted": 3179,
+      "pct": 34,
+      "weightedPct": 19.9
+    },
+    "generatedSafe": {
+      "count": 297,
+      "weighted": 12451
+    },
+    "generatedWarned": {
+      "count": 33,
+      "weighted": 364
+    }
+  },
+  "classifications": {
+    "passed": [
+      {
+        "class": "flex",
+        "count": 1000
+      },
+      {
+        "class": "items-center",
+        "count": 781
+      },
+      {
+        "class": "shrink-0",
+        "count": 604
+      },
+      {
+        "class": "min-w-0",
+        "count": 494
+      },
+      {
+        "class": "flex-1",
+        "count": 315
+      },
+      {
+        "class": "truncate",
+        "count": 283
+      },
+      {
+        "class": "gap-2",
+        "count": 282
+      },
+      {
+        "class": "flex-col",
+        "count": 274
+      },
+      {
+        "class": "w-full",
+        "count": 255
+      },
+      {
+        "class": "size-3.5",
+        "count": 247
+      },
+      {
+        "class": "font-medium",
+        "count": 227
+      },
+      {
+        "class": "justify-center",
+        "count": 204
+      },
+      {
+        "class": "gap-1.5",
+        "count": 193
+      },
+      {
+        "class": "rounded-full",
+        "count": 186
+      },
+      {
+        "class": "transition-colors",
+        "count": 186
+      },
+      {
+        "class": "text-xs",
+        "count": 184
+      },
+      {
+        "class": "px-2",
+        "count": 183
+      },
+      {
+        "class": "relative",
+        "count": 170
+      },
+      {
+        "class": "min-h-0",
+        "count": 166
+      },
+      {
+        "class": "text-[11px]",
+        "count": 141
+      },
+      {
+        "class": "text-sm",
+        "count": 138
+      },
+      {
+        "class": "rounded-md",
+        "count": 135
+      },
+      {
+        "class": "rounded-lg",
+        "count": 134
+      },
+      {
+        "class": "absolute",
+        "count": 133
+      },
+      {
+        "class": "overflow-hidden",
+        "count": 127
+      },
+      {
+        "class": "size-3",
+        "count": 124
+      },
+      {
+        "class": "gap-1",
+        "count": 120
+      },
+      {
+        "class": "px-3",
+        "count": 107
+      },
+      {
+        "class": "size-4",
+        "count": 102
+      },
+      {
+        "class": "py-1",
+        "count": 99
+      },
+      {
+        "class": "gap-3",
+        "count": 95
+      },
+      {
+        "class": "text-left",
+        "count": 92
+      },
+      {
+        "class": "h-full",
+        "count": 91
+      },
+      {
+        "class": "py-1.5",
+        "count": 84
+      },
+      {
+        "class": "text-[var(--color-text-foreground)]",
+        "count": 81
+      },
+      {
+        "class": "justify-between",
+        "count": 73
+      },
+      {
+        "class": "font-normal",
+        "count": 67
+      },
+      {
+        "class": "py-2",
+        "count": 63
+      },
+      {
+        "class": "text-center",
+        "count": 63
+      },
+      {
+        "class": "px-2.5",
+        "count": 62
+      },
+      {
+        "class": "size-5",
+        "count": 56
+      },
+      {
+        "class": "bg-transparent",
+        "count": 55
+      },
+      {
+        "class": "px-4",
+        "count": 55
+      },
+      {
+        "class": "gap-0.5",
+        "count": 54
+      },
+      {
+        "class": "grid",
+        "count": 54
+      },
+      {
+        "class": "py-0.5",
+        "count": 54
+      },
+      {
+        "class": "border-[color:var(--color-border-light)]",
+        "count": 53
+      },
+      {
+        "class": "font-semibold",
+        "count": 47
+      },
+      {
+        "class": "px-1.5",
+        "count": 47
+      },
+      {
+        "class": "animate-spin",
+        "count": 46
+      },
+      {
+        "class": "px-1",
+        "count": 46
+      },
+      {
+        "class": "opacity-0",
+        "count": 44
+      },
+      {
+        "class": "text-[10px]",
+        "count": 44
+      },
+      {
+        "class": "transition-opacity",
+        "count": 44
+      },
+      {
+        "class": "inset-0",
+        "count": 40
+      },
+      {
+        "class": "border-[color:var(--color-border)]",
+        "count": 39
+      },
+      {
+        "class": "border-transparent",
+        "count": 39
+      },
+      {
+        "class": "items-start",
+        "count": 39
+      },
+      {
+        "class": "-translate-y-1/2",
+        "count": 38
+      },
+      {
+        "class": "py-3",
+        "count": 38
+      },
+      {
+        "class": "top-1/2",
+        "count": 38
+      },
+      {
+        "class": "z-50",
+        "count": 38
+      },
+      {
+        "class": "hidden",
+        "count": 37
+      },
+      {
+        "class": "bg-[var(--color-background-elevated-secondary)]",
+        "count": 36
+      },
+      {
+        "class": "border-t",
+        "count": 36
+      },
+      {
+        "class": "rounded-xl",
+        "count": 36
+      },
+      {
+        "class": "text-[var(--color-text-foreground-secondary)]",
+        "count": 36
+      },
+      {
+        "class": "duration-150",
+        "count": 35
+      },
+      {
+        "class": "z-10",
+        "count": 35
+      },
+      {
+        "class": "size-1.5",
+        "count": 34
+      },
+      {
+        "class": "justify-end",
+        "count": 33
+      },
+      {
+        "class": "h-7",
+        "count": 32
+      },
+      {
+        "class": "h-8",
+        "count": 32
+      },
+      {
+        "class": "border-b",
+        "count": 31
+      },
+      {
+        "class": "rounded-sm",
+        "count": 31
+      },
+      {
+        "class": "flex-wrap",
+        "count": 30
+      },
+      {
+        "class": "gap-2.5",
+        "count": 30
+      },
+      {
+        "class": "leading-relaxed",
+        "count": 30
+      },
+      {
+        "class": "duration-200",
+        "count": 29
+      },
+      {
+        "class": "mt-1",
+        "count": 29
+      },
+      {
+        "class": "mt-2",
+        "count": 29
+      },
+      {
+        "class": "opacity-100",
+        "count": 29
+      },
+      {
+        "class": "ml-auto",
+        "count": 28
+      },
+      {
+        "class": "leading-none",
+        "count": 27
+      },
+      {
+        "class": "leading-tight",
+        "count": 27
+      },
+      {
+        "class": "size-7",
+        "count": 27
+      },
+      {
+        "class": "fixed",
+        "count": 26
+      },
+      {
+        "class": "[-webkit-app-region:no-drag]",
+        "count": 25
+      },
+      {
+        "class": "font-mono",
+        "count": 25
+      },
+      {
+        "class": "justify-start",
+        "count": 25
+      },
+      {
+        "class": "opacity-80",
+        "count": 25
+      },
+      {
+        "class": "px-5",
+        "count": 25
+      },
+      {
+        "class": "size-6",
+        "count": 24
+      },
+      {
+        "class": "bg-[var(--color-background-surface)]",
+        "count": 23
+      },
+      {
+        "class": "text-[13px]",
+        "count": 23
+      },
+      {
+        "class": "text-base",
+        "count": 23
+      },
+      {
+        "class": "gap-4",
+        "count": 22
+      },
+      {
+        "class": "mt-0.5",
+        "count": 22
+      },
+      {
+        "class": "mx-auto",
+        "count": 22
+      },
+      {
+        "class": "whitespace-nowrap",
+        "count": 22
+      },
+      {
+        "class": "opacity-60",
+        "count": 21
+      },
+      {
+        "class": "opacity-70",
+        "count": 21
+      },
+      {
+        "class": "p-3",
+        "count": 21
+      },
+      {
+        "class": "text-[12px]",
+        "count": 21
+      },
+      {
+        "class": "leading-snug",
+        "count": 20
+      },
+      {
+        "class": "size-8",
+        "count": 20
+      },
+      {
+        "class": "[&_svg]:shrink-0",
+        "count": 19
+      },
+      {
+        "class": "p-1",
+        "count": 19
+      },
+      {
+        "class": "pb-2",
+        "count": 19
+      },
+      {
+        "class": "px-6",
+        "count": 19
+      },
+      {
+        "class": "py-2.5",
+        "count": 19
+      },
+      {
+        "class": "size-full",
+        "count": 19
+      },
+      {
+        "class": "text-right",
+        "count": 19
+      },
+      {
+        "class": "items-baseline",
+        "count": 18
+      },
+      {
+        "class": "p-2",
+        "count": 18
+      },
+      {
+        "class": "pb-4",
+        "count": 18
+      },
+      {
+        "class": "pt-0.5",
+        "count": 18
+      },
+      {
+        "class": "pt-4",
+        "count": 18
+      },
+      {
+        "class": "shadow-none",
+        "count": 18
+      },
+      {
+        "class": "z-20",
+        "count": 18
+      },
+      {
+        "class": "bg-[var(--color-background-button-secondary)]",
+        "count": 17
+      },
+      {
+        "class": "inset-y-0",
+        "count": 17
+      },
+      {
+        "class": "shadow-sm",
+        "count": 17
+      },
+      {
+        "class": "h-px",
+        "count": 16
+      },
+      {
+        "class": "max-w-full",
+        "count": 16
+      },
+      {
+        "class": "overflow-visible",
+        "count": 16
+      },
+      {
+        "class": "p-0",
+        "count": 16
+      },
+      {
+        "class": "px-3.5",
+        "count": 16
+      },
+      {
+        "class": "transition-all",
+        "count": 16
+      },
+      {
+        "class": "border-l",
+        "count": 15
+      },
+      {
+        "class": "h-3",
+        "count": 15
+      },
+      {
+        "class": "h-6",
+        "count": 15
+      },
+      {
+        "class": "max-w-sm",
+        "count": 15
+      },
+      {
+        "class": "ml-1",
+        "count": 15
+      },
+      {
+        "class": "opacity-50",
+        "count": 15
+      },
+      {
+        "class": "pt-1",
+        "count": 15
+      },
+      {
+        "class": "rounded-2xl",
+        "count": 15
+      },
+      {
+        "class": "ease-out",
+        "count": 14
+      },
+      {
+        "class": "h-4",
+        "count": 14
+      },
+      {
+        "class": "leading-5",
+        "count": 14
+      },
+      {
+        "class": "mb-2",
+        "count": 14
+      },
+      {
+        "class": "pb-1",
+        "count": 14
+      },
+      {
+        "class": "pt-3",
+        "count": 14
+      },
+      {
+        "class": "[&::-webkit-scrollbar]:hidden",
+        "count": 13
+      },
+      {
+        "class": "[scrollbar-width:none]",
+        "count": 13
+      },
+      {
+        "class": "h-2.5",
+        "count": 13
+      },
+      {
+        "class": "ml-1.5",
+        "count": 13
+      },
+      {
+        "class": "mt-4",
+        "count": 13
+      },
+      {
+        "class": "pl-2",
+        "count": 13
+      },
+      {
+        "class": "pr-2",
+        "count": 13
+      },
+      {
+        "class": "size-2.5",
+        "count": 13
+      },
+      {
+        "class": "gap-0",
+        "count": 12
+      },
+      {
+        "class": "items-end",
+        "count": 12
+      },
+      {
+        "class": "items-stretch",
+        "count": 12
+      },
+      {
+        "class": "left-0",
+        "count": 12
+      },
+      {
+        "class": "max-w-md",
+        "count": 12
+      },
+      {
+        "class": "p-4",
+        "count": 12
+      },
+      {
+        "class": "p-6",
+        "count": 12
+      },
+      {
+        "class": "py-4",
+        "count": 12
+      },
+      {
+        "class": "self-end",
+        "count": 12
+      },
+      {
+        "class": "w-56",
+        "count": 12
+      },
+      {
+        "class": "h-10",
+        "count": 11
+      },
+      {
+        "class": "inset-x-0",
+        "count": 11
+      },
+      {
+        "class": "leading-4",
+        "count": 11
+      },
+      {
+        "class": "mt-3",
+        "count": 11
+      },
+      {
+        "class": "mx-2",
+        "count": 11
+      },
+      {
+        "class": "my-1",
+        "count": 11
+      },
+      {
+        "class": "opacity-75",
+        "count": 11
+      },
+      {
+        "class": "p-1.5",
+        "count": 11
+      },
+      {
+        "class": "px-0",
+        "count": 11
+      },
+      {
+        "class": "text-lg",
+        "count": 11
+      },
+      {
+        "class": "text-white",
+        "count": 11
+      },
+      {
+        "class": "top-0",
+        "count": 11
+      },
+      {
+        "class": "z-0",
+        "count": 11
+      },
+      {
+        "class": "-translate-x-1/2",
+        "count": 10
+      },
+      {
+        "class": "bg-[var(--color-background-elevated-primary-opaque)]",
+        "count": 10
+      },
+      {
+        "class": "bg-[var(--composer-surface)]",
+        "count": 10
+      },
+      {
+        "class": "end-0",
+        "count": 10
+      },
+      {
+        "class": "end-0.5",
+        "count": 10
+      },
+      {
+        "class": "max-w-xl",
+        "count": 10
+      },
+      {
+        "class": "mt-1.5",
+        "count": 10
+      },
+      {
+        "class": "p-0.5",
+        "count": 10
+      },
+      {
+        "class": "pl-8",
+        "count": 10
+      },
+      {
+        "class": "pt-2",
+        "count": 10
+      },
+      {
+        "class": "py-0",
+        "count": 10
+      },
+      {
+        "class": "py-10",
+        "count": 10
+      },
+      {
+        "class": "size-2",
+        "count": 10
+      },
+      {
+        "class": "text-[11.5px]",
+        "count": 10
+      },
+      {
+        "class": "transition-transform",
+        "count": 10
+      },
+      {
+        "class": "z-30",
+        "count": 10
+      },
+      {
+        "class": "[&_svg]:mx-0",
+        "count": 9
+      },
+      {
+        "class": "h-5",
+        "count": 9
+      },
+      {
+        "class": "left-1.5",
+        "count": 9
+      },
+      {
+        "class": "max-h-full",
+        "count": 9
+      },
+      {
+        "class": "mb-1",
+        "count": 9
+      },
+      {
+        "class": "min-h-8",
+        "count": 9
+      },
+      {
+        "class": "min-w-44",
+        "count": 9
+      },
+      {
+        "class": "pb-1.5",
+        "count": 9
+      },
+      {
+        "class": "pb-3",
+        "count": 9
+      },
+      {
+        "class": "px-0.5",
+        "count": 9
+      },
+      {
+        "class": "right-0",
+        "count": 9
+      },
+      {
+        "class": "right-1",
+        "count": 9
+      },
+      {
+        "class": "rounded-[10px]",
+        "count": 9
+      },
+      {
+        "class": "w-auto",
+        "count": 9
+      },
+      {
+        "class": "w-px",
+        "count": 9
+      },
+      {
+        "class": "whitespace-normal",
+        "count": 9
+      },
+      {
+        "class": "bg-[var(--color-background-surface-under)]",
+        "count": 8
+      },
+      {
+        "class": "bg-[var(--color-text-foreground)]",
+        "count": 8
+      },
+      {
+        "class": "bg-black/60",
+        "count": 8
+      },
+      {
+        "class": "bottom-0",
+        "count": 8
+      },
+      {
+        "class": "col-start-2",
+        "count": 8
+      },
+      {
+        "class": "flex-row",
+        "count": 8
+      },
+      {
+        "class": "gap-px",
+        "count": 8
+      },
+      {
+        "class": "grid-cols-[1fr_auto]",
+        "count": 8
+      },
+      {
+        "class": "invisible",
+        "count": 8
+      },
+      {
+        "class": "mb-3",
+        "count": 8
+      },
+      {
+        "class": "pb-0.5",
+        "count": 8
+      },
+      {
+        "class": "pl-3",
+        "count": 8
+      },
+      {
+        "class": "ps-2",
+        "count": 8
+      },
+      {
+        "class": "shadow-lg",
+        "count": 8
+      },
+      {
+        "class": "text-[9px]",
+        "count": 8
+      },
+      {
+        "class": "text-xl",
+        "count": 8
+      },
+      {
+        "class": "top-1",
+        "count": 8
+      },
+      {
+        "class": "translate-y-0",
+        "count": 8
+      },
+      {
+        "class": "w-24",
+        "count": 8
+      },
+      {
+        "class": "[&_svg]:-mx-0.5",
+        "count": 7
+      },
+      {
+        "class": "animate-pulse",
+        "count": 7
+      },
+      {
+        "class": "bg-[var(--color-background-control-opaque)]",
+        "count": 7
+      },
+      {
+        "class": "bg-amber-500",
+        "count": 7
+      },
+      {
+        "class": "col-start-1",
+        "count": 7
+      },
+      {
+        "class": "ease-linear",
+        "count": 7
+      },
+      {
+        "class": "flex-col-reverse",
+        "count": 7
+      },
+      {
+        "class": "font-sans",
+        "count": 7
+      },
+      {
+        "class": "gap-6",
+        "count": 7
+      },
+      {
+        "class": "grid-cols-2",
+        "count": 7
+      },
+      {
+        "class": "line-through",
+        "count": 7
+      },
+      {
+        "class": "max-w-2xl",
+        "count": 7
+      },
+      {
+        "class": "min-h-9",
+        "count": 7
+      },
+      {
+        "class": "my-0.5",
+        "count": 7
+      },
+      {
+        "class": "px-[calc(--spacing(3)-1px)]",
+        "count": 7
+      },
+      {
+        "class": "py-px",
+        "count": 7
+      },
+      {
+        "class": "size-11",
+        "count": 7
+      },
+      {
+        "class": "text-2xl",
+        "count": 7
+      },
+      {
+        "class": "top-2",
+        "count": 7
+      },
+      {
+        "class": "tracking-tight",
+        "count": 7
+      },
+      {
+        "class": "translate-x-0",
+        "count": 7
+      },
+      {
+        "class": "w-44",
+        "count": 7
+      },
+      {
+        "class": "bg-[color:var(--color-border)]",
+        "count": 6
+      },
+      {
+        "class": "bg-emerald-500",
+        "count": 6
+      },
+      {
+        "class": "border-dashed",
+        "count": 6
+      },
+      {
+        "class": "flex-none",
+        "count": 6
+      },
+      {
+        "class": "h-2",
+        "count": 6
+      },
+      {
+        "class": "h-3.5",
+        "count": 6
+      },
+      {
+        "class": "leading-6",
+        "count": 6
+      },
+      {
+        "class": "max-w-3xl",
+        "count": 6
+      },
+      {
+        "class": "min-w-60",
+        "count": 6
+      },
+      {
+        "class": "ms-auto",
+        "count": 6
+      },
+      {
+        "class": "opacity-35",
+        "count": 6
+      },
+      {
+        "class": "pb-5",
+        "count": 6
+      },
+      {
+        "class": "pr-1",
+        "count": 6
+      },
+      {
+        "class": "px-[calc(--spacing(2.5)-1px)]",
+        "count": 6
+      },
+      {
+        "class": "right-1.5",
+        "count": 6
+      },
+      {
+        "class": "right-2",
+        "count": 6
+      },
+      {
+        "class": "rounded-[.25rem]",
+        "count": 6
+      },
+      {
+        "class": "rounded-[14px]",
+        "count": 6
+      },
+      {
+        "class": "self-start",
+        "count": 6
+      },
+      {
+        "class": "size-16",
+        "count": 6
+      },
+      {
+        "class": "text-[var(--color-background-surface)]",
+        "count": 6
+      },
+      {
+        "class": "text-[var(--notification-fg)]",
+        "count": 6
+      },
+      {
+        "class": "text-emerald-600",
+        "count": 6
+      },
+      {
+        "class": "w-20",
+        "count": 6
+      },
+      {
+        "class": "w-72",
+        "count": 6
+      },
+      {
+        "class": "z-[1]",
+        "count": 6
+      },
+      {
+        "class": "[&>svg]:shrink-0",
+        "count": 5
+      },
+      {
+        "class": "duration-500",
+        "count": 5
+      },
+      {
+        "class": "gap-7",
+        "count": 5
+      },
+      {
+        "class": "gap-x-1.5",
+        "count": 5
+      },
+      {
+        "class": "grid-rows-2",
+        "count": 5
+      },
+      {
+        "class": "h-12",
+        "count": 5
+      },
+      {
+        "class": "h-44",
+        "count": 5
+      },
+      {
+        "class": "h-9",
+        "count": 5
+      },
+      {
+        "class": "justify-self-end",
+        "count": 5
+      },
+      {
+        "class": "leading-normal",
+        "count": 5
+      },
+      {
+        "class": "max-h-72",
+        "count": 5
+      },
+      {
+        "class": "max-w-[240px]",
+        "count": 5
+      },
+      {
+        "class": "max-w-[92vw]",
+        "count": 5
+      },
+      {
+        "class": "mb-1.5",
+        "count": 5
+      },
+      {
+        "class": "mb-4",
+        "count": 5
+      },
+      {
+        "class": "min-h-12",
+        "count": 5
+      },
+      {
+        "class": "min-w-5",
+        "count": 5
+      },
+      {
+        "class": "mt-5",
+        "count": 5
+      },
+      {
+        "class": "mx-1",
+        "count": 5
+      },
+      {
+        "class": "py-6",
+        "count": 5
+      },
+      {
+        "class": "py-8",
+        "count": 5
+      },
+      {
+        "class": "rounded-[0.5rem]",
+        "count": 5
+      },
+      {
+        "class": "rounded-[inherit]",
+        "count": 5
+      },
+      {
+        "class": "size-9",
+        "count": 5
+      }
+    ],
+    "warned": [
+      {
+        "class": "hover:bg-[var(--color-background-elevated-secondary)]",
+        "count": 37
+      },
+      {
+        "class": "hover:bg-[var(--color-background-button-secondary-hover)]",
+        "count": 28
+      },
+      {
+        "class": "hover:bg-[var(--sidebar-accent)]",
+        "count": 24
+      },
+      {
+        "class": "before:absolute",
+        "count": 20
+      },
+      {
+        "class": "hover:text-[var(--color-text-foreground)]",
+        "count": 15
+      },
+      {
+        "class": "sm:gap-3",
+        "count": 14
+      },
+      {
+        "class": "group-hover:opacity-100",
+        "count": 13
+      },
+      {
+        "class": "hover:opacity-100",
+        "count": 13
+      },
+      {
+        "class": "sm:flex-row",
+        "count": 13
+      },
+      {
+        "class": "sm:size-7",
+        "count": 13
+      },
+      {
+        "class": "sm:text-sm",
+        "count": 13
+      },
+      {
+        "class": "sm:justify-end",
+        "count": 12
+      },
+      {
+        "class": "before:inset-0",
+        "count": 11
+      },
+      {
+        "class": "before:shadow-[0_1px_--theme(--color-black/4%)]",
+        "count": 9
+      },
+      {
+        "class": "disabled:opacity-50",
+        "count": 9
+      },
+      {
+        "class": "focus-visible:opacity-100",
+        "count": 9
+      },
+      {
+        "class": "sm:w-auto",
+        "count": 9
+      },
+      {
+        "class": "hover:bg-transparent",
+        "count": 8
+      },
+      {
+        "class": "before:hidden",
+        "count": 7
+      },
+      {
+        "class": "first:border-t-0",
+        "count": 7
+      },
+      {
+        "class": "group-data-[collapsible=icon]:hidden",
+        "count": 7
+      },
+      {
+        "class": "sm:flex",
+        "count": 7
+      },
+      {
+        "class": "sm:grid-cols-2",
+        "count": 7
+      },
+      {
+        "class": "sm:min-h-7",
+        "count": 7
+      },
+      {
+        "class": "sm:px-2.5",
+        "count": 7
+      },
+      {
+        "class": "active:bg-transparent",
+        "count": 6
+      },
+      {
+        "class": "after:absolute",
+        "count": 6
+      },
+      {
+        "class": "sm:items-center",
+        "count": 6
+      },
+      {
+        "class": "sm:justify-between",
+        "count": 6
+      },
+      {
+        "class": "sm:px-6",
+        "count": 6
+      },
+      {
+        "class": "group-hover/thread-row:opacity-100",
+        "count": 5
+      },
+      {
+        "class": "sm:h-8",
+        "count": 5
+      },
+      {
+        "class": "sm:min-h-8",
+        "count": 5
+      }
+    ],
+    "failed": [
+      {
+        "class": "text-muted-foreground",
+        "count": 366
+      },
+      {
+        "class": "text-foreground",
+        "count": 179
+      },
+      {
+        "class": "inline-flex",
+        "count": 154
+      },
+      {
+        "class": "hover:text-foreground",
+        "count": 88
+      },
+      {
+        "class": "cursor-pointer",
+        "count": 86
+      },
+      {
+        "class": "pointer-events-none",
+        "count": 76
+      },
+      {
+        "class": "tabular-nums",
+        "count": 74
+      },
+      {
+        "class": "text-muted-foreground/70",
+        "count": 70
+      },
+      {
+        "class": "outline-none",
+        "count": 66
+      },
+      {
+        "class": "text-[length:var(--app-font-size-ui,12px)]",
+        "count": 65
+      },
+      {
+        "class": "font-system-ui",
+        "count": 48
+      },
+      {
+        "class": "block",
+        "count": 44
+      },
+      {
+        "class": "text-destructive",
+        "count": 41
+      },
+      {
+        "class": "text-muted-foreground/55",
+        "count": 39
+      },
+      {
+        "class": "sr-only",
+        "count": 35
+      },
+      {
+        "class": "border-border/70",
+        "count": 34
+      },
+      {
+        "class": "overflow-y-auto",
+        "count": 34
+      },
+      {
+        "class": "bg-background",
+        "count": 32
+      },
+      {
+        "class": "border-border/60",
+        "count": 30
+      },
+      {
+        "class": "focus-visible:outline-none",
+        "count": 29
+      },
+      {
+        "class": "select-none",
+        "count": 29
+      },
+      {
+        "class": "text-[length:var(--app-font-size-ui-xs,10px)]",
+        "count": 29
+      },
+      {
+        "class": "text-muted-foreground/50",
+        "count": 29
+      },
+      {
+        "class": "text-muted-foreground/60",
+        "count": 29
+      },
+      {
+        "class": "drag-region",
+        "count": 28
+      },
+      {
+        "class": "overflow-auto",
+        "count": 28
+      },
+      {
+        "class": "pointer-events-auto",
+        "count": 28
+      },
+      {
+        "class": "space-y-2",
+        "count": 27
+      },
+      {
+        "class": "focus-visible:ring-1",
+        "count": 25
+      },
+      {
+        "class": "space-y-1",
+        "count": 25
+      },
+      {
+        "class": "cursor-default",
+        "count": 24
+      },
+      {
+        "class": "focus-visible:ring-2",
+        "count": 24
+      },
+      {
+        "class": "focus-visible:ring-ring",
+        "count": 23
+      },
+      {
+        "class": "text-[length:var(--app-font-size-ui-sm,11px)]",
+        "count": 23
+      },
+      {
+        "class": "[&_svg]:pointer-events-none",
+        "count": 22
+      },
+      {
+        "class": "border-border",
+        "count": 22
+      },
+      {
+        "class": "border-border/45",
+        "count": 22
+      },
+      {
+        "class": "space-y-0.5",
+        "count": 22
+      },
+      {
+        "class": "data-ending-style:opacity-0",
+        "count": 20
+      },
+      {
+        "class": "data-starting-style:opacity-0",
+        "count": 20
+      },
+      {
+        "class": "text-muted-foreground/45",
+        "count": 20
+      },
+      {
+        "class": "whitespace-pre-wrap",
+        "count": 20
+      },
+      {
+        "class": "bg-muted",
+        "count": 19
+      },
+      {
+        "class": "space-y-1.5",
+        "count": 18
+      },
+      {
+        "class": "text-foreground/80",
+        "count": 18
+      },
+      {
+        "class": "text-muted-foreground/80",
+        "count": 18
+      },
+      {
+        "class": "[&_svg:not([class*='size-'])]:size-4.5",
+        "count": 17
+      },
+      {
+        "class": "text-muted-foreground/79",
+        "count": 17
+      },
+      {
+        "class": "sm:[&_svg:not([class*='size-'])]:size-4",
+        "count": 16
+      },
+      {
+        "class": "text-foreground/90",
+        "count": 16
+      },
+      {
+        "class": "text-muted-foreground/40",
+        "count": 16
+      },
+      {
+        "class": "before:pointer-events-none",
+        "count": 15
+      },
+      {
+        "class": "bg-border",
+        "count": 15
+      },
+      {
+        "class": "space-y-3",
+        "count": 15
+      },
+      {
+        "class": "text-foreground/85",
+        "count": 15
+      },
+      {
+        "class": "font-heading",
+        "count": 14
+      },
+      {
+        "class": "space-y-4",
+        "count": 14
+      },
+      {
+        "class": "origin-(--transform-origin)",
+        "count": 13
+      },
+      {
+        "class": "overflow-x-auto",
+        "count": 13
+      },
+      {
+        "class": "pointer-coarse:after:absolute",
+        "count": 13
+      },
+      {
+        "class": "pointer-coarse:after:min-h-11",
+        "count": 13
+      },
+      {
+        "class": "ring-1",
+        "count": 13
+      },
+      {
+        "class": "space-y-6",
+        "count": 13
+      },
+      {
+        "class": "pointer-coarse:after:min-w-11",
+        "count": 12
+      },
+      {
+        "class": "sm:text-[length:var(--app-font-size-ui,12px)]",
+        "count": 12
+      },
+      {
+        "class": "break-words",
+        "count": 11
+      },
+      {
+        "class": "font-chat-code",
+        "count": 11
+      },
+      {
+        "class": "outline-hidden",
+        "count": 11
+      },
+      {
+        "class": "text-sidebar-foreground",
+        "count": 11
+      },
+      {
+        "class": "border-border/50",
+        "count": 10
+      },
+      {
+        "class": "border-border/80",
+        "count": 10
+      },
+      {
+        "class": "data-starting-style:scale-98",
+        "count": 10
+      },
+      {
+        "class": "ring-2",
+        "count": 10
+      },
+      {
+        "class": "text-balance",
+        "count": 10
+      },
+      {
+        "class": "text-muted-foreground/72",
+        "count": 10
+      },
+      {
+        "class": "bg-card/90",
+        "count": 9
+      },
+      {
+        "class": "cursor-not-allowed",
+        "count": 9
+      },
+      {
+        "class": "dark:before:shadow-[0_-1px_--theme(--color-white/6%)]",
+        "count": 9
+      },
+      {
+        "class": "data-instant:transition-none",
+        "count": 9
+      },
+      {
+        "class": "divide-y",
+        "count": 9
+      },
+      {
+        "class": "focus-visible:ring-offset-background",
+        "count": 9
+      },
+      {
+        "class": "max-w-(--available-width)",
+        "count": 9
+      },
+      {
+        "class": "overscroll-contain",
+        "count": 9
+      },
+      {
+        "class": "sm:size-6",
+        "count": 9
+      },
+      {
+        "class": "text-[length:var(--app-font-size-ui-meta,10px)]",
+        "count": 9
+      },
+      {
+        "class": "text-success",
+        "count": 9
+      },
+      {
+        "class": "bg-background/70",
+        "count": 8
+      },
+      {
+        "class": "cursor-col-resize",
+        "count": 8
+      },
+      {
+        "class": "data-ending-style:scale-98",
+        "count": 8
+      },
+      {
+        "class": "has-disabled:opacity-64",
+        "count": 8
+      },
+      {
+        "class": "in-data-[side=none]:min-w-[calc(var(--anchor-width)+1.25rem)]",
+        "count": 8
+      },
+      {
+        "class": "list-none",
+        "count": 8
+      },
+      {
+        "class": "ring-inset",
+        "count": 8
+      },
+      {
+        "class": "shadow-lg/5",
+        "count": 8
+      },
+      {
+        "class": "text-muted-foreground/58",
+        "count": 8
+      },
+      {
+        "class": "w-(--sidebar-width)",
+        "count": 8
+      },
+      {
+        "class": "[&_svg,&_[data-slot=central-icon]]:mx-0",
+        "count": 7
+      },
+      {
+        "class": "bg-muted/30",
+        "count": 7
+      },
+      {
+        "class": "dark:bg-input/32",
+        "count": 7
+      },
+      {
+        "class": "data-disabled:opacity-64",
+        "count": 7
+      },
+      {
+        "class": "focus-visible:ring-offset-1",
+        "count": 7
+      },
+      {
+        "class": "focus-visible:ring-ring/60",
+        "count": 7
+      },
+      {
+        "class": "object-contain",
+        "count": 7
+      },
+      {
+        "class": "overflow-clip",
+        "count": 7
+      },
+      {
+        "class": "text-popover-foreground",
+        "count": 7
+      },
+      {
+        "class": "[&_svg:not([class*='size-'])]:size-3",
+        "count": 6
+      },
+      {
+        "class": "active:text-foreground",
+        "count": 6
+      },
+      {
+        "class": "bg-card",
+        "count": 6
+      },
+      {
+        "class": "bg-primary",
+        "count": 6
+      },
+      {
+        "class": "bg-sidebar",
+        "count": 6
+      },
+      {
+        "class": "border-border/65",
+        "count": 6
+      },
+      {
+        "class": "dark:has-autofill:bg-foreground/8",
+        "count": 6
+      },
+      {
+        "class": "disabled:cursor-not-allowed",
+        "count": 6
+      },
+      {
+        "class": "disabled:pointer-events-none",
+        "count": 6
+      },
+      {
+        "class": "divide-[color:var(--color-border)]",
+        "count": 6
+      },
+      {
+        "class": "file-row",
+        "count": 6
+      },
+      {
+        "class": "focus-visible:ring-[color:var(--color-border-focus)]/60",
+        "count": 6
+      },
+      {
+        "class": "has-autofill:bg-foreground/4",
+        "count": 6
+      },
+      {
+        "class": "line-clamp-2",
+        "count": 6
+      },
+      {
+        "class": "motion-reduce:transition-none",
+        "count": 6
+      },
+      {
+        "class": "not-empty:scroll-py-1",
+        "count": 6
+      },
+      {
+        "class": "object-cover",
+        "count": 6
+      },
+      {
+        "class": "pull-request-prose",
+        "count": 6
+      },
+      {
+        "class": "resize-none",
+        "count": 6
+      },
+      {
+        "class": "sidebar-icon-button",
+        "count": 6
+      },
+      {
+        "class": "size-4.5",
+        "count": 6
+      },
+      {
+        "class": "sm:inline",
+        "count": 6
+      },
+      {
+        "class": "sm:text-[length:var(--app-font-size-ui-sm,11px)]",
+        "count": 6
+      },
+      {
+        "class": "text-[length:var(--app-font-size-chat-meta,10px)]",
+        "count": 6
+      },
+      {
+        "class": "text-foreground/70",
+        "count": 6
+      },
+      {
+        "class": "text-muted-foreground/48",
+        "count": 6
+      },
+      {
+        "class": "text-muted-foreground/62",
+        "count": 6
+      },
+      {
+        "class": "text-muted-foreground/65",
+        "count": 6
+      },
+      {
+        "class": "text-muted-foreground/75",
+        "count": 6
+      },
+      {
+        "class": "text-muted-foreground/85",
+        "count": 6
+      },
+      {
+        "class": "text-primary-foreground",
+        "count": 6
+      },
+      {
+        "class": "text-warning",
+        "count": 6
+      },
+      {
+        "class": "transition-[scale,opacity]",
+        "count": 6
+      },
+      {
+        "class": "uppercase",
+        "count": 6
+      },
+      {
+        "class": "[&_svg:not([class*='size-'])]:size-4",
+        "count": 5
+      },
+      {
+        "class": "active:cursor-grabbing",
+        "count": 5
+      },
+      {
+        "class": "backdrop-blur-xl",
+        "count": 5
+      },
+      {
+        "class": "bg-[var(--notification-fg)]/10",
+        "count": 5
+      },
+      {
+        "class": "bg-destructive/5",
+        "count": 5
+      },
+      {
+        "class": "bg-destructive/8",
+        "count": 5
+      },
+      {
+        "class": "bg-popover",
+        "count": 5
+      },
+      {
+        "class": "border-[var(--notification-fg)]/20",
+        "count": 5
+      },
+      {
+        "class": "border-border/40",
+        "count": 5
+      },
+      {
+        "class": "border-destructive/30",
+        "count": 5
+      },
+      {
+        "class": "border-input",
+        "count": 5
+      },
+      {
+        "class": "capitalize",
+        "count": 5
+      },
+      {
+        "class": "contents",
+        "count": 5
+      },
+      {
+        "class": "cursor-grab",
+        "count": 5
+      },
+      {
+        "class": "data-disabled:pointer-events-none",
+        "count": 5
+      },
+      {
+        "class": "data-highlighted:bg-[var(--color-background-button-secondary-hover)]",
+        "count": 5
+      },
+      {
+        "class": "data-highlighted:text-[var(--color-text-foreground)]",
+        "count": 5
+      },
+      {
+        "class": "data-inset:ps-8",
+        "count": 5
+      },
+      {
+        "class": "focus:outline-none",
+        "count": 5
+      },
+      {
+        "class": "group-data-[collapsible=icon]:w-(--sidebar-width-icon)",
+        "count": 5
+      },
+      {
+        "class": "has-focus-visible:ring-0",
+        "count": 5
+      },
+      {
+        "class": "hover:bg-[var(--notification-fg)]/20",
+        "count": 5
+      },
+      {
+        "class": "hover:bg-muted-foreground/20",
+        "count": 5
+      },
+      {
+        "class": "hover:bg-muted/60",
+        "count": 5
+      },
+      {
+        "class": "line-clamp-3",
+        "count": 5
+      },
+      {
+        "class": "max-h-(--available-height)",
+        "count": 5
+      },
+      {
+        "class": "md:opacity-0",
+        "count": 5
+      },
+      {
+        "class": "not-dark:bg-clip-padding",
+        "count": 5
+      },
+      {
+        "class": "ring-ring/60",
+        "count": 5
+      },
+      {
+        "class": "shadow-xs",
+        "count": 5
+      },
+      {
+        "class": "sm:[&_svg:not([class*='size-'])]:size-3.5",
+        "count": 5
+      }
+    ]
+  }
+}

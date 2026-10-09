@@ -24,7 +24,7 @@ describe("Lynx Explorer file actions menu", () => {
       expect(elementTree.root?.querySelector(".ExplorerDockPreviewActionsPopup")).not.toBeNull();
     });
     expect(
-      [...(elementTree.root?.querySelectorAll(".LxMenuItem") ?? [])].map(
+      Array.from(elementTree.root?.querySelectorAll(".LxMenuItem") ?? []).map(
         (item) => item.textContent,
       ),
     ).toEqual(["Reference in chat", "Ask why this changed", "Copy path"]);

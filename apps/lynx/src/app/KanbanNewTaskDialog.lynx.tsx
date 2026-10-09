@@ -76,9 +76,9 @@ import {
   buildNativeKanbanTaskCreateCommand,
   createNativeKanbanTaskId,
 } from "./kanbanTaskCreation.logic";
+import { defaultModelSelectionForProvider } from "../lib/defaultModelSelection";
 
 import "./kanban-new-task-dialog.css";
-import { defaultModelSelectionForProvider } from "./defaultModelSelection.logic";
 
 type NativeTaskInputEvent = {
   readonly detail: {

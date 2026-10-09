@@ -43,7 +43,7 @@ export function KanbanRouteHeaderBackElement(props: { readonly onActivate: () =>
 
 export function KanbanRouteHeaderTitleElement(props: ChildrenProps) {
   return (
-    <text className="SharedKanbanRouteTitle" maxlines={1}>
+    <text className="SharedKanbanRouteTitle" text-maxline="1">
       {props.children}
     </text>
   );

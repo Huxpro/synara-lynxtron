@@ -86,6 +86,10 @@ export const DEFAULT_DESKTOP_COMPARISON_OPTIONS = Object.freeze({
   chatFontSize: null,
   skipLynxDevtool: false,
   skipBuild: false,
+  // Stages Lynxtron and Electron as regular applications instead of agents, so tools
+  // that resolve targets from the running-application list (Computer Use) can
+  // find them. A regular app gets a Dock icon and may take focus once at launch.
+  regularApp: false,
 });
 
 function parsePositiveInteger(raw, flag) {
@@ -106,6 +110,10 @@ export function parseDesktopComparisonArgs(argv) {
     }
     if (argument === "--skip-lynx-devtool") {
       options.skipLynxDevtool = true;
+      continue;
+    }
+    if (argument === "--regular-app") {
+      options.regularApp = true;
       continue;
     }
     if (argument === "--exit-after-certify") {
@@ -278,8 +286,8 @@ export function prepareOwnedLynxtronRuntime(paths, options = {}) {
     ["CFBundleVersion", sourceVersion],
     ["SynaraLynxtronSourceVersion", sourceVersion],
     // An agent (UI element) app never activates, so comparisons cannot pull
-    // focus from the user's foreground app.
-    ["LSUIElement", true],
+    // focus from the user's foreground app. --regular-app opts out.
+    ["LSUIElement", options.regularApp !== true],
   ]) {
     const type = typeof value === "boolean" ? "-bool" : "-string";
     const rewrite = spawnSync("plutil", ["-replace", key, type, String(value), infoPlist], {
@@ -1789,12 +1797,12 @@ function stopOwned(child, signal) {
   } catch {}
 }
 
-async function resolveElectronExecutable(webUrl) {
+async function resolveElectronExecutable(webUrl, { regularApp = false } = {}) {
   process.env.VITE_DEV_SERVER_URL = webUrl;
   const launcher = await import(
     new URL("../apps/desktop/scripts/electron-launcher.mjs", import.meta.url)
   );
-  return launcher.resolveElectronPath({ background: true });
+  return launcher.resolveElectronPath({ background: !regularApp });
 }
 
 export function ownedComparisonPidsFromPs(output, paths, electronExecutable, webPort) {
@@ -1872,7 +1880,10 @@ async function main() {
   persistRun();
   const authToken =
     process.env.SYNARA_COMPARE_AUTH_TOKEN?.trim() || "synara-local-desktop-comparison";
-  const electronExecutable = await resolveElectronExecutable(comparisonElectronStartupUrl(options));
+  const electronExecutable = await resolveElectronExecutable(
+    comparisonElectronStartupUrl(options),
+    { regularApp: options.regularApp },
+  );
   const commands = desktopComparisonCommands(options, paths, authToken, electronExecutable);
   const ownedChildren = [];
   let shuttingDown = false;
@@ -1975,7 +1986,7 @@ async function main() {
 
     stopExistingOwnedElectronRuntime(paths, electronExecutable);
     prepareDesktopComparisonHome(paths);
-    prepareOwnedLynxtronRuntime(paths);
+    prepareOwnedLynxtronRuntime(paths, { regularApp: options.regularApp });
     run.lynxtron = {
       packageVersion: JSON.parse(readFileSync(paths.lynxtronPackageJson, "utf8")).version,
       sourceApp: paths.sourceLynxtronApp,

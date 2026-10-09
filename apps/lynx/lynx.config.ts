@@ -14,6 +14,14 @@ import { createRequire } from "node:module";
 import { fileURLToPath, pathToFileURL } from "url";
 import path from "path";
 
+// Lynx's template encoder (@lynx-js/tasm) and the Lynxtron runtime honor this page
+// config, but @lynx-js/type-config does not declare it yet.
+declare module "@lynx-js/config-rsbuild-plugin" {
+  interface Config {
+    alignMouseEventWithW3C?: boolean;
+  }
+}
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const requireFromApp = createRequire(import.meta.url);
@@ -407,6 +415,22 @@ export default defineConfig({
         assetPrefix: new URL("./dist/desktop/", pathToFileURL(__dirname + path.sep)).toString(),
         distPath: {
           root: "./output/bundle/lynx",
+        },
+      },
+      tools: {
+        rspack: {
+          module: {
+            rules: [
+              {
+                // Lynxtron cannot decode main-thread bytecode that holds a
+                // zero BigInt constant; see the loader for details.
+                test: /\.[cm]?[jt]sx?$/,
+                issuerLayer: "react:main-thread",
+                enforce: "post",
+                loader: path.resolve(__dirname, "scripts/zero-bigint-literal-loader.mjs"),
+              },
+            ],
+          },
         },
       },
     },

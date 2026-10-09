@@ -504,7 +504,7 @@ export function AutomationCreateDialog({
                       <MenuGroupLabel>Every</MenuGroupLabel>
                       <Input
                         nativeInput
-                        accessibleLabel="Interval amount"
+                        aria-label="Interval amount"
                         value={scheduleForm.intervalAmount}
                         onChange={(event) =>
                           setScheduleForm((current) => ({
@@ -535,7 +535,7 @@ export function AutomationCreateDialog({
                       <MenuGroupLabel>Run at</MenuGroupLabel>
                       <Input
                         nativeInput
-                        accessibleLabel="Run at"
+                        aria-label="Run at"
                         value={scheduleForm.onceRunAt}
                         onChange={(event) =>
                           setScheduleForm((current) => ({
@@ -554,7 +554,7 @@ export function AutomationCreateDialog({
                       <MenuGroupLabel>Cron</MenuGroupLabel>
                       <Input
                         nativeInput
-                        accessibleLabel="Cron expression"
+                        aria-label="Cron expression"
                         value={scheduleForm.cronExpression}
                         onChange={(event) =>
                           setScheduleForm((current) => ({
@@ -613,7 +613,7 @@ export function AutomationCreateDialog({
                       <MenuGroupLabel>Timezone</MenuGroupLabel>
                       <Input
                         nativeInput
-                        accessibleLabel="Automation timezone"
+                        aria-label="Automation timezone"
                         value={scheduleForm.timezone}
                         onChange={(event) =>
                           setScheduleForm((current) => ({

@@ -104,7 +104,7 @@ export function FeedbackDialogLynx(props: {
           provider: thread.modelSelection.provider,
           model: thread.modelSelection.model,
           projectKind: props.fallbackContext.projectKind,
-          environmentMode: thread.envMode,
+          environmentMode: thread.envMode ?? null,
           runtimeMode: thread.runtimeMode,
           interactionMode: thread.interactionMode,
           sessionStatus: thread.session?.status ?? null,
@@ -113,7 +113,7 @@ export function FeedbackDialogLynx(props: {
           activityCount: thread.activities.length,
           hasPendingApproval: thread.hasPendingApprovals === true,
           hasPendingUserInput: thread.hasPendingUserInput === true,
-          hasThreadError: Boolean(thread.error),
+          hasThreadError: Boolean(thread.session?.lastError),
         });
       })
       .catch(() => {

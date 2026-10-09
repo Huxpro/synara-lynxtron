@@ -6,6 +6,7 @@ import {
   ProviderItemId,
   type ProviderApprovalDecision,
   type ProviderEvent,
+  ProviderRuntimeEvent,
   type ProviderSession,
   type ProviderTurnStartResult,
   type ProviderUserInputAnswers,
@@ -15,7 +16,7 @@ import {
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { afterAll, it, vi } from "@effect/vitest";
 
-import { Effect, Fiber, FileSystem, Layer, Option, Stream } from "effect";
+import { Effect, Fiber, FileSystem, Layer, Option, Schema, Stream } from "effect";
 
 import {
   CodexAppServerManager,
@@ -565,6 +566,22 @@ const lifecycleLayer = it.layer(
   ),
 );
 
+const nativeLoggingFailureManager = new FakeCodexManager();
+const nativeLoggingFailureLayer = it.layer(
+  makeCodexAdapterLive({
+    manager: nativeLoggingFailureManager,
+    nativeEventLogger: {
+      filePath: "/tmp/codex-adapter-native-event-log-failure",
+      write: () => Effect.die("native event logger failed"),
+      close: () => Effect.void,
+    },
+  }).pipe(
+    Layer.provideMerge(ServerConfig.layerTest(process.cwd(), process.cwd())),
+    Layer.provideMerge(providerSessionDirectoryTestLayer),
+    Layer.provideMerge(NodeServices.layer),
+  ),
+);
+
 lifecycleLayer("CodexAdapterLive lifecycle", (it) => {
   it.effect("maps session/started to a canonical session.started runtime event", () =>
     Effect.gen(function* () {
@@ -662,6 +679,37 @@ lifecycleLayer("CodexAdapterLive lifecycle", (it) => {
       }
       assert.equal(firstEvent.value.payload.itemType, "reasoning");
       assert.equal(firstEvent.value.payload.detail, "Inspect the protocol.\n\nUpdate the adapter.");
+    }),
+  );
+
+  it.effect("trims Codex config warnings so they satisfy the runtime-event contract", () =>
+    Effect.gen(function* () {
+      const adapter = yield* CodexAdapter;
+      const firstEventFiber = yield* Stream.runHead(adapter.streamEvents).pipe(Effect.forkChild);
+
+      lifecycleManager.emit("event", {
+        id: asEventId("evt-config-warning"),
+        kind: "notification",
+        provider: "codex",
+        createdAt: new Date().toISOString(),
+        method: "configWarning",
+        threadId: asThreadId("thread-1"),
+        payload: {
+          summary: "Project-local config is disabled until the project is trusted.\n",
+          details: null,
+        },
+      } satisfies ProviderEvent);
+
+      const firstEvent = yield* Fiber.join(firstEventFiber);
+      assert.equal(firstEvent._tag, "Some");
+      if (firstEvent._tag !== "Some" || firstEvent.value.type !== "config.warning") {
+        assert.fail("expected a config.warning event");
+      }
+      assert.deepEqual(firstEvent.value.payload, {
+        summary: "Project-local config is disabled until the project is trusted.",
+      });
+      // The journal encodes with this schema; an untrimmed summary fails it.
+      yield* Schema.encodeEffect(ProviderRuntimeEvent)(firstEvent.value);
     }),
   );
 
@@ -2208,6 +2256,37 @@ lifecycleLayer("CodexAdapterLive lifecycle", (it) => {
         ),
         ["item/future/outputDelta", "item/future/completed"],
       );
+    }),
+  );
+});
+
+nativeLoggingFailureLayer("CodexAdapterLive native event logging isolation", (it) => {
+  it.effect("keeps assistant deltas in the runtime stream when diagnostic logging fails", () =>
+    Effect.gen(function* () {
+      const adapter = yield* CodexAdapter;
+      const firstEventFiber = yield* Stream.runHead(adapter.streamEvents).pipe(Effect.forkChild);
+
+      nativeLoggingFailureManager.emit("event", {
+        id: asEventId("evt-native-log-failure-delta"),
+        kind: "notification",
+        provider: "codex",
+        threadId: asThreadId("thread-native-log-failure"),
+        createdAt: new Date().toISOString(),
+        method: "item/agentMessage/delta",
+        turnId: asTurnId("turn-native-log-failure"),
+        itemId: asItemId("msg-native-log-failure"),
+        textDelta: "still delivered",
+        payload: {
+          delta: "still delivered",
+        },
+      } satisfies ProviderEvent);
+
+      const firstEvent = yield* Fiber.join(firstEventFiber);
+      assert.equal(firstEvent._tag, "Some");
+      if (firstEvent._tag !== "Some" || firstEvent.value.type !== "content.delta") {
+        return;
+      }
+      assert.equal(firstEvent.value.payload.delta, "still delivered");
     }),
   );
 });

@@ -2,6 +2,7 @@
 
 import { useEffect, useInitData, useMemo, useRef, useState } from "@lynx-js/react";
 import { QueryClientProvider } from "@tanstack/react-query";
+import type { TurnId } from "@synara/contracts";
 
 import {
   APP_SETTINGS_STORAGE_KEY,
@@ -117,7 +118,7 @@ export function App() {
   const initialDiffOpen = initData.initialDiffOpen === true;
   const initialDiffTurnId =
     typeof initData.initialDiffTurnId === "string" && initData.initialDiffTurnId.trim()
-      ? initData.initialDiffTurnId.trim()
+      ? (initData.initialDiffTurnId.trim() as TurnId)
       : null;
   const initialDiffFilePath =
     typeof initData.initialDiffFilePath === "string" && initData.initialDiffFilePath.trim()

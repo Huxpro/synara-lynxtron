@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "@lynx-js/react";
+import arrowDownSvg from "@tabler/icons/outline/arrow-down.svg?raw";
 import { getRectById, getRectByRef, type InputRef } from "@lynx-js/lynx-ui";
 import type { NodesRef, SelectionChangeEvent } from "@lynx-js/types";
 import type { TerminalEvent, TerminalSessionSnapshot } from "@synara/contracts";
@@ -31,6 +32,7 @@ import { buildTerminalSelectionContextMenuItems } from "@synara/shared/contextMe
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input.lynx";
 import { ChevronDownIcon, XIcon } from "../lib/icons.lynx";
+import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
 import { dialogs } from "../platform/dialogs";
@@ -92,7 +94,16 @@ function terminalBottomId(threadId: string, terminalId: string): string {
   return "terminal-bottom-" + (threadId + "-" + terminalId).replace(/[^a-zA-Z0-9_-]/g, "-");
 }
 
-function terminalColorClass(prefix: "fg" | "bg", color: TerminalTextColor | undefined): string {
+function ThreadTerminalJumpIcon(props: { readonly color: string }) {
+  return (
+    <svg className="ThreadTerminalJumpIcon" content={colorizeLynxSvg(arrowDownSvg, props.color)} />
+  );
+}
+
+function terminalColorClass(
+  prefix: "fg" | "bg",
+  color: TerminalTextColor | "terminal-background" | "terminal-foreground" | undefined,
+): string {
   return color && !color.startsWith("#") ? " ThreadTerminalRun--" + prefix + "-" + color : "";
 }
 
@@ -116,9 +127,11 @@ function terminalRunStyle(run: TerminalTextRun) {
   return {
     ...(foreground?.startsWith("#") ? { color: foreground } : {}),
     ...(background?.startsWith("#") ? { backgroundColor: background } : {}),
-    ...(run.style.bold ? { fontWeight: String(TERMINAL_BOLD_FONT_WEIGHT) } : {}),
+    ...(run.style.bold
+      ? { fontWeight: String(TERMINAL_BOLD_FONT_WEIGHT) as `${typeof TERMINAL_BOLD_FONT_WEIGHT}` }
+      : {}),
     ...(run.style.dim ? { opacity: 0.6 } : {}),
-    ...(run.style.italic ? { fontStyle: "italic" } : {}),
+    ...(run.style.italic ? { fontStyle: "italic" as const } : {}),
     ...(run.style.underline || run.style.strikethrough
       ? {
           textDecoration: [
@@ -812,7 +825,7 @@ export function ThreadTerminal({
       });
   };
 
-  const handleTerminalInput = (value: string, isComposing: boolean) => {
+  const handleTerminalInput = (value: string, isComposing: boolean | undefined) => {
     "background only";
     if (!active || isComposing) return;
     const data = terminalCommittedInputDelta(terminalInputValueRef.current, value);
@@ -1118,7 +1131,7 @@ export function ThreadTerminal({
       </view>
       {!pinned ? (
         <view className={jumpInteraction.className} {...jumpInteraction.eventProps}>
-          <ArrowDownIcon className="ThreadTerminalJumpIcon" color={svgColors.mutedForeground} />
+          <ThreadTerminalJumpIcon color={svgColors.mutedForeground} />
         </view>
       ) : null}
       {searchOpen ? (

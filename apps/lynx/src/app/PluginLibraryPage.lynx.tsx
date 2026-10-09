@@ -77,7 +77,7 @@ function DiscoveryRow(props: {
       </view>
       <view className="PluginLibraryRowCopy">
         <text className="PluginLibraryRowTitle">{props.label}</text>
-        <text className="PluginLibraryRowDescription" maxlines={1}>
+        <text className="PluginLibraryRowDescription" text-maxline="1">
           {props.description}
         </text>
       </view>

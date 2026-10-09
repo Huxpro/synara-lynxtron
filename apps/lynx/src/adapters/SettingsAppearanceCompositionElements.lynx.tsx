@@ -136,10 +136,10 @@ export function SettingsAppearanceSegmentedControlElement(props: {
                 ? " SharedSettingsAppearanceSegment--active"
                 : " SharedSettingsAppearanceSegment--inactive"
             }`}
-            role="radio"
-            aria-checked={active}
             aria-label={`${props.ariaLabel}: ${option.label}`}
             buttonProps={{
+              role: "radio",
+              "aria-checked": active,
               "accessibility-role": "radio",
               "accessibility-state": { selected: active },
             }}

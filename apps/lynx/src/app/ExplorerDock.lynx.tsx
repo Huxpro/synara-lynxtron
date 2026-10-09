@@ -20,6 +20,7 @@ import { WorkspaceFilePreviewErrorState } from "@synara-web/components/Workspace
 import { FileEntryIcon } from "../components/FileEntryIcon.lynx";
 import { Input } from "../components/ui/input";
 import { ChevronRightIcon, SearchIcon, XIcon } from "../lib/icons.lynx";
+import { useComposerDraftStore } from "../adapters/composerDraftStore.lynx";
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
 import {
   disclosureChevronClassName,
@@ -31,7 +32,7 @@ import type { NativeSyntaxHighlightThemes } from "../main/syntaxHighlightingCont
 import { ResizableRightPanel } from "./ResizableRightPanel.lynx";
 import { ExplorerPdfFallback } from "./ExplorerPdfFallback.lynx";
 import { ExplorerImagePreview } from "./ExplorerImagePreview.lynx";
-import { applyExplorerFileComment } from "./explorerChatActions.logic";
+import { applyExplorerChatAction, applyExplorerFileComment } from "./explorerChatActions.logic";
 import { visibleExplorerEntries } from "./explorerTree.logic";
 import { ExplorerSyntaxPreview } from "./ExplorerSyntaxPreview.lynx";
 import "./explorer-dock.css";
@@ -294,6 +295,7 @@ export function ExplorerDock(props: {
   readonly pdfPageWidth: number;
   readonly query: string;
   readonly selectedPath: string | null;
+  readonly sidebarVisible?: boolean;
   readonly threadId: string;
   readonly theme: "dark" | "light";
   readonly workspaceRoot: string | null;
@@ -531,6 +533,7 @@ export function ExplorerDock(props: {
           props.presentationMode === "editor-search" ? " ExplorerDock--editor-search" : ""
         }${props.open ? " ExplorerDock--open" : " ExplorerDock--closed"}`}
         aria-hidden={!props.open}
+        user-interaction-enabled={props.open}
       >
         {content}
       </view>
@@ -543,6 +546,7 @@ export function ExplorerDock(props: {
       className={`ExplorerDock${props.hosted ? " ExplorerDock--hosted" : ""}${
         singleFile ? " ExplorerDock--single-file" : ""
       }${props.open ? " ExplorerDock--open" : " ExplorerDock--closed"}`}
+      interactive={props.open}
       defaultWidth={
         props.initialWidth ??
         (props.availableWidth > 0 ? Math.round(props.availableWidth / 2) : 640)

@@ -1,6 +1,7 @@
 import { type ClientOrchestrationCommand, type ModelSelection } from "@synara/contracts";
-import { getDefaultModel } from "@synara/shared/model";
 import { newCommandId, newProjectId, newThreadId } from "@synara-web/lib/utils";
+
+import { defaultModelSelectionForProvider } from "../../lib/defaultModelSelection";
 
 export function buildNativeSearchProjectCreateCommand(input: {
   readonly workspaceRoot: string;
@@ -21,10 +22,7 @@ export function buildNativeSearchProjectCreateCommand(input: {
     title,
     workspaceRoot,
     createWorkspaceRootIfMissing: input.createIfMissing,
-    defaultModelSelection: {
-      provider: input.defaultProvider,
-      model: getDefaultModel(input.defaultProvider),
-    },
+    defaultModelSelection: defaultModelSelectionForProvider(input.defaultProvider),
     isPinned: false,
     spaceId: null,
     createdAt: new Date().toISOString(),

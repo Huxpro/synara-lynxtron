@@ -97,11 +97,16 @@ export function MenuOverlayProvider(props: { children?: ReactNode }) {
   );
 }
 
+// @lynx-js/react types createPortal's result as Preact's VNode, which its own
+// React-typed JSX does not accept as a component result. The value is a
+// regular renderable vnode, so re-type it once here.
+function renderMenuPortal(children: ReactNode, host: NodesRef): ReactNode {
+  return createPortal(<Fragment>{children}</Fragment>, host) as ReactNode;
+}
+
 export function MenuOverlayPortal(props: { children?: ReactNode }) {
   const hostRef = useContext(MenuOverlayHostContext);
-  return hostRef?.current
-    ? createPortal(<Fragment>{props.children}</Fragment>, hostRef.current)
-    : null;
+  return hostRef?.current ? renderMenuPortal(props.children, hostRef.current) : null;
 }
 
 export function Menu(props: {
@@ -581,7 +586,7 @@ export const MenuPopup = MenuPopupBase;
 export function MenuPortal(props: { children?: ReactNode }) {
   const hostRef = useContext(MenuOverlayHostContext);
   return hostRef?.current ? (
-    createPortal(<Fragment>{props.children}</Fragment>, hostRef.current)
+    renderMenuPortal(props.children, hostRef.current)
   ) : (
     <Fragment>{props.children}</Fragment>
   );

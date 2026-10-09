@@ -1,6 +1,7 @@
 import { describe, expect, it } from "@rstest/core";
 
 import type { ProjectSummary, ThreadSummary } from "./queries";
+import { makeProjectSummary, makeThreadSummary } from "./queriesTestFixtures";
 import {
   compareArchivedThreads,
   createUnarchiveCommand,
@@ -16,7 +17,7 @@ function thread(
     readonly createdAt?: string;
   } = {},
 ): ThreadSummary {
-  return {
+  return makeThreadSummary({
     id,
     projectId,
     project: projectId,
@@ -26,22 +27,22 @@ function thread(
     updatedAt: timestamps.updatedAt ?? "2026-01-02T00:00:00.000Z",
     archivedAt: timestamps.archivedAt,
     live: false,
-  };
+  });
 }
 
 const projects: readonly ProjectSummary[] = [
-  {
+  makeProjectSummary({
     id: "project-a",
     kind: "project",
     title: "Project A",
     workspaceRoot: "/project-a",
-  },
-  {
+  }),
+  makeProjectSummary({
     id: "project-b",
     kind: "project",
     title: "Project B",
     workspaceRoot: "/project-b",
-  },
+  }),
 ];
 
 describe("Settings Archived projection", () => {

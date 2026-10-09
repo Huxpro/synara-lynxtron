@@ -443,7 +443,7 @@ export function AutomationEditDialog({
                       <MenuGroupLabel>Every</MenuGroupLabel>
                       <Input
                         nativeInput
-                        accessibleLabel="Interval amount"
+                        aria-label="Interval amount"
                         value={form.intervalAmount}
                         onChange={(event) => setField("intervalAmount", event.target.value)}
                       />
@@ -464,7 +464,7 @@ export function AutomationEditDialog({
                       <MenuGroupLabel>Run at</MenuGroupLabel>
                       <Input
                         nativeInput
-                        accessibleLabel="Run at"
+                        aria-label="Run at"
                         value={form.onceRunAt}
                         onChange={(event) => setField("onceRunAt", event.target.value)}
                       />
@@ -478,7 +478,7 @@ export function AutomationEditDialog({
                       <MenuGroupLabel>Cron</MenuGroupLabel>
                       <Input
                         nativeInput
-                        accessibleLabel="Cron expression"
+                        aria-label="Cron expression"
                         value={form.cronExpression}
                         onChange={(event) => setField("cronExpression", event.target.value)}
                       />
@@ -528,7 +528,7 @@ export function AutomationEditDialog({
                       <MenuGroupLabel>Timezone</MenuGroupLabel>
                       <Input
                         nativeInput
-                        accessibleLabel="Automation timezone"
+                        aria-label="Automation timezone"
                         value={form.timezone}
                         onChange={(event) => setField("timezone", event.target.value)}
                       />

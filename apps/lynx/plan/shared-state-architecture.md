@@ -42,6 +42,14 @@
 1. **不改上游文件的形状，只在它下面换实现。** 想共享一个上游模块时，不从里面"抽逻辑"（抽取等于永久冲突），而是让这个文件本身能在 Lynx 上跑：把它用到的平台能力收进 `~/platform/*` 端口，由别名换实现。这和展示层的 Composition/Elements 是同一个手法，只是用在状态层。
 2. **例外只有壳和逻辑混在一个文件里的情况**，目前是 `__root.tsx` 的 `EventRouter`。这类做一次"纯移动"（整段搬到独立文件并导出，不改行为），并提给上游。
 
+## 展示层要补的纪律
+
+一轮独立的只读分析（默认分支，合并上游之前）给出了同一个方向上的两点补充，都指向"冲突出在 fork 改过的上游文件里"：
+
+- fork 相对上次合并基点在 `apps/web` 改了 331 个上游文件、新增 324 个。新增文件几乎不冲突（与上游撞名的只有 1 个）；冲突来自在上游文件**内部**做的大拆分，例如 `Sidebar.tsx`（−1849 行）、`_chat.settings.tsx`（−815）、`ProvidersSettingsPanel.tsx`（−538）。上游自己也在拆 `ChatView.tsx`，并新增了与 fork seam 撞名的 `ChatSurfaceHeader.tsx`。
+- 因此规则 1 对展示层同样适用：拆出来的东西放**新文件**，上游原文件里只留"换 import"级别的改动。已经做对的例子是 `SettingsSection.tsx`（33 行新文件，原文件只换 import）。
+- 别名表（`lynx.config.ts` 里约 75 条精确别名，再由脚本镜像到 tsconfig）可以换成一条通用解析规则："存在同相对路径的 Lynx 覆盖文件就替换"。上游侧零改动，新增一个 seam 不再需要改三处。这一条未验证，需要一个小 spike。
+
 ## 靠什么防止越界
 
 - **目录即层。** 用 oxlint `no-restricted-imports` 按目录设规则：L2 不得引入 `react-dom`、路由库、`components/ui`、toast；Lynx 专属 API 只允许出现在 `apps/lynx/src/{adapters,platform,main}` 和 `*.lynx.*`。现有的 `no-restricted-globals` 名单扩到 L2 全部文件。

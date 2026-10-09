@@ -1,51 +1,48 @@
 import { beforeEach, describe, expect, it, rs } from "@rstest/core";
 import { fireEvent, render, waitFor } from "@lynx-js/react/testing-library";
+import { SpaceId } from "@synara/contracts";
 
+import { makeProjectSummary } from "../../app/queriesTestFixtures";
 import { SpaceProjectPickerDialogLynx } from "./SpaceProjectPickerDialog.lynx";
 
 const targetSpace = {
-  id: "space-target" as never,
+  id: SpaceId.makeUnsafe("space-target"),
   name: "Focus",
   icon: "target" as const,
 };
-const spaces = [targetSpace, { id: "space-other" as never, name: "Work", icon: "bag" as const }];
+const spaces = [
+  targetSpace,
+  { id: SpaceId.makeUnsafe("space-other"), name: "Work", icon: "bag" as const },
+];
 const projects = [
-  {
+  makeProjectSummary({
     id: "project-a",
-    kind: "project" as const,
+    kind: "project",
     title: "Alpha",
     workspaceRoot: "/work/alpha",
-    defaultModelSelection: null,
-    scripts: [],
     spaceId: null,
-  },
-  {
+  }),
+  makeProjectSummary({
     id: "project-b",
-    kind: "project" as const,
+    kind: "project",
     title: "Beta",
     workspaceRoot: "/work/beta",
-    defaultModelSelection: null,
-    scripts: [],
-    spaceId: "space-other" as never,
-  },
-  {
+    spaceId: SpaceId.makeUnsafe("space-other"),
+  }),
+  makeProjectSummary({
     id: "project-target",
-    kind: "project" as const,
+    kind: "project",
     title: "Already there",
     workspaceRoot: "/work/there",
-    defaultModelSelection: null,
-    scripts: [],
-    spaceId: "space-target" as never,
-  },
-  {
+    spaceId: SpaceId.makeUnsafe("space-target"),
+  }),
+  makeProjectSummary({
     id: "chat-container",
-    kind: "chat" as const,
+    kind: "chat",
     title: "Chats",
     workspaceRoot: "/work/chats",
-    defaultModelSelection: null,
-    scripts: [],
     spaceId: null,
-  },
+  }),
 ];
 
 beforeEach(() => {
@@ -88,15 +85,15 @@ describe("Native Space project picker", () => {
     );
     expect(elementTree.root?.querySelector(".AppSidebarSpaceProjectPickerDialog")).toBeTruthy();
     expect(
-      [...(elementTree.root?.querySelectorAll(".AppSidebarSpaceProjectGroupLabelText") ?? [])].map(
-        (element) => element.textContent,
-      ),
+      Array.from(
+        elementTree.root?.querySelectorAll(".AppSidebarSpaceProjectGroupLabelText") ?? [],
+      ).map((element) => element.textContent),
     ).toEqual(["Void · Active", "Work"]);
 
-    const rows = [...(elementTree.root?.querySelectorAll(".AppSidebarSpaceProjectRow") ?? [])];
+    const rows = Array.from(elementTree.root?.querySelectorAll(".AppSidebarSpaceProjectRow") ?? []);
     fireEvent.tap(rows[0]!);
     fireEvent.tap(rows[1]!);
-    const buttons = [...(elementTree.root?.querySelectorAll(".LxButton") ?? [])];
+    const buttons = Array.from(elementTree.root?.querySelectorAll(".LxButton") ?? []);
     const submit = buttons[buttons.length - 1];
     expect(submit?.textContent).toBe("Move 2 projects");
     fireEvent.tap(submit!);
@@ -120,9 +117,9 @@ describe("Native Space project picker", () => {
     await waitFor(() =>
       expect(elementTree.root?.querySelectorAll(".AppSidebarSpaceProjectRow")).toHaveLength(2),
     );
-    const rows = [...(elementTree.root?.querySelectorAll(".AppSidebarSpaceProjectRow") ?? [])];
+    const rows = Array.from(elementTree.root?.querySelectorAll(".AppSidebarSpaceProjectRow") ?? []);
     rows.forEach((row) => fireEvent.tap(row));
-    const buttons = [...(elementTree.root?.querySelectorAll(".LxButton") ?? [])];
+    const buttons = Array.from(elementTree.root?.querySelectorAll(".LxButton") ?? []);
     fireEvent.tap(buttons[buttons.length - 1]!);
     await waitFor(() =>
       expect(

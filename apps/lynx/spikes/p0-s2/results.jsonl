@@ -1,0 +1,10 @@
+[P0-S2] a {"available":false,"globalWebSocket":"undefined","lynxWebSocketModule":"object","moduleShape":{"ownProps":[],"protoProps":["constructor"],"methods":["connect","send","close"]}}
+[P0-S2] a2_ws_module {"available":true,"rtt":{"n":30,"avg":0.5,"p50":0,"p95":1},"throughput":{"received":300,"perSec":392},"reconnectMs":1}
+[P0-S2] b0_bridge_baseline {"rtt":{"n":30,"avg":0.23,"p50":0,"p95":1}}
+[P0-S2] b1_main_relay {"available":true,"rtt":{"n":30,"avg":0.73,"p50":1,"p95":2},"throughput":{"received":300,"perSec":391},"reconnectMs":3}
+[P0-S2] b2_preload_relay {"available":true,"caps":{"hasWebSocket":true,"hasFetch":true,"hasRequire":false,"hasProcess":true,"processVersion":"v22.18.0","hasNet":false},"rtt":{"n":30,"avg":0.43,"p50":0,"p95":1},"throughput":{"received":300,"perSec":364},"reconnectMs":506}
+[P0-S2] c:probe NetworkingModule=object
+[P0-S2] c:probe server sees sseClients=1 wsClients=0
+[P0-S2] c_sse_fetch {"available":"error","error":"Error: timeout:c:hello"}
+[P0-S2] SUITE_DONE {"a":{"available":false,"globalWebSocket":"undefined","lynxWebSocketModule":"object","moduleShape":{"ownProps":[],"protoProps":["constructor"],"methods":["connect","send","close"]}},"a2_ws_module":{"available":true,"rtt":{"n":30,"avg":0.5,"p50":0,"p95":1},"throughput":{"received":300,"perSec":392},"reconnectMs":1},"b0_bridge_baseline":{"rtt":{"n":30,"avg":0.23,"p50":0,"p95":1}},"b1_main_relay":{"available":true,"rtt":{"n":30,"avg":0.73,"p50":1,"p95":2},"throughput":{"received":300,"perSec":391},"reconnectMs":3},"b2_preload_relay":{"available":true,"caps":{"hasWebSocket":true,"hasFetch":true,"hasRequire":false,"hasProcess":true,"processVersion":"v22.18.0","hasNet":false},"rtt":{"n":30,"avg":0.43,"p50":0,"p95":1},"throughput":{"received":300,"perSec":364},"reconnectMs":506},"c_sse_fetch":{"available":"error","error":"Error: timeout:c:hello"}}
+[P0-S2] c:sse error event {"data":"","error":{}}

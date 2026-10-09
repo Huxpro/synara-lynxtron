@@ -1,0 +1,96 @@
+{
+  "workflow": "J5",
+  "runId": "2026-10-08T22-48-33-587Z-85467",
+  "startedAt": "2026-10-08T22:52:08.347Z",
+  "renderers": {
+    "electron": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "create an automation",
+          "ok": true,
+          "ms": 1624,
+          "detail": {
+            "id": "automation:15cc9df4-e91b-4a88-8ba7-77bb048b2880",
+            "worktreeMode": "auto",
+            "acknowledgedRisks": ["local-checkout"]
+          }
+        },
+        {
+          "name": "open it and edit where it runs",
+          "ok": true,
+          "ms": 665,
+          "detail": {
+            "worktreeMode": "worktree",
+            "via": "select value (native popup not drivable)"
+          }
+        },
+        {
+          "name": "pause and resume it",
+          "ok": true,
+          "ms": 461,
+          "detail": {
+            "pausedThenResumed": true
+          }
+        },
+        {
+          "name": "return to the list and back into the same state",
+          "ok": true,
+          "ms": 233,
+          "detail": {
+            "worktreeMode": "worktree",
+            "enabled": true
+          }
+        }
+      ],
+      "result": {
+        "name": "J5 electron mv04svn0"
+      }
+    },
+    "native": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "create an automation",
+          "ok": true,
+          "ms": 2729,
+          "detail": {
+            "id": "automation:54f74cea-fbea-4986-8d04-38d39d73862f",
+            "worktreeMode": "auto",
+            "acknowledgedRisks": ["local-checkout"]
+          }
+        },
+        {
+          "name": "open it and edit where it runs",
+          "ok": true,
+          "ms": 957,
+          "detail": {
+            "worktreeMode": "worktree",
+            "via": "menu tap"
+          }
+        },
+        {
+          "name": "pause and resume it",
+          "ok": true,
+          "ms": 1314,
+          "detail": {
+            "pausedThenResumed": true
+          }
+        },
+        {
+          "name": "return to the list and back into the same state",
+          "ok": true,
+          "ms": 937,
+          "detail": {
+            "worktreeMode": "worktree",
+            "enabled": true
+          }
+        }
+      ],
+      "result": {
+        "name": "J5 native mv04sy0p"
+      }
+    }
+  },
+  "endedAt": "2026-10-08T22:52:17.391Z"
+}

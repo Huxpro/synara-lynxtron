@@ -13,8 +13,7 @@ import { useEffect, useState } from "react";
 
 import { isElectron } from "./env";
 
-import { isBrowser } from "~/platform/env";
-import { getLocationHash } from "~/platform/env";
+import { getLocationHash, isBrowser } from "~/platform/env";
 type RouterHistory = ReturnType<typeof createBrowserHistory>;
 type HistorySubscriberEvent = Parameters<Parameters<RouterHistory["subscribe"]>[0]>[0];
 type HistorySubscriberAction = HistorySubscriberEvent["action"];

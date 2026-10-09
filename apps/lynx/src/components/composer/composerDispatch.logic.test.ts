@@ -1,4 +1,5 @@
 import { describe, expect, it } from "@rstest/core";
+import { MessageId } from "@synara/contracts";
 
 import {
   buildComposerSendText,
@@ -230,7 +231,7 @@ describe("composer dispatch logic", () => {
         {
           type: "assistant-selection",
           id: "selection-1",
-          assistantMessageId: "assistant-message-1",
+          assistantMessageId: MessageId.makeUnsafe("assistant-message-1"),
           text: "The complete assistant response.",
         },
       ],

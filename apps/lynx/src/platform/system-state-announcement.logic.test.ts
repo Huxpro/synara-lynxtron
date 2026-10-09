@@ -3,6 +3,7 @@ import { describe, expect, it } from "@rstest/core";
 import {
   normalizeSystemStateAnnouncement,
   resolveNextSystemStateAnnouncement,
+  type SystemStateAnnouncementInput,
 } from "./system-state-announcement.logic";
 
 describe("resolveNextSystemStateAnnouncement", () => {
@@ -20,11 +21,21 @@ describe("resolveNextSystemStateAnnouncement", () => {
     expect(normalizeSystemStateAnnouncement(fragments)).toBe(
       "1 project repository was unavailable. Healthy repositories are still shown.",
     );
+    // The typed announcement channel only admits text-like fragments; the
+    // boolean/object fragments above are covered by the untyped normalizer.
+    const typedFragments: SystemStateAnnouncementInput = [
+      1,
+      " project ",
+      ["repository was", " unavailable. "],
+      null,
+      undefined,
+      "Healthy repositories are still shown.",
+    ];
     expect(
       resolveNextSystemStateAnnouncement({
         previousKey: null,
         intent: "status",
-        announcement: fragments,
+        announcement: typedFragments,
       }),
     ).toEqual({
       content: "1 project repository was unavailable. Healthy repositories are still shown.",

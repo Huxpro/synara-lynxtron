@@ -522,6 +522,9 @@ export function DockTerminalPane(props: {
                   "DockTerminalPaneSession" +
                   (tab.id === node.activeTerminalId ? "" : " DockTerminalPaneSession--hidden")
                 }
+                // Hidden sessions stack over the active one; Lynx does not inherit
+                // pointer-events: none, so they must refuse touch outright.
+                user-interaction-enabled={tab.id === node.activeTerminalId}
                 bindtap={() => activateTerminal(tab.id)}
               >
                 <ThreadTerminal
@@ -628,6 +631,7 @@ export function DockTerminalPane(props: {
                 ? ""
                 : " DockTerminalPaneGroupBody--hidden")
             }
+            user-interaction-enabled={terminalGroup.id === resolvedLayout.resolvedActiveGroupId}
           >
             {renderLayout(terminalGroup.layout, terminalGroup.id)}
           </view>

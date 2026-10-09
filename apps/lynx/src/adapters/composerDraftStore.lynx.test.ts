@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "@rstest/core";
 
-import { PROVIDER_SEND_TURN_MAX_ATTACHMENTS } from "@synara/contracts";
+import { MessageId, PROVIDER_SEND_TURN_MAX_ATTACHMENTS } from "@synara/contracts";
 import { createAssistantSelectionAttachment } from "@synara-web/lib/assistantSelections";
 import { createPastedTextDraft } from "@synara-web/lib/composerPastedText";
 import {
@@ -106,12 +106,16 @@ describe("Lynx composer draft attachment subset", () => {
   });
 
   it("persists, deduplicates, and removes whole-message assistant references", () => {
-    const selection = createAssistantSelectionAttachment({
+    const created = createAssistantSelectionAttachment({
       assistantMessageId: "assistant-1",
       text: "\n  Complete response  \n",
     });
-    expect(selection).not.toBeNull();
-    if (!selection) return;
+    expect(created).not.toBeNull();
+    if (!created) return;
+    const selection = {
+      ...created,
+      assistantMessageId: MessageId.makeUnsafe(created.assistantMessageId),
+    };
 
     const store = useComposerDraftStore.getState();
     store.addAssistantSelection("thread-1", selection);
@@ -299,7 +303,8 @@ describe("Lynx composer draft attachment subset", () => {
       store.addAssistantSelection("thread-1", {
         type: "assistant-selection",
         id: `selection-${index}`,
-        assistantMessageId: ` assistant-${index} `,
+        // Untrimmed runtime input: the store itself must normalize the id.
+        assistantMessageId: ` assistant-${index} ` as MessageId,
         text: `\nReference ${index}\n`,
       });
     }

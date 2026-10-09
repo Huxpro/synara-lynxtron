@@ -22,6 +22,7 @@ import type {
   PinnedMessage,
   ProjectId,
   OrchestrationSpaceShell,
+  ProviderInteractionMode,
   ProviderKind,
   PullRequestDetail,
   PullRequestDetailInput,
@@ -30,8 +31,8 @@ import type {
   PullRequestActionResult,
   PullRequestCommentInput,
   PullRequestListEntry,
-  PullRequestsListError,
   PullRequestsListRepositoryBatch,
+  PullRequestsListResult,
   PullRequestSetPinnedInput,
   PullRequestSetPinnedResult,
   PullRequestState,
@@ -48,6 +49,7 @@ import type {
   OrchestrationCheckpointSummary,
   OrchestrationThreadActivity,
   ThreadHandoff,
+  TurnId,
   RuntimeMode,
 } from "@synara/contracts";
 import type { SidebarStatusPresentation } from "@synara-web/components/SidebarStatus.logic";
@@ -96,7 +98,10 @@ import {
 } from "@synara-web/lib/threadRecap";
 import type { NativeSyntaxHighlightThemes } from "../main/syntaxHighlightingContract.logic";
 import { isLocalAbsolutePath } from "@synara/shared/path";
-import { projectActiveThreadSummaries } from "./threadSummaryProjection.logic";
+import {
+  projectActiveThreadSummaries,
+  resolveSnapshotThreadProvider,
+} from "./threadSummaryProjection.logic";
 import { parseMarkdown, type MarkdownNode } from "../components/markdown/markdownAst.lynx";
 
 export const queryClient = new QueryClient({
@@ -111,13 +116,10 @@ export const queryClient = new QueryClient({
 export interface ThreadSummary {
   readonly id: string;
   readonly title: string;
-  readonly remoteName: string;
-  readonly folderName: string;
-  readonly localName: string | null;
   readonly projectId: string;
   readonly project: string;
   readonly messageCount: number;
-  readonly createdAt?: string;
+  readonly createdAt: string;
   readonly updatedAt: string;
   readonly archivedAt?: string | null;
   readonly latestUserMessageAt?: string | null;
@@ -149,6 +151,9 @@ export interface ProjectSummary {
   readonly id: string;
   readonly kind: "project" | "chat" | "studio";
   readonly title: string;
+  readonly remoteName: string;
+  readonly folderName: string;
+  readonly localName: string | null;
   readonly workspaceRoot: string;
   readonly defaultModelSelection: ModelSelection | null;
   readonly scripts: readonly import("@synara/contracts").ProjectScript[];
@@ -184,11 +189,11 @@ export interface ThreadHeaderSummary {
   readonly lockedProvider: ProviderKind | null;
   readonly modelSelection: ModelSelection;
   readonly runtimeMode: RuntimeMode;
-  readonly interactionMode: "default" | "plan";
+  readonly interactionMode: ProviderInteractionMode;
   readonly sessionStatus: string | null;
   readonly error: string | null;
   readonly errorRevision: string | null;
-  readonly activeTurnId: string | null;
+  readonly activeTurnId: TurnId | null;
   readonly sidechatSourceThreadId: string | null;
   readonly parentThreadId: string | null;
   readonly workingDirectory: string | null;
@@ -238,7 +243,10 @@ export type ThreadTranscriptRow = MessagesTimelineRow & {
   readonly markdownTreesByWorkEntryId?: Readonly<Record<string, MarkdownNode | null>>;
 };
 
-export type ExplorerEntriesResult = ProjectListDirectoriesResult | ProjectSearchEntriesResult;
+// Directory listings are never truncated; only search results report it.
+export type ExplorerEntriesResult =
+  | (ProjectListDirectoriesResult & { readonly truncated?: undefined })
+  | ProjectSearchEntriesResult;
 
 export async function fetchAutomations(): Promise<AutomationListResult> {
   "background only";
@@ -457,7 +465,7 @@ const transcriptRowsByThreadId = new Map<
 export interface PullRequestSnapshot {
   readonly viewer: string | null;
   readonly entries: readonly PullRequestListEntry[];
-  readonly errors: readonly PullRequestsListError[];
+  readonly errors: readonly PullRequestsListResult["errors"][number][];
   readonly repositoryBatches: readonly PullRequestsListRepositoryBatch[];
 }
 
@@ -545,7 +553,7 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
     forkSourceThreadId: thread.forkSourceThreadId ?? null,
     sidechatSourceThreadId: thread.sidechatSourceThreadId ?? null,
     handoffSourceProvider: thread.handoff?.sourceProvider ?? null,
-    envMode: thread.envMode,
+    envMode: thread.envMode ?? "local",
     branch: thread.branch,
     worktreePath: thread.worktreePath,
     associatedWorktreePath: thread.associatedWorktreePath,
@@ -836,7 +844,7 @@ export async function fetchThreadHeaderSummary(
     // The snapshot omits null keys; commands built from this summary (Side, fork) must
     // send them as explicit nulls or the server rejects the missing key.
     branch: thread.branch ?? null,
-    envMode: thread.envMode,
+    envMode: thread.envMode ?? "local",
     handoff: thread.handoff ?? null,
     messages: thread.messages,
     activities: thread.activities,
@@ -845,14 +853,14 @@ export async function fetchThreadHeaderSummary(
     associatedWorktreeBranch: thread.associatedWorktreeBranch ?? null,
     associatedWorktreeRef: thread.associatedWorktreeRef ?? null,
     createBranchFlowCompleted: thread.createBranchFlowCompleted ?? false,
-    provider: thread.session?.provider ?? thread.modelSelection.provider,
+    provider: resolveSnapshotThreadProvider(thread),
     lockedProvider: threadHasProviderLockingActivity({
       messages: thread.messages as never,
       sidechatSourceThreadId: thread.sidechatSourceThreadId ?? null,
       latestTurn: thread.latestTurn as never,
       session: thread.session as never,
     })
-      ? (thread.session?.provider ?? thread.modelSelection.provider)
+      ? resolveSnapshotThreadProvider(thread)
       : null,
     modelSelection: thread.modelSelection,
     runtimeMode: thread.runtimeMode,

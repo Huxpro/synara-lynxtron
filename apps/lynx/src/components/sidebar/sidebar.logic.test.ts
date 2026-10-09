@@ -1,6 +1,8 @@
 import { describe, expect, it } from "@rstest/core";
 import { readFileSync } from "node:fs";
+import { SpaceId } from "@synara/contracts";
 
+import { makeProjectSummary, makeThreadSummary } from "../../app/queriesTestFixtures";
 import { deriveSidebarSections, resolveNativeSidebarSpaceId } from "./sidebar.logic";
 import { pruneProjectThreadListPagingForCollapsedProjects } from "@synara-web/components/SidebarProjectPaging.logic";
 import { resolveSettingsBackTarget } from "@synara-web/components/SidebarSettingsBack.logic";
@@ -10,16 +12,16 @@ import { resolveSidebarPrimarySurface } from "@synara-web/components/SidebarSurf
 describe("deriveSidebarProjectGroups", () => {
   it("uses the routed thread Space immediately and falls stale stored ids back to Void", () => {
     const projects = [
-      {
+      makeProjectSummary({
         id: "project",
-        kind: "project" as const,
+        kind: "project",
         title: "Project",
         workspaceRoot: "/work",
-        spaceId: "space-a" as never,
-      },
+        spaceId: SpaceId.makeUnsafe("space-a"),
+      }),
     ];
     const threads = [
-      {
+      makeThreadSummary({
         id: "thread",
         title: "Thread",
         projectId: "project",
@@ -27,9 +29,9 @@ describe("deriveSidebarProjectGroups", () => {
         messageCount: 1,
         updatedAt: "2026-01-01",
         live: false,
-      },
+      }),
     ];
-    const spaces = [{ id: "space-a" as never }];
+    const spaces = [{ id: SpaceId.makeUnsafe("space-a") }];
 
     expect(
       resolveNativeSidebarSpaceId({
@@ -45,7 +47,7 @@ describe("deriveSidebarProjectGroups", () => {
         activeThreadId: null,
         projects,
         spaces,
-        storedActiveSpaceId: "stale-space" as never,
+        storedActiveSpaceId: SpaceId.makeUnsafe("stale-space"),
         threads,
       }),
     ).toBeNull();
@@ -54,11 +56,11 @@ describe("deriveSidebarProjectGroups", () => {
   it("keeps project order and sorts rows newest first", () => {
     const { projectGroups: groups } = deriveSidebarSections({
       projects: [
-        { id: "p2", kind: "project", title: "Two", workspaceRoot: "/two" },
-        { id: "p1", kind: "project", title: "One", workspaceRoot: "/one" },
+        makeProjectSummary({ id: "p2", kind: "project", title: "Two", workspaceRoot: "/two" }),
+        makeProjectSummary({ id: "p1", kind: "project", title: "One", workspaceRoot: "/one" }),
       ],
       threads: [
-        {
+        makeThreadSummary({
           id: "old",
           title: "Old",
           projectId: "p2",
@@ -66,8 +68,8 @@ describe("deriveSidebarProjectGroups", () => {
           messageCount: 1,
           updatedAt: "2026-01-01",
           live: false,
-        },
-        {
+        }),
+        makeThreadSummary({
           id: "new",
           title: "New",
           projectId: "p2",
@@ -75,7 +77,7 @@ describe("deriveSidebarProjectGroups", () => {
           messageCount: 2,
           updatedAt: "2026-02-01",
           live: false,
-        },
+        }),
       ],
     });
 
@@ -86,11 +88,21 @@ describe("deriveSidebarProjectGroups", () => {
   it("applies persisted project and thread sort orders", () => {
     const sections = deriveSidebarSections({
       projects: [
-        { id: "older-active", kind: "project", title: "Older active", workspaceRoot: "/older" },
-        { id: "newer-created", kind: "project", title: "Newer created", workspaceRoot: "/newer" },
+        makeProjectSummary({
+          id: "older-active",
+          kind: "project",
+          title: "Older active",
+          workspaceRoot: "/older",
+        }),
+        makeProjectSummary({
+          id: "newer-created",
+          kind: "project",
+          title: "Newer created",
+          workspaceRoot: "/newer",
+        }),
       ],
       threads: [
-        {
+        makeThreadSummary({
           id: "older-created-recently-updated",
           title: "Updated",
           projectId: "older-active",
@@ -99,8 +111,8 @@ describe("deriveSidebarProjectGroups", () => {
           createdAt: "2026-01-01",
           updatedAt: "2026-04-01",
           live: false,
-        },
-        {
+        }),
+        makeThreadSummary({
           id: "newer-created",
           title: "Created",
           projectId: "newer-created",
@@ -109,7 +121,7 @@ describe("deriveSidebarProjectGroups", () => {
           createdAt: "2026-03-01",
           updatedAt: "2026-03-01",
           live: false,
-        },
+        }),
       ],
       projectSortOrder: "created_at",
       threadSortOrder: "created_at",
@@ -125,7 +137,7 @@ describe("deriveSidebarProjectGroups", () => {
     const { projectGroups: groups } = deriveSidebarSections({
       projects: [],
       threads: [
-        {
+        makeThreadSummary({
           id: "orphan",
           title: "Orphan",
           projectId: "missing",
@@ -133,7 +145,7 @@ describe("deriveSidebarProjectGroups", () => {
           messageCount: 0,
           updatedAt: "2026-01-01",
           live: false,
-        },
+        }),
       ],
     });
     expect(groups).toHaveLength(1);
@@ -143,12 +155,22 @@ describe("deriveSidebarProjectGroups", () => {
   it("keeps hidden chat and studio containers out of Projects", () => {
     const sections = deriveSidebarSections({
       projects: [
-        { id: "project", kind: "project", title: "Visible", workspaceRoot: "/work" },
-        { id: "chat", kind: "chat", title: "Home", workspaceRoot: "/home" },
-        { id: "studio", kind: "studio", title: "Studio", workspaceRoot: "/studio" },
+        makeProjectSummary({
+          id: "project",
+          kind: "project",
+          title: "Visible",
+          workspaceRoot: "/work",
+        }),
+        makeProjectSummary({ id: "chat", kind: "chat", title: "Home", workspaceRoot: "/home" }),
+        makeProjectSummary({
+          id: "studio",
+          kind: "studio",
+          title: "Studio",
+          workspaceRoot: "/studio",
+        }),
       ],
       threads: [
-        {
+        makeThreadSummary({
           id: "chat-thread",
           title: "Chat",
           projectId: "chat",
@@ -156,8 +178,8 @@ describe("deriveSidebarProjectGroups", () => {
           messageCount: 1,
           updatedAt: "2026-03-01",
           live: false,
-        },
-        {
+        }),
+        makeThreadSummary({
           id: "studio-thread",
           title: "Studio chat",
           projectId: "studio",
@@ -165,7 +187,7 @@ describe("deriveSidebarProjectGroups", () => {
           messageCount: 1,
           updatedAt: "2026-02-01",
           live: false,
-        },
+        }),
       ],
     });
 
@@ -176,9 +198,16 @@ describe("deriveSidebarProjectGroups", () => {
 
   it("projects server-pinned threads once and removes standalone pins from ordinary lists", () => {
     const sections = deriveSidebarSections({
-      projects: [{ id: "project", kind: "project", title: "Visible", workspaceRoot: "/work" }],
+      projects: [
+        makeProjectSummary({
+          id: "project",
+          kind: "project",
+          title: "Visible",
+          workspaceRoot: "/work",
+        }),
+      ],
       threads: [
-        {
+        makeThreadSummary({
           id: "pinned",
           title: "Pinned",
           projectId: "project",
@@ -187,8 +216,8 @@ describe("deriveSidebarProjectGroups", () => {
           updatedAt: "2026-03-01",
           live: false,
           isPinned: true,
-        },
-        {
+        }),
+        makeThreadSummary({
           id: "ordinary",
           title: "Ordinary",
           projectId: "project",
@@ -196,7 +225,7 @@ describe("deriveSidebarProjectGroups", () => {
           messageCount: 1,
           updatedAt: "2026-02-01",
           live: false,
-        },
+        }),
       ],
     });
 
@@ -206,9 +235,16 @@ describe("deriveSidebarProjectGroups", () => {
 
   it("merges client-persisted pins with the server snapshot", () => {
     const sections = deriveSidebarSections({
-      projects: [{ id: "project", kind: "project", title: "Visible", workspaceRoot: "/work" }],
+      projects: [
+        makeProjectSummary({
+          id: "project",
+          kind: "project",
+          title: "Visible",
+          workspaceRoot: "/work",
+        }),
+      ],
       threads: [
-        {
+        makeThreadSummary({
           id: "persisted",
           title: "Persisted pin",
           projectId: "project",
@@ -216,7 +252,7 @@ describe("deriveSidebarProjectGroups", () => {
           messageCount: 1,
           updatedAt: "2026-03-01",
           live: false,
-        },
+        }),
       ],
       persistedPinnedThreadIds: ["persisted"],
     });
@@ -228,8 +264,8 @@ describe("deriveSidebarProjectGroups", () => {
   it("orders persisted pinned projects before the ordinary manual order", () => {
     const sections = deriveSidebarSections({
       projects: [
-        { id: "one", kind: "project", title: "One", workspaceRoot: "/one" },
-        { id: "two", kind: "project", title: "Two", workspaceRoot: "/two" },
+        makeProjectSummary({ id: "one", kind: "project", title: "One", workspaceRoot: "/one" }),
+        makeProjectSummary({ id: "two", kind: "project", title: "Two", workspaceRoot: "/two" }),
       ],
       threads: [],
       persistedPinnedProjectIds: ["two"],
@@ -241,24 +277,30 @@ describe("deriveSidebarProjectGroups", () => {
   it("filters ordinary projects and pinned threads to the active Space", () => {
     const sections = deriveSidebarSections({
       projects: [
-        {
+        makeProjectSummary({
           id: "void-project",
           kind: "project",
           title: "Void",
           workspaceRoot: "/void",
           spaceId: null,
-        },
-        {
+        }),
+        makeProjectSummary({
           id: "space-project",
           kind: "project",
           title: "Space",
           workspaceRoot: "/space",
-          spaceId: "space-a" as never,
-        },
-        { id: "chat", kind: "chat", title: "Home", workspaceRoot: "/home", spaceId: null },
+          spaceId: SpaceId.makeUnsafe("space-a"),
+        }),
+        makeProjectSummary({
+          id: "chat",
+          kind: "chat",
+          title: "Home",
+          workspaceRoot: "/home",
+          spaceId: null,
+        }),
       ],
       threads: [
-        {
+        makeThreadSummary({
           id: "void-thread",
           title: "Void thread",
           projectId: "void-project",
@@ -267,8 +309,8 @@ describe("deriveSidebarProjectGroups", () => {
           updatedAt: "2026-01-01",
           live: false,
           isPinned: true,
-        },
-        {
+        }),
+        makeThreadSummary({
           id: "space-thread",
           title: "Space thread",
           projectId: "space-project",
@@ -277,8 +319,8 @@ describe("deriveSidebarProjectGroups", () => {
           updatedAt: "2026-01-02",
           live: false,
           isPinned: true,
-        },
-        {
+        }),
+        makeThreadSummary({
           id: "chat-thread",
           title: "Chat",
           projectId: "chat",
@@ -286,9 +328,9 @@ describe("deriveSidebarProjectGroups", () => {
           messageCount: 1,
           updatedAt: "2026-01-03",
           live: false,
-        },
+        }),
       ],
-      activeSpaceId: "space-a" as never,
+      activeSpaceId: SpaceId.makeUnsafe("space-a"),
     });
 
     expect(sections.projectGroups.map((project) => project.id)).toEqual(["space-project"]);

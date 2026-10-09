@@ -144,7 +144,9 @@ function TranscriptMessageTrailItem(props: {
       }}
     >
       <view className="TranscriptMessageTrailTick" />
-      <view className="TranscriptMessageTrailTooltip">
+      {/* A passive preview: hidden it still spans the transcript, and Lynx does not inherit
+          pointer-events: none, so its text would bubble taps to the trail item. */}
+      <view className="TranscriptMessageTrailTooltip" user-interaction-enabled={false}>
         <text className="TranscriptMessageTrailPreview">{props.item.preview}</text>
         {props.item.responsePreview ? (
           <text className="TranscriptMessageTrailResponse">{props.item.responsePreview}</text>
@@ -161,7 +163,12 @@ function TranscriptMessageTrail(props: {
   readonly viewportWidth: number;
 }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const items = deriveMessageTrailItems(props.rows);
+  const items = deriveMessageTrailItems(
+    props.rows.filter(
+      (row): row is Extract<ThreadTranscriptRow, { readonly kind: "message" }> =>
+        row.kind === "message",
+    ),
+  );
   const activeSnapshot = useSyncExternalStore(
     props.activeStore.subscribe,
     props.activeStore.get,
@@ -678,6 +685,9 @@ function TranscriptMessage({
         );
         if (!confirmed) return;
         try {
+          const { dispatchSynaraCommand } = await import(
+            /* webpackMode: "eager" */ "../data/synaraClient"
+          );
           await dispatchSynaraCommand({
             type: "thread.checkpoint.revert",
             commandId: `lynx-command-${Date.now()}-${Math.random().toString(16).slice(2)}` as never,
@@ -781,7 +791,8 @@ function TranscriptMessage({
       assistantMessageId: message.id,
       text: activeTextSelection.text,
     });
-    if (selection) addAssistantSelection(threadId, selection);
+    if (selection)
+      addAssistantSelection(threadId, { ...selection, assistantMessageId: message.id });
     onTextSelectionChange(null);
   }
   if (message.role === "system") {
@@ -1303,6 +1314,9 @@ export function Transcript({
     setEditSubmitting(true);
     setEditError(null);
     try {
+      const { dispatchSynaraCommand } = await import(
+        /* webpackMode: "eager" */ "../data/synaraClient"
+      );
       await dispatchSynaraCommand({
         type: "thread.message.edit-and-resend",
         commandId: `lynx-command-${Date.now()}-${Math.random().toString(16).slice(2)}` as never,

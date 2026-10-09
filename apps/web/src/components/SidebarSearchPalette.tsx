@@ -28,7 +28,7 @@ import {
 import { isGenericChatThreadTitle } from "@synara/shared/chatThreads";
 import { Autocomplete as AutocompletePrimitive } from "@base-ui/react/autocomplete";
 import { LuArrowLeft, LuCornerLeftUp } from "react-icons/lu";
-import { type ComponentType, useEffect, useMemo, useState, type KeyboardEvent } from "react";
+import { type ComponentType, useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { FolderClosed } from "./FolderClosed";
 import { ProjectSidebarIcon } from "./ProjectSidebarIcon";
@@ -117,6 +117,19 @@ interface SidebarSearchPaletteProps {
   importProviders: readonly ImportProviderKind[];
   onImportThread: (provider: ImportProviderKind, externalId: string) => Promise<void>;
   onImportProjects: (providers: readonly ProjectImportProvider[]) => void;
+}
+
+// Structural so the Lynx CommandInput (which has no DOM input target) can
+// deliver the same key events; selection is only known on the Web.
+interface BrowseInputKeyEvent {
+  readonly key: string;
+  readonly metaKey?: boolean;
+  readonly ctrlKey?: boolean;
+  readonly currentTarget?: {
+    readonly selectionStart: number | null;
+    readonly selectionEnd: number | null;
+  };
+  preventDefault(): void;
 }
 
 // Second page of the "Import projects" command: pick which local tool to import from.
@@ -583,7 +596,7 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
   const isMac = isMacPlatform(platform);
   const submitModifierLabel = isMac ? "⌘" : "Ctrl";
 
-  const handleBrowseInputKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+  const handleBrowseInputKeyDown = (event: BrowseInputKeyEvent) => {
     if (!isBrowsing) return;
     const isModifierPressed = isMac ? event.metaKey : event.ctrlKey;
     if (
@@ -598,8 +611,8 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
       event.key === "Backspace" &&
       hasTrailingPathSeparator(query) &&
       browseParentPath &&
-      event.currentTarget.selectionStart === query.length &&
-      event.currentTarget.selectionEnd === query.length
+      event.currentTarget?.selectionStart === query.length &&
+      event.currentTarget?.selectionEnd === query.length
     ) {
       event.preventDefault();
       setQuery(browseParentPath);

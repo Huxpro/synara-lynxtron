@@ -43,6 +43,16 @@ export interface ButtonProps extends Omit<LynxButtonProps, "children" | "classNa
   render?: ReactNode;
   type?: "button" | "submit" | "reset";
   "aria-label"?: string;
+  /** Web parity: a negative value keeps the button out of keyboard focus. */
+  tabIndex?: number;
+  /** Web parity: accessible-name fallback (Lynx views have no hover tooltip). */
+  title?: string;
+  /**
+   * Web parity for focus guards that call `event.preventDefault()` to keep
+   * focus in a text field. Lynx buttons have no default focus-taking action
+   * to cancel (and lynx-ui owns the press listeners), so it is not invoked.
+   */
+  onMouseDown?: (event: { preventDefault(): void }) => void;
 }
 
 export interface LynxButtonClickEvent {
@@ -96,8 +106,12 @@ export function Button({
   buttonProps,
   disabled,
   "aria-label": ariaLabel,
+  tabIndex,
+  title,
+  onMouseDown: _onMouseDown,
   ...props
 }: ButtonProps) {
+  const accessibleName = ariaLabel ?? title;
   const handleClick = () => {
     "background only";
     onClick?.(createButtonClickEvent());
@@ -126,9 +140,10 @@ export function Button({
         "accessibility-element": accessibilityElement,
         ...(accessibilityTrait ? { "accessibility-trait": accessibilityTrait } : {}),
         ...(accessibilityState ? { "accessibility-state": accessibilityState } : {}),
-        ...(ariaLabel
+        ...(tabIndex !== undefined && tabIndex < 0 ? { focusable: false } : {}),
+        ...(accessibleName
           ? {
-              "accessibility-label": ariaLabel,
+              "accessibility-label": accessibleName,
             }
           : {}),
       }}

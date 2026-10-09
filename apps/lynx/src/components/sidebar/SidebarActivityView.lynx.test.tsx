@@ -1,7 +1,7 @@
 import { fireEvent, render } from "@lynx-js/react/testing-library";
 import { describe, expect, it, rs } from "@rstest/core";
 
-import type { ProjectId, ThreadId } from "@synara/contracts";
+import { ThreadId, type ProjectId } from "@synara/contracts";
 import type { SidebarThreadSummary } from "@synara-web/types";
 
 import { SidebarActivityView, type ActivityProject } from "./SidebarActivityView.lynx";
@@ -112,7 +112,10 @@ function texts(selector: string): string[] {
 
 describe("Lynx sidebar Activity view", () => {
   it("lists recent work as two-line task rows under the scope header", () => {
-    renderActivity([thread({ id: "Fixture secondary" }), thread({ id: "Fixture transcript" })]);
+    renderActivity([
+      thread({ id: ThreadId.makeUnsafe("Fixture secondary") }),
+      thread({ id: ThreadId.makeUnsafe("Fixture transcript") }),
+    ]);
 
     expect(texts(".AppSidebarActivityScope")).toEqual(["All activity"]);
     expect(texts(".AppSidebarActivitySectionLabel")).toEqual(["Recent"]);
@@ -126,14 +129,17 @@ describe("Lynx sidebar Activity view", () => {
 
   it("files settled threads under a collapsed Done section", () => {
     const settledAt = new Date(Date.now() + 1_000).toISOString();
-    renderActivity([thread({ id: "open" }), thread({ id: "finished", settledAt })]);
+    renderActivity([
+      thread({ id: ThreadId.makeUnsafe("open") }),
+      thread({ id: ThreadId.makeUnsafe("finished"), settledAt }),
+    ]);
 
     expect(texts(".AppSidebarActivityRowTitle")).toEqual(["open"]);
     expect(texts(".AppSidebarActivityDisclosure")).toEqual(["Done"]);
   });
 
   it("marks a row done and records it as read", () => {
-    const handlers = renderActivity([thread({ id: "open" })]);
+    const handlers = renderActivity([thread({ id: ThreadId.makeUnsafe("open") })]);
     const done = Array.from(
       elementTree.root?.querySelectorAll(".AppSidebarHoverAction") ?? [],
     ).find((node) => node.getAttribute("accessibility-label") === "Done");

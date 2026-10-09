@@ -53,7 +53,7 @@ export function AppSnapCoordinator(props: {
       queueRef.current = queueRef.current
         .then(async () => {
           const snapshot = await fetchSynaraSidebarShellSnapshot();
-          const availableThreadIds = new Set(snapshot.threads.map((thread) => thread.id));
+          const availableThreadIds = new Set<string>(snapshot.threads.map((thread) => thread.id));
           const draftsByThreadId = useComposerDraftStore.getState().draftsByThreadId;
           const restoredThreadId = findAppSnapCaptureThreadId(draftsByThreadId, capture.captureId);
           const captureAtMs = appSnapCaptureTimestampMs(capture, Date.now());

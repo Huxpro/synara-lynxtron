@@ -371,6 +371,7 @@ function OpenDiffDock(props: {
       className={`DiffDock${
         props.presentation === "hosted" ? " DiffDock--hosted" : ""
       }${props.open ? " DiffDock--open" : " DiffDock--closed"}`}
+      interactive={props.open}
       defaultWidth={
         props.availableWidth > 0
           ? Math.max(RIGHT_DOCK_MIN_WIDTH_PX, Math.round(props.availableWidth / 2))
@@ -695,7 +696,6 @@ function OpenDiffDock(props: {
           className="DiffDockFileJumpViewport"
           accessibility-element
           accessibility-label="Jump to file dialog"
-          accessibility-trait="dialog"
           bindkeydown={(event: { readonly key?: string }) => {
             "background only";
             if (event.key === "Escape") closeFileJump();
@@ -707,7 +707,8 @@ function OpenDiffDock(props: {
             className="DiffDockFileJumpDialog"
             accessibility-element
             accessibility-label="Jump to file"
-            accessibility-trait="dialog"
+            role="dialog"
+            aria-modal={true}
           >
             <Button
               aria-label="Close file picker"

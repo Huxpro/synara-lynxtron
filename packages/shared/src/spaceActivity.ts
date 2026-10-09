@@ -7,17 +7,18 @@ const SPACE_ACTIVITY_PRIORITY: Readonly<Record<SpaceActivityTone, number>> = {
 };
 
 export function deriveSpaceActivityById<
-  TProject extends { readonly id: string; readonly spaceId?: string | null },
+  TSpaceId extends string,
+  TProject extends { readonly id: string; readonly spaceId?: TSpaceId | null },
   TThread extends { readonly projectId: string },
 >(input: {
   readonly projects: readonly TProject[];
   readonly threads: readonly TThread[];
   readonly resolveTone: (thread: TThread) => SpaceActivityTone | null;
-}): ReadonlyMap<string | null, SpaceActivityTone> {
+}): ReadonlyMap<TSpaceId | null, SpaceActivityTone> {
   const projectSpaceById = new Map(
     input.projects.map((project) => [project.id, project.spaceId ?? null] as const),
   );
-  const activity = new Map<string | null, SpaceActivityTone>();
+  const activity = new Map<TSpaceId | null, SpaceActivityTone>();
   for (const thread of input.threads) {
     const spaceId = projectSpaceById.get(thread.projectId);
     if (spaceId === undefined) continue;

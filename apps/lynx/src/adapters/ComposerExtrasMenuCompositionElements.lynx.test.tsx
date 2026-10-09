@@ -45,7 +45,7 @@ describe("native composer attachment menu item", () => {
     expect(triggerIcon?.getAttribute("content")).toContain('stroke="rgba(13, 13, 13, 0.598)"');
     const itemIcons = elementTree.root?.querySelectorAll(".ComposerExtrasItemIconLynx");
     expect(itemIcons).toHaveLength(3);
-    for (const icon of itemIcons ?? []) {
+    for (const icon of Array.from(itemIcons ?? [])) {
       expect(icon.getAttribute("content")).toContain('stroke="rgba(13, 13, 13, 0.598)"');
     }
     expect(elementTree.root?.textContent).not.toContain("+");

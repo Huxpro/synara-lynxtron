@@ -36,6 +36,12 @@ export function ResizableRightPanel(props: {
   readonly onWidthChange?: ((width: number) => void) | undefined;
   readonly resizable: boolean;
   readonly hosted?: boolean;
+  /**
+   * False while the panel is closed. Lynx does not inherit `pointer-events: none`, so a
+   * closed (invisible) panel's buttons and rows would still take taps over the content
+   * beneath; this disables touch for the whole subtree instead.
+   */
+  readonly interactive?: boolean;
   readonly storageKey?: string | undefined;
 }) {
   const viewport = useViewportLayout();
@@ -105,6 +111,7 @@ export function ResizableRightPanel(props: {
   return (
     <view
       className={props.className}
+      user-interaction-enabled={props.interactive ?? true}
       style={props.hosted ? { width: "100%" } : canResize ? { width: `${width}px` } : undefined}
     >
       {canResize ? (

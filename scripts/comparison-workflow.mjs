@@ -316,6 +316,8 @@ export async function openNativeDriver(devtoolPort) {
       return box;
     },
     type: (text) => send("Input.insertText", { text }),
+    /** Evaluates in the Lynx JS context the DevTool session is attached to. */
+    evaluate: (expression) => send("Runtime.evaluate", { expression, returnByValue: true }),
     /**
      * Finger drag at a point (the input a touch/trackpad user gives a Lynx
      * list); negative deltaY scrolls content toward the top.
