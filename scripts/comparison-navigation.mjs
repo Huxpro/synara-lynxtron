@@ -83,6 +83,21 @@ export const DOCK_ADD_PANEL = { label: "Add panel" };
 // than waitFor's 15 s default, later ones are immediate.
 export const DOCK_FIRST_OPEN_TIMEOUT_MS = 45_000;
 
+/** Resolves once `target` has kept its place across two looks ~150 ms apart. */
+async function settledBox(driver, target) {
+  let previous = null;
+  return waitFor(
+    async () => {
+      const box = await driver.find(target);
+      const settled =
+        box && previous && Math.abs(box.x - previous.x) < 1 && Math.abs(box.y - previous.y) < 1;
+      previous = box;
+      return settled ? box : null;
+    },
+    { label: `${JSON.stringify(target)} to stop moving on ${driver.kind}` },
+  );
+}
+
 export async function openDockWithPane(driver, launcherLabel) {
   const launcher = { label: launcherLabel };
   if (await driver.find(DOCK_ADD_PANEL)) return;
@@ -97,6 +112,9 @@ export async function openDockWithPane(driver, launcherLabel) {
     { label: `the dock on ${driver.kind}`, timeoutMs: DOCK_FIRST_OPEN_TIMEOUT_MS },
   );
   if (shown === "launcher") {
+    // The dock slides in: a tap aimed at a launcher button that is still moving lands
+    // beside it, and the pane never opens.
+    await settledBox(driver, launcher);
     await driver.tap(launcher);
     await waitFor(() => driver.find(DOCK_ADD_PANEL), {
       label: `the dock tabs on ${driver.kind}`,
