@@ -488,7 +488,8 @@ describe("Lynx Editor view", () => {
     const desktopSource = source("../main/desktop/shellRuntime.ts");
     expect(appSource).toContain("const initialEditorOpen = initData.initialEditorOpen === true");
     expect(appSource).toContain("await hydrateStorage()");
-    expect(appSource).toContain("useTerminalStateStore.persist.rehydrate()");
+    expect(appSource).toContain("rehydratePersistedStores()");
+    expect(source("./persistedStoreHydration.lynx.ts")).toContain("useTerminalStateStore,");
     expect(appSource).not.toContain("Promise.all([fetchSidebarSnapshot(), fetchThreads()])");
     expect(webHostSource).toContain('get("editor") === "open"');
     expect(webHostSource).toContain('get("editorMode") === "diff"');

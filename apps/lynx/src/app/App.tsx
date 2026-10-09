@@ -64,10 +64,12 @@ async function readPersistedAppearance(): Promise<{
   const { hydrateLynxComposerDraftStore } = await import(
     /* webpackMode: "eager" */ "../adapters/composerDraftStore.lynx"
   );
-  const { useTerminalStateStore } = await import(
-    /* webpackMode: "eager" */ "@synara-web/terminalStateStore"
+  const { rehydratePersistedStores } = await import(
+    /* webpackMode: "eager" */ "./persistedStoreHydration.lynx"
   );
-  await Promise.all([hydrateLynxComposerDraftStore(), useTerminalStateStore.persist.rehydrate()]);
+  // The shared stores were created while the mirror was empty; load what was saved
+  // before SessionSync (gated on this function) can make any of them write.
+  await Promise.all([hydrateLynxComposerDraftStore(), rehydratePersistedStores()]);
   const themeRaw = webStorage.getItem(THEME_STORAGE_KEY);
   return {
     appearance: readSettingsAppearanceProjection(
