@@ -96,8 +96,11 @@ import type {
   ExternalMcpCreateIntegrationResult,
   ExternalMcpIntegration,
 } from "@synara/contracts";
+import { onServerSettingsUpdated } from "@synara-web/wsNativeApi";
 import { resolveDefaultSocketUrl } from "../platform/net.socket";
 import { bridgeCall, onGlobalEvent } from "../platform/bridge";
+import { ensureNativeApi } from "../adapters/nativeApi.lynx";
+import { hostBridgeRequest } from "./nativeRpcBridge";
 import { RpcTransportError, type RpcTransportState } from "./rpcTransport.logic";
 import { NATIVE_EVENT_STREAM_CHANNELS } from "../main/nativeEventStreams.logic";
 import {
@@ -150,7 +153,6 @@ const OFFLINE_RETRY_DELAY_MS = 5_000;
 const TRANSPORT_STATE_EVENT = "synara:transport-state";
 const GIT_ACTION_PROGRESS_EVENT = "synara:git-action-progress";
 const ORCHESTRATION_SHELL_EVENT = NATIVE_EVENT_STREAM_CHANNELS["orchestration.subscribeShell"];
-const SERVER_SETTINGS_EVENT = NATIVE_EVENT_STREAM_CHANNELS["server.subscribeSettings"];
 
 let relayState: RpcTransportState = "idle";
 let relayEverConnected = false;
@@ -163,9 +165,6 @@ let terminalEventStream: Promise<void> | null = null;
 let terminalEventRetry: ReturnType<typeof setTimeout> | null = null;
 let orchestrationShellEventStream: Promise<void> | null = null;
 let orchestrationShellEventRetry: ReturnType<typeof setTimeout> | null = null;
-const serverSettingsListeners = new Set<(settings: ServerSettingsView) => void>();
-let serverSettingsStream: Promise<void> | null = null;
-let serverSettingsRetry: ReturnType<typeof setTimeout> | null = null;
 
 function setRelayState(state: RpcTransportState): void {
   if (relayState === state) return;
@@ -202,21 +201,9 @@ onGlobalEvent(ORCHESTRATION_SHELL_EVENT, (event: unknown) => {
     listener(event as OrchestrationShellStreamItem);
   }
 });
-onGlobalEvent(SERVER_SETTINGS_EVENT, (event: unknown) => {
-  const settings =
-    event && typeof event === "object" && "settings" in event
-      ? (event as { readonly settings: ServerSettingsView }).settings
-      : null;
-  if (!settings) return;
-  for (const listener of serverSettingsListeners) listener(settings);
-});
 function describeRelayError(error: unknown): string {
   if (error instanceof Error) return error.message;
   return String(error);
-}
-
-interface RelayBridgeError extends Error {
-  readonly name: "SynaraRpcResponseError" | "RpcTransportError";
 }
 
 function relayBridgeRequest<A>(
@@ -228,45 +215,6 @@ function relayBridgeRequest<A>(
     tag,
     payload,
     baseUrl: resolveDefaultSocketUrl(null),
-  });
-}
-
-function hostBridgeRequest<A>(method: string, params: Record<string, unknown>): Promise<A> {
-  "background only";
-  return new Promise((resolve, reject) => {
-    try {
-      NativeModules.bridge.call(method, params, (reply: unknown) => {
-        try {
-          const parsed = typeof reply === "string" ? JSON.parse(reply) : reply;
-          if (parsed && typeof parsed === "object" && "error" in parsed && parsed.error) {
-            const name: RelayBridgeError["name"] =
-              "errorKind" in parsed && parsed.errorKind === "rpc"
-                ? "SynaraRpcResponseError"
-                : "RpcTransportError";
-            const error: RelayBridgeError = Object.assign(new Error(String(parsed.error)), {
-              name,
-            });
-            reject(error);
-            return;
-          }
-          if (
-            parsed &&
-            typeof parsed === "object" &&
-            "_tag" in parsed &&
-            parsed._tag === "NativeRpcResult" &&
-            "value" in parsed
-          ) {
-            resolve(parsed.value as A);
-            return;
-          }
-          resolve(parsed as A);
-        } catch (error) {
-          reject(error);
-        }
-      });
-    } catch (error) {
-      reject(error);
-    }
   });
 }
 
@@ -349,40 +297,16 @@ function ensureOrchestrationShellEventStream(): void {
     });
 }
 
-function ensureServerSettingsStream(): void {
-  if (serverSettingsStream || serverSettingsListeners.size === 0) return;
-  serverSettingsStream = relayStreamRequest<{ readonly settings: ServerSettingsView }>(
-    "server.subscribeSettings",
-    {},
-  )
-    .then(() => undefined)
-    .catch(() => undefined)
-    .finally(() => {
-      serverSettingsStream = null;
-      if (serverSettingsListeners.size === 0) return;
-      serverSettingsRetry = setTimeout(() => {
-        serverSettingsRetry = null;
-        ensureServerSettingsStream();
-      }, 1_000);
-    });
-}
-
 /**
  * Server settings as the server publishes them: the current view first, then
- * every change, including changes made by other clients.
+ * every change, including changes made by other clients. Served by the
+ * upstream `NativeApi` facade (`wsNativeApi.ts` on the Lynx transport compat);
+ * the first of the shared state layer's push streams to run on Lynx.
  */
 export function subscribeServerSettings(
   listener: (settings: ServerSettingsView) => void,
 ): () => void {
-  serverSettingsListeners.add(listener);
-  ensureServerSettingsStream();
-  return () => {
-    serverSettingsListeners.delete(listener);
-    if (serverSettingsListeners.size === 0 && serverSettingsRetry) {
-      clearTimeout(serverSettingsRetry);
-      serverSettingsRetry = null;
-    }
-  };
+  return onServerSettingsUpdated((payload) => listener(payload.settings));
 }
 
 function transportRequest<A>(tag: string, payload: unknown): Promise<A> {
@@ -607,8 +531,10 @@ export async function importSynaraThread(
   return transportRequest<OrchestrationImportThreadResult>("orchestration.importThread", input);
 }
 
+// Served by the upstream `NativeApi` facade: the first requests of the shared
+// state layer to run on Lynx (plan step 1).
 export async function fetchServerSettings(): Promise<ServerSettingsView> {
-  return transportRequest<ServerSettingsView>("server.getSettings", {});
+  return ensureNativeApi().server.getSettings();
 }
 
 export async function updateServerSettings(
@@ -618,7 +544,7 @@ export async function updateServerSettings(
 }
 
 export async function fetchServerConfig(): Promise<ServerConfig> {
-  return transportRequest("server.getConfig", {});
+  return ensureNativeApi().server.getConfig();
 }
 
 export async function upsertKeybinding(

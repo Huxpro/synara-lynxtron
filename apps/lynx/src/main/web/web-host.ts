@@ -14,6 +14,11 @@ import {
   resolveWebRelayEndpoint,
 } from "./webRelayEndpoint.logic";
 import { NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG } from "../syntaxHighlightingContract.logic";
+import {
+  NATIVE_RPC_STREAM_CANCEL_METHOD,
+  NATIVE_RPC_STREAM_ITEM_EVENT,
+  type NativeRpcStreamItemEvent,
+} from "../nativeEventStreams.logic";
 import { REDUCED_MOTION_EVENT } from "../reducedMotionEvent.logic";
 import { normalizeLynxRpcPayload } from "../rpcPayload.logic";
 import { SYSTEM_APPEARANCE_EVENT } from "../systemAppearanceEvent.logic";
@@ -70,6 +75,13 @@ interface PendingRelayRequest {
   readonly reject: (error: Error) => void;
   readonly timer: ReturnType<typeof setTimeout> | null;
   readonly chunks?: unknown[];
+  /** Request-scoped stream (shared WsTransport compat): items bypass the chunk buffer. */
+  readonly onItem?: (item: unknown) => void;
+}
+
+interface RelayScopedStream {
+  readonly requestId: string;
+  readonly socket: WebSocket;
 }
 
 class SynaraRpcResponseError extends Error {
@@ -87,6 +99,7 @@ let relaySequence = 0;
 // the real Clipboard API first.
 let relayClipboardText = "";
 const relayPending = new Map<string, PendingRelayRequest>();
+const relayScopedStreams = new Map<string, RelayScopedStream>();
 const relayRecentRpcTags: string[] = [];
 let transcriptScrollElement: HTMLElement | null = null;
 let transcriptPreviousScrollTop: number | null = null;
@@ -115,6 +128,7 @@ let lastRendererReadyRoute: string | null = null;
 let publishRelayTransportState: ((state: "connected" | "reconnecting" | "offline") => void) | null =
   null;
 let publishRelayGitActionProgress: ((event: unknown) => void) | null = null;
+let publishRelayStreamItem: ((event: NativeRpcStreamItemEvent) => void) | null = null;
 
 interface LynxWebRuntimeConfig {
   readonly wsUrl?: unknown;
@@ -379,14 +393,18 @@ async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
     const pending = relayPending.get(message.requestId);
     if (!pending) return;
     if (message._tag === "Chunk") {
-      if (pending.tag !== "terminal.subscribeEvents") {
-        pending.chunks?.push(...(message as WebRpcChunkFrame).values);
-      }
-      for (const value of message.values) {
-        if (pending.tag === "terminal.subscribeEvents") {
-          lynxView.sendGlobalEvent?.(TERMINAL_EVENT, [value]);
-        } else {
-          publishRelayGitActionProgress?.(value);
+      if (pending.onItem) {
+        for (const value of message.values) pending.onItem(value);
+      } else {
+        if (pending.tag !== "terminal.subscribeEvents") {
+          pending.chunks?.push(...(message as WebRpcChunkFrame).values);
+        }
+        for (const value of message.values) {
+          if (pending.tag === "terminal.subscribeEvents") {
+            lynxView.sendGlobalEvent?.(TERMINAL_EVENT, [value]);
+          } else {
+            publishRelayGitActionProgress?.(value);
+          }
         }
       }
       try {
@@ -512,6 +530,12 @@ async function synaraRpc(
   tagValue: unknown,
   payload: unknown,
   stream = false,
+  options: {
+    /** Request-scoped stream id from the shared WsTransport compat class. */
+    readonly streamId?: string;
+    /** `null` disables the watchdog for calls the renderer declared long-running. */
+    readonly timeoutMs?: number | null;
+  } = {},
 ): Promise<unknown> {
   const baseUrl = normalizeSynaraWsUrl(
     resolveWebRelayEndpoint(
@@ -527,32 +551,80 @@ async function synaraRpc(
   if (relayRecentRpcTags.length > 40) relayRecentRpcTags.shift();
   const socket = await ensureRelaySocket(baseUrl);
   const id = String(++relaySequence);
+  const streamId = options.streamId;
   return new Promise((resolve, reject) => {
     const timer = stream
       ? undefined
-      : setTimeout(() => {
-          relayPending.delete(id);
-          const error = new Error(`Synara RPC ${tag} timed out after ${RPC_REQUEST_TIMEOUT_MS}ms`);
-          reject(error);
-          invalidateRelaySocket(socket, baseUrl, error);
-        }, RPC_REQUEST_TIMEOUT_MS);
+      : options.timeoutMs === null
+        ? undefined
+        : setTimeout(() => {
+            relayPending.delete(id);
+            const error = new Error(
+              `Synara RPC ${tag} timed out after ${RPC_REQUEST_TIMEOUT_MS}ms`,
+            );
+            reject(error);
+            invalidateRelaySocket(socket, baseUrl, error);
+          }, RPC_REQUEST_TIMEOUT_MS);
     relayPending.set(id, {
       tag,
       resolve,
       reject,
       timer: timer ?? null,
-      ...(stream ? { chunks: [] } : {}),
+      ...(stream && streamId === undefined ? { chunks: [] } : {}),
+      ...(streamId !== undefined
+        ? {
+            onItem: (item: unknown) => {
+              publishRelayStreamItem?.({ streamId, item });
+            },
+          }
+        : {}),
     });
+    if (streamId !== undefined) {
+      cancelScopedRelayStream(streamId);
+      relayScopedStreams.set(streamId, { requestId: id, socket });
+    }
     try {
       socket.send(JSON.stringify({ _tag: "Request", id, tag, payload, headers: [] }));
     } catch (error) {
       relayPending.delete(id);
       clearTimeout(timer);
+      if (streamId !== undefined && relayScopedStreams.get(streamId)?.requestId === id) {
+        relayScopedStreams.delete(streamId);
+      }
       const transportError = new Error(`Synara RPC ${tag} send failed: ${describeError(error)}`);
       reject(transportError);
       invalidateRelaySocket(socket, baseUrl, transportError);
     }
+  }).finally(() => {
+    if (streamId !== undefined && relayScopedStreams.get(streamId)?.requestId === id) {
+      relayScopedStreams.delete(streamId);
+    }
   });
+}
+
+/**
+ * Ends a request-scoped stream early: the pending request settles locally and
+ * the server gets an Effect RPC `Interrupt`, whose follow-up Exit is then
+ * ignored because the request id is no longer pending.
+ */
+function cancelScopedRelayStream(streamId: string): boolean {
+  const scoped = relayScopedStreams.get(streamId);
+  if (!scoped) return false;
+  relayScopedStreams.delete(streamId);
+  const pending = relayPending.get(scoped.requestId);
+  if (pending) {
+    relayPending.delete(scoped.requestId);
+    if (pending.timer !== null) clearTimeout(pending.timer);
+    pending.resolve(null);
+  }
+  try {
+    if (isWebSocketOpen(scoped.socket)) {
+      scoped.socket.send(JSON.stringify({ _tag: "Interrupt", requestId: scoped.requestId }));
+    }
+  } catch {
+    // The socket is already unusable; the pending entry is gone either way.
+  }
+  return true;
 }
 
 function readStorageEntries(): Record<string, string> {
@@ -672,10 +744,23 @@ async function handleBridgeCall(
         }
       }
       const tag = String(params.tag ?? "");
-      return await synaraRpc(params.baseUrl, tag, normalizeLynxRpcPayload(tag, params.payload));
+      return await synaraRpc(
+        params.baseUrl,
+        tag,
+        normalizeLynxRpcPayload(tag, params.payload),
+        false,
+        {
+          timeoutMs: params.timeoutMs === null ? null : undefined,
+        },
+      );
     }
     if (method === "synaraRpcStream") {
-      return await synaraRpc(params.baseUrl, params.tag, params.payload, true);
+      return await synaraRpc(params.baseUrl, params.tag, params.payload, true, {
+        ...(typeof params.streamId === "string" ? { streamId: params.streamId } : {}),
+      });
+    }
+    if (method === NATIVE_RPC_STREAM_CANCEL_METHOD) {
+      return { cancelled: cancelScopedRelayStream(String(params.streamId ?? "")) };
     }
     if (method === "terminalOpen") {
       return await synaraRpc(params.baseUrl, "terminal.open", params);
@@ -1053,6 +1138,9 @@ publishRelayTransportState = (state) => {
 };
 publishRelayGitActionProgress = (event) => {
   lynxView.sendGlobalEvent?.(GIT_ACTION_PROGRESS_EVENT, [event]);
+};
+publishRelayStreamItem = (event) => {
+  lynxView.sendGlobalEvent?.(NATIVE_RPC_STREAM_ITEM_EVENT, [event]);
 };
 
 globalThis.__SYNARA_LYNX_RELAY_DIAGNOSTICS__ = () => {

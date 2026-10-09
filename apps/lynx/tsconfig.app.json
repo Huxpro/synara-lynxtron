@@ -296,6 +296,8 @@
       "~/components/ui/button": ["./src/components/ui/button.lynx.tsx"],
       "~/components/ui/collapsible": ["./src/components/ui/collapsible.lynx.tsx"],
       "~/components/ui/command": ["./src/components/ui/command.lynx.tsx"],
+      "~/components/ui/confirmDialogFallback": ["./src/adapters/confirmDialogFallback.lynx.ts"],
+      "~/components/ui/contextMenuFallback": ["./src/adapters/contextMenuFallback.lynx.ts"],
       "~/components/ui/dialog": ["./src/components/ui/dialog.lynx.tsx"],
       "~/components/ui/input": ["./src/components/ui/input.lynx.tsx"],
       "~/components/ui/kbd": ["./src/components/ui/kbd.lynx.tsx"],
@@ -310,8 +312,10 @@
       "~/hooks/useViewportLayout": ["./src/hooks/useViewportLayout.lynx.ts"],
       "~/nativeApi": ["./src/adapters/nativeApi.lynx.ts"],
       "~/platform/env": ["./src/platform/env.lynx.ts"],
+      "~/platform/events": ["./src/platform/events.ts"],
       "~/platform/motion": ["./src/platform/motion.lynx.ts"],
       "~/platform/storage": ["./src/platform/storage.ts"],
+      "~/wsTransport": ["./src/adapters/wsTransport.lynx.ts"],
       "react": ["./node_modules/@types/react"]
     }
   },

@@ -52,8 +52,10 @@ import { handleUpdater } from "./updateService";
 import { resolveShellWindowChrome } from "./shellWindowChrome";
 import { NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG } from "../syntaxHighlightingContract.logic";
 import {
+  cancelNativeRpcStream,
   disposeNativeRpcHost,
   handleNativeRpc,
+  runNativeRpcStream,
   subscribeNativeRpcTransportState,
 } from "./nativeRpcHost";
 import {
@@ -65,7 +67,13 @@ import { createRequire } from "node:module";
 import { DesktopAppSnapManager } from "../../../../desktop/src/appSnapManager";
 import type { DesktopAppSnapErrorEvent, DesktopAppSnapState } from "@synara/contracts";
 import { SYSTEM_APPEARANCE_EVENT } from "../systemAppearanceEvent.logic";
-import { nativeEventStreamChannel } from "../nativeEventStreams.logic";
+import {
+  NATIVE_RPC_STREAM_CANCEL_METHOD,
+  NATIVE_RPC_STREAM_ITEM_EVENT,
+  NATIVE_TRANSPORT_STATE_EVENT,
+  nativeEventStreamChannel,
+  type NativeRpcStreamItemEvent,
+} from "../nativeEventStreams.logic";
 import {
   createSystemAppearanceWatcher,
   parseSystemAppearanceProbeSequence,
@@ -845,21 +853,33 @@ app.whenReady().then(() => {
                     path: typeof data.payload?.path === "string" ? data.payload.path : "",
                   }),
               )
-            : await handleNativeRpc(
-                name === "synaraRpcStream" ? "synaraRpcStream" : "synaraRpc",
-                rpcData,
-                (event) => {
-                  const channel =
-                    nativeEventStreamChannel(String(rpcData.tag ?? "")) ??
-                    "synara:git-action-progress";
-                  w.sendGlobalEvent(channel, event);
-                },
-              );
+            : name === "synaraRpcStream" && typeof data.streamId === "string"
+              ? // Request-scoped stream for the shared WsTransport compat class:
+                // items are relayed under the renderer's stream id and the reply
+                // settles when the stream ends or is cancelled.
+                await runNativeRpcStream(data.streamId, rpcData, (item) => {
+                  const event: NativeRpcStreamItemEvent = { streamId: data.streamId, item };
+                  w.sendGlobalEvent(NATIVE_RPC_STREAM_ITEM_EVENT, event);
+                })
+              : await handleNativeRpc(
+                  name === "synaraRpcStream" ? "synaraRpcStream" : "synaraRpc",
+                  rpcData,
+                  (event) => {
+                    const channel =
+                      nativeEventStreamChannel(String(rpcData.tag ?? "")) ??
+                      "synara:git-action-progress";
+                    w.sendGlobalEvent(channel, event);
+                  },
+                );
         callback.sendReply(
           JSON.stringify({
             _tag: "NativeRpcResult",
             value: result ?? null,
           }),
+        );
+      } else if (name === NATIVE_RPC_STREAM_CANCEL_METHOD) {
+        callback.sendReply(
+          JSON.stringify({ cancelled: cancelNativeRpcStream(String(data?.streamId ?? "")) }),
         );
       } else if (name === "showDialog") {
         const { message } = data;
@@ -1254,7 +1274,7 @@ app.whenReady().then(() => {
   });
 
   const unsubscribeTransportState = subscribeNativeRpcTransportState((state) => {
-    w.sendGlobalEvent("synara:transport-state", state);
+    w.sendGlobalEvent(NATIVE_TRANSPORT_STATE_EVENT, state);
   });
 
   if (windowPresentation.showInactiveAfterSetup) {

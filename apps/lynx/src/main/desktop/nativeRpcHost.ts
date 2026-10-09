@@ -110,11 +110,20 @@ export function subscribeNativeRpcTransportState(
   return featureManager.subscribe(listener);
 }
 
+function toRelayError(error: unknown): Error & { errorKind?: "rpc" | "transport" } {
+  const relayError = new Error(error instanceof Error ? error.message : String(error)) as Error & {
+    errorKind?: "rpc" | "transport";
+  };
+  relayError.errorKind = isRpcTransportError(error) ? "transport" : "rpc";
+  return relayError;
+}
+
 export async function handleNativeRpc(
   method: "synaraRpc" | "synaraRpcStream",
   data: {
     readonly tag?: unknown;
     readonly payload?: unknown;
+    readonly timeoutMs?: unknown;
   },
   onProgress?: (event: unknown) => void,
 ): Promise<unknown> {
@@ -129,16 +138,54 @@ export async function handleNativeRpc(
       });
       return events;
     }
-    return await featureManager.request(tag, normalizeLynxRpcPayload(tag, data.payload));
+    return await featureManager.request(tag, normalizeLynxRpcPayload(tag, data.payload), {
+      // `null` disables the watchdog for calls the renderer declared long-running
+      // (provider updates, recap generation); anything else keeps the host default.
+      timeoutMs: data.timeoutMs === null ? null : undefined,
+    });
   } catch (error) {
-    const relayError = new Error(
-      error instanceof Error ? error.message : String(error),
-    ) as Error & { errorKind?: "rpc" | "transport" };
-    relayError.errorKind = isRpcTransportError(error) ? "transport" : "rpc";
-    throw relayError;
+    throw toRelayError(error);
   }
 }
 
+const scopedStreams = new Map<string, () => void>();
+
+/**
+ * Request-scoped stream for the shared `WsTransport` compat class: every item
+ * goes to `onItem` as it arrives, the promise settles when the server ends the
+ * stream or the renderer cancels it (`cancelNativeRpcStream`).
+ */
+export async function runNativeRpcStream(
+  streamId: string,
+  data: { readonly tag?: unknown; readonly payload?: unknown },
+  onItem: (item: unknown) => void,
+): Promise<void> {
+  const tag = String(data.tag ?? "").trim();
+  if (!tag) throw new Error("Synara RPC tag is required");
+  if (!streamId) throw new Error("Synara RPC stream id is required");
+  const previous = scopedStreams.get(streamId);
+  previous?.();
+  const handle = featureManager.openStream(tag, data.payload, onItem);
+  scopedStreams.set(streamId, handle.cancel);
+  try {
+    await handle.settled;
+  } catch (error) {
+    throw toRelayError(error);
+  } finally {
+    if (scopedStreams.get(streamId) === handle.cancel) scopedStreams.delete(streamId);
+  }
+}
+
+export function cancelNativeRpcStream(streamId: string): boolean {
+  const cancel = scopedStreams.get(streamId);
+  if (!cancel) return false;
+  scopedStreams.delete(streamId);
+  cancel();
+  return true;
+}
+
 export function disposeNativeRpcHost(): void {
+  for (const cancel of scopedStreams.values()) cancel();
+  scopedStreams.clear();
   featureManager.dispose();
 }

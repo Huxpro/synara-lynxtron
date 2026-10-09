@@ -5,6 +5,12 @@
   "outputMarkdown": "plan/reports/p5-r1-reuse-baseline.md",
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxEntries": ["src/app/index.tsx"],
+  "parallelImplementationBaseline": {
+    "synaraClientImporters": 39,
+    "useQueryCallSites": 78,
+    "refetchIntervalSites": 15,
+    "routerTsxLines": 3733
+  },
   "patchedSources": [],
   "hardIslandPackages": [
     "@lexical/react",
