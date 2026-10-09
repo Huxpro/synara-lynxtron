@@ -39,9 +39,15 @@ export function settingsShown(driver) {
 export async function showAppSidebar(driver) {
   if (driver.kind === "electron" || (await settingsShown(driver))) {
     await driver.tap(pick(driver, NAVIGATION_TARGETS.appSidebar));
-    await waitFor(() => driver.find(pick(driver, NAVIGATION_TARGETS.newThread)), {
-      label: "the app sidebar",
-    });
+    // Fully on screen: Electron slides the sidebar in from the left on the way back
+    // from Tasks/Kanban, and a row that is still partly off-window cannot be tapped.
+    await waitFor(
+      async () => {
+        const row = await driver.find(pick(driver, NAVIGATION_TARGETS.newThread));
+        return row !== null && row.x - row.width / 2 >= 0;
+      },
+      { label: "the app sidebar" },
+    );
   }
 }
 

@@ -17,7 +17,7 @@ function fakeDriver(kind, visible, onTap = () => undefined) {
   return {
     kind,
     taps,
-    find: async (target) => (visible.has(key(target)) ? { x: 0, y: 0 } : null),
+    find: async (target) => (visible.has(key(target)) ? { x: 100, y: 10, width: 40 } : null),
     tap: async (target) => {
       taps.push(target);
       onTap(target, visible, key);
