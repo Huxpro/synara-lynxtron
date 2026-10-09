@@ -96,7 +96,7 @@ describe("shared settings navigation projection", () => {
 
     for (const section of SETTINGS_SECTION_IDS) {
       if (section === "computer" || NATIVE_UNSUPPORTED_SECTIONS.has(section)) continue;
-      expect(source).toContain(`section === '${section}'`);
+      expect(source).toContain(`section === "${section}"`);
       expect(source).toContain(ownerMarkers[section]);
     }
     expect(source).toContain('section === "providers" ?');
@@ -113,7 +113,7 @@ describe("shared settings navigation projection", () => {
       "Desktop app notifications use your operating system notification center.",
     );
     expect(source).toMatch(
-      /useEffect\(\(\) => \{\s*setSection\(initialSection\);\s*setPendingSearchTarget\(initialTarget\);\s*setSearchQuery\(''\);\s*\}, \[initialSection, initialTarget\]\);/s,
+      /useEffect\(\(\) => \{\s*setSection\(initialSection\);\s*setPendingSearchTarget\(initialTarget\);\s*setSearchQuery\(""\);\s*\}, \[initialSection, initialTarget\]\);/s,
     );
     expect(source).toContain("onSelectSection={(nextSection) => onNavigate(nextSection)}");
     expect(source).toContain("onNavigate(entry.section, target)");
@@ -127,7 +127,7 @@ describe("shared settings navigation projection", () => {
     expect(routerSource).toContain("initialTarget={route.params.target ?? initialSettingsTarget}");
     expect(routerSource).toContain("setRoute(parseRoute(location.href))");
     expect(routerSource).toContain("<TaskCompletionToastHost");
-    expect(routerSource).toContain("{taskCompletionToast}");
+    expect(routerSource).toContain("{appNotifications}");
     expect(source).toContain("includeDesktopShellShortcuts");
     expect(source).toContain(
       '"Desktop app notifications use your operating system notification center."',

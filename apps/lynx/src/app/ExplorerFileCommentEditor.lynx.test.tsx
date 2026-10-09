@@ -35,7 +35,7 @@ describe("Explorer file comment editor", () => {
       elementTree.root
         ?.querySelector(".ExplorerDockCommentBadgeMark")
         ?.getAttribute("accessibility-label"),
-    ).toBe("Lynx logo");
+    ).toBe("Synara");
     const textarea = elementTree.root?.querySelector(".ExplorerDockCommentInput textarea");
     expect(textarea?.getAttribute("placeholder")).toBe("Request change");
 

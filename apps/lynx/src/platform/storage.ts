@@ -55,7 +55,10 @@ function enqueuePersist(method: string, params: Record<string, unknown> = {}): P
 }
 
 function persist(method: string, params: Record<string, unknown> = {}): void {
-  void enqueuePersist(method, params);
+  // Fire-and-forget: the queue already reports a failed host write, and the
+  // synchronous localStorage-style callers have nobody to hand a rejection to.
+  // Without this the failure also surfaces as an unhandled rejection.
+  enqueuePersist(method, params).catch(() => undefined);
 }
 
 /** Load the on-disk KV into the mirror. Await before first render. */

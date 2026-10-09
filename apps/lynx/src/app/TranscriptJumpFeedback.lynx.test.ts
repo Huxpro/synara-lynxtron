@@ -8,7 +8,9 @@ describe("Transcript jump feedback", () => {
       'import arrowDownSvg from "@tabler/icons/outline/arrow-down.svg?raw";',
     );
     expect(transcript).not.toContain("import { ArrowDownIcon } from '@synara-web/lib/icons';");
-    expect(transcript).toContain("content={colorizeLynxSvg(arrowDownSvg, svgColors.foreground)}");
+    expect(transcript).toContain(
+      'content={colorizeLynxSvg(arrowDownSvg, semanticIconColor("primary"))}',
+    );
     expect(transcript).toContain("<TranscriptJumpIcon />");
   });
 
