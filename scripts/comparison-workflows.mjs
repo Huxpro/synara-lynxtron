@@ -1710,9 +1710,8 @@ export async function workflowJ6(context) {
 
     await step("pull requests: same empty state (named blocked cell)", async () => {
       await openPullRequestsSurface(driver);
-      // Electron's Code review page lists pull requests and issues together.
-      const emptyText =
-        driver.kind === "electron" ? "No pull requests and issues found" : "No pull requests found";
+      // The Code review page lists pull requests and issues together, on both renderers.
+      const emptyText = "No pull requests and issues found";
       const empty = await waitFor(() => renderedTextIncludes(driver, emptyText), {
         label: "the pull requests page",
         timeoutMs: 20_000,

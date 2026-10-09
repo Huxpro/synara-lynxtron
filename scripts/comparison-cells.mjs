@@ -138,14 +138,9 @@ export const SURFACES = Object.freeze({
   },
   pr: {
     open: openPullRequestsSurface,
-    ready: (driver) =>
-      driver.find(
-        pick(driver, {
-          // Upstream's Code review page: the inbox toolbar, no state tabs.
-          electron: { label: "More code review actions" },
-          native: { text: "Merged" },
-        }),
-      ),
+    // Upstream's Code review page, on both renderers: the kind tab carries its count once
+    // the inbox list has loaded.
+    ready: (driver) => driver.find({ label: "All, 0" }),
   },
   automations: {
     open: openAutomationsSurface,

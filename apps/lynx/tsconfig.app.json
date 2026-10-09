@@ -189,9 +189,6 @@
       "~/components/pullRequest/PullRequestListCompositionElements": [
         "./src/adapters/PullRequestListCompositionElements.lynx.tsx"
       ],
-      "~/components/pullRequest/PullRequestRouteControlsCompositionElements": [
-        "./src/adapters/PullRequestRouteControlsCompositionElements.lynx.tsx"
-      ],
       "~/components/pullRequest/PullRequestRowCompositionElements": [
         "./src/adapters/PullRequestRowCompositionElements.lynx.tsx"
       ],

@@ -419,10 +419,6 @@ export default defineConfig({
         rootPath,
         "./src/adapters/PullRequestListCompositionElements.lynx.tsx",
       ),
-      "~/components/pullRequest/PullRequestRouteControlsCompositionElements$": path.resolve(
-        rootPath,
-        "./src/adapters/PullRequestRouteControlsCompositionElements.lynx.tsx",
-      ),
       "~/components/pullRequest/PullRequestSummaryCompositionElements$": path.resolve(
         rootPath,
         "./src/adapters/PullRequestSummaryCompositionElements.lynx.tsx",

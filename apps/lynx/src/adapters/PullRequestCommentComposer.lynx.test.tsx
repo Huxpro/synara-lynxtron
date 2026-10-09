@@ -135,7 +135,7 @@ describe("Lynx pull request comment composer", () => {
     expect(appStyles).toContain("--pr-comment-error-border: rgba(227, 67, 63, 0.3);");
   });
 
-  it("submits normalized comments once and revalidates detail and list data", async () => {
+  it("submits normalized comments once through the injected poster", async () => {
     queryClient.clear();
     let resolveRequest: ((value: PullRequestActionResult) => void) | undefined;
     const postComment = rs.fn(
@@ -145,15 +145,6 @@ describe("Lynx pull request comment composer", () => {
         }),
     );
     const selectedDetail = detail();
-    const detailKey = [
-      "pull-request-detail",
-      selectedDetail.projectId,
-      selectedDetail.repository,
-      selectedDetail.number,
-    ];
-    const listKey = ["pull-requests", "open", null];
-    queryClient.setQueryData(detailKey, selectedDetail);
-    queryClient.setQueryData(listKey, []);
     renderComposer(postComment);
 
     expect(textarea().getAttribute("placeholder")).toBe("Leave a comment");
@@ -177,9 +168,18 @@ describe("Lynx pull request comment composer", () => {
 
     await waitFor(() => {
       expect(textarea()).not.toBe(pendingTextarea);
-      expect(queryClient.getQueryState(detailKey)?.isInvalidated).toBe(true);
-      expect(queryClient.getQueryState(listKey)?.isInvalidated).toBe(true);
     });
+  });
+
+  it("posts through upstream's comment mutation, which refreshes upstream's caches", () => {
+    const source = readFileSync(
+      new URL("./PullRequestCommentComposer.lynx.tsx", import.meta.url),
+      "utf8",
+    );
+
+    expect(source).toContain(".build(queryClient, pullRequestCommentMutationOptions(queryClient))");
+    expect(source).not.toContain('"pull-request-detail"');
+    expect(source).not.toContain("invalidateQueries");
   });
 
   it("preserves newline and IME behavior, then keeps the draft recoverable after failure", async () => {
