@@ -3,8 +3,6 @@
 //          when a drop should become a path mention instead of a byte attachment.
 // Layer: Web composer utility (desktop-aware)
 
-import { getDesktopBridge } from "~/platform/desktopBridge";
-
 export interface ComposerDroppedFileItem {
   readonly kind: string;
   readonly getAsFile: () => File | null;
@@ -16,7 +14,7 @@ export interface ComposerDroppedFileItem {
  * On Electron, uses `webUtils.getPathForFile` via the desktop bridge.
  */
 export function resolveDroppedFileAbsolutePath(file: File): string | null {
-  const bridge = getDesktopBridge();
+  const bridge = typeof window !== "undefined" ? window.desktopBridge : undefined;
   const getPath = bridge?.getPathForFile;
   if (typeof getPath !== "function") {
     return null;

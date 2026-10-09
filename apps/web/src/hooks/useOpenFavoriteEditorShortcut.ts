@@ -14,7 +14,6 @@ import { usePreferredEditor } from "../editorPreferences";
 import { isOpenFavoriteEditorShortcut } from "../keybindings";
 import { readNativeApi } from "../nativeApi";
 
-import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 export function useOpenFavoriteEditorShortcut({
   keybindings,
   availableEditors,
@@ -39,7 +38,7 @@ export function useOpenFavoriteEditorShortcut({
       e.preventDefault();
       void api.shell.openInEditor(openInTarget, preferredEditor);
     };
-    addWindowEventListener("keydown", handler);
-    return () => removeWindowEventListener("keydown", handler);
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
   }, [enabled, preferredEditor, keybindings, openInTarget]);
 }

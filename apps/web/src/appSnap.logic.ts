@@ -6,7 +6,6 @@
 import type { ThreadId } from "@synara/contracts";
 
 import { isComposerAppSnapCaptureSource } from "./lib/composerImageSource";
-import { dispatchWindowEvent } from "~/platform/events";
 
 export const APPSNAP_RECENT_TARGET_WINDOW_MS = 60_000;
 
@@ -230,5 +229,5 @@ export const REQUEST_CURRENT_APP_SNAP_EVENT = "synara:request-current-app-snap";
 
 /** Explicit UI gesture only. Capturing never sends a turn or enables Computer. */
 export function requestCurrentAppSnap(): void {
-  dispatchWindowEvent(new Event(REQUEST_CURRENT_APP_SNAP_EVENT));
+  window.dispatchEvent(new Event(REQUEST_CURRENT_APP_SNAP_EVENT));
 }

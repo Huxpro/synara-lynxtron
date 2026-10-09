@@ -41,6 +41,7 @@ import {
   flushStorageBeforePageHide,
   type StateStorage,
 } from "./lib/storage";
+
 export {
   findSupersededComposerImageBlobAttachments,
   isComposerImageBlobReferenced,
@@ -77,12 +78,6 @@ export type { EffectiveComposerModelState } from "./composerDraftModels";
 export { partializeComposerDraftStoreState } from "./composerDraftPersistence";
 
 const COMPOSER_PERSIST_DEBOUNCE_MS = 300;
-// NOTE: intentionally NOT on platform/storage webStorage yet. Pre-port, this
-// module's fallback memory storage and the useLocalStorage hook's fallback were
-// separate maps, and attachment-sync tests (node env) encode that split: they
-// seed "unreadable persisted storage" through the hook path while the deferred
-// writer must not observe it. Unifying the two changes observable behavior
-// there; revisit with the test when the Lynx storage port lands (P2-V2).
 const composerBaseStorage: StateStorage =
   typeof localStorage !== "undefined" ? localStorage : createMemoryStorage();
 const composerPersistStorage = createDeferredPersistStorage<

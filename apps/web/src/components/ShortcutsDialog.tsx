@@ -24,7 +24,6 @@ import {
 } from "../shortcutsSheet";
 import type { ProjectScript } from "../types";
 
-import { raf, cancelRaf } from "~/platform/frame";
 export default function ShortcutsDialog(props: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -61,12 +60,12 @@ function ShortcutsDialogContent(props: {
 
   // Autofocus the search input so the user can type immediately after Mod+/.
   useEffect(() => {
-    const frame = raf(() => {
+    const frame = window.requestAnimationFrame(() => {
       inputRef.current?.focus();
       inputRef.current?.select();
     });
     return () => {
-      cancelRaf(frame);
+      window.cancelAnimationFrame(frame);
     };
   }, []);
 

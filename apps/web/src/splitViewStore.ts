@@ -22,7 +22,6 @@ import {
   type LegacySplitViewLike,
 } from "./splitView.logic";
 
-import { webStorage } from "~/platform/storage";
 export type SplitViewId = string;
 export type PaneId = string;
 export type SplitDirection = "horizontal" | "vertical";
@@ -712,7 +711,7 @@ export const useSplitViewStore = create<SplitViewStore>()(
     {
       name: SPLIT_VIEW_STORAGE_KEY,
       version: SPLIT_VIEW_STORAGE_VERSION,
-      storage: createJSONStorage(() => webStorage),
+      storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         splitViewsById: state.splitViewsById,
         splitViewIdBySourceThreadId: state.splitViewIdBySourceThreadId,

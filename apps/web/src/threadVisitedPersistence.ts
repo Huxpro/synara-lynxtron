@@ -5,8 +5,6 @@
 
 import { hasUnseenCompletion, hasUnseenSnoozeReturn } from "./components/Sidebar.logic";
 import { isPlainObject, sanitizeStringKeyedRecord } from "./persistedRecord";
-import { isBrowser } from "~/platform/env";
-import { webStorage } from "~/platform/storage";
 import type { AppState } from "./storeState";
 import type { SidebarThreadSummary } from "./types";
 
@@ -32,9 +30,9 @@ function isTimestamp(value: unknown): value is string {
 function readPersisted(): PersistedThreadVisitedState {
   if (persisted) return persisted;
   persisted = { watermarkAt: null, byThreadId: {} };
-  if (!isBrowser()) return persisted;
+  if (typeof window === "undefined") return persisted;
   try {
-    const raw = webStorage.getItem(THREAD_VISITED_STORAGE_KEY);
+    const raw = window.localStorage.getItem(THREAD_VISITED_STORAGE_KEY);
     // SAFETY: localStorage is only writable by same-origin scripts; every entry is
     // validated below and a malformed blob behaves like a first run.
     const parsed: unknown = raw ? JSON.parse(raw) : null;
@@ -116,7 +114,7 @@ export function persistThreadVisitedState(
   state: AppState,
   options: { readonly force?: boolean } = {},
 ): void {
-  if (!isBrowser() || !state.threadsHydrated) return;
+  if (typeof window === "undefined" || !state.threadsHydrated) return;
   const summaries = state.sidebarThreadSummaryById;
   if (!options.force && summaries === lastSavedSummaries) return;
   lastSavedSummaries = summaries;
@@ -155,7 +153,7 @@ export function persistThreadVisitedState(
   }
   const next = { watermarkAt, byThreadId };
   try {
-    webStorage.setItem(THREAD_VISITED_STORAGE_KEY, JSON.stringify(next));
+    window.localStorage.setItem(THREAD_VISITED_STORAGE_KEY, JSON.stringify(next));
     persisted = next;
   } catch (error) {
     // Quota/private-mode failures only cost unread state after a reload.

@@ -6,7 +6,6 @@
 
 import type { ContextMenuItem, DesktopContextMenuItem } from "@synara/contracts";
 import { getCentralIconUrl } from "./central-icons";
-import { getDocument } from "~/platform/env";
 
 // macOS menus reserve a 16pt image slot; render at 2x so Retina menus stay crisp.
 const NATIVE_MENU_ICON_POINTS = 16;
@@ -36,13 +35,7 @@ async function rasterizeMenuIcon(icon: string): Promise<string | null> {
   await image.decode();
 
   const size = NATIVE_MENU_ICON_POINTS * NATIVE_MENU_ICON_SCALE;
-  // Lynx's DOM shim has no tag-name map, but this shared Web-only branch still
-  // needs its concrete canvas result when checked as part of the Lynx bundle.
-  const documentWithCanvas = getDocument() as {
-    createElement(tagName: "canvas"): HTMLCanvasElement;
-  } | null;
-  const canvas = documentWithCanvas?.createElement("canvas");
-  if (!canvas) return null;
+  const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;
   const context = canvas.getContext("2d");

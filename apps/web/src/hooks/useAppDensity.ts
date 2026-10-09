@@ -7,7 +7,6 @@ import {
 } from "../lib/appDensity";
 import { useAppSettings } from "../appSettings";
 
-import { getDocumentElement } from "~/platform/env";
 const DENSITY_CSS_VARIABLES = Object.keys(
   getDensityCssVariables(),
 ) as readonly DensityCssVariable[];
@@ -17,8 +16,7 @@ export function useAppDensity() {
   const uiDensity = normalizeUiDensity(settings.uiDensity);
 
   useEffect(() => {
-    const root = getDocumentElement();
-    if (!root) return;
+    const root = document.documentElement;
     const rootStyle = root.style;
     const variableValues = getDensityCssVariables(uiDensity);
 

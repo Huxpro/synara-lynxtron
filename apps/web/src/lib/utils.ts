@@ -3,7 +3,6 @@ import { type CxOptions, cx } from "class-variance-authority";
 import { extendTailwindMerge } from "tailwind-merge";
 import * as Random from "effect/Random";
 import * as Effect from "effect/Effect";
-import { getNavigatorPlatform as getPlatformNavigatorPlatform } from "~/platform/env";
 
 // `text-ui*` / `text-chat*` are font sizes from the `@theme` block in index.css.
 // Register them so twMerge resolves them against `text-xs` etc. instead of
@@ -46,7 +45,7 @@ export function isLinuxPlatform(platform: string): boolean {
 
 /** The host platform string, safe to read where `navigator` may be absent (SSR, node tests). */
 export function getNavigatorPlatform(): string {
-  return getPlatformNavigatorPlatform();
+  return typeof navigator === "undefined" ? "" : navigator.platform;
 }
 
 /** Single source of truth for "render the ⌘ affordance instead of the Ctrl one". */
@@ -55,9 +54,8 @@ export function isMacNavigatorPlatform(): boolean {
 }
 
 export function randomUUID(): string {
-  const nativeRandomUUID = globalThis.crypto?.randomUUID;
-  if (typeof nativeRandomUUID === "function") {
-    return nativeRandomUUID.call(globalThis.crypto);
+  if (typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
   }
   return Effect.runSync(Random.nextUUIDv4);
 }

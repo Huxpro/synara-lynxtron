@@ -34,6 +34,7 @@ import { createRequire } from "node:module";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { generatedFileIsFresh, writeGeneratedFile } from "./format-generated.mjs";
+import { isReferencePosition } from "./ts-identifier-position.mjs";
 
 const require = createRequire(import.meta.url);
 const ts = require("typescript");
@@ -86,38 +87,6 @@ export class EventRouterGenerationError extends Error {
 
 function fail(message) {
   throw new EventRouterGenerationError(message);
-}
-
-/** Identifier positions that name a member or label instead of referencing a binding. */
-function isReferencePosition(node) {
-  const parent = node.parent;
-  if (ts.isPropertyAccessExpression(parent)) return parent.name !== node;
-  if (ts.isQualifiedName(parent)) return parent.right !== node;
-  if (ts.isPropertyAssignment(parent)) return parent.name !== node;
-  if (ts.isBindingElement(parent)) return parent.propertyName !== node;
-  if (
-    ts.isPropertySignature(parent) ||
-    ts.isPropertyDeclaration(parent) ||
-    ts.isMethodDeclaration(parent) ||
-    ts.isMethodSignature(parent) ||
-    ts.isGetAccessorDeclaration(parent) ||
-    ts.isSetAccessorDeclaration(parent) ||
-    ts.isEnumMember(parent) ||
-    ts.isNamedTupleMember(parent)
-  ) {
-    return parent.name !== node;
-  }
-  if (ts.isJsxAttribute(parent)) return parent.name !== node;
-  if (
-    ts.isLabeledStatement(parent) ||
-    ts.isBreakStatement(parent) ||
-    ts.isContinueStatement(parent)
-  ) {
-    return false;
-  }
-  if (ts.isImportSpecifier(parent) || ts.isExportSpecifier(parent)) return false;
-  if (ts.isMetaProperty(parent)) return false;
-  return true;
 }
 
 function topLevelStatementOf(node, sourceFile) {

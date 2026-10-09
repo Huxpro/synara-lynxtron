@@ -1,15 +1,23 @@
 import * as Schema from "effect/Schema";
+import * as Record from "effect/Record";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { isWebStorageArea, webStorage } from "~/platform/storage";
-
-import { isBrowser } from "~/platform/env";
-import {
-  addWindowEventListener,
-  dispatchWindowEvent,
-  removeWindowEventListener,
-} from "~/platform/events";
-const isomorphicLocalStorage = webStorage;
+const isomorphicLocalStorage: Storage =
+  typeof window !== "undefined"
+    ? window.localStorage
+    : (function () {
+        const store = new Map<string, string>();
+        return {
+          clear: () => store.clear(),
+          getItem: (_) => store.get(_) ?? null,
+          key: (_) => Record.keys(store).at(_) ?? null,
+          get length() {
+            return store.size;
+          },
+          removeItem: (_) => store.delete(_),
+          setItem: (_, value) => store.set(_, value),
+        };
+      })();
 
 // Reuse the JSON schema (and Effect's compiled parser) across subscribers. This caches
 // schema machinery only; `getLocalStorageItem` fetches and validates on every call.
@@ -52,8 +60,8 @@ interface LocalStorageChangeDetail {
 }
 
 function dispatchLocalStorageChange(key: string) {
-  if (!isBrowser()) return;
-  dispatchWindowEvent(
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(
     new CustomEvent<LocalStorageChangeDetail>(LOCAL_STORAGE_CHANGE_EVENT, {
       detail: { key },
     }),
@@ -164,11 +172,11 @@ export function useLocalStorage<T, E>(
       return;
     }
     prevKeyRef.current = key;
-    const timeoutId = setTimeout(() => {
+    const timeoutId = window.setTimeout(() => {
       setStoredValue(readLocalStorageItemOrFallback(key, initialValue, schema));
     }, 0);
     return () => {
-      clearTimeout(timeoutId);
+      window.clearTimeout(timeoutId);
     };
   }, [key, initialValue, schema]);
 
@@ -179,7 +187,8 @@ export function useLocalStorage<T, E>(
     };
 
     const handleStorageChange = (event: StorageEvent) => {
-      const affectsLocalStorage = event.storageArea === null || isWebStorageArea(event.storageArea);
+      const affectsLocalStorage =
+        event.storageArea === null || event.storageArea === isomorphicLocalStorage;
       // Browsers report localStorage.clear() with key === null; every subscribed key must reset.
       if (affectsLocalStorage && (event.key === null || event.key === key)) {
         syncFromStorage();
@@ -192,12 +201,12 @@ export function useLocalStorage<T, E>(
       }
     };
 
-    addWindowEventListener("storage", handleStorageChange);
-    addWindowEventListener(LOCAL_STORAGE_CHANGE_EVENT, handleLocalChange as EventListener);
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener(LOCAL_STORAGE_CHANGE_EVENT, handleLocalChange as EventListener);
 
     return () => {
-      removeWindowEventListener("storage", handleStorageChange);
-      removeWindowEventListener(LOCAL_STORAGE_CHANGE_EVENT, handleLocalChange as EventListener);
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener(LOCAL_STORAGE_CHANGE_EVENT, handleLocalChange as EventListener);
     };
   }, [key, initialValue, schema]);
 

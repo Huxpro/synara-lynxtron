@@ -17,8 +17,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "./useMediaQuery";
-import { getDocument } from "~/platform/env";
-import { isAnimationFrameAvailable } from "~/platform/frame";
 
 // Drain the current backlog over this window. Kept above the ~100ms network flush so a
 // small backlog cushion always remains and the reveal tracks inflow without running dry.
@@ -132,8 +130,9 @@ export function useSmoothStreamedText(text: string, isStreaming: boolean): strin
   // jank and never settle. Fall back to immediate text so streaming tests stay
   // deterministic and the main thread isn't blocked by rAF loops.
   const isTestableEnv =
-    getDocument() === null ||
-    !isAnimationFrameAvailable() ||
+    typeof window === "undefined" ||
+    typeof (window as unknown as { requestAnimationFrame?: unknown }).requestAnimationFrame !==
+      "function" ||
     (typeof process !== "undefined" &&
       (process.env.VITEST === "true" || process.env.NODE_ENV === "test"));
   const animate = isStreaming && !reduceMotion && !isTestableEnv;

@@ -16,7 +16,6 @@ import {
 } from "./ui/dialog";
 import { Input } from "./ui/input";
 
-import { raf, cancelRaf } from "~/platform/frame";
 export interface RenameDialogProps {
   open: boolean;
   title: string;
@@ -106,12 +105,12 @@ function RenameDialogForm({
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const frame = raf(() => {
+    const frame = window.requestAnimationFrame(() => {
       inputRef.current?.focus();
       inputRef.current?.select();
     });
     return () => {
-      cancelRaf(frame);
+      window.cancelAnimationFrame(frame);
     };
   }, []);
 

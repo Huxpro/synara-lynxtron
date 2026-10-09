@@ -4,7 +4,6 @@ import { useEffect, type ReactNode } from "react";
 import { useTheme } from "../hooks/useTheme";
 import { resolveDiffThemeName, type DiffThemeName } from "../lib/diffRendering";
 
-import { getHardwareConcurrency } from "~/platform/env";
 function DiffWorkerThemeSync({ themeName }: { themeName: DiffThemeName }) {
   const workerPool = useWorkerPool();
 
@@ -32,7 +31,8 @@ function DiffWorkerThemeSync({ themeName }: { themeName: DiffThemeName }) {
 export function DiffWorkerPoolProvider({ children }: { children?: ReactNode }) {
   const { resolvedTheme } = useTheme();
   const diffThemeName = resolveDiffThemeName(resolvedTheme);
-  const cores = Math.max(1, getHardwareConcurrency() || 4);
+  const cores =
+    typeof navigator === "undefined" ? 4 : Math.max(1, navigator.hardwareConcurrency || 4);
   const workerPoolSize = Math.max(2, Math.min(6, Math.floor(cores / 2)));
 
   return (
@@ -48,7 +48,7 @@ export function DiffWorkerPoolProvider({ children }: { children?: ReactNode }) {
       }}
     >
       <DiffWorkerThemeSync themeName={diffThemeName} />
-      <>{children}</>
+      {children}
     </WorkerPoolContextProvider>
   );
 }

@@ -8,7 +8,7 @@ Generated from the eligible module union of all six P5-R1 screen graphs.
 - Eligible occurrences (registered platform-unsupported utilities excluded): **20064**
 - Covered by generated or deterministic patched CSS: **19673 (98.05%)**
 - Required threshold: **95%**
-- Runtime CSS emission (currently physically shared modules only): **1353 classes / 18741 source occurrences**
+- Runtime CSS emission (currently physically shared modules only): **1346 classes / 18730 source occurrences**
 
 | Status      | Classes | Weighted occurrences |
 | ----------- | ------: | -------------------: |

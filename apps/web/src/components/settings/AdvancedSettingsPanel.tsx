@@ -23,8 +23,6 @@ import { createAllThreadsMessagelessSelector, createThreadShellsSelector } from 
 import { useSettingsRestoreSignal } from "./SettingControls";
 import { SettingsRow, SettingsSection } from "./SettingsPanelPrimitives";
 
-import { dialogs } from "~/platform/dialogs";
-import { assignLocation } from "~/platform/env";
 export function AdvancedSettingsPanel(props: {
   active: boolean;
   onOpenReleaseHistory: () => void;
@@ -82,7 +80,7 @@ export function AdvancedSettingsPanel(props: {
   const repairLocalState = useCallback(async () => {
     if (isRepairingLocalState) return;
     const api = readNativeApi() ?? ensureNativeApi();
-    const confirmed = await dialogs.confirm(
+    const confirmed = await api.dialogs.confirm(
       [
         "Repair local state?",
         "This rebuilds local project indexes and refreshes project snapshots.",
@@ -120,11 +118,11 @@ export function AdvancedSettingsPanel(props: {
     setIsLoggingOut(true);
     const result = await logoutCurrentBrowserSession({
       confirm: () =>
-        dialogs.confirm(
+        api.dialogs.confirm(
           "Sign out this browser?\n\nIts session and every live connection opened with it will be revoked.",
         ),
       logout: () => api.server.logoutAuthSession(),
-      navigate: (path) => assignLocation(path),
+      navigate: (path) => window.location.assign(path),
       onError: (error) =>
         toastManager.add({
           type: "error",

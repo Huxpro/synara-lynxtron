@@ -12,7 +12,6 @@
 //      returned verbatim, so settled content never lags.
 
 import { useEffect, useRef, useState } from "react";
-import { getDocument } from "~/platform/env";
 
 export type ThrottledCommitPlan =
   | { readonly immediate: true }
@@ -37,19 +36,19 @@ export function useThrottledStreamingValue<T>(value: T, active: boolean, interva
   // Testable env: jsdom's timers are fake and performance.now() is mocked – throttling
   // would coalesce indefinitely and make streaming appear stuck. Bypass.
   const isTestableEnv =
-    getDocument() === null ||
+    typeof window === "undefined" ||
     (typeof process !== "undefined" &&
       (process.env.VITEST === "true" || process.env.NODE_ENV === "test"));
   const [throttled, setThrottled] = useState(value);
   const lastCommitAtRef = useRef(0);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timerRef = useRef<number | null>(null);
   const latestRef = useRef(value);
 
   useEffect(() => {
     latestRef.current = value;
     const clearTimer = () => {
       if (timerRef.current !== null) {
-        clearTimeout(timerRef.current);
+        window.clearTimeout(timerRef.current);
         timerRef.current = null;
       }
     };
@@ -70,7 +69,7 @@ export function useThrottledStreamingValue<T>(value: T, active: boolean, interva
       // A trailing commit is already scheduled; it reads the latest value when it fires.
       return;
     }
-    timerRef.current = setTimeout(() => {
+    timerRef.current = window.setTimeout(() => {
       timerRef.current = null;
       lastCommitAtRef.current = performance.now();
       setThrottled(latestRef.current);
@@ -80,7 +79,7 @@ export function useThrottledStreamingValue<T>(value: T, active: boolean, interva
   useEffect(
     () => () => {
       if (timerRef.current !== null) {
-        clearTimeout(timerRef.current);
+        window.clearTimeout(timerRef.current);
         timerRef.current = null;
       }
     },
