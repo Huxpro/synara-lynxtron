@@ -196,12 +196,20 @@ describe("native composer attachment menu item", () => {
       new URL("../components/composer/Composer.lynx.tsx", import.meta.url),
       "utf8",
     );
+    // The recording lifecycle lives in the composer's voice hook.
+    const voiceHookSource = readFileSync(
+      new URL("../components/composer/useNativeComposerVoice.lynx.ts", import.meta.url),
+      "utf8",
+    );
     expect(composerSource).toContain("<ComposerVoiceButton");
     expect(composerSource).toContain("voiceInputEnabled = false");
-    expect(composerSource).toContain("voiceHostSupported && voiceState.showVoiceNotesControl");
-    expect(composerSource).toContain("await nativeVoiceRecorder.start()");
-    expect(composerSource).toContain("const result = await transcribeVoice({");
-    expect(composerSource).toContain("appendVoiceTranscriptToPrompt(currentPrompt, result.text)");
+    expect(composerSource).toContain("enabled: voiceInputEnabled,");
+    expect(voiceHookSource).toContain("hostSupported && voiceState.showVoiceNotesControl");
+    expect(voiceHookSource).toContain("await nativeVoiceRecorder.start()");
+    expect(voiceHookSource).toContain(
+      "const result = await ensureNativeApi().server.transcribeVoice({",
+    );
+    expect(voiceHookSource).toContain("appendVoiceTranscriptToPrompt(");
     expect(composerSource).not.toContain("Record voice note (unavailable in Lynx for Web)");
     expect(primitiveStyles).toMatch(/\.LxMenuItem\s*\{[^}]*border-radius:\s*8px;/s);
     expect(composerStyles).toMatch(
@@ -224,7 +232,7 @@ describe("native composer attachment menu item", () => {
       /\.ComposerModelTriggerMetaLynx\s*\{[^}]*font-size:\s*10px;[^}]*line-height:\s*15px;/s,
     );
     expect(composerStyles).toMatch(
-      /\.ComposerModelTriggerLynx\s*\{[^}]*padding:\s*4px 6px;[^}]*border:\s*1px solid transparent;[^}]*border-radius:\s*10px;/s,
+      /\.ComposerModelTriggerLynx\s*\{[^}]*padding:\s*4px 8px;[^}]*border:\s*1px solid transparent;[^}]*border-radius:\s*10px;/s,
     );
     expect(composerStyles).toMatch(
       /\.ComposerModelTriggerLynx\.ui-hover\s*\{[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s,

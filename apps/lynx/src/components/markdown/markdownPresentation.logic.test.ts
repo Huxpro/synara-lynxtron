@@ -97,10 +97,10 @@ describe("Lynx markdown presentation logic", () => {
     expect(source).not.toContain("'☐'");
     const styles = readFileSync(new URL("./markdown.css", import.meta.url), "utf8");
     expect(styles).toMatch(
-      /\.MdTaskCheckbox\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*border:\s*1px solid var\(--color-border\);[^}]*border-radius:\s*3px;/s,
+      /\.MdTaskCheckbox\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--color-border\);[^}]*border-radius:\s*3px;/s,
     );
     expect(styles).toMatch(
-      /\.MdTaskCheckbox--checked\s*\{[^}]*border-color:\s*var\(--primary\);[^}]*background-color:\s*var\(--primary\);/s,
+      /\.MdTaskCheckbox--checked\s*\{[^}]*border-top-color:\s*var\(--primary\);[^}]*background-color:\s*var\(--primary\);/s,
     );
   });
 

@@ -50,11 +50,14 @@ describe("Lynx interaction scope", () => {
     const source = readFileSync(new URL("./input.lynx.tsx", import.meta.url), "utf8");
 
     expect(source).toContain("const resolvedDisabled = scopeDisabled || Boolean(disabled)");
-    expect(source).toContain("disabled={props.disabled}");
-    expect(source).toContain("focusable={!props.disabled}");
-    expect(source).toContain("main-thread:bindinput={props.disabled ? undefined : handleInput}");
+    // Native <input>/<textarea> path: disabled, unfocusable, no input handler.
+    expect(source).toContain("disabled: props.disabled,");
+    expect(source).toContain("focusable: !props.disabled,");
+    expect(source).toContain('"main-thread:bindinput": props.disabled ? undefined : handleInput,');
     expect(source).toContain("disabled={resolvedDisabled}");
-    expect(source).toContain("focusable={!resolvedDisabled}");
+    // lynx-ui Input path: it forwards no disabled/focusable attribute, so
+    // disabled is enforced through readonly plus dropped handlers.
+    expect(source).toContain("readonly={resolvedDisabled || props.readonly}");
     expect(source).toContain("onInput={resolvedDisabled ? undefined : handleInput}");
   });
 });

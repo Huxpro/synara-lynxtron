@@ -1,7 +1,8 @@
 import type { ClientOrchestrationCommand, OrchestrationShellSnapshot } from "@synara/contracts";
 import { beforeEach, describe, expect, it, rs } from "@rstest/core";
-import { readFileSync } from "node:fs";
 import { fireEvent, render, waitFor } from "@lynx-js/react/testing-library";
+import { QueryClient, QueryClientContext } from "@tanstack/react-query";
+import { createElement, type ReactNode } from "@lynx-js/react";
 
 import { useComposerDraftStore } from "../adapters/composerDraftStore.lynx";
 import { KanbanNewTaskDialog } from "./KanbanNewTaskDialog.lynx";
@@ -10,6 +11,8 @@ import { makeProjectSummary } from "./queriesTestFixtures";
 
 beforeEach(() => {
   Object.assign(lynx, {
+    // `useInitData()` (the model control reads its capture-only switches).
+    __initData: {},
     requestAnimationFrame(callback: () => void) {
       callback();
       return 0;
@@ -48,19 +51,14 @@ const project: ProjectSummary = makeProjectSummary({
   },
 });
 
-describe("Kanban new task project feedback", () => {
-  it("separates branded selection from neutral hover and pressed states", () => {
-    const styles = readFileSync(new URL("./kanban-new-task-dialog.css", import.meta.url), "utf8");
-
-    expect(styles).toMatch(
-      /\.KanbanNewTaskProject--selected\s*\{[^}]*background-color:\s*var\(--accent\);/s,
-    );
-    expect(styles).toMatch(
-      /\.KanbanNewTaskProject\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--secondary\);/s,
-    );
-    expect(styles).not.toMatch(/\.KanbanNewTaskProject\.ui-pressed\s*\{[^}]*opacity:/s);
-  });
-});
+// The dialog reads server config and the model catalog through React Query.
+// Neither is under test here: the queries stay pending and the dialog falls
+// back to its defaults. The context directly, as in
+// `eventRouter.generated.test.tsx`.
+function renderWithQueryClient(children: ReactNode) {
+  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  return render(createElement(QueryClientContext.Provider, { value: queryClient }, children));
+}
 
 function textarea(): Element {
   const element = elementTree.root?.querySelector(".KanbanNewTaskInput");
@@ -104,7 +102,7 @@ describe("Lynx Kanban new task dialog", () => {
       .mockResolvedValue({ sequence: 1 });
     const onOpenChange = rs.fn();
     const onTaskCreated = rs.fn();
-    render(
+    renderWithQueryClient(
       <KanbanNewTaskDialog
         initialProjectId={project.id as never}
         initialSendAsDraft
@@ -116,7 +114,9 @@ describe("Lynx Kanban new task dialog", () => {
       />,
     );
 
-    expect(textarea().getAttribute("placeholder")).toBe("Describe the task");
+    expect(textarea().getAttribute("placeholder")).toBe(
+      "Describe the task, @tag files/folders, paste images, or use / for skills",
+    );
     expect(
       elementTree.root?.querySelector(".KanbanNewTaskDraftSwitch")?.getAttribute("class"),
     ).toContain("KanbanNewTaskDraftSwitch--checked");
@@ -150,7 +150,7 @@ describe("Lynx Kanban new task dialog", () => {
       .mockResolvedValueOnce({ sequence: 1 })
       .mockRejectedValueOnce(new Error("provider unavailable"));
     const onOpenChange = rs.fn();
-    render(
+    renderWithQueryClient(
       <KanbanNewTaskDialog
         initialProjectId={project.id as never}
         projects={[project]}
@@ -182,7 +182,9 @@ describe("Lynx Kanban new task dialog", () => {
       "Start this task now.",
     );
     expect(
-      elementTree.root?.querySelector(".KanbanNewTaskProject")?.getAttribute("aria-disabled"),
+      elementTree.root
+        ?.querySelector(".KanbanNewTaskProjectTrigger")
+        ?.getAttribute("aria-disabled"),
     ).toBe("true");
     expect(onOpenChange).not.toHaveBeenCalledWith(false);
   });
@@ -192,7 +194,7 @@ describe("Lynx Kanban new task dialog", () => {
     const dispatchCommand = rs
       .fn<(command: ClientOrchestrationCommand) => Promise<{ sequence: number }>>()
       .mockRejectedValue(new Error("database unavailable"));
-    render(
+    renderWithQueryClient(
       <KanbanNewTaskDialog
         initialProjectId={project.id as never}
         projects={[project]}

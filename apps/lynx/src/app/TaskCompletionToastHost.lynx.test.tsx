@@ -48,8 +48,8 @@ describe("Lynx task completion toast host", () => {
     expect(source).toContain("const completionRunRef = useRef(0);");
     expect(source).toContain("completionRun === completionRunRef.current");
     expect(source).toContain("currentSettings.enableSystemTaskCompletionNotifications");
-    expect(source).toContain("notification.kind !== 'thread-completion'");
-    expect(source).toContain("notification.kind === 'thread-completion'");
+    expect(source).toContain('notification.kind !== "thread-completion"');
+    expect(source).toContain('notification.kind === "thread-completion"');
     expect(source).not.toContain("let active = true;");
   });
 

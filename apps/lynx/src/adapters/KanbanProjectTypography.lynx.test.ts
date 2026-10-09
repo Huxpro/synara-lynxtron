@@ -43,7 +43,9 @@ describe("Kanban project typography fidelity", () => {
       /\.SharedKanbanCardMetaRow\s*\{[^}]*margin-top:\s*0;[^}]*padding-top:\s*2px;/s,
     );
     expect(styles).toMatch(/\.SharedKanbanCardBranch\s*\{[^}]*gap:\s*4px;/s);
-    expect(source).toContain('<GitBranchIcon className="SharedKanbanCardBranchIcon" size={12} />');
+    expect(source).toMatch(
+      /<GitBranchIcon\s+className="SharedKanbanCardBranchIcon"\s+color=\{semanticIconColor\("secondary"\)\}\s+size=\{12\}\s+\/>/,
+    );
   });
 
   it("lets the route-owned three-column grid shrink each vertical scroller", () => {

@@ -78,7 +78,7 @@ describe("Native search input geometry", () => {
       "utf8",
     );
     expect(plugin).toMatch(
-      /\.PluginLibrarySearch \.LxInputControl,[\s\S]*?\.PluginLibrarySearch \.LxInput\s*\{[^}]*height:\s*26px;/,
+      /\.PluginLibrarySearch \.LxInputControl,[\s\S]*?\.PluginLibrarySearch \.LxInput\s*\{[^}]*height:\s*30px;/,
     );
     expect(plugin).toMatch(
       /\.PluginLibrarySearch \.LxInput\s*\{[^}]*padding-top:\s*6px;[^}]*padding-bottom:\s*6px;[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s,

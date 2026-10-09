@@ -50,3 +50,6 @@ jobs:
 
       - name: Style ratchet
         run: bun run --cwd apps/lynx audit:style:check
+
+      - name: Unit tests (rstest)
+        run: bun run --cwd apps/lynx test

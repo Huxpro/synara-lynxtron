@@ -19,11 +19,13 @@ describe("Native route-independent sidebar search palette host", () => {
     const routerSource = readFileSync(new URL("../../app/router.tsx", import.meta.url), "utf8");
     const sidebarSource = readFileSync(new URL("./Sidebar.lynx.tsx", import.meta.url), "utf8");
 
-    expect(routerSource).toContain("if (command === 'sidebar.search') openSearchPalette");
+    expect(routerSource).toContain(
+      'if (command === "sidebar.search") {\n            openSearchPalette();',
+    );
     expect(routerSource.match(/<SidebarSearchPaletteHost/g)).toHaveLength(2);
     expect(routerSource).toContain('route.pathname !== "/settings"');
     expect(sidebarSource).not.toContain("<SidebarSearchPaletteLynx");
-    expect(sidebarSource).toContain("onOpenSearch={onOpenSearch}");
+    expect(sidebarSource).toContain("onOpenSearch={() => onOpenSearch()}");
     const hostSource = readFileSync(
       new URL("./SidebarSearchPaletteHost.lynx.tsx", import.meta.url),
       "utf8",

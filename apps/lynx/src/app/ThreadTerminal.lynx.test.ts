@@ -245,8 +245,11 @@ describe("Lynx thread terminal", () => {
     expect(routerSource).toContain('active={editorRailSurface === "terminal"}');
     expect(routerSource).toContain("className={`ThreadRightDockTerminalPane");
     expect(routerSource).toContain("terminalHydrated");
-    expect(routerSource).toContain("['diff', 'explorer', 'terminal', 'sidechat']");
-    expect(routerSource).toContain("['diff', 'explorer', 'terminal']");
+    // Terminal is a right-dock surface with and without a side chat.
+    expect(routerSource).toContain(
+      '"diff",\n          "explorer",\n          "terminal",\n          "sidechat",',
+    );
+    expect(routerSource).toContain('"diff", "explorer", "terminal", "git"]');
     expect(routerSource).not.toContain(
       "{currentThread?.workspaceRoot ? (\n        <ThreadTerminal",
     );

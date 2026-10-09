@@ -53,7 +53,7 @@ describe("Settings Appearance fidelity", () => {
     expect(source).toContain("DeviceLaptopIcon");
     expect(source).toContain('<text className="LxButton__text">{option.label}</text>');
     expect(primitiveStyles).toMatch(
-      /\.LxSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*border:\s*1px solid var\(--settings-switch-border\);/s,
+      /\.LxSwitch\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--settings-switch-border\);/s,
     );
     expect(source).toContain('role="radiogroup"');
     expect(source).toContain('role: "radio"');
