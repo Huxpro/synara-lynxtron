@@ -103,7 +103,7 @@ Limits of this pass: Electron was not driven through Computer Use, so results ar
 | Cmd+A                               | fail    | Edit → Select All had no visible effect; a background app may ignore it, needs a foreground check (#19)                             |
 | Backspace                           | pass    |                                                                                                                                     |
 | Undo / redo                         | pass    | Edit → Undo and Edit → Redo                                                                                                         |
-| Paste                               | not run | Not attempted, to avoid pasting or overwriting the user's clipboard                                                                 |
+| Paste                               | not run | Computer Use refuses Edit → Paste in background mode because it touches the system clipboard                                        |
 | Caret placement while editing       | fail    | After a mid-text insert the caret jumps to the end; Shift+Left does not select (#19)                                                |
 | Send a real turn                    | pass    | New thread in the fixture project                                                                                                   |
 | Stop                                | pass    | Stopped during "Thinking"; thread settled                                                                                           |
@@ -129,3 +129,9 @@ Limits of this pass: Electron was not driven through Computer Use, so results ar
 | VoiceOver, microphone prompt        | not run |                                                                                                                                     |
 
 Also seen: a failed turn on the fixture thread (its Codex session is archived) shows the raw stack trace in a translucent banner over the transcript (#20).
+
+What is still open after this pass, and why:
+
+- **Electron as the paired authority through Computer Use: not run.** On run `2026-10-09T03-19-50-642Z-60976` the Electron app was staged as a regular app so Computer Use could find it; the approval request for it was denied. That launch also put Electron in front, so the change was not kept: `--regular-app` affects Lynxtron only.
+- **IME candidate window, paste: not run.** Background Computer Use cannot switch input sources and refuses clipboard menu items. Both need the app in the foreground, which this harness does not do.
+- **Cmd+A, Composer → Terminal typing, Escape: recorded as fail from background input.** They need a foreground check by a person before they are treated as confirmed.
