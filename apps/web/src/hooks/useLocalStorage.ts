@@ -179,8 +179,7 @@ export function useLocalStorage<T, E>(
     };
 
     const handleStorageChange = (event: StorageEvent) => {
-      const affectsLocalStorage =
-        event.storageArea === null || isWebStorageArea(event.storageArea);
+      const affectsLocalStorage = event.storageArea === null || isWebStorageArea(event.storageArea);
       // Browsers report localStorage.clear() with key === null; every subscribed key must reset.
       if (affectsLocalStorage && (event.key === null || event.key === key)) {
         syncFromStorage();

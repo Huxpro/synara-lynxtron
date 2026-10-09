@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-09T14:29:13.100Z",
+  "generatedAt": "2026-10-09T16:13:10.901Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -311,7 +311,7 @@
       "lynxConceptualEntries": ["src/app/router.tsx", "src/components/sidebar/Sidebar.lynx.tsx"],
       "graph": {
         "modules": 620,
-        "loc": 138111,
+        "loc": 138116,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -457,7 +457,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 549,
-          "loc": 127504
+          "loc": 127505
         },
         "PATCHED": {
           "modules": 1,
@@ -465,7 +465,7 @@
         },
         "SPLIT": {
           "modules": 54,
-          "loc": 7577
+          "loc": 7581
         },
         "EXCLUSIVE": {
           "modules": 16,
@@ -474,13 +474,13 @@
       },
       "eligible": {
         "modules": 604,
-        "loc": 135382
+        "loc": 135387
       },
       "currentReuse": {
         "modules": 329,
-        "loc": 85746,
+        "loc": 85747,
         "modulePercent": 54.47,
-        "locPercent": 63.34,
+        "locPercent": 63.33,
         "gatePercent": 54.47
       },
       "modules": [
@@ -4117,7 +4117,7 @@
         },
         {
           "path": "apps/web/src/env.ts",
-          "loc": 1,
+          "loc": 3,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -4407,7 +4407,7 @@
         },
         {
           "path": "apps/web/src/hooks/useLocalStorage.ts",
-          "loc": 152,
+          "loc": 151,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -6322,7 +6322,7 @@
         },
         {
           "path": "apps/web/src/nativeApi.ts",
-          "loc": 53,
+          "loc": 54,
           "classification": "SPLIT",
           "reason": "desktop host capability adapter",
           "currentReuse": "UNMAPPED",
@@ -6740,7 +6740,7 @@
         },
         {
           "path": "apps/web/src/platform/storage.ts",
-          "loc": 95,
+          "loc": 98,
           "classification": "SPLIT",
           "reason": "L1 platform implementation behind a shared port",
           "currentReuse": "UNMAPPED",
@@ -7853,7 +7853,7 @@
       "lynxConceptualEntries": ["src/components/sidebar/Sidebar.lynx.tsx"],
       "graph": {
         "modules": 496,
-        "loc": 118693,
+        "loc": 118698,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -7995,7 +7995,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 433,
-          "loc": 108964
+          "loc": 108965
         },
         "PATCHED": {
           "modules": 1,
@@ -8003,7 +8003,7 @@
         },
         "SPLIT": {
           "modules": 53,
-          "loc": 7557
+          "loc": 7561
         },
         "EXCLUSIVE": {
           "modules": 9,
@@ -8012,11 +8012,11 @@
       },
       "eligible": {
         "modules": 487,
-        "loc": 116822
+        "loc": 116827
       },
       "currentReuse": {
         "modules": 299,
-        "loc": 78678,
+        "loc": 78679,
         "modulePercent": 61.4,
         "locPercent": 67.35,
         "gatePercent": 61.4
@@ -11102,7 +11102,7 @@
         },
         {
           "path": "apps/web/src/env.ts",
-          "loc": 1,
+          "loc": 3,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -11283,7 +11283,7 @@
         },
         {
           "path": "apps/web/src/hooks/useLocalStorage.ts",
-          "loc": 152,
+          "loc": 151,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -12930,7 +12930,7 @@
         },
         {
           "path": "apps/web/src/nativeApi.ts",
-          "loc": 53,
+          "loc": 54,
           "classification": "SPLIT",
           "reason": "desktop host capability adapter",
           "currentReuse": "UNMAPPED",
@@ -13077,7 +13077,7 @@
         },
         {
           "path": "apps/web/src/platform/storage.ts",
-          "loc": 95,
+          "loc": 98,
           "classification": "SPLIT",
           "reason": "L1 platform implementation behind a shared port",
           "currentReuse": "UNMAPPED",
@@ -13760,7 +13760,7 @@
       "lynxConceptualEntries": ["src/app/Transcript.tsx", "src/components/composer/Composer.tsx"],
       "graph": {
         "modules": 1065,
-        "loc": 234325,
+        "loc": 234330,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -13942,7 +13942,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 979,
-          "loc": 217830
+          "loc": 217831
         },
         "PATCHED": {
           "modules": 1,
@@ -13950,7 +13950,7 @@
         },
         "SPLIT": {
           "modules": 59,
-          "loc": 8272
+          "loc": 8276
         },
         "EXCLUSIVE": {
           "modules": 26,
@@ -13959,11 +13959,11 @@
       },
       "eligible": {
         "modules": 1039,
-        "loc": 226403
+        "loc": 226408
       },
       "currentReuse": {
         "modules": 377,
-        "loc": 92366,
+        "loc": 92367,
         "modulePercent": 36.28,
         "locPercent": 40.8,
         "gatePercent": 36.28
@@ -23167,7 +23167,7 @@
         },
         {
           "path": "apps/web/src/env.ts",
-          "loc": 1,
+          "loc": 3,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -23657,7 +23657,7 @@
         },
         {
           "path": "apps/web/src/hooks/useLocalStorage.ts",
-          "loc": 152,
+          "loc": 151,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -26223,7 +26223,7 @@
         },
         {
           "path": "apps/web/src/nativeApi.ts",
-          "loc": 53,
+          "loc": 54,
           "classification": "SPLIT",
           "reason": "desktop host capability adapter",
           "currentReuse": "UNMAPPED",
@@ -26670,7 +26670,7 @@
         },
         {
           "path": "apps/web/src/platform/storage.ts",
-          "loc": 95,
+          "loc": 98,
           "classification": "SPLIT",
           "reason": "L1 platform implementation behind a shared port",
           "currentReuse": "UNMAPPED",
@@ -27845,7 +27845,7 @@
       "lynxConceptualEntries": ["src/app/SettingsPage.tsx"],
       "graph": {
         "modules": 668,
-        "loc": 152007,
+        "loc": 152012,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -27995,7 +27995,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 596,
-          "loc": 141369
+          "loc": 141370
         },
         "PATCHED": {
           "modules": 1,
@@ -28003,7 +28003,7 @@
         },
         "SPLIT": {
           "modules": 55,
-          "loc": 7608
+          "loc": 7612
         },
         "EXCLUSIVE": {
           "modules": 16,
@@ -28012,11 +28012,11 @@
       },
       "eligible": {
         "modules": 652,
-        "loc": 149278
+        "loc": 149283
       },
       "currentReuse": {
         "modules": 330,
-        "loc": 85884,
+        "loc": 85885,
         "modulePercent": 50.61,
         "locPercent": 57.53,
         "gatePercent": 50.61
@@ -32292,7 +32292,7 @@
         },
         {
           "path": "apps/web/src/env.ts",
-          "loc": 1,
+          "loc": 3,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -32590,7 +32590,7 @@
         },
         {
           "path": "apps/web/src/hooks/useLocalStorage.ts",
-          "loc": 152,
+          "loc": 151,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -34582,7 +34582,7 @@
         },
         {
           "path": "apps/web/src/nativeApi.ts",
-          "loc": 53,
+          "loc": 54,
           "classification": "SPLIT",
           "reason": "desktop host capability adapter",
           "currentReuse": "UNMAPPED",
@@ -35000,7 +35000,7 @@
         },
         {
           "path": "apps/web/src/platform/storage.ts",
-          "loc": 95,
+          "loc": 98,
           "classification": "SPLIT",
           "reason": "L1 platform implementation behind a shared port",
           "currentReuse": "UNMAPPED",
@@ -36143,7 +36143,7 @@
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
         "modules": 691,
-        "loc": 153674,
+        "loc": 153679,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -36302,7 +36302,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 616,
-          "loc": 140647
+          "loc": 140648
         },
         "PATCHED": {
           "modules": 1,
@@ -36310,7 +36310,7 @@
         },
         "SPLIT": {
           "modules": 56,
-          "loc": 7988
+          "loc": 7992
         },
         "EXCLUSIVE": {
           "modules": 18,
@@ -36319,13 +36319,13 @@
       },
       "eligible": {
         "modules": 673,
-        "loc": 148936
+        "loc": 148941
       },
       "currentReuse": {
         "modules": 344,
-        "loc": 87955,
+        "loc": 87956,
         "modulePercent": 51.11,
-        "locPercent": 59.06,
+        "locPercent": 59.05,
         "gatePercent": 51.11
       },
       "modules": [
@@ -40864,7 +40864,7 @@
         },
         {
           "path": "apps/web/src/env.ts",
-          "loc": 1,
+          "loc": 3,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -41192,7 +41192,7 @@
         },
         {
           "path": "apps/web/src/hooks/useLocalStorage.ts",
-          "loc": 152,
+          "loc": 151,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -43230,7 +43230,7 @@
         },
         {
           "path": "apps/web/src/nativeApi.ts",
-          "loc": 53,
+          "loc": 54,
           "classification": "SPLIT",
           "reason": "desktop host capability adapter",
           "currentReuse": "UNMAPPED",
@@ -43648,7 +43648,7 @@
         },
         {
           "path": "apps/web/src/platform/storage.ts",
-          "loc": 95,
+          "loc": 98,
           "classification": "SPLIT",
           "reason": "L1 platform implementation behind a shared port",
           "currentReuse": "UNMAPPED",
@@ -44757,7 +44757,7 @@
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
         "modules": 691,
-        "loc": 153675,
+        "loc": 153680,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -44916,7 +44916,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 616,
-          "loc": 140648
+          "loc": 140649
         },
         "PATCHED": {
           "modules": 1,
@@ -44924,7 +44924,7 @@
         },
         "SPLIT": {
           "modules": 56,
-          "loc": 7988
+          "loc": 7992
         },
         "EXCLUSIVE": {
           "modules": 18,
@@ -44933,13 +44933,13 @@
       },
       "eligible": {
         "modules": 673,
-        "loc": 148937
+        "loc": 148942
       },
       "currentReuse": {
         "modules": 344,
-        "loc": 87955,
+        "loc": 87956,
         "modulePercent": 51.11,
-        "locPercent": 59.06,
+        "locPercent": 59.05,
         "gatePercent": 51.11
       },
       "modules": [
@@ -49478,7 +49478,7 @@
         },
         {
           "path": "apps/web/src/env.ts",
-          "loc": 1,
+          "loc": 3,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -49806,7 +49806,7 @@
         },
         {
           "path": "apps/web/src/hooks/useLocalStorage.ts",
-          "loc": 152,
+          "loc": 151,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -51844,7 +51844,7 @@
         },
         {
           "path": "apps/web/src/nativeApi.ts",
-          "loc": 53,
+          "loc": 54,
           "classification": "SPLIT",
           "reason": "desktop host capability adapter",
           "currentReuse": "UNMAPPED",
@@ -52262,7 +52262,7 @@
         },
         {
           "path": "apps/web/src/platform/storage.ts",
-          "loc": 95,
+          "loc": 98,
           "classification": "SPLIT",
           "reason": "L1 platform implementation behind a shared port",
           "currentReuse": "UNMAPPED",
@@ -53371,7 +53371,7 @@
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
         "modules": 1035,
-        "loc": 229048,
+        "loc": 229053,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -53552,7 +53552,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 949,
-          "loc": 212553
+          "loc": 212554
         },
         "PATCHED": {
           "modules": 1,
@@ -53560,7 +53560,7 @@
         },
         "SPLIT": {
           "modules": 59,
-          "loc": 8272
+          "loc": 8276
         },
         "EXCLUSIVE": {
           "modules": 26,
@@ -53569,11 +53569,11 @@
       },
       "eligible": {
         "modules": 1009,
-        "loc": 221126
+        "loc": 221131
       },
       "currentReuse": {
         "modules": 377,
-        "loc": 92366,
+        "loc": 92367,
         "modulePercent": 37.36,
         "locPercent": 41.77,
         "gatePercent": 37.36
@@ -62457,7 +62457,7 @@
         },
         {
           "path": "apps/web/src/env.ts",
-          "loc": 1,
+          "loc": 3,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -62912,7 +62912,7 @@
         },
         {
           "path": "apps/web/src/hooks/useLocalStorage.ts",
-          "loc": 152,
+          "loc": 151,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -65443,7 +65443,7 @@
         },
         {
           "path": "apps/web/src/nativeApi.ts",
-          "loc": 53,
+          "loc": 54,
           "classification": "SPLIT",
           "reason": "desktop host capability adapter",
           "currentReuse": "UNMAPPED",
@@ -65890,7 +65890,7 @@
         },
         {
           "path": "apps/web/src/platform/storage.ts",
-          "loc": 95,
+          "loc": 98,
           "classification": "SPLIT",
           "reason": "L1 platform implementation behind a shared port",
           "currentReuse": "UNMAPPED",
