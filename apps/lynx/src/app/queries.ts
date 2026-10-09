@@ -880,11 +880,11 @@ export async function fetchThreadHeaderSummary(
 
 export async function fetchThreadTranscriptRows(threadId: string): Promise<ThreadTranscriptRow[]> {
   "background only";
-  const [{ fetchSynaraThreadDetailSnapshot }, { useStore }, { getThreadFromState }] =
+  const [{ fetchSynaraThreadDetailSnapshot }, { useStore }, { projectThreadDetailSnapshot }] =
     await Promise.all([
       import(/* webpackMode: "eager" */ "../data/synaraClient"),
       import(/* webpackMode: "eager" */ "@synara-web/store"),
-      import(/* webpackMode: "eager" */ "@synara-web/threadDerivation"),
+      import(/* webpackMode: "eager" */ "./threadDetailProjection.logic"),
     ]);
   const snapshot = await fetchSynaraThreadDetailSnapshot(threadId);
   if (!snapshot) return [];
@@ -892,17 +892,8 @@ export async function fetchThreadTranscriptRows(threadId: string): Promise<Threa
   if (cached?.snapshotSequence === snapshot.snapshotSequence) {
     return cached.rows;
   }
-  useStore
-    .getState()
-    .syncServerThreadDetail(
-      snapshot.thread as Parameters<
-        ReturnType<typeof useStore.getState>["syncServerThreadDetail"]
-      >[0],
-    );
-  const thread = getThreadFromState(
-    useStore.getState(),
-    threadId as Parameters<typeof getThreadFromState>[1],
-  );
+  // Projected, not committed: upstream session sync owns thread detail in the store.
+  const thread = projectThreadDetailSnapshot(useStore.getState(), snapshot.thread);
   if (!thread) {
     transcriptRowsByThreadId.set(threadId, {
       snapshotSequence: snapshot.snapshotSequence,
@@ -1062,25 +1053,16 @@ export async function fetchThreadRecapSummary(
 
 export async function prepareThreadRecap(threadId: string): Promise<ThreadRecapPlan | null> {
   "background only";
-  const [{ fetchSynaraThreadDetailSnapshot }, { useStore }, { getThreadFromState }] =
+  const [{ fetchSynaraThreadDetailSnapshot }, { useStore }, { projectThreadDetailSnapshot }] =
     await Promise.all([
       import(/* webpackMode: "eager" */ "../data/synaraClient"),
       import(/* webpackMode: "eager" */ "@synara-web/store"),
-      import(/* webpackMode: "eager" */ "@synara-web/threadDerivation"),
+      import(/* webpackMode: "eager" */ "./threadDetailProjection.logic"),
     ]);
   const snapshot = await fetchSynaraThreadDetailSnapshot(threadId);
   if (!snapshot) return null;
-  useStore
-    .getState()
-    .syncServerThreadDetail(
-      snapshot.thread as Parameters<
-        ReturnType<typeof useStore.getState>["syncServerThreadDetail"]
-      >[0],
-    );
-  const thread = getThreadFromState(
-    useStore.getState(),
-    threadId as Parameters<typeof getThreadFromState>[1],
-  );
+  // Projected, not committed: upstream session sync owns thread detail in the store.
+  const thread = projectThreadDetailSnapshot(useStore.getState(), snapshot.thread);
   if (!thread) return null;
   const cache = readPersistedThreadRecapCache(webStorage);
   const existing = cache[threadId] ?? null;

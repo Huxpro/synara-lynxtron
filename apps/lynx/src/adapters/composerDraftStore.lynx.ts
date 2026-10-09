@@ -13,6 +13,7 @@ import {
   type ModelSelection,
   type ProviderMentionReference,
   type ProviderSkillReference,
+  type ThreadId,
 } from "@synara/contracts";
 
 import { updateComposerDraftPrompt } from "@synara-web/composerDraftPrompt.logic";
@@ -60,6 +61,14 @@ interface LynxComposerDraft {
 
 interface LynxComposerDraftStoreState {
   readonly draftsByThreadId: Record<string, LynxComposerDraft>;
+  /**
+   * Upstream's registry of client-side draft threads (a thread the composer
+   * shows before the server knows it). Lynx creates the server thread before it
+   * routes to it, so the registry is always empty here; the member exists
+   * because upstream's session sync (`EventRouter`) reads it to keep draft
+   * threads' terminal state alive.
+   */
+  readonly draftThreadsByThreadId: Readonly<Record<string, never>>;
   readonly addAssistantSelection: (
     threadId: string,
     selection: ChatAssistantSelectionAttachment,
@@ -373,6 +382,7 @@ function modelSelectionsEqual(left: ModelSelection | undefined, right: ModelSele
 
 export const useComposerDraftStore = create<LynxComposerDraftStoreState>()((set) => ({
   draftsByThreadId: {},
+  draftThreadsByThreadId: {},
   addAssistantSelection: (threadId, selection) =>
     set((state) => {
       const current = state.draftsByThreadId[threadId] ?? emptyDraft();
@@ -783,6 +793,16 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()((set)
       return { draftsByThreadId };
     }),
 }));
+
+// Upstream's session sync promotes a draft thread once the server reports it
+// (`markPromotedDraftThreads`) and drops the draft once that thread has started
+// (`finalizePromotedDraftThreads`). With no client-side draft threads on Lynx
+// (see `draftThreadsByThreadId`) there is nothing to promote; the composer
+// clears its own prompt draft when it sends. Same signatures as upstream so the
+// generated `EventRouter` runs unchanged.
+export function markPromotedDraftThreads(_serverThreadIds: ReadonlySet<ThreadId>): void {}
+
+export function finalizePromotedDraftThreads(_serverThreadIds: ReadonlySet<ThreadId>): void {}
 
 let draftStoreHydrated = false;
 

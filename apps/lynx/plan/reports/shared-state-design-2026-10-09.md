@@ -275,3 +275,45 @@ is red on the clean tree (stale `p5-r4-core-class-manifest.json`; regenerating a
 Evidence (2026-10-09 runs on `ff3653628`): cells 6/6 + 7/7, J1 native 6/6 (reload step), J3–J6
 both renderers, J4 `electronTonative: "live"`; host log: facade `server.getConfig`/`getSettings`
 without `baseUrl`, scoped streams `g1/g2/g3` across reloads, scoped-stream duplicate rejections 0.
+
+## 7. Step 2 as built (branch `huxcc/m2-session-sync`)
+
+Generator: `scripts/generate-event-router.mjs` → `src/generated/eventRouter.generated.tsx` (`EventRouter`
+plus the 16 file-local declarations it closes over, verbatim; relative imports rewritten to `~/…`).
+Scope resolution uses the TypeScript checker (`noResolve`, ES2023 + DOM libs), not names or line
+numbers. It fails without writing when the root is missing, an identifier resolves to nothing, or a
+relative import leaves `apps/web/src`. `--check` runs in `typecheck` and `audit:reuse:check`;
+`__root.tsx` is declared in `patchedSources`. `DesktopProjectBootstrap` is not extracted (it calls
+`repairState()`; mount it only with a reason).
+
+| Upstream import          | Lynx resolution                                                                                                                                                                                     |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@tanstack/react-router` | alias → `adapters/reactRouter.lynx.ts` (`useRouterState`, `useParams`, `useSearch`, `useNavigate` over the memory history, bound by `app/SessionSync.lynx.tsx`); TypeScript keeps the package types |
+| `~/components/ui/toast`  | alias → `components/ui/toast.lynx.ts` (in-memory sink: `add`/`update`/`close`, `console.info`, subscribable; no surface yet)                                                                        |
+| `~/composerDraftStore`   | alias → `adapters/composerDraftStore.lynx.ts` (`draftThreadsByThreadId` always empty; promotion helpers are no-ops: Lynx has no client-side draft threads)                                          |
+| `@tanstack/react-pacer`  | alias → the copy `apps/web` depends on                                                                                                                                                              |
+
+Aliases only, no resource replacement, for toast and the draft store: mirroring a replacement in the
+audit removes the type-import inflation of §1 for those subgraphs (measured: −3 to −9 points per
+screen), which is a separate decision.
+
+Mount: `App.tsx` renders `<SessionSync />` once storage is hydrated. The generated module is reached
+through a `'background only'` eager dynamic import (P-16), so it is absent from the main-thread graph.
+
+Writers of the shared store during coexistence:
+
+- Thread detail: `EventRouter` only. The polling path (`queries.ts`) now normalizes its snapshot with
+  the pure projection (`app/threadDetailProjection.logic.ts`) and does not commit. Two writers were not
+  harmless: a polled snapshot committed inside `EventRouter`'s 100 ms flush window makes the queued
+  streaming deltas append a second time (reproduced in `src/generated/eventRouter.generated.test.tsx`).
+- Shell: both. `fetchSidebarSnapshot` still commits `getSidebarShellSnapshot`, because
+  `LandingComposer` and `router.tsx` read `projects`/`spaces` from the store right after it. That
+  snapshot is the 80 most recently updated threads, so on a server with more threads the store drops
+  the older ones at each poll until Step 3 removes this writer. Re-applying an identical snapshot is a
+  no-op for the store slices (tested).
+- `subscribeOrchestrationShellEvents` now only listens on the facade (`onShellEvent`); `EventRouter`
+  opens the single shell stream. The host's fixed `orchestration.subscribeShell` channel is unused.
+
+`tsconfig.app.json` sets `verbatimModuleSyntax: false`: upstream is not written against that flag
+(`editorPreferences.ts` imports the type `NativeApi` without `type`), and this program now
+type-checks upstream state-layer source. The bundler does not read this tsconfig.

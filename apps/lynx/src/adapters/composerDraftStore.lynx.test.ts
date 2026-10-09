@@ -1,10 +1,13 @@
 import { beforeEach, describe, expect, it } from "@rstest/core";
 
-import { MessageId, PROVIDER_SEND_TURN_MAX_ATTACHMENTS } from "@synara/contracts";
+import { MessageId, PROVIDER_SEND_TURN_MAX_ATTACHMENTS, ThreadId } from "@synara/contracts";
 import { createAssistantSelectionAttachment } from "@synara-web/lib/assistantSelections";
 import { createPastedTextDraft } from "@synara-web/lib/composerPastedText";
+import type * as WebComposerDraftStore from "@synara-web/composerDraftStore";
 import {
+  finalizePromotedDraftThreads,
   LYNX_COMPOSER_DRAFT_STORAGE_KEY,
+  markPromotedDraftThreads,
   parsePersistedLynxComposerDrafts,
   useComposerDraftStore,
 } from "./composerDraftStore.lynx";
@@ -544,5 +547,41 @@ describe("Lynx composer draft attachment subset", () => {
         terminalContexts: [],
       },
     });
+  });
+});
+
+describe("Lynx composer draft store as upstream session sync uses it", () => {
+  beforeEach(() => {
+    webStorage.clear();
+    useComposerDraftStore.setState({ draftsByThreadId: {} });
+  });
+
+  it("matches the upstream promotion helper signatures", () => {
+    // Compile-time contract: the generated EventRouter is written against the
+    // Web module and runs against this facade.
+    const helpers: Pick<
+      typeof WebComposerDraftStore,
+      "markPromotedDraftThreads" | "finalizePromotedDraftThreads"
+    > = { markPromotedDraftThreads, finalizePromotedDraftThreads };
+    expect(Object.keys(helpers)).toHaveLength(2);
+  });
+
+  it("has no client-side draft threads, so terminal cleanup retains none for them", () => {
+    useComposerDraftStore.getState().setPrompt("thread-1", "hello");
+    expect(Object.keys(useComposerDraftStore.getState().draftThreadsByThreadId)).toEqual([]);
+  });
+
+  it("leaves composer drafts untouched when server threads are promoted", () => {
+    useComposerDraftStore.getState().setPrompt("thread-1", "unsent prompt");
+    const before = useComposerDraftStore.getState();
+    const serverThreadIds = new Set([ThreadId.makeUnsafe("thread-1")]);
+
+    markPromotedDraftThreads(serverThreadIds);
+    finalizePromotedDraftThreads(serverThreadIds);
+
+    expect(useComposerDraftStore.getState()).toBe(before);
+    expect(useComposerDraftStore.getState().draftsByThreadId["thread-1"]?.prompt).toBe(
+      "unsent prompt",
+    );
   });
 });

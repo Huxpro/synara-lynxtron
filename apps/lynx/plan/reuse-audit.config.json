@@ -11,7 +11,7 @@
     "refetchIntervalSites": 15,
     "routerTsxLines": 3733
   },
-  "patchedSources": [],
+  "patchedSources": ["apps/web/src/routes/__root.tsx"],
   "hardIslandPackages": [
     "@lexical/react",
     "lexical",

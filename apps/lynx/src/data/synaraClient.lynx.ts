@@ -102,7 +102,6 @@ import { bridgeCall, onGlobalEvent } from "../platform/bridge";
 import { ensureNativeApi } from "../adapters/nativeApi.lynx";
 import { hostBridgeRequest } from "./nativeRpcBridge";
 import { RpcTransportError, type RpcTransportState } from "./rpcTransport.logic";
-import { NATIVE_EVENT_STREAM_CHANNELS } from "../main/nativeEventStreams.logic";
 import {
   NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG,
   type NativeSyntaxHighlightThemes,
@@ -152,7 +151,6 @@ export type SynaraPullRequestListResult = PullRequestsListResult;
 const OFFLINE_RETRY_DELAY_MS = 5_000;
 const TRANSPORT_STATE_EVENT = "synara:transport-state";
 const GIT_ACTION_PROGRESS_EVENT = "synara:git-action-progress";
-const ORCHESTRATION_SHELL_EVENT = NATIVE_EVENT_STREAM_CHANNELS["orchestration.subscribeShell"];
 
 let relayState: RpcTransportState = "idle";
 let relayEverConnected = false;
@@ -160,11 +158,8 @@ let relayOfflineUntilMs = 0;
 const relayStateListeners = new Set<(state: RpcTransportState) => void>();
 const gitActionProgressListeners = new Map<string, (event: GitActionProgressEvent) => void>();
 const terminalEventListeners = new Set<(event: TerminalEvent) => void>();
-const orchestrationShellEventListeners = new Set<(event: OrchestrationShellStreamItem) => void>();
 let terminalEventStream: Promise<void> | null = null;
 let terminalEventRetry: ReturnType<typeof setTimeout> | null = null;
-let orchestrationShellEventStream: Promise<void> | null = null;
-let orchestrationShellEventRetry: ReturnType<typeof setTimeout> | null = null;
 
 function setRelayState(state: RpcTransportState): void {
   if (relayState === state) return;
@@ -194,12 +189,6 @@ onGlobalEvent(GIT_ACTION_PROGRESS_EVENT, (event: unknown) => {
     return;
   }
   gitActionProgressListeners.get(event.actionId)?.(event as GitActionProgressEvent);
-});
-onGlobalEvent(ORCHESTRATION_SHELL_EVENT, (event: unknown) => {
-  if (!event || typeof event !== "object") return;
-  for (const listener of orchestrationShellEventListeners) {
-    listener(event as OrchestrationShellStreamItem);
-  }
 });
 function describeRelayError(error: unknown): string {
   if (error instanceof Error) return error.message;
@@ -277,26 +266,6 @@ function ensureTerminalEventStream(): void {
     });
 }
 
-function ensureOrchestrationShellEventStream(): void {
-  if (orchestrationShellEventStream || orchestrationShellEventListeners.size === 0) {
-    return;
-  }
-  orchestrationShellEventStream = relayStreamRequest<OrchestrationShellStreamItem>(
-    "orchestration.subscribeShell",
-    {},
-  )
-    .then(() => undefined)
-    .catch(() => undefined)
-    .finally(() => {
-      orchestrationShellEventStream = null;
-      if (orchestrationShellEventListeners.size === 0) return;
-      orchestrationShellEventRetry = setTimeout(() => {
-        orchestrationShellEventRetry = null;
-        ensureOrchestrationShellEventStream();
-      }, 1_000);
-    });
-}
-
 /**
  * Server settings as the server publishes them: the current view first, then
  * every change, including changes made by other clients. Served by the
@@ -347,18 +316,17 @@ export function subscribeTerminalEvents(listener: (event: TerminalEvent) => void
   };
 }
 
+/**
+ * Shell stream items (snapshot, then thread/project changes) as the upstream
+ * facade publishes them. This only listens: the stream itself is opened and
+ * kept alive by upstream's session sync (`EventRouter`, mounted in App.tsx).
+ * The server admits one shell stream per socket, so a second opener here would
+ * be rejected as a duplicate subscription.
+ */
 export function subscribeOrchestrationShellEvents(
   listener: (event: OrchestrationShellStreamItem) => void,
 ): () => void {
-  orchestrationShellEventListeners.add(listener);
-  ensureOrchestrationShellEventStream();
-  return () => {
-    orchestrationShellEventListeners.delete(listener);
-    if (orchestrationShellEventListeners.size === 0 && orchestrationShellEventRetry) {
-      clearTimeout(orchestrationShellEventRetry);
-      orchestrationShellEventRetry = null;
-    }
-  };
+  return ensureNativeApi().orchestration.onShellEvent(listener);
 }
 
 export async function fetchSynaraSnapshot(): Promise<SynaraSnapshot> {
