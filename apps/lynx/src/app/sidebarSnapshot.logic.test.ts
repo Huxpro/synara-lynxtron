@@ -3,12 +3,19 @@ import type {
   OrchestrationShellSnapshot,
   OrchestrationSidebarSearchSnapshot,
 } from "@synara/contracts";
-import { syncServerShellSnapshot } from "@synara-web/storeProjection";
+import { applyOrchestrationEventsHotPath } from "@synara-web/storeEventReducer";
+import {
+  syncServerShellSnapshot,
+  syncServerThreadDetailHotPath,
+} from "@synara-web/storeProjection";
+import { makeDomainEvent, makeReadModelThread } from "@synara-web/storeTestFixtures";
 import { initialState, type AppState } from "@synara-web/storeState";
 
+import { linkedThreadsForWorktree, linkedWorktreeCounts } from "./settingsWorktrees.logic";
 import {
   createRouteThreadSummariesSelector,
   createSidebarSnapshotSelector,
+  projectFreshSidebarSnapshot,
   projectSidebarSnapshot,
   type SidebarSnapshotLocalInputs,
 } from "./sidebarSnapshot.logic";
@@ -183,10 +190,9 @@ describe("sidebar snapshot from the shared store", () => {
       project: "Project A",
       messageCount: 0,
       isPinned: true,
-      // `live` is upstream's `hasLiveTailWork`, which needs the thread's
-      // messages and activities; a shell-only running thread shows its state
-      // through the status pill.
-      live: false,
+      // Upstream's working rule: the running session with a live turn is
+      // enough, before any streamed message exists in the store.
+      live: true,
       provider: "claudeAgent",
       sessionStatus: "running",
       activeTurnId: "turn-live",
@@ -325,6 +331,10 @@ describe("sidebar snapshot from the shared store", () => {
   });
 });
 
+function runningRow(snapshot: ReturnType<ReturnType<typeof createSidebarSnapshotSelector>>) {
+  return snapshot?.threads.find((thread) => thread.id === "running");
+}
+
 describe("sidebar snapshot selector (first paint and memoization)", () => {
   it("reads as loading until session sync hydrates the store", () => {
     const select = createSidebarSnapshotSelector();
@@ -364,6 +374,181 @@ describe("sidebar snapshot selector (first paint and memoization)", () => {
     expect(select({ ...state, messageByThreadId: {} }, LOCAL)).toBe(first);
     expect(select({ ...state, projects: [...state.projects] }, LOCAL)).not.toBe(first);
     expect(select(state, { ...LOCAL })).not.toBe(first);
+  });
+
+  // The store's real streaming path: shell first, then thread detail, then
+  // growing assistant text through the hot-path reducers session sync uses.
+  describe("while a turn streams", () => {
+    const RUNNING = "running" as never;
+    const assistantDelta = (text: string, updatedAt: string) =>
+      makeDomainEvent("thread.message-sent", {
+        threadId: RUNNING,
+        messageId: "assistant-1" as never,
+        role: "assistant",
+        text,
+        turnId: "turn-live" as never,
+        streaming: true,
+        attachments: [],
+        source: "native",
+        createdAt: "2026-08-16T00:00:01.000Z",
+        updatedAt,
+      } as never);
+    const runningDetail = () =>
+      makeReadModelThread({
+        id: RUNNING,
+        projectId: "project-a" as never,
+        title: "Running thread",
+        branch: "main" as never,
+        updatedAt: "2026-08-16T00:00:00.000Z",
+        latestTurn: {
+          turnId: "turn-live",
+          state: "running",
+          requestedAt: "2026-08-16T00:00:00.000Z",
+          startedAt: "2026-08-16T00:00:00.000Z",
+          completedAt: null,
+          assistantMessageId: null,
+        } as never,
+        session: { ...shellSession("running", "claudeAgent"), threadId: "running" } as never,
+        messages: [
+          {
+            id: "user-1",
+            role: "user",
+            text: "go",
+            turnId: null,
+            streaming: false,
+            createdAt: "2026-08-16T00:00:00.000Z",
+            updatedAt: "2026-08-16T00:00:00.000Z",
+          },
+        ] as never,
+      });
+
+    it("guards the running row from the shell on, and text-only deltas keep the snapshot", () => {
+      const select = createSidebarSnapshotSelector();
+      let state = hydratedState();
+      // Shell only: no message has streamed yet, the guard already holds.
+      expect(runningRow(select(state, LOCAL))?.live).toBe(true);
+
+      state = syncServerThreadDetailHotPath(state, runningDetail());
+      const withDetail = select(state, LOCAL);
+      expect(runningRow(withDetail)).toMatchObject({ live: true, messageCount: 1 });
+
+      // The first assistant message is a real change: one more message.
+      state = applyOrchestrationEventsHotPath(state, [
+        assistantDelta("Hel", "2026-08-16T00:00:01.000Z"),
+      ]);
+      const firstDelta = select(state, LOCAL);
+      expect(firstDelta).not.toBe(withDetail);
+      expect(runningRow(firstDelta)).toMatchObject({ live: true, messageCount: 2 });
+
+      // Growing text replaces the shell and message-id dictionaries in the
+      // store, and changes nothing the sidebar shows.
+      for (const [index, text] of ["Hello", "Hello wor", "Hello world"].entries()) {
+        const before = state;
+        state = applyOrchestrationEventsHotPath(state, [
+          assistantDelta(text, `2026-08-16T00:00:0${index + 2}.000Z`),
+        ]);
+        expect(state).not.toBe(before);
+        expect(state.messageByThreadId).not.toBe(before.messageByThreadId);
+        expect(state.threadShellById).not.toBe(before.threadShellById);
+        expect(state.messageIdsByThreadId).not.toBe(before.messageIdsByThreadId);
+        const snapshot = select(state, LOCAL);
+        expect(snapshot).toBe(firstDelta);
+        expect(runningRow(snapshot)?.live).toBe(true);
+      }
+    });
+
+    it("still propagates what the sidebar does show", () => {
+      const select = createSidebarSnapshotSelector();
+      let state = syncServerThreadDetailHotPath(hydratedState(), runningDetail());
+      const before = select(state, LOCAL);
+
+      // A worktree association on any thread reaches the worktree bookkeeping.
+      state = {
+        ...state,
+        threadShellById: {
+          ...state.threadShellById,
+          [RUNNING]: { ...state.threadShellById![RUNNING]!, worktreePath: "/tmp/wt" },
+        },
+      };
+      const withWorktree = select(state, LOCAL);
+      expect(withWorktree).not.toBe(before);
+      expect(
+        withWorktree?.workspaceThreads.find((thread) => thread.id === "running")?.worktreePath,
+      ).toBe("/tmp/wt");
+
+      // The turn ends: the session leaves "running" with the shell, the guard drops.
+      state = syncServerShellSnapshot(state, {
+        ...SHELL_SNAPSHOT,
+        snapshotSequence: 8,
+        threads: SHELL_SNAPSHOT.threads.map((thread) =>
+          thread.id === "running"
+            ? {
+                ...thread,
+                session: shellSession("ready", "claudeAgent"),
+                latestTurn: {
+                  ...thread.latestTurn,
+                  state: "completed",
+                  completedAt: "2026-08-16T00:00:09.000Z",
+                },
+              }
+            : thread,
+        ),
+      } as unknown as OrchestrationShellSnapshot);
+      expect(runningRow(select(state, LOCAL))?.live).toBe(false);
+    });
+  });
+});
+
+describe("fresh sidebar snapshot for a destructive action", () => {
+  // Another client linked a conversation to a managed worktree; the shell event
+  // has not reached this renderer (delayed, or the stream is recovering). The
+  // store is hydrated and stale. Removal is forced and the server does not
+  // re-check links, so the decision must come from the server's current shell.
+  const WORKTREE = "/tmp/worktrees/feature";
+  const serverShell = {
+    ...SHELL_SNAPSHOT,
+    snapshotSequence: 9,
+    threads: [
+      ...SHELL_SNAPSHOT.threads,
+      shellThread({ id: "late-active", title: "Late active", worktreePath: WORKTREE }),
+      shellThread({
+        id: "late-archived",
+        title: "Late archived",
+        associatedWorktreePath: WORKTREE,
+        archivedAt: "2026-08-16T01:00:00.000Z",
+      }),
+    ],
+  } as unknown as OrchestrationShellSnapshot;
+
+  it("sees conversations linked on the server before their shell event arrives", () => {
+    const staleStore = hydratedState();
+    expect(staleStore.threadsHydrated).toBe(true);
+    // What the store alone would tell the dialog: nothing is linked.
+    expect(
+      linkedThreadsForWorktree(
+        projectSidebarSnapshot(staleStore, LOCAL).workspaceThreads,
+        WORKTREE,
+      ),
+    ).toEqual([]);
+
+    const fresh = projectFreshSidebarSnapshot(staleStore, serverShell, LOCAL);
+    const linked = linkedThreadsForWorktree(fresh.workspaceThreads, WORKTREE);
+    expect(linked.map((thread) => thread.id)).toEqual(["late-active", "late-archived"]);
+    expect(linkedWorktreeCounts(linked)).toEqual({ active: 1, archived: 1 });
+  });
+
+  it("does not write the store", () => {
+    const staleStore = hydratedState();
+    const frozen = { ...staleStore };
+    projectFreshSidebarSnapshot(staleStore, serverShell, LOCAL);
+    expect(staleStore).toEqual(frozen);
+    expect(staleStore.threadIds).toHaveLength(SHELL_SNAPSHOT.threads.length);
+  });
+
+  it("drops a link the server no longer has", () => {
+    const linkedStore = syncServerShellSnapshot(initialState, serverShell);
+    const fresh = projectFreshSidebarSnapshot(linkedStore, SHELL_SNAPSHOT, LOCAL);
+    expect(linkedThreadsForWorktree(fresh.workspaceThreads, WORKTREE)).toEqual([]);
   });
 });
 

@@ -11,7 +11,7 @@ import {
 } from "../data/synaraClient.lynx";
 import { dialogs } from "../platform/dialogs";
 import { queryClient } from "./queries";
-import { readSidebarSnapshot, useSidebarSnapshot } from "./sidebarSnapshot.lynx";
+import { readFreshSidebarSnapshot, useSidebarSnapshot } from "./sidebarSnapshot.lynx";
 import {
   createDeleteThreadCommand,
   groupManagedWorktrees,
@@ -72,7 +72,9 @@ export function SettingsWorktreesPanel() {
     setDeleteError(null);
     let linkedThreads: ReturnType<typeof linkedThreadsForWorktree>;
     try {
-      const snapshot = await readSidebarSnapshot();
+      // Removal is forced and the server does not re-check links: decide on
+      // the server's current shell, not on a store read that may lag the stream.
+      const snapshot = await readFreshSidebarSnapshot();
       linkedThreads = linkedThreadsForWorktree(snapshot.workspaceThreads, input.path);
     } catch {
       setDeleteError(

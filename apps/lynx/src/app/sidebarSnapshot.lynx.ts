@@ -10,15 +10,20 @@
 // the dismissed status keys (renderer UI state in storage) and the sidebar
 // search snapshot (message windows for the search palette; a server read that
 // upstream does not have). Both live in a small local store next to it.
+//
+// Session sync reports no failure of its own, so "never hydrated" is turned
+// into an error with a Retry by `sessionShellBootstrap.logic.ts`.
 
 import { useEffect, useMemo } from "@lynx-js/react";
 import { useStore } from "@synara-web/store";
 import { create } from "zustand";
 
 import { fetchSidebarSearchSnapshot, type SidebarSnapshot, type ThreadSummary } from "./queries";
+import { createShellBootstrapWatch, type ShellBootstrapWatch } from "./sessionShellBootstrap.logic";
 import {
   createRouteThreadSummariesSelector,
   createSidebarSnapshotSelector,
+  projectFreshSidebarSnapshot,
   type SidebarSnapshotLocalInputs,
 } from "./sidebarSnapshot.logic";
 
@@ -28,6 +33,9 @@ const useSidebarSnapshotLocalInputs = create<SidebarSnapshotLocalInputs>(() => (
   dismissedThreadStatusKeyByThreadId: {},
 }));
 
+/** Set while the store has never hydrated and session sync is not going to get there unaided. */
+const useShellBootstrapError = create<{ readonly error: Error | null }>(() => ({ error: null }));
+
 // One selector instance for every consumer: they all pass the same local-input
 // object, so the projection runs once per store change, not once per observer.
 const selectSidebarSnapshot = createSidebarSnapshotSelector();
@@ -35,6 +43,7 @@ const selectRouteThreadSummaries = createRouteThreadSummariesSelector();
 
 let localInputsRequest: Promise<void> | null = null;
 let searchSnapshotRequest: Promise<void> | null = null;
+let shellBootstrapWatch: ShellBootstrapWatch | null = null;
 
 function ensureSidebarSnapshotLocalInputs(): Promise<void> {
   "background only";
@@ -49,10 +58,52 @@ function ensureSidebarSnapshotLocalInputs(): Promise<void> {
       dismissedThreadStatusKeyByThreadId: readSidebarUiState().dismissedThreadStatusKeyByThreadId,
     });
   })().catch((error: unknown) => {
-    localInputsRequest = null;
+    // Dismissed status keys only hide pills the user already dismissed. Losing
+    // them must not hold every sidebar surface in "loading": mounted consumers
+    // only start this once, so readiness is settled here either way.
     console.error("[sidebar] local inputs unavailable", error);
+    useSidebarSnapshotLocalInputs.setState({ ready: true });
   });
   return localInputsRequest;
+}
+
+function ensureShellBootstrapWatch(): ShellBootstrapWatch {
+  "background only";
+  if (shellBootstrapWatch) return shellBootstrapWatch;
+  const watch = createShellBootstrapWatch({
+    isHydrated: () => useStore.getState().threadsHydrated,
+    setError: (error) => {
+      if (useShellBootstrapError.getState().error !== error) {
+        useShellBootstrapError.setState({ error });
+      }
+    },
+    startTimeout: (milliseconds, onTimeout) => {
+      const timer = setTimeout(onTimeout, milliseconds);
+      return () => clearTimeout(timer);
+    },
+    getShellSnapshot: async () => {
+      const { ensureNativeApi } = await import(/* webpackMode: "eager" */ "~/nativeApi");
+      return ensureNativeApi().orchestration.getShellSnapshot();
+    },
+    // The same store action session sync's own bootstrap uses. Reached only
+    // from an explicit Retry while the store has never hydrated, so there is no
+    // streamed state it could roll back; the stream's snapshot replaces it.
+    commitShellSnapshot: (snapshot) => useStore.getState().syncServerShellSnapshot(snapshot),
+  });
+  shellBootstrapWatch = watch;
+  let hydrated = useStore.getState().threadsHydrated;
+  useStore.subscribe((state) => {
+    if (state.threadsHydrated === hydrated) return;
+    hydrated = state.threadsHydrated;
+    watch.hydrationChanged();
+  });
+  void import(/* webpackMode: "eager" */ "@synara-web/wsTransportEvents").then(
+    ({ addWsTransportStateListener }) => {
+      addWsTransportStateListener(watch.transportChanged);
+    },
+  );
+  watch.start();
+  return watch;
 }
 
 /**
@@ -81,15 +132,24 @@ export function refreshSidebarSearchSnapshot(): Promise<void> {
   return searchSnapshotRequest;
 }
 
+/** Retry for every sidebar surface: the shell if it never loaded, then the search messages. */
+async function refetchSidebarSnapshot(): Promise<void> {
+  "background only";
+  void ensureSidebarSnapshotLocalInputs();
+  await ensureShellBootstrapWatch().retry();
+  await refreshSidebarSearchSnapshot();
+}
+
 export interface SidebarSnapshotResult {
   /** `undefined` until session sync has hydrated the store. */
   readonly data: SidebarSnapshot | undefined;
+  /** Not hydrated yet and not failed. */
   readonly isPending: boolean;
-  /** The store has no failure state of its own: an unreachable server reads as pending. */
+  /** Set while the store has never hydrated and the shell is not arriving. */
   readonly error: Error | null;
   readonly isError: boolean;
   readonly isFetching: boolean;
-  /** Refreshes the only request-backed input (search message windows). */
+  /** Retries the shell bootstrap if it never completed, and refreshes the search messages. */
   readonly refetch: () => Promise<void>;
 }
 
@@ -102,10 +162,12 @@ export function useSidebarSnapshot(): SidebarSnapshotResult {
   const local = useSidebarSnapshotLocalInputs();
   const hydrated = useStore((state) => state.threadsHydrated);
   const data = useStore((state) => selectSidebarSnapshot(state, local));
+  const bootstrapError = useShellBootstrapError((state) => state.error);
 
   useEffect(() => {
     "background only";
     void ensureSidebarSnapshotLocalInputs();
+    ensureShellBootstrapWatch();
   }, []);
   useEffect(() => {
     "background only";
@@ -116,32 +178,39 @@ export function useSidebarSnapshot(): SidebarSnapshotResult {
     void refreshSidebarSearchSnapshot();
   }, [hydrated]);
 
-  return useMemo(
-    () => ({
+  return useMemo(() => {
+    const error = data === undefined ? bootstrapError : null;
+    return {
       data,
-      isPending: data === undefined,
-      error: null,
-      isError: false,
+      isPending: data === undefined && error === null,
+      error,
+      isError: error !== null,
       isFetching: false,
-      refetch: refreshSidebarSearchSnapshot,
-    }),
-    [data],
-  );
+      refetch: refetchSidebarSnapshot,
+    };
+  }, [bootstrapError, data]);
 }
 
 /**
- * The current sidebar snapshot for an action that must decide on fresh state.
- * Throws while session sync has not hydrated the store.
+ * The sidebar snapshot as the server has it now, for an action that must not
+ * decide on a read that may lag the shell stream (deleting a worktree with
+ * `force`). Issues one shell request through the upstream facade and projects
+ * it without writing the store. Throws while session sync has not hydrated the
+ * store, and when the server cannot be reached.
  */
-export async function readSidebarSnapshot(): Promise<SidebarSnapshot> {
+export async function readFreshSidebarSnapshot(): Promise<SidebarSnapshot> {
   "background only";
   await ensureSidebarSnapshotLocalInputs();
-  const snapshot = selectSidebarSnapshot(
+  if (!useStore.getState().threadsHydrated) {
+    throw new Error("Synara has not finished loading projects and threads.");
+  }
+  const { ensureNativeApi } = await import(/* webpackMode: "eager" */ "~/nativeApi");
+  const shell = await ensureNativeApi().orchestration.getShellSnapshot();
+  return projectFreshSidebarSnapshot(
     useStore.getState(),
+    shell,
     useSidebarSnapshotLocalInputs.getState(),
   );
-  if (!snapshot) throw new Error("Synara has not finished loading projects and threads.");
-  return snapshot;
 }
 
 /**

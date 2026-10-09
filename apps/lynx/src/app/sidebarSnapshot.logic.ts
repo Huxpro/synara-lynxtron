@@ -4,7 +4,12 @@
 // only reshapes what the upstream selectors return into the summaries the Lynx
 // sidebar surfaces already render. Nothing here fetches or commits.
 
-import type { OrchestrationSidebarSearchSnapshot } from "@synara/contracts";
+import type {
+  OrchestrationShellSnapshot,
+  OrchestrationSidebarSearchSnapshot,
+  ProjectId,
+} from "@synara/contracts";
+import { isThreadActivelyWorking } from "@synara-web/components/SidebarThreadSort.logic";
 import { resolveThreadStatusPill } from "@synara-web/components/SidebarThreadStatus.logic";
 import {
   projectSidebarSearchProject,
@@ -15,9 +20,11 @@ import {
   createSidebarTreeThreadsSelector,
   createThreadShellsSelector,
 } from "@synara-web/storeSelectors";
+import { syncServerShellSnapshot } from "@synara-web/storeProjection";
 import type { AppState } from "@synara-web/storeState";
+import type { SidebarThreadSummary } from "@synara-web/types";
 
-import type { SidebarSnapshot, ThreadSummary } from "./queries";
+import type { SidebarSnapshot, ThreadSummary, WorktreeThreadSummary } from "./queries";
 
 /** Inputs of the sidebar projection that do not live in the shared store. */
 export interface SidebarSnapshotLocalInputs {
@@ -28,29 +35,125 @@ export interface SidebarSnapshotLocalInputs {
   readonly dismissedThreadStatusKeyByThreadId: Readonly<Record<string, string>>;
 }
 
-export function projectSidebarSnapshot(
+/** What the sidebar shows of an archived thread shell, before project names and counts. */
+interface ArchivedThreadBase {
+  readonly id: string;
+  readonly title: string;
+  readonly projectId: ProjectId;
+  readonly createdAt: string;
+  readonly updatedAt: string;
+  readonly archivedAt: string | null;
+  readonly latestUserMessageAt: string | null;
+  readonly provider: ThreadSummary["provider"];
+}
+
+/**
+ * The store slices the projection reads, reduced to what the sidebar exposes.
+ * `threadShellById` and `messageIdsByThreadId` are replaced on every streamed
+ * message batch (the shell carries `updatedAt`, the id list is rebuilt), so the
+ * projection never keys on them: it keys on these reductions, which keep their
+ * reference while the exposed values are unchanged.
+ */
+interface SidebarSnapshotInputs {
+  readonly projects: AppState["projects"];
+  readonly spaces: AppState["spaces"];
+  readonly displayThreads: readonly SidebarThreadSummary[];
+  readonly workspaceThreads: readonly WorktreeThreadSummary[];
+  readonly archivedThreads: readonly ArchivedThreadBase[];
+  /** Messages the store holds per thread; absent while a thread has no detail. */
+  readonly messageCountByThreadId: Readonly<Record<string, number>>;
+}
+
+function reduceWorkspaceThreads(
   state: AppState,
-  local: Pick<SidebarSnapshotLocalInputs, "searchSnapshot" | "dismissedThreadStatusKeyByThreadId">,
+  selectThreadShells: ReturnType<typeof createThreadShellsSelector>,
+): { workspaceThreads: WorktreeThreadSummary[]; archivedThreads: ArchivedThreadBase[] } {
+  const workspaceThreads: WorktreeThreadSummary[] = [];
+  const archivedThreads: ArchivedThreadBase[] = [];
+  for (const thread of selectThreadShells(state)) {
+    workspaceThreads.push({
+      id: thread.id,
+      title: thread.title,
+      archivedAt: thread.archivedAt ?? null,
+      worktreePath: thread.worktreePath ?? null,
+      associatedWorktreePath: thread.associatedWorktreePath ?? null,
+    });
+    if (thread.archivedAt != null) {
+      archivedThreads.push({
+        id: thread.id,
+        title: thread.title,
+        projectId: thread.projectId,
+        createdAt: thread.createdAt,
+        updatedAt: thread.updatedAt ?? thread.createdAt,
+        archivedAt: thread.archivedAt ?? null,
+        latestUserMessageAt: thread.latestUserMessageAt ?? null,
+        provider: thread.modelSelection.provider,
+      });
+    }
+  }
+  return { workspaceThreads, archivedThreads };
+}
+
+function reduceMessageCounts(state: AppState): Record<string, number> {
+  const counts: Record<string, number> = {};
+  const messageIdsByThreadId = state.messageIdsByThreadId;
+  if (!messageIdsByThreadId) return counts;
+  for (const threadId of state.threadIds ?? []) {
+    const messageIds = messageIdsByThreadId[threadId];
+    if (messageIds) counts[threadId] = messageIds.length;
+  }
+  return counts;
+}
+
+function reduceSidebarSnapshotInputs(
+  state: AppState,
   selectors: {
     readonly selectDisplayThreads: ReturnType<typeof createSidebarDisplayThreadsSelector>;
     readonly selectThreadShells: ReturnType<typeof createThreadShellsSelector>;
-  } = {
-    selectDisplayThreads: createSidebarDisplayThreadsSelector(),
-    selectThreadShells: createThreadShellsSelector(),
   },
+): SidebarSnapshotInputs {
+  return {
+    projects: state.projects,
+    spaces: state.spaces,
+    displayThreads: selectors.selectDisplayThreads(state),
+    ...reduceWorkspaceThreads(state, selectors.selectThreadShells),
+    messageCountByThreadId: reduceMessageCounts(state),
+  };
+}
+
+function shallowEqualRecords(
+  left: Readonly<Record<string, unknown>>,
+  right: Readonly<Record<string, unknown>>,
+): boolean {
+  const leftKeys = Object.keys(left);
+  if (leftKeys.length !== Object.keys(right).length) return false;
+  for (const key of leftKeys) {
+    if (left[key] !== right[key]) return false;
+  }
+  return true;
+}
+
+/** `next` unless it equals `previous` row by row, in which case `previous` keeps its reference. */
+function keepEqualRows<Row extends object>(
+  previous: readonly Row[] | undefined,
+  next: readonly Row[],
+): readonly Row[] {
+  if (!previous || previous.length !== next.length) return next;
+  for (let index = 0; index < next.length; index += 1) {
+    const left = previous[index] as Readonly<Record<string, unknown>>;
+    const right = next[index] as Readonly<Record<string, unknown>>;
+    if (left !== right && !shallowEqualRecords(left, right)) return next;
+  }
+  return previous;
+}
+
+function projectSidebarSnapshotFromInputs(
+  inputs: SidebarSnapshotInputs,
+  local: Pick<SidebarSnapshotLocalInputs, "searchSnapshot" | "dismissedThreadStatusKeyByThreadId">,
 ): SidebarSnapshot {
-  const projectNames = new Map(state.projects.map((project) => [project.id, project.name]));
-  const spaceNames = new Map(state.spaces.map((space) => [space.id, space.name]));
-  const displayThreads = selectors.selectDisplayThreads(state);
-  const threadShells = selectors.selectThreadShells(state);
-  const archivedThreadShells = threadShells.filter((thread) => thread.archivedAt != null);
-  const workspaceThreads = threadShells.map((thread) => ({
-    id: thread.id,
-    title: thread.title,
-    archivedAt: thread.archivedAt ?? null,
-    worktreePath: thread.worktreePath ?? null,
-    associatedWorktreePath: thread.associatedWorktreePath ?? null,
-  }));
+  const { projects, spaces, displayThreads, messageCountByThreadId } = inputs;
+  const projectNames = new Map(projects.map((project) => [project.id, project.name]));
+  const spaceNames = new Map(spaces.map((space) => [space.id, space.name]));
   const searchMessagesByThreadId = new Map(
     (local.searchSnapshot?.threads ?? []).map(
       (thread) => [thread.threadId, thread.messages] as const,
@@ -62,14 +165,18 @@ export function projectSidebarSnapshot(
     projectId: thread.projectId,
     project: projectNames.get(thread.projectId) ?? "Unknown project",
     messageCount:
-      state.messageIdsByThreadId?.[thread.id]?.length ??
-      searchMessagesByThreadId.get(thread.id)?.length ??
-      0,
+      messageCountByThreadId[thread.id] ?? searchMessagesByThreadId.get(thread.id)?.length ?? 0,
     createdAt: thread.createdAt,
     updatedAt: thread.updatedAt ?? thread.createdAt,
     archivedAt: thread.archivedAt ?? null,
     latestUserMessageAt: thread.latestUserMessageAt ?? null,
-    live: thread.hasLiveTailWork,
+    // Upstream's own "is this thread working" rule (the status pill and the
+    // sort use it): live tail work, or a running session with a live turn.
+    // `hasLiveTailWork` alone stays false for a whole turn when the running
+    // shell arrives before the first streamed message, because streaming does
+    // not rewrite the sidebar summary; the session state does flip with the
+    // shell at stream start and end. Archive and Delete are gated on this.
+    live: isThreadActivelyWorking(thread),
     provider: thread.session?.provider ?? thread.modelSelection.provider,
     isPinned: thread.isPinned,
     sessionStatus: thread.session?.status ?? null,
@@ -95,20 +202,20 @@ export function projectSidebarSnapshot(
       hasPendingUserInput: thread.hasPendingUserInput,
     }),
   }));
-  const archivedThreads = archivedThreadShells.map((thread) => ({
+  const archivedThreads = inputs.archivedThreads.map((thread) => ({
     id: thread.id,
     title: thread.title,
     projectId: thread.projectId,
     project: projectNames.get(thread.projectId) ?? "Unknown project",
-    messageCount: state.messageIdsByThreadId?.[thread.id]?.length ?? 0,
+    messageCount: messageCountByThreadId[thread.id] ?? 0,
     createdAt: thread.createdAt,
-    updatedAt: thread.updatedAt ?? thread.createdAt,
-    archivedAt: thread.archivedAt ?? null,
-    latestUserMessageAt: thread.latestUserMessageAt ?? null,
+    updatedAt: thread.updatedAt,
+    archivedAt: thread.archivedAt,
+    latestUserMessageAt: thread.latestUserMessageAt,
     live: false,
-    provider: thread.modelSelection.provider,
+    provider: thread.provider,
   }));
-  const searchProjects = state.projects.map((project) =>
+  const searchProjects = projects.map((project) =>
     projectSidebarSearchProject({
       id: project.id,
       name: project.name,
@@ -141,8 +248,8 @@ export function projectSidebarSnapshot(
     })),
   });
   return {
-    spaces: state.spaces,
-    projects: state.projects.map((project) => ({
+    spaces,
+    projects: projects.map((project) => ({
       id: project.id,
       kind: project.kind,
       title: project.name,
@@ -157,10 +264,10 @@ export function projectSidebarSnapshot(
     })),
     threads,
     archivedThreads,
-    workspaceThreads,
+    workspaceThreads: inputs.workspaceThreads,
     searchProjects,
     searchThreads,
-    kanbanProjects: state.projects.map((project) => ({
+    kanbanProjects: projects.map((project) => ({
       id: project.id,
       kind: project.kind,
       name: project.name,
@@ -169,15 +276,44 @@ export function projectSidebarSnapshot(
   };
 }
 
+/** One-off projection of a store state (no memoization). */
+export function projectSidebarSnapshot(
+  state: AppState,
+  local: Pick<SidebarSnapshotLocalInputs, "searchSnapshot" | "dismissedThreadStatusKeyByThreadId">,
+): SidebarSnapshot {
+  return projectSidebarSnapshotFromInputs(
+    reduceSidebarSnapshotInputs(state, {
+      selectDisplayThreads: createSidebarDisplayThreadsSelector(),
+      selectThreadShells: createThreadShellsSelector(),
+    }),
+    local,
+  );
+}
+
+/**
+ * The sidebar snapshot as the server has it right now: `shell` projected onto
+ * the store state with the store's own projection, without writing the store.
+ * For actions that must not decide on a read that may lag the shell stream
+ * (a delayed or recovering stream leaves the store hydrated and stale).
+ */
+export function projectFreshSidebarSnapshot(
+  state: AppState,
+  shell: OrchestrationShellSnapshot,
+  local: Pick<SidebarSnapshotLocalInputs, "searchSnapshot" | "dismissedThreadStatusKeyByThreadId">,
+): SidebarSnapshot {
+  return projectSidebarSnapshot(syncServerShellSnapshot(state, shell), local);
+}
+
 /**
  * Memoized store selector for the sidebar snapshot. Returns `undefined` until
  * session sync has delivered its first shell snapshot and the renderer-local
  * inputs have been read: before that the store holds its empty initial value,
  * which must read as "loading", not as "no projects".
  *
- * The result is reference-stable while the slices it reads are unchanged, so it
- * is safe as a zustand selector and message streaming does not re-render the
- * sidebar.
+ * The result keeps its reference while nothing the sidebar shows has changed.
+ * A streamed text delta replaces the store's shell and message-id dictionaries
+ * but changes no title, worktree, archive state or message count, so it costs a
+ * comparison pass over the thread list and re-renders no consumer.
  */
 export function createSidebarSnapshotSelector(): (
   state: AppState,
@@ -187,44 +323,73 @@ export function createSidebarSnapshotSelector(): (
     selectDisplayThreads: createSidebarDisplayThreadsSelector(),
     selectThreadShells: createThreadShellsSelector(),
   };
-  let previous:
-    | {
-        readonly projects: AppState["projects"];
-        readonly spaces: AppState["spaces"];
-        readonly threadIds: AppState["threadIds"];
-        readonly threadShellById: AppState["threadShellById"];
-        readonly sidebarThreadSummaryById: AppState["sidebarThreadSummaryById"];
-        readonly messageIdsByThreadId: AppState["messageIdsByThreadId"];
-        readonly local: SidebarSnapshotLocalInputs;
-        readonly value: SidebarSnapshot;
-      }
+  // Raw slices of the last call: when all are identical nothing is reduced.
+  let previousState:
+    | Pick<
+        AppState,
+        | "projects"
+        | "spaces"
+        | "threadIds"
+        | "threadShellById"
+        | "sidebarThreadSummaryById"
+        | "messageIdsByThreadId"
+      >
     | undefined;
+  let previousInputs: SidebarSnapshotInputs | undefined;
+  let previousLocal: SidebarSnapshotLocalInputs | undefined;
+  let previousValue: SidebarSnapshot | undefined;
 
   return (state, local) => {
     if (!state.threadsHydrated || !local.ready) return undefined;
+    let inputs = previousInputs;
     if (
-      previous &&
-      previous.projects === state.projects &&
-      previous.spaces === state.spaces &&
-      previous.threadIds === state.threadIds &&
-      previous.threadShellById === state.threadShellById &&
-      previous.sidebarThreadSummaryById === state.sidebarThreadSummaryById &&
-      previous.messageIdsByThreadId === state.messageIdsByThreadId &&
-      previous.local === local
+      !inputs ||
+      !previousState ||
+      previousState.projects !== state.projects ||
+      previousState.spaces !== state.spaces ||
+      previousState.threadIds !== state.threadIds ||
+      previousState.threadShellById !== state.threadShellById ||
+      previousState.sidebarThreadSummaryById !== state.sidebarThreadSummaryById ||
+      previousState.messageIdsByThreadId !== state.messageIdsByThreadId
     ) {
-      return previous.value;
+      const next = reduceSidebarSnapshotInputs(state, selectors);
+      const displayThreads = keepEqualRows(previousInputs?.displayThreads, next.displayThreads);
+      const workspaceThreads = keepEqualRows(
+        previousInputs?.workspaceThreads,
+        next.workspaceThreads,
+      );
+      const archivedThreads = keepEqualRows(previousInputs?.archivedThreads, next.archivedThreads);
+      const messageCountByThreadId =
+        previousInputs &&
+        shallowEqualRecords(previousInputs.messageCountByThreadId, next.messageCountByThreadId)
+          ? previousInputs.messageCountByThreadId
+          : next.messageCountByThreadId;
+      inputs =
+        previousInputs &&
+        previousInputs.projects === next.projects &&
+        previousInputs.spaces === next.spaces &&
+        previousInputs.displayThreads === displayThreads &&
+        previousInputs.workspaceThreads === workspaceThreads &&
+        previousInputs.archivedThreads === archivedThreads &&
+        previousInputs.messageCountByThreadId === messageCountByThreadId
+          ? previousInputs
+          : {
+              projects: next.projects,
+              spaces: next.spaces,
+              displayThreads,
+              workspaceThreads,
+              archivedThreads,
+              messageCountByThreadId,
+            };
+      previousState = state;
     }
-    previous = {
-      projects: state.projects,
-      spaces: state.spaces,
-      threadIds: state.threadIds,
-      threadShellById: state.threadShellById,
-      sidebarThreadSummaryById: state.sidebarThreadSummaryById,
-      messageIdsByThreadId: state.messageIdsByThreadId,
-      local,
-      value: projectSidebarSnapshot(state, local, selectors),
-    };
-    return previous.value;
+    if (previousValue && inputs === previousInputs && local === previousLocal) {
+      return previousValue;
+    }
+    previousInputs = inputs;
+    previousLocal = local;
+    previousValue = projectSidebarSnapshotFromInputs(inputs, local);
+    return previousValue;
   };
 }
 

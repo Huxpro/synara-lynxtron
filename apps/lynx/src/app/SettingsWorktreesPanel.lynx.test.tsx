@@ -35,7 +35,8 @@ describe("Settings Worktrees fidelity", () => {
       "utf8",
     );
 
-    expect(panelSource).toContain("const snapshot = await readSidebarSnapshot()");
+    expect(panelSource).toContain("const snapshot = await readFreshSidebarSnapshot()");
+    expect(panelSource).not.toContain("await readSidebarSnapshot()");
     expect(panelSource).toContain("linkedThreadsForWorktree(snapshot.workspaceThreads, input.path");
     expect(panelSource).toContain(
       "Could not verify linked conversations. Retry once the app reconnects to the server.",

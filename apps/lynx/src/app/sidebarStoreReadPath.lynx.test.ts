@@ -46,18 +46,31 @@ describe("sidebar read path (plan Step 3)", () => {
     );
   });
 
-  it("the store-backed hooks issue no shell request and run no timer", () => {
+  it("the store-backed hooks poll nothing and request the shell only on demand", () => {
     const hooks = source("./sidebarSnapshot.lynx.ts");
     for (const forbidden of [
       "refetchInterval",
       "setInterval",
-      "setTimeout",
       "useQuery",
-      "ShellSnapshot",
+      "getSidebarShellSnapshot",
       "subscribeOrchestrationShellEvents",
+      "synaraClient",
     ]) {
       expect(hooks, forbidden).not.toContain(forbidden);
     }
+    // Two on-demand shell reads through the upstream facade: the user's Retry
+    // of a bootstrap that never completed, and the fresh read a destructive
+    // action decides on. The render path has none.
+    expect(hooks.match(/orchestration\.getShellSnapshot\(\)/g)).toHaveLength(2);
+    const renderPath = hooks.slice(
+      hooks.indexOf("export function useSidebarSnapshot"),
+      hooks.indexOf("export async function readFreshSidebarSnapshot"),
+    );
+    expect(renderPath).not.toContain("getShellSnapshot");
+    // The only store write is the Retry commit, guarded by the bootstrap watch.
+    expect(hooks.match(/syncServer\w+\(/g)).toEqual(["syncServerShellSnapshot("]);
+    // The one timer is the bootstrap deadline, not a poll.
+    expect(hooks.match(/setTimeout\(/g)).toHaveLength(1);
     expect(hooks).toContain("useStore((state) => selectSidebarSnapshot(state, local))");
     expect(hooks).toContain("useStore(selectRouteThreadSummaries)");
     // The projection itself is pure: no client, no store import.
