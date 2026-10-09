@@ -19,6 +19,8 @@ The full loop above is an acceptance pass. During a multi-step refactor, scale i
 - **When a screen changes:** that screen's cells and the workflow that covers it.
 - **Before a milestone merges:** the full matrix and the workflows.
 
+Screenshots, pixel diffs and frame comparisons are milestone-only. Between milestones, judge from the scripts' text output (cell and step results, console error counts, backend state) and do not capture or read images to confirm what a script already reported.
+
 Inside a milestone, cells and workflows are a trend, not a gate. A workflow that depends on a live model turn and fails once is rerun; diagnose only when the same failure repeats in the milestone pass.
 
 ## Input: with and without Computer Use
