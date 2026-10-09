@@ -110,7 +110,7 @@ const ARCHIVE_UNDO_TOAST_SURFACE_CLASS_NAME = cn(
 const TOAST_ACTION_BUTTON_SIZE = "xs";
 const TOAST_ACTION_BUTTON_VARIANT = "ghost";
 const TOAST_ACTION_BUTTON_CLASS_NAME =
-  "pointer-events-auto self-start rounded-md px-2 font-sans font-medium text-ui text-[var(--notification-fg)]/80 sm:text-ui [:hover,[data-pressed]]:bg-[var(--notification-fg)]/10 [:hover,[data-pressed]]:text-[var(--notification-fg)] data-pressed:bg-[var(--notification-fg)]/10 data-pressed:text-[var(--notification-fg)] focus-visible:ring-[var(--notification-fg)]/35";
+  "self-start rounded-md px-2 font-sans font-medium text-ui text-[var(--notification-fg)]/80 sm:text-ui [:hover,[data-pressed]]:bg-[var(--notification-fg)]/10 [:hover,[data-pressed]]:text-[var(--notification-fg)] data-pressed:bg-[var(--notification-fg)]/10 data-pressed:text-[var(--notification-fg)] focus-visible:ring-[var(--notification-fg)]/35";
 
 const ARCHIVE_UNDO_TOAST_LINK_CLASS_NAME =
   "rounded-sm font-medium text-[var(--info-foreground)] underline-offset-2 transition-colors hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--info-foreground)]/35 disabled:pointer-events-none disabled:opacity-55";
@@ -518,7 +518,7 @@ export function ToastSurface({
   return (
     <Toast.Content
       className={cn(
-        "pointer-events-none relative flex overflow-hidden transition-opacity duration-250 data-expanded:opacity-100",
+        "pointer-events-auto relative flex overflow-hidden transition-opacity duration-250 data-expanded:opacity-100",
         compact
           ? cn(
               "gap-2 px-3 py-1.5 pr-1.5 text-ui-sm leading-normal",
@@ -684,7 +684,7 @@ function Toasts({ position: positionProp }: { position: ToastPosition }) {
           return (
             <Toast.Root
               className={cn(
-                "pointer-events-none absolute z-[calc(9999-var(--toast-index))] h-(--toast-calc-height) select-none [transition:transform_.5s_cubic-bezier(.22,1,.36,1),opacity_.5s,height_.15s]",
+                "absolute z-[calc(9999-var(--toast-index))] h-(--toast-calc-height) select-none [transition:transform_.5s_cubic-bezier(.22,1,.36,1),opacity_.5s,height_.15s]",
                 archiveUndoToast
                   ? cn(
                       ARCHIVE_UNDO_TOAST_SURFACE_CLASS_NAME,
