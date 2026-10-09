@@ -22,7 +22,7 @@ certification run without treating a production build as Native evidence.
 
 Unrelated clients remained untouched:
 
-- `localhost:8901`: `@t3tools/lynxtron`, PID `18721`;
+- `localhost:8901`: `another-project`, PID `18721`;
 - `localhost:8902`: iOS `LynxExplorer`, PID `22037`.
 
 ## Compact certification boundary

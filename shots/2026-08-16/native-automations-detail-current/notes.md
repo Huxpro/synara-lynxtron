@@ -556,7 +556,7 @@ warning/error console remained empty.
 - Browser attempts returned to `sessions: []` with zero owned processes.
 - Canonical cleanup returned zero visible definitions/runs; fixture state,
   runtime, and user-data directories were removed. Owned ports `58090` and
-  `8891` were free; the unrelated t3code client remained outside the run.
+  `8891` were free; the unrelated another-project client remained outside the run.
 - No screenshots were retained; local screenshot count remained `100`.
 
 ## Cron schedule parity
@@ -570,7 +570,7 @@ Web authority used the same isolated snapshot and exposed selected schedule
 `Active`, Next run `Tomorrow at 09:00 AM`, and Pause.
 
 Exact-owned Native used PID-derived DevTool client `localhost:8902` because the
-unrelated t3code client remained on `8901`. Native rendered:
+unrelated another-project client remained on `8901`. Native rendered:
 
 - Status `Active`;
 - Repeats `Cron`;
@@ -597,7 +597,7 @@ Exact-client warning/error console remained empty.
 - Browser attempts returned to `sessions: []` with zero owned processes.
 - Canonical cleanup returned zero visible definitions/runs; fixture state,
   runtime, and user-data directories were removed. Owned ports `58090` and
-  `8891` were free; the unrelated t3code client remained outside the run.
+  `8891` were free; the unrelated another-project client remained outside the run.
 - No screenshots were retained; local screenshot count remained `100`.
 
 ## Weekly schedule parity
@@ -611,7 +611,7 @@ Web authority used the same isolated snapshot and exposed selected schedule
 `Active`, Next run `Tomorrow at 09:00 AM`, and Pause.
 
 Exact-owned Native used PID-derived DevTool client `localhost:8902` because an
-unrelated t3code client occupied `8901`. Native rendered:
+unrelated another-project client occupied `8901`. Native rendered:
 
 - Status `Active`;
 - Repeats `Weekly`;
@@ -636,7 +636,7 @@ Exact-client warning/error console remained empty.
 - Browser attempts returned to `sessions: []` with zero owned processes.
 - Canonical cleanup returned zero visible definitions/runs; fixture state,
   runtime, and user-data directories were removed. Owned ports `58090` and
-  `8891` were free; the unrelated t3code client remained outside the run.
+  `8891` were free; the unrelated another-project client remained outside the run.
 - No screenshots were retained; local screenshot count remained `100`.
 
 ## Custom 30-minute interval parity
@@ -650,7 +650,7 @@ Web authority used the same isolated snapshot and exposed selected values
 visible option label was `Every 30 min`.
 
 Exact-owned Native used a PID-derived DevTool client at `localhost:8902`
-because unrelated t3code Lynxtron PID `18721` already owned `8901`. The
+because unrelated another-project Lynxtron PID `18721` already owned `8901`. The
 external client was not touched.
 
 Native detail rendered:
@@ -681,7 +681,7 @@ Exact-client warning/error console remained empty.
 - Browser attempts returned to `sessions: []` with zero owned processes.
 - Canonical cleanup returned zero visible definitions/runs; fixture state,
   runtime, and user-data directories were removed. Owned ports `58090` and
-  `8891` were free. The unrelated t3code client remained outside this run.
+  `8891` were free. The unrelated another-project client remained outside this run.
 - No screenshots were retained; local screenshot count remained `100`.
 
 ## Hourly schedule parity and pause roundtrip
@@ -730,8 +730,8 @@ Exact-client warning/error console stayed empty.
 - Canonical cleanup returned zero visible definitions/runs; fixture state,
   runtime, and user-data directories were removed. Owned ports `58090` and
   `8891` were free.
-- Port `8901` was occupied by an unrelated t3code Lynxtron
-  (`/var/.../t3-mts-product-sNMTGX/desktop`, PID `18721`). It was not
+- Port `8901` was occupied by an unrelated another-project Lynxtron
+  (`/var/.../other-mts-product-sNMTGX/desktop`, PID `18721`). It was not
   terminated and is external contention, not a Synara leak.
 - No screenshots were retained; local screenshot count remained `100`.
 
@@ -1017,7 +1017,7 @@ returned:
 - Canonical cleanup returned zero visible definitions/runs; the fixture
   project/thread and all isolated state/runtime/user directories were removed.
 - Owned ports `58090` and `8891` were free. Port `8901` was occupied only by
-  an unrelated `/Users/bytedance/github/t3code-archaeology-verify3` Lynxtron
+  an unrelated `/Users/bytedance/github/another-project-archaeology-verify3` Lynxtron
   run (PID `78196`) that started after this loop's owned runtime. It was not
   terminated and is recorded as external port competition, not a Synara leak.
 - No screenshots were retained; local screenshot count remained `100`.

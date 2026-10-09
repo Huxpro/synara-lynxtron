@@ -597,7 +597,7 @@ help?` moved that target row from y=16 to y=62, directly below the fixed header,
   `b49514bf16b87f84a72c1e0db6d2e2ceabde6fb94a33d98e73b215583d24de74`;
   the final exact-client error/warning console was empty. Cleanup left no
   comparison Web, Electron, Lynxtron, DevTool, or agent-browser process and
-  preserved the normal Synara `47905/8901` and T3 Code `18465/8902` clients.
+  preserved the normal Synara `47905/8901` and another-project `18465/8902` clients.
 - Computer Use does not reliably deliver Native address-field selection or
   punctuation (`Cmd+A` did not replace the current value, and a literal scheme
   was transformed by the Native input path), so those attempts were discarded
@@ -630,7 +630,7 @@ help?` moved that target row from y=16 to y=62, directly below the fixed header,
   Activating Collapse persisted `open:false` while retaining both pane records
   and destroyed the Browser view; the independent Environment inspector stayed
   open, as intended. The PID-derived error/warning console was empty, and final
-  cleanup preserved only normal Synara `47905/8901` and T3 Code `18465/8902`.
+  cleanup preserved only normal Synara `47905/8901` and another-project `18465/8902`.
   Together with the existing dark/1440 and overflow/hover evidence, FC-009 is
   complete for its tracked header and right-dock debt.
 
@@ -659,7 +659,7 @@ help?` moved that target row from y=16 to y=62, directly below the fixed header,
   was `ade2a75f2d4a1397c0b6cf1f316395c72f2cc70f94e78b81f90f4e548ffbc7c7`.
   Shared, Web, and Native focused suites pass 18/18, 27/27, and 8/8, and the
   production build succeeds. Final cleanup preserved only normal Synara
-  `47905/8901` and T3 Code `18465/8902`. This closes FC-003's remaining
+  `47905/8901` and another-project `18465/8902`. This closes FC-003's remaining
   long-title/draft/working and focus/pressed matrix debt.
 
 ### 2026-09-10 Native model-picker continuation
@@ -681,7 +681,7 @@ help?` moved that target row from y=16 to y=62, directly below the fixed header,
   provider, effort, chevron, and full menu remained available. Its final
   warning/error console was empty; bundle SHA-256 was
   `f10f51d8d1f9da958916b79e539588f35ec2442ed699617ca94544e5a75ed1a0`.
-  Cleanup preserved only normal Synara `47905/8901` and T3 Code `18465/8902`.
+  Cleanup preserved only normal Synara `47905/8901` and another-project `18465/8902`.
 - The first Native pass exposed a shared menu bug: Escape correctly closed the
   OpenCode submenu, but `MenuSubTrigger.catchkeydown` swallowed the next Escape
   after the submenu was closed, so the outer picker remained open. The trigger

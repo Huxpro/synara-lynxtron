@@ -24,7 +24,7 @@
   to `58910`. Host logs showed the real thread snapshot and
   `projects.listDirectories`, with no `projects.readFile`.
 - This Lynxtron instance did not publish a DevTool client. The visible clients
-  belonged to a Lynxtron 0.0.7 default app and `t3code`, so neither was used as
+  belonged to a Lynxtron 0.0.7 default app and `another-project`, so neither was used as
   evidence. Native screenshot/DOM parity is therefore not claimed.
 - The first invalid Native preflight used a stale default-endpoint bundle. It
   was stopped immediately and no frame was retained. Native was rebuilt with
