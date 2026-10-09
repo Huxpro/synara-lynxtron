@@ -110,4 +110,4 @@ Computer Use could not take control of `Synara Comparison Lynxtron`, so nothing 
 | Kanban and PR dialogs                           | not run      | J6 pass                                             |
 | Every menu / popover opens and dismisses        | not run      | Cell increments pass (model, add-panel, automation) |
 
-To unblock: have the user target the running app directly in Claude Desktop (type `@` and pick it), or give the launcher an opt-in mode that stages the app as a regular application so it is listed as running. The second option makes the app activate on launch, so it needs a decision.
+Follow-up in the same session: the launcher gained an opt-in `--regular-app` flag that stages Lynxtron as a regular application. On run `2026-10-09T01-46-33-760Z-76990` Computer Use then found the app and showed the approval dialog, and the request was denied (`user_denied`). Control was refused, so the pass stopped there and every item above stays **not run**. To run it, launch with `--regular-app` and approve the app when asked.
