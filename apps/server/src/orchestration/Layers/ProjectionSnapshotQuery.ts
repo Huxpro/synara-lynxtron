@@ -3047,19 +3047,6 @@ const makeProjectionSnapshotQuery = Effect.gen(function* () {
         }),
       );
 
-  const getSidebarShellSnapshot: ProjectionSnapshotQueryShape["getSidebarShellSnapshot"] = () =>
-    getShellSnapshot().pipe(
-      Effect.map((snapshot) => ({
-        ...snapshot,
-        threads: [...snapshot.threads]
-          .sort((left, right) => {
-            const recency = Date.parse(right.updatedAt) - Date.parse(left.updatedAt);
-            return recency !== 0 ? recency : left.id.localeCompare(right.id);
-          })
-          .slice(0, ORCHESTRATION_SIDEBAR_SEARCH_LIMITS.shellThreadCount),
-      })),
-    );
-
   const listStaleInFlightThreadIds: ProjectionSnapshotQueryShape["listStaleInFlightThreadIds"] = (
     input,
   ) =>
@@ -3821,7 +3808,6 @@ const makeProjectionSnapshotQuery = Effect.gen(function* () {
     getCommandReadModel,
     getSnapshot,
     getShellSnapshot,
-    getSidebarShellSnapshot,
     getSidebarSearchSnapshot,
     getCounts,
     getSnapshotSequence,

@@ -3,7 +3,7 @@
   "upstreamRevision": "6f54f53c66348a9a19c65779daaabd96113773eb",
   "counts": {
     "modifiedUpstreamFiles": 184,
-    "changedLinesInUpstreamFiles": 5961,
+    "changedLinesInUpstreamFiles": 5883,
     "forkFilesInUpstreamPaths": 395
   }
 }

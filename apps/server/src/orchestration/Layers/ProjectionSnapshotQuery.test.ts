@@ -444,25 +444,6 @@ projectionSnapshotLayer("ProjectionSnapshotQuery", (it) => {
           .reduce((total, message) => total + message.text.length, 0) <= 160_000,
       );
 
-      for (let index = 0; index < 81; index += 1) {
-        const threadId = `thread-shell-${String(index).padStart(2, "0")}`;
-        const updatedAt = `2026-08-03T00:00:00.${String(index).padStart(3, "0")}Z`;
-        yield* sql`
-          INSERT INTO projection_threads (
-            thread_id, project_id, title, model_selection_json,
-            created_at, updated_at, deleted_at
-          ) VALUES (
-            ${threadId}, 'project-search', ${threadId},
-            '{"provider":"codex","model":"gpt-5-codex"}',
-            '2026-08-03T00:00:00.000Z', ${updatedAt}, NULL
-          )
-        `;
-      }
-      const sidebarShell = yield* snapshotQuery.getSidebarShellSnapshot();
-      assert.equal(sidebarShell.threads.length, 80);
-      assert.equal(sidebarShell.threads[0]?.id, asThreadId("thread-shell-80"));
-      assert.equal(sidebarShell.threads.at(-1)?.id, asThreadId("thread-shell-01"));
-
       yield* sql`DELETE FROM projection_thread_messages`;
       yield* sql`DELETE FROM projection_threads`;
       yield* sql`DELETE FROM projection_projects`;

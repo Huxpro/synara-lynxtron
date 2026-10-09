@@ -176,7 +176,7 @@ PR #34，merge commit `c5672fe7f`。默认分支与 `upstream/main`（`6f54f53c6
 - **插件库**：`PluginLibraryPage` 的三个读取。
 - **Sidebar**：dev server 列表、local servers（上游的 `sidebarLocalServersQueryOptions` 会带来新的轮询，单独评估）。
 - **Thread 页**：`queries.ts` 里的线程详情读取（M3b）。
-- **没有门面方法的 RPC**：`orchestration.getSidebarSearchSnapshot` 是 fork 自己加的，直接走 `nativeRpcRequest`。`orchestration.getSidebarShellSnapshot` 不再被 Lynx 使用（改用上游的 `getShellSnapshot`），服务端和契约里的 fork 差异可以删。
+- **没有门面方法的 RPC**：`orchestration.getSidebarSearchSnapshot` 是 fork 自己加的，直接走 `nativeRpcRequest`。`orchestration.getSidebarShellSnapshot` 已从契约和服务端删除（Lynx 改用上游的 `getShellSnapshot`）。
 - **宿主里的旧流路径**：`NATIVE_EVENT_STREAM_CHANNELS` 的终端和 shell 通道、不带 `streamId` 的 `synaraRpcStream` 已经没有渲染器调用方，可以删。
 
 未关闭的相关问题：#10（Lynx Rstest 套件）、#16（Stop 过早被丢）、#19 和 #20（Computer Use 验收发现的输入与界面问题）、#35（Stop 延迟）。

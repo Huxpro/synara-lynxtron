@@ -70,7 +70,6 @@ import {
   OrchestrationGetThreadDetailSnapshotInput,
   OrchestrationSearchThreadsInput,
   OrchestrationGetShellSnapshotInput,
-  OrchestrationGetSidebarShellSnapshotInput,
   OrchestrationGetSidebarSearchSnapshotInput,
   OrchestrationRepairStateInput,
   ORCHESTRATION_WS_METHODS,
@@ -464,10 +463,6 @@ const WebSocketRequestBody = Schema.Union([
   ),
   tagRequestBody(ORCHESTRATION_WS_METHODS.getSnapshot, OrchestrationGetSnapshotInput),
   tagRequestBody(ORCHESTRATION_WS_METHODS.getShellSnapshot, OrchestrationGetShellSnapshotInput),
-  tagRequestBody(
-    ORCHESTRATION_WS_METHODS.getSidebarShellSnapshot,
-    OrchestrationGetSidebarShellSnapshotInput,
-  ),
   tagRequestBody(
     ORCHESTRATION_WS_METHODS.getSidebarSearchSnapshot,
     OrchestrationGetSidebarSearchSnapshotInput,

@@ -1376,11 +1376,6 @@ const makeWsRpcHandlersLayer = () =>
             projectionReadModelQuery.getShellSnapshot(),
             "Failed to load orchestration shell snapshot",
           ),
-        [ORCHESTRATION_WS_METHODS.getSidebarShellSnapshot]: () =>
-          rpcEffect(
-            projectionReadModelQuery.getSidebarShellSnapshot(),
-            "Failed to load orchestration sidebar shell snapshot",
-          ),
         [ORCHESTRATION_WS_METHODS.getSidebarSearchSnapshot]: () =>
           rpcEffect(
             projectionReadModelQuery.getSidebarSearchSnapshot(),
