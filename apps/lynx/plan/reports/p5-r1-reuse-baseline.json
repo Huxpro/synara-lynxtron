@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-09T21:25:53.744Z",
+  "generatedAt": "2026-10-09T23:19:18.524Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -12,17 +12,15 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxGraph": {
     "entries": ["src/app/index.tsx"],
-    "modules": 879,
+    "modules": 891,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/checkbox",
       "@base-ui/react/collapsible",
       "@base-ui/react/dialog",
-      "@base-ui/react/field",
       "@base-ui/react/input",
       "@base-ui/react/menu",
       "@base-ui/react/merge-props",
-      "@base-ui/react/popover",
       "@base-ui/react/select",
       "@base-ui/react/separator",
       "@base-ui/react/switch",
@@ -40,6 +38,9 @@
       "@lynx-js/types",
       "@pierre/diffs",
       "@pierre/diffs/react",
+      "@synara-central-icons-fill/circle-check.svg?raw",
+      "@synara-central-icons-fill/circle-x.svg?raw",
+      "@synara-central-icons-fill/loader.svg?raw",
       "@synara-central-icons-fill/pin.svg?raw",
       "@synara-central-icons-fill/play.svg?raw",
       "@synara-central-icons-fill/star.svg?raw",
@@ -79,8 +80,10 @@
       "@synara-central-icons/commits.svg?raw",
       "@synara-central-icons/compose-pencil.svg?raw",
       "@synara-central-icons/console.svg?raw",
+      "@synara-central-icons/cross-small.svg?raw",
       "@synara-central-icons/difference-modified.svg?raw",
       "@synara-central-icons/dot-grid-1x3-horizontal.svg?raw",
+      "@synara-central-icons/draft.svg?raw",
       "@synara-central-icons/edit-small-2.svg?raw",
       "@synara-central-icons/expand-45.svg?raw",
       "@synara-central-icons/file-chart.svg?raw",
@@ -111,6 +114,7 @@
       "@synara-central-icons/magnifying-glass.svg?raw",
       "@synara-central-icons/markdown.svg?raw",
       "@synara-central-icons/merge-conflict.svg?raw",
+      "@synara-central-icons/merged-simple.svg?raw",
       "@synara-central-icons/minimize-45.svg?raw",
       "@synara-central-icons/notes.svg?raw",
       "@synara-central-icons/npm.svg?raw",
@@ -127,6 +131,8 @@
       "@synara-central-icons/pull-request.svg?raw",
       "@synara-central-icons/puzzle.svg?raw",
       "@synara-central-icons/react.svg?raw",
+      "@synara-central-icons/record.svg?raw",
+      "@synara-central-icons/request-closed.svg?raw",
       "@synara-central-icons/robot.svg?raw",
       "@synara-central-icons/rust.svg?raw",
       "@synara-central-icons/screen-capture.svg?raw",
@@ -142,6 +148,7 @@
       "@synara-central-icons/stop.svg?raw",
       "@synara-central-icons/svelte.svg?raw",
       "@synara-central-icons/typescript.svg?raw",
+      "@synara-central-icons/user-group.svg?raw",
       "@synara-central-icons/vercel.svg?raw",
       "@synara-central-icons/video.svg?raw",
       "@synara-central-icons/vue.svg?raw",
@@ -257,7 +264,6 @@
       "node:module",
       "node:path",
       "react",
-      "react-colorful",
       "react-dom",
       "react-dom/server",
       "react-icons",
@@ -288,13 +294,13 @@
   "lynxParallelImplementation": {
     "baseline": {
       "synaraClientImporters": 0,
-      "useQueryCallSites": 29,
+      "useQueryCallSites": 25,
       "refetchIntervalSites": 1,
       "routerTsxLines": 3589
     },
     "current": {
       "synaraClientImporters": 0,
-      "useQueryCallSites": 29,
+      "useQueryCallSites": 25,
       "refetchIntervalSites": 1,
       "routerTsxLines": 3589
     }
@@ -480,11 +486,11 @@
         "loc": 135424
       },
       "currentReuse": {
-        "modules": 320,
-        "loc": 80221,
-        "modulePercent": 53.33,
-        "locPercent": 59.24,
-        "gatePercent": 53.33
+        "modules": 318,
+        "loc": 79900,
+        "modulePercent": 53,
+        "locPercent": 59,
+        "gatePercent": 53
       },
       "modules": [
         {
@@ -3501,7 +3507,7 @@
           "loc": 195,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/ui/button.tsx",
             "apps/web/src/components/ui/scroll-area.tsx",
@@ -3603,7 +3609,7 @@
           "loc": 104,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
             "apps/web/src/lib/utils.ts"
@@ -3735,7 +3741,7 @@
           "loc": 44,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/lib/utils.ts", "apps/web/src/surfaceStyles.ts"]
         },
         {
@@ -5673,7 +5679,7 @@
           "loc": 22,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/githubInboxQueryOptions.ts",
             "apps/web/src/lib/pullRequestCache.ts",
@@ -7928,11 +7934,11 @@
         "loc": 116837
       },
       "currentReuse": {
-        "modules": 290,
-        "loc": 73152,
-        "modulePercent": 60.04,
-        "locPercent": 62.61,
-        "gatePercent": 60.04
+        "modules": 288,
+        "loc": 72831,
+        "modulePercent": 59.63,
+        "locPercent": 62.34,
+        "gatePercent": 59.63
       },
       "modules": [
         {
@@ -10442,7 +10448,7 @@
           "loc": 195,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/ui/button.tsx",
             "apps/web/src/components/ui/scroll-area.tsx",
@@ -10544,7 +10550,7 @@
           "loc": 104,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
             "apps/web/src/lib/utils.ts"
@@ -10676,7 +10682,7 @@
           "loc": 44,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/lib/utils.ts", "apps/web/src/surfaceStyles.ts"]
         },
         {
@@ -12274,7 +12280,7 @@
           "loc": 22,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/githubInboxQueryOptions.ts",
             "apps/web/src/lib/pullRequestCache.ts",
@@ -13800,11 +13806,11 @@
         "loc": 226411
       },
       "currentReuse": {
-        "modules": 370,
-        "loc": 87147,
-        "modulePercent": 35.78,
-        "locPercent": 38.49,
-        "gatePercent": 35.78
+        "modules": 368,
+        "loc": 86826,
+        "modulePercent": 35.59,
+        "locPercent": 38.35,
+        "gatePercent": 35.59
       },
       "modules": [
         {
@@ -22209,7 +22215,7 @@
           "loc": 195,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/ui/button.tsx",
             "apps/web/src/components/ui/scroll-area.tsx",
@@ -22335,7 +22341,7 @@
           "loc": 104,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
             "apps/web/src/lib/utils.ts"
@@ -22475,7 +22481,7 @@
           "loc": 44,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/lib/utils.ts", "apps/web/src/surfaceStyles.ts"]
         },
         {
@@ -25264,7 +25270,7 @@
           "loc": 22,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/githubInboxQueryOptions.ts",
             "apps/web/src/lib/pullRequestCache.ts",
@@ -27730,11 +27736,11 @@
         "loc": 149320
       },
       "currentReuse": {
-        "modules": 321,
-        "loc": 80359,
-        "modulePercent": 49.54,
-        "locPercent": 53.82,
-        "gatePercent": 49.54
+        "modules": 319,
+        "loc": 80038,
+        "modulePercent": 49.23,
+        "locPercent": 53.6,
+        "gatePercent": 49.23
       },
       "modules": [
         {
@@ -31382,7 +31388,7 @@
           "loc": 195,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/ui/button.tsx",
             "apps/web/src/components/ui/scroll-area.tsx",
@@ -31492,7 +31498,7 @@
           "loc": 104,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
             "apps/web/src/lib/utils.ts"
@@ -31624,7 +31630,7 @@
           "loc": 44,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/lib/utils.ts", "apps/web/src/surfaceStyles.ts"]
         },
         {
@@ -33639,7 +33645,7 @@
           "loc": 22,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/githubInboxQueryOptions.ts",
             "apps/web/src/lib/pullRequestCache.ts",
@@ -35941,11 +35947,11 @@
         "loc": 148974
       },
       "currentReuse": {
-        "modules": 335,
-        "loc": 82430,
-        "modulePercent": 50.07,
-        "locPercent": 55.33,
-        "gatePercent": 50.07
+        "modules": 333,
+        "loc": 82109,
+        "modulePercent": 49.78,
+        "locPercent": 55.12,
+        "gatePercent": 49.78
       },
       "modules": [
         {
@@ -39841,7 +39847,7 @@
           "loc": 195,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/ui/button.tsx",
             "apps/web/src/components/ui/scroll-area.tsx",
@@ -39951,7 +39957,7 @@
           "loc": 104,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
             "apps/web/src/lib/utils.ts"
@@ -40083,7 +40089,7 @@
           "loc": 44,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/lib/utils.ts", "apps/web/src/surfaceStyles.ts"]
         },
         {
@@ -42173,7 +42179,7 @@
           "loc": 22,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/githubInboxQueryOptions.ts",
             "apps/web/src/lib/pullRequestCache.ts",
@@ -44457,11 +44463,11 @@
         "loc": 148975
       },
       "currentReuse": {
-        "modules": 335,
-        "loc": 82430,
-        "modulePercent": 50.07,
-        "locPercent": 55.33,
-        "gatePercent": 50.07
+        "modules": 333,
+        "loc": 82109,
+        "modulePercent": 49.78,
+        "locPercent": 55.12,
+        "gatePercent": 49.78
       },
       "modules": [
         {
@@ -48357,7 +48363,7 @@
           "loc": 195,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/ui/button.tsx",
             "apps/web/src/components/ui/scroll-area.tsx",
@@ -48467,7 +48473,7 @@
           "loc": 104,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
             "apps/web/src/lib/utils.ts"
@@ -48599,7 +48605,7 @@
           "loc": 44,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/lib/utils.ts", "apps/web/src/surfaceStyles.ts"]
         },
         {
@@ -50689,7 +50695,7 @@
           "loc": 22,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/githubInboxQueryOptions.ts",
             "apps/web/src/lib/pullRequestCache.ts",
@@ -52995,11 +53001,11 @@
         "loc": 221136
       },
       "currentReuse": {
-        "modules": 370,
-        "loc": 87147,
-        "modulePercent": 36.85,
-        "locPercent": 39.41,
-        "gatePercent": 36.85
+        "modules": 369,
+        "loc": 87272,
+        "modulePercent": 36.75,
+        "locPercent": 39.47,
+        "gatePercent": 36.75
       },
       "modules": [
         {
@@ -58517,7 +58523,7 @@
           "loc": 446,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/components/pullRequest/pullRequestList.logic.ts"
@@ -61126,7 +61132,7 @@
           "loc": 195,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/ui/button.tsx",
             "apps/web/src/components/ui/scroll-area.tsx",
@@ -61252,7 +61258,7 @@
           "loc": 104,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
             "apps/web/src/lib/utils.ts"
@@ -61392,7 +61398,7 @@
           "loc": 44,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/lib/utils.ts", "apps/web/src/surfaceStyles.ts"]
         },
         {
@@ -64069,7 +64075,7 @@
           "loc": 22,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/githubInboxQueryOptions.ts",
             "apps/web/src/lib/pullRequestCache.ts",
