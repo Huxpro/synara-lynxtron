@@ -68,7 +68,6 @@ import { webStorage } from "../platform/storage";
 import {
   fetchAutomationCreateModels,
   fetchAutomationCreateServerConfig,
-  queryClient,
   resolveNativeAssistantDeliveryMode,
   type ProjectSummary,
 } from "./queries";
@@ -424,7 +423,6 @@ export function KanbanNewTaskDialog(props: {
       recover: async () =>
         (await fetchShellSnapshot()).threads.some((thread) => thread.id === threadId),
     });
-    await queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
     return threadId;
   };
 
@@ -461,10 +459,6 @@ export function KanbanNewTaskDialog(props: {
           );
           useComposerDraftStore.getState().clearDraft(createdThreadId);
         }
-        await Promise.all([
-          queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-          queryClient.invalidateQueries({ queryKey: ["threads"] }),
-        ]);
         props.onTaskCreated(createdThreadId, start);
         props.onOpenChange(false);
       })

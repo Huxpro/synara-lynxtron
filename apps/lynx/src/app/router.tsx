@@ -48,6 +48,7 @@ import type { ThemeState } from "@synara-web/theme/theme.logic";
 import type { SettingsSectionId } from "@synara-web/settingsNavigation";
 import type { Project } from "@synara-web/types";
 import { useSessionShellProjects, useSessionShellSpaces } from "./sessionShell.lynx";
+import { useRouteThreadSummaries } from "./sidebarSnapshot.lynx";
 import { useSpacesUiStore } from "@synara-web/spacesUiStore";
 import { useWorkspaceStore } from "@synara-web/workspaceStore";
 import { useRecentViewsStore } from "@synara-web/recentViewsStore";
@@ -94,7 +95,6 @@ import {
   fetchExplorerPdfMetadata,
   fetchThreadHeaderSummary,
   fetchThreadTranscriptRows,
-  fetchThreads,
   queryClient,
   type ExplorerEntriesResult,
   type ProjectSummary,
@@ -257,8 +257,11 @@ async function persistLastThreadRoute(threadId: string): Promise<void> {
   });
 }
 
+// Session sync owns the shell read model: an empty thread list is refreshed by
+// its stream, not by a request from here. The controller still waits the
+// fallback delay before it treats the list as final.
 async function refreshLynxRouteSnapshot(): Promise<unknown> {
-  return fetchThreads();
+  return false;
 }
 
 function waitForLynxRouteFallback(): Promise<void> {
@@ -998,7 +1001,6 @@ function ThreadRightDocks(
             }),
           )
             .then(async () => {
-              await queryClient.invalidateQueries({ queryKey: ["threads"] });
               await queryClient.invalidateQueries({
                 queryKey: ["thread-detail", sidechatThreadId],
               });
@@ -1835,11 +1837,7 @@ function ThreadPage(props: ThreadPageProps) {
         threadId: threadId as never,
         title,
       });
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["thread-detail", threadId] }),
-        queryClient.invalidateQueries({ queryKey: ["threads"] }),
-        queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-      ]);
+      await queryClient.invalidateQueries({ queryKey: ["thread-detail", threadId] });
       setRenamingThread(false);
     } catch (error) {
       setThreadRenameError(error instanceof Error ? error.message : "Unable to rename thread.");
@@ -2804,35 +2802,9 @@ export function SliceRouter({
     },
     [sidebarOpen],
   );
-  const { data: routeThreads, isPending: routeThreadsPending } = useQuery({
-    queryKey: ["threads"],
-    queryFn: fetchThreads,
-    enabled: !componentsLabRoute,
-    refetchInterval: 5_000,
-  });
-  useEffect(() => {
-    if (componentsLabRoute) return;
-    let active = true;
-    let invalidateTimer: ReturnType<typeof setTimeout> | null = null;
-    const unsubscribe = subscribeOrchestrationShellEvents((item) => {
-      if (item.kind !== "snapshot" && item.kind !== "thread-upserted") return;
-      if (invalidateTimer !== null) return;
-      invalidateTimer = setTimeout(() => {
-        invalidateTimer = null;
-        if (!active) return;
-        void queryClient.invalidateQueries({ queryKey: ["threads"] });
-        // The sidebar and Kanban board read the sidebar snapshot; refresh it on
-        // the same shell change instead of waiting for its 5s poll, as the web
-        // app updates both live.
-        void queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
-      }, 50);
-    });
-    return () => {
-      active = false;
-      unsubscribe();
-      if (invalidateTimer !== null) clearTimeout(invalidateTimer);
-    };
-  }, [componentsLabRoute]);
+  // Threads and projects come from the shared store, kept live by session sync.
+  const [routeThreads, routeThreadsHydrated] = useRouteThreadSummaries();
+  const routeThreadsPending = !routeThreadsHydrated;
   const [routeProjects, sessionShellHydrated] = useSessionShellProjects();
   const workspacePages = useWorkspaceStore((state) => state.workspacePages);
   const recentViews = useRecentViewsStore((state) => state.recentViews);
@@ -2872,7 +2844,7 @@ export function SliceRouter({
   const recentViewAvailability = useMemo(
     () => ({
       availableThreadIds: new Set(
-        (routeThreads ?? []).map((thread) => thread.id as import("@synara/contracts").ThreadId),
+        routeThreads.map((thread) => thread.id as import("@synara/contracts").ThreadId),
       ),
       availableWorkspaceIds: new Set(workspacePages.map((workspace) => workspace.id)),
       availableSplitViewIds: new Set<string>(),
@@ -2886,7 +2858,7 @@ export function SliceRouter({
         currentView: currentRecentView,
         // ThreadSummary ids are unbranded strings; the snapshot values are real ids.
         threadsById: Object.fromEntries(
-          (routeThreads ?? []).map((thread) => [
+          routeThreads.map((thread) => [
             thread.id,
             {
               ...thread,
@@ -2896,7 +2868,7 @@ export function SliceRouter({
           ]),
         ),
         projects: routeProjects,
-        pinnedThreadIds: (routeThreads ?? [])
+        pinnedThreadIds: routeThreads
           .filter((thread) => thread.isPinned)
           .map((thread) => thread.id as import("@synara/contracts").ThreadId),
         workspacePages,
@@ -2932,7 +2904,7 @@ export function SliceRouter({
       <VoiceNotificationHost />
       <TaskCompletionToastHost
         activeThreadId={activeThreadId}
-        threads={routeThreads ?? []}
+        threads={routeThreads}
         onOpenThread={(threadId) => history.push(`/thread/${threadId}`)}
       />
       <ProviderUpdatePrompt onReview={() => history.push("/settings/providers")} />
@@ -3166,7 +3138,7 @@ export function SliceRouter({
     () =>
       resolveRestorableThreadRoute({
         lastThreadRoute: persistedLastRoute,
-        availableThreadIds: new Set((routeThreads ?? []).map((thread) => thread.id)),
+        availableThreadIds: new Set(routeThreads.map((thread) => thread.id)),
       }),
     [persistedLastRoute, routeThreads],
   );
@@ -3183,7 +3155,7 @@ export function SliceRouter({
   useRestoreOrCreateChatRouteController({
     enabled: coldStartRoutePending && route.pathname === "/" && lastRouteHydrated,
     threadsHydrated: !routeThreadsPending,
-    threadIds: (routeThreads ?? []).map((thread) => thread.id),
+    threadIds: routeThreads.map((thread) => thread.id),
     splitViewsHydrated: true,
     splitViewIds: [],
     readLastThreadRoute,
@@ -3199,7 +3171,7 @@ export function SliceRouter({
         lastThreadRoute: persistedLastRoute,
         projects: routeProjects,
         sortOrder: studioSettings.sidebarThreadSortOrder,
-        threads: routeThreads ?? [],
+        threads: routeThreads,
       }),
     [persistedLastRoute, routeProjects, routeThreads, studioSettings.sidebarThreadSortOrder],
   );
@@ -3211,7 +3183,7 @@ export function SliceRouter({
   const studioRouteController = useRestoreOrCreateChatRouteController({
     enabled: route.pathname === "/studio" && studioSettings.showStudioSection && lastRouteHydrated,
     threadsHydrated: !routeThreadsPending && sessionShellHydrated,
-    threadIds: (routeThreads ?? []).map((thread) => thread.id),
+    threadIds: routeThreads.map((thread) => thread.id),
     splitViewsHydrated: true,
     splitViewIds: [],
     readLastThreadRoute,
@@ -3327,8 +3299,8 @@ export function SliceRouter({
   const navigateBackFromSettings = useCallback(() => {
     const target = resolveSettingsBackTarget({
       lastThreadRoute: persistedLastRoute,
-      availableThreadIds: new Set((routeThreads ?? []).map((thread) => thread.id)),
-      latestThreadId: routeThreads?.[0]?.id ?? null,
+      availableThreadIds: new Set(routeThreads.map((thread) => thread.id)),
+      latestThreadId: routeThreads[0]?.id ?? null,
     });
     history.push(target.kind === "thread" ? `/thread/${target.threadId}` : "/");
   }, [persistedLastRoute, routeThreads]);
@@ -3521,7 +3493,7 @@ export function SliceRouter({
         }}
         projects={routeProjects}
         threadId={route.params.threadId}
-        threads={routeThreads ?? []}
+        threads={routeThreads}
         resolvedTheme={resolvedTheme}
         viewportWidth={viewportWidth}
         viewportHeight={viewportHeight}

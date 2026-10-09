@@ -10,7 +10,8 @@ import {
   removeManagedWorktree,
 } from "../data/synaraClient.lynx";
 import { dialogs } from "../platform/dialogs";
-import { fetchSidebarSnapshot, queryClient } from "./queries";
+import { queryClient } from "./queries";
+import { readSidebarSnapshot, useSidebarSnapshot } from "./sidebarSnapshot.lynx";
 import {
   createDeleteThreadCommand,
   groupManagedWorktrees,
@@ -57,13 +58,7 @@ export function SettingsWorktreesPanel() {
       return fetchManagedWorktrees();
     },
   });
-  const snapshotQuery = useQuery({
-    queryKey: ["sidebar-snapshot"],
-    queryFn: () => {
-      "background only";
-      return fetchSidebarSnapshot();
-    },
-  });
+  const snapshotQuery = useSidebarSnapshot();
   const [deletingPath, setDeletingPath] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const groups = groupManagedWorktrees(
@@ -77,7 +72,7 @@ export function SettingsWorktreesPanel() {
     setDeleteError(null);
     let linkedThreads: ReturnType<typeof linkedThreadsForWorktree>;
     try {
-      const snapshot = await fetchSidebarSnapshot();
+      const snapshot = await readSidebarSnapshot();
       linkedThreads = linkedThreadsForWorktree(snapshot.workspaceThreads, input.path);
     } catch {
       setDeleteError(
@@ -114,10 +109,7 @@ export function SettingsWorktreesPanel() {
     } catch (error) {
       setDeleteError(error instanceof Error ? error.message : "Unable to delete the worktree.");
     } finally {
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["managed-worktrees"] }),
-        queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-      ]);
+      await queryClient.invalidateQueries({ queryKey: ["managed-worktrees"] });
       setDeletingPath(null);
     }
   }

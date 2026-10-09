@@ -53,11 +53,11 @@ import {
   fetchPullRequestDetail,
   fetchPullRequestDiff,
   fetchPullRequests,
-  fetchSidebarSnapshot,
   performPullRequestAction,
   queryClient,
   setPullRequestPinned,
 } from "./queries";
+import { useSidebarSnapshot } from "./sidebarSnapshot.lynx";
 import { Button } from "../components/ui/button";
 import {
   projectLynxKanbanComposerDrafts,
@@ -97,11 +97,7 @@ export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => 
     () => projectLynxKanbanComposerDrafts(lynxDraftsByThreadId),
     [lynxDraftsByThreadId],
   );
-  const { data, error, isPending, isFetching, refetch } = useQuery({
-    queryKey: ["sidebar-snapshot"],
-    queryFn: fetchSidebarSnapshot,
-    refetchInterval: 5_000,
-  });
+  const { data, error, isPending, isFetching, refetch } = useSidebarSnapshot();
   const board = useMemo(
     () => buildCanonicalSliceKanbanBoard(data, composerDraftByThreadId),
     [composerDraftByThreadId, data],
@@ -240,11 +236,7 @@ export function KanbanProjectPage({
   const kanbanColumnRectsRef = useRef<Partial<Record<KanbanColumnKey, KanbanDragRect>>>({});
   const nativeDragRef = useRef<NativeKanbanDragSession | null>(null);
   const [nativeDrag, setNativeDrag] = useState<NativeKanbanDragSession | null>(null);
-  const { data, error, isPending, isFetching, refetch } = useQuery({
-    queryKey: ["sidebar-snapshot"],
-    queryFn: fetchSidebarSnapshot,
-    refetchInterval: 2_000,
-  });
+  const { data, error, isPending, isFetching, refetch } = useSidebarSnapshot();
   const projectBoard = useMemo(
     () =>
       selectKanbanProjectBoard(
@@ -509,11 +501,7 @@ export function PullRequestsPage() {
   const [routeBodyWidth, setRouteBodyWidth] = useState(0);
   const [lastFailedAction, setLastFailedAction] = useState<PullRequestActionInput | null>(null);
   const actionGateRef = useRef(createPullRequestActionGate());
-  const { data: sidebarData } = useQuery({
-    queryKey: ["sidebar-snapshot"],
-    queryFn: fetchSidebarSnapshot,
-    refetchInterval: 60_000,
-  });
+  const { data: sidebarData } = useSidebarSnapshot();
   const { data, error, isPending, refetch, isFetching } = useQuery({
     queryKey: ["pull-requests", state, projectId ?? null],
     queryFn: () =>

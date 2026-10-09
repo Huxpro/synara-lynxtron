@@ -11,7 +11,7 @@ import { resolveProviderSendAvailability } from "@synara-web/lib/providerAvailab
 import { newCommandId, newThreadId } from "@synara-web/lib/utils";
 
 import { fetchFreshServerConfig, dispatchSynaraCommand } from "../data/synaraClient.lynx";
-import { queryClient, type ThreadHeaderSummary } from "./queries";
+import type { ThreadHeaderSummary } from "./queries";
 
 export interface NativeThreadHandoffProject {
   readonly id: string;
@@ -108,6 +108,5 @@ export async function createNativeThreadHandoff(input: {
       createdAt,
     });
   }
-  await queryClient.invalidateQueries({ queryKey: ["threads"] });
   return nextThreadId;
 }

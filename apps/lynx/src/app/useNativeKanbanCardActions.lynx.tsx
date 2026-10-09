@@ -22,11 +22,7 @@ import {
   nativeThreadContextConfirmation,
 } from "../components/sidebar/threadContextActions.logic";
 import { webStorage } from "../platform/storage";
-import {
-  fetchThreadHeaderSummary,
-  queryClient,
-  resolveNativeAssistantDeliveryMode,
-} from "./queries";
+import { fetchThreadHeaderSummary, resolveNativeAssistantDeliveryMode } from "./queries";
 import {
   buildNativeKanbanArchiveCommand,
   buildNativeKanbanRenameCommand,
@@ -127,7 +123,6 @@ export function useNativeKanbanCardActions(input: {
         });
       }
       await dispatchSynaraCommand(command);
-      await queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
       setMutationNotice(KANBAN_MUTATION_COPY[action].success);
       setMutationTarget(null);
     } catch (error) {
@@ -192,7 +187,6 @@ export function useNativeKanbanCardActions(input: {
           /* webpackMode: "eager" */ "../data/synaraClient"
         );
         await dispatchSynaraCommand(command);
-        await queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
         setMutationNotice(
           action === "toggle-pin"
             ? card.thread?.isPinned

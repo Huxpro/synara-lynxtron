@@ -35,7 +35,7 @@ describe("Settings Worktrees fidelity", () => {
       "utf8",
     );
 
-    expect(panelSource).toContain("const snapshot = await fetchSidebarSnapshot()");
+    expect(panelSource).toContain("const snapshot = await readSidebarSnapshot()");
     expect(panelSource).toContain("linkedThreadsForWorktree(snapshot.workspaceThreads, input.path");
     expect(panelSource).toContain(
       "Could not verify linked conversations. Retry once the app reconnects to the server.",
@@ -48,9 +48,8 @@ describe("Settings Worktrees fidelity", () => {
     expect(panelSource).toContain(
       'queryClient.invalidateQueries({ queryKey: ["managed-worktrees"] })',
     );
-    expect(panelSource).toContain(
-      'queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] })',
-    );
+    // Linked conversations come from the shared store; nothing to invalidate.
+    expect(panelSource).not.toContain('queryKey: ["sidebar-snapshot"]');
   });
 
   it("matches the Web grouped-row and status anatomy", () => {

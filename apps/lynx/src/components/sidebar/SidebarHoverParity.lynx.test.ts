@@ -2,13 +2,12 @@ import { describe, expect, it } from "@rstest/core";
 import { readFileSync } from "node:fs";
 
 describe("Lynx sidebar hover parity", () => {
-  it("invalidates live thread projections from orchestration domain events", () => {
+  it("reads live thread projections from the shared store instead of invalidating a poll", () => {
     const source = readFileSync(new URL("../../app/router.tsx", import.meta.url), "utf8");
 
-    expect(source).toContain("subscribeOrchestrationShellEvents((item) => {");
-    expect(source).toContain("if (invalidateTimer !== null) return;");
-    expect(source).toContain("}, 50);");
-    expect(source).toContain('queryClient.invalidateQueries({ queryKey: ["threads"] })');
+    expect(source).toContain("useRouteThreadSummaries()");
+    expect(source).not.toContain('queryKey: ["threads"]');
+    expect(source).not.toContain("queryFn: fetchThreads");
   });
 
   it("renders the hover card outside the interactive row hit tree", () => {
@@ -50,7 +49,7 @@ describe("Lynx sidebar hover parity", () => {
     expect(source).toContain("getFallbackThreadIdAfterDelete({");
     expect(source).toContain("sortOrder: threadSortOrder");
     expect(source).toContain('navigate(fallbackThreadId ? `/thread/${fallbackThreadId}` : "/")');
-    expect(source).toContain('queryClient.invalidateQueries({ queryKey: ["threads"] })');
+    expect(source).not.toContain('queryKey: ["threads"]');
     expect(source).toContain('type: "project.meta.update"');
     expect(source).toContain("buildProjectContextMenuItems({");
     expect(source).toContain('action === "delete-threads" || action === "delete"');
@@ -87,7 +86,8 @@ describe("Lynx sidebar hover parity", () => {
       "requestOpenThreadPathInTerminal({ threadId: thread.id, cwd: workspaceRoot })",
     );
     expect(source).toContain("renameProjectLocally(renameProjectId");
-    expect(source).toContain("invalidateSidebarSnapshotProjectionCache()");
+    // The alias is store state: the sidebar follows it without a cache to clear.
+    expect(source).not.toContain("invalidateSidebarSnapshotProjectionCache");
     expect(source).not.toContain(
       "type: 'project.meta.update',\n            projectId: renameProjectId",
     );

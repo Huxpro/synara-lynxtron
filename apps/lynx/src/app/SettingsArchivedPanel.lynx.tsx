@@ -1,5 +1,4 @@
 import { useRef, useState, type ReactNode } from "@lynx-js/react";
-import { useQuery } from "@tanstack/react-query";
 import { getRectByRef } from "@lynx-js/lynx-ui";
 import type { NodesRef } from "@lynx-js/types";
 import { buildArchivedThreadContextMenuItems } from "@synara/shared/contextMenu";
@@ -16,7 +15,7 @@ import {
   resolveSecondaryPointerOffset,
 } from "../components/sidebar/threadContextActions.logic";
 import { focusLynxNode } from "../components/ui/focus.lynx";
-import { fetchSidebarSnapshot, queryClient } from "./queries";
+import { useSidebarSnapshot } from "./sidebarSnapshot.lynx";
 import {
   createDeleteArchivedThreadCommand,
   createUnarchiveCommand,
@@ -71,10 +70,7 @@ function ArchivedThreadRow(props: {
 }
 
 export function SettingsArchivedPanel() {
-  const snapshotQuery = useQuery({
-    queryKey: ["sidebar-snapshot"],
-    queryFn: fetchSidebarSnapshot,
-  });
+  const snapshotQuery = useSidebarSnapshot();
   const [pendingAction, setPendingAction] = useState<{
     readonly threadId: string;
     readonly type: "restore" | "delete";
@@ -97,7 +93,6 @@ export function SettingsArchivedPanel() {
           commandId: newCommandId(),
         }),
       );
-      await queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
     } catch (error) {
       setActionError(error instanceof Error ? error.message : "Unable to restore the thread.");
     } finally {
@@ -122,7 +117,6 @@ export function SettingsArchivedPanel() {
           commandId: newCommandId(),
         }),
       );
-      await queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
     } catch (error) {
       setActionError(error instanceof Error ? error.message : "Unable to delete the thread.");
     } finally {

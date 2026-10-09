@@ -21,7 +21,6 @@ import type {
   OrchestrationThreadPullRequest,
   PinnedMessage,
   ProjectId,
-  OrchestrationSpaceShell,
   ProviderKind,
   ThreadMarker,
   PullRequestDetail,
@@ -51,7 +50,6 @@ import type {
   ThreadHandoff,
 } from "@synara/contracts";
 import type { SidebarStatusPresentation } from "@synara-web/components/SidebarStatus.logic";
-import { resolveThreadStatusPill } from "@synara-web/components/SidebarThreadStatus.logic";
 import {
   buildRevertTurnCountByUserMessageId,
   buildTurnDiffSummaryByAssistantMessageId,
@@ -71,19 +69,11 @@ import {
   type PendingApproval,
   type PendingUserInput,
 } from "@synara-web/session-logic";
-import {
-  createSidebarDisplayThreadsSelector,
-  createThreadShellsSelector,
-} from "@synara-web/storeSelectors";
-import type { Project, SidebarThreadSummary } from "@synara-web/types";
+import type { Project, SidebarThreadSummary, Space } from "@synara-web/types";
 import type {
   SidebarSearchProject,
   SidebarSearchThread,
 } from "@synara-web/components/SidebarSearchPalette.logic";
-import {
-  projectSidebarSearchProject,
-  projectSidebarSearchThreads,
-} from "@synara-web/components/SidebarSearchProjection.logic";
 import { webStorage } from "../platform/storage";
 import {
   deriveThreadRecapSource,
@@ -93,10 +83,7 @@ import {
 } from "@synara-web/lib/threadRecap";
 import type { NativeSyntaxHighlightThemes } from "../main/syntaxHighlightingContract.logic";
 import { isLocalAbsolutePath } from "@synara/shared/path";
-import {
-  projectActiveThreadSummaries,
-  resolveSnapshotThreadProvider,
-} from "./threadSummaryProjection.logic";
+import { resolveSnapshotThreadProvider } from "./threadSummaryProjection.logic";
 import { parseMarkdown, type MarkdownNode } from "../components/markdown/markdownAst.lynx";
 
 export const queryClient = new QueryClient({
@@ -218,8 +205,7 @@ export interface ThreadRecapPlan {
 }
 
 export interface SidebarSnapshot {
-  readonly snapshotSequence: number;
-  readonly spaces: readonly OrchestrationSpaceShell[];
+  readonly spaces: readonly Space[];
   readonly projects: readonly ProjectSummary[];
   readonly threads: readonly ThreadSummary[];
   readonly archivedThreads: readonly ThreadSummary[];
@@ -414,39 +400,6 @@ const explorerFileCache = new Map<
   }
 >();
 
-let sidebarSnapshotCache:
-  | {
-      readonly shellSnapshotSequence: number;
-      readonly searchSnapshotSequence: number;
-      readonly value: SidebarSnapshot;
-    }
-  | undefined;
-let sidebarSearchSnapshotCache: OrchestrationSidebarSearchSnapshot | undefined;
-let sidebarSearchSnapshotRequest: Promise<void> | null = null;
-
-function refreshSidebarSearchSnapshotInBackground(
-  fetchSnapshot: () => Promise<OrchestrationSidebarSearchSnapshot>,
-): void {
-  if (sidebarSearchSnapshotRequest !== null) return;
-  sidebarSearchSnapshotRequest = fetchSnapshot()
-    .then((snapshot) => {
-      sidebarSearchSnapshotCache = snapshot;
-      sidebarSnapshotCache = undefined;
-    })
-    .catch((error) => {
-      console.warn("[slice] sidebar search projection unavailable", String(error));
-    })
-    .finally(() => {
-      sidebarSearchSnapshotRequest = null;
-    });
-}
-/** Renderer-local presentation changes (for example a project alias) do not
- * advance the server sequence, so callers must clear this projection memo
- * before refetching the same authoritative shell snapshot. */
-export function invalidateSidebarSnapshotProjectionCache(): void {
-  sidebarSnapshotCache = undefined;
-}
-
 const transcriptRowsByThreadId = new Map<
   string,
   {
@@ -464,181 +417,13 @@ export interface PullRequestSnapshot {
   readonly repositoryBatches: readonly PullRequestsListRepositoryBatch[];
 }
 
-export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
+/** Message windows for the sidebar search palette; a server read upstream does not have. */
+export async function fetchSidebarSearchSnapshot(): Promise<OrchestrationSidebarSearchSnapshot> {
   "background only";
-  const [
-    { fetchSynaraSidebarShellSnapshot, fetchSynaraSidebarSearchSnapshot },
-    { useStore },
-    { projectShellSnapshot },
-    { hydrateStorage },
-    { readSidebarUiState },
-  ] = await Promise.all([
-    import(/* webpackMode: "eager" */ "../data/synaraClient"),
-    import(/* webpackMode: "eager" */ "@synara-web/store"),
-    import(/* webpackMode: "eager" */ "./sessionShell.lynx"),
-    import(/* webpackMode: "eager" */ "../platform/storage"),
-    import(/* webpackMode: "eager" */ "@synara-web/components/Sidebar.uiState"),
-  ]);
-  const snapshot = await fetchSynaraSidebarShellSnapshot();
-  await hydrateStorage();
-  const searchSnapshot = sidebarSearchSnapshotCache ?? {
-    snapshotSequence: snapshot.snapshotSequence,
-    threads: [],
-  };
-  refreshSidebarSearchSnapshotInBackground(fetchSynaraSidebarSearchSnapshot);
-  if (
-    sidebarSnapshotCache?.shellSnapshotSequence === snapshot.snapshotSequence &&
-    sidebarSnapshotCache.searchSnapshotSequence === searchSnapshot.snapshotSequence
-  ) {
-    return sidebarSnapshotCache.value;
-  }
-  const dismissedThreadStatusKeyByThreadId =
-    readSidebarUiState().dismissedThreadStatusKeyByThreadId;
-  // Projected with the Web store's own projection, not committed: upstream
-  // session sync owns shell state in the store, and this snapshot is bounded.
-  let normalized;
-  try {
-    normalized = projectShellSnapshot(useStore.getState(), snapshot);
-  } catch (error) {
-    console.error("[slice] main store projection failed", error);
-    throw error;
-  }
-  const projectNames = new Map(normalized.projects.map((project) => [project.id, project.name]));
-  const spaceNames = new Map(normalized.spaces.map((space) => [space.id, space.name]));
-  const displayThreads = createSidebarDisplayThreadsSelector()(normalized);
-  const archivedThreadShells = createThreadShellsSelector()(normalized).filter(
-    (thread) => thread.archivedAt != null,
+  const { fetchSynaraSidebarSearchSnapshot } = await import(
+    /* webpackMode: "eager" */ "../data/synaraClient"
   );
-  const workspaceThreads = createThreadShellsSelector()(normalized).map((thread) => ({
-    id: thread.id,
-    title: thread.title,
-    archivedAt: thread.archivedAt ?? null,
-    worktreePath: thread.worktreePath ?? null,
-    associatedWorktreePath: thread.associatedWorktreePath ?? null,
-  }));
-  const searchMessagesByThreadId = new Map(
-    searchSnapshot.threads.map((thread) => [thread.threadId, thread.messages] as const),
-  );
-  const threads = displayThreads.map((thread) => ({
-    id: thread.id,
-    title: thread.title,
-    projectId: thread.projectId,
-    project: projectNames.get(thread.projectId) ?? "Unknown project",
-    messageCount:
-      normalized.messageIdsByThreadId?.[thread.id]?.length ??
-      searchMessagesByThreadId.get(thread.id)?.length ??
-      0,
-    createdAt: thread.createdAt,
-    updatedAt: thread.updatedAt ?? thread.createdAt,
-    archivedAt: thread.archivedAt ?? null,
-    latestUserMessageAt: thread.latestUserMessageAt ?? null,
-    live: thread.hasLiveTailWork,
-    provider: thread.session?.provider ?? thread.modelSelection.provider,
-    isPinned: thread.isPinned,
-    sessionStatus: thread.session?.status ?? null,
-    activeTurnId: thread.session?.activeTurnId ?? null,
-    parentThreadId: thread.parentThreadId ?? null,
-    subagentAgentId: thread.subagentAgentId ?? null,
-    subagentNickname: thread.subagentNickname ?? null,
-    subagentRole: thread.subagentRole ?? null,
-    forkSourceThreadId: thread.forkSourceThreadId ?? null,
-    sidechatSourceThreadId: thread.sidechatSourceThreadId ?? null,
-    handoffSourceProvider: thread.handoff?.sourceProvider ?? null,
-    envMode: thread.envMode,
-    branch: thread.branch,
-    worktreePath: thread.worktreePath,
-    associatedWorktreePath: thread.associatedWorktreePath,
-    associatedWorktreeBranch: thread.associatedWorktreeBranch,
-    status: resolveThreadStatusPill({
-      thread: {
-        ...thread,
-        dismissedStatusKey: dismissedThreadStatusKeyByThreadId[thread.id],
-      },
-      hasPendingApprovals: thread.hasPendingApprovals,
-      hasPendingUserInput: thread.hasPendingUserInput,
-    }),
-  }));
-  const archivedThreads = archivedThreadShells.map((thread) => ({
-    id: thread.id,
-    title: thread.title,
-    projectId: thread.projectId,
-    project: projectNames.get(thread.projectId) ?? "Unknown project",
-    messageCount: normalized.messageIdsByThreadId?.[thread.id]?.length ?? 0,
-    createdAt: thread.createdAt,
-    updatedAt: thread.updatedAt ?? thread.createdAt,
-    archivedAt: thread.archivedAt ?? null,
-    latestUserMessageAt: thread.latestUserMessageAt ?? null,
-    live: false,
-    provider: thread.modelSelection.provider,
-  }));
-  const searchProjects = normalized.projects.map((project) =>
-    projectSidebarSearchProject({
-      id: project.id,
-      name: project.name,
-      remoteName: project.remoteName,
-      folderName: project.folderName,
-      localName: project.localName,
-      cwd: project.cwd,
-      spaceName: project.spaceId
-        ? (spaceNames.get(project.spaceId) ?? "Unknown space")
-        : project.kind === "project"
-          ? "Void"
-          : "Global",
-      createdAt: project.createdAt,
-      updatedAt: project.updatedAt,
-    }),
-  );
-  const searchThreads = projectSidebarSearchThreads({
-    projects: searchProjects,
-    threads: displayThreads.map((thread) => {
-      return {
-        id: thread.id,
-        title: thread.title,
-        projectId: thread.projectId,
-        provider: thread.session?.provider ?? thread.modelSelection.provider,
-        createdAt: thread.createdAt,
-        updatedAt: thread.updatedAt,
-        // The server has already capped this message window before it crosses
-        // the Native WebSocket; the shared projection reapplies the same
-        // deterministic contract before data reaches the renderer.
-        messages: searchMessagesByThreadId.get(thread.id),
-      };
-    }),
-  });
-  const value = {
-    snapshotSequence: snapshot.snapshotSequence,
-    spaces: snapshot.spaces,
-    projects: normalized.projects.map((project) => ({
-      id: project.id,
-      kind: project.kind,
-      title: project.name,
-      remoteName: project.remoteName,
-      folderName: project.folderName,
-      localName: project.localName,
-      workspaceRoot: project.cwd,
-      defaultModelSelection: project.defaultModelSelection,
-      scripts: project.scripts,
-      isPinned: project.isPinned,
-      spaceId: project.spaceId ?? null,
-    })),
-    threads,
-    archivedThreads,
-    workspaceThreads,
-    searchProjects,
-    searchThreads,
-    kanbanProjects: normalized.projects.map((project) => ({
-      id: project.id,
-      kind: project.kind,
-      name: project.name,
-    })),
-    kanbanThreads: displayThreads,
-  };
-  sidebarSnapshotCache = {
-    shellSnapshotSequence: snapshot.snapshotSequence,
-    searchSnapshotSequence: searchSnapshot.snapshotSequence,
-    value,
-  };
-  return value;
+  return fetchSynaraSidebarSearchSnapshot();
 }
 
 export async function fetchExplorerEntries(input: {
@@ -789,15 +574,6 @@ export async function fetchExplorerPdfMetadata(input: {
     cwd: input.workspaceRoot,
     path: input.relativePath,
   });
-}
-
-export async function fetchThreads(): Promise<ThreadSummary[]> {
-  "background only";
-  const { fetchSynaraShellSnapshot } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  const snapshot = await fetchSynaraShellSnapshot();
-  return projectActiveThreadSummaries(snapshot);
 }
 
 export async function fetchThreadCompletionAssistantSummary(

@@ -7,9 +7,9 @@
   "lynxEntries": ["src/app/index.tsx"],
   "parallelImplementationBaseline": {
     "synaraClientImporters": 39,
-    "useQueryCallSites": 78,
-    "refetchIntervalSites": 15,
-    "routerTsxLines": 3733
+    "useQueryCallSites": 66,
+    "refetchIntervalSites": 8,
+    "routerTsxLines": 3705
   },
   "patchedSources": ["apps/web/src/routes/__root.tsx"],
   "hardIslandPackages": [

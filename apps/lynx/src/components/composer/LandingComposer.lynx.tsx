@@ -16,7 +16,7 @@ import {
   readSettingsGeneralProjection,
 } from "@synara-web/appSettingsStorageProjection.logic";
 
-import { fetchSidebarSnapshot, queryClient } from "../../app/queries";
+import { queryClient } from "../../app/queries";
 import { projectShellSnapshot } from "../../app/sessionShell.lynx";
 import { EmptyThreadContextTray } from "../../app/EmptyThreadContextTray.lynx";
 import { useComposerDraftStore } from "../../adapters/composerDraftStore.lynx";
@@ -69,9 +69,8 @@ export async function loadLandingBootstrap(
   containerKind: "chat" | "studio" = "chat",
 ) {
   "background only";
-  const [snapshot, , config, serverSettings] = await Promise.all([
+  const [snapshot, config, serverSettings] = await Promise.all([
     fetchSynaraSidebarShellSnapshot(),
-    fetchSidebarSnapshot(),
     fetchServerConfig(),
     fetchServerSettings().catch(() => null),
   ]);
@@ -139,7 +138,6 @@ export async function loadLandingBootstrap(
     const refreshed = await fetchSynaraSidebarShellSnapshot();
     const created = refreshed.projects.find((project) => project.id === projectId);
     if (!created) throw new Error("The new chat workspace was not persisted.");
-    await fetchSidebarSnapshot();
     return {
       homeProject: created,
       projects: refreshed.projects.filter((project) => project.kind === "project"),
@@ -155,7 +153,6 @@ export async function loadLandingBootstrap(
     const refreshed = await fetchSynaraSidebarShellSnapshot();
     const recovered = refreshed.projects.find((project) => project.kind === containerKind);
     if (recovered) {
-      await fetchSidebarSnapshot();
       return {
         homeProject: recovered,
         projects: refreshed.projects.filter((project) => project.kind === "project"),
@@ -488,11 +485,7 @@ export function LandingComposer(props: {
         onSendSucceeded={() => {
           "background only";
           props.onThreadCreated(threadIdRef.current, { temporary });
-          void Promise.all([
-            queryClient.invalidateQueries({ queryKey: ["threads"] }),
-            queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-            queryClient.invalidateQueries({ queryKey: ["landing-composer-bootstrap"] }),
-          ]);
+          void queryClient.invalidateQueries({ queryKey: ["landing-composer-bootstrap"] });
         }}
       />
       <EmptyThreadContextTray
