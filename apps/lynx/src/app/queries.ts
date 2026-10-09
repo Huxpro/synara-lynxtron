@@ -469,11 +469,13 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
   const [
     { fetchSynaraSidebarShellSnapshot, fetchSynaraSidebarSearchSnapshot },
     { useStore },
+    { projectShellSnapshot },
     { hydrateStorage },
     { readSidebarUiState },
   ] = await Promise.all([
     import(/* webpackMode: "eager" */ "../data/synaraClient"),
     import(/* webpackMode: "eager" */ "@synara-web/store"),
+    import(/* webpackMode: "eager" */ "./sessionShell.lynx"),
     import(/* webpackMode: "eager" */ "../platform/storage"),
     import(/* webpackMode: "eager" */ "@synara-web/components/Sidebar.uiState"),
   ]);
@@ -492,17 +494,11 @@ export async function fetchSidebarSnapshot(): Promise<SidebarSnapshot> {
   }
   const dismissedThreadStatusKeyByThreadId =
     readSidebarUiState().dismissedThreadStatusKeyByThreadId;
-  // The real Web client store is the single state container here too: the read
-  // model goes through the same zustand action the Web app uses, and the sidebar
-  // projection reads back from that store instead of a slice-local copy.
+  // Projected with the Web store's own projection, not committed: upstream
+  // session sync owns shell state in the store, and this snapshot is bounded.
   let normalized;
   try {
-    useStore
-      .getState()
-      .syncServerShellSnapshot(
-        snapshot as Parameters<ReturnType<typeof useStore.getState>["syncServerShellSnapshot"]>[0],
-      );
-    normalized = useStore.getState();
+    normalized = projectShellSnapshot(useStore.getState(), snapshot);
   } catch (error) {
     console.error("[slice] main store projection failed", error);
     throw error;

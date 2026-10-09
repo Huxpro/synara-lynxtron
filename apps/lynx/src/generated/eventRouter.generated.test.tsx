@@ -3,6 +3,8 @@
 // NativeApi double. Proves the shared store is fed by upstream's sync code and
 // that the legacy polling read path can run next to it.
 
+import { readFileSync } from "node:fs";
+
 import { afterEach, beforeEach, describe, expect, it, rs } from "@rstest/core";
 import { act, render } from "@lynx-js/react/testing-library";
 import { createMemoryHistory } from "@tanstack/history";
@@ -27,6 +29,7 @@ import { getThreadFromState, getThreadsFromState } from "@synara-web/threadDeriv
 import { installFakeNativeHost } from "../adapters/fakeNativeHost.testUtils";
 import { setNativeApiForTest } from "../adapters/nativeApi.lynx";
 import { bindLynxRouterHistory } from "../adapters/reactRouter.lynx";
+import { projectShellSnapshot } from "../app/sessionShell.lynx";
 import { projectThreadDetailSnapshot } from "../app/threadDetailProjection.logic";
 import { EventRouter } from "./eventRouter.generated";
 
@@ -319,22 +322,151 @@ describe("generated EventRouter on the Lynx shims", () => {
     );
   });
 
-  it("re-applying a shell snapshot the polling path already applied changes nothing", async () => {
-    await mount("/");
-    const snapshot = makeShellSnapshot(shellThread(THREAD_1, "Same snapshot"));
-    useStore.getState().syncServerShellSnapshot(snapshot);
-    const polled = useStore.getState();
-
-    act(() => {
-      fake.pushShell({ kind: "snapshot", snapshot });
+  it("keeps an old thread's detail and newer streamed shell state when a bounded sidebar poll resolves late", async () => {
+    const OLD_THREAD = ThreadId.makeUnsafe("thread-old");
+    const RECENT = Array.from({ length: 80 }, (_unused, index) =>
+      ThreadId.makeUnsafe(`thread-recent-${String(index).padStart(2, "0")}`),
+    );
+    const recentShell = (id: ThreadId, title: string) => ({
+      ...shellThread(id, title),
+      updatedAt: "2026-03-01T00:00:00.000Z",
     });
+    const oldShell = {
+      ...shellThread(OLD_THREAD, "Old thread"),
+      updatedAt: "2026-01-01T00:00:00.000Z",
+    };
+    const fullShell = {
+      ...makeShellSnapshot(oldShell),
+      snapshotSequence: 5,
+      threads: [oldShell, ...RECENT.map((id) => recentShell(id, `Recent ${id}`))],
+    };
+    const streamingMessage = (text: string) =>
+      [
+        {
+          id: MESSAGE_1,
+          role: "assistant",
+          text,
+          turnId: null,
+          streaming: true,
+          createdAt: "2026-02-27T00:02:00.000Z",
+          updatedAt: "2026-02-27T00:02:00.000Z",
+        },
+      ] as never;
 
-    const synced = useStore.getState();
-    expect(synced.projects).toEqual(polled.projects);
-    expect(synced.threadIds).toEqual(polled.threadIds);
-    expect(synced.threadShellById).toEqual(polled.threadShellById);
-    expect(synced.sidebarThreadSummaryById).toBe(polled.sidebarThreadSummaryById);
-    expect(synced.shellSnapshotSequence).toBe(polled.shellSnapshotSequence);
+    // The visible thread is older than the sidebar's 80 most recent ones.
+    await mount(`/thread/${OLD_THREAD}`);
+    act(() => {
+      fake.pushShell({ kind: "snapshot", snapshot: fullShell });
+      fake.pushThread({
+        kind: "snapshot",
+        snapshot: {
+          snapshotSequence: 5,
+          thread: makeReadModelThread({ id: OLD_THREAD, messages: streamingMessage("Hello") }),
+        },
+      } as OrchestrationThreadStreamItem);
+    });
+    expect(getThreadsFromState(useStore.getState())).toHaveLength(81);
+
+    // The sidebar poll is captured now (sequence 5, 80 newest threads) …
+    const boundedPoll = { ...fullShell, threads: fullShell.threads.slice(1) };
+    // … then a newer streamed shell change lands …
+    act(() => {
+      fake.pushShell({
+        kind: "thread-upserted",
+        sequence: 6,
+        thread: recentShell(RECENT[0]!, "Renamed on another client"),
+      } as OrchestrationShellStreamItem);
+    });
+    const beforePoll = useStore.getState();
+
+    // … and only then does the poll resolve. `fetchSidebarSnapshot` cannot be
+    // loaded here (its module graph breaks rstest's chunk loading), so this is
+    // its one store interaction, pinned to the source right below.
+    const queriesSource = readFileSync(new URL("../app/queries.ts", import.meta.url), "utf8");
+    expect(queriesSource).toContain(
+      "normalized = projectShellSnapshot(useStore.getState(), snapshot);",
+    );
+    expect(queriesSource).not.toMatch(/\.(syncServer\w+|applyShellEvent|setState)\(/);
+    const polled = projectShellSnapshot(useStore.getState(), boundedPoll);
+    expect(getThreadsFromState(polled)).toHaveLength(80);
+    expect(getThreadFromState(polled, OLD_THREAD)).toBeUndefined();
+
+    // The store is exactly what session sync made it.
+    const afterPoll = useStore.getState();
+    expect(afterPoll).toBe(beforePoll);
+    expect(getThreadFromState(afterPoll, OLD_THREAD)?.messages[0]?.text).toBe("Hello");
+    expect(getThreadFromState(afterPoll, RECENT[0]!)?.title).toBe("Renamed on another client");
+    expect(getThreadsFromState(afterPoll)).toHaveLength(81);
+
+    // The next delta for the old thread applies, once.
+    const delta = makeDomainEvent(
+      "thread.message-sent",
+      {
+        threadId: OLD_THREAD,
+        messageId: MESSAGE_1,
+        role: "assistant",
+        text: " world",
+        turnId: null,
+        streaming: true,
+        createdAt: "2026-02-27T00:02:00.000Z",
+        updatedAt: "2026-02-27T00:02:00.000Z",
+      } as never,
+      { sequence: 7 },
+    );
+    act(() => {
+      fake.pushThread({ kind: "event", event: delta });
+      fake.pushThread({ kind: "event", event: delta }); // redelivery is dropped by sequence
+      rs.advanceTimersByTime(100);
+    });
+    expect(getThreadFromState(useStore.getState(), OLD_THREAD)?.messages[0]?.text).toBe(
+      "Hello world",
+    );
+  });
+
+  // KNOWN UPSTREAM DEFECT, pinned as an expected failure (review finding 1; not
+  // fixed on upstream/main 6f54f53c6). When a replacement thread snapshot
+  // arrives while deltas it already contains are still queued in the 100 ms
+  // flush window, `EventRouter` drops only `pendingThreadEventsById`, not
+  // `pendingDomainEvents`, and the flush appends the delta again. Nothing on
+  // Lynx renders thread messages from the store yet. Step 4 (thread page reads
+  // the store) is blocked on this: fix upstream or filter at the Lynx read
+  // boundary. When this test starts passing, remove `.fails`.
+  it.fails("does not re-apply a queued delta that a replacement thread snapshot already contains", async () => {
+    await mount(`/thread/${THREAD_1}`);
+    const streamingMessage = (text: string) =>
+      [
+        {
+          id: MESSAGE_1,
+          role: "assistant",
+          text,
+          turnId: null,
+          streaming: true,
+          createdAt: "2026-02-27T00:02:00.000Z",
+          updatedAt: "2026-02-27T00:02:00.000Z",
+        },
+      ] as never;
+    const threadSnapshot = (snapshotSequence: number, text: string) =>
+      ({
+        kind: "snapshot",
+        snapshot: {
+          snapshotSequence,
+          thread: makeReadModelThread({ id: THREAD_1, messages: streamingMessage(text) }),
+        },
+      }) as OrchestrationThreadStreamItem;
+    act(() => {
+      fake.pushShell({
+        kind: "snapshot",
+        snapshot: makeShellSnapshot(shellThread(THREAD_1, "One")),
+      });
+      fake.pushThread(threadSnapshot(5, "Hello"));
+      fake.pushThread({ kind: "event", event: assistantDelta(6, " wor") }); // flushes at once
+      fake.pushThread({ kind: "event", event: assistantDelta(7, "ld") }); // queued
+      fake.pushThread(threadSnapshot(7, "Hello world")); // resubscribe inside the window
+      rs.advanceTimersByTime(100);
+    });
+    expect(getThreadFromState(useStore.getState(), THREAD_1)?.messages[0]?.text).toBe(
+      "Hello world",
+    );
   });
 
   it("releases every listener and lease on unmount", async () => {

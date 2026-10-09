@@ -16,7 +16,9 @@
 //
 // The script fails (and writes nothing) when upstream's shape changes in a way
 // it does not understand: a root that is missing, an identifier that resolves
-// to nothing, or an import form it cannot re-emit.
+// to nothing, an import form it cannot re-emit (attributes), a side-effect
+// import that is not listed as ignorable, or module-level code outside the
+// extraction that uses or assigns a binding inside it.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -35,6 +37,12 @@ const repoRoot = path.resolve(lynxRoot, "../..");
 export const EVENT_ROUTER_SOURCE = "apps/web/src/routes/__root.tsx";
 export const EVENT_ROUTER_OUTPUT = "apps/lynx/src/generated/eventRouter.generated.tsx";
 export const EVENT_ROUTER_ROOTS = Object.freeze(["EventRouter"]);
+/**
+ * Bare `import "…"` specifiers in the upstream file that are known not to
+ * matter to the extracted code (for example a stylesheet for the route shell).
+ * Empty today; any other side-effect import stops the generator.
+ */
+export const EVENT_ROUTER_IGNORED_SIDE_EFFECT_IMPORTS = Object.freeze([]);
 const WEB_SOURCE_ROOT = "apps/web/src";
 
 export class EventRouterGenerationError extends Error {
@@ -159,6 +167,7 @@ export function extractEventRouter({
   sourceText,
   sourcePath = EVENT_ROUTER_SOURCE,
   roots = EVENT_ROUTER_ROOTS,
+  allowedSideEffectImports = EVENT_ROUTER_IGNORED_SIDE_EFFECT_IMPORTS,
 }) {
   const sourceFileName = path.posix.join("/", sourcePath);
   const { program, sourceFile } = createProgramForSource(sourceFileName, sourceText);
@@ -218,6 +227,86 @@ export function extractEventRouter({
   }
   if (unresolved.length > 0) {
     fail(`closed-over identifiers that resolve to nothing: ${[...new Set(unresolved)].join(", ")}`);
+  }
+
+  // Module initialization the extraction would silently drop. Symbol traversal
+  // keeps declarations, so anything else that runs at module load and can change
+  // what the extracted code sees has to stop the generator instead.
+  const symbolOwner = (node) => {
+    const symbol = ts.isShorthandPropertyAssignment(node.parent)
+      ? checker.getShorthandAssignmentValueSymbol(node.parent)
+      : checker.getSymbolAtLocation(node);
+    for (const declaration of symbol?.declarations ?? []) {
+      if (declaration.getSourceFile() !== sourceFile) continue;
+      const owner = topLevelStatementOf(declaration, sourceFile);
+      if (owner && included.has(owner)) return owner;
+    }
+    return null;
+  };
+  const isWriteTarget = (node) => {
+    let target = node;
+    while (
+      ts.isParenthesizedExpression(target.parent) ||
+      ts.isNonNullExpression(target.parent) ||
+      ts.isAsExpression(target.parent)
+    ) {
+      target = target.parent;
+    }
+    const parent = target.parent;
+    if (ts.isBinaryExpression(parent)) {
+      return (
+        parent.left === target &&
+        parent.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
+        parent.operatorToken.kind <= ts.SyntaxKind.LastAssignment
+      );
+    }
+    if (ts.isPrefixUnaryExpression(parent) || ts.isPostfixUnaryExpression(parent)) {
+      return (
+        parent.operator === ts.SyntaxKind.PlusPlusToken ||
+        parent.operator === ts.SyntaxKind.MinusMinusToken
+      );
+    }
+    return false;
+  };
+  const isDeclarationStatement = (statement) =>
+    ts.isVariableStatement(statement) ||
+    ts.isFunctionDeclaration(statement) ||
+    ts.isClassDeclaration(statement) ||
+    ts.isInterfaceDeclaration(statement) ||
+    ts.isTypeAliasDeclaration(statement) ||
+    ts.isEnumDeclaration(statement) ||
+    ts.isModuleDeclaration(statement);
+  for (const statement of sourceFile.statements) {
+    if (ts.isImportDeclaration(statement)) {
+      const specifier = statement.moduleSpecifier.text;
+      if (!statement.importClause && !allowedSideEffectImports.includes(specifier)) {
+        fail(
+          `side-effect import "${specifier}" at ${sourcePath}:${lineOf(statement, sourceFile)} would be dropped; ` +
+            `decide whether Lynx needs it, then list it in EVENT_ROUTER_IGNORED_SIDE_EFFECT_IMPORTS`,
+        );
+      }
+      if (usedImportBindings.has(statement) && (statement.attributes ?? statement.assertClause)) {
+        fail(
+          `import of "${specifier}" at ${sourcePath}:${lineOf(statement, sourceFile)} has import attributes, which are not re-emitted`,
+        );
+      }
+      continue;
+    }
+    if (included.has(statement)) continue;
+    const executable = !isDeclarationStatement(statement) && !ts.isExportDeclaration(statement);
+    const inspect = (node) => {
+      if (ts.isIdentifier(node) && isReferencePosition(node)) {
+        const owner = symbolOwner(node);
+        if (owner && (executable || isWriteTarget(node))) {
+          fail(
+            `top-level statement at ${sourcePath}:${lineOf(statement, sourceFile)} ` +
+              `${executable ? "uses" : "assigns to"} extracted binding ${node.text} and would be dropped`,
+          );
+        }
+      }
+      ts.forEachChild(node, inspect);
+    };
+    inspect(statement);
   }
 
   const importLines = [];

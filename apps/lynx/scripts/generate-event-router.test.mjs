@@ -212,3 +212,76 @@ test("carries upstream exports over without exporting a root twice", () => {
   assert.match(result.text, /\nexport function EventRouter\(/);
   assert.doesNotMatch(result.text, /export \{ EventRouter \}/);
 });
+
+test("fails loudly instead of dropping module initialization", () => {
+  // A bare side-effect import, unless it is listed as ignorable.
+  const withSideEffect = FIXTURE.replace(
+    'import { helper } from "./-rootHelper";',
+    'import { helper } from "./-rootHelper";\nimport "../lib/new-initialization";',
+  );
+  assert.throws(
+    () => extractEventRouter({ sourceText: withSideEffect }),
+    /side-effect import "\.\.\/lib\/new-initialization" at .*:\d+ would be dropped/,
+  );
+  assert.equal(
+    extractEventRouter({
+      sourceText: withSideEffect,
+      allowedSideEffectImports: ["../lib/new-initialization"],
+    }).text,
+    extractEventRouter({ sourceText: FIXTURE }).text,
+  );
+
+  // Import attributes on an import the extraction keeps.
+  assert.throws(
+    () =>
+      extractEventRouter({
+        sourceText: FIXTURE.replace(
+          'from "./-rootHelper";',
+          'from "./-rootHelper" with { type: "json" };',
+        ),
+      }),
+    /import of "\.\/-rootHelper" at .*:\d+ has import attributes/,
+  );
+
+  // A top-level statement that assigns to a binding the extraction includes.
+  const mutable = FIXTURE.replace("const LIMIT = 4;", "let LIMIT = 4;");
+  assert.throws(
+    () =>
+      extractEventRouter({
+        sourceText: mutable.replace("const UNRELATED", "LIMIT = 8;\nconst UNRELATED"),
+      }),
+    /top-level statement at .*:\d+ uses extracted binding LIMIT and would be dropped/,
+  );
+  // … including one hidden in an excluded declaration or function.
+  assert.throws(
+    () =>
+      extractEventRouter({
+        sourceText: mutable.replace("const UNRELATED = 9;", "const UNRELATED = (LIMIT += 5);"),
+      }),
+    /assigns to extracted binding LIMIT/,
+  );
+  assert.throws(
+    () =>
+      extractEventRouter({
+        sourceText: mutable.replace("const [value] = useState(UNRELATED);", "LIMIT++;"),
+      }),
+    /assigns to extracted binding LIMIT/,
+  );
+  // A top-level call that touches an included binding (registration, mutation).
+  assert.throws(
+    () =>
+      extractEventRouter({
+        sourceText: FIXTURE.replace(
+          "const UNRELATED",
+          "Object.freeze(selectLate);\nconst UNRELATED",
+        ),
+      }),
+    /uses extracted binding selectLate/,
+  );
+  // Reading an included binding from excluded code is not initialization.
+  assert.doesNotThrow(() =>
+    extractEventRouter({
+      sourceText: FIXTURE.replace("const UNRELATED = 9;", "const UNRELATED = LIMIT * 2;"),
+    }),
+  );
+});

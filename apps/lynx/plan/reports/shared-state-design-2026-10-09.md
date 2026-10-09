@@ -300,19 +300,48 @@ screen), which is a separate decision.
 Mount: `App.tsx` renders `<SessionSync />` once storage is hydrated. The generated module is reached
 through a `'background only'` eager dynamic import (P-16), so it is absent from the main-thread graph.
 
-Writers of the shared store during coexistence:
+Writers of the shared store during coexistence: `EventRouter` is the only writer of server state.
 
-- Thread detail: `EventRouter` only. The polling path (`queries.ts`) now normalizes its snapshot with
-  the pure projection (`app/threadDetailProjection.logic.ts`) and does not commit. Two writers were not
-  harmless: a polled snapshot committed inside `EventRouter`'s 100 ms flush window makes the queued
-  streaming deltas append a second time (reproduced in `src/generated/eventRouter.generated.test.tsx`).
-- Shell: both. `fetchSidebarSnapshot` still commits `getSidebarShellSnapshot`, because
-  `LandingComposer` and `router.tsx` read `projects`/`spaces` from the store right after it. That
-  snapshot is the 80 most recently updated threads, so on a server with more threads the store drops
-  the older ones at each poll until Step 3 removes this writer. Re-applying an identical snapshot is a
-  no-op for the store slices (tested).
-- `subscribeOrchestrationShellEvents` now only listens on the facade (`onShellEvent`); `EventRouter`
+- Thread detail: the polling path (`queries.ts`) normalizes its snapshot with the pure projection
+  (`app/threadDetailProjection.logic.ts`) and does not commit. A polled snapshot committed inside
+  `EventRouter`'s 100 ms flush window makes the queued streaming deltas append a second time.
+- Shell: `fetchSidebarSnapshot` projects with `projectShellSnapshot` (`app/sessionShell.lynx.ts`) and
+  does not commit. Its snapshot is bounded (the 80 most recently updated threads): committed as if
+  complete it removed older threads and their detail behind `EventRouter`'s sequence bookkeeping, and
+  a poll resolving late rolled back newer streamed shell state.
+- Direct store readers wait for the engine: `router.tsx` reads projects through
+  `useSessionShellProjects()` and gates the Studio restore controller and recent-view pruning on
+  `threadsHydrated`; `LandingComposer` normalizes the snapshot it has just fetched instead of reading
+  the store back (a project it creates must be visible in the next read); `SettingsAdvancedPanel`
+  already gates on `threadsHydrated`.
+- Remaining writers, deliberate: `SettingsAdvancedPanel` repair → `syncServerReadModel` (same call as
+  upstream's `AdvancedSettingsPanel.tsx`, user-initiated, full read model); `markThreadUnread` and
+  `renameProjectLocally` (client-local state, not server state).
+- `subscribeOrchestrationShellEvents` only listens on the facade (`onShellEvent`); `EventRouter`
   opens the single shell stream. The host's fixed `orchestration.subscribeShell` channel is unused.
+
+Generator guards (it stops, writing nothing): missing root; identifier that resolves to nothing;
+relative import leaving `apps/web/src`; import attributes on a kept import; a bare side-effect import
+not listed in `EVENT_ROUTER_IGNORED_SIDE_EFFECT_IMPORTS` (empty); module-level code outside the
+extraction that uses, or any excluded code that assigns to, an extracted binding.
+
+### Upstream defects the engine carries (not patched: the generator does not transform logic)
+
+| Defect                                                                                                                                                                           | upstream/main `6f54f53c6`                                                                                                                                         | Lynx today                                                                                                                                                                                                                        | Blocks                                                                                             |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| A replacement thread snapshot does not drop deltas it already contains from `pendingDomainEvents`; the 100 ms flush appends them again (`Hello worldld`).                        | Not fixed by inspection: the snapshot handler still clears only `pendingThreadEventsById`, and `applyThreadMessageSentEvent` has no sequence guard. Not executed. | Reproduced; pinned as `it.fails` in `src/generated/eventRouter.generated.test.tsx`. Nothing renders thread messages from the store yet.                                                                                           | **Step 4** (thread page reads the store): fix upstream first, or filter at the Lynx read boundary. |
+| `reconcileThreadSubscriptions` and the continuation after `subscribeShell` do not check `disposed`; a reconcile resuming after unmount can open a thread lease with no listener. | Not fixed: no `disposed` check after the removal await or before the additions.                                                                                   | Unreachable: `SessionSync` mounts once per renderer lifetime (`storageReady` only goes false → true) and never swaps the engine; pinned by `src/app/SessionSync.lynx.test.ts`. A LynxView reload is a new host stream generation. | Any change that unmounts or re-keys `SessionSync`.                                                 |
+
+### Open checks for Steps 3–4
+
+- Bootstrap navigation: `EventRouter`'s welcome handler can `replace("/")` → `/thread/<id>` while
+  Lynx's cold-start restore controller also replaces `/`. No host payload or timing that makes them
+  collide has been shown; check with a server started with a bootstrap thread.
+- Terminal pruning: `removeOrphanedTerminalStates` now runs on each shell snapshot. Verify persisted
+  dock (`dockTerminalThreadId`) and workspace scopes survive, including against an incomplete first
+  shell snapshot (the fallback query path).
+- upstream/main's `EventRouter` uses `window.setTimeout`/`window.setInterval`; the generator will
+  extract it as is, so the Lynx runtime needs a `window` timer surface before that sync.
 
 `tsconfig.app.json` sets `verbatimModuleSyntax: false`: upstream is not written against that flag
 (`editorPreferences.ts` imports the type `NativeApi` without `type`), and this program now

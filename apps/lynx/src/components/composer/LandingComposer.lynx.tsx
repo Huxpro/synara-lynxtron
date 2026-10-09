@@ -17,6 +17,7 @@ import {
 } from "@synara-web/appSettingsStorageProjection.logic";
 
 import { fetchSidebarSnapshot, queryClient } from "../../app/queries";
+import { projectShellSnapshot } from "../../app/sessionShell.lynx";
 import { EmptyThreadContextTray } from "../../app/EmptyThreadContextTray.lynx";
 import { useComposerDraftStore } from "../../adapters/composerDraftStore.lynx";
 import {
@@ -78,8 +79,11 @@ export async function loadLandingBootstrap(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
     serverSettings?.defaultThreadEnvMode,
   );
-  const spaces = useStore.getState().spaces;
-  const normalizedProjects = useStore.getState().projects;
+  // Normalized from the snapshot in hand, not read back from the store: session
+  // sync fills the store on its own schedule, and a project created below must
+  // be visible in the very next read.
+  const normalize = (shell: typeof snapshot) => projectShellSnapshot(useStore.getState(), shell);
+  const { spaces, projects: normalizedProjects } = normalize(snapshot);
   const localFolderResult = config.homeDir
     ? await browseFilesystem({
         partialPath: `${config.homeDir.replace(/[\\/]+$/, "")}/`,
@@ -139,8 +143,8 @@ export async function loadLandingBootstrap(
     return {
       homeProject: created,
       projects: refreshed.projects.filter((project) => project.kind === "project"),
-      normalizedProjects: useStore.getState().projects,
-      spaces: useStore.getState().spaces,
+      normalizedProjects: normalize(refreshed).projects,
+      spaces: normalize(refreshed).spaces,
       localFolders: localFolderResult.entries,
       localFoldersError: localFolderResult.errorMessage,
       homeDir: config.homeDir ?? null,
@@ -155,8 +159,8 @@ export async function loadLandingBootstrap(
       return {
         homeProject: recovered,
         projects: refreshed.projects.filter((project) => project.kind === "project"),
-        normalizedProjects: useStore.getState().projects,
-        spaces: useStore.getState().spaces,
+        normalizedProjects: normalize(refreshed).projects,
+        spaces: normalize(refreshed).spaces,
         localFolders: localFolderResult.entries,
         localFoldersError: localFolderResult.errorMessage,
         homeDir: config.homeDir ?? null,
