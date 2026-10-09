@@ -364,9 +364,23 @@
   overflow: hidden;
 }
 
+/* Upstream's actions cluster is `gap-2 shrink-0` at every width; what gives under
+   pressure is decided by the measured footer tiers, not by a tighter gap. */
 .ComposerFooterRowLynx--compact .ComposerFooterActionsLynx {
   flex-shrink: 0;
-  gap: 2px;
+}
+
+/* The leading cluster's content at its natural width (the cluster itself may clip). */
+.ComposerFooterLeadingContentLynx {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: center;
+}
+
+.ComposerFooterLeadingLynx--compact .ComposerFooterLeadingContentLynx,
+.ComposerFooterLeadingLynx--voice-busy .ComposerFooterLeadingContentLynx {
+  gap: 4px;
 }
 
 .ComposerFooterLeadingLynx,
