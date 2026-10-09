@@ -4,10 +4,6 @@ import { readFileSync } from "node:fs";
 describe("Settings Advanced fidelity", () => {
   it("routes the real Advanced section and canonical capabilities", () => {
     const settingsSource = readFileSync(new URL("./SettingsPage.tsx", import.meta.url), "utf8");
-    const clientSource = readFileSync(
-      new URL("../data/synaraClient.lynx.ts", import.meta.url),
-      "utf8",
-    );
     const panelSource = readFileSync(
       new URL("./SettingsAdvancedPanel.lynx.tsx", import.meta.url),
       "utf8",
@@ -17,8 +13,7 @@ describe("Settings Advanced fidelity", () => {
     expect(settingsSource).toContain('"advanced",');
     expect(settingsSource).toContain('section === "advanced"');
     expect(settingsSource).toContain("<SettingsAdvancedPanel />");
-    expect(clientSource).toContain('"shell.openInEditor"');
-    expect(clientSource).toContain('"orchestration.repairState"');
+    expect(panelSource).toContain("useQuery(serverConfigQueryOptions())");
     expect(configSource).toContain('"process.env.SYNARA_APP_VERSION"');
     expect(panelSource).toContain("Keybindings");
     expect(panelSource).toContain("Recovery tools");
@@ -41,12 +36,11 @@ describe("Settings Advanced fidelity", () => {
 
     expect(panelSource).toContain("await dialogs.confirm(");
     expect(panelSource).toContain("await repairAdvancedSettingsState({");
-    expect(panelSource).toContain("repair: repairSynaraState");
+    expect(panelSource).toContain("repair: () => ensureNativeApi().orchestration.repairState()");
     expect(panelSource).toContain("sync: syncServerReadModel");
-    expect(panelSource).toContain(
-      'queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] })',
-    );
-    expect(panelSource).toContain("await openPathInEditor({ cwd: path, editor })");
+    // The repaired read model goes into the shared store; no query mirrors it.
+    expect(panelSource).not.toContain("invalidateQueries");
+    expect(panelSource).toContain("await ensureNativeApi().shell.openInEditor(path, editor)");
     expect(panelSource).toContain("No available editors found.");
     expect(panelSource).toContain("useLynxDisclosurePresence(");
     expect(panelSource).toContain("disclosureContentClassName(");

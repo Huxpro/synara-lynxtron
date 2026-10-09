@@ -1,4 +1,5 @@
 import { useEffect, useInitData, useMemo, useRef, useState } from "@lynx-js/react";
+import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { getRectByRef } from "@lynx-js/lynx-ui";
 import type { NodesRef } from "@lynx-js/types";
 import { useQuery } from "@tanstack/react-query";
@@ -89,7 +90,6 @@ import type { FileCommentDraft } from "@synara-web/lib/fileComments";
 import type { TerminalContextDraft } from "@synara-web/lib/terminalContext";
 import {
   dispatchSynaraCommand,
-  fetchServerConfig,
   fetchProviderModels,
   fetchProviderSkills,
   searchProjectEntries,
@@ -568,15 +568,7 @@ export function Composer({
     enabled: Boolean(discoveryProvider),
     staleTime: 60_000,
   });
-  const { data: serverConfig } = useQuery({
-    queryKey: ["server-config"],
-    queryFn: () => {
-      "background only";
-      return fetchServerConfig();
-    },
-    staleTime: 15_000,
-    retry: false,
-  });
+  const { data: serverConfig } = useQuery({ ...serverConfigQueryOptions(), retry: false });
   const voice = useNativeComposerVoice({
     enabled: voiceInputEnabled,
     draftKey: brandedThreadId,

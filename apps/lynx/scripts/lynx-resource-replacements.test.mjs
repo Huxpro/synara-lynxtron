@@ -27,3 +27,15 @@ test("upstream's draft store resolves to the Lynx facade however it is imported"
   assert.ok(existsSync(facade));
   assert.ok(existsSync(path.join(webSourceRoot, replacement.webSource)));
 });
+
+test("every resource replacement names an upstream file and a Lynx file that exist", () => {
+  // A stale `webSource` matches nothing, so upstream's DOM implementation is
+  // compiled into the Lynx bundle without any build error.
+  for (const { webSource, lynxSource } of lynxResourceReplacements) {
+    assert.ok(
+      existsSync(path.join(webSourceRoot, webSource)),
+      `missing upstream file ${webSource}`,
+    );
+    assert.ok(existsSync(path.join(lynxRoot, lynxSource)), `missing Lynx file ${lynxSource}`);
+  }
+});

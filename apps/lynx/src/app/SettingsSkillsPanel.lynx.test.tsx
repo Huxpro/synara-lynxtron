@@ -4,10 +4,6 @@ import { readFileSync } from "node:fs";
 describe("Settings Skills fidelity", () => {
   it("routes the real Skills section and canonical RPCs", () => {
     const settingsSource = readFileSync(new URL("./SettingsPage.tsx", import.meta.url), "utf8");
-    const clientSource = readFileSync(
-      new URL("../data/synaraClient.lynx.ts", import.meta.url),
-      "utf8",
-    );
     const panelSource = readFileSync(
       new URL("./SettingsSkillsPanel.lynx.tsx", import.meta.url),
       "utf8",
@@ -16,9 +12,8 @@ describe("Settings Skills fidelity", () => {
     expect(settingsSource).toContain('"skills",');
     expect(settingsSource).toContain('section === "skills"');
     expect(settingsSource).toContain("<SettingsSkillsPanel />");
-    expect(clientSource).toContain('"provider.listSkillsCatalog"');
-    expect(panelSource).toContain('queryKey: ["skills-catalog"]');
-    expect(panelSource).toContain('queryKey: ["server-settings"]');
+    expect(panelSource).toContain("useQuery(skillsCatalogQueryOptions())");
+    expect(panelSource).toContain("useQuery(serverSettingsQueryOptions())");
     expect(panelSource).toContain("Synara skills folder");
     expect(panelSource).toContain("No skills found");
     expect(panelSource).toContain(
@@ -32,18 +27,20 @@ describe("Settings Skills fidelity", () => {
       "utf8",
     );
 
-    expect(panelSource).toContain("disabledNamesRef.current");
-    expect(panelSource).toContain("saveQueueRef.current");
-    expect(panelSource).toContain("saveOperationRef.current");
-    expect(panelSource).toContain("nextDisabledSkillNames({");
-    expect(panelSource).toContain("await updateServerSettings({");
-    expect(panelSource).toContain("skills: { disabled: [...next] }");
+    // Behavior is covered by settingsSkillToggleQueue.logic.test.ts.
+    expect(panelSource).toContain("createSkillToggleQueue({");
+    expect(panelSource).toContain("projectDisabledSkillNames(");
+    expect(panelSource).toContain("queueState.intents");
     expect(panelSource).toContain(
-      'queryClient.invalidateQueries({ queryKey: ["provider-skills"] })',
+      "writeServerSettings(queryClient, { skills: { disabled: [...disabled] } })",
     );
-    expect(panelSource).toContain("setDisabledNames(previous)");
+    // No effect copies the settings query into local state any more.
+    expect(panelSource).not.toContain("useEffect");
     expect(panelSource).toContain(
-      'queryClient.invalidateQueries({ queryKey: ["server-settings"] })',
+      "queryClient.invalidateQueries({ queryKey: providerDiscoveryQueryKeys.all })",
+    );
+    expect(panelSource).toContain(
+      "queryClient.invalidateQueries({ queryKey: LEGACY_COMPOSER_PROVIDER_SKILLS_QUERY_KEY })",
     );
   });
 

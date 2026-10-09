@@ -4,10 +4,6 @@ import { readFileSync } from "node:fs";
 describe("Settings Integrations fidelity", () => {
   it("routes the real Integrations section and canonical RPCs", () => {
     const settingsSource = readFileSync(new URL("./SettingsPage.tsx", import.meta.url), "utf8");
-    const clientSource = readFileSync(
-      new URL("../data/synaraClient.lynx.ts", import.meta.url),
-      "utf8",
-    );
     const panelSource = readFileSync(
       new URL("./SettingsIntegrationsPanel.lynx.tsx", import.meta.url),
       "utf8",
@@ -16,10 +12,7 @@ describe("Settings Integrations fidelity", () => {
     expect(settingsSource).toContain('"integrations",');
     expect(settingsSource).toContain('section === "integrations"');
     expect(settingsSource).toContain("<SettingsIntegrationsPanel />");
-    expect(clientSource).toContain('"server.listExternalMcpIntegrations"');
-    expect(clientSource).toContain('"server.createExternalMcpIntegration"');
-    expect(clientSource).toContain('"server.revokeExternalMcpIntegration"');
-    expect(clientSource).toContain('"server.refreshExternalMcpPairing"');
+    expect(panelSource).toContain("useQuery(externalMcpIntegrationsQueryOptions())");
     expect(panelSource).toContain("Connect a coding agent");
     expect(panelSource).toContain("Connected agents");
     expect(panelSource).toContain("No connected agents");
@@ -52,9 +45,9 @@ describe("Settings Integrations fidelity", () => {
 
     expect(panelSource).toContain("buildExternalMcpCapabilities({");
     expect(panelSource).toContain("expiresInDays: 30");
-    expect(panelSource).toContain("await createExternalMcpIntegration({");
-    expect(panelSource).toContain("await revokeExternalMcpIntegration(");
-    expect(panelSource).toContain("await refreshExternalMcpPairing(");
+    expect(panelSource).toContain("await ensureNativeApi().server.createExternalMcpIntegration({");
+    expect(panelSource).toContain("await ensureNativeApi().server.revokeExternalMcpIntegration({");
+    expect(panelSource).toContain("await ensureNativeApi().server.refreshExternalMcpPairing({");
     expect(panelSource).toContain("await copyIntegrationText({");
     expect(panelSource).toContain("writeText: clipboard.writeText");
     for (const successMessage of [
@@ -72,7 +65,7 @@ describe("Settings Integrations fidelity", () => {
     expect(panelSource).toContain("externalMcpSetupAction({");
     expect(panelSource).toContain(
       `queryClient.invalidateQueries({
-        queryKey: ["external-mcp-integrations"]`,
+        queryKey: EXTERNAL_MCP_INTEGRATIONS_QUERY_KEY`,
     );
   });
 

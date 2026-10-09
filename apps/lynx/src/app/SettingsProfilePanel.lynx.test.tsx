@@ -38,10 +38,6 @@ describe("Settings Profile fidelity", () => {
 
   it("routes the real Profile section and fetches canonical local stats", () => {
     const settingsSource = readFileSync(new URL("./SettingsPage.tsx", import.meta.url), "utf8");
-    const clientSource = readFileSync(
-      new URL("../data/synaraClient.lynx.ts", import.meta.url),
-      "utf8",
-    );
     const profileSource = readFileSync(
       new URL("./SettingsProfilePanel.lynx.tsx", import.meta.url),
       "utf8",
@@ -52,8 +48,8 @@ describe("Settings Profile fidelity", () => {
     expect(settingsSource).toContain("<SettingsProfilePanel />");
     expect(settingsSource).toContain('section !== "profile"');
     expect(settingsSource).toContain("SettingsContentInner--profile");
-    expect(clientSource).toContain('"stats.getProfileStats"');
-    expect(clientSource).toContain('"stats.getProfileTokenStats"');
+    expect(profileSource).toContain("useQuery(serverProfileStatsQueryOptions())");
+    expect(profileSource).toContain("useQuery(serverProfileTokenStatsQueryOptions())");
     expect(profileSource).toContain("selectProfileHeatmap");
     expect(profileSource).toContain("selectProfileModelUsage");
     expect(profileSource).toContain("selectProfileTopProvider");

@@ -52,11 +52,11 @@ export const lynxResourceReplacements: ReadonlyArray<{
   // lacks then fails the build as a missing export instead of loading it.
   { webSource: "composerDraftStore.ts", lynxSource: "src/adapters/composerDraftStore.lynx.ts" },
   {
-    webSource: "components/ui/confirmDialogFallback.ts",
+    webSource: "confirmDialogFallback.ts",
     lynxSource: "src/adapters/confirmDialogFallback.lynx.ts",
   },
   {
-    webSource: "components/ui/contextMenuFallback.ts",
+    webSource: "contextMenuFallback.ts",
     lynxSource: "src/adapters/contextMenuFallback.lynx.ts",
   },
 ];
@@ -406,11 +406,11 @@ export default defineConfig({
       // inside apps/web are redirected by `lynxResourceReplacements` below.
       "~/wsTransport$": path.resolve(rootPath, "./src/adapters/wsTransport.lynx.ts"),
       "~/platform/events$": path.resolve(rootPath, "./src/platform/events.ts"),
-      "~/components/ui/confirmDialogFallback$": path.resolve(
+      "~/confirmDialogFallback$": path.resolve(
         rootPath,
         "./src/adapters/confirmDialogFallback.lynx.ts",
       ),
-      "~/components/ui/contextMenuFallback$": path.resolve(
+      "~/contextMenuFallback$": path.resolve(
         rootPath,
         "./src/adapters/contextMenuFallback.lynx.ts",
       ),

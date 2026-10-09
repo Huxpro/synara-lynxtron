@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "@lynx-js/react";
+import { serverQueryKeys } from "@synara-web/lib/serverReactQuery";
 import { useQuery } from "@tanstack/react-query";
 import {
   CommandId,
@@ -226,8 +227,10 @@ export function LandingComposer(props: {
     staleTime: 30_000,
   });
   useEffect(() => {
-    if (data?.serverConfig) {
-      queryClient.setQueryData(["server-config"], data.serverConfig);
+    // Seed only an empty cache: once session sync owns the config query, a
+    // bootstrap read may be older than what the server has pushed since.
+    if (data?.serverConfig && queryClient.getQueryData(serverQueryKeys.config()) === undefined) {
+      queryClient.setQueryData(serverQueryKeys.config(), data.serverConfig);
     }
   }, [data?.serverConfig]);
   useEffect(() => {

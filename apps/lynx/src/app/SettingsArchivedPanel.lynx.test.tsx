@@ -51,7 +51,7 @@ describe("Settings Archived fidelity", () => {
       "utf8",
     );
 
-    expect(panelSource).toContain("dispatchSynaraCommand(");
+    expect(panelSource).toContain("await ensureNativeApi().orchestration.dispatchCommand(");
     expect(panelSource).toContain("createUnarchiveCommand({");
     expect(panelSource).toContain("createDeleteArchivedThreadCommand({");
     expect(panelSource).toContain("await dialogs.confirm(");

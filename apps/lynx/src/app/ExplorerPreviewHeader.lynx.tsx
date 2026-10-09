@@ -1,4 +1,5 @@
 import { useEffect, useState } from "@lynx-js/react";
+import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { useQuery } from "@tanstack/react-query";
 import { EDITORS, type EditorId } from "@synara/contracts";
 import { deriveFilePreviewBreadcrumb } from "@synara/shared/filePreviewBreadcrumb";
@@ -25,7 +26,7 @@ import {
   MenuRadioItem,
   MenuTrigger,
 } from "../components/ui/menu.lynx";
-import { fetchServerConfig, openPathInEditor } from "../data/synaraClient.lynx";
+import { openPathInEditor } from "../data/synaraClient.lynx";
 import { fetchEditorIconUrl } from "./queries";
 import { webStorage } from "../platform/storage";
 import {
@@ -127,14 +128,7 @@ export function ExplorerPreviewHeader(props: {
 }) {
   const { semanticIconColor, svgColors } = useTheme();
   const [editorIconFailed, setEditorIconFailed] = useState(false);
-  const config = useQuery({
-    queryKey: ["server-config"],
-    queryFn: () => {
-      "background only";
-      return fetchServerConfig();
-    },
-    staleTime: Number.POSITIVE_INFINITY,
-  });
+  const config = useQuery(serverConfigQueryOptions());
   const editorOptions = environmentEditorOptions(config.data?.availableEditors ?? []);
   const [preferredEditor, setPreferredEditor] = useState<EditorId | null>(() =>
     resolveEnvironmentEditor(editorOptions, webStorage.getItem(LAST_EDITOR_STORAGE_KEY)),

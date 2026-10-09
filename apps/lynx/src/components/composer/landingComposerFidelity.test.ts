@@ -138,7 +138,7 @@ describe("landing composer fidelity contract", () => {
     expect(landingSource).not.toContain("provider: 'codex'");
     expect(landingSource).not.toContain("getDefaultModel('codex')");
     expect(landingSource).not.toContain("onProviderStatusesChange");
-    expect(composerSource).toContain("fetchServerConfig()");
+    expect(composerSource).toContain("...serverConfigQueryOptions(), retry: false");
     expect(composerSource).not.toContain("fetchFreshServerConfig()");
     expect(landingSource).toContain("onRetry=");
     expect(landingSource).not.toContain(".catch(() => [])");

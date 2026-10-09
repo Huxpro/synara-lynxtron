@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-09T18:19:16.060Z",
+  "generatedAt": "2026-10-09T18:27:08.072Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -12,7 +12,7 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxGraph": {
     "entries": ["src/app/index.tsx"],
-    "modules": 863,
+    "modules": 865,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/checkbox",
@@ -285,13 +285,13 @@
   },
   "lynxParallelImplementation": {
     "baseline": {
-      "synaraClientImporters": 39,
+      "synaraClientImporters": 29,
       "useQueryCallSites": 66,
       "refetchIntervalSites": 8,
       "routerTsxLines": 3701
     },
     "current": {
-      "synaraClientImporters": 39,
+      "synaraClientImporters": 29,
       "useQueryCallSites": 66,
       "refetchIntervalSites": 8,
       "routerTsxLines": 3701
@@ -478,11 +478,11 @@
         "loc": 135424
       },
       "currentReuse": {
-        "modules": 316,
-        "loc": 80031,
-        "modulePercent": 52.67,
-        "locPercent": 59.1,
-        "gatePercent": 52.67
+        "modules": 314,
+        "loc": 79690,
+        "modulePercent": 52.33,
+        "locPercent": 58.84,
+        "gatePercent": 52.33
       },
       "modules": [
         {
@@ -4046,7 +4046,7 @@
           "loc": 77,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/lib/nativeSurfaceOcclusion.ts",
             "apps/web/src/surfaceStyles.ts"
@@ -4065,7 +4065,7 @@
           "loc": 264,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/lib/central-icons.tsx",
             "apps/web/src/lib/nativeMenuIcons.ts",
@@ -7926,11 +7926,11 @@
         "loc": 116837
       },
       "currentReuse": {
-        "modules": 286,
-        "loc": 72962,
-        "modulePercent": 59.21,
-        "locPercent": 62.45,
-        "gatePercent": 59.21
+        "modules": 284,
+        "loc": 72621,
+        "modulePercent": 58.8,
+        "locPercent": 62.16,
+        "gatePercent": 58.8
       },
       "modules": [
         {
@@ -10947,7 +10947,7 @@
           "loc": 77,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/lib/nativeSurfaceOcclusion.ts",
             "apps/web/src/surfaceStyles.ts"
@@ -10966,7 +10966,7 @@
           "loc": 264,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/lib/central-icons.tsx",
             "apps/web/src/lib/nativeMenuIcons.ts",
@@ -13798,11 +13798,11 @@
         "loc": 226411
       },
       "currentReuse": {
-        "modules": 364,
-        "loc": 86649,
-        "modulePercent": 35.2,
-        "locPercent": 38.27,
-        "gatePercent": 35.2
+        "modules": 362,
+        "loc": 86308,
+        "modulePercent": 35.01,
+        "locPercent": 38.12,
+        "gatePercent": 35.01
       },
       "modules": [
         {
@@ -22880,7 +22880,7 @@
           "loc": 77,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/lib/nativeSurfaceOcclusion.ts",
             "apps/web/src/surfaceStyles.ts"
@@ -22899,7 +22899,7 @@
           "loc": 264,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/lib/central-icons.tsx",
             "apps/web/src/lib/nativeMenuIcons.ts",
@@ -27728,11 +27728,11 @@
         "loc": 149320
       },
       "currentReuse": {
-        "modules": 317,
-        "loc": 80169,
-        "modulePercent": 48.92,
-        "locPercent": 53.69,
-        "gatePercent": 48.92
+        "modules": 315,
+        "loc": 79828,
+        "modulePercent": 48.61,
+        "locPercent": 53.46,
+        "gatePercent": 48.61
       },
       "modules": [
         {
@@ -31927,7 +31927,7 @@
           "loc": 77,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/lib/nativeSurfaceOcclusion.ts",
             "apps/web/src/surfaceStyles.ts"
@@ -31946,7 +31946,7 @@
           "loc": 264,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/lib/central-icons.tsx",
             "apps/web/src/lib/nativeMenuIcons.ts",
@@ -35939,11 +35939,11 @@
         "loc": 148974
       },
       "currentReuse": {
-        "modules": 331,
-        "loc": 82240,
-        "modulePercent": 49.48,
-        "locPercent": 55.2,
-        "gatePercent": 49.48
+        "modules": 329,
+        "loc": 81899,
+        "modulePercent": 49.18,
+        "locPercent": 54.98,
+        "gatePercent": 49.18
       },
       "modules": [
         {
@@ -40407,7 +40407,7 @@
           "loc": 77,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/lib/nativeSurfaceOcclusion.ts",
             "apps/web/src/surfaceStyles.ts"
@@ -40426,7 +40426,7 @@
           "loc": 264,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/lib/central-icons.tsx",
             "apps/web/src/lib/nativeMenuIcons.ts",
@@ -44455,11 +44455,11 @@
         "loc": 148975
       },
       "currentReuse": {
-        "modules": 331,
-        "loc": 82240,
-        "modulePercent": 49.48,
-        "locPercent": 55.2,
-        "gatePercent": 49.48
+        "modules": 329,
+        "loc": 81899,
+        "modulePercent": 49.18,
+        "locPercent": 54.97,
+        "gatePercent": 49.18
       },
       "modules": [
         {
@@ -48923,7 +48923,7 @@
           "loc": 77,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/lib/nativeSurfaceOcclusion.ts",
             "apps/web/src/surfaceStyles.ts"
@@ -48942,7 +48942,7 @@
           "loc": 264,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/lib/central-icons.tsx",
             "apps/web/src/lib/nativeMenuIcons.ts",
@@ -52993,11 +52993,11 @@
         "loc": 221136
       },
       "currentReuse": {
-        "modules": 364,
-        "loc": 86649,
-        "modulePercent": 36.25,
-        "locPercent": 39.18,
-        "gatePercent": 36.25
+        "modules": 362,
+        "loc": 86308,
+        "modulePercent": 36.06,
+        "locPercent": 39.03,
+        "gatePercent": 36.06
       },
       "modules": [
         {
@@ -61771,7 +61771,7 @@
           "loc": 77,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/lib/nativeSurfaceOcclusion.ts",
             "apps/web/src/surfaceStyles.ts"
@@ -61790,7 +61790,7 @@
           "loc": 264,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/lib/central-icons.tsx",
             "apps/web/src/lib/nativeMenuIcons.ts",

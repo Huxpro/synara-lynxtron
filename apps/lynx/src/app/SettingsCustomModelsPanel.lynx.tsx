@@ -3,12 +3,12 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import type { ServerSettingsPatch, ServerSettingsView } from "@synara/contracts";
 import { validateCustomModelInput } from "@synara/shared/customModels";
 import { PROVIDER_DESCRIPTOR_BY_KIND } from "@synara/shared/providerMetadata";
+import { serverSettingsQueryOptions } from "@synara-web/lib/serverReactQuery";
 
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Menu, MenuPopup, MenuRadioGroup, MenuRadioItem, MenuTrigger } from "../components/ui/menu";
 import { ChevronDownIcon, PlusIcon, XIcon } from "../lib/icons.lynx";
-import { fetchServerSettings, updateServerSettings } from "../data/synaraClient.lynx";
 import { SettingsResetIcon } from "../adapters/SettingsResetIcon.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { queryClient } from "./queries";
@@ -18,6 +18,7 @@ import {
   customModelsProviderPatch,
   type CustomModelProvider,
 } from "./custom-model-settings";
+import { writeServerSettings } from "./settingsServerData.lynx";
 
 import "./settings-custom-models-panel.css";
 
@@ -28,20 +29,13 @@ export function SettingsCustomModelsPanel(props: {
   const [provider, setProvider] = useState<CustomModelProvider>("codex");
   const [input, setInput] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const settingsQuery = useQuery({
-    queryKey: ["server-settings"],
-    queryFn: () => {
-      "background only";
-      return fetchServerSettings();
-    },
-  });
+  const settingsQuery = useQuery(serverSettingsQueryOptions());
   const updateMutation = useMutation({
     mutationFn: (patch: ServerSettingsPatch) => {
       "background only";
-      return updateServerSettings(patch);
+      return writeServerSettings(queryClient, patch);
     },
     onSuccess: (settings) => {
-      queryClient.setQueryData(["server-settings"], settings);
       props.onSettingsChange?.(settings);
     },
     onError: (mutationError) => {

@@ -31,14 +31,12 @@ import type {
   OrchestrationGetTurnDiffResult,
   OrchestrationLatestTurn,
   OrchestrationMessage,
-  OrchestrationReadModel,
   OrchestrationProposedPlan,
   OrchestrationShellSnapshot,
   OrchestrationSidebarSearchSnapshot,
   OrchestrationThreadDetailSnapshot,
   OrchestrationSession,
   OrchestrationThreadActivity,
-  ProjectId,
   ProjectDiscoverScriptsInput,
   ProjectDiscoverScriptsResult,
   ProjectListDevServersResult,
@@ -62,41 +60,29 @@ import type {
   PullRequestCommentInput,
   PullRequestSetPinnedInput,
   PullRequestSetPinnedResult,
-  PullRequestState,
-  ProfileStats,
-  ProfileTokenStats,
   ProviderKind,
   ProviderComposerCapabilities,
   ProviderListPluginsInput,
   ProviderListPluginsResult,
   ProviderListModelsResult,
   ProviderListSkillsResult,
-  ProviderSkillsCatalogResult,
   ServerConfig,
   ServerGenerateThreadRecapInput,
   ServerGenerateThreadRecapResult,
-  ServerListWorktreesResult,
-  ServerListProviderUsageInput,
-  ServerListProviderUsageResult,
   ServerListLocalServersResult,
   ServerRefreshProvidersResult,
   ServerVoiceTranscriptionInput,
   ServerVoiceTranscriptionResult,
   ServerStopLocalServerInput,
   ServerStopLocalServerResult,
-  ServerSettingsPatch,
   ServerSettingsView,
   ServerProviderUpdateResult,
   KeybindingRule,
   ServerUpsertKeybindingResult,
   TerminalEvent,
   EditorId,
-  ExternalMcpCapability,
-  ExternalMcpCreateIntegrationResult,
-  ExternalMcpIntegration,
   RuntimeMode,
 } from "@synara/contracts";
-import { onServerSettingsUpdated } from "@synara-web/wsNativeApi";
 import { resolveDefaultSocketUrl } from "../platform/net.socket";
 import { bridgeCall, onGlobalEvent } from "../platform/bridge";
 import { ensureNativeApi } from "../adapters/nativeApi.lynx";
@@ -267,18 +253,6 @@ function ensureTerminalEventStream(): void {
     });
 }
 
-/**
- * Server settings as the server publishes them: the current view first, then
- * every change, including changes made by other clients. Served by the
- * upstream `NativeApi` facade (`wsNativeApi.ts` on the Lynx transport compat);
- * the first of the shared state layer's push streams to run on Lynx.
- */
-export function subscribeServerSettings(
-  listener: (settings: ServerSettingsView) => void,
-): () => void {
-  return onServerSettingsUpdated((payload) => listener(payload.settings));
-}
-
 function transportRequest<A>(tag: string, payload: unknown): Promise<A> {
   return relayRequest<A>(tag, payload);
 }
@@ -404,18 +378,6 @@ export async function fetchProviderModels(input: {
   });
 }
 
-export async function fetchManagedWorktrees(): Promise<ServerListWorktreesResult> {
-  return transportRequest<ServerListWorktreesResult>("server.listWorktrees", {});
-}
-
-export async function removeManagedWorktree(input: {
-  readonly cwd: string;
-  readonly path: string;
-  readonly force?: boolean;
-}): Promise<void> {
-  await transportRequest("git.removeWorktree", input);
-}
-
 export async function fetchProviderComposerCapabilities(
   provider: ProviderKind,
 ): Promise<ProviderComposerCapabilities> {
@@ -434,10 +396,6 @@ export async function fetchProviderPlugins(
   input: ProviderListPluginsInput,
 ): Promise<ProviderListPluginsResult> {
   return transportRequest<ProviderListPluginsResult>("provider.listPlugins", input);
-}
-
-export async function fetchSkillsCatalog(): Promise<ProviderSkillsCatalogResult> {
-  return transportRequest<ProviderSkillsCatalogResult>("provider.listSkillsCatalog", {});
 }
 
 export async function browseFilesystem(
@@ -504,12 +462,6 @@ export async function importSynaraThread(
 // state layer to run on Lynx (plan step 1).
 export async function fetchServerSettings(): Promise<ServerSettingsView> {
   return ensureNativeApi().server.getSettings();
-}
-
-export async function updateServerSettings(
-  patch: ServerSettingsPatch,
-): Promise<ServerSettingsView> {
-  return transportRequest<ServerSettingsView>("server.updateSettings", patch);
 }
 
 export async function fetchServerConfig(): Promise<ServerConfig> {
@@ -673,64 +625,6 @@ export async function runGitStackedAction(
     throw new RpcTransportError("Git action stream completed without a final result");
   }
   return result;
-}
-
-export async function repairSynaraState(): Promise<OrchestrationReadModel> {
-  return transportRequest<OrchestrationReadModel>("orchestration.repairState", {});
-}
-
-export async function fetchExternalMcpIntegrations(): Promise<readonly ExternalMcpIntegration[]> {
-  return transportRequest<readonly ExternalMcpIntegration[]>(
-    "server.listExternalMcpIntegrations",
-    {},
-  );
-}
-
-export async function createExternalMcpIntegration(input: {
-  readonly name: string;
-  readonly projectScope: "all" | "selected";
-  readonly projectIds?: readonly string[];
-  readonly capabilities: readonly ExternalMcpCapability[];
-  readonly expiresInDays: number;
-}): Promise<ExternalMcpCreateIntegrationResult> {
-  return transportRequest<ExternalMcpCreateIntegrationResult>(
-    "server.createExternalMcpIntegration",
-    input,
-  );
-}
-
-export async function revokeExternalMcpIntegration(
-  integrationId: string,
-): Promise<{ readonly revoked: boolean }> {
-  return transportRequest("server.revokeExternalMcpIntegration", {
-    integrationId,
-  });
-}
-
-export async function refreshExternalMcpPairing(
-  integrationId: string,
-): Promise<ExternalMcpCreateIntegrationResult> {
-  return transportRequest<ExternalMcpCreateIntegrationResult>("server.refreshExternalMcpPairing", {
-    integrationId,
-  });
-}
-
-export async function fetchProfileStats(utcOffsetMinutes: number): Promise<ProfileStats> {
-  return transportRequest<ProfileStats>("stats.getProfileStats", {
-    utcOffsetMinutes,
-  });
-}
-
-export async function fetchProfileTokenStats(utcOffsetMinutes: number): Promise<ProfileTokenStats> {
-  return transportRequest<ProfileTokenStats>("stats.getProfileTokenStats", {
-    utcOffsetMinutes,
-  });
-}
-
-export async function fetchAllProviderUsage(
-  input: ServerListProviderUsageInput = {},
-): Promise<ServerListProviderUsageResult> {
-  return transportRequest<ServerListProviderUsageResult>("server.listProviderUsage", input);
 }
 
 export async function fetchLocalServers(): Promise<ServerListLocalServersResult> {
