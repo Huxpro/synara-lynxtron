@@ -228,7 +228,6 @@ import {
   PullRequestSetPinnedResult,
   PullRequestsUnavailableError,
 } from "./pullRequests";
-import { KeybindingCommand, KeybindingRule } from "./keybindings";
 import {
   PullRequestAutoFixGetInput,
   PullRequestAutoFixListResult,

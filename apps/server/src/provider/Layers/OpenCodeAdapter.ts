@@ -338,7 +338,6 @@ interface OpenCodeMessageSnapshot {
     readonly id: string;
     readonly role: "user" | "assistant";
     readonly time?: {
-      readonly created?: number;
       readonly completed?: number;
     };
     readonly finish?: string;

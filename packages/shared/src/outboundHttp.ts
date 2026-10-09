@@ -3,11 +3,11 @@
 // Layer: Shared Node/Electron network security boundary
 
 import { randomUUID } from "node:crypto";
+import type { LookupAddress } from "node:dns";
 import * as Dns from "node:dns/promises";
 import * as Http from "node:http";
 import * as Https from "node:https";
 import * as Net from "node:net";
-import type { LookupAddress } from "node:dns";
 
 import {
   assertExactLoopbackIpAddress,

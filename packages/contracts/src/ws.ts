@@ -120,7 +120,7 @@ import {
   TerminalRestartInput,
   TerminalWriteInput,
 } from "./terminal";
-import { KeybindingCommand, KeybindingRule } from "./keybindings";
+import { KeybindingRule } from "./keybindings";
 import {
   ProjectCreateLocalFilePreviewGrantInput,
   ProjectDevServerEvent,

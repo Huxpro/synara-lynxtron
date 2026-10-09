@@ -128,14 +128,12 @@
 
 @layer components {
   .sidebar-icon-button {
-    @apply items-center justify-center rounded-sm p-0.5 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring;
+    @apply items-center justify-center rounded-sm p-0.5 text-muted-foreground/60 transition-colors hover:text-foreground/82 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring;
     background: transparent;
-    color: var(--color-icon-secondary);
   }
 
   .sidebar-icon-button:hover {
     background: var(--color-background-button-secondary-hover);
-    color: var(--color-icon-secondary);
   }
 
   /* Small circular icon badges that sit directly on the sidebar surface inside
