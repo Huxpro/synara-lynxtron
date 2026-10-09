@@ -96,42 +96,54 @@ How it got here: the default launch stages the app as an agent (`LSUIElement`), 
 
 Limits of this pass: Electron was not driven through Computer Use, so results are Native observations judged against expected behavior, not paired comparisons. Background input cannot switch input sources, so the IME candidate window was not exercised.
 
-| Item                                | Result  | Notes                                                                                                                               |
-| ----------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| Composer typing (ASCII)             | pass    | 2 of 4 prompts lost characters; may be the synthetic input path ([#19](https://github.com/Huxpro/synara-lynxtron/issues/19))        |
-| Chinese IME + candidate window      | not run | Direct CJK insertion kept only the last character (#19)                                                                             |
-| Cmd+A                               | fail    | Edit → Select All had no visible effect; a background app may ignore it, needs a foreground check (#19)                             |
-| Backspace                           | pass    |                                                                                                                                     |
-| Undo / redo                         | pass    | Edit → Undo and Edit → Redo                                                                                                         |
-| Paste                               | not run | Computer Use refuses Edit → Paste in background mode because it touches the system clipboard                                        |
-| Caret placement while editing       | fail    | After a mid-text insert the caret jumps to the end; Shift+Left does not select (#19)                                                |
-| Send a real turn                    | pass    | New thread in the fixture project                                                                                                   |
-| Stop                                | pass    | Stopped during "Thinking"; thread settled                                                                                           |
-| Resend                              | pass    | Follow-up turn answered                                                                                                             |
-| Terminal → Composer focus           | pass    |                                                                                                                                     |
-| Composer → Terminal focus           | fail    | Terminal showed no typed input, twice; also prints `undefined` on open ([#20](https://github.com/Huxpro/synara-lynxtron/issues/20)) |
-| App menu → Settings                 | pass    | Menu items use the package name `@synara/lynx` (#20)                                                                                |
-| Transcript wheel scroll             | pass    |                                                                                                                                     |
-| Jump to latest                      | pass    |                                                                                                                                     |
-| Diff dock                           | pass    | Split diff rendered                                                                                                                 |
-| Explorer dock                       | pass    | Tree and file preview                                                                                                               |
-| Theme light / dark                  | pass    |                                                                                                                                     |
-| Density                             | pass    | Compact and back to Comfortable                                                                                                     |
-| Automations create                  | pass    | Required checkbox is nearly invisible when unticked (#20)                                                                           |
-| Automations edit                    | pass    | Repeats changed to Weekly                                                                                                           |
-| Automations pause                   | pass    |                                                                                                                                     |
-| Automations delete                  | pass    | Native confirmation sheet                                                                                                           |
-| Kanban dialog                       | pass    | New task opens and closes with its close button                                                                                     |
-| PR view and filter menu             | pass    | Empty list in the fixture; tabs and filter menu work. No PR dialog could be opened without a PR                                     |
-| Menus / popovers open               | pass    | Add-panel, project picker, Repeats, PR filter                                                                                       |
-| Menus / popovers dismiss by click   | pass    |                                                                                                                                     |
-| Menus / dialogs dismiss with Escape | fail    | Add-panel menu and Kanban dialog stayed open (#20)                                                                                  |
-| VoiceOver, microphone prompt        | not run |                                                                                                                                     |
+| Item                                | Result          | Notes                                                                                                                               |
+| ----------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Composer typing (ASCII)             | pass            | 2 of 4 prompts lost characters; may be the synthetic input path ([#19](https://github.com/Huxpro/synara-lynxtron/issues/19))        |
+| Chinese IME + candidate window      | not run         | Direct CJK insertion kept only the last character (#19)                                                                             |
+| Cmd+A                               | not certifiable | Edit → Select All has no effect in the background in Electron either; needs a foreground check                                      |
+| Backspace                           | pass            |                                                                                                                                     |
+| Undo / redo                         | pass            | Edit → Undo and Edit → Redo                                                                                                         |
+| Paste                               | not run         | Computer Use refuses Edit → Paste in background mode because it touches the system clipboard                                        |
+| Caret placement while editing       | fail            | After a mid-text insert the caret jumps to the end; Shift+Left does not select (#19)                                                |
+| Send a real turn                    | pass            | New thread in the fixture project                                                                                                   |
+| Stop                                | pass            | Stopped during "Thinking"; thread settled                                                                                           |
+| Resend                              | pass            | Follow-up turn answered                                                                                                             |
+| Terminal → Composer focus           | pass            |                                                                                                                                     |
+| Composer → Terminal focus           | fail            | Terminal showed no typed input, twice; also prints `undefined` on open ([#20](https://github.com/Huxpro/synara-lynxtron/issues/20)) |
+| App menu → Settings                 | pass            | Menu items use the package name `@synara/lynx` (#20)                                                                                |
+| Transcript wheel scroll             | pass            |                                                                                                                                     |
+| Jump to latest                      | pass            |                                                                                                                                     |
+| Diff dock                           | pass            | Split diff rendered                                                                                                                 |
+| Explorer dock                       | pass            | Tree and file preview                                                                                                               |
+| Theme light / dark                  | pass            |                                                                                                                                     |
+| Density                             | pass            | Compact and back to Comfortable                                                                                                     |
+| Automations create                  | pass            | Required checkbox is nearly invisible when unticked (#20)                                                                           |
+| Automations edit                    | pass            | Repeats changed to Weekly                                                                                                           |
+| Automations pause                   | pass            |                                                                                                                                     |
+| Automations delete                  | pass            | Native confirmation sheet                                                                                                           |
+| Kanban dialog                       | pass            | New task opens and closes with its close button                                                                                     |
+| PR view and filter menu             | pass            | Empty list in the fixture; tabs and filter menu work. No PR dialog could be opened without a PR                                     |
+| Menus / popovers open               | pass            | Add-panel, project picker, Repeats, PR filter                                                                                       |
+| Menus / popovers dismiss by click   | pass            |                                                                                                                                     |
+| Menus / dialogs dismiss with Escape | fail            | Add-panel menu and Kanban dialog stayed open (#20)                                                                                  |
+| VoiceOver, microphone prompt        | not run         |                                                                                                                                     |
 
 Also seen: a failed turn on the fixture thread (its Codex session is archived) shows the raw stack trace in a translucent banner over the transcript (#20).
 
+### Paired Electron check
+
+Run `2026-10-09T05-37-02-903Z-64827`, `--regular-app` (now stages Electron as a regular app too), Electron driven in the background through the same Computer Use input path. An earlier request for Electron access was denied; this one was approved. The detached DevTools window had to be closed first because it held the app's text cursor. Only the items that failed or were doubtful in Lynxtron were repeated.
+
+| Check                               | Electron (authority)                | Lynxtron                         | Verdict                                                                   |
+| ----------------------------------- | ----------------------------------- | -------------------------------- | ------------------------------------------------------------------------- |
+| Type `hello acceptance 你好世界 YX` | All characters present              | Only `界` of the CJK run remains | Lynxtron bug ([#19](https://github.com/Huxpro/synara-lynxtron/issues/19)) |
+| Left, Left, type `Z`, type `W`      | `…ZWYX`, caret after `W`            | `…ZYXW`, caret jumped to the end | Lynxtron bug (#19)                                                        |
+| Edit → Select All, then Backspace   | No selection; one character deleted | Same                             | Harness limit in the background, not a Lynxtron bug                       |
+| Escape on the dock add-panel menu   | Menu closes                         | Menu stays open                  | Lynxtron bug ([#20](https://github.com/Huxpro/synara-lynxtron/issues/20)) |
+| Click the terminal, type a command  | Text reaches the terminal           | Nothing appears                  | Lynxtron bug (#20)                                                        |
+
 What is still open after this pass, and why:
 
-- **Electron as the paired authority through Computer Use: not run.** On run `2026-10-09T03-19-50-642Z-60976` the Electron app was staged as a regular app so Computer Use could find it; the approval request for it was denied. That launch also put Electron in front, so the change was not kept: `--regular-app` affects Lynxtron only.
+- **Full-list paired run: partial.** Electron was compared on the five checks above. The items that passed in Lynxtron were not repeated in Electron.
 - **IME candidate window, paste: not run.** Background Computer Use cannot switch input sources and refuses clipboard menu items. Both need the app in the foreground, which this harness does not do.
-- **Cmd+A, Composer → Terminal typing, Escape: recorded as fail from background input.** They need a foreground check by a person before they are treated as confirmed.
+- **VoiceOver, microphone prompt: not run.**
