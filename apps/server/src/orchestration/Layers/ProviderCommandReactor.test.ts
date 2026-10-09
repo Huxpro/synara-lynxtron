@@ -338,7 +338,6 @@ describe("ProviderCommandReactor", () => {
     readonly gatewayOperationCompletionWaitTimeout?: Duration.Duration;
     readonly gatewayOperationCompletionNegativeCacheTtl?: Duration.Duration;
     readonly logMessages?: string[];
-    readonly firstEventTimeoutMs?: number;
     readonly gatewayOperationId?: string;
     readonly gitWritingModelSelection?: ModelSelection;
     readonly omitStopRuntimeSession?: boolean;
@@ -756,11 +755,7 @@ describe("ProviderCommandReactor", () => {
             : Option.none(),
         ),
     } as unknown as (typeof ProjectAgentRepository)["Service"]);
-    // The fork's first-event watchdog defaults to 15 s; tests opt in explicitly.
-    const reactorLayer = makeProviderCommandReactorLive({
-      ...input,
-      firstEventTimeoutMs: input?.firstEventTimeoutMs ?? 60_000,
-    });
+    const reactorLayer = makeProviderCommandReactorLive(input);
     const layer = Layer.mergeAll(reactorLayer, ProviderRuntimeIngestionLive).pipe(
       Layer.provideMerge(projectAgentLayer),
       Layer.provideMerge(projectAgentRepositoryLayer),
@@ -12501,97 +12496,6 @@ describe("ProviderCommandReactor", () => {
       threadId: ThreadId.makeUnsafe("thread-1"),
     });
     expect(harness.sendTurn.mock.calls[0]?.[0].input).toContain("continue after re-enable");
-  });
-
-  it("fails a provider-acknowledged turn when its first runtime event never arrives", async () => {
-    const harness = await createHarness({ firstEventTimeoutMs: 25 });
-    const now = new Date().toISOString();
-    harness.sendTurn.mockImplementationOnce((input) => {
-      harness.setRuntimeSessionTurnState({
-        threadId: input.threadId,
-        status: "running",
-        activeTurnId: asTurnId("turn-ack-without-event"),
-      });
-      return Effect.succeed({
-        threadId: input.threadId,
-        turnId: asTurnId("turn-ack-without-event"),
-      });
-    });
-
-    await Effect.runPromise(
-      harness.engine.dispatch({
-        type: "thread.turn.start",
-        commandId: CommandId.makeUnsafe("cmd-turn-ack-without-event"),
-        threadId: ThreadId.makeUnsafe("thread-1"),
-        message: {
-          messageId: asMessageId("user-message-turn-ack-without-event"),
-          role: "user",
-          text: "reply even if turn started notification is missing",
-          attachments: [],
-        },
-        interactionMode: DEFAULT_PROVIDER_INTERACTION_MODE,
-        runtimeMode: "approval-required",
-        createdAt: now,
-      }),
-    );
-
-    await waitFor(() => harness.sendTurn.mock.calls.length === 1);
-    await waitFor(async () => (await readHarnessThread(harness))?.session?.status === "error");
-    const timedOutThread = await readHarnessThread(harness);
-    expect(timedOutThread?.session?.lastError).toContain("produced no runtime events");
-    expect(
-      timedOutThread?.activities.filter(
-        (activity) => activity.kind === "provider.turn.start.failed",
-      ),
-    ).toHaveLength(1);
-    expect(harness.stopRuntimeSession).toHaveBeenCalledWith({
-      threadId: ThreadId.makeUnsafe("thread-1"),
-    });
-  });
-
-  it("cancels the first-event watchdog after an event from the acknowledged turn", async () => {
-    const harness = await createHarness({ firstEventTimeoutMs: 25 });
-    const now = new Date().toISOString();
-    harness.sendTurn.mockImplementationOnce((input) => {
-      harness.setRuntimeSessionTurnState({
-        threadId: input.threadId,
-        status: "running",
-        activeTurnId: asTurnId("turn-watchdog-observed"),
-      });
-      return Effect.succeed({
-        threadId: input.threadId,
-        turnId: asTurnId("turn-watchdog-observed"),
-      });
-    });
-    await Effect.runPromise(
-      harness.engine.dispatch({
-        type: "thread.turn.start",
-        commandId: CommandId.makeUnsafe("cmd-turn-watchdog-observed"),
-        threadId: ThreadId.makeUnsafe("thread-1"),
-        message: {
-          messageId: asMessageId("user-message-turn-watchdog-observed"),
-          role: "user",
-          text: "observe first event",
-          attachments: [],
-        },
-        interactionMode: DEFAULT_PROVIDER_INTERACTION_MODE,
-        runtimeMode: "approval-required",
-        createdAt: now,
-      }),
-    );
-    await waitFor(() => harness.sendTurn.mock.calls.length === 1);
-    await harness.emitRuntimeEvent({
-      type: "turn.started",
-      eventId: asEventId("event-turn-watchdog-observed"),
-      provider: "codex",
-      threadId: ThreadId.makeUnsafe("thread-1"),
-      turnId: asTurnId("turn-watchdog-observed"),
-      createdAt: now,
-      payload: {},
-    });
-    await new Promise((resolve) => setTimeout(resolve, 60));
-    expect((await readHarnessThread(harness))?.session?.status).toBe("ready");
-    expect(harness.stopRuntimeSession).not.toHaveBeenCalled();
   });
 
   it("routes subagent-thread turn starts to the parent session as steers", async () => {

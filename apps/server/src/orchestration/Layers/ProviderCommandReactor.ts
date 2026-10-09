@@ -487,8 +487,6 @@ export function hasBoundProviderSession(
 const turnStartKeyForEvent = (event: ProviderIntentEvent): string =>
   event.commandId !== null ? `command:${event.commandId}` : `event:${event.eventId}`;
 
-const providerTurnKey = (threadId: ThreadId, turnId: TurnId): string => `${threadId}:${turnId}`;
-
 const sameClaudeCacheContext = (
   left: ClaudeCacheObservation,
   right: ClaudeCacheObservation,
@@ -543,7 +541,6 @@ const isClaudeCompactionCancellationEvent = (
 
 const HANDLED_TURN_START_KEY_MAX = 10_000;
 const HANDLED_TURN_START_KEY_TTL = Duration.minutes(30);
-const DEFAULT_PROVIDER_FIRST_EVENT_TIMEOUT_MS = 15_000;
 const PROVIDER_COMMAND_CLAIM_LEASE_MS = 30_000;
 // Poll granularity while waiting out another worker's claim (see
 // processClaimedProviderIntent): re-checking lets a turn proceed the moment
@@ -872,7 +869,6 @@ export interface ProviderCommandReactorLiveOptions {
   readonly cacheResponseTimeout?: Duration.Duration;
   readonly gatewayOperationCompletionWaitTimeout?: Duration.Duration;
   readonly gatewayOperationCompletionNegativeCacheTtl?: Duration.Duration;
-  readonly firstEventTimeoutMs?: number;
 }
 
 interface ProviderCommandReactorConfigShape {
@@ -881,7 +877,6 @@ interface ProviderCommandReactorConfigShape {
   readonly cacheResponseTimeout: Duration.Duration;
   readonly gatewayOperationCompletionWaitTimeout: Duration.Duration;
   readonly gatewayOperationCompletionNegativeCacheTtl: Duration.Duration;
-  readonly firstEventTimeoutMs: number;
 }
 
 class ProviderCommandReactorConfig extends ServiceMap.Service<
@@ -896,9 +891,7 @@ const make = Effect.gen(function* () {
     cacheResponseTimeout,
     gatewayOperationCompletionWaitTimeout,
     gatewayOperationCompletionNegativeCacheTtl,
-    firstEventTimeoutMs,
   } = yield* ProviderCommandReactorConfig;
-  let reactorRuntimeScope: Scope.Scope | undefined;
   const orchestrationEngine = yield* OrchestrationEngineService;
   const deliveryRepository = yield* OrchestrationEventDeliveryRepository;
   const turnCheckpointCoordinator = yield* TurnCheckpointCoordinator;
@@ -977,11 +970,6 @@ const make = Effect.gen(function* () {
   const handledTurnStartKeys = yield* Cache.make<string, true>({
     capacity: HANDLED_TURN_START_KEY_MAX,
     timeToLive: HANDLED_TURN_START_KEY_TTL,
-    lookup: () => Effect.succeed(true),
-  });
-  const observedProviderTurnKeys = yield* Cache.make<string, true>({
-    capacity: 10_000,
-    timeToLive: Duration.minutes(30),
     lookup: () => Effect.succeed(true),
   });
   const deliveryThreadLock = makeKeyedLock<string>();
@@ -4779,68 +4767,6 @@ const make = Effect.gen(function* () {
           turnId: startedTurn.turnId,
           createdAt: event.payload.createdAt,
         });
-      }
-      if (startedTurn) {
-        yield* Effect.gen(function* () {
-          yield* Effect.sleep(Duration.millis(firstEventTimeoutMs));
-          if (
-            Option.isSome(
-              yield* Cache.getOption(
-                observedProviderTurnKeys,
-                providerTurnKey(event.payload.threadId, startedTurn.turnId),
-              ),
-            )
-          ) {
-            return;
-          }
-          const acknowledgedSession = (yield* providerService.listSessions()).find(
-            (session) =>
-              session.threadId === event.payload.threadId &&
-              session.status === "running" &&
-              session.activeTurnId === startedTurn.turnId,
-          );
-          if (!acknowledgedSession) {
-            return;
-          }
-          const currentThread = yield* resolveThread(event.payload.threadId);
-          if (
-            (currentThread?.session?.status !== "ready" &&
-              currentThread?.session?.status !== "running") ||
-            (currentThread.session.activeTurnId !== null &&
-              currentThread.session.activeTurnId !== startedTurn.turnId)
-          ) {
-            return;
-          }
-          const detail =
-            "The provider accepted this turn but produced no runtime events. The session was stopped so you can retry safely.";
-          if (providerService.stopRuntimeSession) {
-            yield* providerService
-              .stopRuntimeSession({ threadId: event.payload.threadId })
-              .pipe(Effect.catch(() => Effect.void));
-          }
-          yield* appendProviderFailureActivity({
-            threadId: event.payload.threadId,
-            kind: "provider.turn.start.failed",
-            summary: "Provider turn start failed",
-            detail,
-            turnId: null,
-            createdAt: event.payload.createdAt,
-            settlementStatus: "uncertain",
-          });
-          yield* setThreadSessionError({
-            threadId: event.payload.threadId,
-            runtimeMode: event.payload.runtimeMode,
-            detail,
-            createdAt: event.payload.createdAt,
-          });
-        }).pipe(
-          Effect.forkIn(
-            reactorRuntimeScope ??
-              (() => {
-                throw new Error("Provider command reactor started without a runtime scope");
-              })(),
-          ),
-        );
       }
       if (startedTurn && isPendingQueuedDispatch) {
         yield* bindPendingQueuedDispatchToTurn(startedTurn.turnId);
@@ -9038,13 +8964,7 @@ const make = Effect.gen(function* () {
     );
   });
 
-  const start = Effect.scope.pipe(
-    Effect.tap((scope) =>
-      Effect.sync(() => {
-        reactorRuntimeScope = scope;
-      }),
-    ),
-    Effect.andThen(seedThreadModelSelections),
+  const start = seedThreadModelSelections.pipe(
     Effect.andThen(
       Effect.all([
         startProviderIntentSource.pipe(
@@ -9062,21 +8982,10 @@ const make = Effect.gen(function* () {
           Effect.andThen(recoverActiveThreadGoals),
         ),
         Stream.runForEach(providerService.streamEvents, (event) => {
-          const markObserved =
-            event.turnId === undefined
-              ? Effect.void
-              : Cache.set(
-                  observedProviderTurnKeys,
-                  providerTurnKey(event.threadId, event.turnId),
-                  true,
-                );
-          return markObserved.pipe(
-            Effect.andThen(
-              event.type === "turn.completed" || event.type === "turn.aborted"
-                ? processQueueDrainEventSafely(event)
-                : Effect.void,
-            ),
-          );
+          if (event.type !== "turn.completed" && event.type !== "turn.aborted") {
+            return Effect.void;
+          }
+          return processQueueDrainEventSafely(event);
         }).pipe(Effect.forkScoped),
         runBlockedGoalContinuationRetries.pipe(Effect.forkScoped),
         runProviderContextLifecycleActivityRetries.pipe(Effect.forkScoped),
@@ -9255,10 +9164,6 @@ export const makeProviderCommandReactorLive = (options?: ProviderCommandReactorL
         cacheResponseTimeout,
         gatewayOperationCompletionWaitTimeout,
         gatewayOperationCompletionNegativeCacheTtl,
-        firstEventTimeoutMs: Math.max(
-          1,
-          options?.firstEventTimeoutMs ?? DEFAULT_PROVIDER_FIRST_EVENT_TIMEOUT_MS,
-        ),
       }),
     ),
     Layer.provideMerge(OrchestrationEventDeliveryRepositoryLive),
