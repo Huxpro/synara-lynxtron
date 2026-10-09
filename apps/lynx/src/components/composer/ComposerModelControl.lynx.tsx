@@ -39,13 +39,15 @@ import {
 } from "@synara-web/lib/modelFavorites.logic";
 import { webStorage } from "../../platform/storage";
 import { useLynxInteractiveState } from "../ui/interactive-state.lynx";
-import { ArrowLeftIcon, ChevronDownIcon, SearchIcon } from "../../lib/icons.lynx";
+import { ArrowLeftIcon, ChevronDownIcon, PlusIcon, SearchIcon } from "../../lib/icons.lynx";
+import { useNavigate } from "../../adapters/reactRouter.lynx";
 import { OpenAIProviderIcon } from "../OpenAIProviderIcon.lynx";
 import { colorizeLynxSvg } from "../../lib/themedSvg.lynx";
 import { useTheme } from "../../adapters/useTheme.lynx";
 import { useViewportLayout } from "../../hooks/useViewportLayout.lynx";
 import {
   Menu,
+  MenuItem,
   MenuPopup,
   MenuSeparator,
   MenuSub,
@@ -129,6 +131,8 @@ export function ComposerModelControl(props: {
   };
   const { semanticIconColor } = useTheme();
   const viewport = useViewportLayout();
+  const navigate = useNavigate();
+  const isPickerVariant = props.triggerVariant === "picker";
   const [modelOpen, setModelOpen] = useState(props.initialOpen ?? false);
   const [submenuProvider, setSubmenuProvider] = useState<ProviderKind | null>(
     (props.initialSubmenuOpen ?? initData.initialComposerModelSubmenuOpen === true)
@@ -454,14 +458,48 @@ export function ComposerModelControl(props: {
     );
   }
 
+  function openProviderSettings() {
+    "background only";
+    setModelOpen(false);
+    void navigate({ to: "/settings/providers" });
+  }
+
   function renderProviderSubmenuList() {
-    const unavailableStart = providerItems.findIndex((item) => item.kind === "coming-soon");
+    // Electron's ProviderModelPicker (resolveVisibleProviderOptions) lists only the
+    // providers the server reports as installed, then "Add Providers".
+    const items = isPickerVariant
+      ? providerItems.filter(
+          (item) =>
+            item.kind === "available" &&
+            props.providers.some(
+              (status) =>
+                status.provider === item.provider && status.enabled !== false && status.available,
+            ),
+        )
+      : providerItems;
+    const unavailableStart = items.findIndex((item) => item.kind === "coming-soon");
     return (
       <view className="ComposerProviderSubmenuListLynx">
-        {providerItems.map((item, index) => (
+        {items.map((item, index) => (
           <view key={item.provider} className="ComposerProviderMenuEntryLynx">
             {index === unavailableStart && unavailableStart > 0 ? <MenuSeparator /> : null}
-            {item.disabled ? (
+            {item.disabled && isPickerVariant ? (
+              // A signed-out provider leads to its setup; any other state is inert.
+              <MenuItem
+                className="ComposerProviderSubTriggerLynx"
+                disabled={item.statusLabel !== "Sign in"}
+                closeOnClick={false}
+                onClick={item.statusLabel === "Sign in" ? openProviderSettings : undefined}
+              >
+                <view className="ComposerProviderSubTriggerContentLynx">
+                  <OpenAIProviderIcon provider={item.provider} />
+                  <text className="ComposerProviderSubTriggerLabelLynx">{item.label}</text>
+                  <text className="ComposerProviderSubTriggerStatusLynx">
+                    {item.statusLabel ?? ""}
+                  </text>
+                </view>
+              </MenuItem>
+            ) : item.disabled ? (
               <ComposerProviderOptionElement item={item} onSelect={() => {}} />
             ) : (
               <MenuSub
@@ -502,6 +540,25 @@ export function ComposerModelControl(props: {
             )}
           </view>
         ))}
+        {isPickerVariant ? (
+          <>
+            <MenuSeparator className="ComposerProviderAddSeparatorLynx" />
+            <MenuItem
+              className="ComposerProviderSubTriggerLynx"
+              closeOnClick={false}
+              onClick={openProviderSettings}
+            >
+              <view className="ComposerProviderSubTriggerContentLynx">
+                <PlusIcon
+                  className="ComposerProviderAddIconLynx"
+                  color={semanticIconColor("secondary")}
+                  size={12}
+                />
+                <text className="ComposerProviderSubTriggerLabelLynx">Add Providers</text>
+              </view>
+            </MenuItem>
+          </>
+        ) : null}
       </view>
     );
   }
@@ -534,10 +591,10 @@ export function ComposerModelControl(props: {
             props.splitTraits && useSinglePanelModelNavigation && popupContent !== "providers"
               ? " ComposerModelPopupLynx--models"
               : ""
-          }`}
-          side="top"
-          // Web ProviderModelPicker opens from the trigger's start edge.
-          align={props.triggerVariant === "picker" ? "start" : "end"}
+          }${isPickerVariant ? " ComposerModelPopupLynx--picker" : ""}`}
+          // Web ProviderModelPicker opens below its trigger, from the trigger's start edge.
+          side={isPickerVariant ? "bottom" : "top"}
+          align={isPickerVariant ? "start" : "end"}
           sideOffset={4}
         >
           {props.splitTraits && !useSinglePanelModelNavigation ? (

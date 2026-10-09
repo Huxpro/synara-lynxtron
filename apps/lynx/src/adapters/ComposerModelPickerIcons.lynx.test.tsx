@@ -65,9 +65,11 @@ describe("Composer model picker icon fidelity", () => {
     expect(controlSource).toContain("useInitData()");
     expect(controlSource).toContain("initData.initialComposerModelMenuOpen === true");
     expect(controlSource).toContain('className="ComposerProviderBackIconLynx"');
+    // Search, Back, the picker menu's "Add Providers" plus, and the traits chevron.
     expect(controlSource.match(/color=\{semanticIconColor\(["']secondary["']\)\}/g)).toHaveLength(
-      3,
+      4,
     );
+    expect(controlSource).toContain('className="ComposerProviderAddIconLynx"');
     expect(triggerSource).toContain('className="ComposerModelTriggerChevronLynx"');
     expect(groupSource).toContain("<ChevronRightIcon");
     expect(groupSource).toContain("color={svgColors.mutedForeground80}");

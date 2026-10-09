@@ -796,6 +796,47 @@
   overflow: visible;
 }
 
+/* Web ProviderModelPicker: the fixed picker shell, `composer-picker-menu-fixed` (14.5rem),
+   rows in `text-ui` with a 12px provider mark. */
+.ComposerModelPopupLynx--picker.LxMenuPopup {
+  width: 232px;
+  min-width: 232px;
+  max-width: min(232px, 92vw);
+  min-height: 0;
+}
+
+.ComposerModelPopupLynx--picker .ComposerProviderSubTriggerLynx.LxMenuItem {
+  height: 26px;
+  border-radius: 10px;
+}
+
+.ComposerModelPopupLynx--picker .ComposerProviderSubTriggerContentLynx .OpenAIProviderIcon,
+.ComposerProviderAddIconLynx {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  margin: 0 -2px;
+}
+
+.ComposerModelPopupLynx--picker .ComposerProviderSubTriggerLabelLynx {
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 20px;
+}
+
+.ComposerProviderSubTriggerStatusLynx {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 18px;
+  opacity: 0.8;
+}
+
+/* `MenuSeparator mx-2 my-1`. */
+.ComposerModelPopupLynx--picker .ComposerProviderAddSeparatorLynx {
+  margin: 4px 8px;
+}
+
 .ComposerModelPopupLynx--models {
   width: 410px;
   max-width: 410px;
