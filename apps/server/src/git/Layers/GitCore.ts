@@ -1787,7 +1787,9 @@ export const makeGitCore = (options?: { executeOverride?: GitCoreShape["execute"
         };
       });
 
-    const statusDetails: GitCoreShape["statusDetails"] = (cwd) => readStatusDetails(cwd, true);
+    // Fork: `git.statusLocal` reads the working tree only and must not schedule a fetch.
+    const statusDetails: GitCoreShape["statusDetails"] = (cwd, options) =>
+      readStatusDetails(cwd, options?.refreshRemote !== false);
 
     const readActionStatus: GitCoreShape["readActionStatus"] = (cwd) =>
       Effect.gen(function* () {
