@@ -120,3 +120,29 @@
 .LxMenuPopup.AppRailMoreMenu {
   width: 256px;
 }
+
+/* Upstream's SidebarRail spans the window's full height, top strip included. */
+.AppRailShellBody .SidebarResizeSash {
+  top: -44px;
+  height: calc(100% + 44px);
+}
+
+/* Upstream SidebarPanelTitle: `pt-1.5 pb-1 pl-1.5` row holding an `h-8 px-2.5` title in
+   the display face at 17px. */
+.AppRailPanelTitleRow {
+  display: flex;
+  height: 42px;
+  padding: 6px 0 4px 6px;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: center;
+}
+
+.AppRailPanelTitle {
+  padding: 0 10px;
+  color: var(--foreground);
+  font-family: var(--font-display-family, var(--font-ui-family));
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 25.5px;
+}

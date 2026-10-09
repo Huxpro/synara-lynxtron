@@ -6,6 +6,8 @@
   height: 32px;
   flex: 1;
   flex-direction: row;
+  /* The header row's `gap-2` before the action cluster. */
+  margin-right: 8px;
   -x-app-region: no-drag;
 }
 

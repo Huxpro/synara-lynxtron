@@ -12,8 +12,8 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  height: 46px;
-  min-height: 46px;
+  height: 44px;
+  min-height: 44px;
   padding: 0 20px;
 }
 
@@ -1097,4 +1097,36 @@
 .SliceRoot--viewport-compact .AutomationCreateChoice,
 .SliceRoot--viewport-compact .AutomationCreateProject {
   padding: 4px 8px;
+}
+
+/* Upstream index route: `items-center justify-center gap-1 px-6 pb-16 text-center`. */
+.AutomationsIndexPrompt {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  padding: 0 24px 64px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.AutomationsIndexPromptTitle {
+  margin-top: 12px;
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui-lg, 14px);
+  font-weight: 500;
+  line-height: 21px;
+}
+
+.AutomationsIndexPromptText {
+  max-width: 320px;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 17.875px;
+  text-align: center;
+}
+
+.AutomationsIndexPromptAction {
+  margin-top: 16px;
 }

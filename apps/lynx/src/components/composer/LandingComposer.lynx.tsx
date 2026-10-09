@@ -481,6 +481,11 @@ export function LandingComposer(props: {
         }
         projectName={readyProject.title}
         temporary={temporary}
+        onResetProject={
+          selectedProject && props.containerKind !== "studio"
+            ? () => selectProject(null)
+            : undefined
+        }
         projectControl={
           <ComposerProjectPickerComposition
             model={projectPickerModel}

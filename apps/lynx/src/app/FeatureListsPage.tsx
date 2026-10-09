@@ -10,6 +10,10 @@ import type {
   PullRequestState,
 } from "@synara/contracts";
 
+import {
+  KanbanOverviewFilterRow,
+  KanbanOverviewHeaderContext,
+} from "../adapters/KanbanRouteHeaderCompositionElements.lynx";
 import { KanbanColumnComposition } from "@synara-web/components/kanban/KanbanColumnComposition";
 import { KanbanOverviewComposition } from "@synara-web/components/kanban/KanbanOverviewComposition";
 import { KanbanRouteHeaderComposition } from "@synara-web/components/kanban/KanbanRouteHeaderComposition";
@@ -115,19 +119,21 @@ export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => 
   });
   return (
     <view className="FeaturePage FeaturePage--overview">
-      <KanbanRouteHeaderComposition
-        title="Kanban"
-        taskCount={board.totalCount}
-        navigationAvailable={false}
-        backAvailable={false}
-        onBack={() => {}}
-        newTaskDisabled={projects.length === 0}
-        newTaskShortcutParts={[]}
-        onNewTask={() => {
-          setNewTaskProjectId(null);
-          setNewTaskOpen(true);
-        }}
-      />
+      <KanbanOverviewHeaderContext.Provider value={true}>
+        <KanbanRouteHeaderComposition
+          title="Kanban"
+          taskCount={board.totalCount}
+          navigationAvailable={false}
+          backAvailable={false}
+          onBack={() => {}}
+          newTaskDisabled={projects.length === 0}
+          newTaskShortcutParts={[]}
+          onNewTask={() => {
+            setNewTaskProjectId(null);
+            setNewTaskOpen(true);
+          }}
+        />
+      </KanbanOverviewHeaderContext.Provider>
       {cardActions.actionPanels}
       {routeState.kind === "loading" ? (
         <KanbanStateComposition kind="loading-overview" />
@@ -146,6 +152,7 @@ export function ProjectsPage({ navigate }: { readonly navigate: (to: string) => 
               onRetry={() => void refetch()}
             />
           ) : null}
+          <KanbanOverviewFilterRow />
           <KanbanOverviewComposition
             board={board}
             onOpenProject={(projectId) => navigate(`/kanban/${projectId}`)}

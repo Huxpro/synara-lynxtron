@@ -125,6 +125,7 @@ import { SettingsPage } from "./SettingsPage";
 import { UpdatePage } from "./UpdatePage";
 import { KanbanProjectPage, ProjectsPage, PullRequestsPage } from "./FeatureListsPage";
 import { AutomationsPage } from "./AutomationsPage.lynx";
+import { AutomationsRailPanel } from "./AutomationsRailPanel.lynx";
 import { PluginLibraryPage } from "./PluginLibraryPage.lynx";
 import { resolveLandingRoutePresentation } from "./landingRoutePresentation.logic";
 import { RecentViewSwitcherLynx } from "./RecentViewSwitcher.lynx";
@@ -241,6 +242,8 @@ import { AppSnapCoordinator } from "./AppSnapCoordinator.lynx";
 import { AppSnapWelcomeDialogLynx } from "./AppSnapWelcomeDialog.lynx";
 import { EditorRailTabs } from "./EditorRailTabs.lynx";
 import { OpenThreadTabStrip } from "./OpenThreadTabStrip.lynx";
+import { SponsorLandingBanner } from "./SponsorLandingBanner.lynx";
+import { ThreadComposerDock } from "./ThreadComposerDock.lynx";
 import { ThreadHeaderActions } from "./ThreadHeaderActions.lynx";
 import {
   consumeOpenThreadPathInTerminal,
@@ -560,6 +563,7 @@ function ThreadsLandingPage(props: {
             lives for the rest of the conversation. */}
         <view className="ThreadsLandingBody">
           <view className="ThreadsLandingHero">
+            <SponsorLandingBanner />
             <CenteredEmptyLanding projectName={routePresentation.projectName} />
           </view>
           <view className="ThreadsLandingComposerDock">
@@ -2566,7 +2570,7 @@ function ThreadPage(props: ThreadPageProps) {
           chatBody
         )}
         {!terminalPrimary && bodyState.kind !== "empty" ? (
-          <view className="ThreadComposerDock">{composer}</view>
+          <ThreadComposerDock>{composer}</ThreadComposerDock>
         ) : null}
         {currentThread ? (
           <EnvironmentPanel
@@ -3565,18 +3569,22 @@ export function SliceRouter({
   const sidebar = editorModeOpen ? null : (
     <AppRailShell titlebarControls={openTitlebarControls} onHome={navigateBackFromSettings}>
       <SidebarDisclosure open={panelOpen}>
-        <Sidebar
-          activeThreadId={route.pathname === "/thread/$threadId" ? route.params.threadId! : null}
-          draftProjectId={
-            route.pathname === "/new-thread/$projectId" ? route.params.projectId : null
-          }
-          activePath={route.pathname === "/kanban/$projectId" ? "/kanban" : route.pathname}
-          navigate={navigateToChat}
-          searchOpen={searchOpen}
-          onOpenSearch={openSearchPalette}
-          activityViewEnabled={activityViewEnabled}
-          onActivityViewEnabledChange={setActivityViewEnabled}
-        />
+        {route.pathname.startsWith("/automations") ? (
+          <AutomationsRailPanel />
+        ) : (
+          <Sidebar
+            activeThreadId={route.pathname === "/thread/$threadId" ? route.params.threadId! : null}
+            draftProjectId={
+              route.pathname === "/new-thread/$projectId" ? route.params.projectId : null
+            }
+            activePath={route.pathname === "/kanban/$projectId" ? "/kanban" : route.pathname}
+            navigate={navigateToChat}
+            searchOpen={searchOpen}
+            onOpenSearch={openSearchPalette}
+            activityViewEnabled={activityViewEnabled}
+            onActivityViewEnabledChange={setActivityViewEnabled}
+          />
+        )}
       </SidebarDisclosure>
     </AppRailShell>
   );

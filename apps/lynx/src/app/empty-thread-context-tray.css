@@ -121,3 +121,75 @@
   padding: 7px;
   gap: 0;
 }
+
+/* Upstream ProjectPicker: the reset button sits over the trigger's glyph
+   (`absolute left-1.5 top-1/2 size-5`), shown while the picker is hovered. */
+.EmptyThreadProjectPicker {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: row;
+}
+
+.EmptyThreadProjectReset {
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  z-index: 10;
+  display: flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+.EmptyThreadProjectReset.ui-hover,
+.EmptyThreadProjectReset.ui-focus,
+.EmptyThreadProjectReset.ui-pressed {
+  opacity: 1;
+}
+
+.EmptyThreadProjectResetGlyph {
+  display: flex;
+  width: 14px;
+  height: 14px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background-color: var(--muted-foreground);
+}
+
+/* Upstream's Worktree checkbox: an outline `sm` button, label then a `size-4` box. */
+.EmptyThreadWorktreeToggle {
+  display: flex;
+  height: 28px;
+  padding: 0 10px;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  -x-app-region: no-drag;
+}
+
+.EmptyThreadWorktreeToggle.ui-hover,
+.EmptyThreadWorktreeToggle.ui-pressed {
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.EmptyThreadWorktreeToggle.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.EmptyThreadWorktreeBox {
+  display: flex;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--muted-foreground);
+  border-radius: 4px;
+}

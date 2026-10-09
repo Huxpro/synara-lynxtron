@@ -385,8 +385,9 @@
 .ComposerContextWindowMeterLynx {
   position: relative;
   display: flex;
-  width: 18px;
-  height: 18px;
+  /* Electron: a `size-4` ring inside `p-0.5`. */
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
   align-items: center;
   justify-content: center;

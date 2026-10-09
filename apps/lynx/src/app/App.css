@@ -163,7 +163,7 @@
   --app-density-settings-row-padding-y: 8.5px;
   --app-density-chat-gutter-x: 10.2px;
   --app-density-chat-gutter-x-lg: 17px;
-  --app-density-composer-editor-min-height: 33.15px;
+  --app-density-composer-editor-min-height: 35.9125px;
   --app-density-composer-editor-padding-top: 10.2px;
   --app-density-composer-editor-padding-bottom: 6.8px;
   --app-density-composer-editor-padding-x: 10.2px;
@@ -180,7 +180,7 @@
   --app-density-settings-row-padding-y: 10px;
   --app-density-chat-gutter-x: 12px;
   --app-density-chat-gutter-x-lg: 20px;
-  --app-density-composer-editor-min-height: 39px;
+  --app-density-composer-editor-min-height: 42.25px;
   --app-density-composer-editor-padding-top: 12px;
   --app-density-composer-editor-padding-bottom: 8px;
   --app-density-composer-editor-padding-x: 12px;
@@ -197,7 +197,7 @@
   --app-density-settings-row-padding-y: 11.5px;
   --app-density-chat-gutter-x: 13.8px;
   --app-density-chat-gutter-x-lg: 23px;
-  --app-density-composer-editor-min-height: 44.85px;
+  --app-density-composer-editor-min-height: 48.5875px;
   --app-density-composer-editor-padding-top: 13.8px;
   --app-density-composer-editor-padding-bottom: 9.2px;
   --app-density-composer-editor-padding-x: 13.8px;
@@ -239,8 +239,9 @@
 .AppMain--sidebar-closed .AppWindowDragRegion--padded,
 .AppMain--sidebar-closed .SharedKanbanRouteHeader,
 .AppMain--sidebar-closed .SharedPrRouteHeader {
-  /* Clears the leading window controls (they end at x=174); the rail takes 51px. */
-  padding-left: 161px;
+  /* Upstream: the leading window controls end at x=174 and the header row's `gap-3`
+     follows; the rail takes the first 51px. */
+  padding-left: 135px;
 }
 
 .SliceRoot--viewport-compact .AppMain--sidebar-closed .ThreadsLandingHeader,
@@ -1437,9 +1438,17 @@
 }
 
 .FeatureOverviewBody {
+  display: flex;
   flex: 1;
   min-height: 0;
   padding-top: 12px;
+  flex-direction: column;
+}
+
+.FeatureOverviewBody .SharedKanbanOverviewScroller {
+  flex: 1;
+  min-height: 0;
+  height: auto;
 }
 
 .FeaturePageInner {
@@ -2533,7 +2542,7 @@
 .SettingsSidebarFixedChrome {
   flex-shrink: 0;
   width: 100%;
-  padding: 8px 6px 0;
+  padding: 0 6px;
 }
 
 .SettingsSidebarBodyInner {
@@ -2547,7 +2556,10 @@
 .SettingsContent {
   flex: 1;
   min-width: 0;
-  height: 100%;
+  /* Upstream: the settings scroller starts under the 44px window top bar, and the page
+     keeps the route card's 3px inset from the window's right edge. */
+  height: calc(100% - 44px);
+  margin: 44px 3px 0 0;
   background-color: var(--app-settings-surface);
 }
 
