@@ -66,7 +66,7 @@ This fork (`Huxpro/synara-lynxtron`) adds a second renderer, `apps/lynx` (ReactL
 
 - Upstream (`Emanuele-web04/synara`) is read-only for this fork. Do not reshape upstream-owned files in `apps/web`; absorb platform differences on the Lynx side (aliases, platform ports, generated sources). Allowed edits there: `window.x` → `~/platform/x`, and `data-*` test hooks.
 - Lynx-only code lives in `apps/lynx/src/{adapters,platform,main,data}` or `*.lynx.*` files.
-- Layering, invariants, and the migration plan: [shared-state-architecture.md](apps/lynx/plan/shared-state-architecture.md).
+- Principles and invariants (read before changing how Lynx gets data or touching an upstream-owned file): [architecture-principles.md](apps/lynx/docs/architecture-principles.md). Milestones, metrics, and remaining work: [shared-state-architecture.md](apps/lynx/plan/shared-state-architecture.md). Last upstream merge, fork footprint, and port queue: [upstream-sync-2026-10-09.md](apps/lynx/plan/reports/upstream-sync-2026-10-09.md).
 - Verifying Lynx against Electron (`bun run compare:desktop`, cells, workflows, Computer Use): [verification-harness.md](apps/lynx/docs/verification-harness.md). Read it before running the harness. The short version: stop only processes you started, never bring an app forward, and a harness failure is not a product regression.
 - Never run unscoped `bun fmt` in this fork (the tree is large; format the files you changed with `bunx oxfmt <files>`).
 

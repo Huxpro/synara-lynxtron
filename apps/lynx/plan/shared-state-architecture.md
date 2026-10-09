@@ -1,6 +1,6 @@
 # Web / Lynx 共享架构：把共享边界下推到状态与会话层
 
-状态：v1.2（2026-10-09）。方向已确认，取舍见文末。
+状态：v2.0（2026-10-09）。M0–M3a 和 M5（合上游）已合入默认分支；M4 进行中。长期有效的原则与不变量见 [architecture-principles.md](../docs/architecture-principles.md)，本文保留过程、里程碑和指标记录。
 
 ## 结论
 
@@ -121,6 +121,7 @@
 | -------------------- | -------------------: | ---------------------: | --------------------: | -------: | ----------------: | -------: | -----: | ------------: |
 | 基线（M0 之前）      |               31,489 |                 21,731 |                36,379 |    3,490 |                32 |       78 |     15 |         3,733 |
 | M3a 合入后（M0–M3a） |               34,742 |                 19,131 |                35,726 |    3,490 |                39 |       66 |      8 |         3,705 |
+| M5 合上游后          |                    — |                      — |                     — |        — |                39 |       66 |      8 |         3,701 |
 
 里程碑检查（M0–M3a 合入后，默认分支 `d576ba279`，2026-10-09）：单元格矩阵 4 种配置（深色、浅色 × 1280×820、1440×900）共 24 个基础格 + 28 个状态增量，全部通过；工作流 J3 12/12、J4 12/12、J5 8/8、J6 10/10（两端合计）。直接把默认分支合 `upstream/main` 的冲突文件数为 256；经由上游同步分支分两段合，第二段上次试合为 60。
 
@@ -130,3 +131,51 @@
 - M1–M3a 之后，`__root.tsx`、`storeSelectors.ts`、`wsNativeApi.ts`、`store.ts` 的 2,600 行改为随合并自动到达（`__root.tsx` 通过生成器）。`wsTransport.ts` 仍需人工跟进，因为 Lynx 用的是同形的兼容类。
 - 剩下的 19,131 行里，17,402 行来自 `ChatView.tsx` 和 `Sidebar.tsx` 两个容器。也就是说状态层（L2）已经基本共享，合并成本的大头在编排层（L3），这是 M4 要解决的，也是这套方案里最难的一步。
 - 基线的 `synaraClient` 引用数按 grep 记为 32；审计改用 AST 统计后同一时点是 39，所以 32 → 39 不是回退。
+
+### M5：合入 upstream/main（2026-10-09）
+
+PR #34，merge commit `c5672fe7f`。默认分支与 `upstream/main`（`6f54f53c6`）差距为 0。完整记录见 [upstream-sync-2026-10-09.md](reports/upstream-sync-2026-10-09.md)。
+
+- 分两段合：先把重构后的默认分支合进上一轮的同步分支，再合 `upstream/main` 剩余的 567 个提交。
+- 对这 567 个提交，`apps/web/src` 的非测试改动里：随合并自动到达 14,653 行；状态层需手工 6,245 行（`ChatView.tsx`、`Sidebar.tsx`、`wsTransport.ts`）；Lynx 有自己的对应物、需手工 42,766 行。
+- 共享状态层的检验结果：`EventRouter` 生成器在第二段不用改，重新生成即可；兼容传输按上游的新行为补了一批实现，仍是手工，但有类型断言兜底。
+- 带 fork 差异的上游文件 311 → 270。
+- 合并后 GitHub CI 26 项全过（用上游的工作流原文件）；工作流 J3–J6 在两端通过；J1 除 Stop 外通过。
+
+合并暴露出来、并已处理的问题：
+
+| 问题                                           | 性质                    | 处理                                               |
+| ---------------------------------------------- | ----------------------- | -------------------------------------------------- |
+| 41 个上游浏览器测试在 fork 上失败              | fork 在上游文件里的差异 | 5 处原因，4 处还原成上游，1 处重新落位             |
+| `useLocalStorage` 跨窗口同步在 Electron 上失效 | 同上，真实产品缺陷      | 存储端口增加 `isWebStorageArea`                    |
+| fork 的"首个事件看门狗"会停掉正常会话          | fork 的服务端差异       | 删除，上游已有等价机制                             |
+| Lynx 冷启动覆盖已保存的项目偏好                | Lynx 既有缺陷           | 增加存储就绪边界                                   |
+| 锁文件把 Web 共用的包抬到上游没用过的版本      | Lynx 的依赖范围         | 以上游锁文件为基础重建，对齐范围，钉住 Lynx 工具链 |
+
+合并后的已知状态：
+
+- **单元格矩阵是红的。** 上游重做了 Electron 的应用外壳，Lynx 还是旧外壳。这是移植队列的第 1 项，不是回退。矩阵恢复为门禁要等外壳移植完成。
+- **Stop 后约 14 秒回合才结束**，两端相同，是上游服务端的缺陷（Huxpro/synara-lynxtron#35），未修。
+- Lynx 上的替代实现：provider 只用默认账号、收藏模型来自本地预设、分组项目不显示、PR 通过 GitHub inbox 列表读取。
+
+### 尚未完成
+
+| 项                                  | 状态                                                                                        |
+| ----------------------------------- | ------------------------------------------------------------------------------------------- |
+| M3b Thread 页改读 `store`           | 未开始。被上游 `EventRouter` 的增量重复缺陷挡住，需在 Lynx 的读取边界处理                   |
+| M4 逐屏收敛                         | 进行中，Settings 为第一屏。之后是 Environment/Git、Kanban/PR、Automations、Composer、Thread |
+| 删除 `synaraClient.lynx.ts`         | 未完成。803 行、80 个导出，被 39 个文件引用（清单见下）                                     |
+| 缩小 fork 在上游文件里的差异（270） | 未开始。它决定下一次合并的成本                                                              |
+| 移植上游的新界面                    | 队列见合并报告，第 1 项是应用外壳                                                           |
+
+`synaraClient.lynx.ts` 的剩余引用（M5 合入后，按界面分组）：
+
+- **Settings（10）**：`SettingsPage`、`SettingsAdvancedPanel`、`SettingsArchivedPanel`、`SettingsCustomModelsPanel`、`SettingsIntegrationsPanel`、`SettingsProfilePanel`、`SettingsProviderToolsPanel`、`SettingsSkillsPanel`、`SettingsUsagePanel`、`SettingsWorktreesPanel`
+- **Environment / Git / Explorer（8）**：`EnvironmentPanel`、`environmentBootstrap`、`DiffDock`、`GitDockPane`、`threadDock`、`BrowserDockPane`、`ExplorerPdfFallback`、`ExplorerPreviewHeader`
+- **Thread 页（6）**：`router`、`queries`、`Transcript`、`ThreadHeaderActions`、`ThreadTerminal`、`ChatMarkdown`
+- **Composer（3）**：`Composer`、`LandingComposer`、`useNativeComposerVoice`
+- **Sidebar（4）**：`Sidebar`、`SidebarSearchPalette`、`SidebarSearchPaletteHost`、`FeedbackDialog`
+- **Kanban（2）**：`KanbanNewTaskDialog`、`useNativeKanbanCardActions`
+- **其它（6）**：`AppSnapCoordinator`、`appSnapRouting`、`TaskCompletionToastHost`、`temporaryThreadLifecycle`、`threadHandoff`、`useSynaraTransportState`
+
+未关闭的相关问题：#10（Lynx Rstest 套件）、#16（Stop 过早被丢）、#19 和 #20（Computer Use 验收发现的输入与界面问题）、#35（Stop 延迟）。
