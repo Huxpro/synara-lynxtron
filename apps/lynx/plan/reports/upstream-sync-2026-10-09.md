@@ -28,10 +28,9 @@ matter to the port:
 2. `AGENTS.md` is upstream's text with the fork's Lynx and model sections appended; `CLAUDE.md`
    is upstream's. The commands it names exist and pass: `fmt:check`, `windows-runtime:check`,
    `migrations:check`, `brand:check`, `server-sync-fs:check` (inside `lint`).
-3. CI is upstream's plus the Lynx CSS ratchet step and the two relaxations of
-   Huxpro/synara-lynxtron#30 (browser tests and the Windows job non-blocking). Neither could be
-   re-tested here (Linux Playwright runner, Windows runner), so both stay. The six web unit
-   failures of #28 no longer occur: the web suite passes. #10 (Lynx Rstest baseline) is unchanged.
+3. CI uses upstream's workflow unchanged (`.github/workflows/ci.yml` has no fork diff; its
+   contract test forbids `continue-on-error`). The six web unit failures of #28 no longer occur:
+   the web suite passes. #10 (Lynx Rstest baseline) is unchanged.
 4. Upstream features Lynx does not have are not ported; they are absent on Lynx and listed in the
    port queue.
 5. `bun.lock` was resolved from the fork's lock. `bun install --frozen-lockfile` passes and the
@@ -43,23 +42,25 @@ discovery error state), `Sidebar.logic.ts`, `MessageTrail.tsx`, `ProviderHealthB
 `chatHeaderControls.tsx`, the pull-request state glyph and timeline files, `modelFavorites.ts`,
 `starredModels.ts`, `rightDockStore.logic.ts`, `editorViewState.ts`, `EditorWorkspaceView.tsx`,
 `DockExplorerPane.tsx`, `SingleChatSurface.tsx`, the voice and terminal controllers, and
-`ui/{checkbox,input,input-group,textarea}.tsx`. The provider-update prompt cleanup in
-`__root.tsx` for the Components Lab route was dropped as well.
+`ui/{checkbox,input,input-group,textarea}.tsx`. The Components Lab conditional in
+`__root.tsx` is gone too (see the review findings): only the menu navigation remains there.
 
 ## Fork footprint
 
-276 upstream-owned files carry a fork diff after the merge; 311 did before it. 38 returned to
-upstream's content, 3 are new (`threadVisitedPersistence.ts`, `useCommittedPathname.test.ts`,
-`server-sync-fs-budget.json`).
+273 upstream-owned files carry a fork diff; 311 did before the merge. The merge itself left 276
+(38 returned to upstream's content, 3 new: `threadVisitedPersistence.ts`,
+`useCommittedPathname.test.ts`, `server-sync-fs-budget.json`). After it, `ci.yml`,
+`ProviderCommandReactor.test.ts`, `OpenCodeAdapter.ts` and `outboundHttp.ts` returned to
+upstream's content and `git/Layers/GitCore.ts` gained a three-line diff.
 
 | Area                 | Files |
 | -------------------- | ----: |
 | `apps/web`           |   208 |
-| `apps/server`        |    22 |
-| `packages/shared`    |    14 |
+| `apps/server`        |    21 |
+| `packages/shared`    |    13 |
 | `apps/desktop`       |    13 |
 | `packages/contracts` |     9 |
-| Root and CI          |    10 |
+| Root                 |     9 |
 
 The full list with a reason per file is in the appendix. Reasons for `apps/web` rows are derived
 from the content of each diff by rule (which seam the added lines use), not reviewed one by one.
@@ -158,6 +159,45 @@ launcher, shadow-root file previews, automation rows, Kanban cards, the Appearan
 "Toggle right sidebar", "Chat behavior". No defect introduced by the merge (class (c)) showed up
 in a workflow. One was found outside the harness and fixed: the missing `text-ui*` rules above.
 
+## Independent review and follow-up fixes
+
+A read-only review of the merge confirmed seven issues. All are fixed in separate commits after
+the merge; each was checked against the code first, and none turned out to be wrong.
+
+|    # | Finding                                                                                                                                                                                                                  | Fix                                                                                                                                                                                                                                                             | Commit      |
+| ---: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+|    1 | The fork's first-event watchdog in `ProviderCommandReactor.ts` read the post-persistence event stream, so an ingestion delay looked like provider silence, and its stop was not tied to the inspected turn or generation | Removed, with its tests. The file is upstream's except a four-line deleted-thread guard from 6fe249adf, which no test in the upstream test file covers                                                                                                          | `d363e35a8` |
+|    2 | Lynx created the shared stores before the storage mirror was hydrated; the first shell snapshot then persisted blank project names, appearance, expansion and order over the saved ones                                  | `app/persistedStoreHydration.lynx.ts`: after `hydrateStorage()` and before SessionSync, reload the project preferences through `storePersistence.readPersistedState` and rehydrate every eagerly created zustand persist store. A test reproduces the overwrite | `208d7b10f` |
+|    3 | A starred preset saved for a non-default provider account was selectable on Lynx and ran in the default account                                                                                                          | `selectableStarredModels` leaves such presets out of the picker; storage is untouched                                                                                                                                                                           | `b24091d48` |
+|    4 | `git.statusLocal` passed `{ refreshRemote: false }` but upstream's `statusDetails` ignored it and still scheduled a fetch                                                                                                | `git/Layers/GitCore.ts` passes the option through (three lines). A test counts real `git fetch` invocations                                                                                                                                                     | `a22eb574b` |
+|    5 | The compat transport ran Git actions as one-shot streams: no recovery after a lost socket, and a failure after `action_finished` was reported as an error                                                                | Upstream's negotiated loop: `recoverable` only when the server advertises `git.action-recovery`, reattach by action id with `resume`, never re-run; a received final result is returned                                                                         | `6e7267d2a` |
+| 6, 7 | The Components Lab conditional in `__root.tsx` unmounted the session-sync engine and notification services on Electron, making upstream's unguarded continuations reachable and stranding the provider-update toast      | The conditional is removed. The hook is the menu navigation only (one component, one JSX line, one import); the Lab renders under the same services as every route                                                                                              | `ef548b487` |
+|    8 | Fork diffs with no remaining purpose                                                                                                                                                                                     | Dropped: OpenCodeAdapter's `time.created`, unused Keybinding imports in contracts, outboundHttp import order, and the sidebar icon button ink in `index.css` (no Lynx code reads that rule, so parity does not need the fork value)                             | `fff3705e4` |
+
+Persisted stores audited for finding 2:
+
+| Store                                                                                               | Start on Lynx before the fix                                  | Now                                          |
+| --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- | -------------------------------------------- |
+| `store.ts` project preferences (`storePersistence`)                                                 | blank, then overwritten                                       | reloaded at the boundary                     |
+| `recentViewsStore`, `rightDockStore`, `splitViewStore`, `latestProjectStore`, `workspacePathsStore` | defaults; next write replaced the saved state                 | rehydrated at the boundary                   |
+| `terminalStateStore`, `pinnedThreadsStore`, `pinnedProjectsStore`, `projectInstructionsStore`       | rehydrated later by App, the sidebar or the Environment panel | also rehydrated at the boundary (idempotent) |
+| `composerDraftStore`                                                                                | Lynx adapter with its own hydration                           | unchanged                                    |
+| `spacesUiStore`                                                                                     | session storage, empty at launch by definition                | unchanged                                    |
+| `threadVisitedPersistence`, `Sidebar.uiState`, `appSettings`                                        | read on first use, after hydration                            | unchanged                                    |
+
+Not covered: when storage hydration fails and the user retries from Settings, the stores are not
+reloaded, because by then they hold live state that a reload would replace.
+
+Verification after these fixes: `bun typecheck`, `bun lint`, `bun fmt --check`, `brand:check`,
+the CI contract tests (14 pass), Lynx typecheck, build, `audit:reuse:check` and
+`audit:style:check` pass. Lynx Rstest: 366 files, 1405 tests, the same 23 failures in 26 files.
+`ProviderCommandReactor.test.ts` passes on upstream's content. One harness session, dark
+1280×820: J3 to J6 pass on both renderers, J1 passes on both except Stop, which is unchanged
+(Native 15.5 s, Electron 14.8 s after Stop; issue #35). Components Lab was opened and left once
+on Electron by route; the app returned to its thread with the sidebar intact. The harness log
+records only the Native host's subscriptions, so the absence of a duplicate Electron shell
+subscription was not observed directly; it follows from the engine no longer unmounting.
+
 ## Port queue
 
 Ordered by what a user of the Native app notices first. Size: S under a day, M a few days, L a
@@ -221,7 +261,6 @@ is where the gap grew: upstream redesigned the shell, and none of it is shared.
 
 | File                                                                                 | Diff vs upstream | Reason                                                                                                 |
 | ------------------------------------------------------------------------------------ | ---------------- | ------------------------------------------------------------------------------------------------------ |
-| `.github/workflows/ci.yml`                                                           | +9 / -0          | Lynx CSS ratchet step; browser tests and the Windows job non-blocking (#30)                            |
 | `.gitignore`                                                                         | +8 / -0          | ignores for Lynx build and comparison output                                                           |
 | `.oxfmtrc.json`                                                                      | +3 / -0          | format ignores for Lynx generated files                                                                |
 | `.oxlintrc.json`                                                                     | +236 / -2        | no-restricted-globals rule and its exempt lists                                                        |
@@ -243,20 +282,19 @@ is where the gap grew: upstream redesigned the shell, and none of it is shared.
 | `apps/server/package.json`                                                           | +2 / -0          | pdfjs and canvas for the PDF first-page size                                                           |
 | `apps/server/src/git/Layers/CodexTextGeneration.ts`                                  | +2 / -1          | resolves the ChatGPT-bundled Codex binary                                                              |
 | `apps/server/src/git/Layers/GitStatusBroadcaster.test.ts`                            | +39 / -1         | status details without a remote refresh                                                                |
+| `apps/server/src/git/Layers/GitCore.ts`                                              | +3 / -1          | `statusDetails` honors `refreshRemote: false` for `git.statusLocal`                                    |
 | `apps/server/src/git/Layers/GitStatusBroadcaster.ts`                                 | +9 / -1          | status details without a remote refresh                                                                |
 | `apps/server/src/git/Services/GitCore.ts`                                            | +4 / -1          | status details without a remote refresh                                                                |
 | `apps/server/src/http.ts`                                                            | +57 / -0         | local PDF first-page size route                                                                        |
 | `apps/server/src/localImageRoute.test.ts`                                            | +64 / -3         | local PDF first-page size route                                                                        |
 | `apps/server/src/orchestration/Layers/ProjectionSnapshotQuery.test.ts`               | +97 / -0         | sidebar shell and search snapshot queries Lynx bootstraps from                                         |
 | `apps/server/src/orchestration/Layers/ProjectionSnapshotQuery.ts`                    | +161 / -0        | sidebar shell and search snapshot queries Lynx bootstraps from                                         |
-| `apps/server/src/orchestration/Layers/ProviderCommandReactor.test.ts`                | +97 / -1         | first-event watchdog for a provider turn                                                               |
-| `apps/server/src/orchestration/Layers/ProviderCommandReactor.ts`                     | +104 / -5        | first-event watchdog for a provider turn                                                               |
+| `apps/server/src/orchestration/Layers/ProviderCommandReactor.ts`                     | +4 / -0          | deleted-thread guard before the session write (6fe249adf)                                              |
 | `apps/server/src/orchestration/Services/ProjectionSnapshotQuery.ts`                  | +16 / -0         | sidebar shell and search snapshot queries Lynx bootstraps from                                         |
 | `apps/server/src/orchestration/startupTurnReconciliation.test.ts`                    | +15 / -0         | skip deleted threads at startup reconciliation                                                         |
 | `apps/server/src/orchestration/startupTurnReconciliation.ts`                         | +10 / -5         | skip deleted threads at startup reconciliation                                                         |
 | `apps/server/src/orchestration/testing/fakeProjectionSnapshotQuery.ts`               | +2 / -0          | sidebar shell and search snapshot queries Lynx bootstraps from                                         |
 | `apps/server/src/provider/Layers/CodexAdapter.test.ts`                               | +80 / -1         | synchronous Codex enqueue and trimmed Codex notices                                                    |
-| `apps/server/src/provider/Layers/OpenCodeAdapter.ts`                                 | +1 / -0          | optional field read by the fork                                                                        |
 | `apps/server/src/provider/Layers/ProviderService.test.ts`                            | +105 / -0        | runtime event stream survives an unprocessable event; failed turn mapping                              |
 | `apps/server/src/provider/Layers/ProviderService.ts`                                 | +6 / -2          | runtime event stream survives an unprocessable event; failed turn mapping                              |
 | `apps/server/src/threadRetention.test.ts`                                            | +9 / -0          | switch that keeps the comparison fixture from being pruned                                             |
@@ -453,7 +491,7 @@ is where the gap grew: upstream redesigned the shell, and none of it is shared.
 | `apps/web/src/rightDockStore.logic.test.ts`                                          | +21 / -0         | test follows a fork seam                                                                               |
 | `apps/web/src/rightDockStore.ts`                                                     | +2 / -1          | ~/platform seam                                                                                        |
 | `apps/web/src/routeTree.gen.ts`                                                      | +21 / -0         | generated: Components Lab route                                                                        |
-| `apps/web/src/routes/__root.tsx`                                                     | +48 / -23        | Components Lab menu hook, the one patched source of the generated EventRouter                          |
+| `apps/web/src/routes/__root.tsx`                                                     | +19 / -0         | Components Lab menu navigation only; the patched source of the generated EventRouter                   |
 | `apps/web/src/routes/_chat.$threadId.tsx`                                            | +6 / -6          | small seam: class constants or values shared with Lynx                                                 |
 | `apps/web/src/session-logic.ts`                                                      | +10 / -35        | shared .logic / @synara/shared extraction                                                              |
 | `apps/web/src/spacesUiStore.ts`                                                      | +6 / -4          | ~/platform seam                                                                                        |
@@ -489,7 +527,6 @@ is where the gap grew: upstream redesigned the shell, and none of it is shared.
 | `packages/shared/src/localPreviewFiles.ts`                                           | +6 / -8          | runtime logic shared by both renderers; subpath exports                                                |
 | `packages/shared/src/localServers.test.ts`                                           | +22 / -0         | runtime logic shared by both renderers; subpath exports                                                |
 | `packages/shared/src/localServers.ts`                                                | +17 / -1         | runtime logic shared by both renderers; subpath exports                                                |
-| `packages/shared/src/outboundHttp.ts`                                                | +1 / -1          | runtime logic shared by both renderers; subpath exports                                                |
 | `packages/shared/src/pinnedMessages.test.ts`                                         | +11 / -0         | runtime logic shared by both renderers; subpath exports                                                |
 | `packages/shared/src/pinnedMessages.ts`                                              | +30 / -0         | runtime logic shared by both renderers; subpath exports                                                |
 | `packages/shared/src/providerUsage.ts`                                               | +14 / -0         | runtime logic shared by both renderers; subpath exports                                                |
