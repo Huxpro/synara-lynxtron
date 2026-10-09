@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-09T07:18:51.292Z",
+  "generatedAt": "2026-10-09T09:01:55.267Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -12,7 +12,7 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxGraph": {
     "entries": ["src/app/index.tsx"],
-    "modules": 759,
+    "modules": 772,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/collapsible",
@@ -206,7 +206,6 @@
       "@tanstack/history",
       "@tanstack/react-pacer",
       "@tanstack/react-query",
-      "@tanstack/react-router",
       "background-only",
       "class-variance-authority",
       "diff",
@@ -389,11 +388,11 @@
         "loc": 79392
       },
       "currentReuse": {
-        "modules": 267,
-        "loc": 55064,
-        "modulePercent": 67.25,
-        "locPercent": 69.36,
-        "gatePercent": 67.25
+        "modules": 275,
+        "loc": 57197,
+        "modulePercent": 69.27,
+        "locPercent": 72.04,
+        "gatePercent": 69.27
       },
       "modules": [
         {
@@ -3674,7 +3673,7 @@
           "loc": 28,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -3702,7 +3701,7 @@
           "loc": 147,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/nativeApi.ts"]
         },
         {
@@ -3912,7 +3911,7 @@
           "loc": 36,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -4181,7 +4180,7 @@
           "loc": 41,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -4269,7 +4268,7 @@
           "loc": 1549,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "PATCHED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/branding.ts",
@@ -4437,7 +4436,7 @@
           "loc": 90,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/storeState.ts", "apps/web/src/threadDerivation.ts"]
         },
         {
@@ -4675,7 +4674,7 @@
           "loc": 24,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -4756,7 +4755,7 @@
           "loc": 218,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/store.ts", "apps/web/src/threadDerivation.ts"]
         },
         {
@@ -5047,11 +5046,11 @@
         "loc": 68765
       },
       "currentReuse": {
-        "modules": 254,
-        "loc": 50478,
-        "modulePercent": 74.05,
-        "locPercent": 73.41,
-        "gatePercent": 73.41
+        "modules": 256,
+        "loc": 50737,
+        "modulePercent": 74.64,
+        "locPercent": 73.78,
+        "gatePercent": 73.78
       },
       "modules": [
         {
@@ -8399,7 +8398,7 @@
           "loc": 41,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -8777,7 +8776,7 @@
           "loc": 218,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/store.ts", "apps/web/src/threadDerivation.ts"]
         },
         {
@@ -9062,11 +9061,11 @@
         "loc": 144212
       },
       "currentReuse": {
-        "modules": 402,
-        "loc": 70368,
-        "modulePercent": 53.96,
-        "locPercent": 48.79,
-        "gatePercent": 48.79
+        "modules": 410,
+        "loc": 72501,
+        "modulePercent": 55.03,
+        "locPercent": 50.27,
+        "gatePercent": 50.27
       },
       "modules": [
         {
@@ -16904,7 +16903,7 @@
           "loc": 28,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -16932,7 +16931,7 @@
           "loc": 147,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/nativeApi.ts"]
         },
         {
@@ -17229,7 +17228,7 @@
           "loc": 36,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -17596,7 +17595,7 @@
           "loc": 41,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -17728,7 +17727,7 @@
           "loc": 1549,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "PATCHED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/branding.ts",
@@ -17900,7 +17899,7 @@
           "loc": 90,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/storeState.ts", "apps/web/src/threadDerivation.ts"]
         },
         {
@@ -18146,7 +18145,7 @@
           "loc": 24,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -18227,7 +18226,7 @@
           "loc": 218,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/store.ts", "apps/web/src/threadDerivation.ts"]
         },
         {
@@ -18562,11 +18561,11 @@
         "loc": 89036
       },
       "currentReuse": {
-        "modules": 297,
-        "loc": 58039,
-        "modulePercent": 63.46,
-        "locPercent": 65.19,
-        "gatePercent": 63.46
+        "modules": 305,
+        "loc": 60172,
+        "modulePercent": 65.17,
+        "locPercent": 67.58,
+        "gatePercent": 65.17
       },
       "modules": [
         {
@@ -22712,7 +22711,7 @@
           "loc": 28,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -22740,7 +22739,7 @@
           "loc": 147,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/nativeApi.ts"]
         },
         {
@@ -22977,7 +22976,7 @@
           "loc": 36,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -23254,7 +23253,7 @@
           "loc": 41,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -23342,7 +23341,7 @@
           "loc": 1549,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "PATCHED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/branding.ts",
@@ -23535,7 +23534,7 @@
           "loc": 90,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/storeState.ts", "apps/web/src/threadDerivation.ts"]
         },
         {
@@ -23773,7 +23772,7 @@
           "loc": 24,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -23854,7 +23853,7 @@
           "loc": 218,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/store.ts", "apps/web/src/threadDerivation.ts"]
         },
         {
@@ -24168,11 +24167,11 @@
         "loc": 95222
       },
       "currentReuse": {
-        "modules": 321,
-        "loc": 61613,
-        "modulePercent": 63.82,
-        "locPercent": 64.7,
-        "gatePercent": 63.82
+        "modules": 329,
+        "loc": 63746,
+        "modulePercent": 65.41,
+        "locPercent": 66.94,
+        "gatePercent": 65.41
       },
       "modules": [
         {
@@ -28833,7 +28832,7 @@
           "loc": 28,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -28861,7 +28860,7 @@
           "loc": 147,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/nativeApi.ts"]
         },
         {
@@ -29106,7 +29105,7 @@
           "loc": 36,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -29383,7 +29382,7 @@
           "loc": 41,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -29479,7 +29478,7 @@
           "loc": 1549,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "PATCHED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/branding.ts",
@@ -29638,7 +29637,7 @@
           "loc": 90,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/storeState.ts", "apps/web/src/threadDerivation.ts"]
         },
         {
@@ -29876,7 +29875,7 @@
           "loc": 24,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -29957,7 +29956,7 @@
           "loc": 218,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/store.ts", "apps/web/src/threadDerivation.ts"]
         },
         {
@@ -30271,11 +30270,11 @@
         "loc": 95223
       },
       "currentReuse": {
-        "modules": 321,
-        "loc": 61613,
-        "modulePercent": 63.82,
-        "locPercent": 64.7,
-        "gatePercent": 63.82
+        "modules": 329,
+        "loc": 63746,
+        "modulePercent": 65.41,
+        "locPercent": 66.94,
+        "gatePercent": 65.41
       },
       "modules": [
         {
@@ -34936,7 +34935,7 @@
           "loc": 28,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -34964,7 +34963,7 @@
           "loc": 147,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/nativeApi.ts"]
         },
         {
@@ -35209,7 +35208,7 @@
           "loc": 36,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -35486,7 +35485,7 @@
           "loc": 41,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -35582,7 +35581,7 @@
           "loc": 1549,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "PATCHED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/branding.ts",
@@ -35741,7 +35740,7 @@
           "loc": 90,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/storeState.ts", "apps/web/src/threadDerivation.ts"]
         },
         {
@@ -35979,7 +35978,7 @@
           "loc": 24,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -36060,7 +36059,7 @@
           "loc": 218,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/store.ts", "apps/web/src/threadDerivation.ts"]
         },
         {
@@ -36370,11 +36369,11 @@
         "loc": 90377
       },
       "currentReuse": {
-        "modules": 341,
-        "loc": 63244,
-        "modulePercent": 69.17,
-        "locPercent": 69.98,
-        "gatePercent": 69.17
+        "modules": 349,
+        "loc": 65377,
+        "modulePercent": 70.79,
+        "locPercent": 72.34,
+        "gatePercent": 70.79
       },
       "modules": [
         {
@@ -40716,7 +40715,7 @@
           "loc": 28,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -40744,7 +40743,7 @@
           "loc": 147,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/nativeApi.ts"]
         },
         {
@@ -40982,7 +40981,7 @@
           "loc": 36,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -41280,7 +41279,7 @@
           "loc": 41,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -41376,7 +41375,7 @@
           "loc": 1549,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "PATCHED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/branding.ts",
@@ -41558,7 +41557,7 @@
           "loc": 90,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/storeState.ts", "apps/web/src/threadDerivation.ts"]
         },
         {
@@ -41796,7 +41795,7 @@
           "loc": 24,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -41877,7 +41876,7 @@
           "loc": 218,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/store.ts", "apps/web/src/threadDerivation.ts"]
         },
         {

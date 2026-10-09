@@ -24,7 +24,11 @@ const tsconfigPath = path.join(appRoot, "tsconfig.app.json");
 
 // Aliases that re-point a bare npm package to a runtime build/shim. TypeScript
 // must keep resolving those packages' own declarations.
-const RUNTIME_ONLY_ALIASES = new Set(["react$", "decode-named-character-reference$"]);
+const RUNTIME_ONLY_ALIASES = new Set([
+  "react$",
+  "decode-named-character-reference$",
+  "@tanstack/react-router$",
+]);
 
 // Packages the ReactLynx toolchain aliases for every module it compiles, so
 // Web-tree files (whose own node_modules lack them) still resolve them.

@@ -47,7 +47,7 @@ import type { SettingsAppearanceValues } from "@synara-web/components/settings/S
 import type { ThemeState } from "@synara-web/theme/theme.logic";
 import type { SettingsSectionId } from "@synara-web/settingsNavigation";
 import type { Project } from "@synara-web/types";
-import { useStore } from "@synara-web/store";
+import { useSessionShellProjects, useSessionShellSpaces } from "./sessionShell.lynx";
 import { useSpacesUiStore } from "@synara-web/spacesUiStore";
 import { useWorkspaceStore } from "@synara-web/workspaceStore";
 import { useRecentViewsStore } from "@synara-web/recentViewsStore";
@@ -1576,7 +1576,7 @@ function ThreadPage(props: ThreadPageProps) {
   );
   const providerHealthVisible =
     resolveProviderHealthBannerPresentation(providerHealth.status) !== null;
-  const editorProjectSpaces = useStore((state) => state.spaces);
+  const editorProjectSpaces = useSessionShellSpaces();
   const editorActiveSpaceId = useSpacesUiStore((state) => state.activeSpaceId);
   const editorChatHistoryThreads = currentThread
     ? resolveEditorChatHistoryThreads({
@@ -2833,7 +2833,7 @@ export function SliceRouter({
       if (invalidateTimer !== null) clearTimeout(invalidateTimer);
     };
   }, [componentsLabRoute]);
-  const routeProjects = useStore((state) => state.projects);
+  const [routeProjects, sessionShellHydrated] = useSessionShellProjects();
   const workspacePages = useWorkspaceStore((state) => state.workspacePages);
   const recentViews = useRecentViewsStore((state) => state.recentViews);
   const recordRecentView = useRecentViewsStore((state) => state.recordRecentView);
@@ -2920,9 +2920,9 @@ export function SliceRouter({
     if (currentRecentView) recordRecentView(currentRecentView);
   }, [currentRecentViewKey, recordRecentView]);
   useEffect(() => {
-    if (routeThreadsPending) return;
+    if (routeThreadsPending || !sessionShellHydrated) return;
     pruneRecentViewsStore(recentViewAvailability);
-  }, [pruneRecentViewsStore, recentViewAvailability, routeThreadsPending]);
+  }, [pruneRecentViewsStore, recentViewAvailability, routeThreadsPending, sessionShellHydrated]);
   const appNotifications = (
     <view
       className={`AppNotificationStack${
@@ -3210,7 +3210,7 @@ export function SliceRouter({
   }, []);
   const studioRouteController = useRestoreOrCreateChatRouteController({
     enabled: route.pathname === "/studio" && studioSettings.showStudioSection && lastRouteHydrated,
-    threadsHydrated: !routeThreadsPending,
+    threadsHydrated: !routeThreadsPending && sessionShellHydrated,
     threadIds: (routeThreads ?? []).map((thread) => thread.id),
     splitViewsHydrated: true,
     splitViewIds: [],
@@ -3292,7 +3292,7 @@ export function SliceRouter({
     (direction: "next" | "previous") => {
       const currentSelection = recentViewSelectionRef.current;
       let views = recentViewsRef.current;
-      if (currentSelection === null) {
+      if (currentSelection === null && sessionShellHydrated) {
         views = pruneRecentViews(views, recentViewAvailability);
         pruneRecentViewsStore(recentViewAvailability);
       }
@@ -3310,7 +3310,7 @@ export function SliceRouter({
         selectedKey: recentViewKey(selectedView),
       });
     },
-    [currentRecentViewKey, pruneRecentViewsStore, recentViewAvailability],
+    [currentRecentViewKey, pruneRecentViewsStore, recentViewAvailability, sessionShellHydrated],
   );
   const renderTitlebarControls = (placement: "open" | "closed") => (
     <DesktopTitlebarControls

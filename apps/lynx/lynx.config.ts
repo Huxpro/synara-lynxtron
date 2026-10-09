@@ -250,6 +250,10 @@ export default defineConfig({
         "../../packages/shared/src/githubRepository.ts",
       ),
       "@tanstack/react-query$": path.resolve(rootPath, "./node_modules/@tanstack/react-query"),
+      // Only apps/web depends on the pacer (store.ts already runs it on Lynx,
+      // resolved from there). Lynx-side generated upstream code imports it too
+      // and must get that same copy.
+      "@tanstack/react-pacer$": path.resolve(rootPath, "../web/node_modules/@tanstack/react-pacer"),
       "@synara-provider-icons": path.resolve(rootPath, "../web/public/central-icons-fill"),
       "@synara-central-icons": path.resolve(rootPath, "../web/public/central-icons-reversed"),
       "@synara-central-icons-fill": path.resolve(rootPath, "../web/public/central-icons-fill"),
@@ -381,6 +385,11 @@ export default defineConfig({
         rootPath,
         "./src/adapters/contextMenuFallback.lynx.ts",
       ),
+      // Session sync (generated `EventRouter`, plan Step 2) reaches these two
+      // through `~/…`. The draft store is the Lynx facade (the Web store cannot
+      // enter the Lynx bundle, plan decision P6-C1).
+      "~/composerDraftStore$": path.resolve(rootPath, "./src/adapters/composerDraftStore.lynx.ts"),
+      "~/components/ui/toast$": path.resolve(rootPath, "./src/components/ui/toast.lynx.ts"),
       "~/components/ui/button$": path.resolve(rootPath, "./src/components/ui/button.lynx.tsx"),
       "~/components/ui/input$": path.resolve(rootPath, "./src/components/ui/input.lynx.tsx"),
       "~/components/ui/command$": path.resolve(rootPath, "./src/components/ui/command.lynx.tsx"),
@@ -406,6 +415,10 @@ export default defineConfig({
       // (Verified: compat re-exports the same @lynx-js/react instance — no
       // runtime duplication.)
       react$: path.resolve(rootPath, "./src/react-compat-shim.ts"),
+      // The router's component layer crashes on ReactLynx (P2-V1). Upstream
+      // state-layer modules only use a few of its hooks; those run over the
+      // Lynx memory history instead.
+      "@tanstack/react-router$": path.resolve(rootPath, "./src/adapters/reactRouter.lynx.ts"),
       // Rspeedy's Lynx target selects the package's `browser` condition, whose
       // decoder creates a DOM element at module load. PrimJS has no document;
       // use the package's equivalent pure character-entities implementation.

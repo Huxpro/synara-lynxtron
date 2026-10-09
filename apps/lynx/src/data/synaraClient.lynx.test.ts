@@ -25,10 +25,12 @@ describe("Lynx Synara relay state", () => {
     expect(mainSource).toContain('_tag: "NativeRpcResult"');
     expect(bridgeSource).toContain('parsed._tag === "NativeRpcResult"');
     expect(clientSource).toContain('import { hostBridgeRequest } from "./nativeRpcBridge";');
-    expect(clientSource).toContain('"orchestration.subscribeShell"');
-    // Long-lived streams are relayed as global events through one shared table.
+    // The shell stream moved to the upstream NativeApi facade (shared state
+    // layer step 2): upstream's session sync opens it, this module only
+    // listens. A second opener would be a duplicate subscription on the socket.
+    expect(clientSource).not.toContain("orchestration.subscribeShell");
     expect(clientSource).toContain(
-      'const ORCHESTRATION_SHELL_EVENT = NATIVE_EVENT_STREAM_CHANNELS["orchestration.subscribeShell"]',
+      "return ensureNativeApi().orchestration.onShellEvent(listener);",
     );
     // Server settings moved to the upstream NativeApi facade (shared state
     // layer step 1); the fixed channel for it is no longer consumed here.

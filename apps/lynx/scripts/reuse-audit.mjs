@@ -120,7 +120,7 @@ function resolveLynxImport(specifier, importer) {
     );
   }
   const lynxUiPrimitive = specifier.match(
-    /^~\/components\/ui\/(button|input|dialog|menu|tooltip|scroll-area|collapsible|command|kbd)$/,
+    /^~\/components\/ui\/(button|input|dialog|menu|tooltip|scroll-area|collapsible|command|kbd|toast)$/,
   );
   if (lynxUiPrimitive) {
     return resolveSourceCandidate(
@@ -134,6 +134,18 @@ function resolveLynxImport(specifier, importer) {
   if (elementAdapter) {
     return resolveSourceCandidate(
       path.join(lynxRoot, `src/adapters/${elementAdapter[1]}`),
+      lynxSourceExtensions,
+    );
+  }
+  if (specifier === "~/composerDraftStore") {
+    return resolveSourceCandidate(
+      path.join(lynxRoot, "src/adapters/composerDraftStore"),
+      lynxSourceExtensions,
+    );
+  }
+  if (specifier === "@tanstack/react-router") {
+    return resolveSourceCandidate(
+      path.join(lynxRoot, "src/adapters/reactRouter"),
       lynxSourceExtensions,
     );
   }

@@ -3,6 +3,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "@lynx-js/react",
+    "verbatimModuleSyntax": false,
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "moduleSuffixes": [".lynx", ""],
@@ -92,6 +93,7 @@
       "@synara-web/*": ["../web/src/*"],
       "@synara/shared/githubRepository": ["../../packages/shared/src/githubRepository.ts"],
       "@synara/shared/model": ["../../packages/shared/src/model.ts"],
+      "@tanstack/react-pacer": ["../web/node_modules/@tanstack/react-pacer"],
       "@tanstack/react-query": ["./node_modules/@tanstack/react-query"],
       "~": ["../web/src"],
       "~/*": ["../web/src/*"],
@@ -304,10 +306,12 @@
       "~/components/ui/menu": ["./src/components/ui/menu.lynx.tsx"],
       "~/components/ui/scroll-area": ["./src/components/ui/scroll-area.lynx.tsx"],
       "~/components/ui/shortcut-kbd": ["../web/src/components/ui/shortcut-kbd.tsx"],
+      "~/components/ui/toast": ["./src/components/ui/toast.lynx.ts"],
       "~/components/ui/tooltip": ["./src/components/ui/tooltip.lynx.tsx"],
       "~/components/WorkspaceFilePreviewErrorStateElements": [
         "./src/adapters/WorkspaceFilePreviewErrorStateElements.lynx.tsx"
       ],
+      "~/composerDraftStore": ["./src/adapters/composerDraftStore.lynx.ts"],
       "~/hooks/useTheme": ["./src/adapters/useTheme.lynx.ts"],
       "~/hooks/useViewportLayout": ["./src/hooks/useViewportLayout.lynx.ts"],
       "~/nativeApi": ["./src/adapters/nativeApi.lynx.ts"],
