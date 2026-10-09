@@ -19,7 +19,14 @@ Lynx 通过构建时的**派生层**消费原样的上游源码。派生层有�
 
 手工编辑上游文件不是允许的手段。这条结论来自同一次上游合并里的对照：用派生的部分（会话同步）在 567 个上游提交之后不用改；用手工接缝的部分让 41 个上游测试在 Electron 上失败，并且每次合并都要解冲突。
 
-环境注入的实现：`scripts/browser-environment-loader.mjs` 只对 `apps/web/src` 生效，把文件里用到的浏览器全局名绑定到 `src/platform/browserEnvironment.lynx.ts` 的导出；npm 包和 Lynx 自己的代码仍然看到真实运行时。该模块的每个成员属于四类之一并在源码里标明：有 Lynx 实现、接受但无效果、故意缺席（让上游的特性探测走"不可用"分支）、调用即抛出带成员名的错误。rstest 挂同一条规则。
+环境注入的实现：`scripts/browser-environment-loader.mjs` 只对 `apps/web/src` 生效，把文件里用到的浏览器全局名绑定到 `src/platform/browserEnvironment.lynx.ts` 的导出；npm 包和 Lynx 自己的代码仍然看到真实运行时。哪些名字要绑定由 TypeScript 编译器的作用域分析决定：只有模块里存在一个不被文件自身任何绑定解析的**值引用**时才注入，属性名、类型位置、字符串、注释、从别的模块转出的名字和嵌套作用域里自己声明的同名变量都不算。import 插在指令序言（`"use client"`、`'background only'`）和 hashbang 之后，不增加行。该环境模块的每个成员属于四类之一并在源码里标明：有 Lynx 实现、接受但无效果、故意缺席（让上游的特性探测走"不可用"分支）、调用即抛出带成员名的错误。rstest 挂同一条规则；`browser-environment-loader.test.mjs` 对 `apps/web/src` 的全部源文件验证两种加载顺序（原始 TS/TSX、去类型之后）结论一致、没有重复绑定、指令保持为指令。
+
+**还原一个 Lynx 会执行的上游文件之前，要检查它的分支。** 注入之后 `typeof window` 在 Lynx 上恒为已定义。fork 以前把上游的同一个判断改写成了两种谓词：`isBrowser()`（Lynx 上为真）和 `getDocument() !== null`（Lynx 上为假）。还原后两者都变成"为真"，所以 fork 原先刻意关掉的分支会被打开。已知的三处：
+
+- `hooks/useSmoothStreamedText.ts`、`hooks/useThrottledStreamingValue.ts`：目前不在 Lynx 的模块图里；一旦有 Lynx 使用方，逐帧动画和节流会在 Lynx 上启用（以前被 `getDocument() === null` 关掉）。
+- `lib/projectReactQuery.ts`：两个 workspace 文件引用查询以前在 Lynx 上是禁用的。这个文件因此还没有还原。
+
+需要真实 DOM 的上游辅助函数（`lib/browserDownload.ts` 创建 `<a>` 并挂到 `body`、`lib/domLayout.ts` 调 `getComputedStyle`、设置页登出用的 `location.assign`）在环境里是"调用即抛出"。它们目前没有 Lynx 使用方；在增加任何 Lynx 使用方之前，先用模块替换给出 Lynx 适配实现，不要让环境假装下载或导航成功。
 
 现存的手工差异是存量债务，只许减少：`bun run --cwd apps/lynx audit:upstream-footprint` 统计上游拥有的路径里被 fork 改过的文件数、改动行数，以及 fork 放在这些路径里的文件数，CI 在任何一项增加时失败。清理顺序按"最机械的先做"：
 

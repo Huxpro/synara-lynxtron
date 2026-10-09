@@ -120,6 +120,26 @@ function cancelFrame(handle: number): void {
   (globalThis as FrameGlobals).cancelAnimationFrame?.(handle);
 }
 
+// ── external links (backed) ──────────────────────────────────────────
+
+async function openExternally(url: string): Promise<void> {
+  "background only";
+  const { platformWindow } = await import(/* webpackMode: "eager" */ "./window");
+  platformWindow.openWindow(url);
+}
+
+/**
+ * `window.open` hands the URL to the host's default handler, best effort, and
+ * returns `null`: there is no window handle, as with `noopener` in a browser.
+ * Upstream's `openExternalLink` falls back to this when the shell call fails.
+ */
+function openWindow(url?: string | URL): null {
+  if (url !== undefined && String(url) !== "") {
+    void openExternally(String(url)).catch(() => undefined);
+  }
+  return null;
+}
+
 // ── navigator ────────────────────────────────────────────────────────
 
 async function writeClipboardText(value: string): Promise<void> {
@@ -311,6 +331,8 @@ export interface LynxWindow {
   readonly addEventListener: typeof addWindowEventListener;
   readonly removeEventListener: typeof removeWindowEventListener;
   readonly dispatchEvent: typeof dispatchWindowEvent;
+  /** backed: opens the URL in the host's default handler; never returns a window. */
+  readonly open: (url?: string | URL, target?: string, features?: string) => null;
   readonly navigator: LynxNavigator;
   readonly location: LynxLocation;
   readonly document: LynxDocument;
@@ -329,7 +351,6 @@ export interface LynxWindow {
   readonly nativeApi: undefined;
   // throws
   readonly getComputedStyle: (element: unknown) => never;
-  readonly open: (url?: string) => never;
   /** Upstream attaches debug handles (`window.__…ForTests`); they are kept, unused. */
   [debugHandle: `__${string}`]: unknown;
 }
@@ -359,7 +380,7 @@ export const window: LynxWindow = {
   desktopBridge: undefined,
   nativeApi: undefined,
   getComputedStyle: () => unsupported("window.getComputedStyle"),
-  open: () => unsupported("window.open"),
+  open: openWindow,
 };
 
 /**

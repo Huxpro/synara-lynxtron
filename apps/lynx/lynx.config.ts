@@ -44,6 +44,13 @@ export const lynxResourceReplacements: ReadonlyArray<{
   { webSource: "nativeApi.ts", lynxSource: "src/adapters/nativeApi.lynx.ts" },
   { webSource: "wsTransport.ts", lynxSource: "src/adapters/wsTransport.lynx.ts" },
   { webSource: "platform/events.ts", lynxSource: "src/platform/events.ts" },
+  // Upstream's draft store persists under the same storage it would now reach
+  // through the browser environment, and Lynx hydrates only its own facade. A
+  // second, unhydrated store would overwrite saved drafts on its first write,
+  // so no import path may reach the upstream module. Today upstream files
+  // import it relatively for types only (erased); a value import the facade
+  // lacks then fails the build as a missing export instead of loading it.
+  { webSource: "composerDraftStore.ts", lynxSource: "src/adapters/composerDraftStore.lynx.ts" },
   {
     webSource: "components/ui/confirmDialogFallback.ts",
     lynxSource: "src/adapters/confirmDialogFallback.lynx.ts",

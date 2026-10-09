@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-09T17:39:30.270Z",
+  "generatedAt": "2026-10-09T18:19:16.060Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -12,7 +12,7 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxGraph": {
     "entries": ["src/app/index.tsx"],
-    "modules": 873,
+    "modules": 863,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/checkbox",
@@ -250,7 +250,6 @@
       "effect/Random",
       "effect/Record",
       "effect/Schema",
-      "effect/Types",
       "mdast",
       "micromark-util-decode-string",
       "node:module",
@@ -479,11 +478,11 @@
         "loc": 135424
       },
       "currentReuse": {
-        "modules": 326,
-        "loc": 85788,
-        "modulePercent": 54.33,
-        "locPercent": 63.35,
-        "gatePercent": 54.33
+        "modules": 316,
+        "loc": 80031,
+        "modulePercent": 52.67,
+        "locPercent": 59.1,
+        "gatePercent": 52.67
       },
       "modules": [
         {
@@ -3894,7 +3893,7 @@
           "loc": 2150,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -3915,7 +3914,7 @@
           "loc": 601,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftDomain.ts",
             "apps/web/src/hooks/useLocalStorage.ts",
@@ -3947,7 +3946,7 @@
           "loc": 902,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -3959,7 +3958,7 @@
           "loc": 1629,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -3988,7 +3987,7 @@
           "loc": 170,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftActions.ts",
             "apps/web/src/composerDraftAttachments.ts",
@@ -4949,7 +4948,7 @@
           "loc": 30,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -4965,7 +4964,7 @@
           "loc": 36,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -4981,7 +4980,7 @@
           "loc": 150,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/lib/indexedDb.ts"]
         },
         {
@@ -5037,7 +5036,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -5315,7 +5314,7 @@
           "loc": 51,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -7927,11 +7926,11 @@
         "loc": 116837
       },
       "currentReuse": {
-        "modules": 296,
-        "loc": 78719,
-        "modulePercent": 61.28,
-        "locPercent": 67.38,
-        "gatePercent": 61.28
+        "modules": 286,
+        "loc": 72962,
+        "modulePercent": 59.21,
+        "locPercent": 62.45,
+        "gatePercent": 59.21
       },
       "modules": [
         {
@@ -10803,7 +10802,7 @@
           "loc": 2150,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -10824,7 +10823,7 @@
           "loc": 601,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftDomain.ts",
             "apps/web/src/hooks/useLocalStorage.ts",
@@ -10856,7 +10855,7 @@
           "loc": 902,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -10868,7 +10867,7 @@
           "loc": 1629,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -10897,7 +10896,7 @@
           "loc": 170,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftActions.ts",
             "apps/web/src/composerDraftAttachments.ts",
@@ -11647,7 +11646,7 @@
           "loc": 30,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -11663,7 +11662,7 @@
           "loc": 36,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -11679,7 +11678,7 @@
           "loc": 150,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/lib/indexedDb.ts"]
         },
         {
@@ -11711,7 +11710,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -11932,7 +11931,7 @@
           "loc": 51,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -13799,11 +13798,11 @@
         "loc": 226411
       },
       "currentReuse": {
-        "modules": 374,
-        "loc": 92406,
-        "modulePercent": 36.17,
-        "locPercent": 40.81,
-        "gatePercent": 36.17
+        "modules": 364,
+        "loc": 86649,
+        "modulePercent": 35.2,
+        "locPercent": 38.27,
+        "gatePercent": 35.2
       },
       "modules": [
         {
@@ -22720,7 +22719,7 @@
           "loc": 2150,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -22741,7 +22740,7 @@
           "loc": 601,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftDomain.ts",
             "apps/web/src/hooks/useLocalStorage.ts",
@@ -22773,7 +22772,7 @@
           "loc": 902,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -22785,7 +22784,7 @@
           "loc": 1629,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -22814,7 +22813,7 @@
           "loc": 170,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftActions.ts",
             "apps/web/src/composerDraftAttachments.ts",
@@ -24292,7 +24291,7 @@
           "loc": 30,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -24308,7 +24307,7 @@
           "loc": 36,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -24336,7 +24335,7 @@
           "loc": 150,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/lib/indexedDb.ts"]
         },
         {
@@ -24392,7 +24391,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -24766,7 +24765,7 @@
           "loc": 51,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -27729,11 +27728,11 @@
         "loc": 149320
       },
       "currentReuse": {
-        "modules": 327,
-        "loc": 85926,
-        "modulePercent": 50.46,
-        "locPercent": 57.54,
-        "gatePercent": 50.46
+        "modules": 317,
+        "loc": 80169,
+        "modulePercent": 48.92,
+        "locPercent": 53.69,
+        "gatePercent": 48.92
       },
       "modules": [
         {
@@ -31775,7 +31774,7 @@
           "loc": 2150,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -31796,7 +31795,7 @@
           "loc": 601,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftDomain.ts",
             "apps/web/src/hooks/useLocalStorage.ts",
@@ -31828,7 +31827,7 @@
           "loc": 902,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -31840,7 +31839,7 @@
           "loc": 1629,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -31869,7 +31868,7 @@
           "loc": 170,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftActions.ts",
             "apps/web/src/composerDraftAttachments.ts",
@@ -32883,7 +32882,7 @@
           "loc": 30,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -32899,7 +32898,7 @@
           "loc": 36,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -32915,7 +32914,7 @@
           "loc": 150,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/lib/indexedDb.ts"]
         },
         {
@@ -32971,7 +32970,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -33257,7 +33256,7 @@
           "loc": 51,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -35940,11 +35939,11 @@
         "loc": 148974
       },
       "currentReuse": {
-        "modules": 341,
-        "loc": 87997,
-        "modulePercent": 50.97,
-        "locPercent": 59.07,
-        "gatePercent": 50.97
+        "modules": 331,
+        "loc": 82240,
+        "modulePercent": 49.48,
+        "locPercent": 55.2,
+        "gatePercent": 49.48
       },
       "modules": [
         {
@@ -40247,7 +40246,7 @@
           "loc": 2150,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -40268,7 +40267,7 @@
           "loc": 601,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftDomain.ts",
             "apps/web/src/hooks/useLocalStorage.ts",
@@ -40300,7 +40299,7 @@
           "loc": 902,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -40312,7 +40311,7 @@
           "loc": 1629,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -40341,7 +40340,7 @@
           "loc": 170,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftActions.ts",
             "apps/web/src/composerDraftAttachments.ts",
@@ -41394,7 +41393,7 @@
           "loc": 30,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -41410,7 +41409,7 @@
           "loc": 36,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -41426,7 +41425,7 @@
           "loc": 150,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/lib/indexedDb.ts"]
         },
         {
@@ -41482,7 +41481,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -41774,7 +41773,7 @@
           "loc": 51,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -44456,11 +44455,11 @@
         "loc": 148975
       },
       "currentReuse": {
-        "modules": 341,
-        "loc": 87997,
-        "modulePercent": 50.97,
-        "locPercent": 59.07,
-        "gatePercent": 50.97
+        "modules": 331,
+        "loc": 82240,
+        "modulePercent": 49.48,
+        "locPercent": 55.2,
+        "gatePercent": 49.48
       },
       "modules": [
         {
@@ -48763,7 +48762,7 @@
           "loc": 2150,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -48784,7 +48783,7 @@
           "loc": 601,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftDomain.ts",
             "apps/web/src/hooks/useLocalStorage.ts",
@@ -48816,7 +48815,7 @@
           "loc": 902,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -48828,7 +48827,7 @@
           "loc": 1629,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -48857,7 +48856,7 @@
           "loc": 170,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftActions.ts",
             "apps/web/src/composerDraftAttachments.ts",
@@ -49910,7 +49909,7 @@
           "loc": 30,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -49926,7 +49925,7 @@
           "loc": 36,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -49942,7 +49941,7 @@
           "loc": 150,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/lib/indexedDb.ts"]
         },
         {
@@ -49998,7 +49997,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -50290,7 +50289,7 @@
           "loc": 51,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -52994,11 +52993,11 @@
         "loc": 221136
       },
       "currentReuse": {
-        "modules": 374,
-        "loc": 92406,
-        "modulePercent": 37.25,
-        "locPercent": 41.79,
-        "gatePercent": 37.25
+        "modules": 364,
+        "loc": 86649,
+        "modulePercent": 36.25,
+        "locPercent": 39.18,
+        "gatePercent": 36.25
       },
       "modules": [
         {
@@ -61611,7 +61610,7 @@
           "loc": 2150,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -61632,7 +61631,7 @@
           "loc": 601,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftDomain.ts",
             "apps/web/src/hooks/useLocalStorage.ts",
@@ -61664,7 +61663,7 @@
           "loc": 902,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -61676,7 +61675,7 @@
           "loc": 1629,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -61705,7 +61704,7 @@
           "loc": 170,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/composerDraftActions.ts",
             "apps/web/src/composerDraftAttachments.ts",
@@ -63113,7 +63112,7 @@
           "loc": 30,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -63129,7 +63128,7 @@
           "loc": 36,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -63157,7 +63156,7 @@
           "loc": 150,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/lib/indexedDb.ts"]
         },
         {
@@ -63213,7 +63212,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -63579,7 +63578,7 @@
           "loc": 51,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {

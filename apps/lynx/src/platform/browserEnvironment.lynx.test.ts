@@ -5,8 +5,9 @@ const bridgeCalls: Array<{ readonly method: string; readonly params: unknown }> 
 rs.mock("./bridge", () => ({
   bridgeCall: async (method: string, params: unknown) => {
     bridgeCalls.push({ method, params });
-    return {};
+    return method === "shellOpenExternal" ? { opened: true } : {};
   },
+  onGlobalEvent: () => () => undefined,
 }));
 
 import { addWsTransportStateListener, emitWsTransportState } from "@synara-web/wsTransportEvents";
@@ -112,10 +113,19 @@ describe("Lynx browser environment", () => {
   it("throws a named error for members that cannot work", () => {
     expect(() => document.createElement("canvas")).toThrow(BrowserEnvironmentUnsupportedError);
     expect(() => document.body).toThrow("document.body is not available in the Lynx renderer.");
-    expect(() => window.open("https://example.com")).toThrow(BrowserEnvironmentUnsupportedError);
     expect(() => window.getComputedStyle({})).toThrow(BrowserEnvironmentUnsupportedError);
     expect(() => location.assign("/")).toThrow(BrowserEnvironmentUnsupportedError);
     expect(() => location.reload()).toThrow(BrowserEnvironmentUnsupportedError);
+  });
+
+  it("opens a URL through the host and returns no window handle", async () => {
+    bridgeCalls.length = 0;
+    expect(window.open("https://example.com/a", "_blank", "noopener,noreferrer")).toBeNull();
+    expect(window.open()).toBeNull();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(bridgeCalls).toEqual([
+      { method: "shellOpenExternal", params: { url: "https://example.com/a" } },
+    ]);
   });
 
   it("keeps debug handles upstream attaches to window", () => {
