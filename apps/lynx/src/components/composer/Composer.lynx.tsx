@@ -347,6 +347,11 @@ function createComposerDispatchId(kind: "command" | "message"): string {
   return `lynx-${kind}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
+/** Tailwind `leading-relaxed`, the composer editor's line box in upstream. */
+const COMPOSER_EDITOR_LINE_HEIGHT_RATIO = 1.625;
+/** `COMPOSER_EDITOR_LINE_HEIGHT_PX` of `@synara/shared/composerPlaceholder`. */
+const SHARED_EMPTY_EDITOR_LINE_HEIGHT_PX = 19.5;
+
 export function Composer({
   availableWidth = null,
   chatFontSizePx = DEFAULT_CHAT_FONT_SIZE_PX,
@@ -396,11 +401,17 @@ export function Composer({
           subagent: false,
           phase: resolveSessionPhase(sessionStatus),
         }));
-  const emptyEditorMinHeightPx = resolveEmptyComposerEditorMinHeightPx({
-    availableWidthPx: availableWidth,
-    chatFontSizePx: normalizedChatFontSizePx,
-    placeholder,
-  });
+  // Upstream's editor is `text-chat leading-relaxed`: a 1.625 line box. The shared helper
+  // still returns whole lines of its older 19.5px line, so only its line count is used.
+  const editorLineHeightPx = normalizedChatFontSizePx * COMPOSER_EDITOR_LINE_HEIGHT_RATIO;
+  const emptyEditorMinHeightPx =
+    (resolveEmptyComposerEditorMinHeightPx({
+      availableWidthPx: availableWidth,
+      chatFontSizePx: normalizedChatFontSizePx,
+      placeholder,
+    }) /
+      SHARED_EMPTY_EDITOR_LINE_HEIGHT_PX) *
+    editorLineHeightPx;
   const initData = useInitData() as {
     readonly initialComposerModelProvider?: unknown;
   };
@@ -1761,6 +1772,11 @@ export function Composer({
             {
               "--type-composer-editor-size": `${normalizedChatFontSizePx}px`,
               "--composer-empty-editor-height": `${emptyEditorMinHeightPx}px`,
+              // Lynx drops custom properties set through `style`, so the empty editor's
+              // height (upstream `min-h-[2lh]`) is also set directly.
+              ...(draftProjection.displayText.length === 0
+                ? { minHeight: `${emptyEditorMinHeightPx}px` }
+                : {}),
             } as Record<string, string>
           }
           capture-bindtap={restoreNativeFocus}

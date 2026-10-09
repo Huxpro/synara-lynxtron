@@ -658,20 +658,22 @@
   font-size: 14px;
 }
 
+/* Upstream create dialog: 56px header, a 362.5px panel (240px prompt + two 35.75px
+   notices), and a two-row footer (the chips wrap beside the status and buttons). */
 .LxDialogPopup.AutomationCreateDialog {
   width: 768px;
   max-width: calc(100vw - 32px);
-  height: 465px;
+  height: 498.5px;
   max-height: calc(100vh - 32px);
   padding: 0;
 }
 
 .LxDialogPopup.AutomationCreateDialog--expanded {
-  height: 503px;
+  height: 540px;
 }
 
 .LxDialogPopup.AutomationCreateDialog--expanded-more {
-  height: 541px;
+  height: 582px;
 }
 
 .LxDialogPopup.AutomationEditDialog {
@@ -825,10 +827,11 @@
   min-width: 0;
 }
 
+/* `text-ui leading-snug`. */
 .AutomationCreateWarningTitle,
 .AutomationCreateWarningDetail {
-  font-size: 12px;
-  line-height: 16px;
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 17.875px;
 }
 
 .AutomationCreateWarningTitle {
@@ -954,11 +957,12 @@
   line-height: 16px;
 }
 
+/* `flex flex-wrap items-center gap-2 px-4 pb-4 pt-1`; the chip row wraps (`gap-0.5`). */
 .AutomationCreateFooter {
   flex-shrink: 0;
   align-items: center;
   gap: 8px;
-  height: 52px;
+  height: auto;
   margin-top: 0;
   padding: 4px 16px 16px;
 }
@@ -967,9 +971,26 @@
   display: flex;
   flex: 1;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   gap: 2px;
   min-width: 0;
+}
+
+/* Why Create is disabled (`role=status`, `text-ui leading-snug`), beside the buttons. */
+.AutomationCreateBlockReason {
+  min-width: 0;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 17.875px;
+}
+
+.AutomationCreateFooterActions .LxButton__text,
+.AutomationCreateTemplateButton .LxButton__text {
+  /* Lynx lays a text run out about 1.3px wider than Chromium; see composer-model-picker.css. */
+  margin-right: -1px;
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 19.5px;
 }
 
 .AutomationCreateFooterActions {
@@ -1005,9 +1026,16 @@
 }
 
 .AutomationCreateChipText {
+  margin-right: -1px;
   color: var(--color-text-foreground-secondary);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui, 13px);
   font-weight: 400;
+  line-height: 19.5px;
+}
+
+.AutomationCreateToolbar .ComposerModelTriggerLabelLynx {
+  margin-right: -1px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 

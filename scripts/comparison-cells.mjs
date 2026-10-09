@@ -296,6 +296,20 @@ export async function labeledControls(driver) {
         const control = node.matches('[data-slot="input"]') && node.parentElement?.matches('[data-slot="input-control"]') ? node.parentElement : node;
         const r = control.getBoundingClientRect();
         if (r.width <= 0 || r.height <= 0 || r.right <= 0 || r.bottom <= 0 || r.left >= innerWidth || r.top >= innerHeight) return [];
+        // A control an ancestor clips away entirely is not on screen: the rail layout keeps
+        // the collapsed panel mounted at its full width inside a zero-width, paint-contained
+        // column, so its rows still have boxes that overlap the window.
+        let left = r.left, top = r.top, right = r.right, bottom = r.bottom;
+        for (let parent = control.parentElement; parent; parent = parent.parentElement) {
+          const style = getComputedStyle(parent);
+          const clipsX = style.overflowX !== "visible" || /paint|strict|content/.test(style.contain);
+          const clipsY = style.overflowY !== "visible" || /paint|strict|content/.test(style.contain);
+          if (!clipsX && !clipsY) continue;
+          const p = parent.getBoundingClientRect();
+          if (clipsX) { left = Math.max(left, p.left); right = Math.min(right, p.right); }
+          if (clipsY) { top = Math.max(top, p.top); bottom = Math.min(bottom, p.bottom); }
+          if (right <= left || bottom <= top) return [];
+        }
         // Width of the classic scrollbar (app CSS: 10px) on the nearest overflowing ancestor.
         let gutter = 0;
         for (let parent = node.parentElement; parent; parent = parent.parentElement) {

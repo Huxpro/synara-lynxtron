@@ -6,19 +6,23 @@
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  padding-top: 44px;
+  overflow: visible;
   background-color: var(--app-sidebar-surface, var(--sidebar));
 }
 
-/* Zero intrinsic width, like upstream's strip: the column is as wide as rail + panel, and
-   the leading controls overflow it while the panel is collapsed. */
+/* Zero intrinsic width, like upstream's strip (`w-0 min-w-full`): the column is as wide as
+   rail + panel, and the leading controls overflow it while the panel is collapsed. */
 .AppRailShellTopStrip {
-  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 44px;
   display: flex;
   flex-direction: row;
-  flex-shrink: 0;
   align-items: center;
-  padding: 0 12px 0 14px;
+  padding: 0 0 0 14px;
   overflow: visible;
   z-index: 80;
 }

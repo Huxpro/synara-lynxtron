@@ -744,8 +744,12 @@
   font-size: 11px;
 }
 
+/* Upstream's effort trigger is an `sm` button: `text-ui-sm` on an 18px line. The 1px trim
+   takes back Lynx's wider text run (see composer-model-picker.css). */
 .ComposerTraitsTriggerLabelLynx {
-  line-height: 16.5px;
+  margin-right: -1px;
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 18px;
 }
 
 .ComposerTraitsTriggerFastLynx,

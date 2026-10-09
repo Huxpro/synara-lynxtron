@@ -61,9 +61,10 @@
 .EmptyThreadTemporaryLabel {
   overflow: hidden;
   color: var(--muted-foreground);
-  font-size: 11px;
+  /* Upstream's composer-row chips are `sm` buttons: `text-ui-sm` on an 18px line. */
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 400;
-  line-height: 16.5px;
+  line-height: 18px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -74,7 +75,6 @@
 }
 
 .EmptyThreadTemporaryButton {
-  min-width: 102px;
   height: 28px;
   min-height: 28px;
   padding: 5px 10px;

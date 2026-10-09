@@ -235,15 +235,15 @@ export function LandingComposer(props: {
       setInternalEnvMode(data.generalSettings.defaultThreadEnvMode);
     }
   }, [data?.generalSettings.defaultThreadEnvMode, props.envMode]);
+  // Upstream seeds a new draft with the project default's provider and model only: its
+  // options (reasoning effort, speed) start from the model's own defaults.
   const modelSelection = useMemo<ModelSelection>(() => {
-    const selectedProject = data?.projects.find((project) => project.id === selectedProjectId);
-    if (selectedProject?.defaultModelSelection) {
-      return selectedProject.defaultModelSelection;
-    }
-    if (data?.homeProject.defaultModelSelection) {
-      return data.homeProject.defaultModelSelection;
-    }
-    return defaultModelSelectionForProvider(initialModelProvider);
+    const projectDefault =
+      data?.projects.find((project) => project.id === selectedProjectId)?.defaultModelSelection ??
+      data?.homeProject.defaultModelSelection;
+    if (!projectDefault) return defaultModelSelectionForProvider(initialModelProvider);
+    const { options: _options, ...selection } = projectDefault;
+    return selection as ModelSelection;
   }, [data, initialModelProvider, selectedProjectId]);
   const selectedProject = data?.projects.find((project) => project.id === selectedProjectId);
   const targetProject = selectedProject ?? data?.homeProject;
