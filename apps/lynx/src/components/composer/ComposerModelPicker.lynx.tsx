@@ -38,6 +38,7 @@ import {
   type ComposerTraitSelection,
 } from "@synara-web/components/chat/composerTraits";
 import { resolveRuntimeModelDescriptor } from "@synara-web/components/chat/runtimeModelCapabilities";
+import { splitShortcutLabel } from "@synara-web/keybindings";
 import { starredModelSlotKey, type StarredModel } from "@synara-web/lib/starredModels";
 import {
   buildModelSelection,
@@ -94,7 +95,11 @@ export interface ComposerModelPickerProps {
   readonly hideStatusLabel?: boolean;
   readonly disabled?: boolean;
   readonly modelSelection: ModelSelection;
-  /** A started thread may only switch models within its own provider. */
+  /**
+   * A started thread's provider. Electron lists the other providers too: picking one hands
+   * the thread off in place on the next send. That handoff is not ported, so here their
+   * tabs open on a notice and only this provider's models can be picked.
+   */
   readonly lockedProvider: ProviderKind | null;
   /** Provider whose runtime catalog `runtimeModels` holds. */
   readonly catalogProvider: ProviderKind;
@@ -252,7 +257,9 @@ function ComposerModelPickerPanel(
   const setTab = (next: ComposerModelPickerTab) => {
     "background only";
     setTabState(next);
-    if (next !== STARRED_TAB) props.onCatalogProviderChange(next as ProviderKind);
+    if (next !== STARRED_TAB && (lockedProvider === null || next === lockedProvider)) {
+      props.onCatalogProviderChange(next as ProviderKind);
+    }
   };
 
   const pickerSettings = readSettingsProviderPickerProjection(
@@ -269,7 +276,6 @@ function ComposerModelPickerPanel(
     .filter((item) =>
       props.providers.some((status) => status.provider === item.provider && status.available),
     )
-    .filter((item) => lockedProvider === null || item.provider === lockedProvider)
     .map((item) => ({
       provider: item.provider,
       label: item.label,
@@ -308,27 +314,34 @@ function ComposerModelPickerPanel(
       modelOptionsByProvider[entry.provider] ??= optionsFor(entry.provider);
     }
   }
+  // Another provider's tab in a started thread: Electron's in-thread handoff target.
+  const handoffTab =
+    tab !== STARRED_TAB && lockedProvider !== null && tab !== lockedProvider
+      ? (providerTabs.find((entry) => entry.provider === tab) ?? null)
+      : null;
   const rows: ReadonlyArray<PickerRow> =
-    tab === STARRED_TAB
-      ? buildStarredTabRows({
-          starredModels: usableStarredModels,
-          modelOptionsFor: (provider) => modelOptionsByProvider[provider] ?? [],
-          query: normalizedQuery,
-          current: {
-            provider: activeProvider,
-            // Lynx offers each provider's default account only; its id is the provider id.
-            instanceId: activeProvider,
-            model: props.modelSelection.model,
-            ...resolveStarredTraits(props.currentSelection),
-          },
-          effortLevelsFor: (provider, model) => traitSelectionFor(provider, model).effortLevels,
-        })
-      : buildProviderTabRows({
-          provider: tab as ProviderKind,
-          options: optionsFor(tab as ProviderKind),
-          query: normalizedQuery,
-          selectedModel: tab === activeProvider ? props.modelSelection.model : null,
-        });
+    handoffTab !== null
+      ? []
+      : tab === STARRED_TAB
+        ? buildStarredTabRows({
+            starredModels: usableStarredModels,
+            modelOptionsFor: (provider) => modelOptionsByProvider[provider] ?? [],
+            query: normalizedQuery,
+            current: {
+              provider: activeProvider,
+              // Lynx offers each provider's default account only; its id is the provider id.
+              instanceId: activeProvider,
+              model: props.modelSelection.model,
+              ...resolveStarredTraits(props.currentSelection),
+            },
+            effortLevelsFor: (provider, model) => traitSelectionFor(provider, model).effortLevels,
+          })
+        : buildProviderTabRows({
+            provider: tab as ProviderKind,
+            options: optionsFor(tab as ProviderKind),
+            query: normalizedQuery,
+            selectedModel: tab === activeProvider ? props.modelSelection.model : null,
+          });
   const starredModelSlots = new Set(starredModels.map(starredModelSlotKey));
 
   const commitRow = (
@@ -469,7 +482,7 @@ function ComposerModelPickerPanel(
         providerTabs={providerTabs}
         onTabChange={setTab}
         onAddProviders={
-          lockedProvider === null && props.onOpenProviderSettings
+          props.onOpenProviderSettings
             ? () => {
                 "background only";
                 props.onClose();
@@ -499,7 +512,17 @@ function ComposerModelPickerPanel(
         scroll-orientation="vertical"
         role="tabpanel"
       >
-        {isTabLoading ? (
+        {handoffTab !== null ? (
+          <view className="ComposerModelPickerNoticeLynx">
+            <text className="ComposerModelPickerNoticeTitleLynx">
+              {`${handoffTab.label} cannot take over this thread yet`}
+            </text>
+            <text className="ComposerModelPickerNoticeBodyLynx">
+              Switching a started thread to another provider is not available in the Native app yet.
+              Use Hand off thread in the header to continue in a new thread.
+            </text>
+          </view>
+        ) : isTabLoading ? (
           <view className="ComposerModelPickerLoadingLynx" aria-label="Loading models">
             {Array.from({ length: 5 }, (_, index) => (
               <view
@@ -603,41 +626,64 @@ function ComposerModelPickerTabs(props: {
 }) {
   const { svgColors } = useTheme();
   return (
-    <view className="ComposerModelPickerTabsLynx" role="tablist" aria-label="Model sources">
-      <PickerTabButton
-        label="Starred"
-        active={props.tab === STARRED_TAB}
-        onSelect={() => props.onTabChange(STARRED_TAB)}
+    <view className="ComposerModelPickerTabsLynx">
+      {/* Electron's SurfaceTabStrip: the tab list scrolls sideways; "Add providers" stays
+          outside it. The strip is 8px taller than its tabs for the open tab's marker. */}
+      <view
+        className="ComposerModelPickerTabStripLynx"
+        role="tablist"
+        aria-label="Model sources"
+        accessibility-element={true}
+        accessibility-label="Model sources"
+        accessibility-trait="none"
       >
-        {(color) => (
-          <svg
-            className="ComposerModelPickerTabGlyphLynx"
-            content={colorizeLynxSvg(starFilledSvg, color)}
-          />
-        )}
-      </PickerTabButton>
-      {props.providerTabs.map((entry) => (
-        <PickerTabButton
-          key={entry.provider}
-          label={
-            entry.unavailableLabel ? `${entry.label} · ${entry.unavailableLabel}` : entry.label
-          }
-          active={props.tab === entry.provider}
-          disabled={entry.unavailableLabel !== null}
-          onSelect={() => props.onTabChange(entry.provider)}
+        <scroll-view
+          className="ComposerModelPickerTabStripScrollerLynx"
+          scroll-orientation="horizontal"
         >
-          {(color) => (
-            <view className="ComposerModelPickerTabProviderIconLynx">
-              <OpenAIProviderIcon
-                provider={entry.provider}
-                color={resolveProviderGlyphColor(entry.provider, color)}
-              />
-            </view>
-          )}
-        </PickerTabButton>
-      ))}
+          <view className="ComposerModelPickerTabStripListLynx">
+            <PickerTabButton
+              label="Starred"
+              active={props.tab === STARRED_TAB}
+              onSelect={() => props.onTabChange(STARRED_TAB)}
+            >
+              {(color) => (
+                <svg
+                  className="ComposerModelPickerTabGlyphLynx"
+                  content={colorizeLynxSvg(starFilledSvg, color)}
+                />
+              )}
+            </PickerTabButton>
+            {props.providerTabs.map((entry) => (
+              <PickerTabButton
+                key={entry.provider}
+                // The name alone, as Electron: why a tab is closed is its value, not its name.
+                label={entry.label}
+                value={entry.unavailableLabel ?? undefined}
+                active={props.tab === entry.provider}
+                disabled={entry.unavailableLabel !== null}
+                onSelect={() => props.onTabChange(entry.provider)}
+              >
+                {(color) => (
+                  <view className="ComposerModelPickerTabProviderIconLynx">
+                    <OpenAIProviderIcon
+                      provider={entry.provider}
+                      color={resolveProviderGlyphColor(entry.provider, color)}
+                    />
+                  </view>
+                )}
+              </PickerTabButton>
+            ))}
+          </view>
+        </scroll-view>
+      </view>
       {props.onAddProviders ? (
-        <PickerTabButton label="Add providers" active={false} onSelect={props.onAddProviders}>
+        <PickerTabButton
+          label="Add providers"
+          tab={false}
+          active={false}
+          onSelect={props.onAddProviders}
+        >
           {() => (
             <PlusIcon
               className="ComposerModelPickerTabGlyphLynx"
@@ -653,6 +699,10 @@ function ComposerModelPickerTabs(props: {
 
 function PickerTabButton(props: {
   readonly label: string;
+  /** False for the settings shortcut outside the tab list. */
+  readonly tab?: boolean;
+  /** Spoken after the name: why an unavailable provider's tab is closed. */
+  readonly value?: string | undefined;
   readonly active: boolean;
   readonly disabled?: boolean;
   readonly onSelect: () => void;
@@ -664,7 +714,7 @@ function PickerTabButton(props: {
       props.active ? " ComposerModelPickerTabLynx--active" : ""
     }${props.disabled ? " ComposerModelPickerTabLynx--disabled" : ""}`,
     accessibleLabel: props.label,
-    accessibilityValue: props.active ? "Selected" : undefined,
+    accessibilityValue: props.value ?? (props.active ? "Selected" : undefined),
     disabled: props.disabled,
     onActivate: props.onSelect,
   });
@@ -675,9 +725,9 @@ function PickerTabButton(props: {
   return (
     <view
       className={interaction.className}
-      role="tab"
+      role={props.tab === false ? undefined : "tab"}
       aria-label={props.label}
-      aria-selected={props.active}
+      aria-selected={props.tab === false ? undefined : props.active}
       {...interaction.eventProps}
     >
       {props.children(color)}
@@ -724,8 +774,19 @@ function ComposerModelPickerRowElement(props: {
       </text>
       <text className="ComposerModelPickerRowDetailLynx">{row.detail ?? ""}</text>
       {props.shortcutHint ? (
-        <view className="ComposerModelPickerKbdLynx">
-          <text className="ComposerModelPickerKbdTextLynx">{props.shortcutHint}</text>
+        // Electron's ShortcutKbd: one capsule named by the chord, a hair between its keys.
+        <view
+          className="ComposerModelPickerKbdLynx"
+          aria-label={props.shortcutHint}
+          accessibility-element={true}
+          accessibility-label={props.shortcutHint}
+          accessibility-trait="none"
+        >
+          {splitShortcutLabel(props.shortcutHint).map((part) => (
+            <text key={part} className="ComposerModelPickerKbdTextLynx">
+              {part}
+            </text>
+          ))}
         </view>
       ) : null}
       {row.selectableModel !== null ? (
