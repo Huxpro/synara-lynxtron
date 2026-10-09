@@ -115,6 +115,7 @@ import {
   consumeComposerNativeValueAck,
   type ComposerNativeValueAck,
 } from "./composerNativeValueAck.logic";
+import { shouldPushDraftProjectionToNativeEditor } from "./composerNativeValueSync.logic";
 import {
   createComposerEditorHistory,
   pushComposerEditorHistory,
@@ -520,16 +521,19 @@ export function Composer({
   const editorHistoryRef = useRef(createComposerEditorHistory<ComposerEditorHistoryContext>());
   const compositionHistorySnapshotRef =
     useRef<ComposerEditorHistorySnapshot<ComposerEditorHistoryContext> | null>(null);
-  useEffect(() => {
+  function projectStoredDraft(canonicalText?: string) {
     "background only";
-    const prompt = useComposerDraftStore.getState().draftsByThreadId[brandedThreadId]?.prompt ?? "";
     const current = useComposerDraftStore.getState().draftsByThreadId[brandedThreadId];
-    const projection = createNativeComposerDraftProjection({
-      canonicalText: prompt,
+    return createNativeComposerDraftProjection({
+      canonicalText: canonicalText ?? current?.prompt ?? "",
       mentions: current?.mentions ?? EMPTY_MENTIONS,
       skills: current?.skills ?? EMPTY_SKILLS,
       terminalContexts: current?.terminalContexts ?? EMPTY_TERMINAL_CONTEXTS,
     });
+  }
+  useEffect(() => {
+    "background only";
+    const projection = projectStoredDraft();
     const selection = {
       selectionStart: projection.displayText.length,
       selectionEnd: projection.displayText.length,
@@ -787,13 +791,7 @@ export function Composer({
     triggerAfterAck: ComposerTrigger | null = null,
   ) {
     "background only";
-    const current = useComposerDraftStore.getState().draftsByThreadId[brandedThreadId];
-    const projection = createNativeComposerDraftProjection({
-      canonicalText: canonicalValue,
-      mentions: current?.mentions ?? EMPTY_MENTIONS,
-      skills: current?.skills ?? EMPTY_SKILLS,
-      terminalContexts: current?.terminalContexts ?? EMPTY_TERMINAL_CONTEXTS,
-    });
+    const projection = projectStoredDraft(canonicalValue);
     draftProjectionRef.current = projection;
     const safeCanonicalSelectionStart = Math.max(
       0,
@@ -934,8 +932,12 @@ export function Composer({
   useEffect(() => {
     "background only";
     if (
-      appliedDisplayProjectionRef.current === draftProjection.displayText &&
-      nativeEditorSnapshotRef.current.value === draftProjection.displayText
+      !shouldPushDraftProjectionToNativeEditor({
+        renderedDisplayText: draftProjection.displayText,
+        latestDisplayText: projectStoredDraft().displayText,
+        appliedDisplayText: appliedDisplayProjectionRef.current,
+        nativeEditorValue: nativeEditorSnapshotRef.current.value,
+      })
     ) {
       return;
     }
@@ -1840,6 +1842,8 @@ export function Composer({
                 selectionEnd: event.detail.selectionEnd,
                 isComposing: event.detail.isComposing ?? false,
               };
+              // The editor already shows this value; never echo it back.
+              appliedDisplayProjectionRef.current = event.detail.value;
               if (pendingNativeValueRef.current !== null) {
                 const pendingNativeValue = pendingNativeValueRef.current;
                 pendingNativeValueRef.current = null;
