@@ -296,8 +296,6 @@
       "~/components/ui/button": ["./src/components/ui/button.lynx.tsx"],
       "~/components/ui/collapsible": ["./src/components/ui/collapsible.lynx.tsx"],
       "~/components/ui/command": ["./src/components/ui/command.lynx.tsx"],
-      "~/components/ui/confirmDialogFallback": ["./src/adapters/confirmDialogFallback.lynx.ts"],
-      "~/components/ui/contextMenuFallback": ["./src/adapters/contextMenuFallback.lynx.ts"],
       "~/components/ui/dialog": ["./src/components/ui/dialog.lynx.tsx"],
       "~/components/ui/input": ["./src/components/ui/input.lynx.tsx"],
       "~/components/ui/kbd": ["./src/components/ui/kbd.lynx.tsx"],
@@ -310,6 +308,8 @@
         "./src/adapters/WorkspaceFilePreviewErrorStateElements.lynx.tsx"
       ],
       "~/composerDraftStore": ["./src/adapters/composerDraftStore.lynx.ts"],
+      "~/confirmDialogFallback": ["./src/adapters/confirmDialogFallback.lynx.ts"],
+      "~/contextMenuFallback": ["./src/adapters/contextMenuFallback.lynx.ts"],
       "~/hooks/useTheme": ["./src/adapters/useTheme.lynx.ts"],
       "~/hooks/useViewportLayout": ["./src/hooks/useViewportLayout.lynx.ts"],
       "~/lib/icons": ["./src/adapters/webIcons.lynx.ts"],
