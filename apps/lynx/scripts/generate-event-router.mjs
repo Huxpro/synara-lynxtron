@@ -11,6 +11,12 @@
 // rewritten to the `~/…` form Lynx resolves. Scope resolution is done by the
 // TypeScript checker, so nothing is matched by name or line number.
 //
+// The one deviation from "verbatim" is the list of guarded patches in
+// `event-router-patches.mjs`: corrections of upstream defects, applied to the
+// source text before extraction and named in the generated file's header. Each
+// stops the generator when upstream's code is not the shape it was written
+// against, and applies nothing once upstream has fixed the defect itself.
+//
 // Browser globals are the one thing the extracted code cannot take from an
 // import: Lynx injects `window`, `document`, … into the background bundle with
 // no value, so a member read throws. The generator therefore checks every use
@@ -33,6 +39,7 @@ import path from "node:path";
 import { createRequire } from "node:module";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { applyEventRouterPatches, EventRouterPatchError } from "./event-router-patches.mjs";
 import { generatedFileIsFresh, writeGeneratedFile } from "./format-generated.mjs";
 import { isReferencePosition } from "./ts-identifier-position.mjs";
 
@@ -171,6 +178,8 @@ export function extractEventRouter({
   allowedSideEffectImports = EVENT_ROUTER_IGNORED_SIDE_EFFECT_IMPORTS,
   browserGlobals = EVENT_ROUTER_BROWSER_GLOBALS,
   globalPorts = EVENT_ROUTER_GLOBAL_PORTS,
+  /** Names of the patches already applied to `sourceText`; recorded in the header. */
+  appliedPatches = [],
 }) {
   const sourceFileName = path.posix.join("/", sourcePath);
   const { program, sourceFile } = createProgramForSource(sourceFileName, sourceText);
@@ -401,6 +410,12 @@ export function extractEventRouter({
     `// generator, then run \`node scripts/generate-event-router.mjs\` in apps/lynx.`,
     `// Contents: ${roots.join(", ")} and the file-local declarations it closes over,`,
     `// verbatim; only import specifiers are rewritten.`,
+    ...(appliedPatches.length > 0
+      ? [
+          `// Except for these guarded patches of upstream defects, marked "LYNX PATCH"`,
+          `// below (apps/lynx/scripts/event-router-patches.mjs): ${appliedPatches.join(", ")}.`,
+        ]
+      : []),
     ...(portLines.length > 0
       ? [
           `// Browser globals Lynx has no value for are bound to Lynx modules below`,
@@ -426,21 +441,56 @@ export function extractEventRouter({
   };
 }
 
+/**
+ * What the generator writes for an upstream source: the guarded patches, then
+ * the extraction. `upstreamFixed` names patches upstream no longer needs.
+ */
+export function generateEventRouter({
+  sourceText,
+  sourcePath = EVENT_ROUTER_SOURCE,
+  /** `null` extracts without patching (generator tests on synthetic sources). */
+  applyPatches = applyEventRouterPatches,
+}) {
+  const patched = applyPatches
+    ? applyPatches({ sourceText, sourcePath })
+    : { text: sourceText, applied: [], upstreamFixed: [] };
+  return {
+    ...extractEventRouter({
+      sourceText: patched.text,
+      sourcePath,
+      appliedPatches: patched.applied,
+    }),
+    appliedPatches: patched.applied,
+    upstreamFixedPatches: patched.upstreamFixed,
+  };
+}
+
 /** Runs the generator against files on disk. Returns a process exit code. */
 export function runEventRouterGenerator({
   check = false,
   sourceFile = path.join(repoRoot, EVENT_ROUTER_SOURCE),
   outputFile = path.join(repoRoot, EVENT_ROUTER_OUTPUT),
+  applyPatches = applyEventRouterPatches,
   log = console.log,
   logError = console.error,
 } = {}) {
   let result;
   try {
-    result = extractEventRouter({ sourceText: fs.readFileSync(sourceFile, "utf8") });
+    result = generateEventRouter({
+      sourceText: fs.readFileSync(sourceFile, "utf8"),
+      applyPatches,
+    });
   } catch (error) {
-    if (!(error instanceof EventRouterGenerationError)) throw error;
+    if (!(error instanceof EventRouterGenerationError) && !(error instanceof EventRouterPatchError))
+      throw error;
     logError(error.message);
     return 1;
+  }
+  for (const patch of result.upstreamFixedPatches) {
+    log(
+      `generate-event-router: upstream now handles what patch ${patch} corrected; nothing was patched. ` +
+        `Delete the patch from scripts/event-router-patches.mjs`,
+    );
   }
   const relativeOutput = path.relative(repoRoot, outputFile).split(path.sep).join("/");
   if (check) {
@@ -465,6 +515,7 @@ export function runEventRouterGenerator({
           ({ names, line, endLine }) => `${names.join(",")}:${line}-${endLine}`,
         ),
         imports: result.imports.length,
+        patches: result.appliedPatches,
       },
       null,
       2,

@@ -11,8 +11,14 @@ import {
   EVENT_ROUTER_SOURCE,
   EventRouterGenerationError,
   extractEventRouter,
+  generateEventRouter,
   runEventRouterGenerator,
 } from "./generate-event-router.mjs";
+import {
+  applyEventRouterPatches,
+  EventRouterPatchError,
+  QUEUED_EVENT_PATCH,
+} from "./event-router-patches.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 const upstreamSource = fs.readFileSync(path.join(repoRoot, EVENT_ROUTER_SOURCE), "utf8");
@@ -86,8 +92,8 @@ test("extracts EventRouter with exactly the declarations and imports it closes o
 });
 
 test("extraction of the upstream file is deterministic and matches the committed artifact", () => {
-  const first = extractEventRouter({ sourceText: upstreamSource });
-  const second = extractEventRouter({ sourceText: upstreamSource });
+  const first = generateEventRouter({ sourceText: upstreamSource });
+  const second = generateEventRouter({ sourceText: upstreamSource });
   assert.equal(first.text, second.text);
   assert.ok(first.declarations.some((declaration) => declaration.names.includes("EventRouter")));
   for (const line of first.imports) {
@@ -119,6 +125,7 @@ test("--check fails when the source or the generated file drifts", (t) => {
       check,
       sourceFile,
       outputFile,
+      applyPatches: null,
       log: () => undefined,
       logError: (line) => errors.push(line),
     });
@@ -173,6 +180,7 @@ test("fails loudly on a closed-over identifier it cannot resolve", () => {
     const code = runEventRouterGenerator({
       sourceFile,
       outputFile,
+      applyPatches: null,
       log: () => undefined,
       logError: (line) => errors.push(line),
     });
@@ -368,4 +376,210 @@ test("fails loudly on a browser global or member that no Lynx port provides", ()
     ),
   });
   assert.deepEqual(shadowed.globalPorts, []);
+});
+
+// ---------------------------------------------------------------------------
+// Guarded patches (event-router-patches.mjs)
+
+const PATCH_FIXTURE = `
+function EventRouter() {
+  useEffect(() => {
+    let pendingDomainEvents: OrchestrationEvent[] = [];
+    const flushPendingDomainEvents = () => {
+      apply(pendingDomainEvents);
+      pendingDomainEvents = [];
+    };
+    const queueDomainEvent = (event: OrchestrationEvent) => {
+      pendingDomainEvents.push(event);
+    };
+    const reconcileThreadProjection = async (threadId: ThreadId) => {
+      const snapshot = await api.getThreadDetailSnapshot({ threadId });
+      syncServerThreadDetailHotPath(snapshot.thread, snapshot.snapshotSequence);
+    };
+    const unsub = api.onThreadEvent((item) => {
+      if (item.kind === "snapshot") {
+        syncServerThreadDetailHotPath(item.snapshot.thread, item.snapshot.snapshotSequence);
+        return;
+      }
+      queueDomainEvent(item.event);
+      flushPendingDomainEvents();
+    });
+    return unsub;
+  }, []);
+  return null;
+}
+`;
+
+function patch(sourceText) {
+  return applyEventRouterPatches({ sourceText, sourcePath: "apps/web/src/routes/__root.tsx" });
+}
+
+test("the queued-event patch filters the queue right before both snapshot applies", () => {
+  const result = patch(PATCH_FIXTURE);
+  assert.deepEqual(result.applied, [QUEUED_EVENT_PATCH]);
+  assert.deepEqual(result.upstreamFixed, []);
+  const lines = result.text.split("\n");
+  for (const snapshot of ["snapshot", "item.snapshot"]) {
+    const apply = lines.findIndex((line) =>
+      line.includes(`syncServerThreadDetailHotPath(${snapshot}.thread`),
+    );
+    assert.ok(apply > 0);
+    assert.deepEqual(
+      lines.slice(apply - 5, apply).map((line) => line.trim()),
+      [
+        "pendingDomainEvents = pendingDomainEvents.filter(",
+        "(queuedEvent) =>",
+        `String(queuedEvent.aggregateId) !== ${snapshot}.thread.id ||`,
+        `queuedEvent.sequence > ${snapshot}.snapshotSequence,`,
+        ");",
+      ],
+    );
+    // Same indentation as the statement it guards.
+    assert.equal(lines[apply - 5].match(/^ */)[0], lines[apply].match(/^ */)[0]);
+  }
+  // Everything else is byte-identical.
+  const inserted = (line, index, all) =>
+    line.includes("LYNX PATCH") ||
+    line.includes("// the snapshot already") ||
+    line.includes("// sequence; flushing") ||
+    line.includes("pendingDomainEvents = pendingDomainEvents.filter(") ||
+    line.includes("queuedEvent") ||
+    (line.trim() === ");" && all[index - 1].includes("queuedEvent.sequence"));
+  assert.equal(
+    lines.filter((line, index, all) => !inserted(line, index, all)).join("\n"),
+    PATCH_FIXTURE,
+  );
+});
+
+test("the queued-event patch is applied to the upstream file and named in the artifact", () => {
+  const result = generateEventRouter({ sourceText: upstreamSource });
+  assert.deepEqual(result.appliedPatches, [QUEUED_EVENT_PATCH]);
+  assert.deepEqual(result.upstreamFixedPatches, []);
+  assert.equal(result.text.split(`// LYNX PATCH ${QUEUED_EVENT_PATCH}`).length - 1, 2);
+  assert.match(result.text.split("\n").slice(0, 10).join("\n"), new RegExp(QUEUED_EVENT_PATCH));
+  // Without the patch the extraction is upstream's text, verbatim.
+  const verbatim = generateEventRouter({ sourceText: upstreamSource, applyPatches: null });
+  assert.doesNotMatch(verbatim.text, /LYNX PATCH/);
+});
+
+test("the queued-event patch stops generation on a queue use it does not recognize", () => {
+  const before = (statement) =>
+    PATCH_FIXTURE.replaceAll(/^( *)(syncServerThreadDetailHotPath\()/gm, `$1${statement}\n$1$2`);
+  // A read is not a fix: stepping aside here would bring the duplicate back.
+  assert.throws(() => patch(before("void pendingDomainEvents.length;")), /does not recognize/);
+  // Neither is a flush that only runs in a callback or under a condition.
+  assert.throws(
+    () => patch(before("queueMicrotask(() => flushPendingDomainEvents());")),
+    /does not recognize/,
+  );
+  assert.throws(() => patch(before("if (keep) flushPendingDomainEvents();")), /does not recognize/);
+});
+
+test("the queued-event patch steps aside once upstream handles the queue itself", () => {
+  // Upstream filters the queue before applying, in both paths.
+  const filtered = PATCH_FIXTURE.replaceAll(
+    /^( *)(syncServerThreadDetailHotPath\()/gm,
+    "$1pendingDomainEvents = pendingDomainEvents.filter(keep);\n$1$2",
+  );
+  assert.deepEqual(patch(filtered), {
+    text: filtered,
+    applied: [],
+    upstreamFixed: [QUEUED_EVENT_PATCH],
+  });
+  // Or flushes it first.
+  const flushed = PATCH_FIXTURE.replaceAll(
+    /^( *)(syncServerThreadDetailHotPath\()/gm,
+    "$1flushPendingDomainEvents();\n$1$2",
+  ).replace(
+    "const reconcileThreadProjection",
+    "const hoisted = 0;\n    const reconcileThreadProjection",
+  );
+  assert.deepEqual(patch(flushed).upstreamFixed, [QUEUED_EVENT_PATCH]);
+
+  const messages = [];
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "event-router-patch-"));
+  try {
+    const sourceFile = path.join(directory, "__root.tsx");
+    fs.writeFileSync(
+      sourceFile,
+      `import { useEffect } from "react";\ndeclare const api: any; declare const keep: any; declare const apply: any;\n` +
+        `declare const syncServerThreadDetailHotPath: any;\ntype OrchestrationEvent = unknown; type ThreadId = string;\n${filtered}`,
+    );
+    const code = runEventRouterGenerator({
+      sourceFile,
+      outputFile: path.join(directory, "out.tsx"),
+      log: (line) => messages.push(String(line)),
+      logError: (line) => messages.push(String(line)),
+    });
+    assert.equal(code, 0, messages.join("\n"));
+    assert.ok(
+      messages.some((line) => line.includes("Delete the patch")),
+      messages.join("\n"),
+    );
+    assert.doesNotMatch(fs.readFileSync(path.join(directory, "out.tsx"), "utf8"), /LYNX PATCH/);
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test("the queued-event patch stops the generator when upstream's shape changed", () => {
+  const cases = [
+    // A third place applies snapshots.
+    PATCH_FIXTURE.replace(
+      "return unsub;",
+      "syncServerThreadDetailHotPath(other.thread, other.snapshotSequence);\n    return unsub;",
+    ),
+    // One of the two is gone.
+    PATCH_FIXTURE.replace(
+      "syncServerThreadDetailHotPath(snapshot.thread, snapshot.snapshotSequence);",
+      "",
+    ),
+    // The call no longer passes the snapshot's own sequence.
+    PATCH_FIXTURE.replace("snapshot.thread, snapshot.snapshotSequence", "snapshot.thread"),
+    PATCH_FIXTURE.replace("item.snapshot.thread, item.snapshot.snapshotSequence", "thread, seq"),
+    // The queue was renamed, made constant, or is no longer an array.
+    PATCH_FIXTURE.replaceAll("pendingDomainEvents", "queuedDomainEvents"),
+    PATCH_FIXTURE.replace("let pendingDomainEvents", "const pendingDomainEvents"),
+    PATCH_FIXTURE.replace("OrchestrationEvent[] = [];", "Set<OrchestrationEvent> = new Set();"),
+    // Only one path was fixed upstream.
+    PATCH_FIXTURE.replace(
+      "syncServerThreadDetailHotPath(snapshot.thread",
+      "flushPendingDomainEvents();\n      syncServerThreadDetailHotPath(snapshot.thread",
+    ),
+    // The apply is no longer a statement of its own.
+    PATCH_FIXTURE.replace(
+      "syncServerThreadDetailHotPath(snapshot.thread, snapshot.snapshotSequence);",
+      "const applied = syncServerThreadDetailHotPath(snapshot.thread, snapshot.snapshotSequence);",
+    ),
+  ];
+  for (const sourceText of cases) {
+    assert.throws(() => patch(sourceText), EventRouterPatchError, sourceText);
+  }
+
+  const errors = [];
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), "event-router-patch-"));
+  try {
+    const sourceFile = path.join(directory, "__root.tsx");
+    const outputFile = path.join(directory, "out.tsx");
+    fs.writeFileSync(sourceFile, cases[0]);
+    const code = runEventRouterGenerator({
+      sourceFile,
+      outputFile,
+      log: () => undefined,
+      logError: (line) => errors.push(line),
+    });
+    assert.equal(code, 1);
+    assert.match(errors[0], /drop-queued-thread-events-covered-by-snapshot/);
+    assert.equal(fs.existsSync(outputFile), false, "nothing is written");
+  } finally {
+    fs.rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test("a source without EventRouter is left for the extractor to reject", () => {
+  assert.deepEqual(patch("const nothing = 1;\n").applied, []);
+  assert.throws(
+    () => generateEventRouter({ sourceText: "const nothing = 1;\n" }),
+    EventRouterGenerationError,
+  );
 });

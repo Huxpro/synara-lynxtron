@@ -7,7 +7,10 @@ import { MarkdownFileReferenceToken } from "./MarkdownFileReferenceToken.lynx";
 describe("Lynx markdown file reference token", () => {
   it("preparses every initial transcript markdown surface before rendering list cells", () => {
     const source = readFileSync(new URL("./ChatMarkdown.lynx.tsx", import.meta.url), "utf8");
-    const querySource = readFileSync(new URL("../../app/queries.ts", import.meta.url), "utf8");
+    const querySource = readFileSync(
+      new URL("../../app/threadPageProjection.logic.ts", import.meta.url),
+      "utf8",
+    );
     const transcriptSource = readFileSync(
       new URL("../../app/Transcript.tsx", import.meta.url),
       "utf8",
@@ -16,8 +19,8 @@ describe("Lynx markdown file reference token", () => {
     expect(source).toContain("readonly preparsedTree?: MarkdownNode | null;");
     expect(source).toContain("if (hasPreparsedTree) return;");
     expect(source).toContain("const tree = hasPreparsedTree ? preparsedTree : parsedTree;");
-    expect(querySource).toContain("...markdownWorkEntries.map((entry) =>");
-    expect(querySource).toContain("parseMarkdown(");
+    expect(querySource).toContain("markdownWorkEntries.map((entry) => [");
+    expect(querySource).toContain("parseMarkdown(text, role)");
     expect(querySource).toContain("markdownTree: markdownTreesByMessageId[row.message.id] ?? null");
     expect(source).toContain("setParsedTree(parseMarkdown(text, variant));");
     expect(transcriptSource).toContain("preparsedTree={row.markdownTree}");

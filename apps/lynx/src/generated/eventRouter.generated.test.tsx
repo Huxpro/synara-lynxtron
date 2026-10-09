@@ -10,10 +10,7 @@ import { act, render } from "@lynx-js/react/testing-library";
 import { createMemoryHistory } from "@tanstack/history";
 import { QueryClient, QueryClientContext } from "@tanstack/react-query";
 import {
-  MessageId,
   ThreadId,
-  type NativeApi,
-  type OrchestrationEvent,
   type OrchestrationShellStreamItem,
   type OrchestrationThreadStreamItem,
 } from "@synara/contracts";
@@ -32,6 +29,15 @@ import { bindLynxRouterHistory } from "../adapters/reactRouter.lynx";
 import { projectShellSnapshot } from "../app/sessionShell.lynx";
 import { projectThreadDetailSnapshot } from "../app/threadDetailProjection.logic";
 import { EventRouter } from "./eventRouter.generated";
+import {
+  assistantDelta,
+  createFakeNativeApi,
+  MESSAGE_1,
+  settle,
+  shellThread,
+  THREAD_1,
+  THREAD_2,
+} from "./eventRouterHarness.testUtils";
 
 // Persisted stores in the EventRouter graph write to host storage as soon as
 // their module loads, before any `beforeEach` can install the host double.
@@ -43,112 +49,6 @@ rs.hoisted(() => {
     },
   };
 });
-
-const THREAD_1 = ThreadId.makeUnsafe("thread-1");
-const THREAD_2 = ThreadId.makeUnsafe("thread-2");
-const MESSAGE_1 = MessageId.makeUnsafe("message-1");
-
-function shellThread(id: ThreadId, title: string) {
-  const {
-    messages: _messages,
-    activities: _activities,
-    ...thread
-  } = makeReadModelThread({
-    id,
-    title,
-  });
-  return thread as unknown as Parameters<typeof makeShellSnapshot>[0];
-}
-
-function createFakeNativeApi() {
-  const shellListeners = new Set<(item: OrchestrationShellStreamItem) => void>();
-  const threadListeners = new Set<(item: OrchestrationThreadStreamItem) => void>();
-  const deviceListeners = new Set<(event: unknown) => void>();
-  const computerListeners = new Set<(event: unknown) => void>();
-  const calls: string[] = [];
-  const api = {
-    // Upstream's EventRouter mounts the device and computer event bridges.
-    device: {
-      onEvent: (listener: (event: unknown) => void) => {
-        deviceListeners.add(listener);
-        return () => deviceListeners.delete(listener);
-      },
-    },
-    computer: {
-      onEvent: (listener: (event: unknown) => void) => {
-        computerListeners.add(listener);
-        return () => computerListeners.delete(listener);
-      },
-    },
-    orchestration: {
-      onShellEvent: (listener: (item: OrchestrationShellStreamItem) => void) => {
-        shellListeners.add(listener);
-        return () => shellListeners.delete(listener);
-      },
-      onThreadEvent: (listener: (item: OrchestrationThreadStreamItem) => void) => {
-        threadListeners.add(listener);
-        return () => threadListeners.delete(listener);
-      },
-      subscribeShell: async () => void calls.push("subscribeShell"),
-      unsubscribeShell: async () => void calls.push("unsubscribeShell"),
-      subscribeThread: async (input: { threadId: string }) =>
-        void calls.push(`subscribeThread:${input.threadId}`),
-      unsubscribeThread: async (input: { threadId: string }) =>
-        void calls.push(`unsubscribeThread:${input.threadId}`),
-      getShellSnapshot: async () => {
-        calls.push("getShellSnapshot");
-        return makeShellSnapshot(shellThread(THREAD_1, "From the fallback query"));
-      },
-      replayEvents: async () => [] as OrchestrationEvent[],
-    },
-    terminal: { onEvent: () => () => undefined },
-    projects: {
-      onDevServerEvent: () => () => undefined,
-      listDevServers: async () => ({ servers: [] }),
-    },
-    shell: { openInEditor: async () => undefined },
-  } as unknown as NativeApi;
-  return {
-    api,
-    calls,
-    pushShell: (item: OrchestrationShellStreamItem) => {
-      for (const listener of Array.from(shellListeners)) listener(item);
-    },
-    pushThread: (item: OrchestrationThreadStreamItem) => {
-      for (const listener of Array.from(threadListeners)) listener(item);
-    },
-    listenerCounts: () => ({
-      shell: shellListeners.size,
-      thread: threadListeners.size,
-      device: deviceListeners.size,
-      computer: computerListeners.size,
-    }),
-  };
-}
-
-function assistantDelta(sequence: number, text: string): OrchestrationEvent {
-  return makeDomainEvent(
-    "thread.message-sent",
-    {
-      threadId: THREAD_1,
-      messageId: MESSAGE_1,
-      role: "assistant",
-      text,
-      turnId: null,
-      streaming: true,
-      createdAt: "2026-02-27T00:02:00.000Z",
-      updatedAt: "2026-02-27T00:02:00.000Z",
-    } as never,
-    { sequence },
-  );
-}
-
-async function settle(): Promise<void> {
-  // The subscription reconcile is a promise chain several turns deep.
-  await act(async () => {
-    for (let turn = 0; turn < 20; turn += 1) await Promise.resolve();
-  });
-}
 
 describe("generated EventRouter on the Lynx shims", () => {
   let fake: ReturnType<typeof createFakeNativeApi>;
@@ -453,16 +353,14 @@ describe("generated EventRouter on the Lynx shims", () => {
     );
   });
 
-  // KNOWN UPSTREAM DEFECT, pinned as an expected failure (review finding 1; not
-  // fixed on upstream/main 6f54f53c6). When a replacement thread snapshot
-  // arrives while deltas it already contains are still queued in the 100 ms
-  // flush window, `EventRouter` drops only `pendingThreadEventsById`, not
-  // `pendingDomainEvents`, and the flush appends the delta again. Nothing on
-  // Lynx renders thread messages from the store yet. Step 4 (thread page reads
-  // the store) is blocked on this: fix upstream or filter at the Lynx read
-  // boundary. When this test starts passing, remove `.fails`.
-  it.fails("does not re-apply a queued delta that a replacement thread snapshot already contains", async () => {
-    await mount(`/thread/${THREAD_1}`);
+  // Upstream defect (not fixed on upstream/main 6f54f53c6), corrected by the
+  // generator's guarded patch `drop-queued-thread-events-covered-by-snapshot`
+  // (scripts/event-router-patches.mjs). A snapshot replaces the thread while
+  // deltas it already contains are still queued in the 100 ms flush window;
+  // unpatched, `EventRouter` drops only `pendingThreadEventsById`, not
+  // `pendingDomainEvents`, and the flush appends the delta again
+  // ("Hello worldld"). The thread page renders these messages from the store.
+  describe("queued deltas a thread snapshot already contains", () => {
     const streamingMessage = (text: string) =>
       [
         {
@@ -475,28 +373,103 @@ describe("generated EventRouter on the Lynx shims", () => {
           updatedAt: "2026-02-27T00:02:00.000Z",
         },
       ] as never;
+    const detail = (snapshotSequence: number, text: string) => ({
+      snapshotSequence,
+      thread: makeReadModelThread({ id: THREAD_1, messages: streamingMessage(text) }),
+    });
     const threadSnapshot = (snapshotSequence: number, text: string) =>
       ({
         kind: "snapshot",
-        snapshot: {
-          snapshotSequence,
-          thread: makeReadModelThread({ id: THREAD_1, messages: streamingMessage(text) }),
-        },
+        snapshot: detail(snapshotSequence, text),
       }) as OrchestrationThreadStreamItem;
-    act(() => {
-      fake.pushShell({
-        kind: "snapshot",
-        snapshot: makeShellSnapshot(shellThread(THREAD_1, "One")),
+    const text = () => getThreadFromState(useStore.getState(), THREAD_1)?.messages[0]?.text;
+
+    async function openStreamingThread(): Promise<void> {
+      await mount(`/thread/${THREAD_1}`);
+      act(() => {
+        fake.pushShell({
+          kind: "snapshot",
+          snapshot: makeShellSnapshot(shellThread(THREAD_1, "One")),
+        });
+        fake.pushThread(threadSnapshot(5, "Hello"));
+        fake.pushThread({ kind: "event", event: assistantDelta(6, " wor") }); // flushes at once
+        fake.pushThread({ kind: "event", event: assistantDelta(7, "ld") }); // queued
       });
-      fake.pushThread(threadSnapshot(5, "Hello"));
-      fake.pushThread({ kind: "event", event: assistantDelta(6, " wor") }); // flushes at once
-      fake.pushThread({ kind: "event", event: assistantDelta(7, "ld") }); // queued
-      fake.pushThread(threadSnapshot(7, "Hello world")); // resubscribe inside the window
-      rs.advanceTimersByTime(100);
+      expect(text()).toBe("Hello wor");
+    }
+
+    it("are not applied again after a stream snapshot (resubscribe inside the window)", async () => {
+      await openStreamingThread();
+      act(() => {
+        fake.pushThread(threadSnapshot(7, "Hello world"));
+      });
+      expect(text()).toBe("Hello world");
+      act(() => {
+        rs.advanceTimersByTime(100);
+      });
+      expect(text()).toBe("Hello world");
+
+      // The stream goes on from the snapshot's sequence.
+      act(() => {
+        fake.pushThread({ kind: "event", event: assistantDelta(7, "ld") }); // redelivery
+        fake.pushThread({ kind: "event", event: assistantDelta(8, "!") });
+        rs.advanceTimersByTime(100);
+      });
+      expect(text()).toBe("Hello world!");
     });
-    expect(getThreadFromState(useStore.getState(), THREAD_1)?.messages[0]?.text).toBe(
-      "Hello world",
-    );
+
+    it("keeps queued deltas that are newer than the stream snapshot", async () => {
+      await openStreamingThread();
+      act(() => {
+        fake.pushThread({ kind: "event", event: assistantDelta(8, "!") }); // queued behind 7
+        // A snapshot taken at 7: it contains " wor" and "ld", not "!".
+        fake.pushThread(threadSnapshot(7, "Hello world"));
+        rs.advanceTimersByTime(100);
+      });
+      expect(text()).toBe("Hello world!");
+    });
+
+    it("are not applied again after the catch-up projection read", async () => {
+      await openStreamingThread();
+      // The thread counts as live (a streaming assistant message), so the
+      // catch-up interval reads the projection; it resolves inside the window.
+      let resolveDetail: (value: ReturnType<typeof detail>) => void = () => undefined;
+      const requested: string[] = [];
+      (
+        fake.api.orchestration as unknown as {
+          getThreadDetailSnapshot: (input: { threadId: string }) => Promise<unknown>;
+        }
+      ).getThreadDetailSnapshot = (input) => {
+        requested.push(input.threadId);
+        return new Promise((resolve) => {
+          resolveDetail = resolve;
+        });
+      };
+      // An event that arrives for a subscribed thread with no fence asks for the
+      // projection; so does the periodic catch-up. Drive the latter.
+      await act(async () => {
+        for (let elapsed = 0; elapsed < 30_000 && requested.length === 0; elapsed += 50) {
+          rs.advanceTimersByTime(50);
+          await Promise.resolve();
+        }
+      });
+      expect(requested).toEqual([THREAD_1]);
+      expect(text()).toBe("Hello world"); // the window elapsed while waiting
+
+      act(() => {
+        fake.pushThread({ kind: "event", event: assistantDelta(8, " again") }); // queued
+      });
+      const beforeProjection = text();
+      await act(async () => {
+        resolveDetail(detail(8, "Hello world again"));
+        for (let turn = 0; turn < 10; turn += 1) await Promise.resolve();
+      });
+      act(() => {
+        rs.advanceTimersByTime(100);
+      });
+      expect(beforeProjection).toBe("Hello world");
+      expect(text()).toBe("Hello world again");
+    });
   });
 
   it("releases every listener and lease on unmount", async () => {
