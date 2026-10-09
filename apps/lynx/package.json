@@ -25,6 +25,7 @@
     "pack": "bun run build && lynxtron-builder --publish never",
     "audit:reuse": "node scripts/reuse-audit.mjs",
     "audit:reuse:check": "node scripts/reuse-audit.mjs --check",
+    "audit:upstream-merge": "node scripts/upstream-merge-layer-report.mjs",
     "audit:component-lab": "bun scripts/component-lab-identity-audit.ts",
     "audit:component-lab:inventory": "bun scripts/component-lab-primitive-inventory.ts",
     "audit:style": "node scripts/style-audit.mjs",
