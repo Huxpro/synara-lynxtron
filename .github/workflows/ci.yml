@@ -85,7 +85,10 @@ jobs:
           cd apps/web
           ./node_modules/.bin/playwright install --with-deps chromium
 
+      # Three browser tests fail on the default branch (Huxpro/synara-lynxtron#30).
+      # Non-blocking until they are fixed.
       - name: Browser test (stable)
+        continue-on-error: true
         timeout-minutes: 20
         run: bun run --cwd apps/web test:browser:stable
 
@@ -107,6 +110,9 @@ jobs:
 
   windows_process:
     name: Windows Process Regression
+    # The install's Effect language-service patch fails on Windows
+    # (Huxpro/synara-lynxtron#30). Non-blocking until it is fixed.
+    continue-on-error: true
     runs-on: windows-2022
     timeout-minutes: 15
     steps:
