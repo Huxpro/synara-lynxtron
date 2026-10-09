@@ -14,6 +14,10 @@ import {
   selectProfileModelUsage,
   selectProfileTopProvider,
 } from "@synara-web/components/profile/profileSelectors";
+import {
+  serverProfileStatsQueryOptions,
+  serverProfileTokenStatsQueryOptions,
+} from "@synara-web/lib/serverReactQuery";
 
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge.lynx";
@@ -26,7 +30,6 @@ import {
 } from "../components/ui/dialog.lynx";
 import { Input } from "../components/ui/input.lynx";
 import { OpenAIProviderIcon, hasLynxProviderIcon } from "../components/OpenAIProviderIcon.lynx";
-import { fetchProfileStats, fetchProfileTokenStats } from "../data/synaraClient.lynx";
 import { ProfileUsageKindIcon } from "./ProfileUsageKindIcon.lynx";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import { ScreenshotIcon, Trash2 } from "../lib/icons.lynx";
@@ -115,10 +118,6 @@ function toDisplayName(value: string): string {
     .split(" ")
     .map((part) => (part.length > 0 ? `${part[0]!.toUpperCase()}${part.slice(1)}` : part))
     .join(" ");
-}
-
-function utcOffsetMinutes(): number {
-  return -new Date().getTimezoneOffset();
 }
 
 function providerLabel(provider: ProviderKind | null): string {
@@ -816,25 +815,8 @@ function ProfileContent(props: {
 }
 
 export function SettingsProfilePanel() {
-  const offset = utcOffsetMinutes();
-  const coreQuery = useQuery({
-    queryKey: ["profile-stats", offset],
-    queryFn: () => {
-      "background only";
-      return fetchProfileStats(offset);
-    },
-    staleTime: 60_000,
-    retry: false,
-  });
-  const tokenQuery = useQuery({
-    queryKey: ["profile-token-stats", offset],
-    queryFn: () => {
-      "background only";
-      return fetchProfileTokenStats(offset);
-    },
-    staleTime: 5 * 60_000,
-    retry: false,
-  });
+  const coreQuery = useQuery(serverProfileStatsQueryOptions());
+  const tokenQuery = useQuery(serverProfileTokenStatsQueryOptions());
 
   if (coreQuery.isPending && !coreQuery.data) {
     return (

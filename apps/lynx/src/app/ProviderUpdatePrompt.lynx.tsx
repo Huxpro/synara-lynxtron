@@ -13,14 +13,17 @@ import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsProviderPickerProjection,
 } from "@synara-web/appSettingsStorageProjection.logic";
+import {
+  serverConfigQueryOptions,
+  serverQueryKeys,
+  serverSettingsQueryOptions,
+} from "@synara-web/lib/serverReactQuery";
 
 import { Button } from "../components/ui/button";
 import { IconButton } from "../components/ui/icon-button.lynx";
 import { CircleAlertIcon, TriangleAlertIcon, XIcon } from "../lib/icons.lynx";
 import { webStorage } from "../platform/storage";
 import {
-  fetchProviderUpdatePromptServerConfig,
-  fetchProviderUpdatePromptServerSettings,
   refreshProviderUpdatePromptServerConfig,
   queryClient,
   updatePromptProvider,
@@ -161,21 +164,17 @@ export function ProviderUpdatePromptSurface(props: {
 }
 
 export function ProviderUpdatePrompt(props: { readonly onReview: () => void }) {
-  const config = useQuery({
-    queryKey: ["server-config"],
-    queryFn: fetchProviderUpdatePromptServerConfig,
-  });
-  const serverSettings = useQuery({
-    queryKey: ["server-settings"],
-    queryFn: fetchProviderUpdatePromptServerSettings,
-  });
+  // The same queries Settings reads and writes, so a provider update or a
+  // settings change made there is reflected here without a second cache.
+  const config = useQuery(serverConfigQueryOptions());
+  const serverSettings = useQuery(serverSettingsQueryOptions());
   useEffect(() => {
     if (serverSettings.data?.enableProviderUpdateChecks !== true) return;
     let disposed = false;
     const refresh = () => {
       void refreshProviderUpdatePromptServerConfig()
         .then((nextConfig) => {
-          if (!disposed) queryClient.setQueryData(["server-config"], nextConfig);
+          if (!disposed) queryClient.setQueryData(serverQueryKeys.config(), nextConfig);
         })
         .catch(() => undefined);
     };
@@ -285,7 +284,7 @@ export function ProviderUpdatePrompt(props: { readonly onReview: () => void }) {
             status: outcome.status,
             copy: providerUpdateOutcomeCopy(outcome),
           });
-          void queryClient.invalidateQueries({ queryKey: ["server-config"] });
+          void queryClient.invalidateQueries({ queryKey: serverQueryKeys.config() });
         });
       }}
     />

@@ -92,7 +92,11 @@ import { Button } from "../components/ui/button";
 import { IconButton } from "../components/ui/icon-button.lynx";
 import { SettingsGeneralBooleanControlElement } from "../adapters/SettingsGeneralCompositionElements.lynx";
 import { SettingsResetIcon } from "../adapters/SettingsResetIcon.lynx";
-import type { ResolvedKeybindingsConfig, ServerSettingsView } from "@synara/contracts";
+import type {
+  ResolvedKeybindingsConfig,
+  ServerSettingsPatch,
+  ServerSettingsView,
+} from "@synara/contracts";
 import { SettingsUsagePanel } from "./SettingsUsagePanel";
 import { SettingsProfilePanel } from "./SettingsProfilePanel.lynx";
 import { SettingsProviderToolsPanel } from "./SettingsProviderToolsPanel.lynx";
@@ -148,10 +152,12 @@ async function readSettings(retry: boolean): Promise<{
   "background only";
   const [
     { getStorageHydrationError, hydrateStorage, retryHydrateStorage, webStorage },
-    { fetchServerConfig, fetchServerSettings },
+    { readServerConfig, readServerSettings },
+    { queryClient },
   ] = await Promise.all([
     import(/* webpackMode: "eager" */ "../platform/storage"),
-    import(/* webpackMode: "eager" */ "../data/synaraClient"),
+    import(/* webpackMode: "eager" */ "./settingsServerData.lynx"),
+    import(/* webpackMode: "eager" */ "./queries"),
   ]);
   if (retry) {
     await retryHydrateStorage();
@@ -160,8 +166,8 @@ async function readSettings(retry: boolean): Promise<{
   }
   const hydrationError = getStorageHydrationError();
   if (hydrationError) throw hydrationError;
-  const serverSettings = await fetchServerSettings().catch(() => null);
-  const serverConfig = await fetchServerConfig().catch(() => null);
+  const serverSettings = await readServerSettings(queryClient).catch(() => null);
+  const serverConfig = await readServerConfig(queryClient).catch(() => null);
   const appSettingsRaw = webStorage.getItem(APP_SETTINGS_STORAGE_KEY);
   const themeRaw = webStorage.getItem(THEME_STORAGE_KEY);
   return {
@@ -194,13 +200,22 @@ function readServerBackedSettings(
   };
 }
 
+/** Server-settings write through the upstream facade and settings query. */
+async function saveServerSettings(patch: ServerSettingsPatch): Promise<void> {
+  "background only";
+  const [{ writeServerSettings }, { queryClient }] = await Promise.all([
+    import(/* webpackMode: "eager" */ "./settingsServerData.lynx"),
+    import(/* webpackMode: "eager" */ "./queries"),
+  ]);
+  await writeServerSettings(queryClient, patch);
+}
+
 async function persistProviderUpdateChecks(
   values: SettingsProviderUpdateChecksValues,
 ): Promise<SettingsPersistOutcome> {
   "background only";
-  const { updateServerSettings } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
   try {
-    await updateServerSettings(values);
+    await saveServerSettings(values);
     return { kind: "saved" };
   } catch {
     return { kind: "partial", message: SETTINGS_PROVIDER_SAVE_ERROR };
@@ -231,11 +246,8 @@ async function persistBehaviorSettings(
     writeSettingsBehaviorProjection(webStorage.getItem(APP_SETTINGS_STORAGE_KEY), values),
   );
   if (updateServerStreaming) {
-    const { updateServerSettings } = await import(
-      /* webpackMode: "eager" */ "../data/synaraClient"
-    );
     try {
-      await updateServerSettings({
+      await saveServerSettings({
         enableAssistantStreaming: values.enableAssistantStreaming,
       });
     } catch {
@@ -260,9 +272,8 @@ async function persistGitWritingModel(
   values: SettingsGitWritingModelValues,
 ): Promise<SettingsPersistOutcome> {
   "background only";
-  const { updateServerSettings } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
   try {
-    await updateServerSettings({
+    await saveServerSettings({
       textGenerationModelSelection: values,
     });
     return { kind: "saved" };
@@ -284,11 +295,8 @@ async function persistSettings(
     writeSettingsGeneralProjection(webStorage.getItem(APP_SETTINGS_STORAGE_KEY), settings),
   );
   if (updateServerThreadMode) {
-    const { updateServerSettings } = await import(
-      /* webpackMode: "eager" */ "../data/synaraClient"
-    );
     try {
-      await updateServerSettings({
+      await saveServerSettings({
         defaultThreadEnvMode: settings.defaultThreadEnvMode,
       });
     } catch {
@@ -460,13 +468,14 @@ export function SettingsPage({
     let unsubscribe: (() => void) | null = null;
     void Promise.all([
       import(/* webpackMode: "eager" */ "../platform/storage"),
-      import(/* webpackMode: "eager" */ "../data/synaraClient"),
-    ]).then(([{ webStorage }, { subscribeServerSettings }]) => {
+      import(/* webpackMode: "eager" */ "@synara-web/wsNativeApi"),
+    ]).then(([{ webStorage }, { onServerSettingsUpdated }]) => {
       if (!active) return;
-      unsubscribe = subscribeServerSettings((serverSettings) => {
+      // The facade's settings push: the current view first, then every change.
+      unsubscribe = onServerSettingsUpdated((payload) => {
         const next = readServerBackedSettings(
           webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
-          serverSettings,
+          payload.settings,
         );
         setSettings(next.general);
         setBehavior(next.behavior);

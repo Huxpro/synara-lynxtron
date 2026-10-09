@@ -42,8 +42,8 @@ describe("Settings Custom Models fidelity", () => {
     const settingsSource = readFileSync(new URL("./SettingsPage.tsx", import.meta.url), "utf8");
 
     expect(source).toContain("validateCustomModelInput");
-    expect(source).toContain('queryKey: ["server-settings"]');
-    expect(source).toContain("updateServerSettings(patch)");
+    expect(source).toContain("useQuery(serverSettingsQueryOptions())");
+    expect(source).toContain("writeServerSettings(queryClient, patch)");
     expect(source).toContain('confirmType="send"');
     expect(source).toContain("onConfirm={addModel}");
     expect(source).toContain("color={svgColors.foreground80}");

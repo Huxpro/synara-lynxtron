@@ -4,10 +4,6 @@ import { readFileSync } from "node:fs";
 describe("Settings Worktrees fidelity", () => {
   it("routes the real Worktrees section and canonical RPCs", () => {
     const settingsSource = readFileSync(new URL("./SettingsPage.tsx", import.meta.url), "utf8");
-    const clientSource = readFileSync(
-      new URL("../data/synaraClient.lynx.ts", import.meta.url),
-      "utf8",
-    );
     const queriesSource = readFileSync(new URL("./queries.ts", import.meta.url), "utf8");
     const panelSource = readFileSync(
       new URL("./SettingsWorktreesPanel.lynx.tsx", import.meta.url),
@@ -17,11 +13,10 @@ describe("Settings Worktrees fidelity", () => {
     expect(settingsSource).toContain('"worktrees",');
     expect(settingsSource).toContain('section === "worktrees"');
     expect(settingsSource).toContain("<SettingsWorktreesPanel />");
-    expect(clientSource).toContain('"server.listWorktrees"');
-    expect(clientSource).toContain('"git.removeWorktree"');
     expect(queriesSource).toContain("readonly workspaceThreads:");
     expect(queriesSource).toContain("associatedWorktreePath:");
-    expect(panelSource).toContain('queryKey: ["managed-worktrees"]');
+    expect(panelSource).toContain("useQuery(serverWorktreesQueryOptions())");
+    expect(panelSource).toContain("useMutation(gitRemoveWorktreeMutationOptions({ queryClient }))");
     expect(panelSource).toContain("No app-managed worktrees found yet.");
     expect(panelSource).toContain("No conversations linked to this worktree.");
     expect(panelSource).toMatch(
@@ -44,10 +39,11 @@ describe("Settings Worktrees fidelity", () => {
     expect(panelSource).toContain("await dialogs.confirm(");
     expect(panelSource).toContain("createDeleteThreadCommand({");
     expect(panelSource).toContain("if (thread.archivedAt == null) continue;");
-    expect(panelSource).toContain("await removeManagedWorktree({");
+    expect(panelSource).toContain("await ensureNativeApi().orchestration.dispatchCommand(");
+    expect(panelSource).toContain("await removeWorktreeMutation.mutateAsync({");
     expect(panelSource).toContain("force: true");
     expect(panelSource).toContain(
-      'queryClient.invalidateQueries({ queryKey: ["managed-worktrees"] })',
+      "queryClient.invalidateQueries({ queryKey: serverQueryKeys.worktrees() })",
     );
     // Linked conversations come from the shared store; nothing to invalidate.
     expect(panelSource).not.toContain('queryKey: ["sidebar-snapshot"]');

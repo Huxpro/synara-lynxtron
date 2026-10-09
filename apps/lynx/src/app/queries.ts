@@ -241,12 +241,6 @@ export async function fetchAutomations(): Promise<AutomationListResult> {
   return fetchAutomationList();
 }
 
-export async function fetchProviderUpdatePromptServerConfig() {
-  "background only";
-  const { fetchServerConfig } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
-  return fetchServerConfig();
-}
-
 /**
  * The delivery mode for a new turn, resolved at send time from the same setting the
  * web app uses (server value first, then the stored app settings, default streaming).
@@ -264,12 +258,6 @@ export async function resolveNativeAssistantDeliveryMode(): Promise<AssistantDel
       serverSettings?.enableAssistantStreaming,
     ),
   );
-}
-
-export async function fetchProviderUpdatePromptServerSettings() {
-  "background only";
-  const { fetchServerSettings } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
-  return fetchServerSettings();
 }
 
 export async function refreshProviderUpdatePromptServerConfig() {

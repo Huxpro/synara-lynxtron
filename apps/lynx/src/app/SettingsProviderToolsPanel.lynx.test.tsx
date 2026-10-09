@@ -55,29 +55,24 @@ describe("Settings Provider tools fidelity", () => {
       new URL("./SettingsProviderToolsPanel.lynx.tsx", import.meta.url),
       "utf8",
     );
-    const clientSource = readFileSync(
-      new URL("../data/synaraClient.lynx.ts", import.meta.url),
-      "utf8",
-    );
     const settingsSource = readFileSync(new URL("./SettingsPage.tsx", import.meta.url), "utf8");
     const providerUpdatesSource = readFileSync(
       new URL("../../../web/src/providerUpdates.ts", import.meta.url),
       "utf8",
     );
 
-    expect(source).toContain('queryKey: ["server-config"]');
-    expect(source).toContain('queryKey: ["server-settings"]');
+    expect(source).toContain("useQuery(serverConfigQueryOptions())");
+    expect(source).toContain("useQuery(serverSettingsQueryOptions())");
     expect(source).toContain("withProviderUpdateTimeout({");
-    expect(source).toContain("request: updateProvider(provider)");
+    expect(source).toContain("request: ensureNativeApi().server.updateProvider({ provider })");
     expect(source).toContain("providerUpdateFailureMessage(");
     expect(source).toContain("providerUpdateFailureMessage,\n  providerUpdateStatusLabel,");
     expect(providerUpdatesSource).toContain('if (typeof value !== "string") return null;');
     expect(providerUpdatesSource).toContain(
       'state.status !== "failed" && state.status !== "unchanged"',
     );
-    expect(source).toContain("updateServerSettings(patch)");
-    expect(source).toContain('queryClient.setQueryData(["server-settings"], settings)');
-    expect(clientSource).toContain('transportRequest("server.updateProvider", { provider })');
+    expect(source).toContain("writeServerSettings(queryClient, patch)");
+    expect(source).toContain("queryKey: serverQueryKeys.config()");
     expect(source).toContain("getVisibleProviderUpdateStatuses({");
     expect(source).toContain("shouldShowProviderUpdateStatus({");
     expect(source).toContain("Automatic CLI update checks");

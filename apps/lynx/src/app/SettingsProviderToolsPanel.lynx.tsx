@@ -26,7 +26,13 @@ import {
   withProviderUpdateTimeout,
 } from "@synara-web/providerUpdates";
 import { SettingsSection } from "@synara-web/components/settings/SettingsSection";
+import {
+  serverConfigQueryOptions,
+  serverQueryKeys,
+  serverSettingsQueryOptions,
+} from "@synara-web/lib/serverReactQuery";
 import { SETTINGS_TARGETS } from "@synara-web/settingsNavigation";
+import { ensureNativeApi } from "~/nativeApi";
 
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -34,12 +40,6 @@ import { SettingsGeneralBooleanControlElement } from "../adapters/SettingsGenera
 import { SettingsResetIcon } from "../adapters/SettingsResetIcon.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
-import {
-  fetchServerConfig,
-  fetchServerSettings,
-  updateProvider,
-  updateServerSettings,
-} from "../data/synaraClient.lynx";
 import { OpenAIProviderIcon, hasLynxProviderIcon } from "../components/OpenAIProviderIcon.lynx";
 import { ArrowDownToLineIcon, ChevronRightIcon } from "../lib/icons.lynx";
 import {
@@ -49,6 +49,7 @@ import {
 } from "../platform/motion.lynx";
 import { openExternalBestEffort } from "../platform/window";
 import { queryClient } from "./queries";
+import { writeServerSettings } from "./settingsServerData.lynx";
 import {
   isProviderToolDirty,
   providerFieldPatch,
@@ -328,26 +329,14 @@ export function SettingsProviderToolsPanel(props: {
 }) {
   const [openProviders, setOpenProviders] = useState<Partial<Record<ProviderKind, boolean>>>({});
   const [notice, setNotice] = useState<string | null>(null);
-  const configQuery = useQuery({
-    queryKey: ["server-config"],
-    queryFn: () => {
-      "background only";
-      return fetchServerConfig();
-    },
-  });
-  const settingsQuery = useQuery({
-    queryKey: ["server-settings"],
-    queryFn: () => {
-      "background only";
-      return fetchServerSettings();
-    },
-  });
+  const configQuery = useQuery(serverConfigQueryOptions());
+  const settingsQuery = useQuery(serverSettingsQueryOptions());
   const updateMutation = useMutation({
     mutationFn: (provider: ProviderKind) => {
       "background only";
       return withProviderUpdateTimeout({
         provider,
-        request: updateProvider(provider),
+        request: ensureNativeApi().server.updateProvider({ provider }),
       });
     },
     onSuccess: async (result, provider) => {
@@ -359,7 +348,7 @@ export function SettingsProviderToolsPanel(props: {
       } else {
         setNotice(null);
       }
-      await queryClient.invalidateQueries({ queryKey: ["server-config"] });
+      await queryClient.invalidateQueries({ queryKey: serverQueryKeys.config() });
     },
     onError: (error) => {
       setNotice(error instanceof Error ? error.message : "The provider update failed.");
@@ -368,10 +357,9 @@ export function SettingsProviderToolsPanel(props: {
   const settingsMutation = useMutation({
     mutationFn: (patch: ServerSettingsPatch) => {
       "background only";
-      return updateServerSettings(patch);
+      return writeServerSettings(queryClient, patch);
     },
-    onSuccess: (settings) => {
-      queryClient.setQueryData(["server-settings"], settings);
+    onSuccess: () => {
       setNotice(null);
     },
     onError: (error) => {

@@ -4,10 +4,6 @@ import { readFileSync } from "node:fs";
 describe("Settings Skills fidelity", () => {
   it("routes the real Skills section and canonical RPCs", () => {
     const settingsSource = readFileSync(new URL("./SettingsPage.tsx", import.meta.url), "utf8");
-    const clientSource = readFileSync(
-      new URL("../data/synaraClient.lynx.ts", import.meta.url),
-      "utf8",
-    );
     const panelSource = readFileSync(
       new URL("./SettingsSkillsPanel.lynx.tsx", import.meta.url),
       "utf8",
@@ -16,9 +12,8 @@ describe("Settings Skills fidelity", () => {
     expect(settingsSource).toContain('"skills",');
     expect(settingsSource).toContain('section === "skills"');
     expect(settingsSource).toContain("<SettingsSkillsPanel />");
-    expect(clientSource).toContain('"provider.listSkillsCatalog"');
-    expect(panelSource).toContain('queryKey: ["skills-catalog"]');
-    expect(panelSource).toContain('queryKey: ["server-settings"]');
+    expect(panelSource).toContain("useQuery(skillsCatalogQueryOptions())");
+    expect(panelSource).toContain("useQuery(serverSettingsQueryOptions())");
     expect(panelSource).toContain("Synara skills folder");
     expect(panelSource).toContain("No skills found");
     expect(panelSource).toContain(
@@ -36,15 +31,15 @@ describe("Settings Skills fidelity", () => {
     expect(panelSource).toContain("saveQueueRef.current");
     expect(panelSource).toContain("saveOperationRef.current");
     expect(panelSource).toContain("nextDisabledSkillNames({");
-    expect(panelSource).toContain("await updateServerSettings({");
+    expect(panelSource).toContain("await writeServerSettings(queryClient, {");
     expect(panelSource).toContain("skills: { disabled: [...next] }");
     expect(panelSource).toContain(
-      'queryClient.invalidateQueries({ queryKey: ["provider-skills"] })',
+      "queryClient.invalidateQueries({ queryKey: providerDiscoveryQueryKeys.all })",
+    );
+    expect(panelSource).toContain(
+      "queryClient.invalidateQueries({ queryKey: LEGACY_COMPOSER_PROVIDER_SKILLS_QUERY_KEY })",
     );
     expect(panelSource).toContain("setDisabledNames(previous)");
-    expect(panelSource).toContain(
-      'queryClient.invalidateQueries({ queryKey: ["server-settings"] })',
-    );
   });
 
   it("matches the Web portable summary and grouped-row anatomy", () => {

@@ -2,14 +2,14 @@ import { useEffect, useRef, useState } from "@lynx-js/react";
 import { useQuery } from "@tanstack/react-query";
 
 import { SettingsSection } from "@synara-web/components/settings/SettingsSection";
+import {
+  providerDiscoveryQueryKeys,
+  skillsCatalogQueryOptions,
+} from "@synara-web/lib/providerDiscoveryReactQuery";
+import { serverSettingsQueryOptions } from "@synara-web/lib/serverReactQuery";
 
 import { SettingsGeneralBooleanControlElement } from "../adapters/SettingsGeneralCompositionElements.lynx";
 import { OpenAIProviderIcon, hasLynxProviderIcon } from "../components/OpenAIProviderIcon.lynx";
-import {
-  fetchServerSettings,
-  fetchSkillsCatalog,
-  updateServerSettings,
-} from "../data/synaraClient.lynx";
 import {
   buildSettingsSkillGroups,
   buildSettingsSkillSections,
@@ -17,6 +17,10 @@ import {
   settingsSkillNameKey,
 } from "./settingsSkills.logic";
 import { queryClient } from "./queries";
+import {
+  LEGACY_COMPOSER_PROVIDER_SKILLS_QUERY_KEY,
+  writeServerSettings,
+} from "./settingsServerData.lynx";
 
 import "./settings-skills-panel.css";
 
@@ -44,21 +48,8 @@ function SkillProviderStack(props: { readonly providers: readonly string[] }) {
 }
 
 export function SettingsSkillsPanel() {
-  const catalogQuery = useQuery({
-    queryKey: ["skills-catalog"],
-    queryFn: () => {
-      "background only";
-      return fetchSkillsCatalog();
-    },
-    staleTime: 30_000,
-  });
-  const settingsQuery = useQuery({
-    queryKey: ["server-settings"],
-    queryFn: () => {
-      "background only";
-      return fetchServerSettings();
-    },
-  });
+  const catalogQuery = useQuery(skillsCatalogQueryOptions());
+  const settingsQuery = useQuery(serverSettingsQueryOptions());
   const [disabledNames, setDisabledNames] = useState<readonly string[]>([]);
   const disabledNamesRef = useRef<readonly string[]>([]);
   const saveQueueRef = useRef<Promise<void>>(Promise.resolve());
@@ -97,7 +88,7 @@ export function SettingsSkillsPanel() {
       .catch(() => undefined)
       .then(async () => {
         try {
-          const settings = await updateServerSettings({
+          const settings = await writeServerSettings(queryClient, {
             skills: { disabled: [...next] },
           });
           if (saveOperationRef.current === operationId) {
@@ -105,7 +96,11 @@ export function SettingsSkillsPanel() {
             setDisabledNames(settings.skills.disabled);
             setSavingSkillKey(null);
           }
-          await queryClient.invalidateQueries({ queryKey: ["provider-skills"] });
+          // Composer skill pickers are served filtered by these toggles.
+          await Promise.all([
+            queryClient.invalidateQueries({ queryKey: providerDiscoveryQueryKeys.all }),
+            queryClient.invalidateQueries({ queryKey: LEGACY_COMPOSER_PROVIDER_SKILLS_QUERY_KEY }),
+          ]);
         } catch (error) {
           if (saveOperationRef.current === operationId) {
             disabledNamesRef.current = previous;
@@ -113,7 +108,6 @@ export function SettingsSkillsPanel() {
             setSavingSkillKey(null);
             setSaveError(error instanceof Error ? error.message : "Unable to update this skill.");
           }
-          await queryClient.invalidateQueries({ queryKey: ["server-settings"] });
         }
       });
     await saveQueueRef.current;

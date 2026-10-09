@@ -1,8 +1,10 @@
 import { useState } from "@lynx-js/react";
 import { useQuery } from "@tanstack/react-query";
 import { SettingsSection } from "@synara-web/components/settings/SettingsSection";
+import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { createAllThreadsMessagelessSelector } from "@synara-web/storeSelectors";
 import { useStore } from "@synara-web/store";
+import { ensureNativeApi } from "~/nativeApi";
 
 import { Button } from "../components/ui/button";
 import { ChevronRightIcon } from "../lib/icons.lynx";
@@ -12,9 +14,7 @@ import {
   disclosureContentClassName,
   useLynxDisclosurePresence,
 } from "../platform/motion.lynx";
-import { fetchServerConfig, openPathInEditor, repairSynaraState } from "../data/synaraClient.lynx";
 import { dialogs } from "../platform/dialogs";
-import { queryClient } from "./queries";
 import { useSidebarSnapshot } from "./sidebarSnapshot.lynx";
 import {
   advancedAppVersion,
@@ -28,13 +28,7 @@ import { ReleaseHistoryDialogLynx } from "./ReleaseHistoryDialog.lynx";
 import "./settings-advanced-panel.css";
 
 export function SettingsAdvancedPanel() {
-  const configQuery = useQuery({
-    queryKey: ["server-config"],
-    queryFn: () => {
-      "background only";
-      return fetchServerConfig();
-    },
-  });
+  const configQuery = useQuery(serverConfigQueryOptions());
   const snapshotQuery = useSidebarSnapshot();
   const allThreadsMessageless = useStore(createAllThreadsMessagelessSelector());
   const threadsHydrated = useStore((state) => state.threadsHydrated);
@@ -70,7 +64,7 @@ export function SettingsAdvancedPanel() {
     setOpeningFile(true);
     setNotice(null);
     try {
-      await openPathInEditor({ cwd: path, editor });
+      await ensureNativeApi().shell.openInEditor(path, editor);
     } catch (error) {
       setNotice({
         intent: "error",
@@ -96,9 +90,8 @@ export function SettingsAdvancedPanel() {
     setNotice(null);
     try {
       await repairAdvancedSettingsState({
-        repair: repairSynaraState,
+        repair: () => ensureNativeApi().orchestration.repairState(),
         sync: syncServerReadModel,
-        invalidate: () => queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
       });
       setNotice({
         intent: "success",
