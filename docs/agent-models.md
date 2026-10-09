@@ -11,7 +11,7 @@ Operator preferences for this fork.
 ## Mechanics
 
 - Codex runs through the CLI: `codex exec -m <model> … < /dev/null` or `codex review`. Pass the model explicitly and close stdin, or a background run waits forever. Use `-s read-only` for review and investigation.
-- As of 2026-10-09 the API rejects `gpt-6.1-sol` for this ChatGPT account ("not supported when using Codex with a ChatGPT account"). Until that changes, use `-m gpt-5.6-sol`. Retry `gpt-6.1-sol` first when starting a new piece of helper work.
+- As of 2026-10-09 this account, on Codex CLI 0.149.0, is offered `gpt-5.6-sol`, `gpt-5.6-terra`, `gpt-5.6-luna` and `gpt-5.5`. Every 6.x name (`gpt-6.1-sol`, `gpt-6.0-sol`) is rejected with "not supported when using Codex with a ChatGPT account", so use `-m gpt-5.6-sol`. The offered list is in `~/.codex/models_cache.json`; check it again after a CLI upgrade.
 - Codex Computer Use from `codex exec` needs the operator's interactive per-app approval and cannot reach the Lynx DevTool port from its sandbox; plan for that before relying on it.
 - Codex runs can exceed a 10-minute shell timeout: run in the background and wait for a report file.
 - Parallel Codex implementation runs need separate worktrees.
