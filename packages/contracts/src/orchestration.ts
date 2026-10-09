@@ -57,7 +57,6 @@ import {
 export const ORCHESTRATION_WS_METHODS = {
   getSnapshot: "orchestration.getSnapshot",
   getShellSnapshot: "orchestration.getShellSnapshot",
-  getSidebarShellSnapshot: "orchestration.getSidebarShellSnapshot",
   getSidebarSearchSnapshot: "orchestration.getSidebarSearchSnapshot",
   getThreadDetailSnapshot: "orchestration.getThreadDetailSnapshot",
   searchThreads: "orchestration.searchThreads",
@@ -83,7 +82,6 @@ export const ORCHESTRATION_WS_METHODS = {
 
 export const ORCHESTRATION_SIDEBAR_SEARCH_LIMITS = Object.freeze({
   debounceMs: 80,
-  shellThreadCount: 80,
   messageThreadCount: 160,
   messagesPerThread: 12,
   messageCharsPerMessage: 1_200,
@@ -2939,13 +2937,6 @@ export type OrchestrationGetShellSnapshotInput = typeof OrchestrationGetShellSna
 const OrchestrationGetShellSnapshotResult = OrchestrationShellSnapshot;
 export type OrchestrationGetShellSnapshotResult = typeof OrchestrationGetShellSnapshotResult.Type;
 
-export const OrchestrationGetSidebarShellSnapshotInput = Schema.Struct({});
-export type OrchestrationGetSidebarShellSnapshotInput =
-  typeof OrchestrationGetSidebarShellSnapshotInput.Type;
-const OrchestrationGetSidebarShellSnapshotResult = OrchestrationShellSnapshot;
-export type OrchestrationGetSidebarShellSnapshotResult =
-  typeof OrchestrationGetSidebarShellSnapshotResult.Type;
-
 export const OrchestrationGetSidebarSearchSnapshotInput = Schema.Struct({});
 export type OrchestrationGetSidebarSearchSnapshotInput =
   typeof OrchestrationGetSidebarSearchSnapshotInput.Type;
@@ -3174,10 +3165,6 @@ export const OrchestrationRpcSchemas = {
   getShellSnapshot: {
     input: OrchestrationGetShellSnapshotInput,
     output: OrchestrationGetShellSnapshotResult,
-  },
-  getSidebarShellSnapshot: {
-    input: OrchestrationGetSidebarShellSnapshotInput,
-    output: OrchestrationGetSidebarShellSnapshotResult,
   },
   getSidebarSearchSnapshot: {
     input: OrchestrationGetSidebarSearchSnapshotInput,
