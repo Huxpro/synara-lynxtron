@@ -47,15 +47,16 @@ discovery error state), `Sidebar.logic.ts`, `MessageTrail.tsx`, `ProviderHealthB
 
 ## Fork footprint
 
-273 upstream-owned files carry a fork diff; 311 did before the merge. The merge itself left 276
+270 upstream-owned files carry a fork diff; 311 did before the merge. The merge itself left 276
 (38 returned to upstream's content, 3 new: `threadVisitedPersistence.ts`,
 `useCommittedPathname.test.ts`, `server-sync-fs-budget.json`). After it, `ci.yml`,
 `ProviderCommandReactor.test.ts`, `OpenCodeAdapter.ts` and `outboundHttp.ts` returned to
-upstream's content and `git/Layers/GitCore.ts` gained a three-line diff.
+upstream's content and `git/Layers/GitCore.ts` gained a three-line diff. The browser-test
+fixes then returned `nativeApi.ts`, `env.ts` and `lib/chatProjects.test.ts` (273 to 270).
 
 | Area                 | Files |
 | -------------------- | ----: |
-| `apps/web`           |   208 |
+| `apps/web`           |   205 |
 | `apps/server`        |    21 |
 | `packages/shared`    |    13 |
 | `apps/desktop`       |    13 |
@@ -198,6 +199,47 @@ on Electron by route; the app returned to its thread with the sidebar intact. Th
 records only the Native host's subscriptions, so the absence of a duplicate Electron shell
 subscription was not observed directly; it follows from the engine no longer unmounting.
 
+## Browser lanes on PR #34
+
+Upstream's six browser lanes failed on the fork (41 ChatView tests; the three `components`
+shards failed or ran into the 20-minute limit). The same lanes pass on upstream. Each cause was
+found by restoring fork-diffed files to upstream's content and re-running a failing test.
+
+| Cause                                                                                                                                                                                                                                                    | Tests it broke                                                                                                                                                                                        | What was done                                                                                                                                                        | Commit      |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| `nativeApi.ts` no longer read `window.nativeApi`; the fork had replaced it with a `setNativeApiForTest` override. Upstream's browser tests install their API fixtures on `window.nativeApi`, so the fixtures were ignored and the real WebSocket API ran | 40 ChatView tests (all of chat-projects and chat-workflows), and in `components`: GeneratedMarkdownImage, WorkspaceSearchPalette, WorkspaceFilePreview relocation, plus the hangs behind the timeouts | `nativeApi.ts`, `env.ts` and `lib/chatProjects.test.ts` restored to upstream. Lynx substitutes its own `nativeApi` adapter and did not depend on the override        | `d6b23566b` |
+| `ChatMarkdown.tsx` deferred streamed text with a 100 ms debounce instead of `useDeferredValue`. Under a steady stream the debounce keeps resetting, so the text and its height arrive late                                                               | chat-follow: "restores streaming follow after send in the full ChatView"                                                                                                                              | `useDeferredValue` restored. Lynx renders its own ChatMarkdown                                                                                                       | `4e12f30d4` |
+| `ui/toast.tsx` made the toast root and surface `pointer-events-none`                                                                                                                                                                                     | toast: "hides toasts behind the front one so wider ones do not peek out"                                                                                                                              | Upstream's class names restored; the fork's source-reading test `toast.pointer-events.test.ts` removed                                                               | `021a63206` |
+| `useLocalStorage.ts` compared `StorageEvent.storageArea` with the `webStorage` wrapper by identity, which never matches `localStorage`. Writes from another window were ignored in the product, not only in the test                                     | FeatureTourDialog: "closes an automatic tour when another window acknowledges this installation"                                                                                                      | Seam kept (Lynx loads this hook) and re-seated: the storage port answers `isWebStorageArea`, which on web compares with the real `localStorage` and on Lynx is false | `e33653b26` |
+| Fork-only test `MessageRowComposition.browser.tsx` assumed the pointer was not over the row; in upstream's shard order an earlier file leaves it there                                                                                                   | the test itself                                                                                                                                                                                       | The test parks the pointer first. No product change                                                                                                                  | `fe90125cf` |
+
+Results on this machine (macOS, headless Chromium 1234), one lane per process as in CI:
+
+| Lane           | Before          | After                 |
+| -------------- | --------------- | --------------------- |
+| chat-follow    | 1 failed        | 28 passed             |
+| chat-projects  | 15 failed       | 47 passed             |
+| chat-workflows | 25 failed       | 128 passed            |
+| components 1/3 | timed out on CI | 342 passed, 1 failed  |
+| components 2/3 | timed out on CI | 321 passed, 1 skipped |
+| components 3/3 | 16 failed       | 335 passed            |
+
+Still failing: `src/hooks/useCommittedPathname.browser.tsx` "renders a shell subscriber once per
+navigation with matching pathname and params". It fails with every upstream-owned source file
+restored to upstream's content, so no source diff causes it. The fork's lockfile resolves
+`@tanstack/react-router` 1.170.40 and `router-core` 1.171.33 where upstream locks 1.167.3,
+because `apps/lynx/package.json` asks for `^1.170.18`; the newer router renders the shell twice
+per navigation. Lynx resolves `@tanstack/react-router` to its own shim at build time, so it
+probably does not need the newer range. Aligning it needs a lockfile regenerated with bun 1.4.2
+and is not done here. The same drift is why `useCommittedPathname.test.ts` is skipped, and it is
+wider than the router: 97 packages present in both lockfiles resolve to a different version
+(among them `@tanstack/react-query` 5.104.0 against 5.90.21, `shiki` 4.4.3 against 4.0.2/3.23.0,
+`motion-dom`, `sharp`, `diff`).
+
+Not changed: `useId` is still replaced by a counter-based `useUniqueId` in `Icons.tsx`,
+`AntigravityIcon.tsx` and `ThemePackEditorCompositionElements.tsx`, so those element ids differ
+from upstream's. No browser test depends on them.
+
 ## Port queue
 
 Ordered by what a user of the Native app notices first. Size: S under a day, M a few days, L a
@@ -311,7 +353,7 @@ is where the gap grew: upstream redesigned the shell, and none of it is shared.
 | `apps/web/src/components/AntigravityIcon.tsx`                                        | +3 / -2          | small seam: class constants or values shared with Lynx                                                 |
 | `apps/web/src/components/AppSnapWelcomeDialog.tsx`                                   | +8 / -11         | ~/platform seam; shared .logic / @synara/shared extraction                                             |
 | `apps/web/src/components/BrowserPanel.tsx`                                           | +36 / -34        | shared .logic / @synara/shared extraction                                                              |
-| `apps/web/src/components/ChatMarkdown.tsx`                                           | +9 / -32         | ~/platform seam                                                                                        |
+| `apps/web/src/components/ChatMarkdown.tsx`                                           | +7 / -30         | ~/platform seam; inline file-path helper shared with Lynx                                              |
 | `apps/web/src/components/ChatView.logic.test.ts`                                     | +62 / -0         | test follows a fork seam                                                                               |
 | `apps/web/src/components/ChatView.logic.ts`                                          | +27 / -88        | shared .logic / @synara/shared extraction                                                              |
 | `apps/web/src/components/DiffPanel.tsx`                                              | +7 / -6          | ~/platform seam                                                                                        |
@@ -401,7 +443,7 @@ is where the gap grew: upstream redesigned the shell, and none of it is shared.
 | `apps/web/src/components/ui/sidebar.tsx`                                             | +16 / -17        | ~/platform seam; shared .logic / @synara/shared extraction                                             |
 | `apps/web/src/components/ui/switch.tsx`                                              | +2 / -2          | token shared with Lynx                                                                                 |
 | `apps/web/src/components/ui/time-picker.tsx`                                         | +6 / -18         | shared .logic / @synara/shared extraction                                                              |
-| `apps/web/src/components/ui/toast.tsx`                                               | +41 / -16        | ~/platform seam                                                                                        |
+| `apps/web/src/components/ui/toast.tsx`                                               | +38 / -13        | ~/platform seam; ToastSurface export and fixture for the Components Lab                                |
 | `apps/web/src/components/ui/toggle.tsx`                                              | +1 / -1          | token shared with Lynx                                                                                 |
 | `apps/web/src/components/useGitProgressToastPreview.ts`                              | +2 / -2          | small seam: class constants or values shared with Lynx                                                 |
 | `apps/web/src/components/useRouteSpaceSync.browser.tsx`                              | +1 / -1          | test follows a fork seam                                                                               |
@@ -410,7 +452,6 @@ is where the gap grew: upstream redesigned the shell, and none of it is shared.
 | `apps/web/src/composerDraftStore.ts`                                                 | +6 / -1          | ~/platform seam                                                                                        |
 | `apps/web/src/confirmedCustomBinaryPathStore.ts`                                     | +6 / -4          | ~/platform seam                                                                                        |
 | `apps/web/src/deviceStateStore.ts`                                                   | +4 / -2          | ~/platform seam                                                                                        |
-| `apps/web/src/env.ts`                                                                | +4 / -5          | exports added for Lynx reuse                                                                           |
 | `apps/web/src/featureFlags.ts`                                                       | +9 / -6          | ~/platform seam                                                                                        |
 | `apps/web/src/feedback.ts`                                                           | +17 / -33        | ~/platform seam; shared .logic / @synara/shared extraction                                             |
 | `apps/web/src/file-icons.test.ts`                                                    | +16 / -0         | test follows a fork seam                                                                               |
@@ -423,7 +464,7 @@ is where the gap grew: upstream redesigned the shell, and none of it is shared.
 | `apps/web/src/hooks/useDesktopCustomTitleBar.ts`                                     | +2 / -1          | ~/platform seam                                                                                        |
 | `apps/web/src/hooks/useDesktopTopBarGutter.ts`                                       | +3 / -2          | ~/platform seam                                                                                        |
 | `apps/web/src/hooks/useEditorLaunchers.ts`                                           | +3 / -2          | ~/platform seam                                                                                        |
-| `apps/web/src/hooks/useLocalStorage.ts`                                              | +17 / -25        | ~/platform seam                                                                                        |
+| `apps/web/src/hooks/useLocalStorage.ts`                                              | +18 / -27        | ~/platform seam                                                                                        |
 | `apps/web/src/hooks/useMediaQuery.ts`                                                | +13 / -19        | ~/platform seam; shared .logic / @synara/shared extraction                                             |
 | `apps/web/src/hooks/useOpenFavoriteEditorShortcut.ts`                                | +3 / -2          | ~/platform seam                                                                                        |
 | `apps/web/src/hooks/useRecentViewSwitcher.ts`                                        | +5 / -4          | ~/platform seam                                                                                        |
@@ -442,7 +483,6 @@ is where the gap grew: upstream redesigned the shell, and none of it is shared.
 | `apps/web/src/lib/appTypography.ts`                                                  | +45 / -1         | exports added for Lynx reuse                                                                           |
 | `apps/web/src/lib/automationForm.ts`                                                 | +12 / -13        | shared .logic / @synara/shared extraction                                                              |
 | `apps/web/src/lib/browserDownload.ts`                                                | +3 / -13         | ~/platform seam                                                                                        |
-| `apps/web/src/lib/chatProjects.test.ts`                                              | +19 / -27        | test follows a fork seam                                                                               |
 | `apps/web/src/lib/chatReferences.ts`                                                 | +2 / -2          | small seam: class constants or values shared with Lynx                                                 |
 | `apps/web/src/lib/codeFence.ts`                                                      | +9 / -65         | logic moved to a shared or .logic module, re-exported here                                             |
 | `apps/web/src/lib/composerDropPaths.ts`                                              | +3 / -1          | ~/platform seam                                                                                        |
@@ -477,7 +517,6 @@ is where the gap grew: upstream redesigned the shell, and none of it is shared.
 | `apps/web/src/lib/utils.ts`                                                          | +5 / -3          | ~/platform seam                                                                                        |
 | `apps/web/src/lib/voiceRecorder.ts`                                                  | +6 / -5          | ~/platform seam                                                                                        |
 | `apps/web/src/lib/wsHttpUrl.ts`                                                      | +7 / -4          | ~/platform seam                                                                                        |
-| `apps/web/src/nativeApi.ts`                                                          | +10 / -8         | exports added for Lynx reuse                                                                           |
 | `apps/web/src/notifications/taskCompletion.logic.ts`                                 | +18 / -7         | exports added for Lynx reuse                                                                           |
 | `apps/web/src/persistedRecord.ts`                                                    | +3 / -38         | shared .logic / @synara/shared extraction                                                              |
 | `apps/web/src/pinnedMessages.ts`                                                     | +4 / -51         | logic moved to a shared or .logic module, re-exported here                                             |
