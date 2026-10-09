@@ -1,7 +1,6 @@
 import { runOnMainThread, useEffect, useRef, useState, type ReactNode } from "@lynx-js/react";
 
 import { SettingsNavigationComposition } from "@synara-web/components/SettingsNavigationComposition";
-import { SidebarDesktopHeader } from "@synara-web/components/SidebarDesktopHeader";
 import { SettingsSidebarChromeComposition } from "@synara-web/components/settings/SettingsSidebarChromeComposition";
 import { AppShellFrame } from "@synara-web/components/AppShellFrame";
 import { SettingsAppearanceComposition } from "@synara-web/components/settings/SettingsAppearanceComposition";
@@ -109,6 +108,7 @@ import { SettingsIntegrationsPanel } from "./SettingsIntegrationsPanel.lynx";
 import { SettingsAppSnapPanel } from "./SettingsAppSnapPanel.lynx";
 import { sleepOnHost } from "../platform/timer";
 import { SettingsSearchResults } from "./SettingsSearchResults.lynx";
+import { AppRailShell } from "../components/sidebar/AppRail.lynx";
 import { SidebarDisclosure } from "./SidebarDisclosure.lynx";
 import { rankLynxSettingsSearchEntries } from "./settingsSearch.logic";
 import { settingsSearchEntryTarget } from "@synara-web/settingsSearchIndex";
@@ -365,7 +365,6 @@ export function SettingsPage({
   onNavigate,
   sidebarOpen,
   openTitlebarControls,
-  closedTitlebarControls,
   resolvedTheme,
   onAppearanceChange,
   onThemeStateChange,
@@ -376,7 +375,6 @@ export function SettingsPage({
   readonly onNavigate: (section: SettingsSectionId, target?: string | null) => void;
   readonly sidebarOpen: boolean;
   readonly openTitlebarControls: ReactNode;
-  readonly closedTitlebarControls: ReactNode;
   readonly resolvedTheme: "dark" | "light";
   readonly onAppearanceChange: (appearance: SettingsAppearanceValues) => void;
   readonly onThemeStateChange: (state: ThemeState) => void;
@@ -705,54 +703,54 @@ export function SettingsPage({
   const persistencePresentation = resolveSettingsPersistencePresentation(persistenceState);
 
   const settingsSidebar = (
-    <SidebarDisclosure open={sidebarOpen}>
-      <view className="SettingsSidebar">
-        {/* The web settings route keeps the app Sidebar's desktop header. */}
-        <SidebarDesktopHeader leadingControls={openTitlebarControls} trafficLightGutter />
-        <view className="SettingsSidebarFixedChrome">
-          <SettingsSidebarChromeComposition
-            onBack={onBack}
-            searchCapability="available"
-            searchValue={searchQuery}
-            onSearchValueChange={setSearchQuery}
-            onSubmitSearch={() => {
-              const topMatch = searchResults[0];
-              if (topMatch) selectSearchResult(topMatch);
-            }}
-            onEscapeSearch={() => setSearchQuery("")}
-          />
-        </view>
-        <scroll-view className="SettingsSidebarBody" scroll-orientation="vertical">
-          <view className="SettingsSidebarBodyInner">
-            {searchQuery.trim() ? (
-              <SettingsSearchResults results={searchResults} onSelect={selectSearchResult} />
-            ) : (
-              <SettingsNavigationComposition
-                activeSection={section}
-                availableSections={[
-                  "general",
-                  "profile",
-                  "appearance",
-                  "notifications",
-                  "behavior",
-                  "appsnap",
-                  "shortcuts",
-                  "worktrees",
-                  "archived",
-                  "models",
-                  "providers",
-                  "skills",
-                  "usage",
-                  "integrations",
-                  "advanced",
-                ]}
-                onSelectSection={(nextSection) => onNavigate(nextSection)}
-              />
-            )}
+    <AppRailShell titlebarControls={openTitlebarControls} onHome={onBack}>
+      <SidebarDisclosure open={sidebarOpen}>
+        <view className="SettingsSidebar">
+          <view className="SettingsSidebarFixedChrome">
+            <SettingsSidebarChromeComposition
+              onBack={onBack}
+              searchCapability="available"
+              searchValue={searchQuery}
+              onSearchValueChange={setSearchQuery}
+              onSubmitSearch={() => {
+                const topMatch = searchResults[0];
+                if (topMatch) selectSearchResult(topMatch);
+              }}
+              onEscapeSearch={() => setSearchQuery("")}
+            />
           </view>
-        </scroll-view>
-      </view>
-    </SidebarDisclosure>
+          <scroll-view className="SettingsSidebarBody" scroll-orientation="vertical">
+            <view className="SettingsSidebarBodyInner">
+              {searchQuery.trim() ? (
+                <SettingsSearchResults results={searchResults} onSelect={selectSearchResult} />
+              ) : (
+                <SettingsNavigationComposition
+                  activeSection={section}
+                  availableSections={[
+                    "general",
+                    "profile",
+                    "appearance",
+                    "notifications",
+                    "behavior",
+                    "appsnap",
+                    "shortcuts",
+                    "worktrees",
+                    "archived",
+                    "models",
+                    "providers",
+                    "skills",
+                    "usage",
+                    "integrations",
+                    "advanced",
+                  ]}
+                  onSelectSection={(nextSection) => onNavigate(nextSection)}
+                />
+              )}
+            </view>
+          </scroll-view>
+        </view>
+      </SidebarDisclosure>
+    </AppRailShell>
   );
 
   return (
@@ -762,7 +760,6 @@ export function SettingsPage({
           sidebarOpen ? "open" : "closed"
         }`}
       >
-        {sidebarOpen ? null : closedTitlebarControls}
         <scroll-view
           id="settings-content-scroll"
           className="SettingsContent"

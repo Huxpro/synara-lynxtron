@@ -215,7 +215,9 @@
 .AppMain {
   flex: 1;
   min-width: 0;
-  height: 100%;
+  /* Upstream `chat-content-card`: the route card is inset 3px from the window's right and
+     bottom edges. */
+  margin: 0 3px 3px 0;
   background-color: var(--background);
 }
 
@@ -237,7 +239,8 @@
 .AppMain--sidebar-closed .AppWindowDragRegion--padded,
 .AppMain--sidebar-closed .SharedKanbanRouteHeader,
 .AppMain--sidebar-closed .SharedPrRouteHeader {
-  padding-left: 212px;
+  /* Clears the leading window controls (they end at x=174); the rail takes 51px. */
+  padding-left: 161px;
 }
 
 .SliceRoot--viewport-compact .AppMain--sidebar-closed .ThreadsLandingHeader,
@@ -642,8 +645,8 @@
 .ThreadsLandingHeader {
   display: flex;
   width: 100%;
-  height: 46px;
-  min-height: 46px;
+  height: 44px;
+  min-height: 44px;
   flex-shrink: 0;
   align-items: center;
 }

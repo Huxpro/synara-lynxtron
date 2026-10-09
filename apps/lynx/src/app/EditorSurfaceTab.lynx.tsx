@@ -17,6 +17,11 @@ import "./editor-surface-tab.css";
 export function EditorSurfaceTab(props: {
   readonly active?: boolean;
   readonly className?: string;
+  /**
+   * "trailing" is upstream's SurfaceContentTabs chip: the icon stays put and a 24px
+   * close button sits at the tab's right edge. Default: the icon slot swaps to the close.
+   */
+  readonly closePlacement?: "icon" | "trailing";
   readonly closeLabel: string;
   readonly icon: ReactNode;
   readonly label: string;
@@ -43,6 +48,33 @@ export function EditorSurfaceTab(props: {
 
   const deterministicState =
     props.visualState && props.visualState !== "default" ? ` ui-${props.visualState}` : "";
+  const closeGlyph = (
+    <XIcon className="EditorSurfaceTabCloseIcon" color={semanticIconColor("secondary")} size={14} />
+  );
+  const label = (
+    <text
+      className={`EditorSurfaceTabLabel${props.labelClassName ? ` ${props.labelClassName}` : ""}`}
+    >
+      {props.label}
+    </text>
+  );
+  if (props.closePlacement === "trailing") {
+    return (
+      <view
+        className={`${tab.className} EditorSurfaceTab--content${deterministicState}`}
+        {...tab.eventProps}
+      >
+        <view className="EditorSurfaceTabIconSlot">{props.icon}</view>
+        {label}
+        <view
+          className={`${close.className} EditorSurfaceTabTrailingClose`}
+          {...lynxNestedInteractiveEventProps(close.eventProps)}
+        >
+          {closeGlyph}
+        </view>
+      </view>
+    );
+  }
   return (
     <view className={`${tab.className}${deterministicState}`} {...tab.eventProps}>
       {props.leading ? <view className="EditorSurfaceTabLeading">{props.leading}</view> : null}
@@ -51,19 +83,9 @@ export function EditorSurfaceTab(props: {
         {...lynxNestedInteractiveEventProps(close.eventProps)}
       >
         <view className="EditorSurfaceTabRestingIcon">{props.icon}</view>
-        <view className="EditorSurfaceTabCloseGlyph">
-          <XIcon
-            className="EditorSurfaceTabCloseIcon"
-            color={semanticIconColor("secondary")}
-            size={14}
-          />
-        </view>
+        <view className="EditorSurfaceTabCloseGlyph">{closeGlyph}</view>
       </view>
-      <text
-        className={`EditorSurfaceTabLabel${props.labelClassName ? ` ${props.labelClassName}` : ""}`}
-      >
-        {props.label}
-      </text>
+      {label}
     </view>
   );
 }

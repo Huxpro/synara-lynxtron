@@ -1,0 +1,122 @@
+/* Upstream rail layout: AppShellTopStrip (h-[44px]) over AppRail
+   (`w-(--app-rail-width)` = 3.25rem - 1px) and the panel column. */
+.AppRailShell {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  background-color: var(--app-sidebar-surface, var(--sidebar));
+}
+
+/* Zero intrinsic width, like upstream's strip: the column is as wide as rail + panel, and
+   the leading controls overflow it while the panel is collapsed. */
+.AppRailShellTopStrip {
+  width: 100%;
+  height: 44px;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 0 12px 0 14px;
+  overflow: visible;
+  z-index: 80;
+}
+
+.AppRailShellBody {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+/* AppRail nav: `flex-col items-center gap-1.5 pt-2.5 pb-2.5`. */
+.AppRail {
+  width: 51px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.AppRailItems {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+.AppRailItemsInner {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.AppRailBottom {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+/* appRailButtonClassName: `size-9 rounded-lg`, section-label tone at rest. */
+.AppRailButton {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.AppRailButton.ui-hover,
+.AppRailButton.ui-pressed {
+  background-color: var(--sidebar-accent);
+}
+
+.AppRailButton--active,
+.AppRailButton--active.ui-hover {
+  background-color: var(--sidebar-selected);
+}
+
+.AppRailButton.ui-focus {
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+/* APP_RAIL_GLYPH_CLASS_NAME: `size-5`. */
+.AppRailGlyph {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.AppRailUsageRing {
+  flex-shrink: 0;
+}
+
+.AppRailUsageIcon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.AppRailUsageIcon .OpenAIProviderIcon {
+  width: 100%;
+  height: 100%;
+}
+
+.AppRailUsageIcon--unavailable {
+  opacity: 0.5;
+}
+
+.LxMenuPopup.AppRailMoreMenu {
+  width: 256px;
+}

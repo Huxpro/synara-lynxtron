@@ -46,7 +46,6 @@ import {
   type RightDockThreadState,
 } from "@synara/shared/rightDock";
 import { resolveThreadHeaderActionState } from "@synara/shared/threadHeaderActions";
-import { resolveThreadHeaderIconKind } from "@synara/shared/threadHeaderIdentity";
 import { buildPullRequestCodeView } from "@synara-web/components/pullRequest/pullRequestCode.logic";
 import type { SettingsAppearanceValues } from "@synara-web/components/settings/SettingsAppearanceComposition.logic";
 import type { ThemeState } from "@synara-web/theme/theme.logic";
@@ -137,6 +136,7 @@ import type { TransportNoticeState } from "./transportRecovery.logic";
 import { Input } from "../components/ui/input.lynx";
 import { platformTerminal } from "../platform/terminal";
 import { ensureNativeApi } from "~/nativeApi";
+import { AppRailShell, railPanelShownForPathname } from "../components/sidebar/AppRail.lynx";
 import { Sidebar } from "../components/sidebar/Sidebar.lynx";
 import { SidebarSearchPaletteHost } from "../components/sidebar/SidebarSearchPaletteHost.lynx";
 import { focusLynxElementById } from "../components/ui/focus.lynx";
@@ -240,6 +240,7 @@ import { ProviderUpdatePrompt } from "./ProviderUpdatePrompt.lynx";
 import { AppSnapCoordinator } from "./AppSnapCoordinator.lynx";
 import { AppSnapWelcomeDialogLynx } from "./AppSnapWelcomeDialog.lynx";
 import { EditorRailTabs } from "./EditorRailTabs.lynx";
+import { OpenThreadTabStrip } from "./OpenThreadTabStrip.lynx";
 import { ThreadHeaderActions } from "./ThreadHeaderActions.lynx";
 import {
   consumeOpenThreadPathInTerminal,
@@ -415,7 +416,7 @@ function ThreadsLandingHeader(props: {
   // project actions, only the panel toggles.
   return (
     <ChatSurfaceHeaderFrame className="ThreadsLandingHeader">
-      <view className="ThreadsLandingHeaderIdentity" />
+      <OpenThreadTabStrip activeThreadId={null} />
       <view className="ThreadHeaderControls">
         {props.environmentAvailable ? (
           <EnvironmentToggle
@@ -1868,21 +1869,9 @@ function ThreadPage(props: ThreadPageProps) {
       ) : null}
     </view>
   ) : (
-    <ChatSurfaceHeaderIdentity
-      title={currentThread?.title ?? "Thread"}
-      icon={
-        resolveThreadHeaderIconKind(terminalPrimary ? "terminal" : "chat", currentThread?.title) ===
-        "terminal" ? (
-          <svg
-            className="ThreadHeaderTerminalIcon"
-            content={colorizeLynxSvg(terminalSvg, semanticIconColor("accent"))}
-          />
-        ) : (
-          <OpenAIProviderIcon provider={currentThread?.provider} />
-        )
-      }
-      iconTitle={terminalPrimary ? "Terminal" : (currentThread?.project ?? "Synara")}
-      onRename={currentThread ? beginThreadRename : undefined}
+    <OpenThreadTabStrip
+      activeThreadId={threadId}
+      onRenameActiveThread={currentThread ? beginThreadRename : undefined}
     />
   );
   const chatBody =
@@ -3278,7 +3267,6 @@ export function SliceRouter({
     />
   );
   const openTitlebarControls = renderTitlebarControls("open");
-  const closedTitlebarControls = renderTitlebarControls("closed");
   const navigateBackFromSettings = useCallback(() => {
     const target = resolveSettingsBackTarget({
       lastThreadRoute: persistedLastRoute,
@@ -3434,7 +3422,6 @@ export function SliceRouter({
         }}
         sidebarOpen={sidebarOpen}
         openTitlebarControls={openTitlebarControls}
-        closedTitlebarControls={closedTitlebarControls}
         resolvedTheme={resolvedTheme}
         onAppearanceChange={onAppearanceChange}
         onThemeStateChange={onThemeStateChange}
@@ -3574,9 +3561,10 @@ export function SliceRouter({
     );
   }
 
-  const sidebar =
-    route.pathname !== "/settings" && route.pathname !== "/components-lab" ? (
-      <SidebarDisclosure open={sidebarOpen && !editorModeOpen}>
+  const panelOpen = sidebarOpen && !editorModeOpen && railPanelShownForPathname(route.pathname);
+  const sidebar = editorModeOpen ? null : (
+    <AppRailShell titlebarControls={openTitlebarControls} onHome={navigateBackFromSettings}>
+      <SidebarDisclosure open={panelOpen}>
         <Sidebar
           activeThreadId={route.pathname === "/thread/$threadId" ? route.params.threadId! : null}
           draftProjectId={
@@ -3588,34 +3576,10 @@ export function SliceRouter({
           onOpenSearch={openSearchPalette}
           activityViewEnabled={activityViewEnabled}
           onActivityViewEnabledChange={setActivityViewEnabled}
-          titlebarControls={openTitlebarControls}
         />
       </SidebarDisclosure>
-    ) : null;
-  if (route.pathname === "/settings") {
-    return (
-      <>
-        {page}
-        <SidebarSearchPaletteHost
-          activeThreadId={activeThreadId}
-          initialQuery={searchInitialQuery}
-          navigate={navigateToChat}
-          onOpenChange={setSearchPaletteOpen}
-          open={searchOpen}
-          paletteKey={searchPaletteKey}
-        />
-        {recentViewSelection ? (
-          <RecentViewSwitcherLynx
-            entries={recentViewEntries}
-            selectedIndex={recentViewSelection.selectedIndex}
-          />
-        ) : null}
-        {appSnapCoordinator}
-        {appSnapWelcomeDialog}
-        {appNotifications}
-      </>
-    );
-  }
+    </AppRailShell>
+  );
   if (route.pathname === "/components-lab") {
     return (
       <>
@@ -3627,16 +3591,15 @@ export function SliceRouter({
   return (
     <>
       {transportNotice}
-      <AppShellFrame key="product-route-shell" sidebar={sidebar}>
-        <view
-          className={`AppMain AppMain--sidebar-${
-            sidebarOpen && !editorModeOpen ? "open" : "closed"
-          }`}
-        >
-          {sidebarOpen || editorModeOpen ? null : closedTitlebarControls}
-          {page}
-        </view>
-      </AppShellFrame>
+      {route.pathname === "/settings" ? (
+        page
+      ) : (
+        <AppShellFrame key="product-route-shell" sidebar={sidebar}>
+          <view className={`AppMain AppMain--sidebar-${panelOpen ? "open" : "closed"}`}>
+            {page}
+          </view>
+        </AppShellFrame>
+      )}
       <SidebarSearchPaletteHost
         activeThreadId={activeThreadId}
         initialQuery={searchInitialQuery}

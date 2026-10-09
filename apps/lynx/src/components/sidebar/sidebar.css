@@ -4,12 +4,9 @@
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  /* Upstream panel: the title row's `pt-1.5` on top, SidebarFooter's `p-2 pt-0` below. */
+  padding: 6px 0 8px;
   background-color: var(--app-sidebar-surface, var(--sidebar));
-  box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.03);
-}
-
-.SliceRoot--theme-dark .AppSidebar {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
 }
 
 .AppSidebarTitlebar {
@@ -1019,4 +1016,9 @@
   width: 16px;
   height: 16px;
   opacity: 0.95;
+}
+
+/* Upstream's collapsible thread list opens with `pt-0.5`; the rows carry 1px of it. */
+.AppSidebarProjectBody {
+  padding-top: 1px;
 }

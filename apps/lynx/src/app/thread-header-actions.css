@@ -1,29 +1,28 @@
-/* Electron header text buttons: px calc(2.5 spacing - 1px) inside a 1px border,
-   11px icon, ui-sm text (11px at the default size) on a 1.5 line box. */
+/* Electron ChatHeaderIconButton: a 28px square with a `size-4` glyph. */
 .ThreadHeaderTextAction {
+  width: 28px;
+  min-width: 28px;
   height: 28px;
   min-height: 28px;
-  padding: 0 9px;
-  gap: 6px;
+  padding: 0;
   border-radius: 8px;
   flex-shrink: 0;
   -x-app-region: no-drag;
 }
 
-.ThreadHeaderTextAction .LxButton__text,
-.ThreadHeaderTextActionLabel {
-  color: var(--foreground);
-  font-size: var(--app-font-size-ui-sm);
-  font-weight: 400;
-  line-height: 16.5px;
-  white-space: nowrap;
-}
-
 .ThreadHeaderTextActionIcon {
-  width: 11px;
-  height: 11px;
+  width: 16px;
+  height: 16px;
   color: var(--color-icon-primary);
   opacity: 0.8;
+}
+
+/* `h-(--app-chrome-divider-height) w-px` between the thread actions and the panel toggles. */
+.ThreadHeaderActionDivider {
+  width: 1px;
+  height: 20px;
+  flex-shrink: 0;
+  background-color: var(--border);
 }
 
 .ThreadHeaderActionMenu {

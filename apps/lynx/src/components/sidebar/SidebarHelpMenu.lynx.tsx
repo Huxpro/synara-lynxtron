@@ -95,6 +95,8 @@ function HelpMenuContent(props: {
 
 /** Electron's footer Help menu: recent releases, the changelog, and help destinations. */
 export function SidebarHelpMenu(props: {
+  /** Rail layout: the trigger takes the rail button look and the menu opens to the side. */
+  readonly inRail?: boolean;
   readonly onOpenShortcuts: () => void;
   readonly onOpenFeedback: () => void;
   readonly onOpenDocs: () => void;
@@ -109,15 +111,18 @@ export function SidebarHelpMenu(props: {
   return (
     <>
       <Menu autoHighlightFirst={false}>
-        <MenuTrigger ariaLabel="Help" className="SidebarHelpTrigger">
+        <MenuTrigger
+          ariaLabel="Help"
+          className={props.inRail ? "AppRailButton" : "SidebarHelpTrigger"}
+        >
           <svg
-            className="SidebarHelpTriggerGlyph"
+            className={props.inRail ? "AppRailGlyph" : "SidebarHelpTriggerGlyph"}
             content={colorizeLynxSvg(helpSvg, semanticIconColor("secondary"))}
           />
         </MenuTrigger>
         <MenuPopup
-          align="start"
-          side="top"
+          align={props.inRail ? "end" : "start"}
+          side={props.inRail ? "right" : "top"}
           sideOffset={4}
           className="LxComposerPickerMenuPopup SidebarHelpMenu"
         >

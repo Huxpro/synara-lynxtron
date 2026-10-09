@@ -6,7 +6,7 @@ import {
   resolveLatestProjectTargetIdWithFallback,
   resolveNewThreadTarget,
 } from "@synara-web/lib/projectShortcutTargets";
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "@lynx-js/react";
+import { useCallback, useEffect, useMemo, useState } from "@lynx-js/react";
 import {
   buildProjectContextMenuItems,
   buildSpaceContextMenuItems,
@@ -27,8 +27,9 @@ import forkSvg from "@synara-central-icons/fork.svg?raw";
 import terminalSvg from "@synara-central-icons/console.svg?raw";
 import worktreeSvg from "@synara-central-icons/arrow-split-right.svg?raw";
 
-import { SidebarPrimarySurfaceNavigation } from "@synara-web/components/SidebarPrimarySurfaceNavigation";
-import { resolvePullRequestReviewBadge } from "@synara-web/components/SidebarActionBadges.logic";
+import { SidebarPrimaryNavigation } from "@synara-web/components/SidebarPrimaryNavigation";
+import { SidebarGlyph } from "@synara-web/components/sidebarGlyphs";
+import { splitShortcutLabel } from "@synara-web/keybindings";
 import { resolveSidebarPrimarySurface } from "@synara-web/components/SidebarSurface.logic";
 import { resolveSidebarSurfacePickerViews } from "@synara-web/components/SidebarSurfacePicker.logic";
 import { SidebarProjectDisclosure } from "@synara-web/components/SidebarProjectDisclosure";
@@ -80,9 +81,7 @@ import { SidebarChatsSection } from "@synara-web/components/SidebarChatsSection"
 import { SidebarProjectsSection } from "@synara-web/components/SidebarProjectsSection";
 import { SidebarStudioSection } from "@synara-web/components/SidebarStudioSection";
 import { SidebarPinnedSection } from "@synara-web/components/SidebarPinnedSection";
-import { SidebarFooterSection } from "@synara-web/components/SidebarFooterSection";
 import { SidebarSurfaceContent } from "@synara-web/components/SidebarSurfaceContent";
-import { SidebarDesktopHeader } from "@synara-web/components/SidebarDesktopHeader";
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsBehaviorProjection,
@@ -118,32 +117,16 @@ import {
   collectVisibleSidebarThreadIds,
   getNextVisibleSidebarThreadId,
 } from "@synara-web/components/SidebarThreadNavigation.logic";
-import {
-  fetchPullRequests,
-  fetchThreadHeaderSummary,
-  queryClient,
-  type ThreadSummary,
-} from "../../app/queries";
+import { fetchThreadHeaderSummary, queryClient, type ThreadSummary } from "../../app/queries";
 import { useSidebarSnapshot } from "../../app/sidebarSnapshot.lynx";
-import {
-  ArchiveIcon,
-  ClockIcon,
-  ChevronDownIcon,
-  GitBranchIcon,
-  PlusIcon,
-  SettingsIcon,
-} from "../../lib/icons";
+import { ArchiveIcon, ClockIcon, ChevronDownIcon, GitBranchIcon, PlusIcon } from "../../lib/icons";
 import { colorizeLynxSvg } from "../../lib/themedSvg.lynx";
 import { useTheme } from "../../adapters/useTheme.lynx";
 import { useComposerDraftStore } from "../../adapters/composerDraftStore.lynx";
 import { Button } from "../ui/button";
 import { useLynxInteractiveState } from "../ui/interactive-state.lynx";
 import { lynxNestedInteractiveEventProps } from "../ui/interactive-state.lynx";
-import {
-  countUniqueViewerReviewRequests,
-  deriveSidebarSections,
-  resolveNativeSidebarSpaceId,
-} from "./sidebar.logic";
+import { deriveSidebarSections, resolveNativeSidebarSpaceId } from "./sidebar.logic";
 import { SpaceSwitcherLynx } from "./SpaceSwitcher.lynx";
 import { SpaceEditorDialogLynx } from "./SpaceEditorDialog.lynx";
 import { SpaceProjectPickerDialogLynx } from "./SpaceProjectPickerDialog.lynx";
@@ -184,10 +167,6 @@ import { LYNX_SIDEBAR_PRIMARY_ICONS } from "./SidebarPrimaryIcons.lynx";
 import { SidebarHoverAction, SidebarNavigationRow } from "./SidebarNavigationRow.lynx";
 import { SidebarSurfaceHeader } from "./SidebarSurfaceHeader.lynx";
 import { SidebarActivityView } from "./SidebarActivityView.lynx";
-import { SidebarHelpMenu } from "./SidebarHelpMenu.lynx";
-import { FeedbackDialogLynx, resolveNativeFeedbackContext } from "./FeedbackDialog.lynx";
-import { SYNARA_DOCS_URL } from "@synara-web/components/SidebarHelpMenu.logic";
-import { settingsRouteLocation } from "../../app/settingsRoute.logic";
 import { useThreadSettledOverrides } from "./useThreadSettledOverrides.lynx";
 import { hasUnreadActivity as hasUnreadActivityOutsideActiveThread } from "@synara-web/components/SidebarActivityView.logic";
 import folderClosedSvg from "@synara-central-icons/folder-2.svg?raw";
@@ -373,7 +352,6 @@ export function Sidebar({
   onOpenSearch,
   activityViewEnabled = false,
   onActivityViewEnabledChange,
-  titlebarControls,
 }: {
   readonly activeThreadId: string | null;
   // Project of the new-thread (draft) route, which the web also treats as focused.
@@ -384,7 +362,6 @@ export function Sidebar({
   readonly onOpenSearch: (initialQuery?: string, returnFocusElementId?: string) => void;
   readonly activityViewEnabled?: boolean;
   readonly onActivityViewEnabledChange?: (enabled: boolean) => void;
-  readonly titlebarControls?: ReactNode;
 }) {
   const { semanticIconColor } = useTheme();
   const sidebarSecondaryIconColor = semanticIconColor("secondary");
@@ -427,22 +404,6 @@ export function Sidebar({
     }
     return result;
   }, [data?.projects, localServersQuery.data?.servers, projectDevServersQuery.data?.servers]);
-  const { data: pullRequests } = useQuery({
-    queryKey: ["pull-requests", "sidebar-review-count"],
-    queryFn: () =>
-      fetchPullRequests({
-        state: "open",
-        projectId: null,
-      }),
-  });
-  const pullRequestsReviewBadge = resolvePullRequestReviewBadge(
-    pullRequests
-      ? {
-          count: countUniqueViewerReviewRequests(pullRequests.entries),
-          incomplete: false,
-        }
-      : undefined,
-  );
   const primarySidebarSurface = resolveSidebarPrimarySurface({
     isOnStudio: activePath === "/studio",
   });
@@ -615,12 +576,6 @@ export function Sidebar({
     readonly icon: SpaceIconName;
   } | null>(null);
   const [spaceActionError, setSpaceActionError] = useState<string | null>(null);
-  const [feedbackOpen, setFeedbackOpen] = useState(false);
-  const openDocs = () => {
-    "background only";
-    void platformWindow.openExternal(SYNARA_DOCS_URL);
-  };
-  const activeThreadSummary = data?.threads.find((thread) => thread.id === activeThreadId);
   const persistSidebarSortOrders = useCallback(
     (
       nextProjectSortOrder: SidebarProjectSortOrderValue,
@@ -1571,7 +1526,6 @@ export function Sidebar({
 
   return (
     <view className="AppSidebar">
-      <SidebarDesktopHeader leadingControls={titlebarControls} trafficLightGutter />
       <SidebarSurfaceContent
         surfaceKey={primarySidebarSurface}
         picker={
@@ -1600,20 +1554,28 @@ export function Sidebar({
           />
         }
         navigation={
-          <SidebarPrimarySurfaceNavigation
-            surface={primarySidebarSurface}
-            pullRequestIcon={PullRequestCompareIcon}
-            icons={LYNX_SIDEBAR_PRIMARY_ICONS}
-            kanbanActive={activePath === "/kanban"}
-            pullRequestsActive={activePath === "/pull-requests"}
-            automationsActive={activePath.startsWith("/automations")}
-            pullRequestsBadge={pullRequestsReviewBadge}
-            newThreadShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.newThread}
-            onCreateThread={openPrimaryNewThread}
-            onCreateStudioChat={() => navigate("/studio")}
-            onOpenKanban={() => navigate("/kanban")}
-            onOpenPullRequests={() => navigate("/pull-requests")}
-            onOpenAutomations={() => navigate("/automations")}
+          // Upstream's rail owns the route destinations, so the panel keeps "New thread".
+          <SidebarPrimaryNavigation
+            items={[
+              primarySidebarSurface === "studio"
+                ? {
+                    id: "New studio chat",
+                    icon: (
+                      <SidebarGlyph icon={LYNX_SIDEBAR_PRIMARY_ICONS.newThread} variant="leading" />
+                    ),
+                    label: "New studio chat",
+                    onActivate: () => navigate("/studio"),
+                  }
+                : {
+                    id: "New thread",
+                    icon: (
+                      <SidebarGlyph icon={LYNX_SIDEBAR_PRIMARY_ICONS.newThread} variant="leading" />
+                    ),
+                    label: "New thread",
+                    shortcutParts: splitShortcutLabel(LYNX_PRIMARY_SHORTCUT_LABELS.newThread),
+                    onActivate: openPrimaryNewThread,
+                  },
+            ]}
           />
         }
         body={
@@ -1692,7 +1654,7 @@ export function Sidebar({
                         }`}
                         actions={threadHoverActions(thread)}
                         hoverCard={threadHoverCard(thread)}
-                        label={thread.title}
+                        label={`Open ${thread.title}`}
                         onActivate={() => navigate(`/thread/${thread.id}`)}
                         onContextMenu={(position, restoreFocus) =>
                           void openThreadContextMenu(
@@ -1737,7 +1699,7 @@ export function Sidebar({
                           }`}
                           actions={threadHoverActions(thread)}
                           hoverCard={threadHoverCard(thread)}
-                          label={thread.title}
+                          label={`Open ${thread.title}`}
                           onActivate={() => navigate(`/thread/${thread.id}`)}
                           onContextMenu={(position, restoreFocus) =>
                             void openThreadContextMenu(
@@ -1878,7 +1840,7 @@ export function Sidebar({
                               actions={
                                 <>
                                   <SidebarHoverAction
-                                    label={`View pull requests for ${group.title}`}
+                                    label={`Open code review for ${group.title}`}
                                     onActivate={() => navigate("/pull-requests")}
                                   >
                                     <PullRequestCompareIcon
@@ -1960,7 +1922,7 @@ export function Sidebar({
                                 }`}
                                 actions={threadHoverActions(thread)}
                                 hoverCard={threadHoverCard(thread)}
-                                label={thread.title}
+                                label={`Open ${thread.title}`}
                                 onActivate={() => navigate(`/thread/${thread.id}`)}
                                 onContextMenu={(position, restoreFocus) =>
                                   void openThreadContextMenu(
@@ -2048,7 +2010,7 @@ export function Sidebar({
                   }`}
                   actions={threadHoverActions(thread)}
                   hoverCard={threadHoverCard(thread)}
-                  label={thread.title}
+                  label={`Open ${thread.title}`}
                   onActivate={() => navigate(`/thread/${thread.id}`)}
                   onContextMenu={(position, restoreFocus) =>
                     void openThreadContextMenu(
@@ -2077,28 +2039,6 @@ export function Sidebar({
             onShowLess={() => applyChatListAction("show_less")}
           />
         }
-      />
-      <SidebarFooterSection
-        settingsVisible={activePath !== "/settings"}
-        settingsActive={activePath === "/settings"}
-        settingsIcon={<SettingsIcon className="AppSidebarSettingsIcon" size={15} />}
-        onOpenSettings={() => navigate("/settings")}
-        trailing={
-          <SidebarHelpMenu
-            onOpenShortcuts={() => navigate(settingsRouteLocation("shortcuts"))}
-            onOpenFeedback={() => setFeedbackOpen(true)}
-            onOpenDocs={openDocs}
-          />
-        }
-      />
-      <FeedbackDialogLynx
-        activeThreadId={activeThreadId}
-        open={feedbackOpen}
-        fallbackContext={resolveNativeFeedbackContext(
-          activeThreadSummary,
-          data?.projects.find((project) => project.id === activeThreadSummary?.projectId)?.kind,
-        )}
-        onOpenChange={setFeedbackOpen}
       />
       <SpaceEditorDialogLynx
         mode={spaceEditorMode ?? "edit"}
