@@ -1,6 +1,6 @@
 # Web / Lynx 共享架构：把共享边界下推到状态与会话层
 
-状态：v1.1（2026-10-09）。方向已确认，取舍见文末；分步计划待设计调查完成后补入。
+状态：v1.2（2026-10-09）。方向已确认，取舍见文末。
 
 ## 结论
 
@@ -56,21 +56,36 @@
 - **棘轮。** 复用审计增加"状态层"子图，并给 Lynx 平行实现设只减不增的计数：`synaraClient.lynx.ts` 的引用数（现 43）、`useQuery` 直连数（现 78）、`router.tsx` 行数（现 3764）。CI 里升了就失败。
 - **合并报告脚本。** 每次合上游后自动输出"上游改动 × 层 × Lynx 对应物"表（本文第 1 条依据就是手工跑的这张表），把手工移植队列变成显式清单，而不是靠比对截图发现。
 
-## 顺序
+## 分步计划（v1.2，来自设计调查）
 
-0. **先合并，不重构。** 在同步分支上继续：合入默认分支（41 个提交，41 个冲突文件），再合 `upstream/main`（60 个冲突）。过矩阵和 J3–J6 后成为新的默认分支。
-1. **传输端口。** Lynx 已有 W3C 形状的 socket 端口（`platform/net.socket.ts`）。让上游的 `WsTransport` / `createWsNativeApi()` 在 Lynx 上运行，`ensureNativeApi()` 两端同源。`synaraClient.lynx.ts` 退化为过渡期薄封装，再逐步删除。**这一步需要先做一个小验证**：Effect RPC 客户端在 PrimJS 后台线程能否正常工作，未验证。
-2. **会话同步引擎。** `EventRouter` 纯移动成独立模块，Lynx 挂载同一份。之后 `store` 成为两端唯一读模型。
-3. **读路径逐屏迁移。** Sidebar → Thread → Kanban/PR/Automations → Settings。每屏把 `queries.ts` 的快照投影换成 `store` selector 和上游的 query options；每屏过一次矩阵。
-4. **编排层收敛。** 最后处理 `router.tsx` 里的页面编排，让上游容器在 Lynx 上可达。这一层体量最大、上游改动最频繁（`ChatView.tsx` 在 567 个提交里被改了 80 次），放最后，按屏做。
+调查纠正了两个前提：
 
-每一步的验收：fmt / lint / typecheck、矩阵 24+28、J3–J6、该屏复用率不降。
+- 复用审计把 `wsTransport.ts` / `wsNativeApi.ts` 记为"已共享"是静态图的假象（把 `import type` 和相对路径引用也算进去了）。构建产物里没有这两份代码，`ensureNativeApi()` 在 Lynx 上今天只会抛错。也就是说 Lynx 上现在没有任何 `NativeApi` 在运行。
+- Lynx 当初自建客户端的理由一部分已经过时（`TextEncoder` 缺失已补），一部分仍成立：由宿主进程持有 socket（重载不掉线、对比 harness 也按这个假设检查连接），以及 Effect RPC 在 PrimJS 上是否可用至今未验证。
+
+因此传输层选"保留宿主中继"：在 `bridgeCall` 之上做一个与上游 `WsTransport` 同形的兼容类，用别名替换 `~/wsTransport`。它上面的 `wsNativeApi.ts` → `nativeApi.ts` → `store` → `EventRouter` 全部运行上游源码。直连 WebSocket 作为可选的后续替换（第 7 步），替换时别名以上不用改。
+
+| 步  | 内容                                                                                                                                          | 删掉什么                         | 验证                           | 棘轮                               |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- | ------------------------------ | ---------------------------------- |
+| 1   | 兼容传输 + 真实 `NativeApi` 门面；先把 3 个服务器设置函数改走上游门面（请求和推送流各走一遍，作为运行时证明）                                 | 3 个中继函数体                   | Settings 单元格、实时设置同步  | `synaraClient` 导出数下降          |
+| 2   | 用确定性生成器从 `__root.tsx` 抽出 `EventRouter`（生成物 + `--check` 防漂移，登记为 PATCHED），补路由和 toast 的 Lynx 垫片，在 `App.tsx` 挂载 | 暂不删，与轮询并存               | Threads / Thread 单元格、J3–J6 | `__root.tsx` 从未映射变为 PATCHED  |
+| 3   | Sidebar 改读 `store` selector                                                                                                                 | `fetchSidebarSnapshot`、两处轮询 | Threads 单元格、J3             | `useQuery`、`refetchInterval` 下降 |
+| 4   | Thread 页改读 `store`，markdown 解析保留为 Lynx 适配器                                                                                        | 500 ms 轮询、转录行缓存          | Thread 单元格和状态增量、J4–J6 | `router.tsx` 行数下降              |
+| 5   | 逐屏换成上游的 query options（Settings → Environment/Git → Kanban/PR → Automations）                                                          | 对应的 `synaraClient` 导出       | 各屏单元格                     | `synaraClient` 引用文件 32 → 0     |
+| 6   | 删除 `synaraClient.lynx.ts`（语法高亮留在 Lynx 专属模块）                                                                                     | 整个文件                         | 全矩阵                         | `queries.ts` ≤ 300 行              |
+| 7   | 可选：验证通过后改为后台线程直连，删除宿主中继                                                                                                | 宿主中继约 900 行                | 全矩阵 + 连接预检              | —                                  |
+
+第 1、2 步是地基，必须串行；第 3、4 步互不相交；第 5 步可以按屏并行。
+
+永远留在 Lynx 的：`src/main/**`、`platform/*` 的实现、markdown AST 解析适配、宿主语法高亮、`router.tsx` 的路由表与内存历史、转录的 `<list>`、输入框与 IME、终端 / 浏览器 / PDF、静态主题投影。
+
+基线（默认分支，只许降）：`synaraClient.lynx.ts` 被 32 个文件引用；`useQuery` 78 处；`refetchInterval` 15 处；`router.tsx` 3733 行。
 
 ## 已定的取舍（2026-10-09）
 
 1. **上游只读。** 不向上游提 PR，也不改上游文件的形状。原先"把 `EventRouter` 纯移动成独立文件并提给上游"的方案作废；平台差异全部由 Lynx 侧的兼容层吸收（别名、平台端口、确定性的 PATCHED 源）。规则 2 的例外随之取消。
 2. **顺序。** 先在默认分支上完成分层重构，保证不回退；过程中沉淀本文档为"架构原则与不变量"，并清理被替换掉的平行实现；最后再合上游。"顺序"一节的第 0 步因此移到最后。
 3. **对 apps/web 的改动上限。** 只允许平台端口化（`window.x` → `~/platform/x`）和测试钩子（`data-*`），并且每一处都要能在合上游时原样重放。
-4. **Lynx 的 RPC 走哪条路**由设计调查的验证结果决定，见下一版。
+4. **Lynx 的 RPC 走哪条路。** 保留宿主中继，在其上做与 `WsTransport` 同形的兼容类；直连是可选的后续替换。
 
 上一轮已经解好的"默认分支 → 同步分支"合并存放在分支 `huxcc/shared-state-arch`（本地提交 `b4a572cd8`，未认证），最后合上游时从它继续。
