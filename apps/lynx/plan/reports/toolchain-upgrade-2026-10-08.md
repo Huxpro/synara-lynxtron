@@ -88,26 +88,44 @@ Only the dark 1280×820 configuration was run this time; the other three matrix 
 
 New bug found while reproducing: Stop pressed early in a turn is sometimes lost (`turn/interrupt failed: no active turn to interrupt`), 2 of 4 Electron J1 runs. Filed as [#16](https://github.com/Huxpro/synara-lynxtron/issues/16).
 
-### Computer Use: not run
+### Computer Use pass
 
-Computer Use could not take control of `Synara Comparison Lynxtron`, so nothing below was verified through physical input. This time it was not a refused approval: the approval dialog was never shown, because Computer Use could not find the app.
+Run `2026-10-09T03-08-14-702Z-99575`, launched with `--regular-app`, 1280×820 dark, Lynxtron PID 2775, driven in the background with Claude Desktop Computer Use. The app was never activated or raised by the harness.
 
-- The launcher stages the app as an agent (`LSUIElement`), so it never appears in the running-application list Computer Use resolves against.
-- Computer Use otherwise finds apps through Spotlight, and this Mac's index is read-only (`mdutil -s /` reports "Index is read-only"), so a bundle under `.synara-desktop-comparison/` or anywhere else cannot be indexed.
-- Requests by bundle id (`com.lynxjs.SynaraComparisonLynxtron`), display name, and path all returned "not installed". Nothing was activated or raised.
+How it got here: the default launch stages the app as an agent (`LSUIElement`), which Computer Use cannot find, and this Mac's Spotlight index is read-only. `--regular-app` makes it discoverable. The first approval request was denied; the second was approved.
 
-| Item                                            | Computer Use | Scripted substitute (DevTool input, not physical)   |
-| ----------------------------------------------- | ------------ | --------------------------------------------------- |
-| Composer typing, Chinese IME + candidate window | not run      | none                                                |
-| Cmd+A / Backspace / undo / redo / paste         | not run      | none                                                |
-| Send a real turn, stop, resend                  | not run      | J1 pass, both renderers                             |
-| Composer ↔ Terminal focus handoff               | not run      | none                                                |
-| App menu → Settings                             | not run      | J4 pass (in-app navigation, not the system menu)    |
-| Transcript wheel scroll + jump                  | not run      | J2 pass (drag-scroll, not a real wheel)             |
-| Explorer / Diff dock                            | not run      | J3 pass                                             |
-| Theme and density                               | not run      | J4 pass                                             |
-| Automations create / edit / pause / delete      | not run      | J5 pass                                             |
-| Kanban and PR dialogs                           | not run      | J6 pass                                             |
-| Every menu / popover opens and dismisses        | not run      | Cell increments pass (model, add-panel, automation) |
+Limits of this pass: Electron was not driven through Computer Use, so results are Native observations judged against expected behavior, not paired comparisons. Background input cannot switch input sources, so the IME candidate window was not exercised.
 
-Follow-up in the same session: the launcher gained an opt-in `--regular-app` flag that stages Lynxtron as a regular application. On run `2026-10-09T01-46-33-760Z-76990` Computer Use then found the app and showed the approval dialog, and the request was denied (`user_denied`). Control was refused, so the pass stopped there and every item above stays **not run**. To run it, launch with `--regular-app` and approve the app when asked.
+| Item                                | Result  | Notes                                                                                                                               |
+| ----------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Composer typing (ASCII)             | pass    | 2 of 4 prompts lost characters; may be the synthetic input path ([#19](https://github.com/Huxpro/synara-lynxtron/issues/19))        |
+| Chinese IME + candidate window      | not run | Direct CJK insertion kept only the last character (#19)                                                                             |
+| Cmd+A                               | fail    | Edit → Select All had no visible effect; a background app may ignore it, needs a foreground check (#19)                             |
+| Backspace                           | pass    |                                                                                                                                     |
+| Undo / redo                         | pass    | Edit → Undo and Edit → Redo                                                                                                         |
+| Paste                               | not run | Not attempted, to avoid pasting or overwriting the user's clipboard                                                                 |
+| Caret placement while editing       | fail    | After a mid-text insert the caret jumps to the end; Shift+Left does not select (#19)                                                |
+| Send a real turn                    | pass    | New thread in the fixture project                                                                                                   |
+| Stop                                | pass    | Stopped during "Thinking"; thread settled                                                                                           |
+| Resend                              | pass    | Follow-up turn answered                                                                                                             |
+| Terminal → Composer focus           | pass    |                                                                                                                                     |
+| Composer → Terminal focus           | fail    | Terminal showed no typed input, twice; also prints `undefined` on open ([#20](https://github.com/Huxpro/synara-lynxtron/issues/20)) |
+| App menu → Settings                 | pass    | Menu items use the package name `@synara/lynx` (#20)                                                                                |
+| Transcript wheel scroll             | pass    |                                                                                                                                     |
+| Jump to latest                      | pass    |                                                                                                                                     |
+| Diff dock                           | pass    | Split diff rendered                                                                                                                 |
+| Explorer dock                       | pass    | Tree and file preview                                                                                                               |
+| Theme light / dark                  | pass    |                                                                                                                                     |
+| Density                             | pass    | Compact and back to Comfortable                                                                                                     |
+| Automations create                  | pass    | Required checkbox is nearly invisible when unticked (#20)                                                                           |
+| Automations edit                    | pass    | Repeats changed to Weekly                                                                                                           |
+| Automations pause                   | pass    |                                                                                                                                     |
+| Automations delete                  | pass    | Native confirmation sheet                                                                                                           |
+| Kanban dialog                       | pass    | New task opens and closes with its close button                                                                                     |
+| PR view and filter menu             | pass    | Empty list in the fixture; tabs and filter menu work. No PR dialog could be opened without a PR                                     |
+| Menus / popovers open               | pass    | Add-panel, project picker, Repeats, PR filter                                                                                       |
+| Menus / popovers dismiss by click   | pass    |                                                                                                                                     |
+| Menus / dialogs dismiss with Escape | fail    | Add-panel menu and Kanban dialog stayed open (#20)                                                                                  |
+| VoiceOver, microphone prompt        | not run |                                                                                                                                     |
+
+Also seen: a failed turn on the fixture thread (its Codex session is archived) shows the raw stack trace in a translucent banner over the transcript (#20).
