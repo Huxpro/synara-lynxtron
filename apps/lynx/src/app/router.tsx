@@ -957,8 +957,10 @@ function ThreadRightDocks(
     hasWorkspace: Boolean(dockThread?.workspaceRoot),
     hasGitRepository: props.launcherAvailability.hasGitRepository,
     hasReview: props.launcherAvailability.hasReview,
-    // Lynx has no device (simulator) pane; the launcher offers what the add menu can open.
-    supportedKinds: new Set(addMenuKinds),
+    // Upstream lists Side chats and (on macOS) the iOS Simulator for every chat. Lynx lists
+    // them too; the launcher says so when this chat cannot open one (`openableKinds`).
+    hasDeviceSupport: true,
+    supportedKinds: new Set([...addMenuKinds, "sidechat", "device"]),
   });
   const openDockPane = (kind: RightDockPaneKind) => {
     "background only";
@@ -1020,7 +1022,11 @@ function ThreadRightDocks(
       tabs={dockTabs}
     >
       {activePane === null ? (
-        <ThreadRightDockLauncher entries={launcherEntries} onOpen={openDockPane} />
+        <ThreadRightDockLauncher
+          entries={launcherEntries}
+          openableKinds={addMenuKinds}
+          onOpen={openDockPane}
+        />
       ) : null}
       {diffOpen ? (
         <DiffDock
