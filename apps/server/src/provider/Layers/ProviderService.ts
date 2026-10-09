@@ -982,7 +982,23 @@ const makeProviderService = (options?: ProviderServiceLiveOptions) =>
             Effect.andThen(updateSessionBindingFromRuntimeEvent(canonicalEvent)),
             Effect.andThen(publishRuntimeEvent(canonicalEvent)),
           );
-        }),
+        }).pipe(
+          // One adapter stream carries every thread of a provider. An event
+          // that cannot be processed (e.g. it fails journal encoding) is
+          // dropped here; letting the defect escape would end the stream and
+          // silently stop all later events for that provider.
+          Effect.catchCause((cause) =>
+            Cause.hasInterruptsOnly(cause)
+              ? Effect.failCause(cause)
+              : Effect.logError("provider.runtime_event.dropped", {
+                  threadId: event.threadId,
+                  provider: event.provider,
+                  eventType: event.type,
+                  eventId: event.eventId,
+                  cause: Cause.pretty(cause),
+                }),
+          ),
+        ),
       );
 
     // Fan provider events straight into the bounded pubsub so high-volume

@@ -4061,6 +4061,52 @@ it.effect("ProviderServiceLive backpressures slow subscribers and completes fano
   }),
 );
 
+const unpersistableEventId = "evt-unpersistable";
+const droppingPersistence = makeProviderServiceLayer({
+  persistRuntimeEvent: (event) =>
+    event.eventId === unpersistableEventId
+      ? Effect.die(new Error("journal rejected the event"))
+      : Effect.void,
+});
+droppingPersistence.layer("ProviderServiceLive unprocessable runtime events", (it) => {
+  it.effect("drops an event that fails persistence and keeps the provider stream alive", () =>
+    Effect.gen(function* () {
+      const provider = yield* ProviderService;
+      const threadId = asThreadId("thread-unpersistable");
+      yield* provider.startSession(threadId, {
+        provider: "codex",
+        threadId,
+        runtimeMode: "full-access",
+      });
+      yield* droppingPersistence.codex.waitForRuntimeSubscribers();
+
+      const received = yield* Stream.take(provider.streamEvents, 1).pipe(
+        Stream.runCollect,
+        Effect.forkChild,
+      );
+      yield* sleep(20);
+
+      for (const eventId of [unpersistableEventId, "evt-after-unpersistable"]) {
+        droppingPersistence.codex.emit({
+          type: "message.delta",
+          eventId: asEventId(eventId),
+          provider: "codex",
+          createdAt: new Date().toISOString(),
+          threadId,
+          turnId: asTurnId("turn-unpersistable"),
+          delta: "x",
+        });
+      }
+
+      const events = Array.from(yield* Fiber.join(received));
+      assert.deepEqual(
+        events.map((event) => event.eventId),
+        [asEventId("evt-after-unpersistable")],
+      );
+    }),
+  );
+});
+
 const liveFallback = makeProviderServiceLayer();
 liveFallback.layer("ProviderServiceLive live-fallback settled turns", (it) => {
   it.effect("persists the first binding row as stopped when the turn settles pre-write", () =>
