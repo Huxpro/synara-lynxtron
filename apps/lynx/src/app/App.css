@@ -23,15 +23,17 @@
   --type-ui-supporting-size: 11px;
   --type-ui-meta-size: 10px;
   --type-composer-editor-size: 12px;
-  /* Upstream's settings rows are `text-ui` on a 1.5 line box, and the panel description is
-     `text-ui leading-relaxed`; tokens.css still carries the earlier 12px / 18px roles. */
-  --type-settings-section-label-size: var(--app-font-size-ui, 13px);
+  /* Upstream's settings rows are `text-ui` (13px at the default size) on a 1.5 line box,
+     and the panel description is `text-ui leading-relaxed`; tokens.css still carries the
+     earlier 12px / 18px roles. Literal sizes: Lynx does not resolve a custom property
+     whose value is another `var()`. */
+  --type-settings-section-label-size: 13px;
   --type-settings-section-label-line-height: 19.5px;
-  --type-settings-row-title-size: var(--app-font-size-ui, 13px);
+  --type-settings-row-title-size: 13px;
   --type-settings-row-title-line-height: 19.5px;
-  --type-settings-row-description-size: var(--app-font-size-ui, 13px);
+  --type-settings-row-description-size: 13px;
   --type-settings-row-description-line-height: 19.5px;
-  --type-settings-header-description-size: var(--app-font-size-ui, 13px);
+  --type-settings-header-description-size: 13px;
   --type-settings-header-description-line-height: 21.125px;
   --settings-usage-meter-healthy: #00bc7d;
   --settings-usage-meter-warning: #fe9a00;

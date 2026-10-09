@@ -90,10 +90,10 @@ export async function openDockWithPane(driver, launcherLabel) {
         : (await driver.find(launcher))
           ? "launcher"
           : null,
-    { label: "the dock" },
+    { label: `the dock on ${driver.kind}` },
   );
   if (shown === "launcher") {
     await driver.tap(launcher);
-    await waitFor(() => driver.find(DOCK_ADD_PANEL), { label: "the dock tabs" });
+    await waitFor(() => driver.find(DOCK_ADD_PANEL), { label: `the dock tabs on ${driver.kind}` });
   }
 }
