@@ -117,6 +117,16 @@ Electron is the design and behavior authority. Lynxtron (Native) is verified aga
 5. **Explore and accept** what the scripts do not cover, using the input path your environment has (next section).
 6. **Stop the launcher** (Ctrl-C or SIGINT) and confirm it printed `Cleanup verified`.
 
+### How much to run
+
+The full loop above is an acceptance pass. During a multi-step refactor, scale it:
+
+- **Every step:** `bun typecheck`, `bun lint`, `bun fmt --check`, the Lynx build, and `bun run compare:desktop --exit-after-certify` (both renderers start, show the same thread, no runtime errors).
+- **When a screen changes:** that screen's cells and the workflow that covers it.
+- **Before a milestone merges:** the full matrix and the workflows.
+
+Inside a milestone, cells and workflows are a trend, not a gate. A workflow that depends on a live model turn and fails once is rerun; diagnose only when the same failure repeats in the milestone pass.
+
 ### Input: with and without Computer Use
 
 Both environments run steps 1–4 and 6 unchanged. They differ only in step 5.
