@@ -2,11 +2,15 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ServerProviderUsageSnapshot } from "@synara/contracts";
 import {
   PROVIDER_USAGE_PROVIDERS,
-  mergeProviderUsageRefresh,
   providerUsageDisplayName,
   providerUsageNeedsAuthDetail,
 } from "@synara/shared/providerUsage";
 import { deriveProviderUsageLimitDisplay } from "@synara/shared/providerUsageDisplay";
+import {
+  fetchAllProviderUsage,
+  serverAllProviderUsageQueryOptions,
+  serverQueryKeys,
+} from "@synara-web/lib/serverReactQuery";
 
 import { SettingsHeadingElement } from "../adapters/SettingsHeadingElement.lynx";
 import { Button } from "../components/ui/button";
@@ -15,19 +19,10 @@ import { RefreshCwIcon, TriangleAlertIcon } from "../lib/icons.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
 import "./settings-usage-panel.css";
 
-const SETTINGS_PROVIDER_USAGE_QUERY_KEY = ["settings-provider-usage"] as const;
 const SETTINGS_USAGE_WARNING_ICON_COLOR = {
   light: "#e17100",
   dark: "rgba(255, 210, 48, 0.9)",
 } as const;
-
-async function loadProviderUsage(forceRefresh = false) {
-  "background only";
-  const { fetchAllProviderUsage } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient.lynx"
-  );
-  return fetchAllProviderUsage(forceRefresh ? { forceRefresh: true } : {});
-}
 
 function missingSnapshot(
   provider: (typeof PROVIDER_USAGE_PROVIDERS)[number],
@@ -116,17 +111,15 @@ function UsageLimitRow(props: {
 export function SettingsUsagePanel() {
   const queryClient = useQueryClient();
   const { resolvedTheme, svgColors } = useTheme();
-  const usageQuery = useQuery({
-    queryKey: SETTINGS_PROVIDER_USAGE_QUERY_KEY,
-    queryFn: () => loadProviderUsage(),
-    staleTime: 30_000,
-  });
+  const usageQuery = useQuery(serverAllProviderUsageQueryOptions());
   const refreshMutation = useMutation({
-    mutationFn: () => loadProviderUsage(true),
+    mutationFn: () => fetchAllProviderUsage({ forceRefresh: true }),
     onSuccess: (data) => {
+      // The batch owns account membership (upstream's ProviderUsageSettingsPanel):
+      // keeping omitted previous snapshots would restore removed or disabled accounts.
       queryClient.setQueryData<readonly ServerProviderUsageSnapshot[]>(
-        SETTINGS_PROVIDER_USAGE_QUERY_KEY,
-        (previous) => mergeProviderUsageRefresh(previous, data),
+        serverQueryKeys.allProviderUsage(),
+        data,
       );
     },
   });

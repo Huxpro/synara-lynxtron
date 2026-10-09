@@ -125,7 +125,9 @@ describe("Lynx Environment panel", () => {
     const routerSource = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
     const appStyles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
 
-    expect(panelSource).toContain("fetchAllProviderUsage({})");
+    expect(panelSource).toContain(
+      "useQuery(serverAllProviderUsageQueryOptions({ enabled: liveQueriesEnabled }))",
+    );
     expect(panelSource).toContain("fetchLocalServers()");
     expect(panelSource).toContain("fetchGitStatus(props.workspaceRoot)");
     expect(panelSource).toContain("async function pollGitStatus()");
@@ -187,7 +189,7 @@ describe("Lynx Environment panel", () => {
     expect(panelSource).toContain('accessibility-role="alert"');
     expect(panelSource).toContain("localServerPrimaryLabel(server)");
     expect(panelSource).toContain("localServerAddressLabel(server)");
-    expect(panelSource).toContain("fetchServerConfig()");
+    expect(panelSource).toContain("...serverConfigQueryOptions(),");
     expect(panelSource).toContain("environmentEditorOptions(");
     expect(panelSource).toContain("webStorage.setItem(LAST_EDITOR_STORAGE_KEY, editor)");
     expect(panelSource).toContain("await openPathInEditor({");

@@ -94,11 +94,11 @@ describe("Lynx Settings section labels", () => {
     expect(usageSource).toContain("<OpenAIProviderIcon provider={snapshot.provider} />");
     expect(usageSource).toContain("<RefreshCwIcon");
     expect(usageSource).toContain("color={svgColors.foreground80}");
-    expect(usageSource).toContain("mutationFn: () => loadProviderUsage(true)");
+    expect(usageSource).toContain("useQuery(serverAllProviderUsageQueryOptions())");
     expect(usageSource).toContain(
-      "return fetchAllProviderUsage(forceRefresh ? { forceRefresh: true } : {});",
+      "mutationFn: () => fetchAllProviderUsage({ forceRefresh: true })",
     );
-    expect(usageSource).toContain("(previous) => mergeProviderUsageRefresh(previous, data)");
+    expect(usageSource).toContain("serverQueryKeys.allProviderUsage(),\n        data,");
     expect(usageSource).toContain(
       "const isRefreshing = usageQuery.isFetching || refreshMutation.isPending;",
     );

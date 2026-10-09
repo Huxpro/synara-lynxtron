@@ -1,7 +1,12 @@
 import { useEffect, useState } from "@lynx-js/react";
 import { useQuery } from "@tanstack/react-query";
-import type { ExternalMcpCreateIntegrationResult, ExternalMcpIntegration } from "@synara/contracts";
+import {
+  ProjectId,
+  type ExternalMcpCreateIntegrationResult,
+  type ExternalMcpIntegration,
+} from "@synara/contracts";
 import { SettingsSection } from "@synara-web/components/settings/SettingsSection";
+import { ensureNativeApi } from "~/nativeApi";
 import {
   buildExternalMcpClientConfiguration,
   buildExternalMcpExamplePrompt,
@@ -19,14 +24,12 @@ import {
   disclosureContentClassName,
   useLynxDisclosurePresence,
 } from "../platform/motion.lynx";
-import {
-  createExternalMcpIntegration,
-  fetchExternalMcpIntegrations,
-  refreshExternalMcpPairing,
-  revokeExternalMcpIntegration,
-} from "../data/synaraClient.lynx";
 import { clipboard } from "../platform/clipboard";
 import { queryClient } from "./queries";
+import {
+  EXTERNAL_MCP_INTEGRATIONS_QUERY_KEY,
+  externalMcpIntegrationsQueryOptions,
+} from "./settingsServerData.lynx";
 import { useSidebarSnapshot } from "./sidebarSnapshot.lynx";
 import {
   buildExternalMcpCapabilities,
@@ -69,14 +72,7 @@ function ProjectChoice(props: {
 }
 
 export function SettingsIntegrationsPanel() {
-  const integrationsQuery = useQuery({
-    queryKey: ["external-mcp-integrations"],
-    queryFn: () => {
-      "background only";
-      return fetchExternalMcpIntegrations();
-    },
-    staleTime: 5_000,
-  });
+  const integrationsQuery = useQuery(externalMcpIntegrationsQueryOptions());
   const snapshotQuery = useSidebarSnapshot();
   const [name, setName] = useState("Coding agent");
   const [allProjects, setAllProjects] = useState(true);
@@ -165,16 +161,18 @@ export function SettingsIntegrationsPanel() {
     setPendingAction("create");
     setNotice(null);
     try {
-      const result = await createExternalMcpIntegration({
+      const result = await ensureNativeApi().server.createExternalMcpIntegration({
         name: name.trim(),
         projectScope: allProjects ? "all" : "selected",
-        ...(allProjects ? {} : { projectIds: selectedProjectIds }),
+        ...(allProjects
+          ? {}
+          : { projectIds: selectedProjectIds.map((id) => ProjectId.makeUnsafe(id)) }),
         capabilities,
         expiresInDays: 30,
       });
       setSetup(result);
       await queryClient.invalidateQueries({
-        queryKey: ["external-mcp-integrations"],
+        queryKey: EXTERNAL_MCP_INTEGRATIONS_QUERY_KEY,
       });
     } catch (error) {
       setNotice({
@@ -191,12 +189,14 @@ export function SettingsIntegrationsPanel() {
     setPendingAction(integration.integrationId);
     setNotice(null);
     try {
-      await revokeExternalMcpIntegration(integration.integrationId);
+      await ensureNativeApi().server.revokeExternalMcpIntegration({
+        integrationId: integration.integrationId,
+      });
       if (setup?.integration.integrationId === integration.integrationId) {
         setSetup(null);
       }
       await queryClient.invalidateQueries({
-        queryKey: ["external-mcp-integrations"],
+        queryKey: EXTERNAL_MCP_INTEGRATIONS_QUERY_KEY,
       });
     } catch (error) {
       setNotice({
@@ -222,7 +222,9 @@ export function SettingsIntegrationsPanel() {
             setupCommand: "Pairing already completed",
             stdio: integration.stdio,
           }
-        : await refreshExternalMcpPairing(integration.integrationId);
+        : await ensureNativeApi().server.refreshExternalMcpPairing({
+            integrationId: integration.integrationId,
+          });
       setSetup(result);
     } catch (error) {
       setNotice({

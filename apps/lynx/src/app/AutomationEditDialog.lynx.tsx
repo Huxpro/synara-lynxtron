@@ -1,4 +1,5 @@
 import { useEffect, useState } from "@lynx-js/react";
+import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { useQuery } from "@tanstack/react-query";
 import type { AutomationDefinition, AutomationUpdateInput, ProviderKind } from "@synara/contracts";
 import { AUTOMATION_TEMPLATES } from "@synara/shared/automationTemplates";
@@ -63,12 +64,7 @@ import {
   AutomationComposerWarningRow,
 } from "./AutomationComposerPrimitives.lynx";
 import { AutomationTimeInput } from "./AutomationTimeInput.lynx";
-import {
-  fetchAutomationCreateModels,
-  fetchAutomationCreateServerConfig,
-  type ProjectSummary,
-  type ThreadSummary,
-} from "./queries";
+import { fetchAutomationCreateModels, type ProjectSummary, type ThreadSummary } from "./queries";
 
 const MAX_ITERATION_OPTIONS = ["", "10", "25", "50", "100", "250"] as const;
 
@@ -129,12 +125,7 @@ export function AutomationEditDialog({
   const hasBlockingWarning = hasBlockingAutomationDraftWarnings(warnings, acknowledgedWarningIds);
   const canSave = !pending && isFormSubmittable(form) && !hasBlockingWarning;
 
-  const serverConfig = useQuery({
-    queryKey: ["automation-edit", "server-config"],
-    queryFn: fetchAutomationCreateServerConfig,
-    enabled: open,
-    staleTime: 30_000,
-  });
+  const serverConfig = useQuery({ ...serverConfigQueryOptions(), enabled: open });
   const modelCatalog = useQuery({
     queryKey: [
       "automation-edit",

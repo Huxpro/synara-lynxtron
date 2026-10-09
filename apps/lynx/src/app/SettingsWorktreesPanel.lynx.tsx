@@ -1,14 +1,12 @@
 import { useState } from "@lynx-js/react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { SettingsSection } from "@synara-web/components/settings/SettingsSection";
+import { gitRemoveWorktreeMutationOptions } from "@synara-web/lib/gitReactQuery";
+import { serverQueryKeys, serverWorktreesQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { formatWorktreePathForDisplay } from "@synara-web/worktreeCleanup";
+import { ensureNativeApi } from "~/nativeApi";
 
 import { Button } from "../components/ui/button";
-import {
-  dispatchSynaraCommand,
-  fetchManagedWorktrees,
-  removeManagedWorktree,
-} from "../data/synaraClient.lynx";
 import { dialogs } from "../platform/dialogs";
 import { queryClient } from "./queries";
 import { readFreshSidebarSnapshot, useSidebarSnapshot } from "./sidebarSnapshot.lynx";
@@ -51,13 +49,8 @@ function deleteConfirmation(input: {
 }
 
 export function SettingsWorktreesPanel() {
-  const worktreesQuery = useQuery({
-    queryKey: ["managed-worktrees"],
-    queryFn: () => {
-      "background only";
-      return fetchManagedWorktrees();
-    },
-  });
+  const worktreesQuery = useQuery(serverWorktreesQueryOptions());
+  const removeWorktreeMutation = useMutation(gitRemoveWorktreeMutationOptions({ queryClient }));
   const snapshotQuery = useSidebarSnapshot();
   const [deletingPath, setDeletingPath] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
@@ -96,22 +89,26 @@ export function SettingsWorktreesPanel() {
     try {
       for (const thread of linkedThreads) {
         if (thread.archivedAt == null) continue;
-        await dispatchSynaraCommand(
+        await ensureNativeApi().orchestration.dispatchCommand(
           createDeleteThreadCommand({
             threadId: thread.id,
             commandId: newCommandId(),
           }),
         );
       }
-      await removeManagedWorktree({
+      await removeWorktreeMutation.mutateAsync({
         cwd: input.workspaceRoot,
         path: input.path,
         force: true,
+        // The confirmation only announces removing the worktree from disk.
+        // Reclaiming (upstream's default) also deletes the temporary branch,
+        // which can be the last ref to unmerged commits: keep the branch.
+        reclaimTemporaryBranch: false,
       });
     } catch (error) {
       setDeleteError(error instanceof Error ? error.message : "Unable to delete the worktree.");
     } finally {
-      await queryClient.invalidateQueries({ queryKey: ["managed-worktrees"] });
+      await queryClient.invalidateQueries({ queryKey: serverQueryKeys.worktrees() });
       setDeletingPath(null);
     }
   }

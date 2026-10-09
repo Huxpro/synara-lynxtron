@@ -27,13 +27,13 @@ describe("Lynx provider update prompt copy", () => {
     );
     expect(source).toContain("runProviderUpdateBatch({");
     expect(source).toContain("providerUpdateOutcomeCopy(outcome)");
-    expect(source).toContain("queryKey: ['server-config']");
-    expect(source).toContain("queryKey: ['server-settings']");
+    expect(source).toContain("useQuery(serverConfigQueryOptions())");
+    expect(source).toContain("useQuery(serverSettingsQueryOptions())");
     expect(source).not.toContain("queryKey: ['provider-update-prompt']");
     expect(source).toContain("PROVIDER_UPDATE_INITIAL_REFRESH_DELAY_MS");
     expect(source).toContain("PROVIDER_UPDATE_REFRESH_INTERVAL_MS");
     expect(source).toContain("refreshProviderUpdatePromptServerConfig()");
-    expect(source).toContain("queryClient.setQueryData(['server-config'], nextConfig)");
+    expect(source).toContain("queryClient.setQueryData(serverQueryKeys.config(), nextConfig)");
     expect(source).toContain("activeOutcome?.status === 'succeeded'");
     expect(source).toContain("Copy");
     expect(source).toContain("Review providers");

@@ -38,7 +38,6 @@ import type {
   ProviderListModelsResult,
   ProviderListPluginsResult,
   ProviderListSkillsResult,
-  ServerConfig,
   ProjectListDirectoriesResult,
   ProjectReadFileResult,
   ProjectSearchEntriesResult,
@@ -241,12 +240,6 @@ export async function fetchAutomations(): Promise<AutomationListResult> {
   return fetchAutomationList();
 }
 
-export async function fetchProviderUpdatePromptServerConfig() {
-  "background only";
-  const { fetchServerConfig } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
-  return fetchServerConfig();
-}
-
 /**
  * The delivery mode for a new turn, resolved at send time from the same setting the
  * web app uses (server value first, then the stored app settings, default streaming).
@@ -264,12 +257,6 @@ export async function resolveNativeAssistantDeliveryMode(): Promise<AssistantDel
       serverSettings?.enableAssistantStreaming,
     ),
   );
-}
-
-export async function fetchProviderUpdatePromptServerSettings() {
-  "background only";
-  const { fetchServerSettings } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
-  return fetchServerSettings();
 }
 
 export async function refreshProviderUpdatePromptServerConfig() {
@@ -332,20 +319,6 @@ export async function fetchPluginLibraryCapabilities(
     /* webpackMode: "eager" */ "../data/synaraClient"
   );
   return fetchProviderComposerCapabilities(provider);
-}
-
-export async function fetchPluginLibraryServerConfig(): Promise<ServerConfig> {
-  "background only";
-  const { fetchServerConfig } = await import(/* webpackMode: "eager" */ "../data/synaraClient");
-  return fetchServerConfig();
-}
-
-export async function fetchAutomationCreateServerConfig(): Promise<ServerConfig> {
-  "background only";
-  const { fetchFreshServerConfig } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  return fetchFreshServerConfig();
 }
 
 export async function fetchAutomationCreateModels(input: {

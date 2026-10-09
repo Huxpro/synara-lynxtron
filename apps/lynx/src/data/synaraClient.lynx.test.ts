@@ -35,9 +35,7 @@ describe("Lynx Synara relay state", () => {
     // Server settings moved to the upstream NativeApi facade (shared state
     // layer step 1); the fixed channel for it is no longer consumed here.
     expect(clientSource).not.toContain("server.subscribeSettings");
-    expect(clientSource).toContain(
-      "return onServerSettingsUpdated((payload) => listener(payload.settings));",
-    );
+    expect(clientSource).not.toContain("onServerSettingsUpdated");
     expect(clientSource).toContain("return ensureNativeApi().server.getSettings();");
     expect(clientSource).toContain("return ensureNativeApi().server.getConfig();");
     expect(mainSource).toContain("nativeEventStreamChannel(String(rpcData.tag");

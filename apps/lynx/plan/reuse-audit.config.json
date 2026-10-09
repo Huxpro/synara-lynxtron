@@ -6,7 +6,7 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxEntries": ["src/app/index.tsx"],
   "parallelImplementationBaseline": {
-    "synaraClientImporters": 39,
+    "synaraClientImporters": 29,
     "useQueryCallSites": 66,
     "refetchIntervalSites": 8,
     "routerTsxLines": 3701

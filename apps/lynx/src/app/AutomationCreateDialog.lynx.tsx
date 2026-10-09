@@ -1,4 +1,5 @@
 import { useEffect, useState } from "@lynx-js/react";
+import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { useQuery } from "@tanstack/react-query";
 import {
   AUTOMATION_DEFAULT_MODEL_SELECTION,
@@ -28,12 +29,7 @@ import {
   type AutomationDraftWarningId,
 } from "@synara-web/lib/automationDraft";
 
-import {
-  fetchAutomationCreateModels,
-  fetchAutomationCreateServerConfig,
-  type ProjectSummary,
-  type ThreadSummary,
-} from "./queries";
+import { fetchAutomationCreateModels, type ProjectSummary, type ThreadSummary } from "./queries";
 import { webStorage } from "../platform/storage";
 import { ComposerModelControl } from "../components/composer/ComposerModelControl.lynx";
 import { Button } from "../components/ui/button";
@@ -124,12 +120,7 @@ export function AutomationCreateDialog({
   const [acknowledgedWarningIds, setAcknowledgedWarningIds] = useState<
     ReadonlySet<AutomationDraftWarningId>
   >(() => new Set());
-  const serverConfig = useQuery({
-    queryKey: ["automation-create", "server-config"],
-    queryFn: fetchAutomationCreateServerConfig,
-    enabled: open,
-    staleTime: 30_000,
-  });
+  const serverConfig = useQuery({ ...serverConfigQueryOptions(), enabled: open });
   const modelCatalog = useQuery({
     queryKey: [
       "automation-create",

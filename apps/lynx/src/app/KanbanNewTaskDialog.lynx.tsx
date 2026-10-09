@@ -7,6 +7,7 @@ import type {
   ProviderKind,
   RuntimeMode,
 } from "@synara/contracts";
+import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { createElement, useRef, useState } from "@lynx-js/react";
 import { useQuery } from "@tanstack/react-query";
 import { ComposerReferenceAttachmentsComposition } from "@synara-web/components/chat/ComposerReferenceAttachmentsComposition";
@@ -67,7 +68,6 @@ import { dialogs } from "../platform/dialogs";
 import { webStorage } from "../platform/storage";
 import {
   fetchAutomationCreateModels,
-  fetchAutomationCreateServerConfig,
   resolveNativeAssistantDeliveryMode,
   type ProjectSummary,
 } from "./queries";
@@ -322,11 +322,7 @@ export function KanbanNewTaskDialog(props: {
   const [modelCatalogProvider, setModelCatalogProvider] = useState<ProviderKind>(
     modelSelection.provider,
   );
-  const serverConfig = useQuery({
-    queryKey: ["kanban-new-task", "server-config"],
-    queryFn: fetchAutomationCreateServerConfig,
-    staleTime: 30_000,
-  });
+  const serverConfig = useQuery(serverConfigQueryOptions());
   const modelCatalog = useQuery({
     queryKey: [
       "kanban-new-task",

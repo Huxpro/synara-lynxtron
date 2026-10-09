@@ -4,10 +4,10 @@ import type { NodesRef } from "@lynx-js/types";
 import { buildArchivedThreadContextMenuItems } from "@synara/shared/contextMenu";
 import { SettingsSection } from "@synara-web/components/settings/SettingsSection";
 import { formatRelativeTime } from "@synara-web/lib/relativeTime";
+import { ensureNativeApi } from "~/nativeApi";
 
 import { Button } from "../components/ui/button";
 import { ArchiveIcon } from "../lib/icons.lynx";
-import { dispatchSynaraCommand } from "../data/synaraClient.lynx";
 import { dialogs } from "../platform/dialogs";
 import { showContextMenu } from "../platform/contextMenu";
 import {
@@ -87,7 +87,7 @@ export function SettingsArchivedPanel() {
     setPendingAction({ threadId, type: "restore" });
     setActionError(null);
     try {
-      await dispatchSynaraCommand(
+      await ensureNativeApi().orchestration.dispatchCommand(
         createUnarchiveCommand({
           threadId,
           commandId: newCommandId(),
@@ -111,7 +111,7 @@ export function SettingsArchivedPanel() {
     setPendingAction({ threadId, type: "delete" });
     setActionError(null);
     try {
-      await dispatchSynaraCommand(
+      await ensureNativeApi().orchestration.dispatchCommand(
         createDeleteArchivedThreadCommand({
           threadId,
           commandId: newCommandId(),
