@@ -7,7 +7,11 @@ import {
   type RpcTransportState,
   type StartRpcTimeout,
 } from "../../data/rpcTransport.logic";
-import { nativeEventStreamChannel } from "../nativeEventStreams.logic";
+import {
+  nativeEventStreamChannel,
+  type NativeRpcStreamResetReply,
+} from "../nativeEventStreams.logic";
+import { createScopedStreamRegistry } from "../scopedStreamRegistry.logic";
 import { resolveSynaraWsUrl } from "./runtimeEndpoint.logic";
 import { normalizeLynxRpcPayload } from "../rpcPayload.logic";
 
@@ -110,11 +114,20 @@ export function subscribeNativeRpcTransportState(
   return featureManager.subscribe(listener);
 }
 
+function toRelayError(error: unknown): Error & { errorKind?: "rpc" | "transport" } {
+  const relayError = new Error(error instanceof Error ? error.message : String(error)) as Error & {
+    errorKind?: "rpc" | "transport";
+  };
+  relayError.errorKind = isRpcTransportError(error) ? "transport" : "rpc";
+  return relayError;
+}
+
 export async function handleNativeRpc(
   method: "synaraRpc" | "synaraRpcStream",
   data: {
     readonly tag?: unknown;
     readonly payload?: unknown;
+    readonly timeoutMs?: unknown;
   },
   onProgress?: (event: unknown) => void,
 ): Promise<unknown> {
@@ -129,16 +142,54 @@ export async function handleNativeRpc(
       });
       return events;
     }
-    return await featureManager.request(tag, normalizeLynxRpcPayload(tag, data.payload));
+    return await featureManager.request(tag, normalizeLynxRpcPayload(tag, data.payload), {
+      // `null` disables the watchdog for calls the renderer declared long-running
+      // (provider updates, recap generation); a number is the renderer's own
+      // deadline; anything else keeps the host default.
+      timeoutMs:
+        data.timeoutMs === null
+          ? null
+          : typeof data.timeoutMs === "number"
+            ? data.timeoutMs
+            : undefined,
+    });
   } catch (error) {
-    const relayError = new Error(
-      error instanceof Error ? error.message : String(error),
-    ) as Error & { errorKind?: "rpc" | "transport" };
-    relayError.errorKind = isRpcTransportError(error) ? "transport" : "rpc";
-    throw relayError;
+    throw toRelayError(error);
   }
 }
 
+const scopedStreams = createScopedStreamRegistry();
+
+/**
+ * Request-scoped stream for the shared `WsTransport` compat class: every item
+ * goes to `onItem` as it arrives, the promise settles when the server ends the
+ * stream or the renderer cancels it (`cancelNativeRpcStream`). Ownership and
+ * renderer generations live in `scopedStreamRegistry.logic.ts`.
+ */
+export async function runNativeRpcStream(
+  streamId: string,
+  data: { readonly tag?: unknown; readonly payload?: unknown },
+  onItem: (item: unknown) => void,
+): Promise<void> {
+  const tag = String(data.tag ?? "").trim();
+  if (!tag) throw new Error("Synara RPC tag is required");
+  try {
+    await scopedStreams.run(streamId, () => featureManager.openStream(tag, data.payload, onItem));
+  } catch (error) {
+    throw toRelayError(error);
+  }
+}
+
+export function cancelNativeRpcStream(streamId: string): boolean {
+  return scopedStreams.cancel(streamId);
+}
+
+/** Renderer-generation handshake; see `NATIVE_RPC_STREAM_RESET_METHOD`. */
+export function resetNativeRpcStreams(): NativeRpcStreamResetReply {
+  return { generation: scopedStreams.reset(), transportState: featureManager.getState() };
+}
+
 export function disposeNativeRpcHost(): void {
+  scopedStreams.cancelAll();
   featureManager.dispose();
 }

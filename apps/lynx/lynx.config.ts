@@ -31,6 +31,40 @@ const appVersion = String(
 );
 const configuredSynaraWsUrl = process.env.SYNARA_WS_URL?.trim() ?? "";
 const buildHostInputProbe = process.env.SYNARA_HOST_INPUT_PROBE === "1";
+
+// `resolve.alias` only sees `~/…` specifiers. Upstream modules also import
+// these files relatively (`./nativeApi`, `./wsTransport`, …), so the resolved
+// resource path is rewritten after resolution to the same Lynx replacement the
+// alias points at. Keep both tables in sync; `scripts/reuse-audit.mjs` mirrors
+// them so the audit resolves like the bundle.
+export const lynxResourceReplacements: ReadonlyArray<{
+  readonly webSource: string;
+  readonly lynxSource: string;
+}> = [
+  { webSource: "nativeApi.ts", lynxSource: "src/adapters/nativeApi.lynx.ts" },
+  { webSource: "wsTransport.ts", lynxSource: "src/adapters/wsTransport.lynx.ts" },
+  { webSource: "platform/events.ts", lynxSource: "src/platform/events.ts" },
+  {
+    webSource: "components/ui/confirmDialogFallback.ts",
+    lynxSource: "src/adapters/confirmDialogFallback.lynx.ts",
+  },
+  {
+    webSource: "components/ui/contextMenuFallback.ts",
+    lynxSource: "src/adapters/contextMenuFallback.lynx.ts",
+  },
+];
+const webSourceRoot = path.resolve(__dirname, "../web/src");
+const resourceReplacementByWebPath = new Map(
+  lynxResourceReplacements.map((entry) => [
+    path.join(webSourceRoot, entry.webSource),
+    path.resolve(__dirname, entry.lynxSource),
+  ]),
+);
+const resourceReplacementPattern = new RegExp(
+  `(${lynxResourceReplacements
+    .map((entry) => entry.webSource.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&"))
+    .join("|")})$`,
+);
 console.log("rootPath: ", path.resolve(rootPath, "./src/assets"));
 export default defineConfig({
   server: {
@@ -333,6 +367,20 @@ export default defineConfig({
       "~/hooks/useTheme$": path.resolve(rootPath, "./src/adapters/useTheme.lynx.ts"),
       "~/hooks/useViewportLayout$": path.resolve(rootPath, "./src/hooks/useViewportLayout.lynx.ts"),
       "~/nativeApi$": path.resolve(rootPath, "./src/adapters/nativeApi.lynx.ts"),
+      // Shared state layer (plan/shared-state-architecture.md): the upstream
+      // NativeApi facade runs on Lynx; only the transport and the DOM-bound
+      // fallbacks below it are swapped. Relative imports of the same files
+      // inside apps/web are redirected by `lynxResourceReplacements` below.
+      "~/wsTransport$": path.resolve(rootPath, "./src/adapters/wsTransport.lynx.ts"),
+      "~/platform/events$": path.resolve(rootPath, "./src/platform/events.ts"),
+      "~/components/ui/confirmDialogFallback$": path.resolve(
+        rootPath,
+        "./src/adapters/confirmDialogFallback.lynx.ts",
+      ),
+      "~/components/ui/contextMenuFallback$": path.resolve(
+        rootPath,
+        "./src/adapters/contextMenuFallback.lynx.ts",
+      ),
       "~/components/ui/button$": path.resolve(rootPath, "./src/components/ui/button.lynx.tsx"),
       "~/components/ui/input$": path.resolve(rootPath, "./src/components/ui/input.lynx.tsx"),
       "~/components/ui/command$": path.resolve(rootPath, "./src/components/ui/command.lynx.tsx"),
@@ -368,6 +416,25 @@ export default defineConfig({
   },
   output: {
     filename: "[name].[platform].bundle",
+  },
+  tools: {
+    rspack: (config, { rspack }) => {
+      config.plugins ??= [];
+      config.plugins.push(
+        new rspack.NormalModuleReplacementPlugin(resourceReplacementPattern, (result) => {
+          const createData = (
+            result as { createData?: { resource?: string; request?: string; userRequest?: string } }
+          ).createData;
+          const resource = createData?.resource;
+          if (!createData || typeof resource !== "string") return;
+          const replacement = resourceReplacementByWebPath.get(resource);
+          if (!replacement) return;
+          createData.resource = replacement;
+          createData.request = replacement;
+          createData.userRequest = replacement;
+        }),
+      );
+    },
   },
   environments: {
     web: {

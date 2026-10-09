@@ -35,6 +35,16 @@ interface RpcSocketContext {
   readonly pending: Map<string, PendingRpc>;
 }
 
+interface RpcRequestHandle {
+  readonly interrupt: () => void;
+}
+
+export interface RpcStreamHandle {
+  /** Resolves when the stream ends (including after `cancel()`); rejects on transport failure. */
+  readonly settled: Promise<void>;
+  readonly cancel: () => void;
+}
+
 export class RpcTransportError extends Error {
   readonly name = "RpcTransportError";
 }
@@ -270,6 +280,7 @@ export function createRpcSocketManager(input: {
     payload: unknown,
     onChunk?: (value: unknown) => void,
     timeoutMs: number | null = input.requestTimeoutMs,
+    onStarted?: (handle: RpcRequestHandle) => void,
   ): Promise<A> => {
     const context = contextFor(socket);
     if (context.failed) {
@@ -316,7 +327,24 @@ export function createRpcSocketManager(input: {
         failTransport(
           new RpcTransportError(`Synara RPC ${tag} send failed: ${describeError(error)}`),
         );
+        return;
       }
+      onStarted?.({
+        // Settle locally first so the server's interrupt Exit, which arrives
+        // with a failure cause, is ignored for this request id.
+        interrupt: () => {
+          const pending = context.pending.get(id);
+          if (!pending) return;
+          context.pending.delete(id);
+          pending.cancelTimeout();
+          try {
+            socket.send(JSON.stringify({ _tag: "Interrupt", requestId: id }));
+          } catch {
+            // The socket is already unusable; the pending entry is gone either way.
+          }
+          pending.resolve(undefined);
+        },
+      });
     });
   };
 
@@ -387,10 +415,20 @@ export function createRpcSocketManager(input: {
   };
 
   return {
-    async request<A>(tag: string, payload: unknown): Promise<A> {
+    async request<A>(
+      tag: string,
+      payload: unknown,
+      options?: { readonly timeoutMs?: number | null },
+    ): Promise<A> {
       const socket = await getSocket();
       ensureResponseListener(socket);
-      return requestOnSocket<A>(socket, tag, payload);
+      return requestOnSocket<A>(
+        socket,
+        tag,
+        payload,
+        undefined,
+        options?.timeoutMs === undefined ? input.requestTimeoutMs : options.timeoutMs,
+      );
     },
     async requestStream<A>(
       tag: string,
@@ -400,6 +438,38 @@ export function createRpcSocketManager(input: {
       const socket = await getSocket();
       ensureResponseListener(socket);
       await requestOnSocket<void>(socket, tag, payload, (value) => onChunk(value as A), null);
+    },
+    /**
+     * Like `requestStream`, but cancellable: `cancel()` sends an Effect RPC
+     * `Interrupt` for the request and settles the stream locally. Cancelling
+     * before the socket is open just skips sending the request.
+     */
+    openStream<A>(tag: string, payload: unknown, onChunk: (value: A) => void): RpcStreamHandle {
+      let cancelled = false;
+      let interrupt: (() => void) | null = null;
+      const settled = (async () => {
+        const socket = await getSocket();
+        if (cancelled) return;
+        ensureResponseListener(socket);
+        await requestOnSocket<void>(
+          socket,
+          tag,
+          payload,
+          (value) => onChunk(value as A),
+          null,
+          (handle) => {
+            interrupt = handle.interrupt;
+            if (cancelled) handle.interrupt();
+          },
+        );
+      })();
+      return {
+        settled,
+        cancel: () => {
+          cancelled = true;
+          interrupt?.();
+        },
+      };
     },
     getState(): RpcTransportState {
       return state;

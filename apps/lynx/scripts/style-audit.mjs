@@ -5,6 +5,8 @@ import path from "node:path";
 import { createRequire } from "node:module";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
+import { generatedFileIsFresh, writeGeneratedFile } from "./format-generated.mjs";
+
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(scriptDir, "..");
 const webRoot = path.resolve(workspaceRoot, "../..");
@@ -853,7 +855,7 @@ async function generate() {
 }
 
 function assertEqual(filePath, expected) {
-  if (!fs.existsSync(filePath) || fs.readFileSync(filePath, "utf8") !== expected) {
+  if (!generatedFileIsFresh(filePath, expected)) {
     throw new Error(`${path.relative(workspaceRoot, filePath)} is stale`);
   }
 }
@@ -889,12 +891,11 @@ if (checkMode) {
     throw new Error(`platform-unsupported utility surface grew: ${addedUnsupported.join(", ")}`);
   }
 } else {
-  fs.mkdirSync(path.dirname(cssPath), { recursive: true });
-  fs.writeFileSync(manifestPath, result.manifestText);
-  fs.writeFileSync(reportPath, result.reportText);
-  fs.writeFileSync(cssPath, result.css);
+  writeGeneratedFile(manifestPath, result.manifestText);
+  writeGeneratedFile(reportPath, result.reportText);
+  writeGeneratedFile(cssPath, result.css);
   if (!belowThreshold && (updateBaseline || !fs.existsSync(baselinePath))) {
-    fs.writeFileSync(baselinePath, `${JSON.stringify(result.baseline, null, 2)}\n`);
+    writeGeneratedFile(baselinePath, `${JSON.stringify(result.baseline, null, 2)}\n`);
   }
 }
 
