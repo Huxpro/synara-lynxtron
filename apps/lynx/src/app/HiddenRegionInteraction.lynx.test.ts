@@ -56,7 +56,7 @@ describe("hidden region interaction", () => {
     const panel = source("./ResizableRightPanel.lynx.tsx");
     expect(panel).toContain("user-interaction-enabled={props.interactive ?? true}");
     expect(source("./ThreadRightDockHost.lynx.tsx")).toMatch(
-      /ThreadRightDockHost--closed"\s*\}`\}\s*interactive=\{props\.open\}/s,
+      /ThreadRightDockHost--closed"\s*\}[^`]*`\}\s*interactive=\{props\.open\}/s,
     );
     expect(source("./DiffDock.lynx.tsx")).toMatch(
       /DiffDock--closed"\}`\}\s*interactive=\{props\.open\}/s,

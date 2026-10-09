@@ -35,6 +35,14 @@
   max-width: none;
 }
 
+/* Upstream RightDock maximized: the dock takes the whole chat shell, above the chat. */
+.ThreadRightDockHost--maximized {
+  z-index: 30;
+  min-width: 0;
+  max-width: none;
+  border-left-width: 0;
+}
+
 .ThreadRightDockHostBody {
   position: relative;
   display: flex;

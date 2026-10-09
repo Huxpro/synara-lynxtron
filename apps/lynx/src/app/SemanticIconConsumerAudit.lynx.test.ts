@@ -98,7 +98,8 @@ describe("semantic icon consumer audit", () => {
     // Transcript row actions read the same secondary role from the palette.
     expect(transcript).toContain("svgColors.iconSecondary");
     expect(transcript).not.toContain("svgColors.mutedForeground");
-    expect(diff.match(/semanticIconColor\("secondary"\)/g)).toHaveLength(5);
+    // Includes the Previous/Next change chevrons of the Diff tools group.
+    expect(diff.match(/semanticIconColor\("secondary"\)/g)).toHaveLength(7);
     // The terminal-thread glyph moved with the header identity into the open-thread tabs.
     expect(
       readFileSync(new URL("./OpenThreadTabStrip.lynx.tsx", import.meta.url), "utf8"),

@@ -22,8 +22,6 @@
   --color-mix-dc5bef3f35: rgba(255, 255, 255, 0.864706);
   /* color-mix(in oklab, var(--color-border) 45%, transparent) */
   --color-mix-ffcb15d4c6: rgba(13, 13, 13, 0.031765);
-  /* color-mix(in oklab, var(--color-border) 60%, transparent) */
-  --color-mix-d4604fe614: rgba(13, 13, 13, 0.042353);
   /* color-mix(in oklab, var(--color-border) 65%, transparent) */
   --color-mix-414b06c953: rgba(13, 13, 13, 0.045882);
   /* color-mix(in oklab, var(--color-border) 70%, transparent) */
@@ -207,8 +205,6 @@
   --color-mix-dc5bef3f35: rgba(23, 23, 23, 0.864706);
   /* color-mix(in oklab, var(--color-border) 45%, transparent) */
   --color-mix-ffcb15d4c6: rgba(252, 252, 252, 0.031765);
-  /* color-mix(in oklab, var(--color-border) 60%, transparent) */
-  --color-mix-d4604fe614: rgba(252, 252, 252, 0.042353);
   /* color-mix(in oklab, var(--color-border) 65%, transparent) */
   --color-mix-414b06c953: rgba(252, 252, 252, 0.045882);
   /* color-mix(in oklab, var(--color-border) 70%, transparent) */

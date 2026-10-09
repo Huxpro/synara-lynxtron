@@ -14,6 +14,7 @@ import {
   NAVIGATION_TARGETS,
   showAppSidebar,
   DOCK_ADD_PANEL,
+  DOCK_FIRST_OPEN_TIMEOUT_MS,
   DOCK_TOGGLE,
   openAutomationsSurface,
   openDockWithPane,
@@ -108,13 +109,16 @@ export const SURFACES = Object.freeze({
       await showAppSidebar(driver);
       await driver.tap(pick(driver, NAVIGATION_TARGETS.newThread));
     },
-    ready: (driver) =>
-      driver.find(
+    ready: async (driver) => {
+      const composer = await driver.find(
         pick(driver, {
           electron: { testId: "composer-editor" },
           native: { label: "Message composer" },
         }),
-      ),
+      );
+      if (!composer || driver.kind !== "electron") return composer;
+      return (await electronModelTriggerSettled(driver)) ? composer : null;
+    },
   },
   thread: {
     open: async (driver) => {
@@ -143,6 +147,45 @@ export const SURFACES = Object.freeze({
   },
 });
 
+const MODEL_TRIGGER_QUIET_MS = 6_000;
+const modelTriggerSeen = new WeakMap();
+
+/**
+ * Electron draws the composer's model trigger before its model catalog has loaded: the
+ * effort label ("Medium") is missing until then, so the trigger is ~50px narrower and
+ * everything left of it sits elsewhere. Native reads the built-in catalog and shows the
+ * label at once. Settled means the effort label is there, or (a model without an effort
+ * ladder never gets one) the trigger has kept its width for MODEL_TRIGGER_QUIET_MS.
+ */
+async function electronModelTriggerSettled(driver) {
+  const trigger = await driver.evaluate(`(() => {
+    const node = document.querySelector('[aria-label="Change model and reasoning"]');
+    if (!node) return null;
+    const label = node.querySelector("span > span > span");
+    return {
+      width: node.getBoundingClientRect().width,
+      // Provider icon and model name are always there; the effort label is a second span.
+      hasEffortLabel: (label?.querySelectorAll(":scope > span").length ?? 0) > 1,
+    };
+  })()`);
+  return modelTriggerSettled(modelTriggerSeen, driver, trigger, Date.now());
+}
+
+/** Pure part of the check above, so the timing rule can be tested without a renderer. */
+export function modelTriggerSettled(seenByDriver, driver, trigger, now) {
+  if (!trigger) {
+    seenByDriver.delete(driver);
+    return false;
+  }
+  if (trigger.hasEffortLabel) return true;
+  const seen = seenByDriver.get(driver);
+  if (!seen || seen.width !== trigger.width) {
+    seenByDriver.set(driver, { width: trigger.width, since: now });
+    return false;
+  }
+  return now - seen.since >= MODEL_TRIGGER_QUIET_MS;
+}
+
 const MENU_PROBE = {
   name: "menu popup",
   electron: '[data-slot="menu-popup"]:not([data-closed])',
@@ -165,6 +208,7 @@ export const INCREMENTS = Object.freeze({
     // The web landing is the draft thread: its toggle opens the empty dock's launcher.
     open: (driver) => driver.tap(DOCK_TOGGLE),
     ready: (driver) => driver.find({ label: "Open Review" }),
+    readyTimeoutMs: DOCK_FIRST_OPEN_TIMEOUT_MS,
     probes: [],
     close: (driver) => driver.tap(DOCK_TOGGLE),
   },
@@ -645,7 +689,7 @@ async function main() {
         await increment.open(driver);
         await waitFor(
           () => (increment.ready ? increment.ready(driver) : probeBox(driver, increment.probes[0])),
-          { label: `${name} on ${driver.kind}`, timeoutMs: 15_000 },
+          { label: `${name} on ${driver.kind}`, timeoutMs: increment.readyTimeoutMs ?? 15_000 },
         );
       }
       await sleep(600);

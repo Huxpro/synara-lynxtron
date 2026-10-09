@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   compareControls,
   errorsBetweenProbes,
+  modelTriggerSettled,
   namedOffsetExemption,
   parseDevtoolConsole,
   scrollbarGutterExemption,
@@ -39,6 +40,33 @@ describe("comparison cells", () => {
     expect(result.electronOnly).toEqual(["Only E"]);
     expect(result.missing).toEqual(["Only E"]);
     expect(result.nativeOnly).toEqual(["Only N"]);
+  });
+});
+
+describe("landing readiness on Electron", () => {
+  it("waits for the effort label, or for a width that stopped changing", () => {
+    const seen = new WeakMap();
+    const driver = {};
+    expect(modelTriggerSettled(seen, driver, null, 0)).toBe(false);
+    // Catalog still loading: narrow trigger, no effort label.
+    expect(modelTriggerSettled(seen, driver, { width: 137.5, hasEffortLabel: false }, 0)).toBe(
+      false,
+    );
+    expect(modelTriggerSettled(seen, driver, { width: 137.5, hasEffortLabel: false }, 5_000)).toBe(
+      false,
+    );
+    expect(modelTriggerSettled(seen, driver, { width: 188.7, hasEffortLabel: true }, 5_100)).toBe(
+      true,
+    );
+    // A model without an effort ladder settles once its width has been quiet long enough.
+    const other = {};
+    expect(modelTriggerSettled(seen, other, { width: 120, hasEffortLabel: false }, 0)).toBe(false);
+    expect(modelTriggerSettled(seen, other, { width: 130, hasEffortLabel: false }, 5_000)).toBe(
+      false,
+    );
+    expect(modelTriggerSettled(seen, other, { width: 130, hasEffortLabel: false }, 11_000)).toBe(
+      true,
+    );
   });
 });
 

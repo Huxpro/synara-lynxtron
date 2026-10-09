@@ -62,7 +62,11 @@ describe("Lynx thread right dock tabs", () => {
     // The base chip; the fixed-width content tab (`--content`) lets its label fill.
     expect(sharedStyles).toMatch(/^\.EditorSurfaceTabLabel\s*\{[^}]*flex-shrink:\s*1;/ms);
     expect(sharedStyles).not.toMatch(/^\.EditorSurfaceTabLabel\s*\{[^}]*flex:\s*1;/ms);
-    expect(dockStyles).toMatch(/\.ThreadRightDockTab\s*\{[^}]*min-width:\s*68px;/s);
+    // Dock tabs are upstream's content chips: fixed 18em, shrinking together, close at the end.
+    expect(sharedStyles).toMatch(/\.EditorSurfaceTab--content\s*\{[^}]*width:\s*216px;/s);
+    expect(
+      readFileSync(new URL("./ThreadRightDockTabs.lynx.tsx", import.meta.url), "utf8"),
+    ).toContain('closePlacement="trailing"');
     // Same chat-surface header row as Electron: 44px with a layout-neutral hairline.
     expect(dockStyles).toMatch(/\.ThreadRightDockTabHeader\s*\{[^}]*height:\s*44px;/s);
     expect(dockStyles).not.toMatch(/\.ThreadRightDockTabHeader\s*\{[^}]*border-bottom/s);

@@ -17,6 +17,12 @@ const CODEX_READY = {
   authStatus: "authenticated",
 } as unknown as ServerProviderStatus;
 
+const CLAUDE_READY = {
+  provider: "claudeAgent",
+  available: true,
+  authStatus: "authenticated",
+} as unknown as ServerProviderStatus;
+
 const LUNA_LOW: ModelSelection = {
   provider: "codex",
   model: "gpt-5.6-luna",
@@ -103,19 +109,62 @@ describe("Lynx composer model picker", () => {
       ["Starred", "Codex"],
     );
     expect(query(".ComposerModelPickerTabLynx--active").getAttribute("aria-label")).toBe("Codex");
+    // One capsule per row, named by its chord like Electron's ShortcutKbd.
     expect(
-      rows.map((row) => row.querySelector(".ComposerModelPickerKbdTextLynx")?.textContent),
+      rows.map((row) =>
+        row.querySelector(".ComposerModelPickerKbdLynx")?.getAttribute("accessibility-label"),
+      ),
+    ).toEqual(rows.map((_, index) => `⌘${index + 1}`));
+    expect(
+      rows.map((row) =>
+        Array.from(
+          row.querySelectorAll(".ComposerModelPickerKbdTextLynx"),
+          (part) => part.textContent,
+        ).join(""),
+      ),
     ).toEqual(rows.map((_, index) => `⌘${index + 1}`));
     expect(rowNamed("GPT-5.6 Luna").getAttribute("class")).toContain(
       "ComposerModelPickerRowLynx--selected",
     );
     expect(query(".ComposerEffortSliderCardLabelLynx").textContent).toBe("Low");
-    expect(query(".ComposerEffortSliderLynx").getAttribute("accessibility-value")).toBe("Low");
+    // The thumb carries the slider's name and value, as Electron's thumb input does.
+    const thumb = query(".ComposerEffortSliderThumbLynx");
+    expect(thumb.getAttribute("accessibility-label")).toBe("Reasoning effort");
+    expect(thumb.getAttribute("accessibility-value")).toBe("Low");
+    expect(query(".ComposerModelPickerTabStripLynx").getAttribute("accessibility-label")).toBe(
+      "Model sources",
+    );
   });
 
-  it("offers Add providers only while the provider can still change", async () => {
+  it("lists the other providers of a started thread and explains they cannot take it over yet", async () => {
+    const props = renderPicker({ providers: [CODEX_READY, CLAUDE_READY] });
+    await openPicker();
+
+    expect(all(".ComposerModelPickerTabLynx").map((tab) => tab.getAttribute("aria-label"))).toEqual(
+      ["Starred", "Codex", "Claude"],
+    );
+    const claude = all(".ComposerModelPickerTabLynx").find(
+      (tab) => tab.getAttribute("aria-label") === "Claude",
+    );
+    if (!claude) throw new Error("expected the Claude tab");
+    fireEvent.tap(claude);
+    await waitFor(() => {
+      expect(query(".ComposerModelPickerNoticeTitleLynx").textContent).toBe(
+        "Claude cannot take over this thread yet",
+      );
+    });
+    expect(query(".ComposerModelPickerNoticeBodyLynx").textContent).toContain(
+      "not available in the Native app yet",
+    );
+    // No models to pick, and no catalog read for a provider that cannot be used here.
+    expect(all(".ComposerModelPickerRowLynx")).toHaveLength(0);
+    expect(props.onCatalogProviderChange).not.toHaveBeenCalledWith("claudeAgent");
+    expect(props.onModelSelectionChange).not.toHaveBeenCalled();
+  });
+
+  it("offers Add providers on a new and on a started thread", async () => {
     const onOpenProviderSettings = rs.fn();
-    renderPicker({ lockedProvider: null, onOpenProviderSettings });
+    renderPicker({ onOpenProviderSettings });
     await openPicker();
     const add = all(".ComposerModelPickerTabLynx").find(
       (tab) => tab.getAttribute("aria-label") === "Add providers",
