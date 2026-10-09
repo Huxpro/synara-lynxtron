@@ -1,6 +1,6 @@
 import { useEffect, useState } from "@lynx-js/react";
-import { ensureNativeApi } from "~/nativeApi";
 import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
+import { providerModelsQueryOptions } from "@synara-web/lib/providerDiscoveryReactQuery";
 import { useQuery } from "@tanstack/react-query";
 import type {
   AutomationDefinition,
@@ -200,25 +200,14 @@ function AutomationDetailModelControl(props: {
     setCatalogProvider(props.definition.modelSelection.provider);
   }, [props.definition.id, props.definition.modelSelection.provider]);
   const serverConfig = useQuery(serverConfigQueryOptions());
-  const modelCatalog = useQuery({
-    queryKey: [
-      "automation-detail",
-      "models",
-      catalogProvider,
-      props.project?.workspaceRoot ?? null,
-    ],
-    queryFn: () => {
-      "background only";
-      const cwd = props.project?.workspaceRoot;
-      // The server schema takes a missing `cwd`, not a null one.
-      return ensureNativeApi().provider.listModels({
-        provider: catalogProvider,
-        ...(cwd ? { cwd } : {}),
-      });
-    },
-    enabled: Boolean(props.project),
-    staleTime: 30_000,
-  });
+  const modelCatalog = useQuery(
+    // Upstream's catalog query (and key), shared with the composer's picker.
+    providerModelsQueryOptions({
+      provider: catalogProvider,
+      cwd: props.project?.workspaceRoot ?? null,
+      enabled: Boolean(props.project),
+    }),
+  );
   return (
     <ComposerModelControl
       hideStatusLabel

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "@lynx-js/react";
-import { ensureNativeApi } from "~/nativeApi";
 import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
+import { providerModelsQueryOptions } from "@synara-web/lib/providerDiscoveryReactQuery";
 import { useQuery } from "@tanstack/react-query";
 import {
   AUTOMATION_DEFAULT_MODEL_SELECTION,
@@ -123,25 +123,14 @@ export function AutomationCreateDialog({
     ReadonlySet<AutomationDraftWarningId>
   >(() => new Set());
   const serverConfig = useQuery({ ...serverConfigQueryOptions(), enabled: open });
-  const modelCatalog = useQuery({
-    queryKey: [
-      "automation-create",
-      "models",
-      modelCatalogProvider,
-      projects.find((candidate) => candidate.id === projectId)?.workspaceRoot ?? null,
-    ],
-    queryFn: () => {
-      "background only";
-      const cwd = projects.find((candidate) => candidate.id === projectId)?.workspaceRoot;
-      // The server schema takes a missing `cwd`, not a null one.
-      return ensureNativeApi().provider.listModels({
-        provider: modelCatalogProvider,
-        ...(cwd ? { cwd } : {}),
-      });
-    },
-    enabled: open && Boolean(projects.find((candidate) => candidate.id === projectId)),
-    staleTime: 30_000,
-  });
+  const modelCatalog = useQuery(
+    // Upstream's catalog query (and key), shared with the composer's picker.
+    providerModelsQueryOptions({
+      provider: modelCatalogProvider,
+      cwd: projects.find((candidate) => candidate.id === projectId)?.workspaceRoot ?? null,
+      enabled: open && Boolean(projects.find((candidate) => candidate.id === projectId)),
+    }),
+  );
   useEffect(() => {
     if (!open) return;
     const firstProject = projects[0];
