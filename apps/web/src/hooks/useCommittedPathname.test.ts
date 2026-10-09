@@ -35,19 +35,15 @@ function createHarness(initialPath: string) {
   });
   let heldPathname: string | null = null;
   const snapshots: StoreSnapshot[] = [];
-  // Fork: `__store` exists on upstream's locked @tanstack/react-router, not on the newer
-  // one apps/lynx requires. The suite is skipped below until the versions are aligned.
-  (router as unknown as { __store: { subscribe(listener: () => void): void } }).__store.subscribe(
-    () => {
-      const state = router.state;
-      heldPathname = resolveCommittedPathname(state, heldPathname);
-      snapshots.push({
-        committedPathname: heldPathname,
-        locationPathname: state.location.pathname,
-        ...describeMatches(state.matches),
-      });
-    },
-  );
+  router.__store.subscribe(() => {
+    const state = router.state;
+    heldPathname = resolveCommittedPathname(state, heldPathname);
+    snapshots.push({
+      committedPathname: heldPathname,
+      locationPathname: state.location.pathname,
+      ...describeMatches(state.matches),
+    });
+  });
 
   return {
     router,
@@ -88,7 +84,7 @@ function listRoutePaths(router: ReturnType<typeof createHarness>["router"]): str
   return [...paths];
 }
 
-describe.skip("resolveCommittedPathname", () => {
+describe("resolveCommittedPathname", () => {
   it("stays string-identical to location.pathname on every route", async () => {
     const harness = createHarness("/");
     await harness.router.load();
