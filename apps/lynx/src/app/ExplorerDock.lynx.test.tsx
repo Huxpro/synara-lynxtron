@@ -164,8 +164,7 @@ describe("Lynx Explorer dock", () => {
     expect(routerSource).toContain("explorerEntriesPending,\n    explorerEntriesTruncated,");
     expect(routerSource).toContain("useExplorerFile({");
     expect(routerSource).toContain('"background only"');
-    expect(routerSource).toContain("enabled: activeThreadId !== null");
-    expect(routerSource).toContain("const [data, summary] = await Promise.all([");
+    expect(routerSource).toContain("useThreadPageData(activeThreadId)");
     expect(source).toContain("<ResizableRightPanel");
     expect(source).toContain('props.open ? " ExplorerDock--open" : " ExplorerDock--closed"');
     expect(source).toContain("minWidth={EXPLORER_DOCK_MIN_WIDTH}");

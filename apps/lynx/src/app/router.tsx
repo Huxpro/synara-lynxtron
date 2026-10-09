@@ -96,13 +96,13 @@ import {
   type ExplorerFileResult,
   fetchExplorerLocalPreviewUrl,
   fetchExplorerPdfMetadata,
-  fetchThreadHeaderSummary,
-  fetchThreadTranscriptRows,
-  queryClient,
   type ExplorerEntriesResult,
   type ProjectSummary,
+  type ThreadHeaderSummary,
   type ThreadSummary,
+  type ThreadTranscriptRow,
 } from "./queries";
+import { useThreadPageData } from "./threadPageStore.lynx";
 import { resolveStudioRestoreRoute } from "./studioRoute.logic";
 import { buildThreadRelaunchUrl } from "./relaunchSurface.logic";
 import { parseSettingsRouteLocation, settingsRouteLocation } from "./settingsRoute.logic";
@@ -684,8 +684,8 @@ type ExplorerDockProps = Pick<
 
 interface ThreadPageProps {
   readonly appearance: SettingsAppearanceValues;
-  readonly currentThread: Awaited<ReturnType<typeof fetchThreadHeaderSummary>>;
-  readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>> | undefined;
+  readonly currentThread: ThreadHeaderSummary | undefined;
+  readonly data: readonly ThreadTranscriptRow[] | undefined;
   readonly error: unknown;
   readonly environmentData: EnvironmentBootstrapData | null;
   readonly explorerEntries: ExplorerEntriesResult["entries"];
@@ -1715,9 +1715,6 @@ function ThreadPage(props: ThreadPageProps) {
         decision,
         createdAt: new Date().toISOString(),
       });
-      await queryClient.invalidateQueries({
-        queryKey: ["thread-detail", threadId],
-      });
     } finally {
       setRespondingApprovalRequestId(null);
     }
@@ -1738,9 +1735,6 @@ function ThreadPage(props: ThreadPageProps) {
         ...(lifecycleGeneration ? { lifecycleGeneration } : {}),
         answers,
         createdAt: new Date().toISOString(),
-      });
-      await queryClient.invalidateQueries({
-        queryKey: ["thread-detail", threadId],
       });
     } finally {
       setRespondingUserInputRequestId(null);
@@ -1838,7 +1832,6 @@ function ThreadPage(props: ThreadPageProps) {
         threadId: threadId as never,
         title,
       });
-      await queryClient.invalidateQueries({ queryKey: ["thread-detail", threadId] });
       setRenamingThread(false);
     } catch (error) {
       setThreadRenameError(error instanceof Error ? error.message : "Unable to rename thread.");
@@ -2980,53 +2973,13 @@ export function SliceRouter({
   const previousExplorerThreadIdRef = useRef(activeThreadId);
   const explorerTrimmedQuery = explorerQuery.trim();
   const explorerExpandedDirectoryPaths = Array.from(explorerExpandedDirectories).toSorted();
+  // Thread detail is read from the shared store, which session sync keeps
+  // current for the routed thread (app/threadPageStore.lynx.ts).
   const {
     data: activeThreadData,
     error: activeThreadError,
     isPending: activeThreadPending,
-  } = useQuery({
-    queryKey: ["thread-detail", activeThreadId],
-    queryFn: async () => {
-      "background only";
-      const threadId = activeThreadId;
-      if (!threadId) throw new Error("Thread detail requires a thread id.");
-      const [data, summary] = await Promise.all([
-        fetchThreadTranscriptRows(threadId),
-        fetchThreadHeaderSummary(threadId),
-      ]);
-      return { data, summary };
-    },
-    enabled: activeThreadId !== null,
-    // No interval: react-query intervals never ran on Lynx before the
-    // query-core environment fix, and this read is refreshed by session-sync
-    // invalidation. A timer here would be a new poll.
-    retry: false,
-  });
-  useEffect(() => {
-    if (!activeThreadId) return;
-    let active = true;
-    let invalidateTimer: ReturnType<typeof setTimeout> | null = null;
-    const unsubscribe = ensureNativeApi().orchestration.onShellEvent((item) => {
-      if (
-        item.kind !== "snapshot" &&
-        (item.kind !== "thread-upserted" || item.thread.id !== activeThreadId)
-      )
-        return;
-      if (invalidateTimer !== null) return;
-      invalidateTimer = setTimeout(() => {
-        invalidateTimer = null;
-        if (!active) return;
-        void queryClient.invalidateQueries({
-          queryKey: ["thread-detail", activeThreadId],
-        });
-      }, 50);
-    });
-    return () => {
-      active = false;
-      unsubscribe();
-      if (invalidateTimer !== null) clearTimeout(invalidateTimer);
-    };
-  }, [activeThreadId]);
+  } = useThreadPageData(activeThreadId);
   const resolvedActiveThreadData = activeThreadData;
   // The new-thread landing (the web's draft thread) reports the project its
   // dock works in; a thread route always uses the thread's workspace.

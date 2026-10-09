@@ -52,29 +52,15 @@ import type {
   RuntimeMode,
 } from "@synara/contracts";
 import type { SidebarStatusPresentation } from "@synara-web/components/SidebarStatus.logic";
-import {
-  buildRevertTurnCountByUserMessageId,
-  buildTurnDiffSummaryByAssistantMessageId,
-  deriveMessagesTimelineRows,
-  type MessagesTimelineRow,
-} from "@synara-web/components/chat/MessagesTimeline.logic";
-import {
-  filterSidechatTranscriptMessages,
-  threadHasProviderLockingActivity,
-} from "@synara-web/components/ChatView.logic";
-import {
-  formatAgentActivityEntryPreview,
-  isReasoningUpdateWorkEntry,
-} from "@synara-web/components/chat/agentActivity.logic";
+import type { MessagesTimelineRow } from "@synara-web/components/chat/MessagesTimeline.logic";
+import { threadHasProviderLockingActivity } from "@synara-web/components/ChatView.logic";
 import {
   derivePendingApprovals,
   derivePendingUserInputs,
-  deriveTimelineEntries,
-  deriveWorkLogEntries,
   type PendingApproval,
   type PendingUserInput,
 } from "@synara-web/session-logic";
-import type { Project, SidebarThreadSummary, Space } from "@synara-web/types";
+import type { ChatMessage, Project, SidebarThreadSummary, Space } from "@synara-web/types";
 import type {
   SidebarSearchProject,
   SidebarSearchThread,
@@ -88,7 +74,7 @@ import {
 } from "@synara-web/lib/threadRecap";
 import type { NativeSyntaxHighlightThemes } from "../main/syntaxHighlightingContract.logic";
 import { resolveSnapshotThreadProvider } from "./threadSummaryProjection.logic";
-import { parseMarkdown, type MarkdownNode } from "../components/markdown/markdownAst.lynx";
+import type { MarkdownNode } from "../components/markdown/markdownAst.lynx";
 
 export { queryClient };
 
@@ -156,7 +142,11 @@ export interface ThreadHeaderSummary {
   readonly branch: string | null;
   readonly envMode: "local" | "worktree";
   readonly handoff: ThreadHandoff | null;
-  readonly messages: readonly OrchestrationMessage[];
+  /**
+   * Read by upstream's hand-off, fork and Side builders. The store read gives
+   * them the store's messages; the request-backed read the snapshot's.
+   */
+  readonly messages: readonly OrchestrationMessage[] | readonly ChatMessage[];
   readonly activities: readonly OrchestrationThreadActivity[];
   readonly worktreePath: string | null;
   readonly associatedWorktreePath: string | null;
@@ -428,10 +418,12 @@ export async function fetchThreadHeaderSummary(
 
 export async function fetchThreadTranscriptRows(threadId: string): Promise<ThreadTranscriptRow[]> {
   "background only";
-  const [{ useStore }, { projectThreadDetailSnapshot }] = await Promise.all([
-    import(/* webpackMode: "eager" */ "@synara-web/store"),
-    import(/* webpackMode: "eager" */ "./threadDetailProjection.logic"),
-  ]);
+  const [{ useStore }, { projectThreadDetailSnapshot }, { projectThreadTranscriptRows }] =
+    await Promise.all([
+      import(/* webpackMode: "eager" */ "@synara-web/store"),
+      import(/* webpackMode: "eager" */ "./threadDetailProjection.logic"),
+      import(/* webpackMode: "eager" */ "./threadPageProjection.logic"),
+    ]);
   const snapshot = await fetchThreadDetailSnapshot(threadId);
   if (!snapshot) return [];
   const cached = transcriptRowsByThreadId.get(threadId);
@@ -448,140 +440,7 @@ export async function fetchThreadTranscriptRows(threadId: string): Promise<Threa
     return [];
   }
 
-  const visibleMessages = filterSidechatTranscriptMessages(
-    thread.messages,
-    Boolean(thread.sidechatSourceThreadId),
-  );
-  const visibleTurnIds = new Set(
-    visibleMessages.flatMap((message) => (message.turnId ? [message.turnId] : [])),
-  );
-  if (thread.latestTurn?.turnId) {
-    visibleTurnIds.add(thread.latestTurn.turnId);
-  }
-  const workEntries = deriveWorkLogEntries(
-    thread.activities,
-    thread.latestTurn?.turnId ?? undefined,
-    { visibleTurnIds },
-  );
-  const timelineEntries = deriveTimelineEntries(
-    visibleMessages as Parameters<typeof deriveTimelineEntries>[0],
-    thread.proposedPlans as Parameters<typeof deriveTimelineEntries>[1],
-    workEntries,
-  );
-  const activeTurnInProgress = thread.latestTurn?.state === "running";
-  const turnDiffSummaryByAssistantMessageId = buildTurnDiffSummaryByAssistantMessageId({
-    turnDiffSummaries: thread.turnDiffSummaries,
-    messages: visibleMessages.map((message) => ({
-      id: message.id,
-      role: message.role,
-      turnId: message.turnId ?? null,
-    })),
-  });
-  const inferredCheckpointTurnCountByTurnId = Object.fromEntries(
-    [...thread.turnDiffSummaries]
-      .sort((left, right) => left.completedAt.localeCompare(right.completedAt))
-      .map((summary, index) => [summary.turnId, index + 1]),
-  );
-  const revertTurnCountByUserMessageId = buildRevertTurnCountByUserMessageId({
-    timelineEntries,
-    turnDiffSummaryByAssistantMessageId,
-    inferredCheckpointTurnCountByTurnId,
-  });
-  const derivedRows = deriveMessagesTimelineRows({
-    timelineEntries,
-    isWorking: activeTurnInProgress,
-    worktreeSetup: null,
-    worktreeSetupOpen: false,
-    activeTurnInProgress,
-    activeTurnId: thread.latestTurn?.turnId ?? null,
-    activeTurnStartedAt: thread.latestTurn?.startedAt ?? null,
-    turnDiffSummaryByAssistantMessageId,
-    revertTurnCountByUserMessageId,
-  });
-  const markdownMessages = derivedRows.flatMap((row) =>
-    row.kind === "message"
-      ? [
-          row.message,
-          ...(row.collapsedTurnItems ?? []).flatMap((item) =>
-            item.kind === "narration" ? [item.message] : [],
-          ),
-        ]
-      : [],
-  );
-  const markdownWorkEntries = derivedRows.flatMap((row) => {
-    const entries =
-      row.kind === "work"
-        ? row.groupedEntries
-        : row.kind === "message"
-          ? [
-              ...(row.leadingWorkEntries ?? []),
-              ...(row.inlineWorkEntries ?? []),
-              ...(row.collapsedTurnItems ?? []).flatMap((item) =>
-                item.kind === "work" ? [item.entry] : [],
-              ),
-            ]
-          : [];
-    return entries.filter(isReasoningUpdateWorkEntry);
-  });
-  const parsedMarkdownTrees = [
-    ...markdownMessages.map((message) =>
-      parseMarkdown(message.text, message.role === "user" ? "user" : "assistant"),
-    ),
-    ...markdownWorkEntries.map((entry) =>
-      parseMarkdown(
-        formatAgentActivityEntryPreview(entry) ?? entry.preview ?? entry.detail ?? entry.label,
-        "assistant",
-      ),
-    ),
-  ];
-  const parsedTreeByMessageId = new Map(
-    markdownMessages.map((message, index) => [message.id, parsedMarkdownTrees[index] ?? null]),
-  );
-  const parsedTreeByWorkEntryId = new Map(
-    markdownWorkEntries.map((entry, index) => [
-      entry.id,
-      parsedMarkdownTrees[markdownMessages.length + index] ?? null,
-    ]),
-  );
-  const rows = derivedRows.map((row): ThreadTranscriptRow => {
-    const rowWorkEntries =
-      row.kind === "work"
-        ? row.groupedEntries
-        : row.kind === "message"
-          ? [
-              ...(row.leadingWorkEntries ?? []),
-              ...(row.inlineWorkEntries ?? []),
-              ...(row.collapsedTurnItems ?? []).flatMap((item) =>
-                item.kind === "work" ? [item.entry] : [],
-              ),
-            ]
-          : [];
-    const markdownTreesByWorkEntryId = Object.fromEntries(
-      rowWorkEntries
-        .filter(isReasoningUpdateWorkEntry)
-        .map((entry) => [entry.id, parsedTreeByWorkEntryId.get(entry.id) ?? null]),
-    );
-    if (row.kind !== "message") {
-      return Object.keys(markdownTreesByWorkEntryId).length > 0
-        ? { ...row, markdownTreesByWorkEntryId }
-        : row;
-    }
-    const messages = [
-      row.message,
-      ...(row.collapsedTurnItems ?? []).flatMap((item) =>
-        item.kind === "narration" ? [item.message] : [],
-      ),
-    ];
-    const markdownTreesByMessageId: Record<string, MarkdownNode | null> = {};
-    for (const message of messages)
-      markdownTreesByMessageId[message.id] = parsedTreeByMessageId.get(message.id) ?? null;
-    return {
-      ...row,
-      markdownTree: markdownTreesByMessageId[row.message.id] ?? null,
-      markdownTreesByMessageId,
-      markdownTreesByWorkEntryId,
-    };
-  });
+  const rows = projectThreadTranscriptRows(thread);
   transcriptRowsByThreadId.set(threadId, {
     snapshotSequence: snapshot.snapshotSequence,
     rows,

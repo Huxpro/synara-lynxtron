@@ -63,11 +63,12 @@ describe("Lynx pending approval capability", () => {
     expect(querySource).toContain("pendingApprovals: readonly PendingApproval[]");
   });
 
-  it("dispatches the canonical response and refreshes the thread", () => {
+  it("dispatches the canonical response; session sync delivers the settled interaction", () => {
     expect(routerSource).toContain('type: "thread.approval.respond"');
     expect(routerSource).toContain("requestId: activePendingApproval.requestId");
     expect(routerSource).toContain("decision,");
     expect(routerSource).toContain("<PendingApprovalPanel");
-    expect(routerSource).toContain('queryKey: ["thread-detail", threadId]');
+    // The page reads the shared store, so there is no query to refresh.
+    expect(routerSource).not.toContain('"thread-detail"');
   });
 });

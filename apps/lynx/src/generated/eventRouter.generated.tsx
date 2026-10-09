@@ -3,6 +3,8 @@
 // generator, then run `node scripts/generate-event-router.mjs` in apps/lynx.
 // Contents: EventRouter and the file-local declarations it closes over,
 // verbatim; only import specifiers are rewritten.
+// Except for these guarded patches of upstream defects, marked "LYNX PATCH"
+// below (apps/lynx/scripts/event-router-patches.mjs): drop-queued-thread-events-covered-by-snapshot.
 // Browser globals Lynx has no value for are bound to Lynx modules below
 // (EVENT_ROUTER_GLOBAL_PORTS): window.
 
@@ -1233,6 +1235,14 @@ function EventRouter() {
         // turn, the resync belongs to the turn that requested it, and the new turn must
         // still get its own.
         const catchupEntryBeforeApply = resolveThreadCatchupBackoff(threadId);
+        // LYNX PATCH drop-queued-thread-events-covered-by-snapshot (scripts/event-router-patches.mjs):
+        // the snapshot already contains this thread's queued events up to its
+        // sequence; flushing them after it would apply them twice.
+        pendingDomainEvents = pendingDomainEvents.filter(
+          (queuedEvent) =>
+            String(queuedEvent.aggregateId) !== snapshot.thread.id ||
+            queuedEvent.sequence > snapshot.snapshotSequence,
+        );
         syncServerThreadDetailHotPath(snapshot.thread, snapshot.snapshotSequence);
         reconcilePromotedDraftFromThreadDetail(snapshot.thread);
         flushThreadBuffer(threadId, snapshot.snapshotSequence);
@@ -1445,6 +1455,14 @@ function EventRouter() {
           clearThreadDetailResumeCursor(threadId);
           return;
         }
+        // LYNX PATCH drop-queued-thread-events-covered-by-snapshot (scripts/event-router-patches.mjs):
+        // the snapshot already contains this thread's queued events up to its
+        // sequence; flushing them after it would apply them twice.
+        pendingDomainEvents = pendingDomainEvents.filter(
+          (queuedEvent) =>
+            String(queuedEvent.aggregateId) !== item.snapshot.thread.id ||
+            queuedEvent.sequence > item.snapshot.snapshotSequence,
+        );
         syncServerThreadDetailHotPath(item.snapshot.thread, item.snapshot.snapshotSequence);
         // The projection can discard a tombstoned snapshot (deleted thread or
         // project) instead of applying it; committing the cursor or the stream
