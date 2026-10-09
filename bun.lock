@@ -265,6 +265,7 @@
   },
   "trustedDependencies": [
     "electron-winstaller",
+    "node-pty",
     "@lynx-js/lynxtron",
   ],
   "patchedDependencies": {

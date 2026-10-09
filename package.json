@@ -109,6 +109,7 @@
   },
   "trustedDependencies": [
     "@lynx-js/lynxtron",
-    "electron-winstaller"
+    "electron-winstaller",
+    "node-pty"
   ]
 }
