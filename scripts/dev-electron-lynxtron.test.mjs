@@ -769,88 +769,105 @@ describe("Electron and Lynxtron comparison launcher", () => {
     expect(options.skipLynxDevtool).toBe(true);
   });
 
-  it("copies Lynxtron to an exact-owned app path for desktop automation", () => {
-    const root = mkdtempSync(join(tmpdir(), "synara-owned-lynxtron-"));
-    const paths = resolveDesktopComparisonPaths(root);
-    mkdirSync(join(paths.sourceLynxtronApp, "Contents", "MacOS"), { recursive: true });
-    mkdirSync(dirname(paths.lynxtronPackageJson), { recursive: true });
-    writeFileSync(paths.lynxtronPackageJson, JSON.stringify({ version: "0.0.21" }));
-    writeFileSync(
-      join(paths.sourceLynxtronApp, "Contents", "Info.plist"),
-      `<?xml version="1.0" encoding="UTF-8"?>
+  // Staging rewrites Info.plist with plutil and copies with ditto, which exist only on macOS.
+  it.skipIf(platform() !== "darwin")(
+    "copies Lynxtron to an exact-owned app path for desktop automation",
+    () => {
+      const root = mkdtempSync(join(tmpdir(), "synara-owned-lynxtron-"));
+      const paths = resolveDesktopComparisonPaths(root);
+      mkdirSync(join(paths.sourceLynxtronApp, "Contents", "MacOS"), { recursive: true });
+      mkdirSync(dirname(paths.lynxtronPackageJson), { recursive: true });
+      writeFileSync(paths.lynxtronPackageJson, JSON.stringify({ version: "0.0.21" }));
+      writeFileSync(
+        join(paths.sourceLynxtronApp, "Contents", "Info.plist"),
+        `<?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0"><dict>
 <key>CFBundleIdentifier</key><string>com.lynxjs.Lynxtron</string>
 <key>CFBundleDisplayName</key><string>lynxtron</string>
 <key>CFBundleName</key><string>lynxtron</string>
 </dict></plist>`,
-    );
-    writeFileSync(join(paths.sourceLynxtronApp, "Contents", "MacOS", "lynxtron"), "binary");
-
-    prepareOwnedLynxtronRuntime(paths, { sign: false });
-
-    expect(readFileSync(paths.ownedLynxtronExecutable, "utf8")).toBe("binary");
-    expect(paths.ownedLynxtronApp).not.toBe(paths.sourceLynxtronApp);
-    expect(
-      spawnSync(
-        "plutil",
-        [
-          "-extract",
-          "CFBundleIdentifier",
-          "raw",
-          join(paths.ownedLynxtronApp, "Contents", "Info.plist"),
-        ],
-        { encoding: "utf8" },
-      ).stdout.trim(),
-    ).toBe("com.lynxjs.SynaraComparisonLynxtron");
-    expect(
-      spawnSync(
-        "plutil",
-        [
-          "-extract",
-          "CFBundleShortVersionString",
-          "raw",
-          join(paths.ownedLynxtronApp, "Contents", "Info.plist"),
-        ],
-        { encoding: "utf8" },
-      ).stdout.trim(),
-    ).toBe("0.0.21");
-    expect(
-      spawnSync(
-        "plutil",
-        [
-          "-extract",
-          "SynaraLynxtronSourceVersion",
-          "raw",
-          join(paths.ownedLynxtronApp, "Contents", "Info.plist"),
-        ],
-        { encoding: "utf8" },
-      ).stdout.trim(),
-    ).toBe("0.0.21");
-    expect(
-      spawnSync(
-        "plutil",
-        ["-extract", "LSUIElement", "raw", join(paths.ownedLynxtronApp, "Contents", "Info.plist")],
-        { encoding: "utf8" },
-      ).stdout.trim(),
-    ).toBe("true");
-
-    // --regular-app stages a regular application so Computer Use can find it.
-    expect(parseDesktopComparisonArgs(["--regular-app"]).regularApp).toBe(true);
-    prepareOwnedLynxtronRuntime(paths, { sign: false, regularApp: true });
-    expect(
-      spawnSync(
-        "plutil",
-        ["-extract", "LSUIElement", "raw", join(paths.ownedLynxtronApp, "Contents", "Info.plist")],
-        { encoding: "utf8" },
-      ).stdout.trim(),
-    ).toBe("false");
-    if (platform() === "darwin") {
-      const source = readFileSync(new URL("./dev-electron-lynxtron.mjs", import.meta.url), "utf8");
-      expect(source).toContain(
-        'spawnSync("ditto", [paths.sourceLynxtronApp, paths.ownedLynxtronApp]',
       );
-    }
-  });
+      writeFileSync(join(paths.sourceLynxtronApp, "Contents", "MacOS", "lynxtron"), "binary");
+
+      prepareOwnedLynxtronRuntime(paths, { sign: false });
+
+      expect(readFileSync(paths.ownedLynxtronExecutable, "utf8")).toBe("binary");
+      expect(paths.ownedLynxtronApp).not.toBe(paths.sourceLynxtronApp);
+      expect(
+        spawnSync(
+          "plutil",
+          [
+            "-extract",
+            "CFBundleIdentifier",
+            "raw",
+            join(paths.ownedLynxtronApp, "Contents", "Info.plist"),
+          ],
+          { encoding: "utf8" },
+        ).stdout.trim(),
+      ).toBe("com.lynxjs.SynaraComparisonLynxtron");
+      expect(
+        spawnSync(
+          "plutil",
+          [
+            "-extract",
+            "CFBundleShortVersionString",
+            "raw",
+            join(paths.ownedLynxtronApp, "Contents", "Info.plist"),
+          ],
+          { encoding: "utf8" },
+        ).stdout.trim(),
+      ).toBe("0.0.21");
+      expect(
+        spawnSync(
+          "plutil",
+          [
+            "-extract",
+            "SynaraLynxtronSourceVersion",
+            "raw",
+            join(paths.ownedLynxtronApp, "Contents", "Info.plist"),
+          ],
+          { encoding: "utf8" },
+        ).stdout.trim(),
+      ).toBe("0.0.21");
+      expect(
+        spawnSync(
+          "plutil",
+          [
+            "-extract",
+            "LSUIElement",
+            "raw",
+            join(paths.ownedLynxtronApp, "Contents", "Info.plist"),
+          ],
+          { encoding: "utf8" },
+        ).stdout.trim(),
+      ).toBe("true");
+
+      // --regular-app stages a regular application so Computer Use can find it.
+      expect(parseDesktopComparisonArgs(["--regular-app"]).regularApp).toBe(true);
+      prepareOwnedLynxtronRuntime(paths, { sign: false, regularApp: true });
+      expect(
+        spawnSync(
+          "plutil",
+          [
+            "-extract",
+            "LSUIElement",
+            "raw",
+            join(paths.ownedLynxtronApp, "Contents", "Info.plist"),
+          ],
+          { encoding: "utf8" },
+        ).stdout.trim(),
+      ).toBe("false");
+      if (platform() === "darwin") {
+        const source = readFileSync(
+          new URL("./dev-electron-lynxtron.mjs", import.meta.url),
+          "utf8",
+        );
+        expect(source).toContain(
+          'spawnSync("ditto", [paths.sourceLynxtronApp, paths.ownedLynxtronApp]',
+        );
+      }
+    },
+  );
 
   it("matches only exact comparison-owned Lynxtron executables during cleanup", () => {
     const executable =

@@ -72,8 +72,13 @@ export interface BrandIdentityBinaryFile {
   readonly contents: Uint8Array;
 }
 
+// The fork's Lynx renderer ships under its own reviewed bundle id. Only that
+// complete id is exempt; any other use of the domain still fails.
+const approvedLynxBundleId = `${incorrectBundleDomain}.lynx`;
+
 function containsForbiddenIdentity(value: string): boolean {
-  return forbiddenPatterns.some((pattern) => pattern.test(value));
+  const candidate = value.replaceAll(approvedLynxBundleId, "");
+  return forbiddenPatterns.some((pattern) => pattern.test(candidate));
 }
 
 export function findBrandIdentityViolations(

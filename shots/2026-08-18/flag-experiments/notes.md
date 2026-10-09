@@ -26,7 +26,7 @@ removed from the retained source after evidence capture.
 - isolated user-data directory per round;
 - parallel-instance mode and background presentation;
 - PID-derived DevTool client only;
-- unrelated `@t3tools/lynxtron` and iOS LynxExplorer clients were not reused or
+- unrelated `another-project` and iOS LynxExplorer clients were not reused or
   stopped.
 
 All seven retained rounds proved that

@@ -35,7 +35,7 @@
 ## Harness classification
 
 - The existing Web process on `http://localhost:5733/plugins` rendered a
-  `T3 CODE (DEV)` error boundary with
+  `another-project (DEV)` error boundary with
   `Primary environment request failed during fetch-session-state (HTTP 500)`.
 - That process was not connected to the isolated Synara snapshot and is a
   harness mismatch, not a comparable Web authority frame. It is excluded from
