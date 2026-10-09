@@ -12,22 +12,14 @@ describe("Electron Components Lab menu navigation", () => {
     expect(root).toContain('navigate({ to: "/components-lab", search: {} })');
   });
 
-  it("isolates the lab from product-global services", () => {
+  it("keeps every global service mounted on the lab route", () => {
     const root = readFileSync(new URL("./__root.tsx", import.meta.url), "utf8");
-    expect(root).toMatch(
-      /const componentsLabActive =\s+useRouterState\(\{ select: \(state\) => state\.location\.pathname \}\) === "\/components-lab"/,
+    // Unmounting the session-sync engine on navigation strands its in-flight
+    // subscriptions, and an unmounted notifier leaves its prompt toast behind.
+    expect(root).not.toContain("componentsLabActive");
+    expect(root).not.toMatch(/\? null : \(\s*<>\s*<GitProgressToastPreviewDev/);
+    expect(root).toContain(
+      "<GlobalComponentsLabMenuNavigation />\n          <GitProgressToastPreviewDev />",
     );
-    // One gate around every global mount keeps the hook a single block in upstream's file.
-    const gated = root.slice(
-      root.indexOf("{componentsLabActive ? null : ("),
-      root.indexOf("<Outlet />"),
-    );
-    for (const mount of [
-      "<EventRouter />",
-      "<ProviderStatusRefreshCoordinator />",
-      "<TaskCompletionNotifications />",
-    ]) {
-      expect(gated).toContain(mount);
-    }
   });
 });

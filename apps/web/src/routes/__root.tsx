@@ -22,7 +22,6 @@ import {
   type ErrorComponentProps,
   useNavigate,
   useParams,
-  useRouterState,
 } from "@tanstack/react-router";
 import {
   Suspense,
@@ -277,6 +276,8 @@ export const Route = createRootRouteWithContext<{
   }),
 });
 
+// Fork: the desktop menu's "Components Lab…" entry. It only navigates; every global
+// service below stays mounted on that route, exactly as on any other.
 function GlobalComponentsLabMenuNavigation() {
   const navigate = useNavigate();
 
@@ -293,8 +294,6 @@ function GlobalComponentsLabMenuNavigation() {
 }
 
 function RootRouteView() {
-  const componentsLabActive =
-    useRouterState({ select: (state) => state.location.pathname }) === "/components-lab";
   useAppTypography();
   useAppDensity();
   useChatWidth();
@@ -366,35 +365,30 @@ function RootRouteView() {
     <>
       <ToastProvider position="top-center">
         <AnchoredToastProvider>
-          {/* Fork: the Components Lab route renders stories without the app's global services. */}
           <GlobalComponentsLabMenuNavigation />
-          {componentsLabActive ? null : (
-            <>
-              <GitProgressToastPreviewDev />
-              <EventRouter />
-              <EditorDirtyRouteGuard />
-              <ProviderStatusRefreshCoordinator />
-              <ProviderModelDiscoveryWarmer />
-              <GlobalShortcutsDialog />
-              <BrowserVaultDialog />
-              <GlobalFeedbackDialog />
-              <GlobalWhatsNewSurface />
-              <TaskCompletionNotifications />
-              <QueuedComposerDrainCoordinator />
-              {/* Beta welcome must resolve the first-run gate even while Safari is queued. */}
-              <BetaWelcomeDialog />
-              <SafariAccessOnboarding startup>
-                <AppSnapWelcomeDialog>
-                  <FeatureTourDialog />
-                </AppSnapWelcomeDialog>
-              </SafariAccessOnboarding>
-              <GlobalOnboardingDialog />
-              <ProjectImportAnnouncementDialog />
-              <GlobalProjectImportDialog />
-              <AppSnapCoordinator />
-              <DesktopProjectBootstrap />
-            </>
-          )}
+          <GitProgressToastPreviewDev />
+          <EventRouter />
+          <EditorDirtyRouteGuard />
+          <ProviderStatusRefreshCoordinator />
+          <ProviderModelDiscoveryWarmer />
+          <GlobalShortcutsDialog />
+          <BrowserVaultDialog />
+          <GlobalFeedbackDialog />
+          <GlobalWhatsNewSurface />
+          <TaskCompletionNotifications />
+          <QueuedComposerDrainCoordinator />
+          {/* Beta welcome must resolve the first-run gate even while Safari is queued. */}
+          <BetaWelcomeDialog />
+          <SafariAccessOnboarding startup>
+            <AppSnapWelcomeDialog>
+              <FeatureTourDialog />
+            </AppSnapWelcomeDialog>
+          </SafariAccessOnboarding>
+          <GlobalOnboardingDialog />
+          <ProjectImportAnnouncementDialog />
+          <GlobalProjectImportDialog />
+          <AppSnapCoordinator />
+          <DesktopProjectBootstrap />
           <Outlet />
         </AnchoredToastProvider>
       </ToastProvider>
