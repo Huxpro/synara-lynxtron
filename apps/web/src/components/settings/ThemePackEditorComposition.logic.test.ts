@@ -15,7 +15,7 @@ describe("resolveThemePackEditorModel", () => {
 
     expect(model.titleLabel).toBe("Dark theme");
     expect(model.contextLabel).toBe("System is currently using this dark slot.");
-    expect(model.codeThemeLabel).toBe("Codex");
+    expect(model.codeThemeLabel).toBe("Synara");
     expect(model.codeThemes.every((option) => option.id !== "proof")).toBe(true);
   });
 

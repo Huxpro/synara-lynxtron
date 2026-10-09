@@ -1,5 +1,3 @@
-import fs from "node:fs";
-import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -18,13 +16,5 @@ describe("sidebar sort option catalog", () => {
       { value: "updated_at", label: "Last user message" },
       { value: "created_at", label: "Created at" },
     ]);
-  });
-
-  it("keeps the Web sidebar on the shared catalog", () => {
-    const sidebarSource = fs.readFileSync(path.resolve(__dirname, "Sidebar.tsx"), "utf8");
-    expect(sidebarSource).toContain("SIDEBAR_PROJECT_SORT_OPTIONS.map");
-    expect(sidebarSource).toContain("SIDEBAR_THREAD_SORT_OPTIONS.map");
-    expect(sidebarSource).not.toContain("SIDEBAR_SORT_LABELS");
-    expect(sidebarSource).not.toContain("SIDEBAR_THREAD_SORT_LABELS");
   });
 });

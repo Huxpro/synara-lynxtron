@@ -19,6 +19,7 @@ describe("SettingsGitWritingModelComposition", () => {
       settings: {
         providers: {
           codex: { customModels: [] },
+          claudeAgent: { customModels: [] },
           cursor: { customModels: [] },
           droid: { customModels: [] },
           opencode: { customModels: ["custom/model"] },
