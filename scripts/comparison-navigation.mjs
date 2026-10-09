@@ -79,6 +79,10 @@ export const DOCK_ADD_PANEL = { label: "Add panel" };
  * launcher (one "Open <pane>" button per pane kind) instead of tabs; `launcherLabel`
  * picks the pane opened from it. A dock that already has panes is left as it is.
  */
+// Electron loads the dock's panes on first use; the first open of a run has taken longer
+// than waitFor's 15 s default, later ones are immediate.
+export const DOCK_FIRST_OPEN_TIMEOUT_MS = 45_000;
+
 export async function openDockWithPane(driver, launcherLabel) {
   const launcher = { label: launcherLabel };
   if (await driver.find(DOCK_ADD_PANEL)) return;
@@ -90,10 +94,13 @@ export async function openDockWithPane(driver, launcherLabel) {
         : (await driver.find(launcher))
           ? "launcher"
           : null,
-    { label: `the dock on ${driver.kind}` },
+    { label: `the dock on ${driver.kind}`, timeoutMs: DOCK_FIRST_OPEN_TIMEOUT_MS },
   );
   if (shown === "launcher") {
     await driver.tap(launcher);
-    await waitFor(() => driver.find(DOCK_ADD_PANEL), { label: `the dock tabs on ${driver.kind}` });
+    await waitFor(() => driver.find(DOCK_ADD_PANEL), {
+      label: `the dock tabs on ${driver.kind}`,
+      timeoutMs: DOCK_FIRST_OPEN_TIMEOUT_MS,
+    });
   }
 }
