@@ -1,6 +1,11 @@
 import { describe, expect, it } from "@rstest/core";
 import { readFileSync } from "node:fs";
 
+const explorerQueriesSource = readFileSync(
+  new URL("./explorerQueries.lynx.ts", import.meta.url),
+  "utf8",
+);
+
 describe("Lynx Explorer dock", () => {
   it("offers bounded recovery when a selected file cannot be read", () => {
     const source = readFileSync(new URL("./ExplorerDock.lynx.tsx", import.meta.url), "utf8");
@@ -26,17 +31,18 @@ describe("Lynx Explorer dock", () => {
       "utf8",
     );
     expect(header).toContain("await ensureNativeApi().shell.openInEditor(openTarget, editor)");
-    expect(routerSource).toContain("onExplorerRetryFile: () => void explorerFileQuery.refetch(),");
+    expect(routerSource).toContain("onExplorerRetryFile: explorerFileQuery.retry,");
     // Every mounted Explorer (dock and editor mode) must receive the retry handler,
     // and the page must forward it to the dock host.
     expect(routerSource.match(/<ExplorerDock\b/g)?.length).toBe(
       routerSource.match(/onRetryFile=\{onExplorerRetryFile\}/g)?.length,
     );
     expect(routerSource).toContain("onExplorerRetryFile={onExplorerRetryFile}");
-    expect(routerSource).toContain("explorerFileQuery.isError && explorerFileQuery.isFetching");
+    expect(routerSource).toContain("explorerFileRetrying: explorerFileQuery.isRetrying,");
     // A failed read is never cached as data, so Retry issues a new request.
     expect(queriesSource).not.toContain("explorerFileCache");
-    expect(queriesSource).toContain("queryClient.fetchQuery(\n    projectReadFileQueryOptions({");
+    // Behavior (rejected read, rejected grant, Retry) is covered by explorerQueries.lynx.test.tsx.
+    expect(explorerQueriesSource).toContain("projectReadFileQueryOptions({");
   });
 
   it("restores the exact file row after its native context menu closes", () => {
@@ -135,11 +141,11 @@ describe("Lynx Explorer dock", () => {
       "utf8",
     );
 
-    expect(queriesSource).toContain("projectListDirectoriesQueryOptions(");
-    expect(queriesSource).toContain("projectSearchEntriesQueryOptions(");
-    expect(queriesSource).toContain("projectReadFileQueryOptions(");
-    expect(queriesSource).toContain("projectLocalPreviewGrantQueryOptions(");
-    expect(queriesSource).toContain("isLocalAbsolutePath(input.relativePath)");
+    expect(explorerQueriesSource).toContain("projectListDirectoriesQueryOptions({");
+    expect(explorerQueriesSource).toContain("projectSearchEntriesQueryOptions({");
+    expect(explorerQueriesSource).toContain("projectReadFileQueryOptions({");
+    expect(explorerQueriesSource).toContain("projectLocalPreviewGrantQueryOptions({");
+    expect(explorerQueriesSource).toContain("isLocalAbsolutePath(path)");
     expect(source).not.toContain("useQuery");
     expect(source).toContain("entriesPending: boolean");
     expect(source).toContain("entriesTruncated: boolean");
@@ -147,20 +153,16 @@ describe("Lynx Explorer dock", () => {
     expect(source).toContain('" ExplorerDockEntries--truncated"');
     expect(source).toContain("Showing top matches. Refine search.");
     expect(source).toContain("onQueryChange: (query: string) => void");
-    expect(routerSource).toContain("fetchExplorerEntries({");
     expect(routerSource).toContain(
-      "explorerEntriesTruncated: explorerEntriesQuery.data?.truncated ?? false,",
+      "useExplorerEntries({ workspaceRoot, query: explorerTrimmedQuery })",
     );
-    expect(routerSource).toContain(
-      'queryKey: ["explorer-entries", activeThreadId, workspaceRoot, explorerTrimmedQuery]',
-    );
-    expect(routerSource).toContain(
-      'queryKey: ["explorer-file", activeThreadId, workspaceRoot, explorerSelectedPath]',
-    );
+    expect(routerSource).toContain("explorerEntriesTruncated: explorerEntriesQuery.truncated,");
+    expect(routerSource).not.toContain('queryKey: ["explorer-entries"');
+    expect(routerSource).not.toContain('queryKey: ["explorer-file"');
     expect(routerSource).toContain("entriesTruncated={explorerEntriesTruncated}");
     expect(routerSource).toContain('| "explorerEntriesTruncated"');
     expect(routerSource).toContain("explorerEntriesPending,\n    explorerEntriesTruncated,");
-    expect(routerSource).toContain("fetchExplorerFile({");
+    expect(routerSource).toContain("useExplorerFile({");
     expect(routerSource).toContain('"background only"');
     expect(routerSource).toContain("enabled: activeThreadId !== null");
     expect(routerSource).toContain("const [data, summary] = await Promise.all([");
@@ -231,13 +233,13 @@ describe("Lynx Explorer dock", () => {
     expect(source).toContain("showPaths={Boolean(props.query.trim())}");
     expect(source).toContain("props.showPath && directoryPath(props.entry.path)");
     expect(source).toContain('return separator < 0 ? "" : normalized.slice(0, separator + 1);');
-    expect(queriesSource).toContain("export async function fetchExplorerDirectory");
-    expect(queriesSource).toContain("relativePath: input.relativePath");
-    expect(routerSource).toContain("fetchExplorerDirectory({");
+    expect(explorerQueriesSource).toContain("export function useExplorerDirectories(");
+    expect(explorerQueriesSource).toContain("useQueries({");
+    expect(routerSource).toContain("useExplorerDirectories({");
     expect(routerSource).toContain("Array.from(explorerExpandedDirectories).toSorted()");
-    expect(routerSource).toContain("explorerDirectoriesQuery.data ?? []");
-    expect(routerSource).toContain("explorerExpandedDirectoryPaths.map(async (path)");
-    expect(routerSource).toContain("fetchExplorerDirectory({");
+    expect(routerSource).toContain("projectExplorerDirectories(explorerDirectoriesQuery.results)");
+    expect(explorerQueriesSource).toContain("queries: input.expandedPaths.map((relativePath) =>");
+    expect(routerSource).toContain("expandedPaths: explorerExpandedDirectoryPaths,");
     expect(routerSource).toContain("fetchExplorerLocalPreviewUrl({");
     expect(routerSource).toContain("!isSupportedLocalPreviewFilePath(explorerSelectedPath)");
     expect(queriesSource).toContain("export async function fetchExplorerLocalPreviewUrl");

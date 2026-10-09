@@ -93,9 +93,7 @@ import bubbleTextSvg from "@synara-central-icons/bubble-text.svg?raw";
 import terminalSvg from "@synara-central-icons/console.svg?raw";
 
 import {
-  fetchExplorerDirectory,
-  fetchExplorerEntries,
-  fetchExplorerFile,
+  type ExplorerFileResult,
   fetchExplorerLocalPreviewUrl,
   fetchExplorerPdfMetadata,
   fetchThreadHeaderSummary,
@@ -109,6 +107,12 @@ import { resolveStudioRestoreRoute } from "./studioRoute.logic";
 import { buildThreadRelaunchUrl } from "./relaunchSurface.logic";
 import { parseSettingsRouteLocation, settingsRouteLocation } from "./settingsRoute.logic";
 import { projectExplorerDirectories, toggleExpandedDirectory } from "./explorerTree.logic";
+import {
+  useExplorerDirectories,
+  useExplorerEntries,
+  useExplorerFile,
+  useExplorerSyntaxHighlight,
+} from "./explorerQueries.lynx";
 import { threadRecapRevision } from "./environmentRecap.logic";
 import type { EnvironmentBootstrapData } from "./environmentBootstrap.lynx";
 import {
@@ -685,7 +689,7 @@ interface ThreadPageProps {
   readonly data: Awaited<ReturnType<typeof fetchThreadTranscriptRows>> | undefined;
   readonly error: unknown;
   readonly environmentData: EnvironmentBootstrapData | null;
-  readonly explorerEntries: Awaited<ReturnType<typeof fetchExplorerEntries>>["entries"];
+  readonly explorerEntries: ExplorerEntriesResult["entries"];
   readonly explorerEntriesError: boolean;
   readonly explorerEntriesPending: boolean;
   readonly explorerEntriesTruncated: boolean;
@@ -693,13 +697,11 @@ interface ThreadPageProps {
   readonly explorerDirectoryErrors: ReadonlySet<string>;
   readonly explorerDirectoryPending: ReadonlySet<string>;
   readonly explorerExpandedDirectories: ReadonlySet<string>;
-  readonly explorerFile: Awaited<ReturnType<typeof fetchExplorerFile>>["file"] | null;
+  readonly explorerFile: ExplorerFileResult["file"] | null;
   readonly explorerFileError: boolean;
   readonly explorerFilePending: boolean;
   readonly explorerFileRetrying: boolean;
-  readonly explorerFileSyntaxHighlight: Awaited<
-    ReturnType<typeof fetchExplorerFile>
-  >["syntaxHighlight"];
+  readonly explorerFileSyntaxHighlight: ExplorerFileResult["syntaxHighlight"];
   readonly explorerLocalPreviewUrl: string | null;
   readonly explorerLocalPreviewError: boolean;
   readonly explorerLocalPreviewPending: boolean;
@@ -2996,7 +2998,9 @@ export function SliceRouter({
       return { data, summary };
     },
     enabled: activeThreadId !== null,
-    refetchInterval: 500,
+    // No interval: react-query intervals never ran on Lynx before the
+    // query-core environment fix, and this read is refreshed by session-sync
+    // invalidation. A timer here would be a new poll.
     retry: false,
   });
   useEffect(() => {
@@ -3032,32 +3036,15 @@ export function SliceRouter({
     activeThreadId !== null
       ? (resolvedActiveThreadData?.summary?.workspaceRoot ?? null)
       : landingDockWorkspaceRoot;
-  const explorerEntriesQuery = useQuery({
-    queryKey: ["explorer-entries", activeThreadId, workspaceRoot, explorerTrimmedQuery],
-    queryFn: async () => {
-      "background only";
-      if (!workspaceRoot) return null;
-      return fetchExplorerEntries({ workspaceRoot, query: explorerTrimmedQuery });
-    },
-    enabled: workspaceRoot !== null,
-    retry: false,
-  });
-  const explorerFileQuery = useQuery({
-    queryKey: ["explorer-file", activeThreadId, workspaceRoot, explorerSelectedPath],
-    queryFn: async () => {
-      "background only";
-      if (!workspaceRoot || !explorerSelectedPath) return null;
-      return fetchExplorerFile({
-        workspaceRoot,
-        relativePath: explorerSelectedPath,
-      });
-    },
+  // Explorer reads observe upstream's project queries (app/explorerQueries.lynx.ts).
+  const explorerEntriesQuery = useExplorerEntries({ workspaceRoot, query: explorerTrimmedQuery });
+  const explorerFileQuery = useExplorerFile({
+    workspaceRoot,
+    relativePath: explorerSelectedPath,
     enabled:
-      workspaceRoot !== null &&
-      explorerSelectedPath !== null &&
-      !isSupportedLocalPreviewFilePath(explorerSelectedPath),
-    retry: false,
+      explorerSelectedPath !== null && !isSupportedLocalPreviewFilePath(explorerSelectedPath),
   });
+  const explorerFileSyntaxHighlight = useExplorerSyntaxHighlight(explorerFileQuery.file);
   const explorerLocalPreviewQuery = useQuery({
     queryKey: ["explorer-local-preview", activeThreadId, workspaceRoot, explorerSelectedPath],
     queryFn: async () => {
@@ -3090,32 +3077,14 @@ export function SliceRouter({
       isSupportedLocalPdfPath(explorerSelectedPath),
     retry: false,
   });
-  const expandedDirectoryKey = explorerExpandedDirectoryPaths.join("\0");
-  const explorerDirectoriesQuery = useQuery({
-    queryKey: ["explorer-directories", activeThreadId, workspaceRoot, expandedDirectoryKey],
-    queryFn: async () => {
-      "background only";
-      if (!workspaceRoot || explorerTrimmedQuery.length > 0) return [];
-      return Promise.all(
-        explorerExpandedDirectoryPaths.map(async (path) => {
-          try {
-            const result = await fetchExplorerDirectory({
-              workspaceRoot,
-              relativePath: path,
-            });
-            return [path, result.entries, false] as const;
-          } catch {
-            return [path, [], true] as const;
-          }
-        }),
-      );
-    },
-    enabled: workspaceRoot !== null && explorerTrimmedQuery.length === 0,
-    retry: false,
+  const explorerDirectoriesQuery = useExplorerDirectories({
+    workspaceRoot,
+    expandedPaths: explorerExpandedDirectoryPaths,
+    enabled: explorerTrimmedQuery.length === 0,
   });
   const resolvedActiveThreadPending = resolvedActiveThreadData === undefined && activeThreadPending;
   const { entriesByPath: explorerDirectoryData, errorPaths: explorerDirectoryErrors } =
-    projectExplorerDirectories(explorerDirectoriesQuery.data ?? []);
+    projectExplorerDirectories(explorerDirectoriesQuery.results);
   const explorerDirectoryPending = new Set(
     explorerDirectoriesQuery.isFetching
       ? [...explorerExpandedDirectories].filter(
@@ -3387,23 +3356,23 @@ export function SliceRouter({
   }, [commitRecentViewSelection, openOrAdvanceRecentViews, openSearchPalette, setRoute]);
 
   const explorerDockProps: ExplorerDockProps = {
-    explorerEntries: explorerEntriesQuery.data?.entries ?? [],
+    explorerEntries: explorerEntriesQuery.entries,
     explorerEntriesError: explorerEntriesQuery.isError,
-    explorerEntriesPending: workspaceRoot !== null && explorerEntriesQuery.isPending,
-    explorerEntriesTruncated: explorerEntriesQuery.data?.truncated ?? false,
+    explorerEntriesPending: explorerEntriesQuery.isPending,
+    explorerEntriesTruncated: explorerEntriesQuery.truncated,
     explorerDirectoryEntries: explorerDirectoryData,
     explorerDirectoryErrors: explorerDirectoryErrors,
     explorerDirectoryPending: explorerDirectoryPending,
     explorerExpandedDirectories: explorerExpandedDirectories,
-    explorerFile: explorerFileQuery.data?.file ?? null,
+    explorerFile: explorerFileQuery.file,
     explorerFileError: explorerFileQuery.isError,
     explorerFilePending:
       explorerSelectedPath !== null &&
       !isSupportedLocalPreviewFilePath(explorerSelectedPath) &&
       workspaceRoot !== null &&
       explorerFileQuery.isPending,
-    explorerFileRetrying: explorerFileQuery.isError && explorerFileQuery.isFetching,
-    explorerFileSyntaxHighlight: explorerFileQuery.data?.syntaxHighlight ?? null,
+    explorerFileRetrying: explorerFileQuery.isRetrying,
+    explorerFileSyntaxHighlight,
     explorerLocalPreviewUrl: explorerLocalPreviewQuery.data ?? null,
     explorerLocalPreviewError: explorerLocalPreviewQuery.isError,
     explorerLocalPreviewPending:
@@ -3426,7 +3395,7 @@ export function SliceRouter({
       setExplorerQuery(query);
       setExplorerSelectedPath(null);
     },
-    onExplorerRetryFile: () => void explorerFileQuery.refetch(),
+    onExplorerRetryFile: explorerFileQuery.retry,
     onExplorerSelectPath: setExplorerSelectedPath,
     onExplorerToggleDirectory: (path) =>
       setExplorerExpandedDirectories((current) => toggleExpandedDirectory(current, path)),

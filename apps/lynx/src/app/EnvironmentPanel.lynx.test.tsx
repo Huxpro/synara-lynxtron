@@ -155,10 +155,13 @@ describe("Lynx Environment panel", () => {
     expect(panelSource).toContain(
       "gitRunStackedActionMutationOptions({ cwd: props.workspaceRoot, queryClient })",
     );
-    expect(panelSource).toContain("ensureNativeApi().git.onActionProgress((event) => {");
-    expect(panelSource).toContain("result = await stackedActionMutation.mutateAsync({");
-    expect(panelSource).toContain("stopProgress();");
-    expect(panelSource).toContain("await pullMutation.mutateAsync()");
+    // The running action and its progress listener live in the workspace owner.
+    expect(panelSource).toContain("useOutstandingGitAction(props.workspaceRoot)");
+    expect(panelSource).toContain("await runOwnedGitAction({");
+    expect(panelSource).not.toContain("onActionProgress");
+    expect(panelSource).toContain("run: () => stackedActionMutation.mutateAsync(variables),");
+    expect(panelSource).toContain("if (readOutstandingGitAction(props.workspaceRoot)) return;");
+    expect(panelSource).toContain("run: () => pullMutation.mutateAsync(),");
     expect(panelSource).toContain("Git pull failed.");
     expect(panelSource).toContain("await dialogs.confirm(");
     expect(panelSource).toContain("<Dialog");
@@ -175,9 +178,10 @@ describe("Lynx Environment panel", () => {
     expect(panelSource).toContain(
       'label={running ? (progressLabel ?? "Working…") : "Commit and Push"}',
     );
-    expect(panelSource).toContain('event.kind === "phase_started"');
-    expect(panelSource).toContain('event.kind === "hook_started"');
-    expect(panelSource).toContain('event.kind === "hook_output"');
+    const ownerSource = readFileSync(new URL("./gitActionOwner.lynx.ts", import.meta.url), "utf8");
+    expect(ownerSource).toContain('event.kind === "phase_started"');
+    expect(ownerSource).toContain('event.kind === "hook_started"');
+    expect(ownerSource).toContain('event.kind === "hook_output"');
     expect(panelSource).toContain("Git actions");
     expect(panelSource).toContain("Pull");
     expect(panelSource).toContain("Unavailable");

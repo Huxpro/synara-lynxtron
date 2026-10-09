@@ -84,14 +84,7 @@ import {
   readPersistedThreadRecapCache,
   upsertPersistedThreadRecap,
 } from "@synara-web/lib/threadRecap";
-import {
-  projectListDirectoriesQueryOptions,
-  projectLocalPreviewGrantQueryOptions,
-  projectReadFileQueryOptions,
-  projectSearchEntriesQueryOptions,
-} from "@synara-web/lib/projectReactQuery";
 import type { NativeSyntaxHighlightThemes } from "../main/syntaxHighlightingContract.logic";
-import { isLocalAbsolutePath } from "@synara/shared/path";
 import { resolveSnapshotThreadProvider } from "./threadSummaryProjection.logic";
 import { parseMarkdown, type MarkdownNode } from "../components/markdown/markdownAst.lynx";
 
@@ -375,75 +368,10 @@ export async function fetchSidebarSearchSnapshot(): Promise<OrchestrationSidebar
   return fetchSynaraSidebarSearchSnapshot();
 }
 
-// Explorer reads go through upstream's project query options, so the same
-// cache entries (and their staleness) serve the tree, search and preview and
-// session sync's file invalidations reach them.
-export async function fetchExplorerEntries(input: {
-  readonly query: string;
-  readonly workspaceRoot: string;
-}): Promise<ExplorerEntriesResult> {
-  "background only";
-  return input.query
-    ? queryClient.fetchQuery(
-        projectSearchEntriesQueryOptions({
-          cwd: input.workspaceRoot,
-          query: input.query,
-          kind: "file",
-          limit: 80,
-        }),
-      )
-    : queryClient.fetchQuery(
-        projectListDirectoriesQueryOptions({ cwd: input.workspaceRoot, includeFiles: true }),
-      );
-}
-
-export async function fetchExplorerDirectory(input: {
-  readonly relativePath: string;
-  readonly workspaceRoot: string;
-}): Promise<ProjectListDirectoriesResult> {
-  "background only";
-  return queryClient.fetchQuery(
-    projectListDirectoriesQueryOptions({
-      cwd: input.workspaceRoot,
-      relativePath: input.relativePath,
-      includeFiles: true,
-    }),
-  );
-}
-
-export async function fetchExplorerFile(input: {
-  readonly previewGrant?: string;
-  readonly relativePath: string;
-  readonly workspaceRoot: string;
-}): Promise<{
+/** The Explorer's file on screen: upstream's read plus the host's highlighting. */
+export interface ExplorerFileResult {
   readonly file: ProjectReadFileResult;
   readonly syntaxHighlight: NativeSyntaxHighlightThemes | null;
-}> {
-  "background only";
-  let previewGrant = input.previewGrant ?? null;
-  if (!previewGrant && isLocalAbsolutePath(input.relativePath)) {
-    previewGrant = (
-      await queryClient.fetchQuery(
-        projectLocalPreviewGrantQueryOptions({ path: input.relativePath }),
-      )
-    ).grant;
-  }
-  const file = await queryClient.fetchQuery(
-    projectReadFileQueryOptions({
-      cwd: input.workspaceRoot,
-      relativePath: input.relativePath,
-      previewGrant,
-    }),
-  );
-  // Host-side highlighting is Lynx-only (`data/hostSyntaxHighlight.lynx.ts`).
-  const { highlightExplorerCode } = await import(
-    /* webpackMode: "eager" */ "../data/hostSyntaxHighlight.lynx"
-  );
-  const syntaxHighlight = await highlightExplorerCode({
-    code: file.contents,
-    path: file.relativePath,
-  }).catch(() => null);
-  return { file, syntaxHighlight };
 }
 
 export async function fetchExplorerLocalPreviewUrl(input: {

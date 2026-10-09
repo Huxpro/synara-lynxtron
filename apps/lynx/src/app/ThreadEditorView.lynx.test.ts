@@ -261,11 +261,9 @@ describe("Lynx Editor view", () => {
 
     expect(routerSource).toContain('queryKey: ["thread-detail", activeThreadId]');
     expect(routerSource).toContain(
-      'queryKey: ["explorer-entries", activeThreadId, workspaceRoot, explorerTrimmedQuery]',
+      "useExplorerEntries({ workspaceRoot, query: explorerTrimmedQuery })",
     );
-    expect(routerSource).toContain(
-      'queryKey: ["explorer-file", activeThreadId, workspaceRoot, explorerSelectedPath]',
-    );
+    expect(routerSource).toContain("useExplorerFile({");
     expect(routerSource).not.toContain(
       "'thread-detail',\n      activeThreadId,\n      explorerTrimmedQuery",
     );

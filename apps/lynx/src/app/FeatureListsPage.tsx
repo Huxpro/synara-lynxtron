@@ -506,7 +506,6 @@ export function PullRequestsPage() {
         state,
         projectId: projectId ?? null,
       }),
-    refetchInterval: 60_000,
     retry: false,
   });
   const {

@@ -5,6 +5,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { generatedFileIsFresh, writeGeneratedFile } from "./format-generated.mjs";
+import { countLynxOwnedQueries } from "./query-ownership.mjs";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(scriptDir, "..");
@@ -198,30 +199,6 @@ function listLynxSourceFiles(root) {
   return files.sort();
 }
 
-/**
- * A query Lynx defines itself: an object literal carrying both `queryKey` and
- * `queryFn`, wherever it is passed (`useQuery`, `queryOptions`, `fetchQuery`).
- * `useQuery(upstreamQueryOptions())` and `useQuery({ ...upstreamQueryOptions(),
- * enabled })` run upstream's query and are not counted: the counter tracks
- * parallel data paths, and replacing a hand-rolled loop with an upstream query
- * must not read as growth.
- */
-function isLynxOwnedQueryDefinition(node) {
-  if (!ts.isObjectLiteralExpression(node)) return false;
-  const names = new Set(
-    node.properties
-      .filter(
-        (property) =>
-          (ts.isPropertyAssignment(property) ||
-            ts.isShorthandPropertyAssignment(property) ||
-            ts.isMethodDeclaration(property)) &&
-          ts.isIdentifier(property.name),
-      )
-      .map((property) => property.name.text),
-  );
-  return names.has("queryKey") && names.has("queryFn");
-}
-
 function countParallelImplementationSites(filePath) {
   const text = fs.readFileSync(filePath, "utf8");
   const sourceFile = ts.createSourceFile(
@@ -231,12 +208,10 @@ function countParallelImplementationSites(filePath) {
     true,
     filePath.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
   );
-  let useQueryCallSites = 0;
+  const useQueryCallSites = countLynxOwnedQueries(text, filePath);
   let refetchIntervalSites = 0;
   function visit(node) {
-    if (isLynxOwnedQueryDefinition(node)) {
-      useQueryCallSites += 1;
-    } else if (
+    if (
       (ts.isPropertyAssignment(node) || ts.isShorthandPropertyAssignment(node)) &&
       ts.isIdentifier(node.name) &&
       node.name.text === "refetchInterval"
@@ -583,7 +558,7 @@ const markdown = [
   ),
   "",
   "- `synaraClientImporters`: non-test files under `src/` whose static or dynamic imports resolve to `data/synaraClient.lynx.ts`.",
-  "- `useQueryCallSites`: queries Lynx defines itself under `src/` (non-test): object literals with both `queryKey` and `queryFn`. A `useQuery` given an upstream option factory is not counted.",
+  "- `useQueryCallSites`: queries Lynx owns under `src/` (non-test), as `scripts/query-ownership.mjs` counts them: definitions with `queryKey` and `queryFn`, and query consumers whose options are not provably an imported upstream factory with non-data overrides.",
   "- `refetchIntervalSites`: `refetchInterval` option sites under `src/` (non-test).",
   "- `routerTsxLines`: raw line count of `src/app/router.tsx`.",
   "",

@@ -118,6 +118,12 @@ import {
   type LocalServerStopFeedback,
 } from "./environmentLocalServers.logic";
 import {
+  GitActionAlreadyRunningError,
+  readOutstandingGitAction,
+  runOwnedGitAction,
+  useOutstandingGitAction,
+} from "./gitActionOwner.lynx";
+import {
   Menu,
   MenuItem,
   MenuPopup,
@@ -517,8 +523,18 @@ export function EnvironmentGitAction(props: {
   const [commitMessage, setCommitMessage] = useState("");
   const [editingFiles, setEditingFiles] = useState(false);
   const [excludedFiles, setExcludedFiles] = useState<ReadonlySet<string>>(new Set());
-  const [running, setRunning] = useState(false);
-  const [progressLabel, setProgressLabel] = useState<string | null>(null);
+  // The running action lives in the workspace's owner, not in this panel:
+  // reopening the panel attaches to it instead of offering a second run.
+  const outstandingAction = useOutstandingGitAction(props.workspaceRoot);
+  const running = outstandingAction !== null;
+  const progressLabel = outstandingAction?.progressLabel ?? null;
+  const mountedRef = useRef(true);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
   const [resultLabel, setResultLabel] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const branchesQuery = useQuery({
@@ -600,7 +616,7 @@ export function EnvironmentGitAction(props: {
     options: { readonly featureBranch?: boolean } = {},
   ): Promise<void> {
     "background only";
-    if (!props.gitStatus || running) return;
+    if (!props.gitStatus || readOutstandingGitAction(props.workspaceRoot)) return;
     if (requiresDefaultBranchConfirmation(action, isDefaultBranch) && activeBranch) {
       const copy = resolveDefaultBranchActionDialogCopy({
         action,
@@ -610,37 +626,29 @@ export function EnvironmentGitAction(props: {
       const confirmed = await dialogs.confirm(`${copy.title}\n\n${copy.description}`);
       if (!confirmed) return;
     }
-    setRunning(true);
-    setProgressLabel("Running git action…");
+    // Checked again after the awaited confirmation: a second accepted dialog
+    // must not start a second run (the owner claims the workspace atomically).
+    if (readOutstandingGitAction(props.workspaceRoot)) return;
     setError(null);
     setResultLabel(null);
     try {
       const actionId = environmentCommandId();
-      // Per-phase progress arrives on the facade's git action channel while
-      // the request itself resolves with the final result.
-      const stopProgress = ensureNativeApi().git.onActionProgress((event) => {
-        if (event.actionId !== actionId) return;
-        if (event.kind === "phase_started") setProgressLabel(event.label);
-        else if (event.kind === "hook_started") {
-          setProgressLabel(`Running ${event.hookName}…`);
-        } else if (event.kind === "hook_output") {
-          setProgressLabel(event.text);
-        } else if (event.kind === "action_failed") {
-          setProgressLabel(event.message);
-        }
+      const variables = {
+        actionId,
+        action,
+        ...(options.featureBranch ? { featureBranch: true } : {}),
+        ...(commitMessage.trim() ? { commitMessage: commitMessage.trim() } : {}),
+        ...(!allSelected ? { filePaths: selectedFiles.map((file) => file.path) } : {}),
+      };
+      // The owner holds the progress listener and the pending state; this
+      // panel may unmount while the (recoverable) action is still running.
+      const result = await runOwnedGitAction({
+        workspaceRoot: props.workspaceRoot,
+        actionId,
+        kind: "stacked",
+        initialProgressLabel: "Running git action…",
+        run: () => stackedActionMutation.mutateAsync(variables),
       });
-      let result: Awaited<ReturnType<typeof stackedActionMutation.mutateAsync>>;
-      try {
-        result = await stackedActionMutation.mutateAsync({
-          actionId,
-          action,
-          ...(options.featureBranch ? { featureBranch: true } : {}),
-          ...(commitMessage.trim() ? { commitMessage: commitMessage.trim() } : {}),
-          ...(!allSelected ? { filePaths: selectedFiles.map((file) => file.path) } : {}),
-        });
-      } finally {
-        stopProgress();
-      }
       const summary = summarizeGitResult(result);
       if (result.branch.status === "created" && result.branch.name) {
         if (props.onBranchChange) {
@@ -655,6 +663,7 @@ export function EnvironmentGitAction(props: {
           });
         }
       }
+      if (!mountedRef.current) return;
       setResultLabel(
         summary.description ? `${summary.title}: ${summary.description}` : summary.title,
       );
@@ -662,21 +671,25 @@ export function EnvironmentGitAction(props: {
       resetDialogState();
       props.onCompleted();
     } catch (cause) {
+      if (cause instanceof GitActionAlreadyRunningError || !mountedRef.current) return;
       setError(cause instanceof Error ? cause.message : "Git action failed.");
-    } finally {
-      setRunning(false);
-      setProgressLabel(null);
     }
   }
 
   async function runPull(): Promise<void> {
     "background only";
-    if (!pullAvailability.canRun || running) return;
-    setRunning(true);
+    if (!pullAvailability.canRun || readOutstandingGitAction(props.workspaceRoot)) return;
     setError(null);
     setResultLabel(null);
     try {
-      const result = await pullMutation.mutateAsync();
+      const result = await runOwnedGitAction({
+        workspaceRoot: props.workspaceRoot,
+        actionId: environmentCommandId(),
+        kind: "pull",
+        initialProgressLabel: null,
+        run: () => pullMutation.mutateAsync(),
+      });
+      if (!mountedRef.current) return;
       setResultLabel(
         result.status === "pulled"
           ? `Pulled ${result.upstreamBranch ?? result.branch}`
@@ -684,9 +697,8 @@ export function EnvironmentGitAction(props: {
       );
       props.onCompleted();
     } catch (cause) {
+      if (cause instanceof GitActionAlreadyRunningError || !mountedRef.current) return;
       setError(cause instanceof Error ? cause.message : "Git pull failed.");
-    } finally {
-      setRunning(false);
     }
   }
 

@@ -90,14 +90,15 @@ describe("sidebar read path (plan Step 3)", () => {
     );
     expect(router).not.toContain('queryKey: ["threads"]');
     expect(router).not.toContain("refetchInterval: 5_000");
-    // The one remaining poll in the router is the thread page's (plan Step 4).
-    expect(router.match(/refetchInterval/g)).toHaveLength(1);
+    // No Lynx-authored interval is left in the router: with query-core running
+    // as a client they would all start firing.
+    expect(router).not.toContain("refetchInterval");
   });
 
   it("the sidebar keeps only its non-shell polls", () => {
     const sidebar = source("../components/sidebar/Sidebar.lynx.tsx");
-    // project dev servers, local servers, pull-request review count.
-    expect(sidebar.match(/refetchInterval/g)).toHaveLength(3);
+    // The three intervals here never ran on Lynx; they are gone, not revived.
+    expect(sidebar).not.toContain("refetchInterval");
     expect(source("../components/composer/Composer.lynx.tsx")).not.toContain("refetchInterval");
   });
 });

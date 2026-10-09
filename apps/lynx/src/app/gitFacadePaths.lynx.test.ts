@@ -189,20 +189,23 @@ describe("Environment / Git / Explorer sources and the legacy client", () => {
     }
   });
 
-  it("keeps the explorer readers of queries.ts off the legacy client", () => {
+  it("keeps the explorer readers off the legacy client and off a second cache", () => {
     const queries = read("./queries.ts");
-    for (const name of [
+    for (const removed of [
       "fetchExplorerEntries",
       "fetchExplorerDirectory",
-      "fetchExplorerFile",
-      "fetchExplorerPdfMetadata",
+      "fetchExplorerFile(",
+      "explorerEntriesCache",
     ]) {
-      const start = queries.indexOf(`export async function ${name}(`);
-      expect(start, name).toBeGreaterThan(-1);
-      const end = queries.indexOf("\nexport ", start + 1);
-      expect(queries.slice(start, end), name).not.toContain("synaraClient");
+      expect(queries, removed).not.toContain(removed);
     }
-    expect(queries).not.toContain("explorerEntriesCache");
+    const explorer = read("./explorerQueries.lynx.ts");
+    expect(explorer).not.toContain("synaraClient");
+    expect(explorer).not.toContain("fetchQuery");
+    const router = read("./router.tsx");
+    for (const legacyKey of ['"explorer-entries"', '"explorer-file"', '"explorer-directories"']) {
+      expect(router, legacyKey).not.toContain(legacyKey);
+    }
   });
 
   it("the legacy client no longer carries git, explorer or host-highlight requests", () => {

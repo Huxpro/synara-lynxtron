@@ -401,7 +401,6 @@ export function Sidebar({
       );
       return fetchProjectDevServers();
     },
-    refetchInterval: 5_000,
   });
   const localServersQuery = useQuery({
     queryKey: ["sidebar-local-servers-native"],
@@ -413,7 +412,6 @@ export function Sidebar({
       return fetchLocalServers();
     },
     enabled: (data?.projects.length ?? 0) > 0,
-    refetchInterval: (data?.projects.length ?? 0) > 0 ? 5_000 : false,
   });
   const projectRunServerByProjectId = useMemo(() => {
     const projects = (data?.projects ?? []).filter((project) => project.kind === "project");
@@ -441,7 +439,6 @@ export function Sidebar({
         state: "open",
         projectId: null,
       }),
-    refetchInterval: 30_000,
   });
   const pullRequestsReviewBadge = resolvePullRequestReviewBadge(
     pullRequests

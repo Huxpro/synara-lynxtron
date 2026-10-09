@@ -5,7 +5,10 @@ import {
   gitStatusQueryOptions,
   gitWorkingTreeDiffQueryOptions,
 } from "@synara-web/lib/gitReactQuery";
-import { checkpointDiffQueryOptions } from "@synara-web/lib/providerReactQuery";
+import {
+  checkpointDiffQueryOptions,
+  resolveCheckpointDiffQueryDisplayState,
+} from "@synara-web/lib/providerReactQuery";
 import {
   ThreadId,
   type GitReadWorkingTreeDiffResult,
@@ -247,6 +250,12 @@ function OpenDiffDock(props: {
       enabled: diffsEnabled && (diffRequest.kind === "turn" || diffRequest.kind === "full-thread"),
     }),
   );
+  const checkpointDisplay = resolveCheckpointDiffQueryDisplayState({
+    isLoading: checkpointDiff.isLoading,
+    isFetching: checkpointDiff.isFetching,
+    data: checkpointDiff.data,
+    error: checkpointDiff.error,
+  });
   const diff =
     diffRequest.kind === "empty"
       ? { data: EMPTY_DIFF, isPending: false, error: null }
@@ -254,8 +263,10 @@ function OpenDiffDock(props: {
         ? { data: repoDiff.data, isPending: repoDiff.isPending, error: repoDiff.error }
         : {
             data: checkpointDiff.data ? { patch: checkpointDiff.data.diff } : undefined,
-            isPending: checkpointDiff.isPending,
-            error: checkpointDiff.error,
+            // Upstream's display state: a checkpoint still being written stays
+            // "loading" through its retries instead of surfacing a late error.
+            isPending: checkpointDisplay.isLoading,
+            error: checkpointDisplay.error,
           };
   const gitStatus = useQuery(gitStatusQueryOptions(props.workspaceRoot, diffsEnabled));
   const refreshDiff = () => {
