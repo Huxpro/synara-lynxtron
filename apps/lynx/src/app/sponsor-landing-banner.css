@@ -5,7 +5,8 @@
   top: 16px;
   left: 50%;
   width: 520px;
-  max-width: calc(100% - 48px);
+  /* The hero's 20px chat gutters plus the banner row's `px-6`. */
+  max-width: calc(100% - 88px);
   transform: translateX(-50%);
   -x-app-region: no-drag;
 }

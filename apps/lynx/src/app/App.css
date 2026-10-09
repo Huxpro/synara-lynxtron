@@ -23,9 +23,16 @@
   --type-ui-supporting-size: 11px;
   --type-ui-meta-size: 10px;
   --type-composer-editor-size: 12px;
-  --type-settings-section-label-size: 12px;
-  --type-settings-row-title-size: 12px;
-  --type-settings-row-description-size: 12px;
+  /* Upstream's settings rows are `text-ui` on a 1.5 line box, and the panel description is
+     `text-ui leading-relaxed`; tokens.css still carries the earlier 12px / 18px roles. */
+  --type-settings-section-label-size: var(--app-font-size-ui, 13px);
+  --type-settings-section-label-line-height: 19.5px;
+  --type-settings-row-title-size: var(--app-font-size-ui, 13px);
+  --type-settings-row-title-line-height: 19.5px;
+  --type-settings-row-description-size: var(--app-font-size-ui, 13px);
+  --type-settings-row-description-line-height: 19.5px;
+  --type-settings-header-description-size: var(--app-font-size-ui, 13px);
+  --type-settings-header-description-line-height: 21.125px;
   --settings-usage-meter-healthy: #00bc7d;
   --settings-usage-meter-warning: #fe9a00;
   --settings-usage-meter-danger: #fb2c36;

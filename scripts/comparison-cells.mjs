@@ -49,6 +49,22 @@ export const NAMED_EXEMPTIONS = Object.freeze([
   },
 ]);
 
+/**
+ * Controls that sit a fixed distance from Electron's because a block above them exists
+ * only on the Electron host. Unlike a named exemption, the control still has to be where
+ * the offset says, at its Electron size: only the stated shift is explained.
+ */
+export const NAMED_OFFSETS = Object.freeze([
+  {
+    // The General settings rows, top to bottom as far as either matrix size shows them.
+    label:
+      /^(Default provider|Default thread mode|Delete worktree on archive|Move sent messages to top|Project sort order|Thread sort order)$/,
+    delta: { x: 0, y: -222 },
+    reason:
+      "Electron's General panel opens with the Safari import button (28px + 24px gap) and the Synara Beta card (146px + 24px gap), which upstream renders only where the Electron desktop bridge supports them; Native has no such bridge, so its rows start 222px higher",
+  },
+]);
+
 /** Electron-only labels that are explained rather than counted as missing. */
 export const COVERAGE_EXEMPTIONS = Object.freeze([
   {
@@ -413,6 +429,23 @@ export function scrollbarGutterExemption(electron, delta, tolerance = CONTROL_TO
   return onlyHorizontal && explained && delta.x > 0 ? `scrollbar-gutter (${gutter}px)` : null;
 }
 
+/**
+ * A named offset explains a control only when what is left after removing the offset is
+ * within tolerance (or is the scrollbar gutter).
+ */
+export function namedOffsetExemption(label, electron, delta, tolerance = CONTROL_TOLERANCE_PX) {
+  const offset = NAMED_OFFSETS.find((entry) => entry.label.test(label));
+  if (!offset) return null;
+  const rest = {
+    x: round(delta.x - offset.delta.x),
+    y: round(delta.y - offset.delta.y),
+    width: delta.width,
+    height: delta.height,
+  };
+  const within = Object.values(rest).every((value) => Math.abs(value) <= tolerance);
+  return within || scrollbarGutterExemption(electron, rest, tolerance) ? offset.reason : null;
+}
+
 function round(value) {
   return Math.round(value * 10) / 10;
 }
@@ -460,7 +493,8 @@ export function compareControls(electron, native, tolerance = CONTROL_TOLERANCE_
         worst <= tolerance
           ? null
           : (NAMED_EXEMPTIONS.find((entry) => entry.label.test(label))?.reason ??
-            scrollbarGutterExemption(e, delta, tolerance)),
+            scrollbarGutterExemption(e, delta, tolerance) ??
+            namedOffsetExemption(label, e, delta, tolerance)),
     });
   }
   compared.sort((left, right) => right.worst - left.worst);

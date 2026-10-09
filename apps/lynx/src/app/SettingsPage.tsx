@@ -28,7 +28,6 @@ import {
   behaviorSettingsValuesEqual,
   type BehaviorSettingsValues,
 } from "@synara-web/components/settings/SettingsBehaviorPanel.logic";
-import { SettingsGeneralComposition } from "@synara-web/components/settings/SettingsGeneralComposition";
 import {
   settingsGeneralValuesEqual,
   type SettingsGeneralKey,
@@ -109,6 +108,7 @@ import { SettingsAppSnapPanel } from "./SettingsAppSnapPanel.lynx";
 import { sleepOnHost } from "../platform/timer";
 import { SettingsSearchResults } from "./SettingsSearchResults.lynx";
 import { AppRailShell } from "../components/sidebar/AppRail.lynx";
+import { SettingsGeneralPanel } from "./SettingsGeneralPanel.lynx";
 import { SidebarDisclosure } from "./SidebarDisclosure.lynx";
 import { rankLynxSettingsSearchEntries } from "./settingsSearch.logic";
 import { settingsSearchEntryTarget } from "@synara-web/settingsSearchIndex";
@@ -818,7 +818,7 @@ export function SettingsPage({
             {ready ? (
               <>
                 {section === "general" ? (
-                  <SettingsGeneralComposition
+                  <SettingsGeneralPanel
                     values={settings}
                     defaults={DEFAULT_SETTINGS_GENERAL_VALUES}
                     onChange={update}

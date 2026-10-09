@@ -1,8 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, namedOffsetExemption } from "vitest";
 
 import {
   compareControls,
   errorsBetweenProbes,
+  namedOffsetExemption,
   parseDevtoolConsole,
   scrollbarGutterExemption,
 } from "./comparison-cells.mjs";
@@ -38,6 +39,35 @@ describe("comparison cells", () => {
     expect(result.electronOnly).toEqual(["Only E"]);
     expect(result.missing).toEqual(["Only E"]);
     expect(result.nativeOnly).toEqual(["Only N"]);
+  });
+});
+
+describe("named offsets", () => {
+  const electron = { x: 910, y: 444, width: 176, height: 32, gutter: 10 };
+
+  it("explains a control only at the stated offset and at its Electron size", () => {
+    expect(
+      namedOffsetExemption("Default provider", electron, { x: 5, y: -222, width: 0, height: 0 }, 2),
+    ).toMatch(/Synara Beta card/);
+    // 8px away from where the offset puts it: still a failure.
+    expect(
+      namedOffsetExemption("Default provider", electron, { x: 0, y: -214, width: 0, height: 0 }, 2),
+    ).toBeNull();
+    // Right place, wrong size.
+    expect(
+      namedOffsetExemption(
+        "Default provider",
+        electron,
+        { x: 0, y: -222, width: 12, height: 0 },
+        2,
+      ),
+    ).toBeNull();
+  });
+
+  it("does not apply to other controls", () => {
+    expect(
+      namedOffsetExemption("Search settings", electron, { x: 0, y: -222, width: 0, height: 0 }, 2),
+    ).toBeNull();
   });
 });
 

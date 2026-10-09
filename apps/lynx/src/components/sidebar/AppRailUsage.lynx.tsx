@@ -5,12 +5,18 @@
 //   from upstream's AppRailUsage.logic, useProviderUsageSummary and the Environment
 //   usage summary, so the rail reads the same numbers as Electron's.
 
-import { DEFAULT_SERVER_SETTINGS_VIEW, type ServerProviderUsageSnapshot } from "@synara/contracts";
+import {
+  DEFAULT_SERVER_SETTINGS_VIEW,
+  type ProviderInstanceId,
+  type ProviderKind,
+  type ServerProviderUsageSnapshot,
+} from "@synara/contracts";
 import { deriveProviderInstances } from "@synara/shared/providerInstances";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "@lynx-js/react";
 
-import { useAppSettings, type RailUsageWindow } from "@synara-web/appSettings";
+import type { RailUsageWindow } from "@synara-web/appSettings";
+import { APP_SETTINGS_STORAGE_KEY } from "@synara-web/appSettingsStorageProjection.logic";
 import {
   getRailUsageAccounts,
   railUsageRingTone,
@@ -33,6 +39,7 @@ import { useStore } from "@synara-web/store";
 import { createAccountRateLimitThreadsSelector } from "@synara-web/storeSelectors";
 import { useTheme } from "../../adapters/useTheme.lynx";
 import { OpenAIProviderIcon } from "../OpenAIProviderIcon.lynx";
+import { webStorage } from "../../platform/storage";
 import { useLynxInteractiveState } from "../ui/interactive-state.lynx";
 
 // Tailwind emerald/yellow/orange/red-500, as upstream's RING_TONE_CLASS_NAME.
@@ -49,6 +56,52 @@ const DOUBLE_RING = { size: 34, stroke: 2.25, box: 34, icon: 12 };
 const RING_SPACING = 4.5;
 
 const selectAccountRateLimitThreads = createAccountRateLimitThreadsSelector();
+
+/** Upstream `RailUsageWindow` literals, default first (`DEFAULT_RAIL_USAGE_WINDOW`). */
+const RAIL_USAGE_WINDOWS = [
+  "both",
+  "fiveHour",
+  "weekly",
+] as const satisfies readonly RailUsageWindow[];
+
+interface RailUsageSettings {
+  readonly selectedIds: ReadonlyArray<ProviderInstanceId>;
+  readonly disabledProviders: ReadonlyArray<ProviderKind>;
+  readonly window: RailUsageWindow;
+  readonly codexHomePath: string | null;
+}
+
+function stringList(value: unknown): string[] | null {
+  return Array.isArray(value) ? value.filter((entry) => typeof entry === "string") : null;
+}
+
+/**
+ * The rail's usage settings, read straight from persisted app settings with upstream's
+ * defaults (`AppSettingsSchema`). Read-only on purpose: upstream's `useAppSettings`
+ * re-encodes the whole record through its schema on mount, which drops keys this build
+ * does not know, and Native must keep them.
+ */
+function readRailUsageSettings(): RailUsageSettings {
+  let record: Record<string, unknown> = {};
+  try {
+    const parsed: unknown = JSON.parse(webStorage.getItem(APP_SETTINGS_STORAGE_KEY) ?? "{}");
+    if (parsed && typeof parsed === "object") record = parsed as Record<string, unknown>;
+  } catch {
+    // Unreadable settings fall back to the defaults below.
+  }
+  const instanceIds = stringList(record.railUsageInstanceIds);
+  const legacyProviders = stringList(record.railUsageProviders) ?? ["codex", "claudeAgent"];
+  const window = RAIL_USAGE_WINDOWS.find((value) => value === record.railUsageWindow);
+  return {
+    selectedIds: (instanceIds ?? legacyProviders) as ProviderInstanceId[],
+    disabledProviders: (stringList(record.disabledProviders) ?? []) as ProviderKind[],
+    window: window ?? RAIL_USAGE_WINDOWS[0],
+    codexHomePath:
+      typeof record.codexHomePath === "string" && record.codexHomePath.length > 0
+        ? record.codexHomePath
+        : null,
+  };
+}
 
 function ringSvg(input: {
   readonly ring: typeof SINGLE_RING;
@@ -146,10 +199,10 @@ function AppRailUsageRing(props: {
 }
 
 function AppRailUsageRings(props: { readonly onOpenUsageSettings: () => void }) {
-  const { settings } = useAppSettings();
+  const [settings] = useState(readRailUsageSettings);
   const settingsQuery = useQuery(serverSettingsQueryOptions());
   const accounts = resolveRailUsageAccounts(
-    settings.railUsageInstanceIds ?? settings.railUsageProviders,
+    settings.selectedIds,
     getRailUsageAccounts(
       deriveProviderInstances(settingsQuery.data ?? DEFAULT_SERVER_SETTINGS_VIEW),
       settings.disabledProviders,
@@ -167,8 +220,8 @@ function AppRailUsageRings(props: { readonly onOpenUsageSettings: () => void }) 
               entry.provider === account.instance.driver &&
               (entry.instanceId ?? entry.provider) === account.instance.instanceId,
           )}
-          window={settings.railUsageWindow}
-          codexHomePath={settings.codexHomePath || null}
+          window={settings.window}
+          codexHomePath={settings.codexHomePath}
           onOpenUsageSettings={props.onOpenUsageSettings}
         />
       ))}
@@ -178,8 +231,8 @@ function AppRailUsageRings(props: { readonly onOpenUsageSettings: () => void }) 
 
 /** Sits above Help: a ring per selected account, with the windows chosen in Settings → Usage. */
 export function AppRailUsage(props: { readonly onOpenUsageSettings: () => void }) {
-  // App settings and the usage queries live on the background thread: nothing on the
-  // main-thread first frame, as upstream shows nothing until usage has loaded.
+  // Persisted settings and the usage queries live on the background thread: nothing on
+  // the main-thread first frame, as upstream shows nothing until usage has loaded.
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     "background only";

@@ -27,7 +27,8 @@ function PanelRow(props: {
     baseClassName: `AutomationsRailRow${props.active ? " AutomationsRailRow--active" : ""}${
       props.dimmed ? " AutomationsRailRow--dimmed" : ""
     }`,
-    accessibleLabel: `Open automation ${props.name}`,
+    // "<name>. <state>", the form the route's automation rows have always announced.
+    accessibleLabel: `${props.name}. ${props.dimmed ? "Paused" : "Active"}`,
     accessibilityValue: props.active ? "Selected" : undefined,
     onActivate: props.onOpen,
   });

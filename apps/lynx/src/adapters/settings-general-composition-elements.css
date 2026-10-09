@@ -54,7 +54,8 @@
 .SharedSettingsGeneralRowCopy {
   flex: 1;
   min-width: 0;
-  padding-right: 16px;
+  /* Upstream SettingsRow: `gap-2.5` between the copy and the control. */
+  padding-right: 10px;
 }
 
 .SharedSettingsGeneralRowTitleLine {
@@ -72,7 +73,9 @@
 }
 
 .SharedSettingsGeneralRowDescription {
-  margin-top: 2px;
+  /* Upstream `space-y-0.5` (2px). Lynx rounds a text box up to whole pixels, so a two-line
+     39px description measures 40px; 1px here keeps the row at upstream's height. */
+  margin-top: 1px;
   color: var(--muted-foreground);
   font-size: var(--type-settings-row-description-size);
   line-height: var(--type-settings-row-description-line-height);
@@ -223,7 +226,7 @@
 }
 
 .SliceRoot--viewport-sm-up .SharedSettingsGeneralRowCopy {
-  padding-right: 16px;
+  padding-right: 10px;
 }
 
 .SliceRoot--viewport-sm-up .SharedSettingsGeneralRowControl {
