@@ -833,6 +833,9 @@
 .bg-destructive {
   background-color: var(--destructive);
 }
+.bg-emerald-500 {
+  background-color: #10b981;
+}
 .bg-muted {
   background-color: var(--muted);
 }
@@ -844,6 +847,9 @@
 }
 .bg-primary {
   background-color: var(--primary);
+}
+.bg-red-500 {
+  background-color: #ef4444;
 }
 .bg-secondary {
   background-color: var(--secondary);
