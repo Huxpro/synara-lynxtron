@@ -68,9 +68,11 @@ describe("Explorer syntax preview", () => {
     expect(hostSource).toContain('from "shiki/core"');
     expect(hostSource).not.toContain("@pierre/diffs");
     expect(hostSource).not.toContain("from 'shiki'");
-    expect(queriesSource).toContain("readProjectFileWithSyntax");
+    expect(queriesSource).toContain("projectReadFileQueryOptions(");
     expect(source).toContain("props.highlighted?.[props.theme]");
-    expect(queriesSource).toContain('/* webpackMode: "eager" */ "../data/synaraClient"');
+    expect(queriesSource).toContain(
+      '/* webpackMode: "eager" */ "../data/hostSyntaxHighlight.lynx"',
+    );
   });
 
   it("keeps Shiki out of the Lynx UI bundle graph", () => {

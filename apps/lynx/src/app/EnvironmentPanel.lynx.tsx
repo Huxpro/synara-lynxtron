@@ -1,9 +1,22 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "@lynx-js/react";
 import {
+  gitBranchesQueryOptions,
+  gitGithubRepositoryQueryOptions,
+  gitInitMutationOptions,
+  gitPullMutationOptions,
+  gitPullRequestSnapshotQueryOptions,
+  gitRunStackedActionMutationOptions,
+  gitStatusQueryOptions,
+  invalidateGitQueriesForCwds,
+} from "@synara-web/lib/gitReactQuery";
+import {
   serverAllProviderUsageQueryOptions,
   serverConfigQueryOptions,
+  serverLocalServersQueryOptions,
+  serverStopLocalServerMutationOptions,
 } from "@synara-web/lib/serverReactQuery";
-import { useQuery } from "@tanstack/react-query";
+import { ensureNativeApi } from "~/nativeApi";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   THREAD_NOTES_MAX_CHARS,
   type EditorId,
@@ -86,20 +99,6 @@ import {
   requiresDefaultBranchConfirmation,
   summarizeGitResult,
 } from "@synara-web/components/GitActionsControl.logic";
-import {
-  dispatchSynaraCommand,
-  fetchLocalServers,
-  fetchGitHubRepository,
-  fetchGitPullRequestSnapshot,
-  fetchGitStatus,
-  initializeGit,
-  pullGitBranch,
-  fetchGitBranches,
-  openPathInEditor,
-  checkoutGitBranch,
-  runGitStackedAction,
-  stopLocalServer,
-} from "../data/synaraClient.lynx";
 import { webStorage } from "../platform/storage";
 import { sleepOnHost } from "../platform/timer";
 import { openExternalBestEffort, platformWindow } from "../platform/window";
@@ -136,6 +135,7 @@ import {
   fetchThreadRecapSummary,
   generatePreparedThreadRecap,
   prepareThreadRecap,
+  queryClient,
   type ThreadRecapSummary,
 } from "./queries";
 import type { EnvironmentBootstrapData } from "./environmentBootstrap.lynx";
@@ -280,21 +280,20 @@ function EnvironmentSectionLabel({ children }: { readonly children: string }) {
 function EnvironmentLocalServers(props: {
   readonly bootstrapOnly: boolean;
   readonly initialData: EnvironmentBootstrapData["localServers"];
+  readonly open: boolean;
 }) {
   const { semanticIconColor } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [stoppingPid, setStoppingPid] = useState<number | null>(null);
   const [stopFeedback, setStopFeedback] = useState<LocalServerStopFeedback | null>(null);
+  // As the Web section does: upstream's own refresh cadence while visible.
   const localServersQuery = useQuery({
-    queryKey: ["environment-local-servers"],
-    queryFn: () => {
-      "background only";
-      return fetchLocalServers();
-    },
-    enabled: !props.bootstrapOnly,
-    refetchInterval: !props.bootstrapOnly && menuOpen ? 5_000 : false,
+    ...serverLocalServersQueryOptions(props.open),
     initialData: props.initialData ?? undefined,
   });
+  const stopLocalServerMutation = useMutation(
+    serverStopLocalServerMutationOptions({ queryClient }),
+  );
   const servers = localServersQuery.data?.servers ?? [];
   const countLabel = `${servers.length}`;
 
@@ -314,7 +313,7 @@ function EnvironmentLocalServers(props: {
     setStoppingPid(server.pid);
     setStopFeedback(null);
     try {
-      const result = await stopLocalServer({
+      const result = await stopLocalServerMutation.mutateAsync({
         pid: server.pid,
         port: server.ports[0] ?? 1,
       });
@@ -430,56 +429,27 @@ function EnvironmentChanges(props: {
   readonly workspaceRoot: string;
 }) {
   const { semanticIconColor } = useTheme();
-  const [refreshGeneration, setRefreshGeneration] = useState(0);
-  const [statusState, setStatusState] = useState<{
-    readonly data: GitStatusLocalResult | GitStatusResult | null;
-    readonly error: boolean;
-    readonly pending: boolean;
-  }>({
-    data: props.initialStatus,
-    error: props.initialLoadCompleted && props.initialStatus === null,
-    pending: !props.initialLoadCompleted && props.initialStatus === null,
-  });
-
+  // Upstream's status query: refreshed by its own staleness, by every git
+  // mutation's invalidation and by session sync, instead of a panel-local loop.
+  const statusQuery = useQuery(gitStatusQueryOptions(props.workspaceRoot, props.open));
+  const liveStatus = statusQuery.data ?? null;
+  const onStatusChange = props.onStatusChange;
   useEffect(() => {
     "background only";
-    if (!props.open) return;
-    let cancelled = false;
-    async function pollGitStatus() {
-      "background only";
-      let first = true;
-      while (!cancelled) {
-        if (first) {
-          setStatusState((current) => ({
-            ...current,
-            error: false,
-            pending: true,
-          }));
-        }
-        try {
-          const data = await fetchGitStatus(props.workspaceRoot);
-          if (!cancelled) {
-            setStatusState({ data, error: false, pending: false });
-            props.onStatusChange(data);
-          }
-        } catch {
-          if (!cancelled) {
-            setStatusState((current) => ({
-              data: current.data,
-              error: true,
-              pending: false,
-            }));
-          }
-        }
-        first = false;
-        if (!cancelled) await sleepOnHost(15_000);
-      }
-    }
-    void pollGitStatus();
-    return () => {
-      cancelled = true;
-    };
-  }, [props.open, props.workspaceRoot, refreshGeneration]);
+    if (liveStatus) onStatusChange(liveStatus);
+  }, [liveStatus, onStatusChange]);
+  const statusData: GitStatusLocalResult | GitStatusResult | null =
+    liveStatus ?? props.initialStatus;
+  const statusState = {
+    data: statusData,
+    error:
+      statusQuery.isError ||
+      (statusData === null && props.initialLoadCompleted && !statusQuery.isFetching),
+    pending:
+      statusData === null &&
+      !statusQuery.isError &&
+      (statusQuery.isFetching || !props.initialLoadCompleted),
+  };
 
   const status = statusState.data;
   const files = status?.workingTree.files ?? [];
@@ -489,9 +459,7 @@ function EnvironmentChanges(props: {
     : status?.hasWorkingTreeChanges
       ? `${files.length} changed file${files.length === 1 ? "" : "s"}`
       : "No changes";
-  const activate = statusState.error
-    ? () => setRefreshGeneration((current) => current + 1)
-    : props.onOpenViewer;
+  const activate = statusState.error ? () => void statusQuery.refetch() : props.onOpenViewer;
   return (
     <EnvironmentInteractiveRow
       baseClassName={`EnvironmentChangesTrigger${
@@ -554,14 +522,15 @@ export function EnvironmentGitAction(props: {
   const [resultLabel, setResultLabel] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const branchesQuery = useQuery({
-    queryKey: ["environment-git-action-branches", props.workspaceRoot],
-    queryFn: () => {
-      "background only";
-      return fetchGitBranches(props.workspaceRoot);
-    },
+    ...gitBranchesQueryOptions(props.workspaceRoot),
     enabled: props.open,
-    staleTime: 15_000,
   });
+  const stackedActionMutation = useMutation(
+    gitRunStackedActionMutationOptions({ cwd: props.workspaceRoot, queryClient }),
+  );
+  const pullMutation = useMutation(
+    gitPullMutationOptions({ cwd: props.workspaceRoot, queryClient }),
+  );
   const branchList = branchesQuery.data;
   const defaultBranch =
     branchList?.branches.find((branch) => !branch.isRemote && branch.isDefault)?.name ?? null;
@@ -647,33 +616,37 @@ export function EnvironmentGitAction(props: {
     setResultLabel(null);
     try {
       const actionId = environmentCommandId();
-      const result = await runGitStackedAction(
-        {
+      // Per-phase progress arrives on the facade's git action channel while
+      // the request itself resolves with the final result.
+      const stopProgress = ensureNativeApi().git.onActionProgress((event) => {
+        if (event.actionId !== actionId) return;
+        if (event.kind === "phase_started") setProgressLabel(event.label);
+        else if (event.kind === "hook_started") {
+          setProgressLabel(`Running ${event.hookName}…`);
+        } else if (event.kind === "hook_output") {
+          setProgressLabel(event.text);
+        } else if (event.kind === "action_failed") {
+          setProgressLabel(event.message);
+        }
+      });
+      let result: Awaited<ReturnType<typeof stackedActionMutation.mutateAsync>>;
+      try {
+        result = await stackedActionMutation.mutateAsync({
           actionId,
-          cwd: props.workspaceRoot,
           action,
           ...(options.featureBranch ? { featureBranch: true } : {}),
           ...(commitMessage.trim() ? { commitMessage: commitMessage.trim() } : {}),
           ...(!allSelected ? { filePaths: selectedFiles.map((file) => file.path) } : {}),
-        },
-        (event) => {
-          if (event.actionId !== actionId) return;
-          if (event.kind === "phase_started") setProgressLabel(event.label);
-          else if (event.kind === "hook_started") {
-            setProgressLabel(`Running ${event.hookName}…`);
-          } else if (event.kind === "hook_output") {
-            setProgressLabel(event.text);
-          } else if (event.kind === "action_failed") {
-            setProgressLabel(event.message);
-          }
-        },
-      );
+        });
+      } finally {
+        stopProgress();
+      }
       const summary = summarizeGitResult(result);
       if (result.branch.status === "created" && result.branch.name) {
         if (props.onBranchChange) {
           props.onBranchChange(result.branch.name);
         } else if (props.threadId) {
-          await dispatchSynaraCommand({
+          await ensureNativeApi().orchestration.dispatchCommand({
             type: "thread.meta.update",
             commandId: environmentCommandId() as never,
             threadId: props.threadId as never,
@@ -703,7 +676,7 @@ export function EnvironmentGitAction(props: {
     setError(null);
     setResultLabel(null);
     try {
-      const result = await pullGitBranch(props.workspaceRoot);
+      const result = await pullMutation.mutateAsync();
       setResultLabel(
         result.status === "pulled"
           ? `Pulled ${result.upstreamBranch ?? result.branch}`
@@ -1025,14 +998,9 @@ function EnvironmentBranch(props: {
   const [switchingBranch, setSwitchingBranch] = useState<string | null>(null);
   const [error, setError] = useState(false);
   const branchesQuery = useQuery({
-    queryKey: ["environment-git-branches", props.workspaceRoot],
-    queryFn: () => {
-      "background only";
-      return fetchGitBranches(props.workspaceRoot);
-    },
+    ...gitBranchesQueryOptions(props.workspaceRoot),
     enabled: props.open && !props.bootstrapOnly,
     initialData: props.initialBranches ?? undefined,
-    staleTime: 15_000,
   });
   const branches = (branchesQuery.data?.branches ?? []).filter((branch) => !branch.isRemote);
   const checkoutDisabled = props.envMode === "worktree" || switchingBranch !== null;
@@ -1043,11 +1011,16 @@ function EnvironmentBranch(props: {
     setSwitchingBranch(branch);
     setError(false);
     try {
-      await checkoutGitBranch({ cwd: props.workspaceRoot, branch });
+      try {
+        await ensureNativeApi().git.checkout({ cwd: props.workspaceRoot, branch });
+      } finally {
+        // Status, branches and open diffs all depend on HEAD.
+        void invalidateGitQueriesForCwds(queryClient, [props.workspaceRoot]).catch(() => undefined);
+      }
       if (props.onBranchChange) {
         props.onBranchChange(branch);
       } else if (props.threadId) {
-        await dispatchSynaraCommand({
+        await ensureNativeApi().orchestration.dispatchCommand({
           type: "thread.meta.update",
           commandId: environmentCommandId() as never,
           threadId: props.threadId as never,
@@ -1145,10 +1118,7 @@ function EnvironmentEditor(props: {
     setOpeningEditor(editor);
     setOpenError(null);
     try {
-      await openPathInEditor({
-        cwd: props.workspaceRoot,
-        editor,
-      });
+      await ensureNativeApi().shell.openInEditor(props.workspaceRoot, editor);
       setPreferredEditor(editor);
       webStorage.setItem(LAST_EDITOR_STORAGE_KEY, editor);
     } catch (error) {
@@ -1220,14 +1190,8 @@ function EnvironmentRepository(props: {
   const { semanticIconColor } = useTheme();
   const [openError, setOpenError] = useState(false);
   const repositoryQuery = useQuery({
-    queryKey: ["environment-github-repository", props.workspaceRoot],
-    queryFn: () => {
-      "background only";
-      return fetchGitHubRepository(props.workspaceRoot);
-    },
-    enabled: props.open && !props.bootstrapOnly,
+    ...gitGithubRepositoryQueryOptions(props.workspaceRoot, props.open && !props.bootstrapOnly),
     initialData: props.initialRepository ?? undefined,
-    staleTime: 5 * 60_000,
   });
   const repository = repositoryQuery.data?.repository ?? null;
   const interaction = useLynxInteractiveState({
@@ -1294,59 +1258,19 @@ function EnvironmentPullRequest(props: {
   const { semanticIconColor } = useTheme();
   const [checksOpen, setChecksOpen] = useState(false);
   const [commentsOpen, setCommentsOpen] = useState(false);
-  const [snapshotState, setSnapshotState] = useState<{
-    readonly data: Awaited<ReturnType<typeof fetchGitPullRequestSnapshot>> | null;
-    readonly error: boolean;
-    readonly pending: boolean;
-  }>({
-    data: null,
-    error: false,
-    pending: true,
-  });
-  const [refreshGeneration, setRefreshGeneration] = useState(0);
-
-  useEffect(() => {
-    "background only";
-    if (!props.open) return;
-    let cancelled = false;
-    const generation = refreshGeneration;
-    async function pollPullRequest() {
-      "background only";
-      let first = true;
-      while (!cancelled) {
-        if (first) {
-          setSnapshotState((current) => ({
-            ...current,
-            error: false,
-            pending: true,
-          }));
-        }
-        try {
-          const data = await fetchGitPullRequestSnapshot({
-            cwd: props.workspaceRoot,
-            reference: props.pullRequest.url,
-          });
-          if (!cancelled) {
-            setSnapshotState({ data, error: false, pending: false });
-          }
-        } catch {
-          if (!cancelled) {
-            setSnapshotState((current) => ({
-              data: current.data,
-              error: true,
-              pending: false,
-            }));
-          }
-        }
-        first = false;
-        if (!cancelled) await sleepOnHost(60_000);
-      }
-    }
-    void pollPullRequest();
-    return () => {
-      cancelled = true;
-    };
-  }, [props.open, props.pullRequest.url, props.workspaceRoot, refreshGeneration]);
+  // Upstream's snapshot query refreshes every minute while the PR is open.
+  const snapshotQuery = useQuery(
+    gitPullRequestSnapshotQueryOptions({
+      cwd: props.workspaceRoot,
+      reference: props.pullRequest.url,
+      enabled: props.open,
+    }),
+  );
+  const snapshotState = {
+    data: snapshotQuery.data ?? null,
+    error: snapshotQuery.isError,
+    pending: snapshotQuery.isPending,
+  };
 
   const livePullRequest = snapshotState.data?.pullRequest ?? props.pullRequest;
   const checks = snapshotState.data?.checks ?? [];
@@ -1445,9 +1369,7 @@ function EnvironmentPullRequest(props: {
           ariaLabel={snapshotState.pending ? "Loading checks" : checksSummary.label}
           className="EnvironmentPullRequestMenuTrigger"
           disabled={snapshotState.pending}
-          onActivate={
-            snapshotState.error ? () => setRefreshGeneration((current) => current + 1) : undefined
-          }
+          onActivate={snapshotState.error ? () => void snapshotQuery.refetch() : undefined}
         >
           <EnvironmentRow
             icon={
@@ -1717,7 +1639,7 @@ function EnvironmentProjectInstructions(props: {
       if (props.onNotesChange) {
         await props.onNotesChange(nextNotes);
       } else if (props.threadId) {
-        await dispatchSynaraCommand({
+        await ensureNativeApi().orchestration.dispatchCommand({
           type: "thread.meta.update",
           commandId: environmentCommandId() as never,
           threadId: props.threadId as never,
@@ -1943,7 +1865,7 @@ function EnvironmentPinned(props: {
     setBusyMessageId(messageId);
     setErrorMessageId(null);
     try {
-      await dispatchSynaraCommand({
+      await ensureNativeApi().orchestration.dispatchCommand({
         ...command,
         commandId: environmentCommandId() as never,
         threadId: props.threadId as never,
@@ -2076,7 +1998,7 @@ function EnvironmentNotepad(props: {
       if (props.onNotesChange) {
         await props.onNotesChange(next);
       } else if (props.threadId) {
-        await dispatchSynaraCommand({
+        await ensureNativeApi().orchestration.dispatchCommand({
           type: "thread.meta.update",
           commandId: environmentCommandId() as never,
           threadId: props.threadId as never,
@@ -2182,15 +2104,13 @@ export function EnvironmentPanel(props: {
   const [gitStatus, setGitStatus] = useState<GitStatusResult | null>(null);
   const [gitRefreshGeneration, setGitRefreshGeneration] = useState(0);
   const repositoryQuery = useQuery({
-    queryKey: ["environment-git-branches", props.workspaceRoot],
-    queryFn: () => {
-      "background only";
-      return fetchGitBranches(props.workspaceRoot!);
-    },
+    ...gitBranchesQueryOptions(props.workspaceRoot),
     enabled: liveQueriesEnabled && Boolean(props.workspaceRoot),
     initialData: props.initialData?.branches ?? undefined,
-    staleTime: 15_000,
   });
+  const initMutation = useMutation(
+    gitInitMutationOptions({ cwd: props.workspaceRoot, queryClient }),
+  );
   const [initializingGit, setInitializingGit] = useState(false);
   const [initializeGitError, setInitializeGitError] = useState(false);
   const isGitRepo = repositoryQuery.data?.isRepo === true;
@@ -2200,7 +2120,7 @@ export function EnvironmentPanel(props: {
     setInitializingGit(true);
     setInitializeGitError(false);
     try {
-      await initializeGit(props.workspaceRoot);
+      await initMutation.mutateAsync();
       await repositoryQuery.refetch();
       setGitRefreshGeneration((current) => current + 1);
     } catch {
@@ -2304,6 +2224,7 @@ export function EnvironmentPanel(props: {
             ) : null}
 
             <EnvironmentLocalServers
+              open={liveQueriesEnabled}
               bootstrapOnly={props.bootstrapOnly}
               initialData={props.initialData?.localServers ?? null}
             />

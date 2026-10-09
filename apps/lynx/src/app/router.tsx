@@ -132,11 +132,7 @@ import { Button } from "../components/ui/button";
 import type { RpcTransportState } from "../data/rpcTransport.logic";
 import { Input } from "../components/ui/input.lynx";
 import { platformTerminal } from "../platform/terminal";
-import {
-  dispatchSynaraCommand,
-  fetchGitBranches,
-  fetchWorkingTreeDiff,
-} from "../data/synaraClient.lynx";
+import { dispatchSynaraCommand } from "../data/synaraClient.lynx";
 import { subscribeOrchestrationShellEvents } from "../data/synaraClient.lynx";
 import { Sidebar } from "../components/sidebar/Sidebar.lynx";
 import { SidebarSearchPaletteHost } from "../components/sidebar/SidebarSearchPaletteHost.lynx";
@@ -1594,13 +1590,7 @@ function ThreadPage(props: ThreadPageProps) {
   const headerDiff = useWorkspaceHeaderDiff({
     workspaceRoot: currentThread?.workspaceRoot ?? null,
     diffOpen,
-    initialData:
-      environmentData?.branches && initialWorkingTreeDiff
-        ? {
-            isGitRepo: environmentData.branches.isRepo,
-            patch: initialWorkingTreeDiff.patch,
-          }
-        : undefined,
+    turnLive: currentThread?.latestTurnState === "running",
   });
   // Electron's TranscriptSelectionActionLayer: Side needs a main server thread; new chats
   // open in the thread's project.

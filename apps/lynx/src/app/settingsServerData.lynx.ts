@@ -9,6 +9,7 @@
 import type { ServerConfig, ServerSettingsPatch, ServerSettingsView } from "@synara/contracts";
 import { queryOptions, type QueryClient } from "@tanstack/react-query";
 import {
+  reconcileServerProviderStatuses,
   serverConfigQueryOptions,
   serverQueryKeys,
   serverSettingsQueryOptions,
@@ -28,6 +29,23 @@ export function readServerSettings(queryClient: QueryClient): Promise<ServerSett
 export function readServerConfig(queryClient: QueryClient): Promise<ServerConfig> {
   "background only";
   return queryClient.fetchQuery(serverConfigQueryOptions());
+}
+
+/**
+ * Asks the server to re-probe the providers and folds the result into
+ * upstream's config query, as `useAppSettings` does after an enablement
+ * change. Returns the config every reader of that query now sees.
+ */
+export async function refreshServerProviderStatuses(
+  queryClient: QueryClient,
+): Promise<ServerConfig> {
+  "background only";
+  const result = await ensureNativeApi().server.refreshProviders();
+  await reconcileServerProviderStatuses(queryClient, result.providers);
+  return (
+    queryClient.getQueryData<ServerConfig>(serverQueryKeys.config()) ??
+    readServerConfig(queryClient)
+  );
 }
 
 /**

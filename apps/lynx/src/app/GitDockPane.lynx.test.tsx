@@ -4,19 +4,24 @@ import { readFileSync } from "node:fs";
 describe("Native Git right-dock pane", () => {
   it("uses canonical staged and unstaged RPCs plus the portable diff renderer", () => {
     const source = readFileSync(new URL("./GitDockPane.lynx.tsx", import.meta.url), "utf8");
-    const client = readFileSync(new URL("../data/synaraClient.lynx.ts", import.meta.url), "utf8");
-    expect(source).toContain('fetchWorkingTreeDiff(props.workspaceRoot, "staged")');
-    expect(source).toContain('fetchWorkingTreeDiff(props.workspaceRoot, "unstaged")');
+    expect(source).toContain(
+      'gitWorkingTreeDiffQueryOptions({ cwd: props.workspaceRoot, scope: "staged" })',
+    );
+    expect(source).toContain(
+      'gitWorkingTreeDiffQueryOptions({ cwd: props.workspaceRoot, scope: "unstaged" })',
+    );
     expect(source).toContain("buildPullRequestCodeView");
     expect(source).toContain("<PullRequestCodeComposition");
-    expect(source).toContain("stageGitFiles(props.workspaceRoot, input.paths)");
-    expect(source).toContain("unstageGitFiles(props.workspaceRoot, input.paths)");
+    expect(source).toContain(
+      "gitStageFilesMutationOptions({ cwd: props.workspaceRoot, queryClient })",
+    );
+    expect(source).toContain(
+      "gitUnstageFilesMutationOptions({ cwd: props.workspaceRoot, queryClient })",
+    );
     expect(source).toContain("fallbackSection");
     expect(source).toContain('color={semanticIconColor("secondary")}');
     expect(source).toContain('selectedResolved?.section === "staged"');
     expect(source).toContain('selectedResolved?.section === "unstaged"');
-    expect(client).toContain('transportRequest("git.stageFiles"');
-    expect(client).toContain('transportRequest("git.unstageFiles"');
   });
 
   it("is wired as a singleton shared right-dock pane", () => {

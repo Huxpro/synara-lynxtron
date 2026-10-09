@@ -5,14 +5,17 @@
 import sidebarRightSvg from "@synara-central-icons/sidebar-simple-right-wide.svg?raw";
 import { useCallback, useState } from "@lynx-js/react";
 import { useQuery } from "@tanstack/react-query";
+import {
+  GIT_WORKING_TREE_DIFF_LIVE_REFETCH_INTERVAL_MS,
+  gitBranchesQueryOptions,
+  gitWorkingTreeDiffStatsQueryOptions,
+} from "@synara-web/lib/gitReactQuery";
 import { RIGHT_DOCK_MIN_WIDTH_PX, type RightDockThreadState } from "@synara/shared/rightDock";
-import { buildPullRequestCodeView } from "@synara-web/components/pullRequest/pullRequestCode.logic";
 import { clampSidebarWidth } from "@synara-web/components/sidebarResize.logic";
 import { VIEWPORT_BREAKPOINTS } from "@synara-web/responsiveLayout.logic";
 
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
 import { useTheme } from "../adapters/useTheme.lynx";
-import { fetchGitBranches, fetchWorkingTreeDiff } from "../data/synaraClient.lynx";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import { readRightDockThreadState, storeRightDockThreadState } from "./rightDockState.lynx";
 
@@ -26,42 +29,34 @@ export interface WorkspaceHeaderDiff {
   };
 }
 
-/** Working-tree totals for the header diff toggle, polled while the dock is closed. */
+/**
+ * Working-tree totals for the header diff toggle, read the way the Web header
+ * reads them (`useRepoDiffTotals`): the server-side line counts, refreshed by
+ * git invalidations and polled only while a turn is live and the dock is closed.
+ */
 export function useWorkspaceHeaderDiff(input: {
   readonly workspaceRoot: string | null;
   readonly diffOpen: boolean;
-  readonly initialData?: { readonly isGitRepo: boolean; readonly patch: string } | undefined;
+  readonly turnLive?: boolean;
 }): WorkspaceHeaderDiff {
-  const state = useQuery({
-    queryKey: ["thread-header-git-state", input.workspaceRoot],
-    queryFn: async () => {
-      "background only";
-      const workspaceRoot = input.workspaceRoot;
-      if (!workspaceRoot) return { isGitRepo: false, patch: "" };
-      const branches = await fetchGitBranches(workspaceRoot);
-      if (!branches.isRepo) return { isGitRepo: false, patch: "" };
-      const diff = await fetchWorkingTreeDiff(workspaceRoot);
-      return { isGitRepo: true, patch: diff.patch };
-    },
-    enabled: Boolean(input.workspaceRoot),
-    initialData: input.initialData,
-    refetchInterval: input.diffOpen ? false : 2_000,
-  });
-  const view = buildPullRequestCodeView(
-    state.data?.patch,
-    `thread-header:${input.workspaceRoot ?? "none"}`,
+  const branches = useQuery(gitBranchesQueryOptions(input.workspaceRoot));
+  const isGitRepo = branches.data?.isRepo === true;
+  const stats = useQuery(
+    gitWorkingTreeDiffStatsQueryOptions({
+      cwd: input.workspaceRoot,
+      enabled: isGitRepo,
+      refetchInterval:
+        input.turnLive === true && !input.diffOpen
+          ? GIT_WORKING_TREE_DIFF_LIVE_REFETCH_INTERVAL_MS
+          : false,
+    }),
   );
+  const additions = isGitRepo ? (stats.data?.additions ?? 0) : 0;
+  const deletions = isGitRepo ? (stats.data?.deletions ?? 0) : 0;
   return {
-    isPending: state.isPending,
-    isGitRepo: state.data?.isGitRepo === true,
-    totals:
-      view.kind === "files"
-        ? {
-            additions: view.additions,
-            deletions: view.deletions,
-            hasChanges: view.additions > 0 || view.deletions > 0,
-          }
-        : { additions: 0, deletions: 0, hasChanges: false },
+    isPending: Boolean(input.workspaceRoot) && branches.isPending,
+    isGitRepo,
+    totals: { additions, deletions, hasChanges: additions > 0 || deletions > 0 },
   };
 }
 

@@ -198,6 +198,30 @@ function listLynxSourceFiles(root) {
   return files.sort();
 }
 
+/**
+ * A query Lynx defines itself: an object literal carrying both `queryKey` and
+ * `queryFn`, wherever it is passed (`useQuery`, `queryOptions`, `fetchQuery`).
+ * `useQuery(upstreamQueryOptions())` and `useQuery({ ...upstreamQueryOptions(),
+ * enabled })` run upstream's query and are not counted: the counter tracks
+ * parallel data paths, and replacing a hand-rolled loop with an upstream query
+ * must not read as growth.
+ */
+function isLynxOwnedQueryDefinition(node) {
+  if (!ts.isObjectLiteralExpression(node)) return false;
+  const names = new Set(
+    node.properties
+      .filter(
+        (property) =>
+          (ts.isPropertyAssignment(property) ||
+            ts.isShorthandPropertyAssignment(property) ||
+            ts.isMethodDeclaration(property)) &&
+          ts.isIdentifier(property.name),
+      )
+      .map((property) => property.name.text),
+  );
+  return names.has("queryKey") && names.has("queryFn");
+}
+
 function countParallelImplementationSites(filePath) {
   const text = fs.readFileSync(filePath, "utf8");
   const sourceFile = ts.createSourceFile(
@@ -210,11 +234,7 @@ function countParallelImplementationSites(filePath) {
   let useQueryCallSites = 0;
   let refetchIntervalSites = 0;
   function visit(node) {
-    if (
-      ts.isCallExpression(node) &&
-      ts.isIdentifier(node.expression) &&
-      node.expression.text === "useQuery"
-    ) {
+    if (isLynxOwnedQueryDefinition(node)) {
       useQueryCallSites += 1;
     } else if (
       (ts.isPropertyAssignment(node) || ts.isShorthandPropertyAssignment(node)) &&
@@ -563,7 +583,7 @@ const markdown = [
   ),
   "",
   "- `synaraClientImporters`: non-test files under `src/` whose static or dynamic imports resolve to `data/synaraClient.lynx.ts`.",
-  "- `useQueryCallSites`: `useQuery(...)` call expressions under `src/` (non-test).",
+  "- `useQueryCallSites`: queries Lynx defines itself under `src/` (non-test): object literals with both `queryKey` and `queryFn`. A `useQuery` given an upstream option factory is not counted.",
   "- `refetchIntervalSites`: `refetchInterval` option sites under `src/` (non-test).",
   "- `routerTsxLines`: raw line count of `src/app/router.tsx`.",
   "",

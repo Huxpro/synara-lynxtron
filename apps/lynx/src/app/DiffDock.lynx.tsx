@@ -1,9 +1,15 @@
 import { useEffect, useRef, useState, type ReactNode } from "@lynx-js/react";
 import type { InputRef } from "@lynx-js/lynx-ui";
 import { useQuery } from "@tanstack/react-query";
-import type {
-  GitReadWorkingTreeDiffResult,
-  OrchestrationCheckpointSummary,
+import {
+  gitStatusQueryOptions,
+  gitWorkingTreeDiffQueryOptions,
+} from "@synara-web/lib/gitReactQuery";
+import { checkpointDiffQueryOptions } from "@synara-web/lib/providerReactQuery";
+import {
+  ThreadId,
+  type GitReadWorkingTreeDiffResult,
+  type OrchestrationCheckpointSummary,
 } from "@synara/contracts";
 import { RIGHT_DOCK_MIN_WIDTH_PX } from "@synara/shared/rightDock";
 import { buildPathTree, filterPathsForSearch, type PathTreeNode } from "@synara/shared/pathTree";
@@ -39,13 +45,7 @@ import {
   TextWrapIcon,
   XIcon,
 } from "../lib/icons.lynx";
-import {
-  fetchWorkingTreeDiff,
-  fetchGitStatus,
-  fetchFullThreadDiff,
-  fetchTurnDiff,
-  highlightExplorerCode,
-} from "../data/synaraClient.lynx";
+import { highlightExplorerCode } from "../data/hostSyntaxHighlight.lynx";
 import { Button } from "../components/ui/button.lynx";
 import { FileEntryIcon } from "../components/FileEntryIcon.lynx";
 import { Input } from "../components/ui/input.lynx";
@@ -105,6 +105,8 @@ function DockHeaderIconButton(props: {
     </view>
   );
 }
+
+const EMPTY_DIFF = { patch: "" } as const;
 
 export function DiffDock(props: {
   readonly availableWidth: number;
@@ -176,7 +178,6 @@ function OpenDiffDock(props: {
   readonly workspaceRoot: string;
 }) {
   const { resolvedTheme, semanticIconColor } = useTheme();
-  const [refreshGeneration, setRefreshGeneration] = useState(0);
   const [expandedFileKeys, setExpandedFileKeys] = useState<string[] | null>(null);
   const [selectedFilePath, setSelectedFilePath] = useState<string | null>(
     props.initialSelectedFilePath ?? null,
@@ -217,50 +218,51 @@ function OpenDiffDock(props: {
   const orderedCheckpoints = sortEditorDiffCheckpoints(props.checkpoints);
   const diffRequest = resolveEditorDiffRequest(diffSource, orderedCheckpoints);
 
-  const diff = useQuery({
-    queryKey: [
-      "working-tree-diff",
-      props.workspaceRoot,
-      diffSource,
-      diffIgnoreWhitespace,
-      refreshGeneration,
-    ],
-    queryFn: () => {
-      "background only";
-      if (diffRequest.kind === "empty") return Promise.resolve({ patch: "" });
-      if (diffRequest.kind === "full-thread") {
-        return fetchFullThreadDiff({
-          threadId: props.threadId,
-          toTurnCount: diffRequest.toTurnCount,
-          ignoreWhitespace: diffIgnoreWhitespace,
-        }).then((result) => ({ patch: result.diff }));
-      }
-      if (diffRequest.kind === "turn") {
-        return fetchTurnDiff({
-          threadId: props.threadId,
-          fromTurnCount: diffRequest.fromTurnCount,
-          toTurnCount: diffRequest.toTurnCount,
-          ignoreWhitespace: diffIgnoreWhitespace,
-        }).then((result) => ({ patch: result.diff }));
-      }
-      return fetchWorkingTreeDiff(props.workspaceRoot, diffRequest.scope);
-    },
-    initialData:
-      refreshGeneration === 0 && diffSource === "workingTree" ? props.initialDiff : undefined,
-    enabled: !props.unavailableLabel,
-    retry: false,
-    staleTime: Number.POSITIVE_INFINITY,
+  // Upstream's two diff reads: the repository scopes and the checkpoint
+  // (turn / whole conversation) diffs, under upstream's keys so git and
+  // checkpoint invalidations from session sync refresh the dock.
+  const diffsEnabled = !props.unavailableLabel;
+  const repoDiff = useQuery({
+    ...gitWorkingTreeDiffQueryOptions({
+      cwd: props.workspaceRoot,
+      scope: diffRequest.kind === "repo" ? diffRequest.scope : "workingTree",
+      enabled: diffsEnabled && diffRequest.kind === "repo",
+    }),
+    initialData: diffSource === "workingTree" ? props.initialDiff : undefined,
   });
-  const gitStatus = useQuery({
-    queryKey: ["diff-dock-git-status", props.workspaceRoot, refreshGeneration],
-    queryFn: () => {
-      "background only";
-      return fetchGitStatus(props.workspaceRoot);
-    },
-    enabled: !props.unavailableLabel,
-    retry: false,
-    staleTime: 15_000,
-  });
+  const checkpointDiff = useQuery(
+    checkpointDiffQueryOptions({
+      threadId: ThreadId.makeUnsafe(props.threadId),
+      fromTurnCount: diffRequest.kind === "turn" ? diffRequest.fromTurnCount : 0,
+      toTurnCount:
+        diffRequest.kind === "turn" || diffRequest.kind === "full-thread"
+          ? diffRequest.toTurnCount
+          : null,
+      ignoreWhitespace: diffIgnoreWhitespace,
+      // Upstream selects the whole-conversation read by this scope prefix.
+      cacheScope:
+        diffRequest.kind === "full-thread"
+          ? `conversation:${props.threadId}`
+          : `turn:${props.threadId}`,
+      enabled: diffsEnabled && (diffRequest.kind === "turn" || diffRequest.kind === "full-thread"),
+    }),
+  );
+  const diff =
+    diffRequest.kind === "empty"
+      ? { data: EMPTY_DIFF, isPending: false, error: null }
+      : diffRequest.kind === "repo"
+        ? { data: repoDiff.data, isPending: repoDiff.isPending, error: repoDiff.error }
+        : {
+            data: checkpointDiff.data ? { patch: checkpointDiff.data.diff } : undefined,
+            isPending: checkpointDiff.isPending,
+            error: checkpointDiff.error,
+          };
+  const gitStatus = useQuery(gitStatusQueryOptions(props.workspaceRoot, diffsEnabled));
+  const refreshDiff = () => {
+    "background only";
+    void (diffRequest.kind === "repo" ? repoDiff : checkpointDiff).refetch();
+    void gitStatus.refetch();
+  };
 
   const view = buildPullRequestCodeView(
     diff.data?.patch,
@@ -298,7 +300,6 @@ function OpenDiffDock(props: {
     queryKey: [
       "working-tree-diff-syntax",
       props.workspaceRoot,
-      refreshGeneration,
       diff.data?.patch ?? "",
       visibleFiles.map((file) => file.key).join("\0"),
     ],
@@ -362,7 +363,7 @@ function OpenDiffDock(props: {
   const retryInteraction = useLynxInteractiveState({
     baseClassName: "DiffDockRetry",
     accessibleLabel: "Retry loading changes",
-    onActivate: () => setRefreshGeneration((current) => current + 1),
+    onActivate: refreshDiff,
   });
 
   return (
@@ -503,7 +504,7 @@ function OpenDiffDock(props: {
               presentation="toolbar"
               threadId={props.threadId}
               workspaceRoot={props.workspaceRoot}
-              onCompleted={() => setRefreshGeneration((current) => current + 1)}
+              onCompleted={refreshDiff}
             />
             <DiffTurnPicker
               checkpoints={orderedCheckpoints}

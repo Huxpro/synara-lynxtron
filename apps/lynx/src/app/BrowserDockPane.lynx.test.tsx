@@ -153,7 +153,9 @@ describe("Native Browser right-dock pane", () => {
     const source = readFileSync(new URL("./BrowserDockPane.lynx.tsx", import.meta.url), "utf8");
     const styles = readFileSync(new URL("./browser-dock-pane.css", import.meta.url), "utf8");
     expect(source).toContain("isBlankBrowserTabUrl");
-    expect(source).toContain("fetchLocalServers()");
+    expect(source).toContain(
+      "serverLocalServersQueryOptions(props.active && props.supported && showLocalServersHome)",
+    );
     expect(source).toContain("browserLocalServerUrl(server)");
     expect(source).toContain("localServerPrimaryLabel(server)");
     expect(source).toContain("localServerAddressLabel(server)");

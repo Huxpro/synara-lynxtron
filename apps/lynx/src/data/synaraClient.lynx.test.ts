@@ -95,9 +95,8 @@ describe("Lynx Synara relay state", () => {
     expect(hostSource).toContain("const timer = stream");
     expect(hostSource).toContain("? undefined");
     expect(clientSource).toContain('"synaraRpcStream"');
-    expect(clientSource).toContain("gitActionProgressListeners.get(event.actionId)");
-    expect(clientSource).toContain('event.kind === "action_finished"');
-    expect(clientSource).toContain('"Git action stream completed without a final result"');
+    // Git stacked actions run on the facade (transport compat); nothing of them is left here.
+    expect(clientSource).not.toContain("git.runStackedAction");
   });
 
   it("keeps Native terminal delivery on the component-owned main-thread listener", () => {

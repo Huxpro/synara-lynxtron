@@ -33,7 +33,7 @@ import {
 import { FileEntryIcon } from "../FileEntryIcon.lynx";
 import { ExternalLinkIcon } from "./ExternalLinkIcon.lynx";
 import { MarkdownFileReferenceToken } from "./MarkdownFileReferenceToken.lynx";
-import { highlightExplorerCode } from "../../data/synaraClient.lynx";
+import { highlightExplorerCode } from "../../data/hostSyntaxHighlight.lynx";
 import type { NativeSyntaxHighlightResult } from "../../main/syntaxHighlightingContract.logic";
 import { useTheme } from "../../adapters/useTheme.lynx";
 

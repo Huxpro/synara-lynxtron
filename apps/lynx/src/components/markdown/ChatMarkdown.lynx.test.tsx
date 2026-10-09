@@ -170,7 +170,7 @@ describe("Lynx markdown file reference token", () => {
     const source = readFileSync(new URL("./ChatMarkdown.lynx.tsx", import.meta.url), "utf8");
 
     expect(source).toContain(
-      'import { highlightExplorerCode } from "../../data/synaraClient.lynx"',
+      'import { highlightExplorerCode } from "../../data/hostSyntaxHighlight.lynx"',
     );
     expect(source).toContain(
       "const [highlighted, setHighlighted] = useState<NativeSyntaxHighlightResult | null>(null)",

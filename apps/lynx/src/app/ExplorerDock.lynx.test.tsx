@@ -25,7 +25,7 @@ describe("Lynx Explorer dock", () => {
       new URL("./ExplorerPreviewHeader.lynx.tsx", import.meta.url),
       "utf8",
     );
-    expect(header).toContain("await openPathInEditor({ cwd: openTarget, editor })");
+    expect(header).toContain("await ensureNativeApi().shell.openInEditor(openTarget, editor)");
     expect(routerSource).toContain("onExplorerRetryFile: () => void explorerFileQuery.refetch(),");
     // Every mounted Explorer (dock and editor mode) must receive the retry handler,
     // and the page must forward it to the dock host.
@@ -34,8 +34,9 @@ describe("Lynx Explorer dock", () => {
     );
     expect(routerSource).toContain("onExplorerRetryFile={onExplorerRetryFile}");
     expect(routerSource).toContain("explorerFileQuery.isError && explorerFileQuery.isFetching");
-    expect(queriesSource).toContain("if (explorerFileCache.get(cacheKey)?.result === result)");
-    expect(queriesSource).toContain("explorerFileCache.delete(cacheKey)");
+    // A failed read is never cached as data, so Retry issues a new request.
+    expect(queriesSource).not.toContain("explorerFileCache");
+    expect(queriesSource).toContain("queryClient.fetchQuery(\n    projectReadFileQueryOptions({");
   });
 
   it("restores the exact file row after its native context menu closes", () => {
@@ -113,10 +114,6 @@ describe("Lynx Explorer dock", () => {
 
   it("uses real project RPCs and a resizable right-panel surface", () => {
     const source = readFileSync(new URL("./ExplorerDock.lynx.tsx", import.meta.url), "utf8");
-    const clientSource = readFileSync(
-      new URL("../data/synaraClient.lynx.ts", import.meta.url),
-      "utf8",
-    );
     const routerSource = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
     const queriesSource = readFileSync(new URL("./queries.ts", import.meta.url), "utf8");
     const appSource = readFileSync(new URL("./App.tsx", import.meta.url), "utf8");
@@ -138,11 +135,10 @@ describe("Lynx Explorer dock", () => {
       "utf8",
     );
 
-    expect(clientSource).toContain('"projects.listDirectories"');
-    expect(clientSource).toContain('"projects.searchEntries"');
-    expect(clientSource).toContain('"projects.readFile"');
-    expect(clientSource).toContain('"projects.createLocalFilePreviewGrant"');
-    expect(queriesSource).toContain("createLocalFilePreviewGrant");
+    expect(queriesSource).toContain("projectListDirectoriesQueryOptions(");
+    expect(queriesSource).toContain("projectSearchEntriesQueryOptions(");
+    expect(queriesSource).toContain("projectReadFileQueryOptions(");
+    expect(queriesSource).toContain("projectLocalPreviewGrantQueryOptions(");
     expect(queriesSource).toContain("isLocalAbsolutePath(input.relativePath)");
     expect(source).not.toContain("useQuery");
     expect(source).toContain("entriesPending: boolean");
@@ -245,7 +241,7 @@ describe("Lynx Explorer dock", () => {
     expect(routerSource).toContain("fetchExplorerLocalPreviewUrl({");
     expect(routerSource).toContain("!isSupportedLocalPreviewFilePath(explorerSelectedPath)");
     expect(queriesSource).toContain("export async function fetchExplorerLocalPreviewUrl");
-    expect(pdfSource).toContain('editor: "system-default"');
+    expect(pdfSource).toContain('shell.openInEditor(openTarget, "system-default")');
     expect(pdfSource).toContain("resolveExplorerPdfOpenTarget({");
     expect(queriesSource).toContain("export async function fetchExplorerPdfMetadata");
     expect(routerSource).toContain("fetchExplorerPdfMetadata({");

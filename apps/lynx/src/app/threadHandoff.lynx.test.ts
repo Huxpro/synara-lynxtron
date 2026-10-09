@@ -103,7 +103,7 @@ describe("Native thread handoff service", () => {
 
   it("owns the complete canonical handoff command and imported activity flow", () => {
     const source = readFileSync(new URL("./threadHandoff.lynx.ts", import.meta.url), "utf8");
-    expect(source).toContain("fetchFreshServerConfig()");
+    expect(source).toContain("refreshServerProviderStatuses(queryClient)");
     expect(source).toContain("resolveProviderSendAvailability({");
     expect(source).toContain("resolveThreadHandoffModelSelection({");
     expect(source).toContain("buildThreadHandoffImportedMessages(");

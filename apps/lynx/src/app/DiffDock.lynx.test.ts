@@ -155,7 +155,7 @@ describe("Diff Dock chrome fidelity", () => {
     const styles = readFileSync(new URL("./diff-dock.css", import.meta.url), "utf8");
 
     expect(source).toContain("import { EnvironmentGitAction }");
-    expect(source).toContain('queryKey: ["diff-dock-git-status"');
+    expect(source).toContain("useQuery(gitStatusQueryOptions(props.workspaceRoot, diffsEnabled))");
     expect(source).toContain('presentation="toolbar"');
     expect(environmentSource).toContain("export function EnvironmentGitAction");
     expect(environmentSource).toContain("resolveQuickAction(");
@@ -167,10 +167,6 @@ describe("Diff Dock chrome fidelity", () => {
 
   it("shares the complete source and view options menu across dock and Editor", () => {
     const source = readFileSync(new URL("./DiffDock.lynx.tsx", import.meta.url), "utf8");
-    const clientSource = readFileSync(
-      new URL("../data/synaraClient.lynx.ts", import.meta.url),
-      "utf8",
-    );
 
     expect(source).toContain("<DiffOptionsMenu");
     expect(source).toContain("<EditorDiffOptionsMenu");
@@ -186,15 +182,14 @@ describe("Diff Dock chrome fidelity", () => {
     expect(source).toContain('<MenuRadioItem value="allTurns">All turns</MenuRadioItem>');
     expect(source).toContain('<MenuRadioItem value="lastTurn">Last turn</MenuRadioItem>');
     expect(source).toContain("value={`turn:${checkpoint.turnId}`}");
-    expect(source).toContain("fetchFullThreadDiff({");
-    expect(source).toContain("fetchTurnDiff({");
+    expect(source).toContain("checkpointDiffQueryOptions({");
+    expect(source).toContain("`conversation:${props.threadId}`");
     expect(source).toContain("ignoreWhitespace: diffIgnoreWhitespace");
     expect(source).toContain('"Copied diff" : "Copy diff"');
-    expect(source).toContain("fetchWorkingTreeDiff(props.workspaceRoot, diffRequest.scope)");
-    expect(clientSource).toContain(
-      'scope: "branch" | "staged" | "unstaged" | "workingTree" = "workingTree"',
+    expect(source).toContain("...gitWorkingTreeDiffQueryOptions({");
+    expect(source).toContain(
+      'scope: diffRequest.kind === "repo" ? diffRequest.scope : "workingTree"',
     );
-    expect(clientSource).toContain("scope,");
   });
 
   it("preserves hunk rows and Web-compatible plus/minus gutters in split mode", () => {

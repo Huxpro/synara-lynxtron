@@ -26,7 +26,7 @@ import {
   MenuRadioItem,
   MenuTrigger,
 } from "../components/ui/menu.lynx";
-import { openPathInEditor } from "../data/synaraClient.lynx";
+import { ensureNativeApi } from "~/nativeApi";
 import { fetchEditorIconUrl } from "./queries";
 import { webStorage } from "../platform/storage";
 import {
@@ -153,7 +153,7 @@ export function ExplorerPreviewHeader(props: {
   });
   const openEditor = async (editor: EditorId) => {
     "background only";
-    await openPathInEditor({ cwd: openTarget, editor });
+    await ensureNativeApi().shell.openInEditor(openTarget, editor);
     setPreferredEditor(editor);
     webStorage.setItem(LAST_EDITOR_STORAGE_KEY, editor);
   };

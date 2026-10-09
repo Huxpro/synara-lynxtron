@@ -39,7 +39,7 @@ import { BROWSER_COPY_LINK_TOAST_TITLE } from "@synara/shared/browserShortcuts";
 import { browserView } from "../platform/browserView.lynx";
 import { sleepOnHost } from "../platform/timer";
 import type { BrowserViewState } from "../main/desktop/browserViewProbe";
-import { fetchLocalServers } from "../data/synaraClient.lynx";
+import { serverLocalServersQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { platformWindow } from "../platform/window";
 import { readBrowserTabsState, storeBrowserTabsState } from "./browserTabsPersistence.lynx";
 import { resolveBrowserViewBounds } from "./browserViewBounds.lynx";
@@ -128,15 +128,10 @@ export function BrowserDockPane(props: {
   const suggestionsOpen = addressFocused && addressSuggestions.length > 0;
   const showLocalServersHome = isBlankBrowserTabUrl(state ?? { url: address });
   const showNativeView = !showLocalServersHome && !actionsOpen && !suggestionsOpen && !error;
-  const localServersQuery = useQuery({
-    queryKey: ["browser-local-servers"],
-    queryFn: () => {
-      "background only";
-      return fetchLocalServers();
-    },
-    enabled: props.active && props.supported && showLocalServersHome,
-    staleTime: 5_000,
-  });
+  // As the Web browser panel does: upstream's cadence while the home is shown.
+  const localServersQuery = useQuery(
+    serverLocalServersQueryOptions(props.active && props.supported && showLocalServersHome),
+  );
   const localServers = localServersQuery.data?.servers ?? [];
   const copyableUrl = resolveCopyableBrowserTabUrl({ url: state?.url ?? address });
   const applyState = (next: BrowserViewState) => {

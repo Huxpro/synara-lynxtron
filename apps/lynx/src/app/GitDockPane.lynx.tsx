@@ -18,7 +18,11 @@ import { DockPaneHeader } from "./DockPaneHeader.lynx";
 import { RefreshCwIcon } from "../lib/icons.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
-import { fetchWorkingTreeDiff, stageGitFiles, unstageGitFiles } from "../data/synaraClient.lynx";
+import {
+  gitStageFilesMutationOptions,
+  gitUnstageFilesMutationOptions,
+  gitWorkingTreeDiffQueryOptions,
+} from "@synara-web/lib/gitReactQuery";
 import { queryClient } from "./queries";
 import "./git-dock-pane.css";
 
@@ -134,26 +138,22 @@ export function GitDockPane(props: {
   readonly onClose?: () => void;
 }) {
   const { semanticIconColor } = useTheme();
-  const [refreshGeneration, setRefreshGeneration] = useState(0);
   const [selected, setSelected] = useState<SelectedGitFile | null>(null);
   const [visibleLineCounts, setVisibleLineCounts] = useState<Record<string, number>>({});
   const [error, setError] = useState<string | null>(null);
-  const stagedQuery = useQuery({
-    queryKey: ["git-dock-diff", props.workspaceRoot, "staged", refreshGeneration],
-    queryFn: () => {
-      "background only";
-      return fetchWorkingTreeDiff(props.workspaceRoot, "staged");
-    },
-    retry: false,
-  });
-  const unstagedQuery = useQuery({
-    queryKey: ["git-dock-diff", props.workspaceRoot, "unstaged", refreshGeneration],
-    queryFn: () => {
-      "background only";
-      return fetchWorkingTreeDiff(props.workspaceRoot, "unstaged");
-    },
-    retry: false,
-  });
+  const stagedQuery = useQuery(
+    gitWorkingTreeDiffQueryOptions({ cwd: props.workspaceRoot, scope: "staged" }),
+  );
+  const unstagedQuery = useQuery(
+    gitWorkingTreeDiffQueryOptions({ cwd: props.workspaceRoot, scope: "unstaged" }),
+  );
+  // Upstream's mutations invalidate this workspace's git queries when they settle.
+  const stageMutation = useMutation(
+    gitStageFilesMutationOptions({ cwd: props.workspaceRoot, queryClient }),
+  );
+  const unstageMutation = useMutation(
+    gitUnstageFilesMutationOptions({ cwd: props.workspaceRoot, queryClient }),
+  );
   const stagedView = useMemo(
     () =>
       buildPullRequestCodeView(stagedQuery.data?.patch, `git-dock:staged:${props.workspaceRoot}`),
@@ -169,29 +169,15 @@ export function GitDockPane(props: {
   );
   const stagedFiles = filesFromView(stagedView);
   const unstagedFiles = filesFromView(unstagedView);
-  const mutation = useMutation({
-    mutationFn: async (input: {
-      readonly action: "stage" | "unstage";
-      readonly paths: readonly string[];
-    }) => {
-      "background only";
-      return input.action === "stage"
-        ? stageGitFiles(props.workspaceRoot, input.paths)
-        : unstageGitFiles(props.workspaceRoot, input.paths);
-    },
-    onMutate: () => {
-      "background only";
+  const mutation = {
+    isPending: stageMutation.isPending || unstageMutation.isPending,
+    mutate(input: { readonly action: "stage" | "unstage"; readonly paths: readonly string[] }) {
       setError(null);
+      (input.action === "stage" ? stageMutation : unstageMutation).mutate(input.paths, {
+        onError: (cause) => setError(cause instanceof Error ? cause.message : String(cause)),
+      });
     },
-    onError: (cause) => {
-      "background only";
-      setError(cause instanceof Error ? cause.message : String(cause));
-    },
-    onSettled: async () => {
-      "background only";
-      await queryClient.invalidateQueries({ queryKey: ["git-dock-diff", props.workspaceRoot] });
-    },
-  });
+  };
   const selectedResolved = selected
     ? (() => {
         const preferredFiles = selected.section === "staged" ? stagedFiles : unstagedFiles;
@@ -220,7 +206,10 @@ export function GitDockPane(props: {
           <IconButton
             className="DockPaneHeaderIconButton"
             label="Refresh changes"
-            onClick={() => setRefreshGeneration((current) => current + 1)}
+            onClick={() => {
+              void stagedQuery.refetch();
+              void unstagedQuery.refetch();
+            }}
           >
             <RefreshCwIcon color={semanticIconColor("secondary")} size={14} />
           </IconButton>

@@ -6,6 +6,16 @@ import type {
   ServerListLocalServersResult,
 } from "@synara/contracts";
 
+import {
+  gitBranchesQueryOptions,
+  gitGithubRepositoryQueryOptions,
+} from "@synara-web/lib/gitReactQuery";
+import {
+  serverConfigQueryOptions,
+  serverLocalServersQueryOptions,
+} from "@synara-web/lib/serverReactQuery";
+import { ensureNativeApi } from "~/nativeApi";
+
 import { sleepOnHost } from "../platform/timer";
 
 export interface EnvironmentBootstrapData {
@@ -29,25 +39,26 @@ async function withinBootstrapBudget<T>(request: Promise<T>): Promise<T | null> 
   ]);
 }
 
+/**
+ * First paint data for the environment panel, read through upstream's query
+ * options so the panel's own queries start from the same cache entries.
+ * `git.statusLocal` has no upstream query (the web panel waits for the full
+ * status); it is a plain facade request used only as the placeholder.
+ */
 export async function fetchEnvironmentBootstrapData(
   workspaceRoot: string,
 ): Promise<EnvironmentBootstrapData> {
-  const {
-    fetchGitBranches,
-    fetchGitHubRepository,
-    fetchGitStatusLocal,
-    fetchLocalServers,
-    fetchServerConfig,
-  } = await import(/* webpackMode: "eager" */ "../data/synaraClient.lynx");
+  "background only";
+  const { queryClient } = await import(/* webpackMode: "eager" */ "./queries");
 
   const [gitStatus, branches, localServers] = await Promise.all([
-    withinBootstrapBudget(fetchGitStatusLocal(workspaceRoot)),
-    withinBootstrapBudget(fetchGitBranches(workspaceRoot)),
-    withinBootstrapBudget(fetchLocalServers()),
+    withinBootstrapBudget(ensureNativeApi().git.statusLocal({ cwd: workspaceRoot })),
+    withinBootstrapBudget(queryClient.fetchQuery(gitBranchesQueryOptions(workspaceRoot))),
+    withinBootstrapBudget(queryClient.fetchQuery(serverLocalServersQueryOptions())),
   ]);
   const [config, repository] = await Promise.all([
-    withinBootstrapBudget(fetchServerConfig()),
-    withinBootstrapBudget(fetchGitHubRepository(workspaceRoot)),
+    withinBootstrapBudget(queryClient.fetchQuery(serverConfigQueryOptions())),
+    withinBootstrapBudget(queryClient.fetchQuery(gitGithubRepositoryQueryOptions(workspaceRoot))),
   ]);
 
   return {

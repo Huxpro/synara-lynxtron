@@ -23,11 +23,9 @@ import { Button } from "../components/ui/button";
 import { IconButton } from "../components/ui/icon-button.lynx";
 import { CircleAlertIcon, TriangleAlertIcon, XIcon } from "../lib/icons.lynx";
 import { webStorage } from "../platform/storage";
-import {
-  refreshProviderUpdatePromptServerConfig,
-  queryClient,
-  updatePromptProvider,
-} from "./queries";
+import { ensureNativeApi } from "~/nativeApi";
+import { queryClient } from "./queries";
+import { refreshServerProviderStatuses } from "./settingsServerData.lynx";
 
 export function providerUpdatePromptCopy(input: {
   readonly firstProviderName: string;
@@ -172,11 +170,8 @@ export function ProviderUpdatePrompt(props: { readonly onReview: () => void }) {
     if (serverSettings.data?.enableProviderUpdateChecks !== true) return;
     let disposed = false;
     const refresh = () => {
-      void refreshProviderUpdatePromptServerConfig()
-        .then((nextConfig) => {
-          if (!disposed) queryClient.setQueryData(serverQueryKeys.config(), nextConfig);
-        })
-        .catch(() => undefined);
+      // Upstream's refresh: re-probe, then reconcile into the shared config query.
+      if (!disposed) void refreshServerProviderStatuses(queryClient).catch(() => undefined);
     };
     const initialRefreshId = setTimeout(refresh, PROVIDER_UPDATE_INITIAL_REFRESH_DELAY_MS);
     const refreshIntervalId = setInterval(refresh, PROVIDER_UPDATE_REFRESH_INTERVAL_MS);
@@ -277,7 +272,7 @@ export function ProviderUpdatePrompt(props: { readonly onReview: () => void }) {
         setUpdateOutcome(null);
         void runProviderUpdateBatch({
           providers,
-          updateProvider: updatePromptProvider,
+          updateProvider: (provider) => ensureNativeApi().server.updateProvider({ provider }),
         }).then((outcome) => {
           setUpdating(false);
           setUpdateOutcome({

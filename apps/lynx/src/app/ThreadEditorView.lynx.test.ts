@@ -323,9 +323,7 @@ describe("Lynx Editor view", () => {
       '<MenuRadioItem value="branch">Branch changes</MenuRadioItem>',
     );
     expect(diffDockSource).toContain("Ignore whitespace-only changes");
-    expect(diffDockSource).toContain(
-      "fetchWorkingTreeDiff(props.workspaceRoot, diffRequest.scope)",
-    );
+    expect(diffDockSource).toContain("...gitWorkingTreeDiffQueryOptions({");
     expect(diffDockSource).toContain('props.diffCopied ? "Copied diff" : "Copy diff"');
     expect(diffDockSource).toContain("+{view.additions}");
     expect(diffDockSource).toContain("-{view.deletions}");
@@ -501,7 +499,7 @@ describe("Lynx Editor view", () => {
     expect(routerSource).toContain("initData.initialEditorHistoryOpen === true");
     expect(appSource).not.toContain("await fetchWorkingTreeDiff(");
     expect(appSource).not.toContain("await fetchGitBranches(summary.workspaceRoot)");
-    expect(diffDockSource).toContain("enabled: !props.unavailableLabel");
+    expect(diffDockSource).toContain("const diffsEnabled = !props.unavailableLabel;");
     expect(diffDockSource).toContain(
       '<text className="DiffDockStateText">{props.unavailableLabel}</text>',
     );
