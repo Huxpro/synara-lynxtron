@@ -11,5 +11,5 @@
     "server.getConfig"
   ],
   "projectsReadFile": false,
-  "devtool": "not published; localhost:8901 was Lynxtron 0.0.7 default app and localhost:8904 was t3code"
+  "devtool": "not published; localhost:8901 was Lynxtron 0.0.7 default app and localhost:8904 was another-project"
 }

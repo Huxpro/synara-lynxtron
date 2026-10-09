@@ -61,7 +61,7 @@ Therefore:
 The app remained healthy for more than one minute, but:
 
 - its PID exposed no DevTool TCP listener;
-- `list-clients` continued to show only unrelated `8901` t3code and `8902`
+- `list-clients` continued to show only unrelated `8901` another-project and `8902`
   iOS Explorer clients;
 - no `@synara/lynx` client or session appeared;
 - the app log contained

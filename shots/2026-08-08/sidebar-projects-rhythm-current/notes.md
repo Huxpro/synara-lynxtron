@@ -80,7 +80,7 @@ Native rounds the fractional Browser coordinates to whole logical pixels while
 preserving the exact internal anatomy.
 
 An earlier valid capture transaction ran while a concurrent
-`@t3tools/lynxtron` client occupied 8901. The PID-derived gate correctly chose
+`another-project` client occupied 8901. The PID-derived gate correctly chose
 the owned Synara client on 8902 and did not touch 8901. The final retained
 capture above ran after that unrelated client exited.
 

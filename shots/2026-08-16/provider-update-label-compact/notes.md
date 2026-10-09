@@ -107,7 +107,7 @@ inflate or close the Update-label loss.
 The published `0.0.9` host rendered but did not register an owned DevTool
 listener, so that attempt was rejected as a harness capability failure.
 The temporary published `0.0.9-dev` diagnostic host then registered exact-owned
-PID `48616` at PID-derived `localhost:8902`; unrelated t3code PID `18721`
+PID `48616` at PID-derived `localhost:8902`; unrelated another-project PID `18721`
 remained on `8901` and was not touched.
 
 Native identity:
@@ -148,4 +148,4 @@ the OpenCode disclosure and switch anatomy.
 - Owned ports `58090`, `8891`, and `8902` were free.
 - Temporary browser stage, server state, Native user/runtime state, and
   diagnostic package were removed.
-- Unrelated t3code `8901` remained running and untouched.
+- Unrelated another-project `8901` remained running and untouched.

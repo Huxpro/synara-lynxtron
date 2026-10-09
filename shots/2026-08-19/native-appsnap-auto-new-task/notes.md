@@ -81,7 +81,7 @@ final Native app remained running on the AppSnap Settings route.
 - One initial Native launch was tied to a unified-exec process group and was
   killed when that group ended. The retained certification used a detached,
   exact-owned process.
-- DevTool discovery initially selected an unrelated t3code client. All retained
+- DevTool discovery initially selected an unrelated another-project client. All retained
   checks explicitly targeted the client derived from the exact-owned PID.
 - Midscene could take screenshots but lacked model configuration for actions;
   no Midscene action was retained as product evidence.

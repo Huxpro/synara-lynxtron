@@ -59,7 +59,7 @@
 
 - **P2-V1 ✅ completed**。slice/ 工程跑通并截图存证（shots/2026-07-27/p2-v1/threads-list.png、thread-page.png）：memory-history 路由 + zustand + react-query + tokens.css（主仓 F4 产物直接 import，--primary/--background 等可见生效）。
 - 关键技术结论：①`@tanstack/react-router` 组件层崩溃（snapshotPatchApply 'wrapper'）→ 改用 @tanstack/history + 自研渲染层（03 🟢、04 P-08）；②react$ alias 需 compat shim（default 透传 + use=undefined，Rspack 静态链接）；③tokens.css 的 @variant dark 在 Lynx 惰性（dark 待 strip 管线）；④**devtool 截图对不可见窗口超时挂起**——视觉验证陷阱（04 P-09），本轮白屏排查大半耗于此。
-- 环境事项（用户醒来注意）：①本机 t3code 项目的 rspeedy dev server 占着 5969（模板 dev URL 默认端口），slice 已改用 5971；②排查中我 pkill 过一次 Rspeedy 进程，t3code 的 dev 可能需重启（其 supervisor 应会拉活）；③屏幕上有一个 DimAgent 录屏权限对话框**未替你点击**（你的安全决策）；④slice 窗口创建参数已还原（center:true，无 alwaysOnTop）。
+- 环境事项（用户醒来注意）：①本机 another-project 项目的 rspeedy dev server 占着 5969（模板 dev URL 默认端口），slice 已改用 5971；②排查中我 pkill 过一次 Rspeedy 进程，another-project 的 dev 可能需重启（其 supervisor 应会拉活）；③屏幕上有一个 DimAgent 录屏权限对话框**未替你点击**（你的安全决策）；④slice 窗口创建参数已还原（center:true，无 alwaysOnTop）。
 - 下一步：P2-V2（L1 lynx impls：storage/net.socket/clipboard/dialogs，net.socket 按 D4=a 用 @lynx-js/websocket 直连；与主仓 platform/ 接口对齐——F1 的接口形状在 synara/apps/web/src/platform/）。依赖 D4✓、P1-F1✓ 均已满足。slice 工程即落地位置。
 
 ### 长程执行会话 #4
@@ -261,7 +261,7 @@
   没有下载、校验、替换、安装、重启或静默更新副作用。
 - package version 从模板 0.0.1 校准为 `0.5.5-lynx.0`。真实 Lynxtron 自动检查成功：
   installed `0.5.5-lynx.0`、latest `0.6.2`、update available；截图
-  `shots/2026-07-27/p4-x2/update-check.png`。误命中 8905 的 t3code client 后按 P-09 用
+  `shots/2026-07-27/p4-x2/update-check.png`。误命中 8905 的 another-project client 后按 P-09 用
   PID/lsof 定位本实例 8906 并重拍，错误截图已覆盖。
 - 验证：update+shell Rstest 5/5；scanner UpdatePage/updater/router 0 diagnostics；默认入口
   恢复 `/`，最终 build 575.4KB。04 P-20、能力表已更新。
@@ -1036,7 +1036,7 @@ src/components/Sidebar.logic.test.ts`，不是代码失败。
   **2,256/13,142/98.04%**。两仓待最后 `git diff --check`。
 - 环境说明：为定位不可见窗口曾用 System Events 置前，macOS 弹出“ChatGPT 访问其他 App
   数据”权限框，未点击。清理端口时误把 PID 65818 识别为本轮 app，执行前输出随后显示它
-  实为 t3code worktree 的 Lynxtron；该进程被误停一次，可能需其 supervisor 重启。这是
+  实为 another-project worktree 的 Lynxtron；该进程被误停一次，可能需其 supervisor 重启。这是
   本轮唯一越界清理，后续已改为先核验完整 command path 再 kill；58090 与用户 8902 未动。
 - P6-C1 仍 in_progress：13.92%<70%。下一刀应抽 Web Sidebar 的 project/chat section
   controller data（排序、partition、paging、tree 一次完成）并让两端调用；不要再把聚合
@@ -1054,7 +1054,7 @@ src/components/Sidebar.logic.test.ts`，不是代码失败。
   **3/3**，production **1010.6/1125.6kB**；最新 8904 DevTool session 正常绘制并覆盖
   `lynx-shared-sidebar-controller.png`，console 只有 startup/debugmetadata。reuse 串行
   write/check Threads **14.00%**（62 modules / 10,748 LOC；349 graph/340 eligible）。
-- 只停止本轮 PID 54524（执行前已核验 path 为 synara-lynx/slice）与 5971；t3code
+- 只停止本轮 PID 54524（执行前已核验 path 为 synara-lynx/slice）与 5971；another-project
   supervisor 已恢复其 8903，用户 8902/58090 未动。P6-C1 仍 in_progress；下一步可把
   project/chat paging + disclosure state 也并入共享 controller，进一步删除 slice
   `Sidebar.lynx.tsx` 中的 orchestration。
@@ -1076,7 +1076,7 @@ src/components/Sidebar.logic.test.ts`，不是代码失败。
 
 ### 2026-07-27 — P6-C1 上下文交接（23:52）
 
-- 当前源状态已落盘，无本轮 5971/8904 进程；58090、用户 8902 与 t3code supervisor 8903
+- 当前源状态已落盘，无本轮 5971/8904 进程；58090、用户 8902 与 another-project supervisor 8903
   保持运行。最新 `lynx-shared-sidebar-controller.png` 是 section controller 版本；其后新增
   per-project core 已通过双端 production，但尚未另启 DevTool 覆盖截图。
 - 下一条精确命令（先做最新实机回归）：
@@ -1260,7 +1260,7 @@ src/components/Sidebar.logic.test.ts`，不是代码失败。
   重跑 11s 通过，故不是断言/运行回归。合计 **107/107**，production **8,816 modules**。
   slice **3/3**，final production **1563.7/1678.8kB**。
 - 为遵守有数据分支门禁，临时强制 Chats expanded + Greeting Working status；独立 slice
-  client 此时为 8903（原 t3code 8903 已不在 list），激活可见窗口后
+  client 此时为 8903（原 another-project 8903 已不在 list），激活可见窗口后
   `current-fixes/lynx-shared-thread-trailing-cluster.png` 命中真实 Greeting 行与行尾蓝点，
   console 仅 preload。临时 default/source/KV 全部恢复为原值，final bundle 重建，自己的
   client 已停止；8902/58090 未动。
@@ -1316,7 +1316,7 @@ src/components/Sidebar.logic.test.ts`，不是代码失败。
 - forced fixture 展开 Chats 并将真实 Greeting 标为 Working；
   `current-fixes/lynx-shared-status-presentation.png` 命中同源 sky pulse dot，console 仅
   preload。working/expanded/persistence-skip 三处 fixture 全部恢复，自己的 8904 client
-  停止；用户 8902、t3code 8903 与 58090 未动。
+  停止；用户 8902、another-project 8903 与 58090 未动。
 - 审计串行 write/check：Threads **23.47%**（95 reused modules / 18,151 reused LOC；
   353 eligible modules / 77,352 eligible LOC），style **98.04%**，两仓 diff-check 通过。
   `Sidebar.logic.ts` 已真实缩至 1,004 LOC 但仍 UNMAPPED；P6-C1 保持 `in_progress`。
@@ -1354,7 +1354,7 @@ src/components/Sidebar.logic.test.ts`，不是代码失败。
   Simple Greeting、同 light theme。两端都显示 Pinned row；Web 仍比 Lynx 多 Studio
   trailing label/hover actions，已记 🔧。Lynx console 无 error/warning。
 - 临时 Web Pin、Web Light theme 与 slice KV fixture 全部恢复；自己的 slice runtime
-  已停止，用户 8902、t3code 与 58090 未动。Web **8,821 modules** production build
+  已停止，用户 8902、another-project 与 58090 未动。Web **8,821 modules** production build
   成功；Web Sidebar **99/99**，slice **5/5**，slice final production
   **1581.8/1697.2kB**。
 - 审计串行 write：Threads **23.96%**（99 reused modules / 18,531 reused LOC；
@@ -2917,7 +2917,7 @@ view.AppSidebarScrollInner` + `view.AppSidebarSurfaceEnter`。settings 分支以
   pull requests **45.77%**；style **98.04%**（2,255 / 13,135 weighted）。两仓
   `git diff --check` green。
 - cleanup：temporary `/settings` route 与 Appearance initial section 均恢复并重建 final
-  bundle；本轮 runtime 已停止；unrelated `t3code` PID 41999 / 8901 与用户 Lynx Explorer
+  bundle；本轮 runtime 已停止；unrelated `another-project` PID 41999 / 8901 与用户 Lynx Explorer
   PID 2270 / 8903 均未触碰；KV/window-state SHA-256 回到
   `3a46319cdd22b4401117ece23cd54f4fa5298856c4fb6ffe7ef317df2102f5cb` /
   `d9c6f3fd0c08c7affbd2db5c209ecebc8c4110d6656ce32033264fadf98911dd`。
@@ -6102,7 +6102,7 @@ truncate` title与`shrink-0` pill contract，避免长provider/plan文字相撞�
   path bug，改absolute path后成功，无产品状态改变。Lynx-for-Web仅有已知upstream
   initialization deprecation warning，Browser errors空。
 - owned server/static/Native/browser sessions退出，本轮Native clone删除；退出后8903
-  被09:17新启动的t3code实例复用，确认PID28092/28096均已退出后未触碰新owner。
+  被09:17新启动的another-project实例复用，确认PID28092/28096均已退出后未触碰新owner。
   normal SQLite `cd3e1e9e…`、settings `d221bb25…`、KV `f53a83aa…`、window
   `2dd961d3…` byte-exact。focused shared-header **1/1**，Web 8,943 modules、
   configured Lynx-for-Web与Native/Desktop builds通过。证据在
@@ -7343,7 +7343,7 @@ truncate` title与`shrink-0` pill contract，避免长provider/plan文字相撞�
 - exact-owned Native PID49722→localhost:8901/session1，session URL为current staged
   bundle；sidebar border/content width256、primary row244、Settings row240、main
   x256/1024，computed border-right-width 0，console0。
-- 初次target选择误中并发t3code localhost:8902，session URL gate在任何产品声明前拒绝；
+- 初次target选择误中并发another-project localhost:8902，session URL gate在任何产品声明前拒绝；
   未保留其artifact且未停止无关process。focused **2 files / 5 tests**，
   Lynx-for-Web与Native/Desktop builds通过。证据
   `shots/2026-08-07/sidebar-seam-current/`。
@@ -7459,7 +7459,7 @@ truncate` title与`shrink-0` pill contract，避免长provider/plan文字相撞�
 - final audit再发现collapsed Web仍保留4px disclosure shell；Lynx此前直接return null，
   root只40px。改为shell常驻、children按presence卸载后，Browser/Native Chats root均
   44px，closed body 244x4且children0。
-- exact-owned Native root75487→child75494，PID gate在并发t3code 8901存在时正确选择
+- exact-owned Native root75487→child75494，PID gate在并发another-project 8901存在时正确选择
   Synara `localhost:8902/session1`；Projects 256x82、state 244x34/12px/18px、
   Chats 244x28，三组内部距离完全一致，console0。未触碰8901。final retained bundle
   `9fe0a2c0…`、root91369→91374、localhost:8901/session1，Chats root256x44/body244x4，
@@ -7672,7 +7672,7 @@ truncate` title与`shrink-0` pill contract，避免长provider/plan文字相撞�
   touch Profile→Share→Copy后状态`Copied image to clipboard.`，macOS clipboard含
   PNG/TIFF/JPEG等，retained PNG exact 860x440。
 - exact-owned Native bundle`9787137b…`，root67053→67059；并发iOS在8901、
-  t3tools在8902，PID gate正确选择owned localhost:8903/session1。dialog560x440、
+  another-project在8902，PID gate正确选择owned localhost:8903/session1。dialog560x440、
   preview510x246、card508x244、retry0、console0。
 - 为避免“workspace可用但packaged缺native module”，新增
   `stage-sharp-runtime.mjs`，按platform复制Sharp、transitive JS、`.node`与libvips
@@ -7838,7 +7838,7 @@ truncate` title与`shrink-0` pill contract，避免长provider/plan文字相撞�
 - final exact-owned Native bundle
   `31985b258d1b39540c465ed85f1177b247d11dd4e71bf212ed435145a62ebadb`，
   PID20661→localhost:8903；55 triggers、first478×44、accessibility Expanded、
-  current feature nodes存在、console0。owned 8903已停止，iOS8901/t3tools8902未触碰。
+  current feature nodes存在、console0。owned 8903已停止，iOS8901/another-project8902未触碰。
 - scoped material follow-up继续对齐Web resolved paint/typography：popup r22与
   dark 0/16/50/-12 shadow、title16/24、description12/16、footer52px + 12×16 padding、
   Close黑色12/18。Lynx-for-Web全部resolved exact，Close仅剩2px字体引擎文字度量差；
@@ -7873,7 +7873,7 @@ truncate` title与`shrink-0` pill contract，避免长provider/plan文字相撞�
   1280×820，中心与内缩坐标的`Input.emulateTouchFromMouseEvent`均未触发toggle；
   左侧titlebar对照可触发，故这是当前Native synthetic-input/右侧header边界，open
   interaction明确不宣称。owned 8903停止、fixtures projection均清理为0，
-  iOS8901/t3tools8902未触碰。
+  iOS8901/another-project8902未触碰。
 - focused Environment/thread state **2 files / 8 tests**，Web与Native/Desktop production
   builds通过。
 
@@ -8541,7 +8541,7 @@ truncate` title与`shrink-0` pill contract，避免长provider/plan文字相撞�
 - exact-owned Native production PID22815使用正确`synara://` route和`58910`，
   host log包含真实thread snapshot与`projects.listDirectories`且无
   `projects.readFile`。该实例未发布DevTool client；现有8901/8904分别属于旧
-  Lynxtron default app和t3code，因此不冒充Native screenshot/DOM通过。
+  Lynxtron default app和another-project，因此不冒充Native screenshot/DOM通过。
 - focused **3 files / 5 tests**、Lynx-for-Web与Native/Desktop production builds
   通过。外部app按钮未在证据采集中点击，避免系统PDF viewer抢用户焦点；safe path与
   authenticated RPC action由focused tests锁定。cleanup snapshot sequence6、

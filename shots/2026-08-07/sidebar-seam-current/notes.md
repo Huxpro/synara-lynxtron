@@ -52,12 +52,12 @@ The Native run used isolated server `58127`, isolated
 `localhost:8901/session 1`. Its session URL was the exact staged
 `apps/lynx/dist/desktop/main.lynx.bundle`.
 
-One initial DevTool target choice selected a concurrently launched t3code
+One initial DevTool target choice selected a concurrently launched another-project
 client on `localhost:8902`. The session URL gate rejected it before any product
-claim; no t3code artifact is retained and that unrelated process was not
+claim; no another-project artifact is retained and that unrelated process was not
 stopped.
 
-After the owned Synara process exited, a later t3code process reused
+After the owned Synara process exited, a later another-project process reused
 `localhost:8901`; its PID, launch time, and cwd identified it as unrelated, so
 it was also left untouched. Owned server/static ports, browser session, and
 isolated state were removed.
