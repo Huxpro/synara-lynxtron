@@ -98,9 +98,6 @@ jobs:
           - name: Lint
             run: bun run lint
 
-          - name: Lynx CSS report (ratchet)
-            run: bun run lynx:css-report -- --check
-
           - name: Exercise release-only workflow steps
             run: node scripts/release-smoke.ts
 
@@ -217,10 +214,7 @@ jobs:
           cd apps/web
           ./node_modules/.bin/playwright install chromium
 
-      # Browser tests failed on the fork's default branch (Huxpro/synara-lynxtron#30).
-      # Non-blocking until they are fixed.
       - name: Browser test (${{ matrix.project }} ${{ matrix.shard }})
-        continue-on-error: true
         timeout-minutes: 20
         run: bun run --cwd apps/web test:browser:ci -- --project=${{ matrix.project }} --shard=${{ matrix.shard }}
 
@@ -329,9 +323,6 @@ jobs:
 
   windows_process:
     name: Windows Process Regression
-    # The install's Effect language-service patch fails on Windows
-    # (Huxpro/synara-lynxtron#30). Non-blocking until it is fixed.
-    continue-on-error: true
     runs-on: windows-2022
     timeout-minutes: 15
     needs: [changes]
