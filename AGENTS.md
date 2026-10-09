@@ -41,4 +41,4 @@ An inherited `SYNARA_AUTH_TOKEN` makes the browser WebSocket fail unless the web
 
 ## Models
 
-Model choice, cost and taste rankings, and the Codex CLI mechanics are in [docs/agent-models.md](docs/agent-models.md). Defaults: fable-5 or opus-4.8 for design, review, and anything user-facing; gpt-5.6-sol through `codex exec` for clear-spec bulk work when it helps; never Haiku.
+Opus 5.5 is the default and does the main work itself: design, code, merges, and the primary Computer Use pass. Codex (gpt-6.1-sol, through `codex exec`) is an optional helper for independent review, verification, a second Computer Use pass, and parallel bulk work. Never use Haiku. Details and CLI mechanics: [docs/agent-models.md](docs/agent-models.md).

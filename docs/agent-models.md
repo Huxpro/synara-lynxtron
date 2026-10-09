@@ -1,33 +1,22 @@
 # Agent model selection
 
-Operator preferences for this fork. Rankings, higher = better. Cost reflects what the operator actually pays (OpenAI is near-free), not list price. Intelligence is how hard a problem the model can take unsupervised. Taste covers UI/UX, code quality, API design, and copy.
+Operator preferences for this fork.
 
-| model       | cost | intelligence | taste |
-| ----------- | ---- | ------------ | ----- |
-| gpt-5.6-sol | 9    | 8            | 5     |
-| sonnet-5    | 5    | 5            | 7     |
-| opus-4.8    | 4    | 7            | 8     |
-| fable-5     | 2    | 9            | 9     |
+## Roles
 
-## How to apply
-
-- These are defaults, not limits. If a cheaper model's output does not meet the bar, redo the work with a smarter model without asking. Judge the output, not the price.
-- For anything that ships: intelligence > taste > cost. Cost is a tie-breaker.
-- Use cheaper models to gather information and try things before moving work to an expensive one.
-- Bulk or mechanical work with a clear spec (implementation, data analysis, migrations): gpt-5.6-sol is a good fit and effectively free, but optional. Use it when it buys parallelism or time.
-- Merges and conflict resolution are judgment work: the session that owns the merge resolves it or reviews every resolution. Codex may help in parallel on well-separated parts.
-- Anything user-facing (UI, copy, API design) needs taste ≥ 7.
-- Reviews of plans and implementations: fable-5 or opus-4.8, optionally gpt-5.6-sol as an independent second view.
-- Never use Haiku.
+- **Opus 5.5 is the default and does the main work itself:** architecture and design, writing code, merges, and the primary Computer Use pass. Claude subagents inherit it; do not pick a different Claude model without a reason. Never use Haiku.
+- **Codex (gpt-6.1-sol) is the helper.** Good uses: an independent code review, verification runs, a second Computer Use pass, and well-separated bulk work in parallel. It is optional: use it when it adds a second opinion or saves wall-clock time, not by default.
+- The session that owns a piece of work stays responsible for it. Review what a helper produced before committing it, and resolve merges yourself or review every resolution.
 
 ## Mechanics
 
-- Claude models run through the Agent/Workflow `model` parameter.
-- gpt-5.6-sol is reachable only through the Codex CLI: `codex exec -m gpt-5.6-sol … < /dev/null` or `codex review`. Pass the model explicitly (`gpt-6.1-sol` is rejected for this account) and close stdin, or a background run waits forever. Use `-s read-only` for investigation.
+- Codex runs through the CLI: `codex exec -m <model> … < /dev/null` or `codex review`. Pass the model explicitly and close stdin, or a background run waits forever. Use `-s read-only` for review and investigation.
+- As of 2026-10-09 the API rejects `gpt-6.1-sol` for this ChatGPT account ("not supported when using Codex with a ChatGPT account"). Until that changes, use `-m gpt-5.6-sol`. Retry `gpt-6.1-sol` first when starting a new piece of helper work.
+- Codex Computer Use from `codex exec` needs the operator's interactive per-app approval and cannot reach the Lynx DevTool port from its sandbox; plan for that before relying on it.
 - Codex runs can exceed a 10-minute shell timeout: run in the background and wait for a report file.
-- Inside workflows the `model` parameter takes only Claude models, so wrap Codex in a thin `sonnet` agent at low effort that writes the prompt, runs `codex exec`, and returns the report. Label it `gpt-5.6-sol:<task>`; the UI otherwise shows the wrapper's model.
-- Parallel Codex implementation agents need separate worktrees.
+- Parallel Codex implementation runs need separate worktrees.
+- Inside workflows the `model` parameter takes only Claude models, so wrap Codex in a thin low-effort agent that writes the prompt, runs `codex exec`, and returns the report. Label it with the Codex model name; the UI otherwise shows the wrapper's model.
 
-## Briefing a long Codex task
+## Briefing a Codex task
 
-gpt-5.6-sol handles large multi-step tasks well; do not split work only because it is large. The result depends on the brief: state the goal, context, constraints, files in scope, deliverables, non-negotiable decisions, and how to verify. Ask it to inspect the current state first, finish end to end, and report changes, verification, and remaining risks.
+The result depends on the brief: state the goal, context, constraints, files in scope, deliverables, non-negotiable decisions, and how to verify. Ask it to inspect the current state first, finish end to end, and report changes, verification, and remaining risks. Do not split work only because it is large.
