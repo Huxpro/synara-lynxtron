@@ -6,6 +6,7 @@ import {
   ProviderItemId,
   type ProviderApprovalDecision,
   type ProviderEvent,
+  ProviderRuntimeEvent,
   type ProviderSession,
   type ProviderTurnStartResult,
   type ProviderUserInputAnswers,
@@ -15,7 +16,7 @@ import {
 import * as NodeServices from "@effect/platform-node/NodeServices";
 import { afterAll, it, vi } from "@effect/vitest";
 
-import { Effect, Fiber, FileSystem, Layer, Option, Stream } from "effect";
+import { Effect, Fiber, FileSystem, Layer, Option, Schema, Stream } from "effect";
 
 import {
   CodexAppServerManager,
@@ -488,6 +489,37 @@ lifecycleLayer("CodexAdapterLive lifecycle", (it) => {
       }
       assert.equal(firstEvent.value.payload.itemType, "reasoning");
       assert.equal(firstEvent.value.payload.detail, "Inspect the protocol.\n\nUpdate the adapter.");
+    }),
+  );
+
+  it.effect("trims Codex config warnings so they satisfy the runtime-event contract", () =>
+    Effect.gen(function* () {
+      const adapter = yield* CodexAdapter;
+      const firstEventFiber = yield* Stream.runHead(adapter.streamEvents).pipe(Effect.forkChild);
+
+      lifecycleManager.emit("event", {
+        id: asEventId("evt-config-warning"),
+        kind: "notification",
+        provider: "codex",
+        createdAt: new Date().toISOString(),
+        method: "configWarning",
+        threadId: asThreadId("thread-1"),
+        payload: {
+          summary: "Project-local config is disabled until the project is trusted.\n",
+          details: null,
+        },
+      } satisfies ProviderEvent);
+
+      const firstEvent = yield* Fiber.join(firstEventFiber);
+      assert.equal(firstEvent._tag, "Some");
+      if (firstEvent._tag !== "Some" || firstEvent.value.type !== "config.warning") {
+        assert.fail("expected a config.warning event");
+      }
+      assert.deepEqual(firstEvent.value.payload, {
+        summary: "Project-local config is disabled until the project is trusted.",
+      });
+      // The journal encodes with this schema; an untrimmed summary fails it.
+      yield* Schema.encodeEffect(ProviderRuntimeEvent)(firstEvent.value);
     }),
   );
 

@@ -167,6 +167,13 @@ function asString(value: unknown): string | undefined {
   return typeof value === "string" ? value : undefined;
 }
 
+// Codex notice text arrives with trailing newlines; the runtime-event contract
+// only accepts trimmed, non-empty strings.
+function asTrimmedString(value: unknown): string | undefined {
+  const trimmed = asString(value)?.trim();
+  return trimmed ? trimmed : undefined;
+}
+
 function asArray(value: unknown): unknown[] | undefined {
   return Array.isArray(value) ? value : undefined;
 }
@@ -1425,8 +1432,10 @@ function mapToRuntimeEvents(
         type: "deprecation.notice",
         ...runtimeEventBase(event, canonicalThreadId),
         payload: {
-          summary: asString(payload?.summary) ?? "Deprecation notice",
-          ...(asString(payload?.details) ? { details: asString(payload?.details) } : {}),
+          summary: asTrimmedString(payload?.summary) ?? "Deprecation notice",
+          ...(asTrimmedString(payload?.details)
+            ? { details: asTrimmedString(payload?.details) }
+            : {}),
         },
       },
     ];
@@ -1438,9 +1447,11 @@ function mapToRuntimeEvents(
         type: "config.warning",
         ...runtimeEventBase(event, canonicalThreadId),
         payload: {
-          summary: asString(payload?.summary) ?? "Configuration warning",
-          ...(asString(payload?.details) ? { details: asString(payload?.details) } : {}),
-          ...(asString(payload?.path) ? { path: asString(payload?.path) } : {}),
+          summary: asTrimmedString(payload?.summary) ?? "Configuration warning",
+          ...(asTrimmedString(payload?.details)
+            ? { details: asTrimmedString(payload?.details) }
+            : {}),
+          ...(asTrimmedString(payload?.path) ? { path: asTrimmedString(payload?.path) } : {}),
           ...(payload?.range !== undefined ? { range: payload.range } : {}),
         },
       },
