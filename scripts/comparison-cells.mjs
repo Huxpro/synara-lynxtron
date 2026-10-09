@@ -83,11 +83,6 @@ export const COVERAGE_EXEMPTIONS = Object.freeze([
       "Electron's swatch button opens a 2D picker popover; Native edits the hex inline in the same swatch, named '<color> hex value' (registered residual)",
   },
   {
-    label: /^Theme preference$/,
-    reason:
-      "Electron names the radiogroup; Lynx has no group role, so Native names each radio 'Theme preference: <mode>'",
-  },
-  {
     label: /^Git actions$/,
     reason:
       "Electron names the split-button group; Lynx has no group role, and both buttons inside (Commit, Git action options) are compared directly",
@@ -196,14 +191,8 @@ export const INCREMENTS = Object.freeze({
     workflow: "J4",
     base: "settings",
     open: (driver) => driver.tap(pick(driver, textTarget("button", "Appearance"))),
-    ready: (driver) =>
-      driver.find(
-        pick(driver, {
-          // Upstream's Appearance panel edits theme packs; the font switch is gone there.
-          electron: { label: "Theme preference" },
-          native: { label: "Use system UI font" },
-        }),
-      ),
+    // Upstream's Appearance panel opens on the theme mode picker, on both renderers.
+    ready: (driver) => driver.find({ label: "Theme preference" }),
     probes: [],
     close: () => undefined,
   },

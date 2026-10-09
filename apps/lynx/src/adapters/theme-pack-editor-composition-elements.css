@@ -22,10 +22,11 @@
   align-items: center;
 }
 
+/* Upstream: `flex flex-wrap items-center justify-between gap-3 px-4 py-3.5` around 28px
+   controls, so the header is 56px. */
 .SharedThemePackHeader {
-  height: 84px;
-  flex-wrap: wrap;
-  padding: 12px 16px;
+  height: 56px;
+  padding: 14px 16px;
   gap: 4px;
 }
 
@@ -288,15 +289,85 @@
   height: 28px;
 }
 
-.SharedThemePackHeader > .LxMenuRoot {
-  width: 100%;
+/* Upstream: `flex flex-wrap items-center justify-between gap-2 px-4 pb-3 text-ui-sm`. */
+.SharedThemePackContextRow {
+  display: flex;
+  min-height: 30px;
+  padding: 0 16px 12px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .SharedThemePackContext {
-  padding: 0 16px 12px;
   color: var(--muted-foreground);
-  font-size: 11px;
-  line-height: 16.5px;
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 18px;
+}
+
+/* Upstream: a `px-4 pb-3` band holding the `rounded-lg border p-3` preview. Its bottom
+   divider is the first row's top border here. */
+.SharedThemePackPreviewRow {
+  display: flex;
+  padding: 0 16px 12px;
+  flex-direction: column;
+}
+
+.SharedThemePackPreview {
+  display: flex;
+  padding: 12px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 8px;
+}
+
+/* `text-ui-lg leading-snug font-medium`. */
+.SharedThemePackPreviewTitle {
+  font-size: var(--app-font-size-ui-lg, 14px);
+  font-weight: 500;
+  line-height: 19.25px;
+}
+
+/* `rounded-md px-3 py-1 text-ui leading-snug`. */
+.SharedThemePackPreviewAccent {
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+.SharedThemePackPreviewAccentText {
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 17.875px;
+}
+
+/* UI font: `flex flex-col items-end gap-1` with the note under the input. */
+.SharedThemePackFontColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.SharedThemePackFontNote {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 18px;
+}
+
+.SharedThemePackWindowMaterial {
+  display: flex;
+  flex-direction: row;
+}
+
+.SharedThemePackUnavailableNote {
+  padding: 0 12px 10px;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 18px;
 }
 
 .SharedThemePackRow {
@@ -311,6 +382,17 @@
 .SharedThemePackRowControl {
   flex-shrink: 0;
   justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Upstream's color reset: `rounded-md p-1` around a 14px glyph. */
+.LxButton.SharedThemePackColorReset {
+  width: 22px;
+  min-width: 22px;
+  height: 22px;
+  min-height: 22px;
+  padding: 4px;
+  border-radius: 6px;
 }
 
 .SharedThemePackColorLine {
@@ -473,8 +555,9 @@
   background-color: var(--background);
 }
 
+/* Upstream ThemeSlider: `w-10 text-right`. */
 .SharedThemePackContrastValue {
-  width: 28px;
+  width: 40px;
   color: var(--muted-foreground);
   font-family: var(--font-mono-family);
   font-size: 12px;

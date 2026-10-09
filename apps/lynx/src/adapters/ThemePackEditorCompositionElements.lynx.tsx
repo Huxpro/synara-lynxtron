@@ -320,6 +320,7 @@ export function ThemePackColorControlElement(props: {
         <Button
           size="icon-sm"
           variant="ghost"
+          className="SharedThemePackColorReset"
           aria-label={`Reset ${props.ariaLabel}`}
           onClick={props.onReset}
         >
@@ -398,26 +399,41 @@ export function ThemePackBooleanControlElement(props: {
   );
 }
 
+/**
+ * Upstream's ThemeSlider: a 0–100 track by default (Contrast), or a `min`–`max` range with
+ * a suffix or a label standing in for the number (the translucency sliders).
+ */
 export function ThemePackContrastControlElement(props: {
   readonly value: number;
   readonly ariaLabel: string;
+  readonly min?: number;
+  readonly max?: number;
+  readonly suffix?: string;
+  /** Shown instead of the number, e.g. while the value is still the automatic default. */
+  readonly valueLabel?: string;
   readonly onChange: (value: number) => void;
 }) {
+  const min = props.min ?? 0;
+  const max = props.max ?? 100;
   const [dragging, setDragging] = useState(false);
   const [trackRect, setTrackRect] = useState({ left: 0, width: 0 });
+  const valueText = props.valueLabel ?? `${props.value}${props.suffix ?? ""}`;
   const interaction = useLynxInteractiveState({
     baseClassName: "SharedThemePackContrastTrack",
     accessibleLabel: props.ariaLabel,
     accessibilityTraits: "adjustable",
-    accessibilityValue: String(props.value),
+    accessibilityValue: valueText,
     focusable: true,
   });
+  const fillPercent = Math.max(0, Math.min(100, ((props.value - min) / (max - min)) * 100));
   const updateFromPointer = (event: ThemePackContrastPointerEvent) => {
-    const next = resolveThemePackContrastPointerValue(event, trackRect);
-    if (next !== null && next !== props.value) props.onChange(next);
+    const percent = resolveThemePackContrastPointerValue(event, trackRect);
+    if (percent === null) return;
+    const next = Math.round(min + (percent / 100) * (max - min));
+    if (next !== props.value) props.onChange(next);
   };
   const handleKeyDown = (event: { readonly key: string; preventDefault?: () => void }) => {
-    const next = resolveThemePackContrastKeyValue(props.value, event.key);
+    const next = resolveThemePackContrastKeyValue(props.value, event.key, min, max);
     if (next === null) return;
     event.preventDefault?.();
     if (next !== props.value) props.onChange(next);
@@ -428,8 +444,8 @@ export function ThemePackContrastControlElement(props: {
         className={interaction.className}
         {...interaction.eventProps}
         aria-label={props.ariaLabel}
-        aria-valuemin={0}
-        aria-valuemax={100}
+        aria-valuemin={min}
+        aria-valuemax={max}
         aria-valuenow={props.value}
         bindlayoutchange={(event: ThemePackContrastLayoutEvent) => {
           "background only";
@@ -475,10 +491,10 @@ export function ThemePackContrastControlElement(props: {
         bindkeydown={handleKeyDown}
       >
         <view className="SharedThemePackContrastRail" />
-        <view className="SharedThemePackContrastFill" style={{ width: `${props.value}%` }} />
-        <view className="SharedThemePackContrastThumb" style={{ left: `${props.value}%` }} />
+        <view className="SharedThemePackContrastFill" style={{ width: `${fillPercent}%` }} />
+        <view className="SharedThemePackContrastThumb" style={{ left: `${fillPercent}%` }} />
       </view>
-      <text className="SharedThemePackContrastValue">{props.value}</text>
+      <text className="SharedThemePackContrastValue">{valueText}</text>
     </view>
   );
 }
@@ -531,14 +547,19 @@ export function resolveThemePackContrastPointerValue(
   return Math.round(Math.max(0, Math.min(1, (x - rect.left) / rect.width)) * 100);
 }
 
-export function resolveThemePackContrastKeyValue(value: number, key: string): number | null {
-  if (key === "Home") return 0;
-  if (key === "End") return 100;
+export function resolveThemePackContrastKeyValue(
+  value: number,
+  key: string,
+  min = 0,
+  max = 100,
+): number | null {
+  if (key === "Home") return min;
+  if (key === "End") return max;
   if (key === "ArrowLeft" || key === "ArrowDown") {
-    return Math.max(0, value - 1);
+    return Math.max(min, value - 1);
   }
   if (key === "ArrowRight" || key === "ArrowUp") {
-    return Math.min(100, value + 1);
+    return Math.min(max, value + 1);
   }
   return null;
 }

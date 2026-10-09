@@ -42,6 +42,17 @@ export function resolveSliceCodeFontFamily(themeState: ThemeState, systemDark = 
   );
 }
 
+/**
+ * Lynx does not resolve a custom property whose value is another `var()` (or a
+ * `color-mix()` over one). Upstream leaves a few such values in the table; they are left
+ * out here so the generated stylesheet's concrete value for the same name stays in effect.
+ */
+function concreteThemeVariables(variables: Record<string, string>): Record<string, string> {
+  return Object.fromEntries(
+    Object.entries(variables).filter(([, value]) => !String(value).includes("var(")),
+  );
+}
+
 export function resolveSliceThemeVariables(
   themeState: ThemeState,
   systemDark = false,
@@ -56,7 +67,7 @@ export function resolveSliceThemeVariables(
   }).variables;
   const uiFontFamily = resolveSliceUiFontFamily(themeState, systemDark);
   return {
-    ...variables,
+    ...concreteThemeVariables(variables),
     "--font-ui-family": uiFontFamily,
     // Web tokens.css: `"Cal Sans", var(--font-ui-family)`, projected concretely for the
     // same nested-fallback reason as the mono stack below.
