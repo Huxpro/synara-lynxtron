@@ -55,7 +55,7 @@ describe("shared primitive geometry", () => {
   it("matches the Electron radius tokens for generic menus and dialogs", () => {
     expect(css).toMatch(/\.LxMenuPopup\s*\{[^}]*border-radius:\s*18px;[^}]*box-shadow:/s);
     expect(css).toMatch(
-      /\.LxDialogPopup\s*\{[^}]*border-color:\s*var\(--color-border-light\);[^}]*border-radius:\s*22px;[^}]*box-shadow:\s*0 16px 50px -12px rgba\(0, 0, 0, 0\.34\);/s,
+      /\.LxDialogPopup\s*\{[^}]*border-top-color:\s*var\(--color-border-light\);[^}]*border-radius:\s*22px;[^}]*box-shadow:\s*0 16px 50px -12px rgba\(0, 0, 0, 0\.34\);/s,
     );
     expect(css).toMatch(
       /\.SliceRoot--theme-dark \.LxDialogPopup\s*\{[^}]*box-shadow:\s*0 16px 50px -12px rgba\(0, 0, 0, 0\.7\);/s,
@@ -79,7 +79,7 @@ describe("shared primitive geometry", () => {
       /\.LxButton\.ui-focus\s*\{[^}]*box-shadow:[^;]*var\(--control-focus-ring-color\);/s,
     );
     expect(css).toMatch(
-      /\.LxInputControl\.ui-focus\s*\{[^}]*border-color:\s*var\(--control-input-focus-border\);/s,
+      /\.LxInputControl\.ui-focus\s*\{[^}]*border-top-color:\s*var\(--control-input-focus-border\);/s,
     );
     expect(css).toMatch(
       /\.LxButton--prominent\s*\{[^}]*border-radius:\s*999px;[^}]*background-color:\s*var\(--foreground\);[^}]*color:\s*var\(--color-background-surface\);/s,

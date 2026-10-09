@@ -6,10 +6,8 @@ describe("Pull Request repository batch projection", () => {
     const queries = readFileSync(new URL("./queries.ts", import.meta.url), "utf8");
     const route = readFileSync(new URL("./FeatureListsPage.tsx", import.meta.url), "utf8");
 
-    expect(queries).toContain(
-      "readonly repositoryBatches: readonly PullRequestsListRepositoryBatch[]",
-    );
-    expect(queries).toContain("readonly errors: readonly PullRequestsListError[]");
+    expect(queries).toContain("readonly repositoryBatches: readonly PullRequestRepositoryBatch[]");
+    expect(queries).toContain("readonly errors: readonly PullRequestListError[]");
     expect(queries).toContain("errors: result.errors");
     expect(queries).toContain("repositoryBatches: result.repositoryBatches");
     expect(route).toContain(

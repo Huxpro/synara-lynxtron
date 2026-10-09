@@ -31,6 +31,17 @@ export default defineConfig({
       // in upstream source reaches the same Lynx facade module as `~/nativeApi`.
       config.plugins ??= [];
       config.plugins.push(createLynxResourceReplacementPlugin(rspack));
+      // ReactLynx's webpack plugin compiles `process.env.DEBUG` to a literal
+      // (`null` when unset). `debug`'s Node build assigns to it
+      // (`process.env.DEBUG = namespaces`), which then is a syntax error that
+      // fails every test file whose graph reaches `debug` (micromark's
+      // development build, via remark-gfm). The bundle resolves `debug` to its
+      // browser build, which never assigns; use the same build under test.
+      config.plugins.push(
+        new rspack.NormalModuleReplacementPlugin(/^\.\/node\.js$/, (resource) => {
+          if (/[\\/]debug[\\/]src$/.test(resource.context)) resource.request = "./browser.js";
+        }),
+      );
       // The ReactLynx testing loader parses every file as TSX (the production
       // loader passes `tsx: false` for `.ts`), so a generic arrow function in
       // an upstream `.ts` module (`<Result>(…) => …`, e.g. `appSettings.ts`)

@@ -45,7 +45,7 @@ describe("Lynx Explorer file actions menu", () => {
     expect(source).toContain('align="end"');
     expect(source).toContain('side="bottom"');
     expect(source).toContain("<EllipsisIcon size={14} color={svgColors.foreground} />");
-    expect(source).toContain("color={semanticIconColor('secondary')}");
+    expect(source).toContain('color={semanticIconColor("secondary")}');
     expect(styles).toMatch(/\.ExplorerDockPreviewActionsPopup\s*\{[^}]*width:\s*208px;/s);
     expect(diffSource).toContain("<ExplorerFileActionsMenu");
     expect(diffSource).toContain("includeCopyPath");

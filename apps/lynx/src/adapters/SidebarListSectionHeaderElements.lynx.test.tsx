@@ -84,13 +84,22 @@ describe("sidebar list section header actions", () => {
     expect(
       readFileSync(new URL("./SidebarListSectionHeaderElements.lynx.tsx", import.meta.url), "utf8"),
     ).toContain("SharedSidebarListSectionHeader LynxWebHoverOwner");
-    expect(sidebarSource).toContain("openSearchPalette('~/', ADD_PROJECT_TRIGGER_ELEMENT_ID");
-    expect(sidebarSource).toContain(
+    // The sidebar only requests the palette; the router owns its state and
+    // the route-independent host keys the palette per open.
+    const routerSource = readFileSync(new URL("../app/router.tsx", import.meta.url), "utf8");
+    const paletteHostSource = readFileSync(
+      new URL("../components/sidebar/SidebarSearchPaletteHost.lynx.tsx", import.meta.url),
+      "utf8",
+    );
+    expect(sidebarSource).toContain('onOpenSearch("~/", ADD_PROJECT_TRIGGER_ELEMENT_ID)');
+    expect(routerSource).toContain(
       'const [searchInitialQuery, setSearchInitialQuery] = useState("")',
     );
-    expect(sidebarSource).toContain("key={searchPaletteKey}");
-    expect(sidebarSource).toContain("initialQuery={searchInitialQuery}");
-    expect(sidebarSource).toContain("focusLynxElementById(searchReturnFocusElementId)");
+    expect(routerSource).toContain("paletteKey={searchPaletteKey}");
+    expect(routerSource).toContain("initialQuery={searchInitialQuery}");
+    expect(routerSource).toContain("focusLynxElementById(searchReturnFocusElementId)");
+    expect(paletteHostSource).toContain("key={props.paletteKey}");
+    expect(paletteHostSource).toContain("initialQuery={props.initialQuery}");
     expect(paletteSource).toContain("initialQuery={props.initialQuery}");
   });
 

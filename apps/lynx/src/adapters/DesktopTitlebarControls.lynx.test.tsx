@@ -60,7 +60,9 @@ describe("desktop titlebar controls", () => {
     expect(routerSource).toContain(
       'const closedTitlebarControls = renderTitlebarControls("closed")',
     );
-    expect(routerSource).toContain("const sidebar =\n    route.pathname !== '/settings' ? (");
+    expect(routerSource).toContain(
+      'const sidebar =\n    route.pathname !== "/settings" && route.pathname !== "/components-lab" ? (',
+    );
     expect(routerSource).toContain("<SidebarDisclosure open={sidebarOpen && !editorModeOpen}>");
     expect(routerSource).toContain(
       "{sidebarOpen || editorModeOpen ? null : closedTitlebarControls}",
@@ -111,7 +113,7 @@ describe("desktop titlebar controls", () => {
       /\.SettingsSidebarBody\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*width:\s*100%;/s,
     );
     expect(appStyles).toMatch(
-      /\.SettingsSidebarBodyInner\s*\{[^}]*min-height:\s*100%;[^}]*padding:\s*8px 6px 6px;/s,
+      /\.SettingsSidebarBodyInner\s*\{[^}]*min-height:\s*100%;[^}]*padding:\s*0 6px 6px;/s,
     );
   });
 });

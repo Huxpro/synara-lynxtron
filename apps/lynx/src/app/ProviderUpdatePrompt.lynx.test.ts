@@ -33,8 +33,10 @@ describe("Lynx provider update prompt copy", () => {
     expect(source).toContain("PROVIDER_UPDATE_INITIAL_REFRESH_DELAY_MS");
     expect(source).toContain("PROVIDER_UPDATE_REFRESH_INTERVAL_MS");
     expect(source).toContain("refreshServerProviderStatuses(queryClient)");
-    expect(source).toContain("queryClient.setQueryData(serverQueryKeys.config(), nextConfig)");
-    expect(source).toContain("activeOutcome?.status === 'succeeded'");
+    // The refresh reconciles into the config query Settings reads; no second cache.
+    expect(source).toContain("const config = useQuery(serverConfigQueryOptions());");
+    expect(source).not.toContain("queryClient.setQueryData(");
+    expect(source).toContain('activeOutcome?.status === "succeeded"');
     expect(source).toContain("Copy");
     expect(source).toContain("Review providers");
     expect(source).toContain("Updating…");

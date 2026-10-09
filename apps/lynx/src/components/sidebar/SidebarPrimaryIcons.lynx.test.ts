@@ -25,8 +25,9 @@ describe("Lynx sidebar primary icons", () => {
 
   it("injects renderer icons without forking shared navigation behavior", () => {
     expect(sidebarSource).toContain("icons={LYNX_SIDEBAR_PRIMARY_ICONS}");
-    expect(sharedSource).toContain("icons: SidebarPrimarySurfaceIcons;");
-    expect(sharedSource).toContain("icon: icons.newWorkspace");
+    // Upstream's navigation takes the renderer's icons as an optional override.
+    expect(sharedSource).toContain("icons?: SidebarPrimarySurfaceIcons | undefined;");
+    expect(sharedSource).toContain("const icons = props.icons ?? DEFAULT_ICONS;");
     expect(sharedSource).toContain("icon: icons.newThread");
     expect(sharedSource).not.toContain("icons.search");
     expect(sharedSource).toContain("icon: icons.kanban");

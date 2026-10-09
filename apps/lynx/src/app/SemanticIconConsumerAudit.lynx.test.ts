@@ -77,7 +77,8 @@ describe("semantic icon consumer audit", () => {
     for (const [relativePath, expected] of [
       ["./ThreadRightDockTabs.lynx.tsx", 'semanticIconColor("secondary")'],
       ["./DockTerminalPane.lynx.tsx", 'semanticIconColor("secondary")'],
-      ["./SettingsProfilePanel.lynx.tsx", 'semanticIconColor("secondary")'],
+      // Profile actions paint with the foreground, like Electron's.
+      ["./SettingsProfilePanel.lynx.tsx", "colorizeLynxSvg(pencilSvg, svgColors.foreground)"],
       [
         "../adapters/PullRequestRowCompositionElements.lynx.tsx",
         'semanticIconColor(props.pinned ? "primary" : "secondary")',
@@ -94,11 +95,13 @@ describe("semantic icon consumer audit", () => {
     const router = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
 
     expect(transcript).toContain('semanticIconColor("primary")');
-    expect(transcript).toContain('semanticIconColor("secondary")');
-    expect(diff.match(/semanticIconColor\('secondary'\)/g)).toHaveLength(2);
+    // Transcript row actions read the same secondary role from the palette.
+    expect(transcript).toContain("svgColors.iconSecondary");
+    expect(transcript).not.toContain("svgColors.mutedForeground");
+    expect(diff.match(/semanticIconColor\("secondary"\)/g)).toHaveLength(5);
     expect(router).toContain('semanticIconColor("accent")');
-    expect(router.match(/semanticIconColor\('primary'\)/g)?.length).toBeGreaterThanOrEqual(6);
-    expect(router.match(/semanticIconColor\('secondary'\)/g)?.length).toBeGreaterThanOrEqual(4);
+    expect(router.match(/semanticIconColor\("primary"\)/g)?.length).toBeGreaterThanOrEqual(5);
+    expect(router.match(/semanticIconColor\("secondary"\)/g)?.length).toBeGreaterThanOrEqual(4);
   });
 
   it("classifies remaining route and shared-adapter neutral SVG icons", () => {
@@ -108,9 +111,10 @@ describe("semantic icon consumer audit", () => {
         "../adapters/PullRequestRouteControlsCompositionElements.lynx.tsx",
         'semanticIconColor("primary")',
       ],
+      // Upstream's sidebar rows draw provider glyphs in the foreground.
       [
         "../adapters/SidebarThreadProviderIdentityElements.lynx.tsx",
-        'semanticIconColor("primary")',
+        "colorizeLynxSvg(source, svgColors.foreground)",
       ],
       ["../adapters/KanbanCardCompositionElements.lynx.tsx", 'semanticIconColor("secondary")'],
       ["../adapters/PullRequestCommentComposer.lynx.tsx", 'semanticIconColor("secondary")'],

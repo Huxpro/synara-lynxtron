@@ -10,6 +10,10 @@ describe("Native composer footer responsiveness", () => {
     new URL("../components/composer/ComposerModelControl.lynx.tsx", import.meta.url),
     "utf8",
   );
+  const voiceHookSource = readFileSync(
+    new URL("../components/composer/useNativeComposerVoice.lynx.ts", import.meta.url),
+    "utf8",
+  );
   const routerSource = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
   const css = readFileSync(new URL("../components/composer/composer.css", import.meta.url), "utf8");
   const compositionSource = readFileSync(
@@ -32,11 +36,12 @@ describe("Native composer footer responsiveness", () => {
       "<ComposerFooterContentComposition\n          compact={compactFooter}",
     );
     expect(composerSource).toContain("voiceBusy={isVoiceRecording || isVoiceTranscribing}");
-    expect(composerSource).toContain(
-      "setVoiceWaveformLevels((current) => [...current, state.level ?? 0].slice(-160",
+    // The recording lifecycle lives in the composer's voice hook.
+    expect(voiceHookSource).toContain(
+      "[...current, scaleNativeVoiceWaveformLevel(state.level ?? 0)].slice(-160)",
     );
-    expect(composerSource).toContain("}, 50);");
-    expect(composerSource).toContain("setIsVoiceTranscribing(true);\n    setVoiceDurationMs(0);");
+    expect(voiceHookSource).toContain("}, 50);");
+    expect(voiceHookSource).toContain("setIsTranscribing(true);\n    setDurationMs(0);");
     expect(composerSource).toContain(
       "if (isVoiceRecording) {\n                      void submitVoiceRecording();",
     );
