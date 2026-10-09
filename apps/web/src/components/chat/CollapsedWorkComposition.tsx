@@ -19,7 +19,7 @@ export function collapsedWorkLabel(elapsed: string | null | undefined): string {
 
 export function CollapsedWorkComposition(props: {
   readonly children: ReactNode;
-  readonly elapsed?: string | null;
+  readonly elapsed?: string | null | undefined;
   readonly open: boolean;
   readonly onOpenChange: (open: boolean) => void;
 }) {

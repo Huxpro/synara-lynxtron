@@ -163,11 +163,11 @@ export function ComposerCommandMentionFilesFooterElement() {
   return (
     <div className="pt-0.5 pb-2">
       <p
-        className={cn(GROUP_LABEL_CLASSNAME, "px-2 py-0 font-medium text-muted-foreground text-xs")}
+        className={cn(GROUP_LABEL_CLASSNAME, "px-2 py-0 font-medium text-muted-foreground text-ui")}
       >
         Files
       </p>
-      <p className="px-2 pt-0.5 text-[11px] text-muted-foreground/55">Type to search for files</p>
+      <p className="px-2 pt-0.5 text-ui-sm text-muted-foreground/55">Type to search for files</p>
     </div>
   );
 }

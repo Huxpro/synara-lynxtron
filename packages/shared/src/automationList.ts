@@ -173,6 +173,8 @@ export function formatAutomationCadence(schedule: AutomationSchedule): string {
       return `${weekdayLabel(schedule.dayOfWeek)} at ${formatClockTime(schedule.timeOfDay)}`;
     case "cron":
       return `Cron ${schedule.expression}`;
+    case "project-event":
+      return "On project events";
   }
 }
 
@@ -294,63 +296,65 @@ export function projectAutomationDetail(input: {
   const scheduleRows: { readonly label: string; readonly value: string }[] =
     input.definition.schedule.type === "manual"
       ? [{ label: "Repeats", value: "Manual" }]
-      : input.definition.schedule.type === "once"
-        ? [
-            { label: "Repeats", value: "Once" },
-            { label: "Run at", value: formatTimestampValue(input.definition.schedule.runAt) },
-          ]
-        : input.definition.schedule.type === "interval"
+      : input.definition.schedule.type === "project-event"
+        ? [{ label: "Repeats", value: "Project events" }]
+        : input.definition.schedule.type === "once"
           ? [
-              {
-                label: "Repeats",
-                value: input.definition.schedule.everySeconds === 3600 ? "Hourly" : "Custom",
-              },
-              ...(input.definition.schedule.everySeconds === 3600
-                ? []
-                : [
-                    {
-                      label: "Every",
-                      value: formatAutomationCadence(input.definition.schedule),
-                    },
-                  ]),
+              { label: "Repeats", value: "Once" },
+              { label: "Run at", value: formatTimestampValue(input.definition.schedule.runAt) },
             ]
-          : input.definition.schedule.type === "cron"
+          : input.definition.schedule.type === "interval"
             ? [
-                { label: "Repeats", value: "Cron" },
-                { label: "Cron", value: input.definition.schedule.expression },
-                { label: "Timezone", value: input.definition.schedule.timezone },
-              ]
-            : [
                 {
                   label: "Repeats",
-                  value:
-                    input.definition.schedule.type === "daily"
-                      ? "Daily"
-                      : input.definition.schedule.type === "weekdays"
-                        ? "Weekdays"
-                        : "Weekly",
+                  value: input.definition.schedule.everySeconds === 3600 ? "Hourly" : "Custom",
                 },
-                ...(input.definition.schedule.type === "weekly"
-                  ? [
+                ...(input.definition.schedule.everySeconds === 3600
+                  ? []
+                  : [
                       {
-                        label: "Day",
-                        value: weekdayLabel(input.definition.schedule.dayOfWeek),
+                        label: "Every",
+                        value: formatAutomationCadence(input.definition.schedule),
                       },
-                    ]
-                  : []),
-                {
-                  label: "Time",
-                  value: formatClockTime(input.definition.schedule.timeOfDay),
-                },
-                ...("timezone" in input.definition.schedule && input.definition.schedule.timezone
-                  ? [
-                      {
-                        label: "Timezone",
-                        value: input.definition.schedule.timezone,
-                      },
-                    ]
-                  : []),
-              ];
+                    ]),
+              ]
+            : input.definition.schedule.type === "cron"
+              ? [
+                  { label: "Repeats", value: "Cron" },
+                  { label: "Cron", value: input.definition.schedule.expression },
+                  { label: "Timezone", value: input.definition.schedule.timezone },
+                ]
+              : [
+                  {
+                    label: "Repeats",
+                    value:
+                      input.definition.schedule.type === "daily"
+                        ? "Daily"
+                        : input.definition.schedule.type === "weekdays"
+                          ? "Weekdays"
+                          : "Weekly",
+                  },
+                  ...(input.definition.schedule.type === "weekly"
+                    ? [
+                        {
+                          label: "Day",
+                          value: weekdayLabel(input.definition.schedule.dayOfWeek),
+                        },
+                      ]
+                    : []),
+                  {
+                    label: "Time",
+                    value: formatClockTime(input.definition.schedule.timeOfDay),
+                  },
+                  ...("timezone" in input.definition.schedule && input.definition.schedule.timezone
+                    ? [
+                        {
+                          label: "Timezone",
+                          value: input.definition.schedule.timezone,
+                        },
+                      ]
+                    : []),
+                ];
   const detailRows = [
     {
       label: "Runs in",

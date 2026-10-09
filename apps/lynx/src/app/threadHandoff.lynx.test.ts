@@ -1,6 +1,7 @@
 import { describe, expect, it } from "@rstest/core";
 import { readFileSync } from "node:fs";
 import { MessageId } from "@synara/contracts";
+import { DEFAULT_PROVIDER_ORDER } from "@synara-web/providerOrdering";
 
 import {
   buildNativeThreadHandoffCreateCommand,
@@ -15,6 +16,19 @@ const eligibleThread: ThreadHeaderSummary = {
   project: "Project",
   branch: null,
   envMode: "local",
+  modelSelection: { provider: "codex", model: "gpt-5.6-sol" },
+  runtimeMode: "full-access",
+  interactionMode: "default",
+  sessionStatus: "idle",
+  error: null,
+  errorRevision: null,
+  activeTurnId: null,
+  sidechatSourceThreadId: null,
+  parentThreadId: null,
+  workingDirectory: null,
+  latestTurnState: "completed",
+  pendingApprovals: [],
+  pendingUserInputs: [],
   handoff: null,
   messages: [
     {
@@ -34,45 +48,56 @@ const eligibleThread: ThreadHeaderSummary = {
   associatedWorktreeBranch: null,
   associatedWorktreeRef: null,
   createBranchFlowCompleted: false,
-  modelSelection: { provider: "codex", model: "gpt-5.6-sol" },
-  runtimeMode: "full-access",
-  interactionMode: "default",
-  sessionStatus: "idle",
-  error: null,
-  errorRevision: null,
-  activeTurnId: null,
-  sidechatSourceThreadId: null,
-  latestTurnState: "completed",
+  lockedProvider: null,
   workspaceRoot: null,
   notes: "",
   pinnedMessages: [],
   pinnedMessageTextById: {},
   pinnedRevision: "",
-  threadMarkers: [],
-  markerRevision: "",
   lastKnownPr: null,
-  pendingApprovals: [],
-  pendingUserInputs: [],
   checkpoints: [],
 };
 
 describe("Native thread handoff service", () => {
   it("uses the same eligibility and target-provider policy as the header and sidebar", () => {
-    expect(resolveNativeThreadHandoffTargets(eligibleThread)).toEqual([
+    const disabledProviders = new Set(["grok"]);
+    const providers = {
+      providerSettings: Object.fromEntries(
+        DEFAULT_PROVIDER_ORDER.map((provider) => [
+          provider,
+          { enabled: !disabledProviders.has(provider) },
+        ]),
+      ) as never,
+      providerStatuses: [
+        { provider: "codex", instanceId: "codex", available: true, authStatus: "authenticated" },
+        {
+          provider: "claudeAgent",
+          instanceId: "claudeAgent",
+          available: true,
+          authStatus: "authenticated",
+        },
+        {
+          provider: "cursor",
+          instanceId: "cursor",
+          available: false,
+          authStatus: "authenticated",
+        },
+        { provider: "grok", instanceId: "grok", available: true, authStatus: "authenticated" },
+        { provider: "opencode", instanceId: "opencode", available: true, authStatus: "unknown" },
+      ] as never,
+    };
+    expect(resolveNativeThreadHandoffTargets(eligibleThread, providers)).toEqual([
       "claudeAgent",
-      "cursor",
-      "antigravity",
-      "grok",
-      "droid",
-      "kilo",
       "opencode",
-      "pi",
     ]);
     expect(
-      resolveNativeThreadHandoffTargets({
-        ...eligibleThread,
-        sessionStatus: "running",
-      }),
+      resolveNativeThreadHandoffTargets(
+        {
+          ...eligibleThread,
+          sessionStatus: "running",
+        },
+        providers,
+      ),
     ).toEqual([]);
   });
 

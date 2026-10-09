@@ -34,11 +34,11 @@ import { SettingsSelectPopup } from "./SettingsPanelPrimitives";
 const HEX_COLOR_RE = /^#[0-9a-fA-F]{6}$/;
 const COLOR_PICKER_COMMIT_DELAY_MS = 220;
 
-export function ThemePackRootElement(props: { readonly children?: ReactNode }) {
+export function ThemePackRootElement(props: { readonly children?: ReactNode | undefined }) {
   return <div className={cn(SETTINGS_CARD_CLASS_NAME, "overflow-hidden")}>{props.children}</div>;
 }
 
-export function ThemePackHeaderElement(props: { readonly children?: ReactNode }) {
+export function ThemePackHeaderElement(props: { readonly children?: ReactNode | undefined }) {
   return (
     <div className="flex flex-wrap items-center gap-1 px-4 py-3 sm:py-3.5">{props.children}</div>
   );
@@ -46,11 +46,11 @@ export function ThemePackHeaderElement(props: { readonly children?: ReactNode })
 
 export function ThemePackTitleElement(props: {
   readonly title: string;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <div className="mr-auto flex items-center gap-2">
-      <h3 className="text-sm font-medium text-foreground">{props.title}</h3>
+      <h3 className="text-ui font-medium text-foreground">{props.title}</h3>
       {props.children}
     </div>
   );
@@ -61,7 +61,7 @@ export function ThemePackResetActionElement(props: { readonly onReset: () => voi
     <button
       type="button"
       onClick={props.onReset}
-      className="rounded-md px-1.5 py-0.5 text-[11px] text-[var(--color-text-foreground-secondary)] transition-colors hover:bg-[var(--color-background-elevated-secondary)] hover:text-[var(--color-text-foreground)]"
+      className="rounded-md px-1.5 py-0.5 text-ui-sm text-[var(--color-text-foreground-secondary)] transition-colors hover:bg-[var(--color-background-elevated-secondary)] hover:text-[var(--color-text-foreground)]"
     >
       Reset
     </button>
@@ -98,7 +98,7 @@ export function ThemePackImportActionElement(props: {
         render={
           <button
             type="button"
-            className="rounded-md px-2 py-1 text-xs text-[var(--color-text-foreground-secondary)] transition-colors hover:bg-[var(--color-background-elevated-secondary)] hover:text-[var(--color-text-foreground)]"
+            className="rounded-md px-2 py-1 text-ui text-[var(--color-text-foreground-secondary)] transition-colors hover:bg-[var(--color-background-elevated-secondary)] hover:text-[var(--color-text-foreground)]"
           >
             Import
           </button>
@@ -107,7 +107,7 @@ export function ThemePackImportActionElement(props: {
       <DialogPopup className="max-w-md">
         <DialogHeader>
           <DialogTitle>Import {props.variant} theme</DialogTitle>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-ui text-muted-foreground">
             Paste a{" "}
             <code className="rounded bg-muted px-1 py-0.5 font-chat-code">codex-theme-v1:</code>{" "}
             share string. The embedded variant must match {props.variant}, and the selected code
@@ -124,10 +124,10 @@ export function ThemePackImportActionElement(props: {
             placeholder='codex-theme-v1:{"codeThemeId":"linear",...}'
             spellCheck={false}
             rows={5}
-            className="font-chat-code text-[11px]"
+            className="font-chat-code text-ui-sm"
             aria-label="Theme share string"
           />
-          {error ? <p className="mt-2 text-xs text-destructive">{error}</p> : null}
+          {error ? <p className="mt-2 text-ui text-destructive">{error}</p> : null}
         </DialogPanel>
         <DialogFooter>
           <DialogClose
@@ -170,7 +170,7 @@ export function ThemePackCopyActionElement(props: {
     <button
       type="button"
       onClick={() => void copy()}
-      className="rounded-md px-2 py-1 text-xs text-[var(--color-text-foreground-secondary)] transition-colors hover:bg-[var(--color-background-elevated-secondary)] hover:text-[var(--color-text-foreground)]"
+      className="rounded-md px-2 py-1 text-ui text-[var(--color-text-foreground-secondary)] transition-colors hover:bg-[var(--color-background-elevated-secondary)] hover:text-[var(--color-text-foreground)]"
     >
       Copy
     </button>
@@ -221,9 +221,9 @@ export function ThemePackCodeThemeControlElement(props: {
   );
 }
 
-export function ThemePackContextElement(props: { readonly children?: ReactNode }) {
+export function ThemePackContextElement(props: { readonly children?: ReactNode | undefined }) {
   return (
-    <div className="px-4 pb-3 text-[11px] text-[var(--color-text-foreground-secondary)]">
+    <div className="px-4 pb-3 text-ui-sm text-[var(--color-text-foreground-secondary)]">
       {props.children}
     </div>
   );
@@ -231,7 +231,7 @@ export function ThemePackContextElement(props: { readonly children?: ReactNode }
 
 export function ThemePackRowElement(props: {
   readonly label: string;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <div
@@ -240,7 +240,7 @@ export function ThemePackRowElement(props: {
         "flex min-h-12 items-center justify-between gap-3 border-t border-[color:var(--color-border)]",
       )}
     >
-      <span className="text-sm text-foreground/90">{props.label}</span>
+      <span className="text-ui text-foreground/90">{props.label}</span>
       <div className="flex shrink-0 items-center gap-2">{props.children}</div>
     </div>
   );
@@ -343,7 +343,7 @@ export function ThemePackColorControlElement(props: {
             className="block size-5 shrink-0 rounded-full border"
             style={{ borderColor: ringColor }}
           />
-          <span className="font-system-ui flex-1 text-[12px] uppercase">{previewColor}</span>
+          <span className="font-system-ui flex-1 text-ui uppercase">{previewColor}</span>
         </PopoverTrigger>
         <PopoverPopup
           align="end"
@@ -369,7 +369,7 @@ export function ThemePackColorControlElement(props: {
               maxLength={7}
               className={cn(
                 SETTINGS_CONTROL_RADIUS_CLASS_NAME,
-                "h-8 border border-[color:var(--color-border-light)] bg-[var(--color-background-elevated-secondary)] px-2 text-center font-chat-code text-xs uppercase outline-none focus:border-[color:var(--color-border-focus)]",
+                "h-8 border border-[color:var(--color-border-light)] bg-[var(--color-background-elevated-secondary)] px-2 text-center font-chat-code text-ui uppercase outline-none focus:border-[color:var(--color-border-focus)]",
               )}
               aria-label={`${props.ariaLabel} hex value`}
             />
@@ -384,7 +384,7 @@ export function ThemePackFontControlElement(props: {
   readonly value: string;
   readonly placeholder: string;
   readonly ariaLabel: string;
-  readonly mono?: boolean;
+  readonly mono?: boolean | undefined;
   readonly onChange: (next: string) => void;
 }) {
   const [draft, setDraft] = useState<string | null>(null);
@@ -442,7 +442,7 @@ export function ThemePackContrastControlElement(props: {
           background: `linear-gradient(to right, var(--primary) 0%, var(--primary) ${fill}%, var(--input) ${fill}%, var(--input) 100%)`,
         }}
       />
-      <span className="w-7 text-right font-chat-code text-xs text-muted-foreground tabular-nums">
+      <span className="w-7 text-right font-chat-code text-ui text-muted-foreground tabular-nums">
         {props.value}
       </span>
     </div>
@@ -454,7 +454,7 @@ function CodeThemeOption(props: { readonly label: string; readonly theme: Chrome
     <div className="flex min-w-0 items-center gap-2.5">
       <span
         aria-hidden
-        className="flex size-5 shrink-0 items-center justify-center rounded-md border text-[10px] font-semibold leading-none"
+        className="flex size-5 shrink-0 items-center justify-center rounded-md border text-ui-xs font-semibold leading-none"
         style={{
           backgroundColor: props.theme.surface,
           borderColor: mixColor(props.theme.surface, props.theme.ink, 0.16),
@@ -464,9 +464,7 @@ function CodeThemeOption(props: { readonly label: string; readonly theme: Chrome
         Aa
       </span>
       <div className="min-w-0 flex-1">
-        <div className="truncate text-[13px] text-[var(--color-text-foreground)]">
-          {props.label}
-        </div>
+        <div className="truncate text-ui-lg text-[var(--color-text-foreground)]">{props.label}</div>
       </div>
     </div>
   );

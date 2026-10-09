@@ -3,32 +3,32 @@ import type { SidebarSearchAction } from "./SidebarSearchPalette.logic";
 export interface SidebarSearchSpaceAction {
   readonly id: string;
   readonly name: string;
-  readonly icon?: SidebarSearchAction["icon"];
+  readonly icon?: SidebarSearchAction["icon"] | undefined;
 }
 
 export interface BuildSidebarSearchActionsInput {
-  readonly newChatShortcutLabel?: string | null;
-  readonly newThreadShortcutLabel?: string | null;
-  readonly addProjectShortcutLabel?: string | null;
-  readonly importThreadShortcutLabel?: string | null;
-  readonly usageSettingsShortcutLabel?: string | null;
-  readonly includeNewChat?: boolean;
-  readonly includeNewThread?: boolean;
-  readonly includeAddProject?: boolean;
-  readonly includeImportThread?: boolean;
-  readonly includeFeedback?: boolean;
-  readonly includeSettings?: boolean;
-  readonly includeUsageSettings?: boolean;
-  readonly includeSpaces?: boolean;
-  readonly includeNewSpace?: boolean;
-  readonly spaces?: readonly SidebarSearchSpaceAction[];
-  readonly voidSpaceName?: string;
-  readonly voidSpaceIcon?: SidebarSearchAction["icon"];
-  readonly newSpaceIcon?: SidebarSearchAction["icon"];
-  readonly onAddProject?: () => void;
-  readonly onSelectVoidSpace?: () => void;
-  readonly onSelectSpace?: (spaceId: string) => void;
-  readonly onCreateSpace?: () => void;
+  readonly newChatShortcutLabel?: string | null | undefined;
+  readonly newThreadShortcutLabel?: string | null | undefined;
+  readonly addProjectShortcutLabel?: string | null | undefined;
+  readonly importThreadShortcutLabel?: string | null | undefined;
+  readonly usageSettingsShortcutLabel?: string | null | undefined;
+  readonly includeNewChat?: boolean | undefined;
+  readonly includeNewThread?: boolean | undefined;
+  readonly includeAddProject?: boolean | undefined;
+  readonly includeImportThread?: boolean | undefined;
+  readonly includeFeedback?: boolean | undefined;
+  readonly includeSettings?: boolean | undefined;
+  readonly includeUsageSettings?: boolean | undefined;
+  readonly includeSpaces?: boolean | undefined;
+  readonly includeNewSpace?: boolean | undefined;
+  readonly spaces?: readonly SidebarSearchSpaceAction[] | undefined;
+  readonly voidSpaceName?: string | undefined;
+  readonly voidSpaceIcon?: SidebarSearchAction["icon"] | undefined;
+  readonly newSpaceIcon?: SidebarSearchAction["icon"] | undefined;
+  readonly onAddProject?: (() => void) | undefined;
+  readonly onSelectVoidSpace?: (() => void) | undefined;
+  readonly onSelectSpace?: ((spaceId: string) => void) | undefined;
+  readonly onCreateSpace?: (() => void) | undefined;
 }
 
 function enabled(value: boolean | undefined): boolean {
@@ -47,7 +47,7 @@ export function buildSidebarSearchActions(
       label: "New chat",
       description: "Open the new chat landing screen.",
       keywords: ["chat", "new", "home"],
-      shortcutLabel: input.newChatShortcutLabel,
+      shortcutLabel: input.newChatShortcutLabel ?? null,
     });
   }
   if (enabled(input.includeNewThread)) {
@@ -56,7 +56,7 @@ export function buildSidebarSearchActions(
       label: "New thread",
       description: "Start a fresh thread in the current or most recently used project.",
       keywords: ["thread", "new", "project"],
-      shortcutLabel: input.newThreadShortcutLabel,
+      shortcutLabel: input.newThreadShortcutLabel ?? null,
     });
   }
   if (enabled(input.includeAddProject)) {
@@ -65,8 +65,8 @@ export function buildSidebarSearchActions(
       label: "Add project",
       description: "Open a repository or folder in the sidebar.",
       keywords: ["folder", "repo", "repository", "open"],
-      shortcutLabel: input.addProjectShortcutLabel,
-      run: input.onAddProject,
+      shortcutLabel: input.addProjectShortcutLabel ?? null,
+      ...(input.onAddProject ? { run: input.onAddProject } : {}),
     });
   }
   if (enabled(input.includeImportThread)) {
@@ -75,7 +75,7 @@ export function buildSidebarSearchActions(
       label: "Import thread from...",
       description: "Attach a local thread to an existing provider session.",
       keywords: ["import", "resume", "thread", "session", "codex", "claude", "cursor", "opencode"],
-      shortcutLabel: input.importThreadShortcutLabel,
+      shortcutLabel: input.importThreadShortcutLabel ?? null,
     });
   }
   if (enabled(input.includeFeedback)) {
@@ -100,7 +100,7 @@ export function buildSidebarSearchActions(
       label: "Usage settings",
       description: "Open provider usage and remaining credits.",
       keywords: ["usage", "limits", "credits", "quota", "providers"],
-      shortcutLabel: input.usageSettingsShortcutLabel,
+      shortcutLabel: input.usageSettingsShortcutLabel ?? null,
     });
   }
 
@@ -112,8 +112,8 @@ export function buildSidebarSearchActions(
       description: "Jump to unassigned projects.",
       keywords: ["space", "switch", "void", "unassigned"],
       requiresQuery: true,
-      run: input.onSelectVoidSpace,
-      icon: input.voidSpaceIcon,
+      ...(input.onSelectVoidSpace ? { run: input.onSelectVoidSpace } : {}),
+      ...(input.voidSpaceIcon ? { icon: input.voidSpaceIcon } : {}),
     });
     for (const space of spaces) {
       actions.push({
@@ -123,7 +123,7 @@ export function buildSidebarSearchActions(
         keywords: ["space", "switch", space.name],
         requiresQuery: true,
         run: () => input.onSelectSpace?.(space.id),
-        icon: space.icon,
+        ...(space.icon ? { icon: space.icon } : {}),
       });
     }
   }
@@ -133,8 +133,8 @@ export function buildSidebarSearchActions(
       label: "New space",
       description: "Group projects into a focused work context.",
       keywords: ["space", "create", "new", "group", "workspace"],
-      run: input.onCreateSpace,
-      icon: input.newSpaceIcon,
+      ...(input.onCreateSpace ? { run: input.onCreateSpace } : {}),
+      ...(input.newSpaceIcon ? { icon: input.newSpaceIcon } : {}),
     });
   }
 

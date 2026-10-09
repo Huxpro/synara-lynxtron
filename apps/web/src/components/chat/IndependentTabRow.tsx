@@ -6,13 +6,13 @@ import { ChevronLeftIcon, ChevronRightIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
 
 export function IndependentTabRow(props: {
-  actionPlacement?: "start" | "end";
+  actionPlacement?: "start" | "end" | undefined;
   actions: ReactNode;
-  className?: string;
-  defaultCollapsed?: boolean;
-  owner?: "chat" | "terminal-pane" | "terminal-groups";
+  className?: string | undefined;
+  defaultCollapsed?: boolean | undefined;
+  owner?: "chat" | "terminal-pane" | "terminal-groups" | undefined;
   tabs: ReactNode;
-  tabsClassName?: string;
+  tabsClassName?: string | undefined;
 }) {
   const [collapsed, setCollapsed] = useState(props.defaultCollapsed ?? false);
   const presentation = resolveIndependentTabRowPresentation(collapsed);

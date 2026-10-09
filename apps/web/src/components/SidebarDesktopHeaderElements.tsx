@@ -9,8 +9,8 @@ import { DESKTOP_TOP_BAR_TRAFFIC_LIGHT_GUTTER_CLASS } from "../hooks/useDesktopT
 import { cn } from "../lib/utils";
 
 export function SidebarDesktopHeaderRootElement(props: {
-  readonly children?: ReactNode;
-  readonly trafficLightGutter?: boolean;
+  readonly children?: ReactNode | undefined;
+  readonly trafficLightGutter?: boolean | undefined;
 }) {
   return (
     <SidebarHeader

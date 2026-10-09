@@ -11,8 +11,8 @@ import { type ReactNode } from "react";
 import { PanelStateMessageElement } from "~/components/chat/PanelStateMessageElements";
 import type { SystemStateIntent } from "~/components/systemStateSemantics";
 
-// `comfortable` matches the larger pane placeholders (text-sm, p-6); `compact`
-// matches dense in-panel hints (text-xs, dimmer). `fill` chooses between filling
+// Both densities use text-ui: `comfortable` has p-6; `compact` uses px-5 and
+// dimmer text for in-panel hints. `fill` chooses between filling
 // a fixed-height parent (`full`) or flexing within a column (`flex`).
 export function PanelStateMessage(props: {
   children: ReactNode;

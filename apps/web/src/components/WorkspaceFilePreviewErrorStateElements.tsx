@@ -5,9 +5,9 @@ export function WorkspaceFilePreviewErrorStateElement(props: {
   readonly description: string;
   readonly detail: string | null;
   readonly retryLabel: string;
-  readonly retryDisabled?: boolean;
+  readonly retryDisabled?: boolean | undefined;
   readonly onRetry: () => void;
-  readonly onClose?: () => void;
+  readonly onClose?: (() => void) | undefined;
 }) {
   return (
     <div
@@ -15,10 +15,10 @@ export function WorkspaceFilePreviewErrorStateElement(props: {
       aria-live="polite"
       className="flex min-h-0 flex-1 flex-col items-start justify-start gap-2 p-3"
     >
-      <p className="text-left text-[11px] font-medium text-destructive/85">{props.title}</p>
-      <p className="text-left text-[11px] leading-4 text-muted-foreground">{props.description}</p>
+      <p className="text-left text-ui-sm font-medium text-destructive/85">{props.title}</p>
+      <p className="text-left text-ui-sm leading-4 text-muted-foreground">{props.description}</p>
       {props.detail ? (
-        <p className="max-w-full break-words text-left font-mono text-[10px] leading-4 text-muted-foreground/80">
+        <p className="max-w-full break-words text-left font-mono text-ui-xs leading-4 text-muted-foreground/80">
           {props.detail}
         </p>
       ) : null}

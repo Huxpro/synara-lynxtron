@@ -34,6 +34,7 @@ export interface TerminalRuntimeConfig {
   terminalCliKind?: TerminalCliKind | null;
   cwd: string;
   runtimeEnv?: Record<string, string>;
+  providerAuthInstanceId?: string;
   callbacks: TerminalRuntimeCallbacks;
 }
 
@@ -48,7 +49,7 @@ export interface TerminalPendingWrite {
   queuedAt: number;
 }
 
-export type TerminalRuntimeStatus = "connecting" | "replaying" | "ready" | "error";
+export type TerminalRuntimeStatus = "connecting" | "replaying" | "ready" | "exited" | "error";
 
 export interface TerminalRuntimeEntry {
   runtimeKey: string;
@@ -58,6 +59,7 @@ export interface TerminalRuntimeEntry {
   terminalCliKind: TerminalCliKind | null;
   cwd: string;
   runtimeEnv?: Record<string, string>;
+  providerAuthInstanceId?: string;
   callbacks: TerminalRuntimeCallbacks;
   wrapper: HTMLDivElement;
   container: HTMLDivElement | null;
@@ -71,14 +73,14 @@ export interface TerminalRuntimeEntry {
   opened: boolean;
   disposed: boolean;
   resizeObserver: ResizeObserver | null;
-  resizeDispatchTimer: number | null;
+  resizeDispatchTimer: ReturnType<typeof setTimeout> | null;
   visualResizeFrame: number | null;
-  visualResizeTimer: number | null;
+  visualResizeTimer: ReturnType<typeof setTimeout> | null;
   lastVisualResizeAt: number;
   lastSentResize: { cols: number; rows: number } | null;
   pendingResize: { cols: number; rows: number } | null;
   writeRafHandle: number | null;
-  writeFlushTimeout: number | null;
+  writeFlushTimeout: ReturnType<typeof setTimeout> | null;
   pendingWrites: TerminalPendingWrite[];
   pendingWriteLength: number;
   pendingWriteBytes: number;

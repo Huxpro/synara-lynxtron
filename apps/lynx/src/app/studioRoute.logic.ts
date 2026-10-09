@@ -6,7 +6,7 @@ import type { ThreadSummary } from "./queries";
 export function collectStudioProjectIds(
   projects: readonly {
     readonly id: string;
-    readonly kind: "project" | "chat" | "studio";
+    readonly kind: "project" | "chat" | "studio" | "group";
   }[],
 ): ReadonlySet<string> {
   return new Set(
@@ -18,7 +18,7 @@ export function resolveStudioRestoreRoute(input: {
   readonly lastThreadRoute: LastThreadRoute | null;
   readonly projects: readonly {
     readonly id: string;
-    readonly kind: "project" | "chat" | "studio";
+    readonly kind: "project" | "chat" | "studio" | "group";
   }[];
   readonly sortOrder: SidebarThreadSortOrderValue;
   readonly threads: readonly ThreadSummary[];

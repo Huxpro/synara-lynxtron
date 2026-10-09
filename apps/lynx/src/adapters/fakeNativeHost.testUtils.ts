@@ -8,11 +8,14 @@
 import { rs } from "@rstest/core";
 
 import {
+  NATIVE_RPC_COMPATIBILITY_EVENT,
   NATIVE_RPC_STREAM_CANCEL_METHOD,
   NATIVE_RPC_STREAM_ITEM_EVENT,
   NATIVE_RPC_STREAM_RESET_METHOD,
   NATIVE_TRANSPORT_STATE_EVENT,
+  type NativeRpcCompatibility,
 } from "../main/nativeEventStreams.logic";
+import { rpcFailureReplyFields, type RpcFailureDetails } from "../main/rpcFailure.logic";
 import { createScopedStreamRegistry } from "../main/scopedStreamRegistry.logic";
 
 export interface FakeBridgeCall {
@@ -26,6 +29,24 @@ export interface FakeOpenStream {
   readonly payload: unknown;
   readonly settle: (value?: unknown) => void;
   readonly fail: (message: string, errorKind?: "rpc" | "transport") => void;
+  /** Fail as the server's typed error (`errorKind: "rpc"` plus the reply details). */
+  readonly failTyped: (details: Partial<RpcFailureDetails> & { readonly code: string }) => void;
+}
+
+/** Throw this from `rpc` to answer a request with a typed server error. */
+export class FakeRpcFailure extends Error {
+  readonly errorKind = "rpc";
+  readonly rpcFailure: RpcFailureDetails;
+
+  constructor(details: Partial<RpcFailureDetails> & { readonly code: string }) {
+    super(`Synara RPC failed: ${details.code}`);
+    this.rpcFailure = { retryAfterMs: null, retryable: null, ...details };
+  }
+}
+
+/** Throw this from `rpc` to answer a request as the host does when its socket drops. */
+export class FakeTransportFailure extends Error {
+  readonly errorKind = "transport";
 }
 
 /** Return this from `rpc` to leave the request unanswered. */
@@ -46,6 +67,9 @@ export interface FakeNativeHost {
   /** Entries the host registry still owns (opened or pending). */
   readonly registrySize: number;
   transportState: string;
+  /** What the reset handshake reports; `setCompatibility` also publishes the host event. */
+  compatibility: NativeRpcCompatibility | null;
+  readonly setCompatibility: (compatibility: NativeRpcCompatibility) => void;
   readonly callsNamed: (name: string) => FakeBridgeCall[];
   readonly pushStreamItem: (streamId: string, item: unknown) => void;
   readonly setTransportState: (state: string) => void;
@@ -82,6 +106,11 @@ export function installFakeNativeHost(
       return registry.size;
     },
     transportState: "connected",
+    compatibility: null,
+    setCompatibility: (compatibility) => {
+      host.compatibility = compatibility;
+      emit(NATIVE_RPC_COMPATIBILITY_EVENT, compatibility);
+    },
     callsNamed: (name) => calls.filter((call) => call.name === name),
     pushStreamItem: (streamId, item) => emit(NATIVE_RPC_STREAM_ITEM_EVENT, { streamId, item }),
     setTransportState: (state) => {
@@ -108,7 +137,22 @@ export function installFakeNativeHost(
       call: (name: string, params: Record<string, unknown>, callback: (reply: string) => void) => {
         calls.push({ name, params });
         if (name === "synaraRpc") {
-          const value = options.rpc?.(String(params.tag), params.payload) ?? {};
+          let value: unknown;
+          try {
+            value = options.rpc?.(String(params.tag), params.payload) ?? {};
+          } catch (error) {
+            if (error instanceof FakeTransportFailure) {
+              reply(callback, { error: error.message, errorKind: error.errorKind });
+              return;
+            }
+            if (!(error instanceof FakeRpcFailure)) throw error;
+            reply(callback, {
+              error: error.message,
+              errorKind: error.errorKind,
+              ...rpcFailureReplyFields(error),
+            });
+            return;
+          }
           if (value === HOLD_REPLY) return;
           reply(callback, { _tag: "NativeRpcResult", value });
           return;
@@ -137,6 +181,10 @@ export function installFakeNativeHost(
                       if (!streams.delete(streamId)) return;
                       failOpen?.(Object.assign(new Error(message), { errorKind }));
                     },
+                    failTyped: (details) => {
+                      if (!streams.delete(streamId)) return;
+                      failOpen?.(new FakeRpcFailure(details));
+                    },
                   });
                 });
               });
@@ -153,6 +201,7 @@ export function installFakeNativeHost(
                 reply(callback, {
                   error: error.message,
                   errorKind: error.errorKind ?? "transport",
+                  ...rpcFailureReplyFields(error),
                 }),
             );
           return;
@@ -164,7 +213,11 @@ export function installFakeNativeHost(
           return;
         }
         if (name === NATIVE_RPC_STREAM_RESET_METHOD) {
-          reply(callback, { generation: registry.reset(), transportState: host.transportState });
+          reply(callback, {
+            generation: registry.reset(),
+            transportState: host.transportState,
+            compatibility: host.compatibility,
+          });
           return;
         }
         const handler = options.bridge?.[name];

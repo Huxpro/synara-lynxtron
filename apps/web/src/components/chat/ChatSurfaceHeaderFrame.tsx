@@ -10,8 +10,8 @@ import {
 
 export interface ChatSurfaceHeaderFrameProps {
   readonly children: ReactNode;
-  readonly className?: string;
-  readonly editorRail?: boolean;
+  readonly className?: string | undefined;
+  readonly editorRail?: boolean | undefined;
 }
 
 /**

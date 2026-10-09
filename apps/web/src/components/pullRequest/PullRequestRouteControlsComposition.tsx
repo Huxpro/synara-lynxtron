@@ -1,7 +1,10 @@
 // FILE: PullRequestRouteControlsComposition.tsx
 // Purpose: Physical shared source for the pull-request route header and filter anatomy.
 
-import type { ProjectId, PullRequestInvolvement, PullRequestState } from "@synara/contracts";
+import type { ProjectId, PullRequestState } from "@synara/contracts";
+
+/** The list's involvement filter. Upstream folded it into the GitHub inbox filters. */
+export type PullRequestInvolvement = "all" | "reviewing" | "authored";
 
 import {
   PullRequestFilterPillGroupElement,

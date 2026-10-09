@@ -57,7 +57,7 @@ function SortableProviderPickerItem(props: {
         >
           <CentralIcon name="dot-grid-2x3" className="size-4" />
         </button>
-        <span className="min-w-0 text-sm text-foreground">{props.item.title}</span>
+        <span className="min-w-0 text-ui text-foreground">{props.item.title}</span>
       </div>
       <Switch
         checked={!props.item.hidden}

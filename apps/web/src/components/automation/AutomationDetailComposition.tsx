@@ -64,7 +64,7 @@ export function AutomationDetailComposition({
               className={cn("flex items-center gap-2 sm:gap-3", CHAT_SURFACE_HEADER_HEIGHT_CLASS)}
             >
               <SidebarHeaderNavigationControls />
-              <div className="flex min-w-0 flex-1 items-center gap-1.5 text-sm [-webkit-app-region:no-drag]">
+              <div className="flex min-w-0 flex-1 items-center gap-1.5 text-ui [-webkit-app-region:no-drag]">
                 <button
                   type="button"
                   onClick={onBack}
@@ -155,7 +155,7 @@ export function AutomationDetailGroup({
 }) {
   return (
     <section className="space-y-0.5">
-      <h2 className="px-1.5 pb-1 text-xs font-medium text-muted-foreground/70">{title}</h2>
+      <h2 className="px-1.5 pb-1 text-ui font-medium text-muted-foreground/70">{title}</h2>
       <div className="flex flex-col">{children}</div>
     </section>
   );
@@ -169,7 +169,7 @@ export function AutomationDetailRow({
   readonly children: ReactNode;
 }) {
   return (
-    <div className="flex items-center justify-between gap-3 rounded-md px-1.5 py-1.5 text-xs">
+    <div className="flex items-center justify-between gap-3 rounded-md px-1.5 py-1.5 text-ui">
       <span className="flex shrink-0 items-center gap-1 text-muted-foreground">{label}</span>
       <span className="min-w-0 truncate text-right text-foreground">{children}</span>
     </div>
@@ -180,7 +180,7 @@ function AutomationDetailStatusValue({
   tone = "default",
   children,
 }: {
-  readonly tone?: "default" | "muted";
+  readonly tone?: "default" | "muted" | undefined;
   readonly children: ReactNode;
 }) {
   return (

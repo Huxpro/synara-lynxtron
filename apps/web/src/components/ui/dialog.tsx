@@ -66,8 +66,7 @@ const dialogFooterButtonClassName = dialogActionButtonClassName
   .join(" ");
 
 /** Shared label style for form fields inside dialogs (SpaceEditorDialog, CreateProjectDialog). */
-const dialogFieldLabelClassName =
-  "text-[length:var(--app-font-size-ui-sm,11px)] font-medium text-foreground/80";
+const dialogFieldLabelClassName = "text-ui-sm font-medium text-foreground/80";
 
 const dialogPanelFieldClassName =
   "[&_[data-slot=textarea-control]]:min-h-24 [&_[data-slot=textarea-control]_[data-slot=textarea]]:px-2.5 [&_[data-slot=textarea-control]_[data-slot=textarea]]:py-2";
@@ -75,13 +74,15 @@ const dialogPanelFieldClassName =
 function DialogPopup({
   className,
   children,
-  showCloseButton = true,
-  bottomStickOnMobile = true,
+  showCloseButton: showCloseButtonProp,
+  bottomStickOnMobile: bottomStickOnMobileProp,
   ...props
 }: DialogPrimitive.Popup.Props & {
   showCloseButton?: boolean;
   bottomStickOnMobile?: boolean;
 }) {
+  const showCloseButton = showCloseButtonProp ?? true;
+  const bottomStickOnMobile = bottomStickOnMobileProp ?? true;
   return (
     <DialogPortal>
       <DialogBackdrop />
@@ -129,11 +130,12 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
 
 function DialogFooter({
   className,
-  variant = "default",
+  variant: variantProp,
   ...props
 }: React.ComponentProps<"div"> & {
   variant?: "default" | "bare";
 }) {
+  const variant = variantProp ?? "default";
   return (
     <div
       className={cn(
@@ -164,7 +166,7 @@ function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
 function DialogDescription({ className, ...props }: DialogPrimitive.Description.Props) {
   return (
     <DialogPrimitive.Description
-      className={cn("text-muted-foreground text-sm leading-snug", className)}
+      className={cn("text-muted-foreground text-ui leading-snug", className)}
       data-slot="dialog-description"
       {...props}
     />
@@ -173,9 +175,10 @@ function DialogDescription({ className, ...props }: DialogPrimitive.Description.
 
 function DialogPanel({
   className,
-  scrollFade = true,
+  scrollFade: scrollFadeProp,
   ...props
 }: React.ComponentProps<"div"> & { scrollFade?: boolean }) {
+  const scrollFade = scrollFadeProp ?? true;
   return (
     <ScrollArea scrollFade={scrollFade}>
       <div

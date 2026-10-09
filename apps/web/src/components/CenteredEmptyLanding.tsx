@@ -5,8 +5,8 @@ import {
 } from "~/components/CenteredEmptyLandingElements";
 
 export interface CenteredEmptyLandingProps {
-  readonly className?: string;
-  readonly projectName?: string | null;
+  readonly className?: string | undefined;
+  readonly projectName?: string | null | undefined;
 }
 
 export function CenteredEmptyLanding({ className, projectName = null }: CenteredEmptyLandingProps) {

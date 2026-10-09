@@ -33,11 +33,12 @@ describe("SettingsNotificationsPanel", () => {
     expect(markup).toContain("Permission granted");
     expect(markup).toContain("Reset activity toasts to default");
     expect(markup).not.toContain("Reset desktop notifications to default");
-    expect(markup.indexOf("Activity toast notifications")).toBeLessThan(
-      markup.indexOf("Activity unavailable"),
+    // Status sits under the row description, ahead of the control (Electron's row layout).
+    expect(markup.indexOf("Activity unavailable")).toBeLessThan(
+      markup.indexOf("Activity toast notifications"),
     );
-    expect(markup.indexOf("Desktop activity notifications")).toBeLessThan(
-      markup.indexOf("Permission granted"),
+    expect(markup.indexOf("Permission granted")).toBeLessThan(
+      markup.indexOf("Desktop activity notifications"),
     );
   });
 

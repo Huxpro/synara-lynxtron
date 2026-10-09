@@ -10,15 +10,15 @@ import {
 
 export interface SidebarPrimaryActionRowProps {
   readonly icon: ReactNode;
-  readonly elementId?: string;
+  readonly elementId?: string | undefined;
   readonly label: string;
-  readonly active?: boolean;
-  readonly disabled?: boolean;
-  readonly trailing?: ReactNode;
+  readonly active?: boolean | undefined;
+  readonly disabled?: boolean | undefined;
+  readonly trailing?: ReactNode | undefined;
   readonly onActivate?: (() => void) | undefined;
   readonly onMouseEnter?: (() => void) | undefined;
   readonly onFocus?: (() => void) | undefined;
-  readonly visualState?: "default" | "hover" | "focus" | "pressed";
+  readonly visualState?: "default" | "hover" | "focus" | "pressed" | undefined;
 }
 
 export function SidebarPrimaryActionRow({

@@ -11,7 +11,7 @@ export function EditorRailAddMenuTerminalIconElement() {
 }
 
 export function EditorRailAddMenuItemElement(props: {
-  readonly disabled?: boolean;
+  readonly disabled?: boolean | undefined;
   readonly icon: ReactNode;
   readonly label: string;
   readonly onActivate: () => void;

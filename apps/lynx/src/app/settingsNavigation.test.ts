@@ -46,7 +46,7 @@ import {
   resolveThemePack,
   updateChromeTheme,
 } from "@synara-web/theme/theme.logic";
-import { SETTINGS_SECTION_IDS } from "@synara-web/settingsNavigation";
+import { SETTINGS_NAV_ITEMS, SETTINGS_SECTION_IDS } from "@synara-web/settingsNavigation";
 
 describe("shared settings navigation projection", () => {
   it("keeps the full canonical taxonomy available", () => {
@@ -55,16 +55,28 @@ describe("shared settings navigation projection", () => {
       availableSections: SETTINGS_SECTION_IDS,
     });
 
-    expect(groups.map((group) => group.label)).toEqual(["App", "Synara"]);
+    expect(groups.map((group) => group.label)).toEqual([
+      "Personal",
+      "Integrations",
+      "Coding",
+      "System",
+      "Archived",
+    ]);
     const items = groups.flatMap((group) => group.items);
-    expect(items.map((item) => item.id)).toEqual(SETTINGS_SECTION_IDS);
+    expect([...items.map((item) => item.id)].sort()).toEqual([...SETTINGS_SECTION_IDS].sort());
     expect(items.every((item) => item.available)).toBe(true);
     expect(items.find((item) => item.id === "appearance")?.active).toBe(true);
   });
 
   it("gives every canonical section an explicit native renderer", () => {
     const source = readFileSync(new URL("./SettingsPage.tsx", import.meta.url), "utf8");
-    const ownerMarkers: Record<(typeof SETTINGS_SECTION_IDS)[number], string> = {
+    // Electron's Computer use drives the desktop through its own native driver; Lynx lists
+    // the section as unavailable until that capability is ported.
+    const NATIVE_UNSUPPORTED_SECTIONS = new Set<string>(["computer"]);
+    const ownerMarkers: Record<
+      Exclude<(typeof SETTINGS_SECTION_IDS)[number], "computer">,
+      string
+    > = {
       general: "<SettingsGeneralComposition",
       profile: "<SettingsProfilePanel />",
       appearance: "<SettingsAppearanceComposition",
@@ -83,6 +95,7 @@ describe("shared settings navigation projection", () => {
     };
 
     for (const section of SETTINGS_SECTION_IDS) {
+      if (section === "computer" || NATIVE_UNSUPPORTED_SECTIONS.has(section)) continue;
       expect(source).toContain(`section === '${section}'`);
       expect(source).toContain(ownerMarkers[section]);
     }
@@ -146,13 +159,13 @@ describe("shared settings navigation projection", () => {
   });
 
   it("round-trips local Provider picker visibility/order without server availability flags", () => {
-    const moved = moveSettingsProvider(DEFAULT_SETTINGS_PROVIDER_PICKER_VALUES, "kilo", "up");
+    const moved = moveSettingsProvider(DEFAULT_SETTINGS_PROVIDER_PICKER_VALUES, "grok", "up");
     const raw = writeSettingsProviderPickerProjection(
       JSON.stringify({ defaultProvider: "codex" }),
-      { ...moved, hiddenProviders: ["kilo"] },
+      { ...moved, hiddenProviders: ["grok"] },
     );
     expect(readSettingsProviderPickerProjection(raw)).toMatchObject({
-      hiddenProviders: ["kilo"],
+      hiddenProviders: ["grok"],
       providerOrder: moved.providerOrder,
     });
     expect(JSON.parse(raw)).not.toHaveProperty("providers");
@@ -161,7 +174,7 @@ describe("shared settings navigation projection", () => {
   it("projects real server Git writing model settings and configured models", () => {
     const selected = readSettingsGitWritingModelValues({
       textGenerationModelSelection: {
-        provider: "kilo",
+        provider: "droid",
         model: "openrouter/custom-model",
       },
     });
@@ -170,46 +183,44 @@ describe("shared settings navigation projection", () => {
       settings: {
         providers: {
           codex: { customModels: [] },
-          kilo: { customModels: ["openrouter/custom-model"] },
+          claudeAgent: { customModels: [] },
+          cursor: { customModels: [] },
+          droid: { customModels: ["openrouter/custom-model"] },
           opencode: { customModels: [] },
         },
       } as never,
     });
     expect(DEFAULT_SETTINGS_GIT_WRITING_MODEL_VALUES.provider).toBe("codex");
     expect(options).toContainEqual({
-      provider: "kilo",
+      provider: "droid",
       model: "openrouter/custom-model",
-      label: "Kilo / openrouter/custom-model",
+      label: "Droid / openrouter/custom-model",
     });
   });
 
   it("uses the canonical route copy for the native panel header", () => {
-    expect(resolveSettingsPanelHeader("general")).toEqual({
-      title: "General",
-      description: "Default provider, thread mode, and sidebar organization.",
-    });
-    expect(resolveSettingsPanelHeader("appearance").description).toBe(
-      "Theme, typography, and timestamp formatting.",
-    );
-    expect(resolveSettingsPanelHeader("shortcuts")).toEqual({
-      title: "Keyboard Shortcuts",
-      description: "Every keyboard shortcut available in Synara, grouped by context.",
-    });
+    for (const id of ["general", "appearance", "shortcuts"] as const) {
+      const item = SETTINGS_NAV_ITEMS.find((candidate) => candidate.id === id);
+      expect(resolveSettingsPanelHeader(id)).toEqual({
+        title: item?.label,
+        description: item?.description,
+      });
+    }
   });
 
   it("uses the canonical app-settings key and preserves non-General fields", () => {
     const raw = writeSettingsGeneralProjection(JSON.stringify({ chatFontSizePx: 18 }), {
       ...DEFAULT_SETTINGS_GENERAL_VALUES,
-      showWorkspaceSection: true,
+      showStudioSection: false,
     });
     expect(APP_SETTINGS_STORAGE_KEY).toBe("synara:app-settings:v1");
     expect(JSON.parse(raw)).toMatchObject({
       chatFontSizePx: 18,
-      showWorkspaceSection: true,
+      showStudioSection: false,
     });
     expect(readSettingsGeneralProjection(raw, "worktree")).toMatchObject({
       defaultThreadEnvMode: "worktree",
-      showWorkspaceSection: true,
+      showStudioSection: false,
     });
   });
 

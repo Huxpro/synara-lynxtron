@@ -14,7 +14,10 @@ export function resolveProviderHealthBannerPresentation(
     return null;
   }
 
-  const providerLabel = PROVIDER_DISPLAY_NAMES[status.provider] ?? status.provider;
+  const providerLabel =
+    status.displayName?.trim() ||
+    (PROVIDER_DISPLAY_NAMES as Readonly<Record<string, string>>)[status.provider] ||
+    status.provider;
   const defaultMessage =
     status.status === "error"
       ? `${providerLabel} provider is unavailable.`

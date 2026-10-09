@@ -6,6 +6,7 @@ import {
   resolveBranchSelectionTarget,
   resolveAssociatedWorktreeMetadataAfterWorkspacePatch,
   resolveDraftEnvModeAfterBranchChange,
+  resolveFixedLocalWorkspacePatch,
   resolveBranchToolbarValue,
   shouldSyncLocalThreadBranch,
 } from "./BranchToolbar.logic";
@@ -40,15 +41,51 @@ describe("resolveDraftEnvModeAfterBranchChange", () => {
       }),
     ).toBe("worktree");
   });
+});
 
-  it("keeps legacy .synara worktree paths working for migrated threads", () => {
+describe("resolveFixedLocalWorkspacePatch", () => {
+  it("preserves the selected folder for branch-only updates", () => {
     expect(
-      resolveDraftEnvModeAfterBranchChange({
-        nextWorktreePath: "/repo/.synara/worktrees/feature-a",
-        currentWorktreePath: null,
-        effectiveEnvMode: "local",
+      resolveFixedLocalWorkspacePatch({
+        currentWorkingDirectory: "/repo/current",
+        patch: { branch: "feature/demo", worktreePath: null },
       }),
-    ).toBe("worktree");
+    ).toEqual({
+      envMode: "local",
+      branch: null,
+      worktreePath: null,
+      workingDirectory: "/repo/current",
+      associatedWorktreePath: null,
+      associatedWorktreeBranch: null,
+      associatedWorktreeRef: null,
+      createBranchFlowCompleted: false,
+    });
+  });
+
+  it("uses an existing worktree selection as the next concrete folder", () => {
+    expect(
+      resolveFixedLocalWorkspacePatch({
+        currentWorkingDirectory: "/repo/current",
+        patch: {
+          branch: "feature/demo",
+          worktreePath: "/repo/.worktrees/feature-demo",
+        },
+      }),
+    ).toMatchObject({
+      envMode: "local",
+      branch: null,
+      worktreePath: null,
+      workingDirectory: "/repo/.worktrees/feature-demo",
+    });
+  });
+
+  it("honors an explicit working-directory clear", () => {
+    expect(
+      resolveFixedLocalWorkspacePatch({
+        currentWorkingDirectory: "/repo/current",
+        patch: { workingDirectory: null },
+      }).workingDirectory,
+    ).toBeNull();
   });
 });
 
@@ -96,6 +133,7 @@ describe("shouldSyncLocalThreadBranch", () => {
         activeThreadBranch: "synara/pi",
         currentGitBranch: "main",
         hasServerThread: true,
+        isThreadSettled: false,
         isBranchActionPending: false,
       }),
     ).toBe(true);
@@ -109,6 +147,7 @@ describe("shouldSyncLocalThreadBranch", () => {
         activeThreadBranch: "synara/pi",
         currentGitBranch: "main",
         hasServerThread: true,
+        isThreadSettled: false,
         isBranchActionPending: true,
       }),
     ).toBe(false);
@@ -122,6 +161,7 @@ describe("shouldSyncLocalThreadBranch", () => {
         activeThreadBranch: null,
         currentGitBranch: "main",
         hasServerThread: false,
+        isThreadSettled: false,
         isBranchActionPending: false,
       }),
     ).toBe(false);
@@ -135,6 +175,7 @@ describe("shouldSyncLocalThreadBranch", () => {
         activeThreadBranch: null,
         currentGitBranch: "main",
         hasServerThread: true,
+        isThreadSettled: false,
         isBranchActionPending: false,
       }),
     ).toBe(true);
@@ -148,6 +189,21 @@ describe("shouldSyncLocalThreadBranch", () => {
         activeThreadBranch: "feature/base",
         currentGitBranch: "main",
         hasServerThread: true,
+        isThreadSettled: false,
+        isBranchActionPending: false,
+      }),
+    ).toBe(false);
+  });
+
+  it("keeps the last branch on a settled thread until it is resumed", () => {
+    expect(
+      shouldSyncLocalThreadBranch({
+        envMode: "local",
+        activeWorktreePath: null,
+        activeThreadBranch: "feature/finished",
+        currentGitBranch: "feature/current",
+        hasServerThread: true,
+        isThreadSettled: true,
         isBranchActionPending: false,
       }),
     ).toBe(false);
@@ -251,30 +307,6 @@ describe("dedupeRemoteBranchesWithLocalMatches", () => {
 
     expect(dedupeRemoteBranchesWithLocalMatches(input).map((branch) => branch.name)).toEqual([
       "feature/demo",
-      "origin/feature/remote-only",
-    ]);
-  });
-
-  it("keeps all entries when no local match exists for a remote ref", () => {
-    const input: GitBranch[] = [
-      {
-        name: "feature/local",
-        current: false,
-        isDefault: false,
-        worktreePath: null,
-      },
-      {
-        name: "origin/feature/remote-only",
-        isRemote: true,
-        remoteName: "origin",
-        current: false,
-        isDefault: false,
-        worktreePath: null,
-      },
-    ];
-
-    expect(dedupeRemoteBranchesWithLocalMatches(input).map((branch) => branch.name)).toEqual([
-      "feature/local",
       "origin/feature/remote-only",
     ]);
   });

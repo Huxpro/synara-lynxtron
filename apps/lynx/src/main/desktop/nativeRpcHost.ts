@@ -9,11 +9,20 @@ import {
 } from "../../data/rpcTransport.logic";
 import {
   nativeEventStreamChannel,
+  parseNativeRpcCompatibility,
+  type NativeRpcCompatibility,
   type NativeRpcStreamResetReply,
 } from "../nativeEventStreams.logic";
+import { readRpcFailureDetails, type RpcFailureDetails } from "../rpcFailure.logic";
 import { createScopedStreamRegistry } from "../scopedStreamRegistry.logic";
 import { resolveSynaraWsUrl } from "./runtimeEndpoint.logic";
 import { normalizeLynxRpcPayload } from "../rpcPayload.logic";
+import {
+  WS_CLIENT_REQUIRED_CAPABILITIES,
+  WS_PROTOCOL_EPOCH,
+  WS_PROTOCOL_MAX_REVISION,
+  WS_PROTOCOL_MIN_REVISION,
+} from "@synara/contracts";
 
 const CLIENT_BUILD = "0.5.5-lynx-slice";
 const SOCKET_OPEN_TIMEOUT_MS = 8_000;
@@ -22,11 +31,15 @@ const MAX_RECONNECT_ATTEMPTS = 6;
 const INITIAL_RECONNECT_DELAY_MS = 250;
 const MAX_RECONNECT_DELAY_MS = 2_000;
 const OFFLINE_RETRY_DELAY_MS = 5_000;
+// Negotiated with the same constants the Electron renderer uses, so a server
+// protocol bump can never strand Lynx on a revision the server rejects. The
+// required capabilities are the upstream client's too: the shared transport
+// compat runs the same streams (thread detail snapshots, worktree setup).
 const PROTOCOL = {
-  epoch: 1,
-  minRevision: 1,
-  maxRevision: 1,
-  capabilities: ["orchestration.cursor-safe-streams", "rpc.typed-errors"],
+  epoch: WS_PROTOCOL_EPOCH,
+  minRevision: WS_PROTOCOL_MIN_REVISION,
+  maxRevision: WS_PROTOCOL_MAX_REVISION,
+  capabilities: WS_CLIENT_REQUIRED_CAPABILITIES,
 } as const;
 
 const startTimeout: StartRpcTimeout = (milliseconds, onTimeout) => {
@@ -43,6 +56,22 @@ function openSocket(url: string): Promise<WebSocket> {
 }
 
 let requestSequence = 0;
+
+let negotiatedCompatibility: NativeRpcCompatibility | null = null;
+const compatibilityListeners = new Set<(compatibility: NativeRpcCompatibility) => void>();
+
+/** Runs before the negotiated socket is opened, so before it reports connected. */
+function adoptCompatibility(compatibility: NativeRpcCompatibility): void {
+  negotiatedCompatibility = compatibility;
+  for (const listener of compatibilityListeners) listener(compatibility);
+}
+
+export function subscribeNativeRpcCompatibility(
+  listener: (compatibility: NativeRpcCompatibility) => void,
+): () => void {
+  compatibilityListeners.add(listener);
+  return () => compatibilityListeners.delete(listener);
+}
 
 function createManager(
   connect: () => Promise<WebSocket>,
@@ -66,11 +95,7 @@ function createManager(
   });
 }
 
-async function negotiate(baseUrl: string): Promise<{
-  readonly protocolEpoch: number;
-  readonly negotiatedRevision: number;
-  readonly serverInstanceId: string;
-}> {
+async function negotiate(baseUrl: string): Promise<NativeRpcCompatibility> {
   const bootstrapUrl = new URL(baseUrl);
   bootstrapUrl.pathname = "/ws/bootstrap";
   bootstrapUrl.hash = "";
@@ -78,13 +103,17 @@ async function negotiate(baseUrl: string): Promise<{
     maxReconnectAttempts: 0,
   });
   try {
-    return await manager.request("bootstrap.negotiate", {
-      protocolEpoch: PROTOCOL.epoch,
-      minRevision: PROTOCOL.minRevision,
-      maxRevision: PROTOCOL.maxRevision,
-      clientBuild: CLIENT_BUILD,
-      requiredCapabilities: [...PROTOCOL.capabilities],
-    });
+    const result = parseNativeRpcCompatibility(
+      await manager.request("bootstrap.negotiate", {
+        protocolEpoch: PROTOCOL.epoch,
+        minRevision: PROTOCOL.minRevision,
+        maxRevision: PROTOCOL.maxRevision,
+        clientBuild: CLIENT_BUILD,
+        requiredCapabilities: [...PROTOCOL.capabilities],
+      }),
+    );
+    if (!result) throw new Error("Synara bootstrap negotiation returned an unreadable result");
+    return result;
   } finally {
     manager.dispose();
   }
@@ -93,6 +122,7 @@ async function negotiate(baseUrl: string): Promise<{
 async function openFeatureSocket(): Promise<WebSocket> {
   const socketUrl = new URL(resolveSynaraWsUrl(process.env.SYNARA_WS_URL));
   const compatibility = await negotiate(socketUrl.toString());
+  adoptCompatibility(compatibility);
   socketUrl.pathname = "/ws";
   socketUrl.hash = "";
   socketUrl.searchParams.set("x-synara-client-build", CLIENT_BUILD);
@@ -114,11 +144,16 @@ export function subscribeNativeRpcTransportState(
   return featureManager.subscribe(listener);
 }
 
-function toRelayError(error: unknown): Error & { errorKind?: "rpc" | "transport" } {
+function toRelayError(
+  error: unknown,
+): Error & { errorKind?: "rpc" | "transport"; rpcFailure?: RpcFailureDetails } {
   const relayError = new Error(error instanceof Error ? error.message : String(error)) as Error & {
     errorKind?: "rpc" | "transport";
+    rpcFailure?: RpcFailureDetails;
   };
   relayError.errorKind = isRpcTransportError(error) ? "transport" : "rpc";
+  const rpcFailure = readRpcFailureDetails(error);
+  if (rpcFailure) relayError.rpcFailure = rpcFailure;
   return relayError;
 }
 
@@ -186,7 +221,11 @@ export function cancelNativeRpcStream(streamId: string): boolean {
 
 /** Renderer-generation handshake; see `NATIVE_RPC_STREAM_RESET_METHOD`. */
 export function resetNativeRpcStreams(): NativeRpcStreamResetReply {
-  return { generation: scopedStreams.reset(), transportState: featureManager.getState() };
+  return {
+    generation: scopedStreams.reset(),
+    transportState: featureManager.getState(),
+    compatibility: negotiatedCompatibility,
+  };
 }
 
 export function disposeNativeRpcHost(): void {

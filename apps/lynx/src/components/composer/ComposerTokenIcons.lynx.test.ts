@@ -139,7 +139,7 @@ describe("Composer token icon fidelity", () => {
     );
     const styles = readFileSync(new URL("./composer.css", import.meta.url), "utf8");
 
-    expect(source).toContain("deriveLatestContextWindowSnapshot(activities)");
+    expect(source).toContain("deriveLatestContextWindowState(activities).snapshot");
     expect(source).toContain("deriveContextWindowMeterDisplay(contextWindow)");
     expect(source).toContain("<ComposerContextWindowMeterElement");
     expect(source).toContain(

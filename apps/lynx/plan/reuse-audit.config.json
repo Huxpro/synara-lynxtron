@@ -9,7 +9,7 @@
     "synaraClientImporters": 39,
     "useQueryCallSites": 66,
     "refetchIntervalSites": 8,
-    "routerTsxLines": 3705
+    "routerTsxLines": 3701
   },
   "patchedSources": ["apps/web/src/routes/__root.tsx"],
   "hardIslandPackages": [
@@ -76,7 +76,7 @@
       "reason": "platform element adapter beneath shared SettingsRow composition"
     },
     {
-      "regex": "^apps/web/src/components/(AppShellFrameElements|SidebarPrimaryActionElements|SidebarPrimaryNavigationElements|CenteredEmptyLandingElements|CenteredEmptyLandingStackElements|SidebarSegmentedPickerElements|SidebarListSectionHeaderElements|SidebarProjectSummaryElements|SidebarThreadIdentityElements|SidebarThreadSubagentIdentityElements|SidebarThreadProviderIdentityElements|SidebarThreadStatusIndicatorElements|SidebarSearchPaletteElements|SidebarChatsSectionElements|SidebarProjectsSectionElements|chat/ChatSurfaceHeader(Frame|Identity)Elements)\\.tsx$",
+      "regex": "^apps/web/src/components/(AppShellFrameElements|SidebarPrimaryActionElements|SidebarPrimaryNavigationElements|CenteredEmptyLandingElements|CenteredEmptyLandingStackElements|SidebarListSectionHeaderElements|SidebarProjectSummaryElements|SidebarThreadIdentityElements|SidebarThreadSubagentIdentityElements|SidebarThreadProviderIdentityElements|SidebarThreadStatusIndicatorElements|SidebarSearchPaletteElements|SidebarChatsSectionElements|SidebarProjectsSectionElements|chat/ChatSurfaceHeader(Frame|Identity)Elements)\\.tsx$",
       "classification": "SPLIT",
       "reason": "platform host-element adapter beneath shared shell/sidebar composition"
     },

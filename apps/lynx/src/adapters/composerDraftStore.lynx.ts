@@ -13,6 +13,7 @@ import {
   type ModelSelection,
   type ProviderMentionReference,
   type ProviderSkillReference,
+  type RuntimeMode,
   type ThreadId,
 } from "@synara/contracts";
 
@@ -51,7 +52,7 @@ interface LynxComposerDraft {
   readonly mentions: ReadonlyArray<ProviderMentionReference>;
   readonly modelSelection?: ModelSelection;
   readonly modelSelectionByProvider?: Readonly<Record<string, ModelSelection>>;
-  readonly runtimeMode?: "full-access" | "approval-required";
+  readonly runtimeMode?: RuntimeMode;
   readonly interactionMode?: "default" | "plan";
   readonly pastedTexts: ReadonlyArray<PastedTextDraft>;
   readonly terminalContexts: ReadonlyArray<TerminalContextDraft>;
@@ -90,10 +91,7 @@ interface LynxComposerDraftStoreState {
   readonly removeFileComments: (threadId: string) => void;
   readonly removeAssistantSelections: (threadId: string) => void;
   readonly setModelSelection: (threadId: string, modelSelection: ModelSelection) => void;
-  readonly setRuntimeMode: (
-    threadId: string,
-    runtimeMode: "full-access" | "approval-required",
-  ) => void;
+  readonly setRuntimeMode: (threadId: string, runtimeMode: RuntimeMode) => void;
   readonly setInteractionMode: (threadId: string, interactionMode: "default" | "plan") => void;
   readonly setMentions: (
     threadId: string,
@@ -123,6 +121,9 @@ export function projectLynxKanbanComposerDrafts(
           draft.terminalContexts.length > 0 ||
           draft.pastedTexts.length > 0,
         provider: draft.modelSelection?.provider ?? null,
+        // The default account of a provider shares the provider's id.
+        providerInstanceId: (draft.modelSelection?.provider ??
+          null) as KanbanComposerDraftSnapshot["providerInstanceId"],
       },
     ]),
   );

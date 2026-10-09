@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it } from "@rstest/core";
 import { act, render } from "@lynx-js/react/testing-library";
 import { createMemoryHistory } from "@tanstack/history";
 import { ThreadId } from "@synara/contracts";
+import { useCommittedPathname } from "@synara-web/hooks/useCommittedPathname";
 import { useDiffRouteSearch } from "@synara-web/hooks/useDiffRouteSearch";
 
 import {
@@ -9,6 +10,7 @@ import {
   resolveLynxNavigationPath,
   useNavigate,
   useParams,
+  useRouter,
   useRouterState,
 } from "./reactRouter.lynx";
 
@@ -25,7 +27,7 @@ const observed: Observed[] = [];
 // The exact call shapes of the generated `EventRouter`.
 function Probe() {
   const navigate = useNavigate();
-  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const pathname = useCommittedPathname();
   const routeThreadId = useParams({
     strict: false,
     select: (params) => (params.threadId ? ThreadId.makeUnsafe(params.threadId) : null),
@@ -91,6 +93,25 @@ describe("Lynx router hook adapter", () => {
 
     act(() => history.push("/thread/thread-1"));
     expect(latest().navigate).toBe(first.navigate);
+  });
+
+  it("serves upstream's committed-pathname hook: one router identity, never loading", () => {
+    const seen: Array<{ router: object; isLoading: boolean }> = [];
+    function RouterProbe() {
+      const router = useRouter();
+      const isLoading = useRouterState({ select: (state) => state.isLoading });
+      seen.push({ router, isLoading });
+      return null;
+    }
+    const history = createMemoryHistory({ initialEntries: ["/"] });
+    unbind = bindLynxRouterHistory(history);
+    render(<RouterProbe />);
+    render(<Probe />);
+    act(() => history.push("/thread/thread-1"));
+
+    expect(latest()).toMatchObject({ pathname: "/thread/thread-1", routeThreadId: "thread-1" });
+    expect(new Set(seen.map((entry) => entry.router)).size).toBe(1);
+    expect(seen.every((entry) => entry.isLoading === false)).toBe(true);
   });
 
   it("maps upstream's bootstrap navigation onto the Lynx thread route", async () => {

@@ -5,8 +5,6 @@ import {
   resolveNewThreadTarget,
 } from "@synara-web/lib/projectShortcutTargets";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "@lynx-js/react";
-import { getRectByRef } from "@lynx-js/lynx-ui";
-import type { NodesRef } from "@lynx-js/types";
 import {
   buildProjectContextMenuItems,
   buildSpaceContextMenuItems,
@@ -29,9 +27,8 @@ import worktreeSvg from "@synara-central-icons/arrow-split-right.svg?raw";
 
 import { SidebarPrimarySurfaceNavigation } from "@synara-web/components/SidebarPrimarySurfaceNavigation";
 import { resolvePullRequestReviewBadge } from "@synara-web/components/SidebarActionBadges.logic";
-import { countUniqueViewerReviewRequests } from "@synara-web/components/pullRequest/pullRequestList.logic";
 import { resolveSidebarPrimarySurface } from "@synara-web/components/SidebarSurface.logic";
-import { SidebarSegmentedPicker } from "@synara-web/components/SidebarSegmentedPicker";
+import { resolveSidebarSurfacePickerViews } from "@synara-web/components/SidebarSurfacePicker.logic";
 import { SidebarProjectDisclosure } from "@synara-web/components/SidebarProjectDisclosure";
 import { SidebarProjectSummary } from "@synara-web/components/SidebarProjectSummary";
 import { SidebarThreadRowComposition } from "@synara-web/components/SidebarThreadRowComposition";
@@ -94,7 +91,6 @@ import {
   type SidebarProjectSortOrderValue,
   type SidebarThreadSortOrderValue,
 } from "@synara-web/sidebarSortDefaults";
-import { useWorkspaceStore } from "@synara-web/workspaceStore";
 import { useStore } from "@synara-web/store";
 import { dockTerminalThreadId } from "@synara-web/lib/dockTerminalScope";
 import { pinActionLabel } from "@synara-web/lib/pin.logic";
@@ -131,8 +127,6 @@ import {
   ArchiveIcon,
   ClockIcon,
   ChevronDownIcon,
-  FolderIcon,
-  FolderOpenIcon,
   GitBranchIcon,
   PlusIcon,
   SettingsIcon,
@@ -141,10 +135,13 @@ import { colorizeLynxSvg } from "../../lib/themedSvg.lynx";
 import { useTheme } from "../../adapters/useTheme.lynx";
 import { useComposerDraftStore } from "../../adapters/composerDraftStore.lynx";
 import { Button } from "../ui/button";
-import { MenuOverlayPortal } from "../ui/menu.lynx";
 import { useLynxInteractiveState } from "../ui/interactive-state.lynx";
 import { lynxNestedInteractiveEventProps } from "../ui/interactive-state.lynx";
-import { deriveSidebarSections, resolveNativeSidebarSpaceId } from "./sidebar.logic";
+import {
+  countUniqueViewerReviewRequests,
+  deriveSidebarSections,
+  resolveNativeSidebarSpaceId,
+} from "./sidebar.logic";
 import { SpaceSwitcherLynx } from "./SpaceSwitcher.lynx";
 import { SpaceEditorDialogLynx } from "./SpaceEditorDialog.lynx";
 import { SpaceProjectPickerDialogLynx } from "./SpaceProjectPickerDialog.lynx";
@@ -162,21 +159,19 @@ import {
   nativeSpaceDeleteConfirmation,
 } from "./spaceContextActions.logic";
 import { LYNX_PRIMARY_SHORTCUT_LABELS } from "./sidebarShortcuts";
-import { focusLynxNode } from "../ui/focus.lynx";
 import { webStorage } from "../../platform/storage";
 import { clipboard } from "../../platform/clipboard";
 import { platformWindow } from "../../platform/window";
 import { platformTerminal } from "../../platform/terminal";
-import { sleepOnHost } from "../../platform/timer";
 import { removeRightDockThreadState } from "../../app/rightDockState.lynx";
 import {
   buildNativeThreadContextCommand,
   isThreadContextMenuActionId,
   nativeThreadContextConfirmation,
-  resolveSecondaryPointerOffset,
 } from "./threadContextActions.logic";
 import {
   createNativeThreadHandoff,
+  fetchNativeThreadHandoffProviderContext,
   resolveNativeThreadHandoffTargets,
 } from "../../app/threadHandoff.lynx";
 import { deleteNativeProjectThreads, removeNativeProject } from "./projectDeletion.lynx.logic";
@@ -184,6 +179,17 @@ import "./sidebar.css";
 import { PullRequestCompareIcon } from "./PullRequestCompareIcon.lynx";
 import { SidebarProjectHoverCard, SidebarThreadHoverCard } from "./SidebarHoverCards.lynx";
 import { LYNX_SIDEBAR_PRIMARY_ICONS } from "./SidebarPrimaryIcons.lynx";
+import { SidebarHoverAction, SidebarNavigationRow } from "./SidebarNavigationRow.lynx";
+import { SidebarSurfaceHeader } from "./SidebarSurfaceHeader.lynx";
+import { SidebarActivityView } from "./SidebarActivityView.lynx";
+import { SidebarHelpMenu } from "./SidebarHelpMenu.lynx";
+import { FeedbackDialogLynx, resolveNativeFeedbackContext } from "./FeedbackDialog.lynx";
+import { SYNARA_DOCS_URL } from "@synara-web/components/SidebarHelpMenu.logic";
+import { settingsRouteLocation } from "../../app/settingsRoute.logic";
+import { useThreadSettledOverrides } from "./useThreadSettledOverrides.lynx";
+import { hasUnreadActivity as hasUnreadActivityOutsideActiveThread } from "@synara-web/components/SidebarActivityView.logic";
+import folderClosedSvg from "@synara-central-icons/folder-2.svg?raw";
+import folderOpenSvg from "@synara-central-icons/folder-open-front.svg?raw";
 import pinSvg from "@synara-central-icons/pin.svg?raw";
 import pinFilledSvg from "@synara-central-icons-fill/pin.svg?raw";
 
@@ -199,138 +205,14 @@ interface PersistedSidebarListState {
   readonly pinnedProjectIds: readonly string[];
 }
 
-export function SidebarNavigationRow(props: {
-  readonly actions?: ReactNode;
-  readonly children?: ReactNode;
-  readonly className: string;
-  readonly active?: boolean;
-  readonly expanded?: boolean;
-  readonly hoverCard?: ReactNode;
-  readonly label: string;
-  readonly projectId?: string;
-  readonly threadId?: string;
-  readonly onActivate: () => void;
-  readonly onContextMenu?: (
-    position: { readonly x: number; readonly y: number },
-    restoreFocus: () => void,
-  ) => void;
-}) {
-  const rowRef = useRef<NodesRef>(null);
-  const [previewVisible, setPreviewVisible] = useState(false);
-  const [hoverCardPosition, setHoverCardPosition] = useState<{
-    readonly left: number;
-    readonly top: number;
-  } | null>(null);
-  const interaction = useLynxInteractiveState({
-    baseClassName: props.className,
-    accessibleLabel: props.label,
-    accessibilityValue:
-      props.expanded === undefined ? undefined : props.expanded ? "Expanded" : "Collapsed",
-    onActivate: props.onActivate,
-    onIntent: props.hoverCard
-      ? () => {
-          "background only";
-          void getRectByRef(rowRef, true)
-            .then((rect) =>
-              setHoverCardPosition({
-                left: rect.right + 8,
-                top: rect.top,
-              }),
-            )
-            .catch(() => setHoverCardPosition(null));
-        }
-      : undefined,
-  });
+/** Electron's project row glyph: Central folder-open-front / folder-2 at 95% foreground. */
+function ProjectFolderGlyph(props: { readonly open: boolean }) {
+  const { svgColors } = useTheme();
   return (
-    <>
-      <view
-        ref={rowRef}
-        data-project-id={props.projectId}
-        data-thread-id={props.threadId}
-        data-active={props.active}
-        className={interaction.className}
-        aria-label={props.label}
-        aria-expanded={props.expanded}
-        {...interaction.eventProps}
-        bindmouseenter={() => {
-          interaction.eventProps.bindmouseenter?.();
-          setPreviewVisible(true);
-        }}
-        bindmouseleave={() => {
-          interaction.eventProps.bindmouseleave?.();
-          setPreviewVisible(false);
-        }}
-        bindfocus={() => {
-          interaction.eventProps.bindfocus?.();
-          setPreviewVisible(true);
-        }}
-        bindblur={() => {
-          interaction.eventProps.bindblur?.();
-          setPreviewVisible(false);
-        }}
-        bindmousedown={(event: {
-          readonly button?: number;
-          readonly x?: number;
-          readonly y?: number;
-        }) => {
-          interaction.eventProps.bindmousedown?.();
-          const offset = resolveSecondaryPointerOffset(event);
-          if (!offset || !props.onContextMenu) return;
-          void getRectByRef(rowRef, true)
-            .then(async (rect) => {
-              // Let the triggering secondary-button release finish before
-              // AppKit places the first native menu item under that pointer.
-              await sleepOnHost(50);
-              props.onContextMenu?.(
-                {
-                  x: rect.left + offset.x,
-                  y: rect.top + offset.y,
-                },
-                () => focusLynxNode(rowRef),
-              );
-            })
-            .catch(() => {
-              // A context menu with invented coordinates is worse than no menu.
-            });
-        }}
-      >
-        {props.children}
-        {props.actions ? <view className="AppSidebarRowHoverActions">{props.actions}</view> : null}
-      </view>
-      {props.hoverCard && previewVisible && hoverCardPosition ? (
-        <MenuOverlayPortal>
-          <view
-            className="AppSidebarRowHoverCard"
-            style={{
-              left: `${hoverCardPosition.left}px`,
-              top: `${hoverCardPosition.top}px`,
-            }}
-          >
-            {props.hoverCard}
-          </view>
-        </MenuOverlayPortal>
-      ) : null}
-    </>
-  );
-}
-
-export function SidebarHoverAction(props: {
-  readonly label: string;
-  readonly onActivate: () => void;
-  readonly children: ReactNode;
-}) {
-  const interaction = useLynxInteractiveState({
-    baseClassName: "AppSidebarHoverAction",
-    accessibleLabel: props.label,
-    onActivate: props.onActivate,
-  });
-  return (
-    <view
-      className={interaction.className}
-      {...lynxNestedInteractiveEventProps(interaction.eventProps)}
-    >
-      {props.children}
-    </view>
+    <svg
+      className="AppSidebarProjectFolderGlyph"
+      content={colorizeLynxSvg(props.open ? folderOpenSvg : folderClosedSvg, svgColors.foreground)}
+    />
   );
 }
 
@@ -482,22 +364,24 @@ async function persistProjectDisclosureState(
 
 export function Sidebar({
   activeThreadId,
-  activeWorkspaceId,
   draftProjectId = null,
   activePath,
   navigate,
   searchOpen,
   onOpenSearch,
+  activityViewEnabled = false,
+  onActivityViewEnabledChange,
   titlebarControls,
 }: {
   readonly activeThreadId: string | null;
-  readonly activeWorkspaceId?: string | null;
   // Project of the new-thread (draft) route, which the web also treats as focused.
   readonly draftProjectId?: string | null;
   readonly activePath: string;
   readonly navigate: (to: string) => void;
   readonly searchOpen: boolean;
   readonly onOpenSearch: (initialQuery?: string, returnFocusElementId?: string) => void;
+  readonly activityViewEnabled?: boolean;
+  readonly onActivityViewEnabledChange?: (enabled: boolean) => void;
   readonly titlebarControls?: ReactNode;
 }) {
   const { semanticIconColor } = useTheme();
@@ -577,14 +461,9 @@ export function Sidebar({
   );
   const primarySidebarSurface = resolveSidebarPrimarySurface({
     isOnStudio: activePath === "/studio",
-    isOnWorkspace: activePath === "/workspace",
   });
-  const workspacePages = useWorkspaceStore((state) => state.workspacePages);
-  const createWorkspace = useWorkspaceStore((state) => state.createWorkspace);
-  const reorderWorkspace = useWorkspaceStore((state) => state.reorderWorkspace);
   const chatsSectionVisible = initialSortSettings.showChatsSection;
   const studioSectionVisible = initialSortSettings.showStudioSection;
-  const workspaceSectionVisible = initialSortSettings.showWorkspaceSection;
   const storedActiveSpaceId = useSpacesUiStore((state) => state.activeSpaceId);
   const setActiveSpaceId = useSpacesUiStore((state) => state.setActiveSpaceId);
   const rememberSpaceThread = useSpacesUiStore((state) => state.rememberThread);
@@ -665,6 +544,36 @@ export function Sidebar({
       threadSortOrder,
     ],
   );
+  // Activity view source: the snapshot's full thread summaries outside Studio, the same
+  // list Electron's Activity view and header bell read.
+  const activityThreads = useMemo(() => {
+    const studioProjectIds = new Set(
+      (data?.projects ?? [])
+        .filter((project) => project.kind === "studio")
+        .map((project) => project.id),
+    );
+    return (data?.kanbanThreads ?? []).filter((thread) => !studioProjectIds.has(thread.projectId));
+  }, [data]);
+  const pinnedThreadIdSet = useMemo(
+    () =>
+      new Set<ThreadId>([
+        ...(data?.threads ?? [])
+          .filter((thread) => thread.isPinned === true)
+          .map((thread) => thread.id as ThreadId),
+        ...(persistedPinnedThreadIds as readonly ThreadId[]),
+      ]),
+    [data, persistedPinnedThreadIds],
+  );
+  // The shell sequence session sync has applied: what Electron's settle reconciliation reads.
+  const shellSnapshotSequence = useStore((state) => state.shellSnapshotSequence ?? 0);
+  const { settledOverrideByThreadId, setThreadSettled } = useThreadSettledOverrides({
+    threads: activityThreads,
+    snapshotSequence: shellSnapshotSequence,
+  });
+  const hasUnreadActivity = useMemo(
+    () => hasUnreadActivityOutsideActiveThread(activityThreads, activeThreadId as ThreadId | null),
+    [activeThreadId, activityThreads],
+  );
   const spaceActivityById = useMemo(
     () =>
       deriveSpaceActivityById({
@@ -722,6 +631,12 @@ export function Sidebar({
     readonly icon: SpaceIconName;
   } | null>(null);
   const [spaceActionError, setSpaceActionError] = useState<string | null>(null);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const openDocs = () => {
+    "background only";
+    void platformWindow.openExternal(SYNARA_DOCS_URL);
+  };
+  const activeThreadSummary = data?.threads.find((thread) => thread.id === activeThreadId);
   const persistSidebarSortOrders = useCallback(
     (
       nextProjectSortOrder: SidebarProjectSortOrderValue,
@@ -767,8 +682,13 @@ export function Sidebar({
     const { showContextMenu } = await import(
       /* webpackMode: "eager" */ "../../platform/contextMenu"
     );
-    const detail = await fetchThreadHeaderSummary(thread.id);
-    const handoffTargets = resolveNativeThreadHandoffTargets(detail);
+    const [detail, handoffProviders] = await Promise.all([
+      fetchThreadHeaderSummary(thread.id),
+      fetchNativeThreadHandoffProviderContext().catch(() => null),
+    ]);
+    const handoffTargets = handoffProviders
+      ? resolveNativeThreadHandoffTargets(detail, handoffProviders)
+      : [];
     const action = (await showContextMenu(
       buildThreadContextMenuItems({
         isPinned,
@@ -1398,6 +1318,8 @@ export function Sidebar({
       },
       project: project
         ? {
+            // Sidebar project groups are always real projects (chats and studio are separate sections).
+            kind: "project" as const,
             cwd: project.workspaceRoot,
             folderName: project.workspaceRoot.split(/[\\/]/).filter(Boolean).at(-1) ?? "",
             name: project.title,
@@ -1703,31 +1625,28 @@ export function Sidebar({
       <SidebarSurfaceContent
         surfaceKey={primarySidebarSurface}
         picker={
-          <SidebarSegmentedPicker
-            views={[
-              ...(studioSectionVisible ? (["studio"] as const) : []),
-              "threads",
-              ...(workspaceSectionVisible ? (["workspace"] as const) : []),
-            ]}
-            activeView={
-              activePath === "/studio"
-                ? "studio"
-                : activePath === "/workspace"
-                  ? "workspace"
-                  : "threads"
-            }
+          <SidebarSurfaceHeader
+            views={resolveSidebarSurfacePickerViews(studioSectionVisible)}
+            activeView={activePath === "/studio" ? "studio" : "threads"}
             onSelectView={(view) => {
               if (view === "studio") {
                 navigate("/studio");
                 return;
               }
-              if (view === "workspace") {
-                const workspaceId = workspacePages[0]?.id;
-                if (workspaceId) navigate(`/workspace/${workspaceId}`);
-                return;
-              }
               navigate("/");
             }}
+            searchElementId={SEARCH_TRIGGER_ELEMENT_ID}
+            searchOpen={searchOpen}
+            onOpenSearch={() => onOpenSearch()}
+            activity={
+              primarySidebarSurface === "studio"
+                ? undefined
+                : {
+                    active: activityViewEnabled,
+                    showUnreadDot: hasUnreadActivity,
+                    onToggle: () => onActivityViewEnabledChange?.(!activityViewEnabled),
+                  }
+            }
           />
         }
         navigation={
@@ -1735,73 +1654,73 @@ export function Sidebar({
             surface={primarySidebarSurface}
             pullRequestIcon={PullRequestCompareIcon}
             icons={LYNX_SIDEBAR_PRIMARY_ICONS}
-            searchOpen={searchOpen}
-            searchElementId={SEARCH_TRIGGER_ELEMENT_ID}
             kanbanActive={activePath === "/kanban"}
             pullRequestsActive={activePath === "/pull-requests"}
             automationsActive={activePath.startsWith("/automations")}
             pullRequestsBadge={pullRequestsReviewBadge}
             newThreadShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.newThread}
-            searchShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.search}
             onCreateThread={openPrimaryNewThread}
-            onCreateWorkspace={() => {
-              const workspaceId = createWorkspace();
-              navigate(`/workspace/${workspaceId}`);
-            }}
             onCreateStudioChat={() => navigate("/studio")}
-            onOpenSearch={onOpenSearch}
             onOpenKanban={() => navigate("/kanban")}
             onOpenPullRequests={() => navigate("/pull-requests")}
             onOpenAutomations={() => navigate("/automations")}
           />
         }
         body={
-          <>
-            {primarySidebarSurface === "workspace" ? (
-              <view className="AppSidebarWorkspace">
-                <text className="AppSidebarWorkspaceLabel">Workspace</text>
-                {workspacePages.map((workspace, workspaceIndex) => (
-                  <SidebarNavigationRow
-                    key={workspace.id}
-                    className={`AppSidebarThread AppSidebarChatThread${
-                      activeWorkspaceId === workspace.id ? " AppSidebarThread--active" : ""
-                    }`}
-                    label={workspace.title}
-                    onActivate={() => navigate(`/workspace/${workspace.id}`)}
-                  >
-                    <text className="AppSidebarWorkspaceTitle">{workspace.title}</text>
-                    <view className="AppSidebarWorkspaceOrder">
-                      <Button
-                        variant="ghost"
-                        size="icon-xs"
-                        disabled={workspaceIndex === 0}
-                        aria-label={`Move ${workspace.title} up`}
-                        onClick={() => reorderWorkspace(workspace.id, workspaceIndex - 1)}
-                      >
-                        <ChevronDownIcon
-                          className="AppSidebarWorkspaceOrderIcon AppSidebarWorkspaceOrderIcon--up"
-                          color={sidebarSecondaryIconColor}
-                          size={14}
-                        />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon-xs"
-                        disabled={workspaceIndex === workspacePages.length - 1}
-                        aria-label={`Move ${workspace.title} down`}
-                        onClick={() => reorderWorkspace(workspace.id, workspaceIndex + 1)}
-                      >
-                        <ChevronDownIcon
-                          className="AppSidebarWorkspaceOrderIcon"
-                          color={sidebarSecondaryIconColor}
-                          size={14}
-                        />
-                      </Button>
-                    </view>
-                  </SidebarNavigationRow>
-                ))}
-              </view>
-            ) : (
+          activityViewEnabled && primarySidebarSurface !== "studio" ? (
+            <SidebarActivityView
+              threads={activityThreads}
+              projects={data?.projects ?? []}
+              activeThreadId={activeThreadId}
+              pinnedThreadIdSet={pinnedThreadIdSet}
+              settledOverrideByThreadId={settledOverrideByThreadId}
+              threadsHydrated={!isPending}
+              resolveThreadStatus={(threadId) =>
+                data?.threads.find((thread) => thread.id === threadId)?.status ?? null
+              }
+              renderThreadHoverCard={(threadId) => {
+                const thread = data?.threads.find((candidate) => candidate.id === threadId);
+                return thread ? threadHoverCard(thread) : null;
+              }}
+              onOpenThread={(threadId) => navigate(`/thread/${threadId}`)}
+              onSetThreadSettled={(threadId, settled) =>
+                void setThreadSettled(threadId, settled).catch((cause: unknown) =>
+                  setSpaceActionError(
+                    cause instanceof Error
+                      ? cause.message
+                      : settled
+                        ? "Unable to mark thread as done"
+                        : "Unable to undo done",
+                  ),
+                )
+              }
+              onToggleThreadPinned={(threadId) => {
+                const thread = data?.threads.find((candidate) => candidate.id === threadId);
+                if (thread) void performThreadAction(thread, "", "toggle-pin");
+              }}
+              onArchiveThread={(threadId) => {
+                const thread = data?.threads.find((candidate) => candidate.id === threadId);
+                if (thread) void performThreadAction(thread, "", "archive");
+              }}
+              onMarkThreadRead={(threadId, completedAt) => {
+                useStore.getState().markThreadVisited(threadId, completedAt);
+              }}
+              onThreadContextMenu={(threadId, position, restoreFocus) => {
+                const thread = data?.threads.find((candidate) => candidate.id === threadId);
+                if (!thread) return;
+                void openThreadContextMenu(
+                  thread,
+                  sections.projectGroups.find((group) => group.id === thread.projectId)
+                    ?.workspaceRoot ?? "",
+                  position,
+                  restoreFocus,
+                );
+              }}
+              onCreateChat={openPrimaryNewThread}
+              onAddProject={() => onOpenSearch("~/", ADD_PROJECT_TRIGGER_ELEMENT_ID)}
+            />
+          ) : (
+            <>
               <>
                 <SidebarPinnedSection
                   rows={sections.pinnedThreads}
@@ -2058,13 +1977,7 @@ export function Sidebar({
                                 leadingClassName={
                                   projectPinned ? "AppSidebarProjectFolder--hidden" : undefined
                                 }
-                                leading={
-                                  isExpanded ? (
-                                    <FolderOpenIcon size={16} />
-                                  ) : (
-                                    <FolderIcon size={16} />
-                                  )
-                                }
+                                leading={<ProjectFolderGlyph open={isExpanded} />}
                                 name={group.title}
                               />
                               {projectRun || projectRunServer || collapsedProjectStatus ? (
@@ -2140,13 +2053,17 @@ export function Sidebar({
                   />
                 )}
               </>
-            )}
-          </>
+            </>
+          )
         }
         trailing={
           <SidebarChatsSection
             visible={
-              chatsSectionVisible && primarySidebarSurface === "threads" && !isPending && !error
+              chatsSectionVisible &&
+              primarySidebarSurface === "threads" &&
+              !activityViewEnabled &&
+              !isPending &&
+              !error
             }
             expanded={chatsExpanded}
             toolbar={
@@ -2216,6 +2133,22 @@ export function Sidebar({
         settingsActive={activePath === "/settings"}
         settingsIcon={<SettingsIcon className="AppSidebarSettingsIcon" size={15} />}
         onOpenSettings={() => navigate("/settings")}
+        trailing={
+          <SidebarHelpMenu
+            onOpenShortcuts={() => navigate(settingsRouteLocation("shortcuts"))}
+            onOpenFeedback={() => setFeedbackOpen(true)}
+            onOpenDocs={openDocs}
+          />
+        }
+      />
+      <FeedbackDialogLynx
+        activeThreadId={activeThreadId}
+        open={feedbackOpen}
+        fallbackContext={resolveNativeFeedbackContext(
+          activeThreadSummary,
+          data?.projects.find((project) => project.id === activeThreadSummary?.projectId)?.kind,
+        )}
+        onOpenChange={setFeedbackOpen}
       />
       <SpaceEditorDialogLynx
         mode={spaceEditorMode ?? "edit"}

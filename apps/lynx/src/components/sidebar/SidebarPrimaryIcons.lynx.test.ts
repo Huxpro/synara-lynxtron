@@ -12,12 +12,9 @@ describe("Lynx sidebar primary icons", () => {
     "utf8",
   );
 
-  it("renders the four Central sidebar glyphs as Native SVG content", () => {
+  it("renders the three Central sidebar glyphs as Native SVG content", () => {
     expect(adapterSource).toContain(
       'import newThreadSvg from "@synara-central-icons/compose-pencil.svg?raw";',
-    );
-    expect(adapterSource).toContain(
-      'import searchSvg from "@synara-central-icons/magnifying-glass.svg?raw";',
     );
     expect(adapterSource).toContain(
       'import kanbanSvg from "@synara-central-icons/columns-3-wide.svg?raw";',
@@ -31,7 +28,7 @@ describe("Lynx sidebar primary icons", () => {
     expect(sharedSource).toContain("icons: SidebarPrimarySurfaceIcons;");
     expect(sharedSource).toContain("icon: icons.newWorkspace");
     expect(sharedSource).toContain("icon: icons.newThread");
-    expect(sharedSource).toContain("icon: icons.search");
+    expect(sharedSource).not.toContain("icons.search");
     expect(sharedSource).toContain("icon: icons.kanban");
     expect(sharedSource).toContain("icon: icons.automations");
   });

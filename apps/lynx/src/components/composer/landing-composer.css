@@ -6,10 +6,17 @@
   transform: translateY(-1px);
 }
 
+/* Upstream's empty-landing controls: an unfilled row directly above the composer, full
+   composer width (`min-h-8 px-1.5 py-1 gap-x-1.5`), so the project / environment / branch
+   chips sit near the shell edges. */
 .EmptyThreadContextTray.LandingComposerTray {
   width: 100%;
   max-width: none;
-  margin-top: -20px;
+  min-height: 36px;
+  margin: 0;
+  padding: 4px 6px;
+  border-radius: 0;
+  background-color: transparent;
 }
 
 .ComposerProjectPickerTriggerLynx {

@@ -16,6 +16,11 @@ import { createServer } from "node:net";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+// Plain Node cannot load @synara/contracts (TypeScript with extensionless
+// imports), so the fixture keeps a copy that comparison-fixture.test.mjs pins to
+// WS_PROTOCOL_* — a server protocol bump fails that test instead of the run.
+export const COMPARISON_WS_PROTOCOL = Object.freeze({ epoch: 1, minRevision: 3, maxRevision: 3 });
+
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 export const COMPARISON_FIXTURE_VERSION = 2;
@@ -254,6 +259,30 @@ export function readComparisonFixtureEntities(databasePath) {
  * Compares a cloned database against the fixture manifest. Returns a list of
  * human-readable mismatches; an empty list means the clone is certifiable.
  */
+/**
+ * The same entities read from a live server's `orchestration.getSnapshot`. The
+ * server holds `state.sqlite` under an exclusive lock while it runs, so once the
+ * backend is up the snapshot RPC is the only way to observe them.
+ */
+export function comparisonFixtureEntitiesFromSnapshot(snapshot) {
+  const byKey = (key) => (left, right) =>
+    left[key] < right[key] ? -1 : left[key] > right[key] ? 1 : 0;
+  const projects = (snapshot?.projects ?? [])
+    .filter((project) => project.deletedAt == null && project.kind === "project")
+    .map((project) => ({ projectId: project.id, workspaceRoot: project.workspaceRoot }))
+    .sort(byKey("projectId"));
+  const threads = (snapshot?.threads ?? [])
+    .filter((thread) => thread.deletedAt == null && thread.archivedAt == null)
+    .map((thread) => ({
+      threadId: thread.id,
+      projectId: thread.projectId,
+      messageCount: thread.messages?.length ?? 0,
+      lastMessageId: thread.messages?.at(-1)?.id ?? null,
+    }))
+    .sort(byKey("threadId"));
+  return { projects, threads, sequence: snapshot?.snapshotSequence ?? null };
+}
+
 export function comparisonFixtureMismatches(manifest, entities) {
   const mismatches = [];
   const project = entities.projects.find((row) => row.projectId === manifest.projectId);
@@ -339,9 +368,9 @@ export async function openSynaraRpcSession(serverUrl, clientBuild = "comparison-
   let negotiated;
   try {
     negotiated = await request(bootstrap, "bootstrap.negotiate", {
-      protocolEpoch: 1,
-      minRevision: 1,
-      maxRevision: 1,
+      protocolEpoch: COMPARISON_WS_PROTOCOL.epoch,
+      minRevision: COMPARISON_WS_PROTOCOL.minRevision,
+      maxRevision: COMPARISON_WS_PROTOCOL.maxRevision,
       clientBuild,
       requiredCapabilities: ["orchestration.cursor-safe-streams", "rpc.typed-errors"],
     });

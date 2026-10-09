@@ -33,7 +33,14 @@
   },
   "overrides": [
     {
-      "files": ["**/*.test.*", "**/*.browser.*", "apps/web/src/test/**", "**/__tests__/**"],
+      "files": [
+        "**/*.test.*",
+        "**/*.browser.*",
+        "apps/web/src/test/**",
+        "**/__tests__/**",
+        "apps/web/e2e/**",
+        "apps/web/perf/**"
+      ],
       "rules": {
         "no-restricted-globals": "off"
       }
@@ -65,8 +72,182 @@
         "apps/web/src/lib/central-icons.tsx",
         "apps/web/src/lib/panelResize.ts",
         "apps/web/scripts/measure-lcp.mjs",
-        "apps/marketing/src/**/*.astro",
-        "apps/marketing/src/lib/releases.ts"
+        "apps/web/src/confirmDialogFallback.ts",
+        "apps/web/src/contextMenuFallback.ts",
+        "apps/desktop/**",
+        "apps/marketing/**",
+        "scripts/**"
+      ],
+      "rules": {
+        "no-restricted-globals": "off"
+      }
+    },
+    {
+      // Electron-only renderer modules that the Lynx bundle never reaches (checked
+      // against the reuse-audit graph for the 2026-09-29 upstream sync). They keep
+      // upstream's direct DOM access so upstream syncs stay mechanical. When one
+      // becomes Lynx-reachable, move its globals behind ~/platform and drop it here.
+      "files": [
+        "apps/web/src/components/AppSnapCoordinator.tsx",
+        "apps/web/src/components/BetaWelcomeDialog.tsx",
+        "apps/web/src/components/BranchToolbar.tsx",
+        "apps/web/src/components/BrowserVault.tsx",
+        "apps/web/src/components/BrowserVaultMaster.tsx",
+        "apps/web/src/components/CreateProjectDialog.tsx",
+        "apps/web/src/components/DesktopWindowControls.tsx",
+        "apps/web/src/components/DiffLineBlamePopover.tsx",
+        "apps/web/src/components/DiffPanel.tsx",
+        "apps/web/src/components/DiffPanelChangeMarkers.tsx",
+        "apps/web/src/components/EditProjectDialog.tsx",
+        "apps/web/src/components/EditorWorkspaceView.tsx",
+        "apps/web/src/components/GitActionsControl.tsx",
+        "apps/web/src/components/RunningChatsQuitCoordinator.tsx",
+        "apps/web/src/components/SafariAccessOnboarding.tsx",
+        "apps/web/src/components/Sidebar.tsx",
+        "apps/web/src/components/SidebarSearchPalette.tsx",
+        "apps/web/src/components/SpaceSwitcher.tsx",
+        "apps/web/src/components/ThemePackEditor.tsx",
+        "apps/web/src/components/ThreadTerminalDrawer.tsx",
+        "apps/web/src/components/browser/useBrowserAnnotations.ts",
+        "apps/web/src/components/chat/ChatHeader.tsx",
+        "apps/web/src/components/chat/ChatThreadSurfacePrimitives.tsx",
+        "apps/web/src/components/chat/ComposerExtrasPanel.tsx",
+        "apps/web/src/components/chat/ComposerLocalDirectoryMenu.tsx",
+        "apps/web/src/components/chat/ComposerModelPicker.logic.ts",
+        "apps/web/src/components/chat/ComposerModelPicker.tsx",
+        "apps/web/src/components/chat/ComputerPreviewPopover.tsx",
+        "apps/web/src/components/chat/FloatingBrowserPanel.tsx",
+        "apps/web/src/components/chat/MessagesTimeline.tsx",
+        "apps/web/src/components/chat/ProjectPicker.tsx",
+        "apps/web/src/components/chat/RightDock.tsx",
+        "apps/web/src/components/chat/SelectionNewChatComposer.tsx",
+        "apps/web/src/components/chat/SingleChatSurface.tsx",
+        "apps/web/src/components/chat/SplitChatSurface.tsx",
+        "apps/web/src/components/chat/ThreadFindBar.tsx",
+        "apps/web/src/components/chat/TimelineWorkEntryRow.tsx",
+        "apps/web/src/components/chat/ToolCallGroupSummaryRow.tsx",
+        "apps/web/src/components/chat/TraitsPicker.tsx",
+        "apps/web/src/components/chat/TranscriptSelectionActionLayer.tsx",
+        "apps/web/src/components/chat/UserInputQuestionForm.tsx",
+        "apps/web/src/components/chat/chatSelectionActions.ts",
+        "apps/web/src/components/chat/projectScriptRuntime.ts",
+        "apps/web/src/components/chat/useAppSnapWindows.ts",
+        "apps/web/src/components/chat/useChatComposerCommands.ts",
+        "apps/web/src/components/chat/useChatComposerDraft.ts",
+        "apps/web/src/components/chat/useChatComposerEditing.ts",
+        "apps/web/src/components/chat/useChatKeyboardShortcuts.ts",
+        "apps/web/src/components/chat/useChatLocalDispatch.ts",
+        "apps/web/src/components/chat/useChatPendingInteractions.ts",
+        "apps/web/src/components/chat/useChatQueuedTurns.ts",
+        "apps/web/src/components/chat/useChatTimelineMessages.ts",
+        "apps/web/src/components/chat/useChatTranscriptScroll.ts",
+        "apps/web/src/components/chat/useChatWorkspaceSelection.ts",
+        "apps/web/src/components/chat/useSidechatShortcut.ts",
+        "apps/web/src/components/chat/useTailAnchorScroll.ts",
+        "apps/web/src/components/chat/useTranscriptAssistantSelectionAction.ts",
+        "apps/web/src/components/computer/useComputerImageStream.ts",
+        "apps/web/src/components/computer/useComputerPreviewFloat.ts",
+        "apps/web/src/components/computer/useComputerPreviewTap.ts",
+        "apps/web/src/components/kanban/KanbanProjectBoardView.tsx",
+        "apps/web/src/components/kanban/KanbanView.tsx",
+        "apps/web/src/components/settings/AppIconPicker.tsx",
+        "apps/web/src/components/settings/AppSnapPermissionSection.tsx",
+        "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
+        "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
+        "apps/web/src/components/settings/agentCursorDesktopSync.ts",
+        "apps/web/src/hooks/useChatWidth.ts",
+        "apps/web/src/hooks/useDesktopAppIcon.ts",
+        "apps/web/src/hooks/useDiffChangeNavigationShortcuts.ts",
+        "apps/web/src/hooks/useDockPaneRuntimeActivation.ts",
+        "apps/web/src/hooks/useNativeFontSmoothing.ts",
+        "apps/web/src/hooks/useProviderStatusRefresh.ts",
+        "apps/web/src/hooks/useRefreshOnWindowReturn.ts",
+        "apps/web/src/hooks/useSidebarThreadActions.ts",
+        "apps/web/src/hooks/useVisibleDiffFilePath.ts",
+        "apps/web/src/hooks/useWindowFolderDrop.ts",
+        "apps/web/src/hooks/useWorkspaceFileEditorSession.ts",
+        "apps/web/src/hooks/useWorkspaceFileEditorShortcuts.ts",
+        "apps/web/src/lib/browserPanelBoundsSync.ts",
+        "apps/web/src/lib/claudeCompactionRequests.ts",
+        "apps/web/src/lib/codexResetAttempt.ts",
+        "apps/web/src/lib/composerImagePreparation.ts",
+        "apps/web/src/lib/radioGridKeyboard.ts",
+        "apps/web/src/lib/rendererErrorDiagnostics.ts",
+        "apps/web/src/lib/visibleInterval.ts",
+        "apps/web/src/notifications/taskCompletion.tsx",
+        "apps/web/src/onboarding/steps/ProvidersStep.tsx",
+        "apps/web/src/projectEnvironmentStore.ts",
+        "apps/web/src/railShellStore.ts",
+        "apps/web/src/repoDiffScopeStore.ts",
+        "apps/web/src/routes/-automations.list.tsx",
+        "apps/web/src/routes/__root.tsx",
+        "apps/web/src/routes/_chat.pull-requests.index.tsx",
+        "apps/web/src/routes/_chat.settings.tsx",
+        "apps/web/src/routes/_chat.tsx",
+        "apps/web/src/voidSpaceStore.ts",
+        "apps/web/src/whatsNew/WhatsNewPopoutCard.tsx",
+        "apps/web/src/workspacePathsStore.ts"
+      ],
+      "rules": {
+        "no-restricted-globals": "off"
+      }
+    },
+    {
+      // Upstream sync 2026-10-09 (6f54f53c6): upstream modules new to this list. The
+      // Lynx bundle does not reach them (reuse-audit graph), or reaches `wsTransport.ts`
+      // only as the resource the compat transport replaces.
+      "files": [
+        "apps/web/src/components/AppSnapWelcomeDialog.tsx",
+        "apps/web/src/components/FeatureTourDialog.tsx",
+        "apps/web/src/components/OneTimeCoachmark.tsx",
+        "apps/web/src/components/chat/ChatPaneKeepAlive.tsx",
+        "apps/web/src/components/chat/MessageTrail.tsx",
+        "apps/web/src/components/chat/OpenThreadTabStrip.tsx",
+        "apps/web/src/components/chat/SidechatDockPane.tsx",
+        "apps/web/src/components/chat/SplitPaneLayout.tsx",
+        "apps/web/src/components/chat/group/GroupEnvironmentSection.tsx",
+        "apps/web/src/components/chat/group/LibraryPanel.tsx",
+        "apps/web/src/components/chat/project/ProjectPanel.tsx",
+        "apps/web/src/components/chat/useChatTerminalController.ts",
+        "apps/web/src/components/chat/useComposerEffortCycle.ts",
+        "apps/web/src/components/githubInbox/GitHubInbox.tsx",
+        "apps/web/src/components/githubInbox/useGitHubInboxSidechat.ts",
+        "apps/web/src/components/inbox/InboxView.tsx",
+        "apps/web/src/components/pullRequest/useHostThreadSidechatAsk.ts",
+        "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
+        "apps/web/src/components/settings/ShortcutRecorderDialog.tsx",
+        "apps/web/src/components/tasks/TaskCard.tsx",
+        "apps/web/src/components/tasks/TasksView.tsx",
+        "apps/web/src/editorViewState.ts",
+        "apps/web/src/fixedShortcuts.ts",
+        "apps/web/src/groupPanelClosedStore.ts",
+        "apps/web/src/hooks/useDesktopMenuShortcuts.ts",
+        "apps/web/src/hooks/useOptimisticTabSelection.ts",
+        "apps/web/src/hooks/useThreadActionShortcuts.ts",
+        "apps/web/src/hooks/useThreadHandoff.ts",
+        "apps/web/src/lib/audioLevel.ts",
+        "apps/web/src/lib/editableEventTarget.ts",
+        "apps/web/src/lib/glassOverlayCutout.ts",
+        "apps/web/src/openThreadTabsStore.ts",
+        "apps/web/src/pinnedProjectAgentsStore.ts",
+        "apps/web/src/routes/_chat.hubs.index.tsx",
+        "apps/web/src/serverBusyState.ts",
+        "apps/web/src/wsTransport.ts"
+      ],
+      "rules": {
+        "no-restricted-globals": "off"
+      }
+    },
+    {
+      // Same sync: the Lynx module graph reaches these, but each DOM access sits in a
+      // component body, effect or event handler that only the Electron renderer mounts
+      // (`useTheme.ts` is aliased to the Lynx adapter for `~/hooks/useTheme`).
+      "files": [
+        "apps/web/src/components/DiagnosticReportAction.tsx",
+        "apps/web/src/components/SidebarHeaderNavigationControls.tsx",
+        "apps/web/src/components/chat/useExpandedImagePreview.ts",
+        "apps/web/src/components/pullRequest/PullRequestMarkdown.tsx",
+        "apps/web/src/hooks/useTheme.ts"
       ],
       "rules": {
         "no-restricted-globals": "off"

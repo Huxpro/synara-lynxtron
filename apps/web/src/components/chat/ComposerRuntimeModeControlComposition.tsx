@@ -12,10 +12,10 @@ import {
 import { Menu, MenuRadioGroup, MenuRadioItem, MenuTrigger } from "~/components/ui/menu";
 
 export function ComposerRuntimeModeControlComposition(props: {
-  readonly disabled?: boolean;
-  readonly hideLabel?: boolean;
-  readonly runtimeMode?: RuntimeMode;
-  readonly onRuntimeModeChange?: (mode: RuntimeMode) => void;
+  readonly disabled?: boolean | undefined;
+  readonly hideLabel?: boolean | undefined;
+  readonly runtimeMode?: RuntimeMode | undefined;
+  readonly onRuntimeModeChange?: ((mode: RuntimeMode) => void) | undefined;
 }) {
   if (!props.runtimeMode || !props.onRuntimeModeChange) {
     return null;

@@ -5,10 +5,10 @@ import { resolveComponentsLabSearch } from "~/components/componentsLabSearch.log
 import { getLocationHash, getLocationSearch } from "~/platform/env";
 
 interface ComponentsLabSearch {
-  readonly embed?: string;
-  readonly state?: string;
-  readonly story?: string;
-  readonly variant?: string;
+  readonly embed?: string | undefined;
+  readonly state?: string | undefined;
+  readonly story?: string | undefined;
+  readonly variant?: string | undefined;
 }
 
 function ComponentsLabRouteView() {

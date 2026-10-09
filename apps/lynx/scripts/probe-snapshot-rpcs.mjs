@@ -63,8 +63,8 @@ async function main() {
   const bootstrap = await openSocket(bootstrapUrl.toString());
   const negotiated = await request(bootstrap, "bootstrap.negotiate", {
     protocolEpoch: 1,
-    minRevision: 1,
-    maxRevision: 1,
+    minRevision: 3,
+    maxRevision: 3,
     clientBuild: "0.5.5-lynx-snapshot-probe",
     requiredCapabilities: ["orchestration.cursor-safe-streams", "rpc.typed-errors"],
   });

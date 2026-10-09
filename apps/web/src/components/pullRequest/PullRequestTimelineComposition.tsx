@@ -16,7 +16,7 @@ import { buildPullRequestTimelineEvents } from "./pullRequestDetail.logic";
 
 export function PullRequestTimelineComposition(props: {
   readonly detail: PullRequestDetail;
-  readonly nowMs?: number;
+  readonly nowMs?: number | undefined;
 }) {
   const events = buildPullRequestTimelineEvents(props.detail);
   return (

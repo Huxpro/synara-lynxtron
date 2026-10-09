@@ -18,7 +18,6 @@ export interface PendingCodeSelectionAction<T> {
   left: number;
   top: number;
   placement: "top" | "bottom";
-  width: number;
 }
 
 // Caller attaches `onContainerMouseUp` to the selectable surface and renders

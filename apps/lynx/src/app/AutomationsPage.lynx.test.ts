@@ -186,10 +186,8 @@ describe("Lynx Automations route", () => {
     expect(dialogSource).toContain('acknowledgedWarningIds.has("local-checkout")');
     expect(createLogicSource).toContain("worktreeMode: input.worktreeMode");
     expect(createLogicSource).toContain("maxIterations: input.maxIterations");
-    expect(createLogicSource).toContain("stopOnError: input.stopOnError");
     expect(createLogicSource).toContain("interactionMode: input.interactionMode");
     expect(dialogSource).toContain("Max iterations");
-    expect(dialogSource).toContain("Stop on error");
     expect(dialogSource).toContain("Permissions");
     expect(dialogSource).toContain('<MenuRadioItem value="standalone">Standalone</MenuRadioItem>');
     expect(dialogSource).toContain('<MenuRadioItem value="heartbeat">Heartbeat</MenuRadioItem>');

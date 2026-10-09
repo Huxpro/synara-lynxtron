@@ -12,8 +12,10 @@ export interface SelectionActionLayout {
   readonly width: number;
 }
 
-export const TRANSCRIPT_SELECTION_ACTION_WIDTH_PX = 292;
-export const TRANSCRIPT_SELECTION_ACTION_HEIGHT_PX = 32;
+// Web chatSelectionActions: the slot the toolbar centers in (it sizes to its labels), and
+// the toolbar's exact height (28px buttons plus a 1px border top and bottom).
+export const TRANSCRIPT_SELECTION_ACTION_WIDTH_PX = 320;
+export const TRANSCRIPT_SELECTION_ACTION_HEIGHT_PX = 30;
 export const TRANSCRIPT_SELECTION_ACTION_GAP_PX = 8;
 
 export function resolveSelectionActionLayout(input: {

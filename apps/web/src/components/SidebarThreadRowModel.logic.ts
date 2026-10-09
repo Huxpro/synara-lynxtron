@@ -1,12 +1,12 @@
 export interface SidebarThreadRowModelInput {
   readonly threadId: string;
-  readonly parentThreadId?: string | null;
-  readonly sidechatSourceThreadId?: string | null;
-  readonly activeThreadId?: string | null;
-  readonly selected?: boolean;
-  readonly temporary?: boolean;
-  readonly depth?: number;
-  readonly topLevel?: boolean;
+  readonly parentThreadId?: string | null | undefined;
+  readonly sidechatSourceThreadId?: string | null | undefined;
+  readonly activeThreadId?: string | null | undefined;
+  readonly selected?: boolean | undefined;
+  readonly temporary?: boolean | undefined;
+  readonly depth?: number | undefined;
+  readonly topLevel?: boolean | undefined;
 }
 
 export interface SidebarThreadRowModel {

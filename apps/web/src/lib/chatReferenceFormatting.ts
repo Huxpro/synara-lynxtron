@@ -4,11 +4,11 @@ import { formatComposerMentionToken } from "./composerMentions";
 
 export interface ChatFileReference {
   path: string;
-  startLine?: number;
-  endLine?: number;
-  startColumn?: number;
-  endColumn?: number;
-  snippet?: string;
+  startLine?: number | undefined;
+  endLine?: number | undefined;
+  startColumn?: number | undefined;
+  endColumn?: number | undefined;
+  snippet?: string | undefined;
 }
 
 export function formatLineRangeLabel(startLine: number, endLine: number): string {

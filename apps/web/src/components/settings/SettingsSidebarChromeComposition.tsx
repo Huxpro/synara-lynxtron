@@ -17,10 +17,10 @@ export type SettingsSidebarSearchCapability = "available" | "unavailable";
 export function SettingsSidebarChromeComposition(props: {
   readonly onBack: () => void;
   readonly searchCapability: SettingsSidebarSearchCapability;
-  readonly searchValue?: string;
-  readonly onSearchValueChange?: (value: string) => void;
-  readonly onSubmitSearch?: () => void;
-  readonly onEscapeSearch?: () => void;
+  readonly searchValue?: string | undefined;
+  readonly onSearchValueChange?: ((value: string) => void) | undefined;
+  readonly onSubmitSearch?: (() => void) | undefined;
+  readonly onEscapeSearch?: (() => void) | undefined;
 }) {
   return (
     <SettingsSidebarChromeRootElement>

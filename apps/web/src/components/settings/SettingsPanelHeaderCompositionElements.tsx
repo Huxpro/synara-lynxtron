@@ -7,7 +7,7 @@ import { Button } from "../ui/button";
 import { RotateCcwIcon } from "../../lib/icons";
 
 type ChildrenProps = {
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 };
 
 export function SettingsPanelHeaderRootElement(props: ChildrenProps) {

@@ -17,7 +17,7 @@ describe("Badge", () => {
     );
     const badges = elementTree.root?.querySelectorAll(".LxBadge") ?? [];
     expect(badges[0]?.getAttribute("style")).toContain("rgba(224, 46, 42, 0.08)");
-    expect(badges[1]?.getAttribute("style")).toContain("rgba(1, 105, 204, 0.08)");
+    expect(badges[1]?.getAttribute("style")).toContain("rgba(199, 70, 20, 0.08)");
     expect(badges[2]?.getAttribute("style")).toContain("rgba(0, 162, 64, 0.08)");
     expect(badges[3]?.getAttribute("style")).toContain("rgba(217, 119, 6, 0.08)");
     expect(styles).not.toContain("LxBadge--success { background-color: color-mix");

@@ -68,7 +68,7 @@ export function getVisibleThreadsForProject<T extends { readonly id: string }>(i
 }
 
 export interface SidebarThreadTreeRow<
-  T extends { readonly id: string; readonly parentThreadId?: string | null },
+  T extends { readonly id: string; readonly parentThreadId?: string | null | undefined },
 > {
   readonly thread: T;
   readonly depth: number;
@@ -76,7 +76,7 @@ export interface SidebarThreadTreeRow<
 }
 
 function collectActiveThreadAncestorIds<
-  T extends { readonly id: string; readonly parentThreadId?: string | null },
+  T extends { readonly id: string; readonly parentThreadId?: string | null | undefined },
 >(threadById: Map<T["id"], T>, forceVisibleThreadId: T["id"] | undefined): Set<T["id"]> {
   const ancestorIds = new Set<T["id"]>();
   let currentThreadId = forceVisibleThreadId;
@@ -93,7 +93,7 @@ function collectActiveThreadAncestorIds<
 
 // Build the project-local parent/child tree while preserving input sort order.
 export function buildProjectThreadTree<
-  T extends { readonly id: string; readonly parentThreadId?: string | null },
+  T extends { readonly id: string; readonly parentThreadId?: string | null | undefined },
 >(input: {
   readonly threads: readonly T[];
   readonly forceVisibleThreadId?: T["id"] | undefined;
@@ -105,8 +105,14 @@ export function buildProjectThreadTree<
 
   for (const thread of threads) {
     const parentThreadId = thread.parentThreadId ?? null;
-    if (!parentThreadId || !threadById.has(parentThreadId)) {
+    if (!parentThreadId) {
       roots.push(thread);
+      continue;
+    }
+    // Subagent threads are only reachable through their parent. When the parent
+    // is not in the list (archived or deleted), its subtree stays hidden instead
+    // of being promoted to top-level rows.
+    if (!threadById.has(parentThreadId)) {
       continue;
     }
     const siblings = childrenByParentId.get(parentThreadId) ?? [];

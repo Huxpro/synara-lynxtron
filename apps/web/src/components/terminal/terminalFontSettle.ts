@@ -19,7 +19,7 @@ export async function waitForTerminalFontReady(input: {
   const fontFamily = input.fontFamily.trim();
   if (!fontFamily) return;
 
-  let timeoutId: number | null = null;
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
   const timeout = new Promise<void>((resolve) => {
     timeoutId = setTimeout(resolve, input.timeoutMs ?? DEFAULT_FONT_LOAD_TIMEOUT_MS);
   });

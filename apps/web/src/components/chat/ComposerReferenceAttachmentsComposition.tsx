@@ -20,15 +20,15 @@ type ComposerImageAttachmentElementProps = Parameters<typeof ComposerImageAttach
 export interface ComposerReferenceAttachmentsCompositionProps {
   assistantSelections: ReadonlyArray<ChatAssistantSelectionAttachment>;
   fileComments: ReadonlyArray<FileCommentDraft>;
-  pastedTexts?: ReadonlyArray<PastedTextDraft>;
+  pastedTexts?: ReadonlyArray<PastedTextDraft> | undefined;
   files: ReadonlyArray<Parameters<typeof ComposerFileAttachmentElement>[0]["file"]>;
   images: ReadonlyArray<ComposerImageAttachmentElementProps["image"]>;
   nonPersistedImageIdSet: ReadonlySet<string>;
   onExpandImage: ComposerImageAttachmentElementProps["onExpandImage"];
   onRemoveAssistantSelections: () => void;
   onRemoveFileComments: () => void;
-  onRemovePastedText?: (pastedTextId: string) => void;
-  onShowPastedTextInField?: (pastedTextId: string) => void;
+  onRemovePastedText?: ((pastedTextId: string) => void) | undefined;
+  onShowPastedTextInField?: ((pastedTextId: string) => void) | undefined;
   onRemoveFile: (fileId: string) => void;
   onRemoveImage: (imageId: string) => void;
 }

@@ -132,8 +132,10 @@ export function sortThreadsForSidebar<T extends { id: string } & SidebarThreadSo
   sortOrder: SidebarThreadSortOrder,
 ): T[] {
   return [...threads].sort((left, right) => {
-    const byAttentionRank = threadSortAttentionRank(right) - threadSortAttentionRank(left);
-    if (byAttentionRank !== 0) return byAttentionRank;
+    if (sortOrder !== "created_at") {
+      const byAttentionRank = threadSortAttentionRank(right) - threadSortAttentionRank(left);
+      if (byAttentionRank !== 0) return byAttentionRank;
+    }
     const rightTimestamp = getThreadSortTimestamp(right, sortOrder);
     const leftTimestamp = getThreadSortTimestamp(left, sortOrder);
     const byTimestamp =
@@ -149,7 +151,7 @@ export function getFallbackThreadIdAfterDelete<
   threads: readonly T[];
   deletedThreadId: T["id"];
   sortOrder: SidebarThreadSortOrder;
-  deletedThreadIds?: ReadonlySet<T["id"]>;
+  deletedThreadIds?: ReadonlySet<T["id"]> | undefined;
 }): T["id"] | null {
   const { deletedThreadId, deletedThreadIds, sortOrder, threads } = input;
   const deletedThread = threads.find((thread) => thread.id === deletedThreadId);
@@ -202,17 +204,20 @@ export function sortProjectsForSidebar<
     threadsByProjectId.set(thread.projectId, existing);
   }
 
+  // Resolve each project's recency once; the comparator otherwise rescanned
+  // that project's threads on every comparison (O(P log P × threads)).
+  const timestampByProjectId = new Map(
+    projects.map(
+      (project) =>
+        [
+          project.id,
+          getProjectSortTimestamp(project, threadsByProjectId.get(project.id) ?? [], sortOrder),
+        ] as const,
+    ),
+  );
   return [...projects].sort((left, right) => {
-    const rightTimestamp = getProjectSortTimestamp(
-      right,
-      threadsByProjectId.get(right.id) ?? [],
-      sortOrder,
-    );
-    const leftTimestamp = getProjectSortTimestamp(
-      left,
-      threadsByProjectId.get(left.id) ?? [],
-      sortOrder,
-    );
+    const rightTimestamp = timestampByProjectId.get(right.id) ?? Number.NEGATIVE_INFINITY;
+    const leftTimestamp = timestampByProjectId.get(left.id) ?? Number.NEGATIVE_INFINITY;
     const byTimestamp =
       rightTimestamp === leftTimestamp ? 0 : rightTimestamp > leftTimestamp ? 1 : -1;
     if (byTimestamp !== 0) return byTimestamp;

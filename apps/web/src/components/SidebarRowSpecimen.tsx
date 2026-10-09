@@ -36,8 +36,10 @@ function Actions({ children, reveal }: { readonly children: ReactNode; readonly 
 
 export function SidebarProjectRowSpecimen(props: {
   readonly state: SidebarRowSpecimenState;
-  readonly variant?: "default" | "pinned" | "running";
-  readonly onContextMenu?: (position: { readonly x: number; readonly y: number }) => void;
+  readonly variant?: "default" | "pinned" | "running" | undefined;
+  readonly onContextMenu?:
+    | ((position: { readonly x: number; readonly y: number }) => void)
+    | undefined;
 }) {
   const pinned = props.variant === "pinned" || props.state === "pinned";
   const running = props.variant === "running";
@@ -88,8 +90,10 @@ export function SidebarProjectRowSpecimen(props: {
 
 export function SidebarThreadRowSpecimen(props: {
   readonly state: SidebarRowSpecimenState;
-  readonly variant?: "active" | "default" | "pinned";
-  readonly onContextMenu?: (position: { readonly x: number; readonly y: number }) => void;
+  readonly variant?: "active" | "default" | "pinned" | undefined;
+  readonly onContextMenu?:
+    | ((position: { readonly x: number; readonly y: number }) => void)
+    | undefined;
 }) {
   const active =
     props.variant === "active" || props.state === "active" || props.state === "active-hover";

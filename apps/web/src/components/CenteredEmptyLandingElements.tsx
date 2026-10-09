@@ -5,13 +5,13 @@ import { SynaraLogo } from "~/components/SynaraLogo";
 import { cn } from "~/lib/utils";
 
 interface ChildrenProps {
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }
 
 export function CenteredEmptyLandingFrameElement({
   className,
   children,
-}: ChildrenProps & { readonly className?: string }) {
+}: ChildrenProps & { readonly className?: string | undefined }) {
   return (
     <div
       className={cn(

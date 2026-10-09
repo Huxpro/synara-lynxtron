@@ -123,11 +123,38 @@
   align-items: flex-start;
 }
 
+/* `.chat-markdown li + li { margin-top: 0.25rem }`. */
+.MdListItem--following {
+  margin-top: 4px;
+}
+
+/* `padding-left: 1.25rem` with an outside marker: the marker is anchored to the gutter's
+   right edge, one space before the item text, and grows leftward ("40." stays whole). */
 .MdListMarker {
+  position: relative;
   width: 20px;
-  color: var(--muted-foreground);
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+/* `right: 4px` is the marker's trailing space. Lynx sizes absolute text to fit its
+   containing block, so the box is wider than any marker and right-aligned inside it. */
+.MdListMarkerText {
+  position: absolute;
+  top: 0;
+  right: 4px;
+  width: 48px;
+  text-align: right;
+  color: var(--foreground);
   font-size: inherit;
   line-height: inherit;
+  white-space: nowrap;
+}
+
+/* Tight list items render their text flush, as react-markdown drops the <p>. */
+.MdParagraph--tight {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .MdListBody {
@@ -140,6 +167,7 @@
   display: flex;
   height: 1.625em;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .MdTaskCheckbox {
@@ -502,4 +530,14 @@
   color: var(--muted-foreground);
   font-family: var(--font-mono-family);
   font-size: 11px;
+}
+
+/* Electron's `.chat-markdown > :first-child/:last-child`: the first and last root blocks
+   drop their outer margins. Last in the file so it wins over every block's own margins. */
+.MdRoot .MdEdge--first {
+  margin-top: 0;
+}
+
+.MdRoot .MdEdge--last {
+  margin-bottom: 0;
 }

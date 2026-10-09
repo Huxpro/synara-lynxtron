@@ -52,18 +52,6 @@ export const COMPONENT_LAB_RECENT_VIEW_ENTRIES = [
     isTerminal: true,
   },
   {
-    key: "workspace:one",
-    view: { kind: "workspace", workspaceId: "component-lab-workspace" },
-    kind: "workspace",
-    icon: { kind: "workspace" },
-    title: "Workspace 1",
-    subtitle: "Workspace",
-    isCurrent: false,
-    isPinned: false,
-    isSplit: false,
-    isTerminal: false,
-  },
-  {
     key: "settings:appearance",
     view: { kind: "settings", section: "appearance" },
     kind: "settings",
@@ -202,7 +190,6 @@ export const COMPONENT_LAB_AUTOMATION_DEFINITION: AutomationDefinition = {
   mode: "standalone",
   targetThreadId: null,
   maxIterations: null,
-  stopOnError: true,
   completionPolicy: { type: "none" },
   completionPolicyVersion: 1,
   completionPolicyUpdatedAt: "2026-09-13T12:00:00.000Z",
@@ -647,6 +634,8 @@ export function resolveComponentLabContextWindowFixture(variant: string | undefi
 export const COMPONENT_LAB_PROVIDER_STATUSES: readonly ServerProviderStatus[] = [
   {
     provider: "codex",
+    driver: "codex",
+    instanceId: "codex" as never,
     status: "ready",
     available: true,
     authStatus: "authenticated",
@@ -654,6 +643,8 @@ export const COMPONENT_LAB_PROVIDER_STATUSES: readonly ServerProviderStatus[] = 
   },
   {
     provider: "opencode",
+    driver: "opencode",
+    instanceId: "opencode" as never,
     status: "ready",
     available: true,
     authStatus: "authenticated",
@@ -712,8 +703,9 @@ export const COMPONENT_LAB_MODEL_OPTIONS_BY_PROVIDER: Record<
   codex: COMPONENT_LAB_CODEX_MODELS.map(({ name, slug }) => ({ name, slug })),
   cursor: [],
   droid: [],
+  devin: [],
   grok: [],
-  kilo: [],
+  omp: [],
   opencode: COMPONENT_LAB_OPENCODE_MODELS.map(({ name, slug }) => ({ name, slug })),
   pi: [],
 };

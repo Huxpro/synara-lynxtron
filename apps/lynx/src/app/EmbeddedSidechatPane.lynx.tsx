@@ -75,7 +75,7 @@ export function EmbeddedSidechatPane(props: {
           <Transcript
             activeTurnId={summary.activeTurnId}
             chatFontSizePx={props.chatFontSizePx}
-            interactionMode={summary.interactionMode}
+            interactionMode={summary.interactionMode === "plan" ? "plan" : "default"}
             modelSelection={summary.modelSelection}
             pinnedMessageIds={new Set(summary.pinnedMessages.map((pin) => pin.messageId))}
             rows={rows}
@@ -95,8 +95,9 @@ export function EmbeddedSidechatPane(props: {
             activities={summary.activities}
             activeTurnId={summary.activeTurnId}
             chatFontSizePx={props.chatFontSizePx}
-            interactionMode={summary.interactionMode}
+            interactionMode={summary.interactionMode === "plan" ? "plan" : "default"}
             modelSelection={summary.modelSelection}
+            lockedProvider={summary.lockedProvider}
             runtimeMode={summary.runtimeMode}
             sessionStatus={summary.sessionStatus}
             threadId={props.threadId}

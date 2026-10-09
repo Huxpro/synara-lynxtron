@@ -1,0 +1,550 @@
+/* Electron ComposerModelMenuTrigger (COMPOSER_PICKER_TRIGGER_TEXT_CLASS_NAME): 12px model
+   name in the foreground, 12px muted effort. */
+.ComposerModelTriggerLynx--menu .ComposerModelTriggerLabelLynx {
+  max-width: none;
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 18px;
+}
+
+.ComposerModelTriggerLynx--menu .ComposerModelTriggerMetaLynx {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 18px;
+}
+
+/* Base UI marks the trigger pressed while its menu is open. */
+.ComposerModelTriggerLynx--menu.ComposerModelTriggerLynx--open {
+  background-color: var(--color-background-elevated-secondary);
+}
+
+/* Electron ComposerModelMenuTrigger: while the picker is open the label stays in place,
+   invisible, sizing the pill, and "Select effort" is laid over it. */
+.ComposerModelTriggerLabelStackLynx {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.ComposerModelTriggerLabelGroupLynx {
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.ComposerModelTriggerLabelGroupLynx--covered {
+  opacity: 0;
+}
+
+.ComposerModelTriggerPlaceholderLynx {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 18px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ComposerPickerMenuPopup `w-[min(18.5rem,92vw)]`; the panel bleeds over the body padding
+   (`-m-1`) so the tab strip, search row, and footer dividers run edge to edge. */
+.ComposerModelPickerPopupLynx.LxMenuPopup {
+  width: 296px;
+  max-width: 92vw;
+  padding: 0;
+  overflow: hidden;
+}
+
+.ComposerModelPickerPanelLynx {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tab strip: `flex gap-0.5 border-b p-1.5`, 28px icon tabs. */
+.ComposerModelPickerTabsLynx {
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 2px;
+  padding: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ComposerModelPickerTabLynx {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.ComposerModelPickerTabLynx.ui-hover {
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.ComposerModelPickerTabLynx.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.ComposerModelPickerTabLynx--disabled {
+  opacity: 0.4;
+}
+
+.ComposerModelPickerTabLynx--disabled.ui-hover {
+  background-color: transparent;
+}
+
+/* Active tab: `after:inset-x-1.5 after:-bottom-1 after:h-0.5` accent underline. */
+.ComposerModelPickerTabIndicatorLynx {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: -4px;
+  height: 2px;
+  border-radius: 1px;
+  background-color: var(--color-text-accent);
+}
+
+.ComposerModelPickerTabGlyphLynx {
+  width: 14px;
+  height: 14px;
+}
+
+.ComposerModelPickerTabProviderIconLynx {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ComposerModelPickerTabProviderIconLynx .OpenAIProviderIcon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Plain search row: `gap-2 border-b px-3`, 28px field, muted/55 magnifier. */
+.ComposerModelPickerSearchLynx {
+  height: 29px;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ComposerModelPickerSearchIconLynx {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.32;
+}
+
+/* The size="sm" control pads its sides; Electron's unstyled field has none. */
+.ComposerModelPickerSearchLynx .ComposerModelPickerSearchInputLynx {
+  min-width: 0;
+  flex: 1;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* The native field is a top-aligned text area that ignores vertical padding: sizing it to
+   one 18px line lets the row's `align-items: center` put the 12px text on the center line,
+   where Electron's vertically centered input sits. */
+.ComposerModelPickerSearchLynx .ComposerModelPickerSearchInputLynx > .LxInput {
+  width: 100%;
+  height: 18px;
+  /* Centering the line box leaves the glyphs ~2px above Electron's text baseline. */
+  margin-top: 4px;
+  padding: 0;
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 18px;
+}
+
+/* Model list: `max-h-[min(12.5rem,40vh)] min-h-20 p-1`, rows spaced by `gap-px`. */
+.ComposerModelPickerListLynx {
+  min-height: 80px;
+  max-height: min(200px, 40vh);
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+}
+
+.ComposerModelPickerGroupLynx {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.ComposerModelPickerGroupLynx + .ComposerModelPickerGroupLynx {
+  margin-top: 1px;
+}
+
+.ComposerModelPickerGroupLabelLynx {
+  padding: 4px 6px;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-xs, 11px);
+  line-height: 16px;
+  opacity: 0.6;
+}
+
+/* Picker option: 26px (`--picker-option-min-h: 1.75rem` minus the item border), `px-2`. */
+.ComposerModelPickerPopupLynx .ComposerModelPickerRowLynx.LxMenuItem {
+  height: 26px;
+  min-height: 26px;
+  padding: 0 7px;
+  border-radius: 10px;
+}
+
+/* Electron's selected row and ⌘N chip are faint foreground washes (elevated-secondary and
+   `Kbd`'s fill) over the translucent picker shell; sampled, each step is ~10 levels in light
+   and ~2 in dark. */
+.ComposerModelPickerPopupLynx .ComposerModelPickerRowLynx--selected.LxMenuItem {
+  background-color: rgba(13, 13, 13, 0.041);
+}
+
+.SliceRoot--theme-dark
+  .ComposerModelPickerPopupLynx
+  .ComposerModelPickerRowLynx--selected.LxMenuItem {
+  background-color: rgba(252, 252, 252, 0.009);
+}
+
+.ComposerModelPickerPopupLynx .ComposerModelPickerRowLynx--selected.LxMenuItem.ui-hover,
+.ComposerModelPickerPopupLynx .ComposerModelPickerRowLynx--selected.LxMenuItem--highlighted {
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.ComposerModelPickerRowContentLynx {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Menu items pull leading glyphs out by 2px (`[&>svg]:-mx-0.5`) and dim them to 80%. */
+.ComposerModelPickerRowProviderLynx {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  margin: 0 -2px;
+  opacity: 0.8;
+}
+
+.ComposerModelPickerRowProviderLynx .OpenAIProviderIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.ComposerModelPickerRowNameLynx {
+  min-width: 0;
+  flex-shrink: 1;
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ComposerModelPickerRowNameLynx--withDetail {
+  max-width: 62%;
+  flex-shrink: 0;
+}
+
+.ComposerModelPickerRowDetailLynx {
+  min-width: 0;
+  flex: 1;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* `Kbd h-4 min-w-4 px-1 text-ui-2xs text-muted-foreground`. */
+.ComposerModelPickerKbdLynx {
+  height: 16px;
+  min-width: 16px;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border-radius: 4px;
+  background-color: rgba(13, 13, 13, 0.041);
+}
+
+.SliceRoot--theme-dark .ComposerModelPickerKbdLynx {
+  background-color: rgba(252, 252, 252, 0.009);
+}
+
+.ComposerModelPickerKbdTextLynx {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-2xs, 10px);
+  line-height: 12px;
+}
+
+/* ModelStarButton: `size-5` with a 14px glyph at muted/50, amber once starred. */
+.ComposerModelPickerStarLynx {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+}
+
+.ComposerModelPickerStarLynx.ui-hover {
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.ComposerModelPickerStarGlyphLynx {
+  width: 14px;
+  height: 14px;
+  opacity: 0.29;
+}
+
+.ComposerModelPickerStarLynx.ui-hover .ComposerModelPickerStarGlyphLynx,
+.ComposerModelPickerStarLynx--starred .ComposerModelPickerStarGlyphLynx {
+  opacity: 1;
+}
+
+.ComposerModelPickerEmptyLynx {
+  padding: 12px 8px;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 21px;
+}
+
+.ComposerModelPickerLoadingLynx {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+}
+
+.ComposerModelPickerSkeletonLynx {
+  width: 176px;
+  height: 14px;
+  border-radius: 7px;
+  background-color: var(--muted);
+}
+
+.ComposerModelPickerSkeletonLynx--short {
+  width: 128px;
+}
+
+/* Trait footer: `flex-col gap-px border-t p-1`. */
+.ComposerModelPickerFooterLynx {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 1px;
+  padding: 4px;
+  border-top: 1px solid var(--border);
+}
+
+.ComposerModelPickerPopupLynx .ComposerModelPickerTraitRowLynx.LxMenuItem {
+  height: 26px;
+  min-height: 26px;
+  padding: 0 7px;
+  border-radius: 10px;
+}
+
+.ComposerModelPickerTraitRowContentLynx {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ComposerModelPickerTraitRowLabelLynx,
+.ComposerModelPickerTraitRowValueLynx {
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ComposerModelPickerTraitRowLabelLynx {
+  color: var(--foreground);
+}
+
+.ComposerModelPickerTraitRowValueLynx {
+  color: var(--muted-foreground);
+}
+
+.ComposerModelPickerTraitPopupLynx.LxMenuPopup {
+  width: 176px;
+}
+
+/* ComposerEffortSliderCard: `px-1 pt-0.5 pb-1`, a 24px header grid, then the slider. */
+.ComposerEffortSliderCardLynx {
+  display: flex;
+  flex-direction: column;
+  padding: 2px 4px 4px;
+}
+
+.ComposerEffortSliderCardHeaderLynx {
+  height: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.ComposerEffortSliderCardButtonLynx,
+.ComposerEffortSliderCardSpacerLynx {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.ComposerEffortSliderCardButtonLynx {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.ComposerEffortSliderCardButtonLynx.ui-hover {
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.ComposerEffortSliderCardButtonLynx.ui-focus {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.ComposerEffortSliderCardButtonLynx--disabled {
+  opacity: 0.35;
+}
+
+.ComposerEffortSliderCardGlyphLynx {
+  width: 14px;
+  height: 14px;
+}
+
+.ComposerEffortSliderCardLabelLynx {
+  min-width: 0;
+  flex: 1;
+  color: var(--color-text-accent);
+  font-size: var(--app-font-size-ui, 13px);
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ComposerEffortSliderCardTrackLynx {
+  margin-top: 4px;
+  padding: 0 2px;
+}
+
+.ComposerEffortSliderCardNoteLynx {
+  padding: 4px 4px 0;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 18px;
+  opacity: 0.8;
+}
+
+/* Slider size="large": 24px track (foreground/14) filled with the accent to the thumb
+   center, a 4px dot per stop, and a 28px white thumb overhanging the track by 2px. */
+.ComposerEffortSliderLynx {
+  position: relative;
+  height: 28px;
+}
+
+.ComposerEffortSliderLynx--disabled {
+  opacity: 0.5;
+}
+
+.ComposerEffortSliderTrackLynx {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  right: 0;
+  height: 24px;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.ComposerEffortSliderTrackTintLynx {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: var(--foreground);
+  opacity: 0.14;
+}
+
+.ComposerEffortSliderFillLynx {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 12px;
+  background-color: var(--color-text-accent);
+  transition: width 120ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.ComposerEffortSliderDotLynx {
+  position: absolute;
+  top: 12px;
+  width: 4px;
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--foreground);
+  opacity: 0.28;
+}
+
+.ComposerEffortSliderDotLynx--reached {
+  opacity: 0.55;
+}
+
+.ComposerEffortSliderThumbLynx {
+  position: absolute;
+  top: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  background-color: #ffffff;
+  box-shadow:
+    0 1px 2px 0 rgba(0, 0, 0, 0.12),
+    0 0 0 0.5px rgba(0, 0, 0, 0.05);
+  transition: left 120ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.ComposerEffortSliderHitLynx {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}

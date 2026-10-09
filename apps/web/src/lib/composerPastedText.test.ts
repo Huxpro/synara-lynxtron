@@ -43,10 +43,6 @@ describe("createPastedTextDraft / pastedTextTitle", () => {
     expect(draft.charCount).toBe(draft.text.length);
     expect(pastedTextTitle(draft.text)).toBe("You are working on it");
   });
-
-  it("falls back to a generic title for whitespace-only content", () => {
-    expect(pastedTextTitle("   \n\t")).toBe("Pasted text");
-  });
 });
 
 describe("appendPastedTextsToPrompt / extractTrailingPastedTexts", () => {
@@ -86,12 +82,6 @@ describe("appendPastedTextsToPrompt / extractTrailingPastedTexts", () => {
 
     expect(extracted.promptText).toBe("do it");
     expect(extracted.pastedTexts.map((entry) => entry.text)).toEqual([pastedText]);
-  });
-
-  it("returns the prompt untouched when there is no trailing block", () => {
-    const extracted = extractTrailingPastedTexts("nothing to see here");
-    expect(extracted.promptText).toBe("nothing to see here");
-    expect(extracted.pastedTexts).toEqual([]);
   });
 });
 

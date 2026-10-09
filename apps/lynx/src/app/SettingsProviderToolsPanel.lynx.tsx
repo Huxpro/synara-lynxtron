@@ -1,3 +1,4 @@
+import { isProviderKind } from "@synara-web/providerOrdering";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState, type ReactNode } from "@lynx-js/react";
 import type {
@@ -83,6 +84,9 @@ function ProviderStatusRow(props: {
 }) {
   const { svgColors } = useTheme();
   const canUpdate = shouldOfferProviderUpdateAction(props.status);
+  // Provider accounts and custom drivers are not on Lynx yet: rows are the built-in kinds.
+  const provider = props.status.provider;
+  if (!isProviderKind(provider)) return null;
   return (
     <view
       className={`SettingsProviderToolsListRow${
@@ -90,7 +94,7 @@ function ProviderStatusRow(props: {
       }`}
     >
       <view className="SettingsProviderToolsRowCopy">
-        <ProviderIdentity provider={props.status.provider} />
+        <ProviderIdentity provider={provider} />
         {providerUpdateStatusLabel(props.status) ? (
           <text className="SettingsProviderToolsStatus">
             {providerUpdateStatusLabel(props.status)}
@@ -103,8 +107,8 @@ function ProviderStatusRow(props: {
           variant="outline"
           className="SettingsProviderToolsUpdate"
           disabled={props.updating}
-          aria-label={`Update ${PROVIDER_DESCRIPTOR_BY_KIND[props.status.provider].displayName}`}
-          onClick={() => props.onUpdate(props.status.provider)}
+          aria-label={`Update ${PROVIDER_DESCRIPTOR_BY_KIND[provider].displayName}`}
+          onClick={() => props.onUpdate(provider)}
         >
           <ArrowDownToLineIcon
             className="SettingsProviderToolsUpdateIcon"
@@ -146,10 +150,7 @@ function ProviderTextField(props: {
   const [value, setValue] = useState(storedValue);
   useEffect(() => setValue(storedValue), [storedValue]);
   const configured =
-    props.field.kind === "password" &&
-    (props.field.settingsKey === "kiloServerPassword"
-      ? props.settings.providers.kilo.serverPasswordConfigured
-      : props.settings.providers.opencode.serverPasswordConfigured);
+    props.field.kind === "password" && props.settings.providers.opencode.serverPasswordConfigured;
 
   return (
     <view className="SettingsProviderToolsField">

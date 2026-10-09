@@ -115,6 +115,7 @@ const NATIVE_RENDERER_COMMANDS = new Set<KeybindingCommand>([
   "chat.new",
   "sidebar.toggle",
   "sidebar.search",
+  "sidebar.activity",
   "browser.toggle",
   "chat.visible.previous",
   "chat.visible.next",
@@ -152,6 +153,36 @@ export interface SearchNavigationMenuItem {
   readonly acceleratorWorksWhenHidden: true;
   readonly registerAccelerator: true;
   readonly click: () => void;
+}
+
+/**
+ * The open composer model picker owns mod+1…9 (Electron's `modelPickerShortcutRowIndex`).
+ * Digits a visible menu item already binds route through that item instead, so only the
+ * remaining digits get hidden accelerators — two items may not share one accelerator.
+ */
+export function buildModelPickerShortcutMenuItems(
+  enabled: boolean,
+  boundDigits: ReadonlySet<number>,
+  dispatch: (rowIndex: number) => void,
+): readonly {
+  readonly label: string;
+  readonly accelerator: string;
+  readonly visible: false;
+  readonly acceleratorWorksWhenHidden: true;
+  readonly registerAccelerator: true;
+  readonly click: () => void;
+}[] {
+  if (!enabled) return [];
+  return [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    .filter((digit) => !boundDigits.has(digit))
+    .map((digit) => ({
+      label: `Model picker: row ${digit}`,
+      accelerator: `CmdOrCtrl+${digit}`,
+      visible: false as const,
+      acceleratorWorksWhenHidden: true as const,
+      registerAccelerator: true as const,
+      click: () => dispatch(digit - 1),
+    }));
 }
 
 export function buildRecentViewNavigationMenuItems(
@@ -558,8 +589,6 @@ export interface SynaraDeepLinkInitData {
   readonly initialRenameOpen: boolean;
   readonly initialTerminalOpen: boolean;
   readonly initialSettingsTarget: string | null;
-  readonly initialWorkspaceSettingsOpen: boolean;
-  readonly initialWorkspaceVisible: boolean;
   readonly initialExplorerOpen: boolean;
   readonly initialExplorerPresentationMode: "dock" | "single-file";
   readonly initialExplorerActionMenuOpen: boolean;
@@ -607,11 +636,6 @@ export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData
       initialRoute = projectId
         ? `/kanban/${encodeURIComponent(decodeURIComponent(projectId))}`
         : "/kanban";
-    } else if (url.hostname === "workspace") {
-      const workspaceId = url.pathname.replace(/^\/+/, "").split("/")[0];
-      initialRoute = workspaceId
-        ? `/workspace/${encodeURIComponent(decodeURIComponent(workspaceId))}`
-        : "/workspace";
     } else if (url.hostname === "new-thread") {
       const projectId = url.pathname.replace(/^\/+/, "").split("/")[0];
       if (!projectId) return null;
@@ -654,8 +678,6 @@ export function parseSynaraDeepLinkInitData(raw: string): SynaraDeepLinkInitData
       initialRenameOpen: url.searchParams.get("rename") === "open",
       initialTerminalOpen: url.searchParams.get("terminal") === "open",
       initialSettingsTarget: url.searchParams.get("target")?.trim() || null,
-      initialWorkspaceSettingsOpen: url.searchParams.get("workspaceSettings") === "open",
-      initialWorkspaceVisible: url.searchParams.get("workspaceVisible") === "open",
       initialExplorerOpen: url.searchParams.get("explorer") === "open",
       initialExplorerPresentationMode:
         url.searchParams.get("explorerMode") === "single-file" ? "single-file" : "dock",

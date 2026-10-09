@@ -1,23 +1,66 @@
 import { afterEach, beforeEach, describe, expect, it, rs } from "@rstest/core";
 import {
+  COMPUTER_WS_CHANNELS,
+  COMPUTER_WS_METHODS,
+  DEVICE_WS_CHANNELS,
+  DEVICE_WS_METHODS,
+  ORCHESTRATION_STREAM_OVERFLOW_CODE,
   ORCHESTRATION_WS_CHANNELS,
   ORCHESTRATION_WS_METHODS,
+  ThreadId,
   WS_CHANNELS,
   WS_METHODS,
+  WS_GIT_ACTION_RECOVERY_CAPABILITY,
+  WS_PROJECT_FILE_WATCH_CAPABILITY,
+  WS_TURN_DISPATCH_SETTLEMENT_CAPABILITY,
 } from "@synara/contracts";
-
-import { NATIVE_EVENT_STREAM_CHANNELS } from "../main/nativeEventStreams.logic";
 import {
+  getThreadDetailResumeCursor,
+  resetThreadDetailResumeCursorsForTests,
+  setThreadDetailResumeCursor,
+} from "@synara-web/threadDetailResumeCursors";
+import type { WsTransport as UpstreamWsTransport } from "../../../web/src/wsTransport";
+
+import {
+  NATIVE_EVENT_STREAM_CHANNELS,
+  type NativeRpcCompatibility,
+} from "../main/nativeEventStreams.logic";
+import {
+  MAX_THREAD_SNAPSHOT_BOOTSTRAP_RETRY_ATTEMPTS,
+  SNAPSHOT_FAULT_RETRY_MS,
   WsTransport,
   WsTransportRequestInterruptedError,
+  MAX_STREAM_OVERFLOW_RETRIES,
+  getProjectFileWatchRetryDelayMs,
+  getStreamOverflowRetryDelayMs,
   mapHostTransportState,
+  resolveStreamAdmissionRetry,
+  type WsThreadStreamFailure,
 } from "./wsTransport.lynx";
 import {
+  FakeRpcFailure,
+  FakeTransportFailure,
   HOLD_REPLY,
   flushHost,
   installFakeNativeHost,
   type FakeNativeHost,
 } from "./fakeNativeHost.testUtils";
+
+// `wsNativeApi.ts` imports the transport relatively, so it type-checks against
+// the upstream class while the bundle runs this one. Every public member the
+// upstream class has must exist here with a compatible signature; a member
+// upstream adds later fails this assignment at typecheck.
+type UpstreamSurface = Pick<UpstreamWsTransport, keyof UpstreamWsTransport>;
+const assertUpstreamSurface = (compat: WsTransport): UpstreamSurface => compat;
+void assertUpstreamSurface;
+
+const COMPATIBILITY: NativeRpcCompatibility = {
+  protocolEpoch: 1,
+  negotiatedRevision: 2,
+  serverBuild: "test",
+  serverInstanceId: "server-a",
+  capabilities: ["rpc.typed-errors", WS_PROJECT_FILE_WATCH_CAPABILITY],
+};
 
 describe("Lynx WsTransport compat", () => {
   let host: FakeNativeHost;
@@ -32,6 +75,7 @@ describe("Lynx WsTransport compat", () => {
 
   afterEach(async () => {
     await transport.dispose();
+    resetThreadDetailResumeCursorsForTests();
     rs.unstubAllGlobals();
     rs.useRealTimers();
   });
@@ -378,6 +422,497 @@ describe("Lynx WsTransport compat", () => {
     expect(host.callsNamed("synaraRpcStream")).toHaveLength(5);
     await failCurrent();
     expect(await opensAfter(500)).toBe(6);
+  });
+
+  it("opens the device and computer event streams for their push channels", async () => {
+    const device: unknown[] = [];
+    const computer: unknown[] = [];
+    transport.subscribe(DEVICE_WS_CHANNELS.event, (message) => device.push(message.data));
+    transport.subscribe(COMPUTER_WS_CHANNELS.event, (message) => computer.push(message.data));
+    await flushHost();
+
+    const streams = [...host.streams.values()];
+    expect(streams.map((stream) => stream.tag)).toEqual([
+      DEVICE_WS_METHODS.subscribeEvents,
+      COMPUTER_WS_METHODS.subscribeEvents,
+    ]);
+    host.pushStreamItem(streams[0]!.streamId, { type: "device.thread-state" });
+    host.pushStreamItem(streams[1]!.streamId, { type: "computer.thread-state" });
+    expect(device).toEqual([{ type: "device.thread-state" }]);
+    expect(computer).toEqual([{ type: "computer.thread-state" }]);
+  });
+
+  it("streams worktree setup and GitHub provisioning, resolving their final results", async () => {
+    const worktreeProgress: unknown[] = [];
+    const provisionProgress: unknown[] = [];
+    transport.subscribe(WS_CHANNELS.gitWorktreeSetupProgress, (message) =>
+      worktreeProgress.push(message.data),
+    );
+    transport.subscribe(WS_CHANNELS.projectProvisionProgress, (message) =>
+      provisionProgress.push(message.data),
+    );
+
+    const worktree = transport.request(
+      WS_METHODS.gitCreateDetachedWorktree,
+      { cwd: "/repo" },
+      { timeoutMs: null },
+    );
+    await flushHost();
+    const [worktreeStream] = [...host.streams.values()];
+    expect(worktreeStream?.tag).toBe(WS_METHODS.gitCreateDetachedWorktree);
+    expect(worktreeStream?.payload).toEqual({ cwd: "/repo" });
+    host.pushStreamItem(worktreeStream!.streamId, { kind: "progress", step: "fetch" });
+    host.pushStreamItem(worktreeStream!.streamId, {
+      kind: "completed",
+      result: { worktreePath: "/repo-wt" },
+    });
+    worktreeStream!.settle();
+    await expect(worktree).resolves.toEqual({ worktreePath: "/repo-wt" });
+    expect(worktreeProgress).toHaveLength(2);
+
+    const provision = transport.request(
+      WS_METHODS.projectsProvisionFromGitHub,
+      { repository: "o/r" },
+      { timeoutMs: null },
+    );
+    await flushHost();
+    const [provisionStream] = [...host.streams.values()];
+    expect(provisionStream?.tag).toBe(WS_METHODS.projectsProvisionFromGitHub);
+    host.pushStreamItem(provisionStream!.streamId, { kind: "completed", result: { cwd: "/r" } });
+    provisionStream!.settle();
+    await expect(provision).resolves.toEqual({ cwd: "/r" });
+    expect(provisionProgress).toHaveLength(1);
+
+    const empty = transport.request(WS_METHODS.gitCreateDetachedWorktree, {}, { timeoutMs: null });
+    await flushHost();
+    [...host.streams.values()][0]!.settle();
+    await expect(empty).rejects.toThrow("Worktree creation completed without a final result.");
+  });
+
+  it("drops null answers from a user-input response before it reaches the host", async () => {
+    await transport.request(ORCHESTRATION_WS_METHODS.dispatchCommand, {
+      command: { type: "thread.user-input.respond", answers: { a: "yes", b: null } },
+    });
+    expect(host.callsNamed("synaraRpc").at(-1)?.params.payload).toEqual({
+      type: "thread.user-input.respond",
+      answers: { a: "yes" },
+    });
+  });
+
+  it("retries a unary request the server rejected for capacity", async () => {
+    await transport.dispose();
+    let calls = 0;
+    host = installFakeNativeHost({
+      rpc: () => {
+        calls += 1;
+        if (calls === 1) {
+          throw new FakeRpcFailure({ code: "RPC_REQUEST_CAPACITY_EXCEEDED", retryAfterMs: 5 });
+        }
+        return { ok: true };
+      },
+    });
+    transport = new WsTransport();
+    await expect(transport.request(WS_METHODS.serverGetConfig)).resolves.toEqual({ ok: true });
+    expect(calls).toBe(2);
+  });
+
+  it("absorbs a repeated subscribeShell until the snapshot arrived, then restarts for a new one", async () => {
+    await transport.request(ORCHESTRATION_WS_METHODS.subscribeShell, {});
+    await flushHost();
+    const [first] = [...host.streams.values()];
+
+    // The pending snapshot of the running stream serves the second caller.
+    await transport.request(ORCHESTRATION_WS_METHODS.subscribeShell, {});
+    await flushHost();
+    expect(host.callsNamed("synaraRpcStream")).toHaveLength(1);
+
+    host.pushStreamItem(first!.streamId, { kind: "snapshot", snapshot: { threads: [] } });
+    await transport.request(ORCHESTRATION_WS_METHODS.subscribeShell, {});
+    await flushHost();
+    expect(host.cancelledStreamIds).toEqual([first!.streamId]);
+    const [second] = [...host.streams.values()];
+    expect(second?.tag).toBe(ORCHESTRATION_WS_METHODS.subscribeShell);
+    expect(second?.streamId).not.toBe(first!.streamId);
+  });
+
+  it("rebuilds a thread stream's input from the resume cursor on an automatic restart", async () => {
+    rs.useFakeTimers();
+    const threadId = ThreadId.makeUnsafe("thread-1");
+    await transport.request(ORCHESTRATION_WS_METHODS.subscribeThread, { threadId });
+    await flushHostWithFakeTimers();
+    const [first] = [...host.streams.values()];
+    expect(first?.payload).toEqual({ threadId });
+
+    // Events were applied on top of the snapshot: a restart must resume there.
+    setThreadDetailResumeCursor(threadId, 42);
+    first!.fail("socket closed");
+    await flushHostWithFakeTimers();
+    await rs.advanceTimersByTimeAsync(500);
+    await flushHostWithFakeTimers();
+    const [second] = [...host.streams.values()];
+    expect(second?.payload).toMatchObject({ threadId });
+    expect(JSON.stringify(second?.payload)).toContain("42");
+  });
+
+  it("drops the resume cursor and retries in place when the server demands a resnapshot", async () => {
+    rs.useFakeTimers();
+    const threadId = ThreadId.makeUnsafe("thread-1");
+    setThreadDetailResumeCursor(threadId, 7);
+    const failures: WsThreadStreamFailure[] = [];
+    transport.onThreadStreamFailure((failure) => failures.push(failure));
+    await transport.request(ORCHESTRATION_WS_METHODS.subscribeThread, { threadId });
+    await flushHostWithFakeTimers();
+
+    [...host.streams.values()][0]!.failTyped({ code: "ORCHESTRATION_RESNAPSHOT_REQUIRED" });
+    await flushHostWithFakeTimers();
+    expect(getThreadDetailResumeCursor(threadId)).toBeUndefined();
+    expect(transport.getState()).not.toBe("closed");
+    await rs.advanceTimersByTimeAsync(250);
+    await flushHostWithFakeTimers();
+    const [retried] = [...host.streams.values()];
+    expect(retried?.payload).toEqual({ threadId });
+    expect(failures).toEqual([]);
+  });
+
+  it("reports a thread stream failure once the snapshot bootstrap retries are exhausted", async () => {
+    rs.useFakeTimers();
+    const failures: WsThreadStreamFailure[] = [];
+    transport.onThreadStreamFailure((failure) => failures.push(failure));
+    await transport.request(ORCHESTRATION_WS_METHODS.subscribeThread, { threadId: "thread-1" });
+    await flushHostWithFakeTimers();
+
+    for (let attempt = 0; attempt < MAX_THREAD_SNAPSHOT_BOOTSTRAP_RETRY_ATTEMPTS; attempt += 1) {
+      [...host.streams.values()][0]!.failTyped({ code: "THREAD_SNAPSHOT_NOT_FOUND" });
+      await flushHostWithFakeTimers();
+      expect(failures).toEqual([]);
+      await rs.advanceTimersByTimeAsync(10_000);
+      await flushHostWithFakeTimers();
+    }
+    expect(host.callsNamed("synaraRpcStream")).toHaveLength(
+      MAX_THREAD_SNAPSHOT_BOOTSTRAP_RETRY_ATTEMPTS + 1,
+    );
+    [...host.streams.values()][0]!.failTyped({ code: "THREAD_SNAPSHOT_NOT_FOUND" });
+    await flushHostWithFakeTimers();
+    expect(failures.map((failure) => [failure.threadId, failure.code])).toEqual([
+      ["thread-1", "THREAD_SNAPSHOT_NOT_FOUND"],
+    ]);
+    // Terminal: no further open until the caller resubscribes.
+    await rs.advanceTimersByTimeAsync(60_000);
+    await flushHostWithFakeTimers();
+    expect(host.streams.size).toBe(0);
+  });
+
+  it("keeps a slow retry armed for a server-diagnosed snapshot fault", async () => {
+    rs.useFakeTimers();
+    await transport.request(ORCHESTRATION_WS_METHODS.subscribeShell, {});
+    await flushHostWithFakeTimers();
+    [...host.streams.values()][0]!.failTyped({
+      code: "ORCHESTRATION_SNAPSHOT_STALLED",
+      retryable: false,
+    });
+    await flushHostWithFakeTimers();
+    await rs.advanceTimersByTimeAsync(SNAPSHOT_FAULT_RETRY_MS - 1);
+    await flushHostWithFakeTimers();
+    expect(host.streams.size).toBe(0);
+    await rs.advanceTimersByTimeAsync(1);
+    await flushHostWithFakeTimers();
+    expect([...host.streams.values()][0]?.tag).toBe(ORCHESTRATION_WS_METHODS.subscribeShell);
+  });
+
+  it("classifies stream admission failures like upstream", () => {
+    const none = { capacity: 0, duplicate: 0, "thread-bootstrap": 0, resnapshot: 0 };
+    const typed = (code: string, extra: object = {}) => ({
+      code,
+      retryAfterMs: null,
+      retryable: null,
+      ...extra,
+    });
+    expect(resolveStreamAdmissionRetry(typed("STREAM_CAPACITY_EXCEEDED"), none)).toEqual({
+      kind: "capacity",
+      attempt: 1,
+      delayMs: 1_000,
+    });
+    expect(
+      resolveStreamAdmissionRetry(typed("STREAM_CAPACITY_EXCEEDED", { retryable: false }), none),
+    ).toBeNull();
+    expect(
+      resolveStreamAdmissionRetry(
+        typed("THREAD_STREAM_DUPLICATE_SUBSCRIPTION", { retryable: false, retryAfterMs: 40 }),
+        none,
+      ),
+    ).toEqual({ kind: "duplicate", attempt: 1, delayMs: 40 });
+    expect(
+      resolveStreamAdmissionRetry(typed("STREAM_DUPLICATE_SUBSCRIPTION"), {
+        ...none,
+        duplicate: 5,
+      }),
+    ).toBeNull();
+    expect(
+      resolveStreamAdmissionRetry(typed("ORCHESTRATION_RESNAPSHOT_REQUIRED"), {
+        ...none,
+        resnapshot: 2,
+      }),
+    ).toBeNull();
+    expect(resolveStreamAdmissionRetry(typed("SOMETHING_ELSE"), none)).toBeNull();
+    expect(resolveStreamAdmissionRetry(null, none)).toBeNull();
+    expect(getProjectFileWatchRetryDelayMs(typed("PROJECT_FILE_WATCH_FAILED"), 2)).toBe(2_000);
+    expect(getProjectFileWatchRetryDelayMs(typed("PROJECT_FILE_WATCH_FAILED"), 5)).toBeNull();
+  });
+
+  it("exposes the host's negotiation and watches files only when the server can", async () => {
+    const seen: (readonly string[] | null)[] = [];
+    transport.onCompatibilityChange((value) => seen.push(value?.capabilities ?? null), {
+      replayCurrent: true,
+    });
+    const changes: unknown[] = [];
+    const unsubscribe = transport.subscribeProjectFileChange(
+      { cwd: "/repo", relativePath: "a.ts" },
+      (event) => changes.push(event),
+    );
+    await flushHost();
+    // No negotiation reported yet: the capability is unknown, nothing opens.
+    expect(transport.getCompatibility()).toBeNull();
+    expect(host.streams.size).toBe(0);
+
+    host.setCompatibility(COMPATIBILITY);
+    await flushHost();
+    expect(transport.getCompatibility()).toEqual(COMPATIBILITY);
+    expect(seen).toEqual([null, COMPATIBILITY.capabilities]);
+    const [watch] = [...host.streams.values()];
+    expect(watch?.tag).toBe(WS_METHODS.projectsSubscribeFileChange);
+    expect(watch?.payload).toEqual({ cwd: "/repo", relativePath: "a.ts" });
+    host.pushStreamItem(watch!.streamId, { kind: "changed" });
+    expect(changes).toEqual([{ kind: "changed" }]);
+
+    unsubscribe();
+    await flushHost();
+    expect(host.cancelledStreamIds).toEqual([watch!.streamId]);
+  });
+
+  it("seeds the negotiation from the reset handshake of an already connected host", async () => {
+    host.compatibility = COMPATIBILITY;
+    await transport.request(WS_METHODS.serverGetConfig);
+    expect(transport.getCompatibility()).toEqual(COMPATIBILITY);
+  });
+
+  it("drops resume cursors and reopens thread streams when the server instance changes", async () => {
+    const threadId = ThreadId.makeUnsafe("thread-1");
+    host.compatibility = COMPATIBILITY;
+    transport.subscribe(WS_CHANNELS.serverWelcome, () => undefined);
+    await transport.request(ORCHESTRATION_WS_METHODS.subscribeThread, { threadId });
+    await flushHost();
+    const lifecycle = [...host.streams.values()].find(
+      (stream) => stream.tag === WS_METHODS.subscribeServerLifecycle,
+    );
+    host.pushStreamItem(lifecycle!.streamId, { type: "welcome", payload: { cwd: "/a" } });
+    expect(transport.getLatestPush(WS_CHANNELS.serverWelcome)).not.toBeNull();
+    setThreadDetailResumeCursor(threadId, 9);
+    const threadStream = [...host.streams.values()].find(
+      (stream) => stream.tag === ORCHESTRATION_WS_METHODS.subscribeThread,
+    );
+
+    // Same instance again (a plain reconnect): nothing is invalidated.
+    host.setCompatibility({ ...COMPATIBILITY });
+    await flushHost();
+    expect(getThreadDetailResumeCursor(threadId)).toBe(9);
+    expect(host.cancelledStreamIds).toEqual([]);
+
+    host.setCompatibility({ ...COMPATIBILITY, serverInstanceId: "server-b" });
+    await flushHost();
+    expect(getThreadDetailResumeCursor(threadId)).toBeUndefined();
+    expect(transport.getLatestPush(WS_CHANNELS.serverWelcome)).toBeNull();
+    expect(host.cancelledStreamIds).toEqual([threadStream!.streamId]);
+    const reopened = [...host.streams.values()].find(
+      (stream) => stream.tag === ORCHESTRATION_WS_METHODS.subscribeThread,
+    );
+    expect(reopened?.payload).toEqual({ threadId });
+    expect(reopened?.streamId).not.toBe(threadStream!.streamId);
+  });
+
+  it("asks the server for the verdict when a turn start loses the socket", async () => {
+    await transport.dispose();
+    const command = { type: "thread.turn.start", threadId: "thread-1", commandId: "c-1" };
+    const tags: string[] = [];
+    let settleCalls = 0;
+    host = installFakeNativeHost({
+      rpc: (tag, payload) => {
+        tags.push(tag);
+        if (tag === ORCHESTRATION_WS_METHODS.dispatchCommand) {
+          throw new FakeTransportFailure("socket closed");
+        }
+        if (tag === ORCHESTRATION_WS_METHODS.settleTurnDispatch) {
+          settleCalls += 1;
+          expect(payload).toEqual({ command });
+          return { status: "accepted", sequence: 7 };
+        }
+        return {};
+      },
+    });
+    host.compatibility = {
+      ...COMPATIBILITY,
+      capabilities: [...COMPATIBILITY.capabilities, WS_TURN_DISPATCH_SETTLEMENT_CAPABILITY],
+    };
+    transport = new WsTransport();
+    await transport.request(WS_METHODS.serverGetConfig);
+
+    await expect(
+      transport.request(ORCHESTRATION_WS_METHODS.dispatchCommand, { command }),
+    ).resolves.toEqual({ sequence: 7 });
+    expect(settleCalls).toBe(1);
+    expect(tags.filter((tag) => tag === ORCHESTRATION_WS_METHODS.dispatchCommand)).toHaveLength(1);
+  });
+
+  it("reports a lost turn start as failed when the server cannot settle it", async () => {
+    await transport.dispose();
+    const tags: string[] = [];
+    host = installFakeNativeHost({
+      rpc: (tag) => {
+        tags.push(tag);
+        if (tag === ORCHESTRATION_WS_METHODS.dispatchCommand) {
+          throw new FakeTransportFailure("socket closed");
+        }
+        return {};
+      },
+    });
+    host.compatibility = COMPATIBILITY;
+    transport = new WsTransport();
+    await transport.request(WS_METHODS.serverGetConfig);
+
+    await expect(
+      transport.request(ORCHESTRATION_WS_METHODS.dispatchCommand, {
+        command: { type: "thread.turn.start", threadId: "thread-1" },
+      }),
+    ).rejects.toThrow("socket closed");
+    await expect(
+      transport.request(ORCHESTRATION_WS_METHODS.settleTurnDispatch, { command: {} }),
+    ).rejects.toMatchObject({ code: "WS_TURN_SETTLEMENT_UNAVAILABLE", retryable: false });
+    expect(tags).not.toContain(ORCHESTRATION_WS_METHODS.settleTurnDispatch);
+  });
+
+  it("runs one cancellable project-agent stream per project", async () => {
+    const events: unknown[] = [];
+    transport.subscribe(WS_CHANNELS.projectAgentEvent, (message) => events.push(message.data));
+    await transport.request(WS_METHODS.subscribeProjectAgentEvents, { projectId: "project-1" });
+    await flushHost();
+
+    const [stream] = [...host.streams.values()];
+    expect(stream?.tag).toBe(WS_METHODS.subscribeProjectAgentEvents);
+    expect(stream?.payload).toEqual({ projectId: "project-1" });
+    host.pushStreamItem(stream!.streamId, { kind: "updated" });
+    expect(events).toEqual([{ kind: "updated" }]);
+
+    await transport.unsubscribeProjectAgentEvents("project-1");
+    expect(host.cancelledStreamIds).toEqual([stream!.streamId]);
+    expect(host.streams.size).toBe(0);
+  });
+
+  it("opens the keep-awake and task streams for their push channels", async () => {
+    transport.subscribe(WS_CHANNELS.serverKeepAwakeUpdated, () => undefined);
+    transport.subscribe(WS_CHANNELS.todoEvent, () => undefined);
+    await flushHost();
+    expect([...host.streams.values()].map((stream) => stream.tag).toSorted()).toEqual(
+      [WS_METHODS.subscribeServerKeepAwake, WS_METHODS.subscribeTodoEvents].toSorted(),
+    );
+  });
+
+  it("retries an overflowed shell stream on upstream's schedule, then reports it", async () => {
+    rs.useFakeTimers();
+    const failures: (string | null)[] = [];
+    transport.onShellStreamFailure((failure) => failures.push(failure.code));
+    await transport.request(ORCHESTRATION_WS_METHODS.subscribeShell, {});
+    await flushHostWithFakeTimers();
+
+    for (let attempt = 0; attempt < MAX_STREAM_OVERFLOW_RETRIES; attempt += 1) {
+      const [stream] = [...host.streams.values()];
+      expect(stream?.tag).toBe(ORCHESTRATION_WS_METHODS.subscribeShell);
+      stream!.failTyped({ code: ORCHESTRATION_STREAM_OVERFLOW_CODE });
+      await flushHostWithFakeTimers();
+      expect(host.streams.size).toBe(0);
+      expect(failures).toEqual([]);
+      await rs.advanceTimersByTimeAsync(getStreamOverflowRetryDelayMs(attempt));
+      await flushHostWithFakeTimers();
+    }
+
+    const [last] = [...host.streams.values()];
+    last!.failTyped({ code: ORCHESTRATION_STREAM_OVERFLOW_CODE });
+    await flushHostWithFakeTimers();
+    expect(failures).toEqual([ORCHESTRATION_STREAM_OVERFLOW_CODE]);
+  });
+
+  it("reattaches a recoverable git action by id after the socket drops, without re-running it", async () => {
+    rs.useFakeTimers();
+    host.compatibility = {
+      ...COMPATIBILITY,
+      capabilities: [...COMPATIBILITY.capabilities, WS_GIT_ACTION_RECOVERY_CAPABILITY],
+    };
+    await transport.request(WS_METHODS.serverGetConfig);
+    const input = { actionId: "action-1", cwd: "/repo", action: "commit_push" };
+
+    const pending = transport.request(WS_METHODS.gitRunStackedAction, input);
+    await flushHostWithFakeTimers();
+    const [first] = [...host.streams.values()];
+    expect(first?.payload).toEqual({ ...input, recoverable: true });
+    host.pushStreamItem(first!.streamId, { kind: "action_started", actionId: "action-1" });
+    first!.fail("socket closed");
+    await flushHostWithFakeTimers();
+    expect(host.streams.size).toBe(0);
+
+    await rs.advanceTimersByTimeAsync(500);
+    await flushHostWithFakeTimers();
+    const [second] = [...host.streams.values()];
+    expect(second?.tag).toBe(WS_METHODS.gitRunStackedAction);
+    expect(second?.payload).toEqual({ ...input, recoverable: true, resume: true });
+    host.pushStreamItem(second!.streamId, {
+      kind: "action_finished",
+      actionId: "action-1",
+      result: { ok: true },
+    });
+    second!.settle();
+    await flushHostWithFakeTimers();
+
+    await expect(pending).resolves.toEqual({ ok: true });
+  });
+
+  it("does not mark a git action recoverable, or retry it, without the server capability", async () => {
+    rs.useFakeTimers();
+    host.compatibility = COMPATIBILITY;
+    await transport.request(WS_METHODS.serverGetConfig);
+    const input = { actionId: "action-2", cwd: "/repo", action: "commit" };
+
+    const pending = transport.request(WS_METHODS.gitRunStackedAction, input);
+    const outcome = pending.then(
+      () => "resolved",
+      (error: Error) => error.message,
+    );
+    await flushHostWithFakeTimers();
+    const [stream] = [...host.streams.values()];
+    expect(stream?.payload).toEqual(input);
+    stream!.fail("socket closed");
+    await flushHostWithFakeTimers();
+
+    expect(await outcome).toContain("socket closed");
+    await rs.advanceTimersByTimeAsync(10_000);
+    await flushHostWithFakeTimers();
+    expect(host.streams.size).toBe(0);
+  });
+
+  it("returns a git action's final result when the stream fails after it arrived", async () => {
+    const pending = transport.request(WS_METHODS.gitRunStackedAction, {
+      actionId: "action-3",
+      cwd: "/repo",
+      action: "commit",
+    });
+    await flushHost();
+    const [stream] = [...host.streams.values()];
+    host.pushStreamItem(stream!.streamId, {
+      kind: "action_finished",
+      actionId: "action-3",
+      result: { ok: true, commit: "abc" },
+    });
+    stream!.fail("socket closed");
+
+    await expect(pending).resolves.toEqual({ ok: true, commit: "abc" });
+    expect(host.streams.size).toBe(0);
   });
 
   it("stops every stream and reports disposed on dispose", async () => {

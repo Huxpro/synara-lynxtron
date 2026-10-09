@@ -18,17 +18,20 @@
   padding: 0 6px 8px;
 }
 
+/* KanbanColumn: `text-ui-lg font-medium text-foreground/90` and a `text-ui` count at /70. */
 .SharedKanbanColumnTitle {
   color: var(--foreground);
-  font-size: 13px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   font-weight: 500;
-  line-height: 19.5px;
+  line-height: 21px;
+  opacity: 0.9;
 }
 
 .SharedKanbanColumnCount {
   color: var(--muted-foreground);
-  font-size: 12px;
-  line-height: 16px;
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 17.875px;
+  opacity: 0.7;
 }
 
 .SharedKanbanColumnHeaderActions {

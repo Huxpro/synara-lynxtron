@@ -224,7 +224,11 @@ export function ProviderUpdatePrompt(props: { readonly onReview: () => void }) {
     return null;
   }
   const first = providers[0];
-  const name = first ? PROVIDER_DISPLAY_NAMES[first.provider] : "";
+  const name = first
+    ? first.displayName?.trim() ||
+      (PROVIDER_DISPLAY_NAMES as Readonly<Record<string, string>>)[first.provider] ||
+      first.provider
+    : "";
   const { title, description } =
     activeOutcome?.copy ??
     providerUpdatePromptCopy({

@@ -7,13 +7,13 @@ import type { SidebarSearchProject, SidebarSearchThread } from "./SidebarSearchP
 export interface SidebarSearchProjectSource {
   readonly id: string;
   readonly name: string;
-  readonly remoteName?: string | null;
-  readonly folderName?: string | null;
-  readonly localName?: string | null;
+  readonly remoteName?: string | null | undefined;
+  readonly folderName?: string | null | undefined;
+  readonly localName?: string | null | undefined;
   readonly cwd: string;
   readonly spaceName: string;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
+  readonly createdAt?: string | undefined;
+  readonly updatedAt?: string | undefined;
 }
 
 export interface SidebarSearchThreadSource {
@@ -22,8 +22,8 @@ export interface SidebarSearchThreadSource {
   readonly projectId: string;
   readonly provider: ProviderKind;
   readonly createdAt: string;
-  readonly updatedAt?: string;
-  readonly messages?: readonly { readonly text: string }[];
+  readonly updatedAt?: string | undefined;
+  readonly messages?: readonly { readonly text: string }[] | undefined;
 }
 
 export function projectSidebarSearchProject(
@@ -45,9 +45,9 @@ export function projectSidebarSearchProject(
 export function projectSidebarSearchThreads(input: {
   readonly threads: readonly SidebarSearchThreadSource[];
   readonly projects: readonly SidebarSearchProject[];
-  readonly visibleThreadIds?: readonly string[];
-  readonly unknownProjectLabel?: string;
-  readonly fallbackSpaceName?: string;
+  readonly visibleThreadIds?: readonly string[] | undefined;
+  readonly unknownProjectLabel?: string | undefined;
+  readonly fallbackSpaceName?: string | undefined;
 }): SidebarSearchThread[] {
   const threadById = new Map(input.threads.map((thread) => [thread.id, thread] as const));
   const projectById = new Map(input.projects.map((project) => [project.id, project] as const));

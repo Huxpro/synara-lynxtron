@@ -8,7 +8,6 @@ const ALLOWED_WEB_INITIAL_ROUTES = new Set([
   "/settings",
   "/studio",
   "/update",
-  "/workspace",
 ]);
 
 export function resolveWebInitialRoute(search: string): string | null {
@@ -16,7 +15,7 @@ export function resolveWebInitialRoute(search: string): string | null {
   if (!candidate || !candidate.startsWith("/")) return null;
   const route = new URL(candidate, "http://synara.local");
   if (ALLOWED_WEB_INITIAL_ROUTES.has(route.pathname)) return candidate;
-  if (/^\/(?:automations|kanban|new-thread|thread|workspace)\/[^/]+$/.test(candidate)) {
+  if (/^\/(?:automations|kanban|new-thread|thread)\/[^/]+$/.test(candidate)) {
     return candidate;
   }
   if (/^\/settings\/[^/]+$/.test(candidate)) return candidate;

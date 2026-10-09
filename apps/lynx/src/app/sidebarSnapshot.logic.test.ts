@@ -440,8 +440,8 @@ describe("sidebar snapshot selector (first paint and memoization)", () => {
       expect(firstDelta).not.toBe(withDetail);
       expect(runningRow(firstDelta)).toMatchObject({ live: true, messageCount: 2 });
 
-      // Growing text replaces the shell and message-id dictionaries in the
-      // store, and changes nothing the sidebar shows.
+      // Growing text replaces the message and shell dictionaries in the store,
+      // and changes nothing the sidebar shows.
       for (const [index, text] of ["Hello", "Hello wor", "Hello world"].entries()) {
         const before = state;
         state = applyOrchestrationEventsHotPath(state, [
@@ -450,7 +450,6 @@ describe("sidebar snapshot selector (first paint and memoization)", () => {
         expect(state).not.toBe(before);
         expect(state.messageByThreadId).not.toBe(before.messageByThreadId);
         expect(state.threadShellById).not.toBe(before.threadShellById);
-        expect(state.messageIdsByThreadId).not.toBe(before.messageIdsByThreadId);
         const snapshot = select(state, LOCAL);
         expect(snapshot).toBe(firstDelta);
         expect(runningRow(snapshot)?.live).toBe(true);
@@ -547,8 +546,22 @@ describe("fresh sidebar snapshot for a destructive action", () => {
 
   it("drops a link the server no longer has", () => {
     const linkedStore = syncServerShellSnapshot(initialState, serverShell);
-    const fresh = projectFreshSidebarSnapshot(linkedStore, SHELL_SNAPSHOT, LOCAL);
+    const fresh = projectFreshSidebarSnapshot(
+      linkedStore,
+      { ...SHELL_SNAPSHOT, snapshotSequence: 10 } as OrchestrationShellSnapshot,
+      LOCAL,
+    );
     expect(linkedThreadsForWorktree(fresh.workspaceThreads, WORKTREE)).toEqual([]);
+  });
+
+  it("keeps the store's state when the read predates what the stream already applied", () => {
+    // The store's projection rejects a snapshot older than the one it integrated
+    // (it could resurrect deleted rows), so the stream's newer state decides.
+    const linkedStore = syncServerShellSnapshot(initialState, serverShell);
+    const fresh = projectFreshSidebarSnapshot(linkedStore, SHELL_SNAPSHOT, LOCAL);
+    expect(
+      linkedThreadsForWorktree(fresh.workspaceThreads, WORKTREE).map((thread) => thread.id),
+    ).toEqual(["late-active", "late-archived"]);
   });
 });
 

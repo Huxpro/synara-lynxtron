@@ -8,7 +8,7 @@ import { PlusIcon } from "~/lib/icons";
 import type { KanbanColumnKey } from "./kanban.logic";
 import { KanbanStatusIcon } from "./KanbanStatusIcon";
 
-type ChildrenProps = { readonly children?: ReactNode };
+type ChildrenProps = { readonly children?: ReactNode | undefined };
 
 export function KanbanColumnRootElement(props: ChildrenProps) {
   return <section className="flex min-h-0 min-w-64 flex-1 flex-col">{props.children}</section>;
@@ -19,11 +19,11 @@ export function KanbanColumnHeaderElement(props: ChildrenProps) {
 }
 
 export function KanbanColumnTitleElement(props: ChildrenProps) {
-  return <h3 className="text-[13px] font-medium text-foreground/90">{props.children}</h3>;
+  return <h3 className="text-ui-lg font-medium text-foreground/90">{props.children}</h3>;
 }
 
 export function KanbanColumnCountElement(props: ChildrenProps) {
-  return <span className="text-xs text-muted-foreground/70">{props.children}</span>;
+  return <span className="text-ui text-muted-foreground/70">{props.children}</span>;
 }
 
 export function KanbanColumnHeaderActionsElement(props: ChildrenProps) {
@@ -31,7 +31,7 @@ export function KanbanColumnHeaderActionsElement(props: ChildrenProps) {
 }
 
 export function KanbanColumnDispatchTargetElement(props: ChildrenProps) {
-  return <span className="text-[11px] text-sky-600 dark:text-sky-300/90">{props.children}</span>;
+  return <span className="text-ui-sm text-sky-600 dark:text-sky-300/90">{props.children}</span>;
 }
 
 export function KanbanColumnNewCardElement(props: {
@@ -70,7 +70,7 @@ export function KanbanColumnCardItemElement(props: ChildrenProps) {
 
 export function KanbanColumnEmptyElement(props: ChildrenProps) {
   return (
-    <li className="list-none rounded-lg border border-dashed border-border/60 px-3 py-4 text-center text-xs text-muted-foreground/60">
+    <li className="list-none rounded-lg border border-dashed border-border/60 px-3 py-4 text-center text-ui text-muted-foreground/60">
       {props.children}
     </li>
   );
@@ -84,7 +84,7 @@ export function KanbanColumnShowMoreElement(props: {
     <button
       type="button"
       onClick={props.onActivate}
-      className="w-full rounded-lg px-3 py-1.5 text-center text-xs text-muted-foreground/80 transition-colors hover:bg-muted/40 hover:text-foreground"
+      className="w-full rounded-lg px-3 py-1.5 text-center text-ui text-muted-foreground/80 transition-colors hover:bg-muted/40 hover:text-foreground"
     >
       {props.label}
     </button>

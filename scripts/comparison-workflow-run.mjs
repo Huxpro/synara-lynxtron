@@ -11,6 +11,7 @@ import {
   openNativeDriver,
   readCertifiedRun,
 } from "./comparison-workflow.mjs";
+import { showAppSidebar } from "./comparison-navigation.mjs";
 import { WORKFLOWS } from "./comparison-workflows.mjs";
 
 const argv = process.argv.slice(2);
@@ -68,6 +69,8 @@ for (const renderer of renderers) {
     return peer;
   };
   try {
+    // Every workflow starts from the app sidebar, whatever the previous one left open.
+    await showAppSidebar(driver);
     const result = await workflow({ driver, backend, step, run, openPeer });
     report.renderers[renderer] = { ok: true, steps, result };
   } catch (error) {

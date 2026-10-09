@@ -61,7 +61,6 @@ export const DEFAULT_SETTINGS_GENERAL_VALUES: SettingsGeneralValues = {
   sidebarThreadSortOrder: DEFAULT_SIDEBAR_THREAD_SORT_ORDER,
   showChatsSection: true,
   showStudioSection: true,
-  showWorkspaceSection: false,
   environmentPanelDefaultOpen: false,
   showEnvironmentUsage: true,
   showEnvironmentRepository: true,
@@ -69,7 +68,6 @@ export const DEFAULT_SETTINGS_GENERAL_VALUES: SettingsGeneralValues = {
   showEnvironmentEditor: true,
   showEnvironmentRecap: true,
   showEnvironmentPinned: true,
-  showEnvironmentMarkers: true,
   showEnvironmentInstructions: true,
   showEnvironmentNotepad: true,
 };
@@ -148,11 +146,6 @@ export function readSettingsGeneralProjection(
       "showStudioSection",
       DEFAULT_SETTINGS_GENERAL_VALUES.showStudioSection,
     ),
-    showWorkspaceSection: booleanValue(
-      record,
-      "showWorkspaceSection",
-      DEFAULT_SETTINGS_GENERAL_VALUES.showWorkspaceSection,
-    ),
     environmentPanelDefaultOpen: booleanValue(
       record,
       "environmentPanelDefaultOpen",
@@ -187,11 +180,6 @@ export function readSettingsGeneralProjection(
       record,
       "showEnvironmentPinned",
       DEFAULT_SETTINGS_GENERAL_VALUES.showEnvironmentPinned,
-    ),
-    showEnvironmentMarkers: booleanValue(
-      record,
-      "showEnvironmentMarkers",
-      DEFAULT_SETTINGS_GENERAL_VALUES.showEnvironmentMarkers,
     ),
     showEnvironmentInstructions: booleanValue(
       record,

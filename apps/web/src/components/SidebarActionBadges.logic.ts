@@ -1,4 +1,8 @@
-import type { PullRequestReviewRequestCountResult } from "@synara/contracts";
+/** Upstream removed the review-request count RPC; the shape stays for the Lynx badge. */
+interface PullRequestReviewRequestCountResult {
+  readonly count: number;
+  readonly incomplete: boolean;
+}
 import { pluralize } from "@synara/shared/text";
 
 export type SidebarActionBadge = {

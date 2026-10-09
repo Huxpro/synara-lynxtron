@@ -58,7 +58,7 @@ function detail(): PullRequestDetail {
         authors: [],
       },
     ],
-    mergeCapabilities: { merge: true, squash: true, rebase: true },
+    mergeCapabilities: { merge: true, squash: true, rebase: true, deleteBranchOnMerge: false },
   };
 }
 

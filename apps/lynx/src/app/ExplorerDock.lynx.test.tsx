@@ -293,7 +293,7 @@ describe("Lynx Explorer dock", () => {
     );
     expect(routerSource).toContain("toggleExpandedDirectory(current, path)");
     expect(readFileSync(new URL("./threadDock.lynx.tsx", import.meta.url), "utf8")).toContain(
-      'accessibleLabel: "Toggle diff panel"',
+      'accessibleLabel: "Toggle right sidebar"',
     );
     expect(routerSource).toContain("onOpenFileReference={openExplorerFileReference}");
     expect(routerSource).toContain("onOpenFileReference={openExplorerFileReference}");

@@ -4,11 +4,22 @@
 // ambient declarations the compiled Web tree relies on; at runtime on Lynx both
 // are absent, so every Web call site already guards them.
 
-import type { DesktopBridge } from "@synara/contracts";
+import type { DesktopBridge, NativeApi } from "@synara/contracts";
+import type { HTMLAttributes, RefAttributes } from "react";
+
+declare module "@lynx-js/react/jsx-runtime" {
+  namespace JSX {
+    interface IntrinsicElements {
+      /** Web-only element used by shared Web components; not rendered by native Lynx routes. */
+      span: HTMLAttributes<HTMLSpanElement> & RefAttributes<HTMLSpanElement>;
+    }
+  }
+}
 
 declare global {
   interface Window {
     desktopBridge?: DesktopBridge;
+    nativeApi?: NativeApi;
   }
 
   interface ImportMeta {

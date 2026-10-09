@@ -233,15 +233,6 @@ function sameStyle(left: TerminalTextStyle, right: TerminalTextStyle): boolean {
   );
 }
 
-function omitStyleProperties(
-  style: TerminalTextStyle,
-  properties: readonly (keyof TerminalTextStyle)[],
-): TerminalTextStyle {
-  const next = { ...style };
-  for (const property of properties) delete next[property];
-  return next;
-}
-
 function cellsToRuns(cells: readonly TerminalCell[]): TerminalTextRun[] {
   const runs: TerminalTextRun[] = [];
   for (const cell of cells) {
@@ -271,6 +262,23 @@ function trimUnstyledTrailingCells(cells: readonly TerminalCell[]): TerminalCell
 function colorByte(value: number | undefined): number {
   if (!Number.isFinite(value)) return 0;
   return Math.max(0, Math.min(255, Math.trunc(value as number)));
+}
+
+function withoutStyleKeys(
+  style: TerminalTextStyle,
+  ...keys: ReadonlyArray<keyof TerminalTextStyle>
+): TerminalTextStyle {
+  const next: { -readonly [K in keyof TerminalTextStyle]: TerminalTextStyle[K] } = { ...style };
+  for (const key of keys) delete next[key];
+  return next;
+}
+
+function withStyleColor(
+  style: TerminalTextStyle,
+  target: "foreground" | "background",
+  color: TerminalTextColor | undefined,
+): TerminalTextStyle {
+  return color === undefined ? withoutStyleKeys(style, target) : { ...style, [target]: color };
 }
 
 function rgbHex(red: number, green: number, blue: number): `#${string}` {
@@ -759,42 +767,37 @@ export function createTerminalTextProjector(
           else if (code === 4) style = { ...style, underline: true };
           else if (code === 7) style = { ...style, inverse: true };
           else if (code === 9) style = { ...style, strikethrough: true };
-          else if (code === 22) {
-            style = omitStyleProperties(style, ["bold", "dim"]);
-          } else if (code === 23) style = omitStyleProperties(style, ["italic"]);
-          else if (code === 24) style = omitStyleProperties(style, ["underline"]);
-          else if (code === 27) style = omitStyleProperties(style, ["inverse"]);
-          else if (code === 29) style = omitStyleProperties(style, ["strikethrough"]);
-          else if (code === 39) style = omitStyleProperties(style, ["foreground"]);
-          else if (code === 49) style = omitStyleProperties(style, ["background"]);
+          else if (code === 22) style = withoutStyleKeys(style, "bold", "dim");
+          else if (code === 23) style = withoutStyleKeys(style, "italic");
+          else if (code === 24) style = withoutStyleKeys(style, "underline");
+          else if (code === 27) style = withoutStyleKeys(style, "inverse");
+          else if (code === 29) style = withoutStyleKeys(style, "strikethrough");
+          else if (code === 39) style = withoutStyleKeys(style, "foreground");
+          else if (code === 49) style = withoutStyleKeys(style, "background");
           else if (code >= 30 && code <= 37) {
-            style = { ...style, foreground: indexedColor(code - 30) };
+            style = withStyleColor(style, "foreground", ANSI_COLORS[code - 30]);
           } else if (code >= 90 && code <= 97) {
-            style = { ...style, foreground: indexedColor(code - 82) };
+            style = withStyleColor(style, "foreground", ANSI_COLORS[code - 82]);
           } else if (code >= 40 && code <= 47) {
-            style = { ...style, background: indexedColor(code - 40) };
+            style = withStyleColor(style, "background", ANSI_COLORS[code - 40]);
           } else if (code >= 100 && code <= 107) {
-            style = { ...style, background: indexedColor(code - 92) };
+            style = withStyleColor(style, "background", ANSI_COLORS[code - 92]);
           } else if (code === 38 || code === 48) {
             const target = code === 38 ? "foreground" : "background";
             const colorMode = codes[index + 1];
-            const colorIndex = codes[index + 2];
-            const red = codes[index + 2];
-            const green = codes[index + 3];
-            const blue = codes[index + 4];
-            if (colorMode === 5 && colorIndex !== undefined) {
-              style = { ...style, [target]: indexedColor(colorIndex) };
+            const first = codes[index + 2];
+            const second = codes[index + 3];
+            const third = codes[index + 4];
+            if (colorMode === 5 && first !== undefined) {
+              style = { ...style, [target]: indexedColor(first) };
               index += 2;
             } else if (
               colorMode === 2 &&
-              red !== undefined &&
-              green !== undefined &&
-              blue !== undefined
+              first !== undefined &&
+              second !== undefined &&
+              third !== undefined
             ) {
-              style = {
-                ...style,
-                [target]: rgbHex(red, green, blue),
-              };
+              style = { ...style, [target]: rgbHex(first, second, third) };
               index += 4;
             }
           }

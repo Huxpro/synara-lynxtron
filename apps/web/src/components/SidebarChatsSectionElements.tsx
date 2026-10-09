@@ -26,7 +26,9 @@ import {
   DISCLOSURE_INNER_CLASS,
 } from "~/platform/motion";
 
-export function SidebarChatsSectionRootElement(props: { readonly children?: ReactNode }) {
+export function SidebarChatsSectionRootElement(props: {
+  readonly children?: ReactNode | undefined;
+}) {
   return (
     <SidebarGroup className="sidebar-surface-enter px-1.5 pt-1 pb-2">
       <div className="group/collapsible">{props.children}</div>
@@ -37,7 +39,7 @@ export function SidebarChatsSectionRootElement(props: { readonly children?: Reac
 export function SidebarChatsSectionHeaderElement(props: {
   readonly expanded: boolean;
   readonly onActivate: () => void;
-  readonly toolbar?: ReactNode;
+  readonly toolbar?: ReactNode | undefined;
 }) {
   return (
     <div className="group/project-header relative">
@@ -53,7 +55,7 @@ export function SidebarChatsSectionHeaderElement(props: {
         }}
       >
         <div className="flex min-w-0 flex-1 items-center gap-1 overflow-hidden">
-          <span className="truncate font-system-ui text-[length:var(--app-font-size-ui,12px)] font-normal text-muted-foreground/79">
+          <span className="truncate font-system-ui text-ui font-normal text-muted-foreground/79">
             Chats
           </span>
           <DisclosureChevron open={props.expanded} className="text-muted-foreground/79" />
@@ -70,7 +72,7 @@ export function SidebarChatsSectionHeaderElement(props: {
 
 export function SidebarChatsSectionBodyElement(props: {
   readonly expanded: boolean;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <div className={`${disclosureShellClassName(props.expanded)} pt-1`}>
@@ -84,7 +86,7 @@ export function SidebarChatsSectionBodyElement(props: {
 }
 
 export function SidebarChatsEmptyElement(props: {
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
   readonly intent: Extract<SystemStateIntent, "empty">;
   readonly announcement: string;
 }) {
@@ -94,7 +96,7 @@ export function SidebarChatsEmptyElement(props: {
       role={semantics.role}
       aria-live={semantics.live}
       aria-atomic={semantics.atomic}
-      className="px-2 py-2 text-[length:var(--app-font-size-ui,12px)] text-muted-foreground/48"
+      className="px-2 py-2 text-ui text-muted-foreground/48"
     >
       {props.children}
     </div>
@@ -104,9 +106,9 @@ export function SidebarChatsEmptyElement(props: {
 export function SidebarChatsPaginationElement(props: {
   readonly canShowMore: boolean;
   readonly canShowLess: boolean;
-  readonly variant?: "section" | "nested";
-  readonly onShowMore?: () => void;
-  readonly onShowLess?: () => void;
+  readonly variant?: "section" | "nested" | undefined;
+  readonly onShowMore?: (() => void) | undefined;
+  readonly onShowLess?: (() => void) | undefined;
 }) {
   if (!props.canShowMore && !props.canShowLess) return null;
   if (props.variant === "nested") {
@@ -118,7 +120,7 @@ export function SidebarChatsPaginationElement(props: {
               render={<button type="button" />}
               data-thread-selection-safe
               size="sm"
-              className="h-7 flex-1 translate-x-0 justify-start rounded-lg pr-2 pl-8 text-left text-[length:var(--app-font-size-ui,12px)] text-muted-foreground/79 hover:bg-transparent hover:text-foreground active:bg-transparent active:text-foreground"
+              className="h-7 flex-1 translate-x-0 justify-start rounded-lg pr-2 pl-8 text-left text-ui text-muted-foreground/79 hover:bg-transparent hover:text-foreground active:bg-transparent active:text-foreground"
               onMouseDown={(event) => event.preventDefault()}
               onClick={props.onShowMore}
             >
@@ -130,7 +132,7 @@ export function SidebarChatsPaginationElement(props: {
               render={<button type="button" />}
               data-thread-selection-safe
               size="sm"
-              className={`h-7 translate-x-0 justify-start rounded-lg text-left text-[length:var(--app-font-size-ui,12px)] text-muted-foreground/79 hover:bg-transparent hover:text-foreground active:bg-transparent active:text-foreground ${
+              className={`h-7 translate-x-0 justify-start rounded-lg text-left text-ui text-muted-foreground/79 hover:bg-transparent hover:text-foreground active:bg-transparent active:text-foreground ${
                 props.canShowMore ? "w-auto flex-none px-2" : "flex-1 pr-2 pl-8"
               }`}
               onMouseDown={(event) => event.preventDefault()}
@@ -149,7 +151,7 @@ export function SidebarChatsPaginationElement(props: {
         {props.canShowMore ? (
           <SidebarMenuButton
             size="sm"
-            className="h-7 flex-1 justify-start rounded-lg pr-2 pl-8 text-left text-[length:var(--app-font-size-ui,12px)] font-normal text-muted-foreground/79 hover:bg-transparent hover:text-foreground active:bg-transparent active:text-foreground"
+            className="h-7 flex-1 justify-start rounded-lg pr-2 pl-8 text-left text-ui font-normal text-muted-foreground/79 hover:bg-transparent hover:text-foreground active:bg-transparent active:text-foreground"
             onMouseDown={(event) => event.preventDefault()}
             onClick={props.onShowMore}
           >
@@ -159,7 +161,7 @@ export function SidebarChatsPaginationElement(props: {
         {props.canShowLess ? (
           <SidebarMenuButton
             size="sm"
-            className={`h-7 justify-start rounded-lg text-left text-[length:var(--app-font-size-ui,12px)] font-normal text-muted-foreground/79 hover:bg-transparent hover:text-foreground active:bg-transparent active:text-foreground ${
+            className={`h-7 justify-start rounded-lg text-left text-ui font-normal text-muted-foreground/79 hover:bg-transparent hover:text-foreground active:bg-transparent active:text-foreground ${
               props.canShowMore ? "w-auto flex-none px-2" : "flex-1 pr-2 pl-8"
             }`}
             onMouseDown={(event) => event.preventDefault()}

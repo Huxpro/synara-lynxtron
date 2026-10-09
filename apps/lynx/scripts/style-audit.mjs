@@ -6,6 +6,7 @@ import { createRequire } from "node:module";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { generatedFileIsFresh, writeGeneratedFile } from "./format-generated.mjs";
+import { readWebThemeFontSizes } from "./web-theme-font-sizes.logic.mjs";
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = path.resolve(scriptDir, "..");
@@ -80,6 +81,9 @@ const unsupportedPatterns = [
   /(^|:)overscroll(?:-[xy])?-(?:auto|contain|none)$/,
   /(^|:)backdrop-(?:blur|brightness|contrast|grayscale|hue-rotate|invert|opacity|saturate|sepia)(?:-.+)?$/,
   /(^|:)resize-(?:none|x|y)$/,
+  // color-mix() is resolved to a token at build time (generate-color-mix-tokens);
+  // `--account-accent` is set per element at runtime, so it has no token.
+  /color-mix\([^)]*var\(--account-accent\)/,
 ];
 
 const deterministicPatches = new Map([
@@ -601,6 +605,11 @@ async function generate() {
     theme: {
       extend: {
         colors: semanticTheme(),
+        // Upstream's typography scale (`text-ui`, `text-chat-meta`, …) lives in the
+        // web app's Tailwind v4 `@theme`; this v3 config has to be told about it.
+        fontSize: readWebThemeFontSizes(
+          fs.readFileSync(path.join(webRoot, "apps/web/src/index.css"), "utf8"),
+        ),
         fontFamily: {
           "system-ui": ["system-ui"],
           mono: ["var(--font-mono-family)"],

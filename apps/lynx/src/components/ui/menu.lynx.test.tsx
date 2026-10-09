@@ -230,6 +230,24 @@ describe("Lynx Menu overlay contract", () => {
     ).toEqual({ left: 803, top: 261 });
   });
 
+  it("flips a start-aligned popup to the end edge when it would cross the viewport", () => {
+    const base = {
+      align: "start" as const,
+      popup: { x: 0, y: 0, width: 296, height: 258 },
+      side: "top" as const,
+      sideOffset: 4,
+      viewport: { x: 0, y: 0, width: 1079, height: 803 },
+    };
+    // Landing composer: the start edge fits, so the popup stays start-aligned.
+    expect(
+      resolveMenuCoordinates({ ...base, anchor: { x: 766, y: 752, width: 189, height: 28 } }).left,
+    ).toBe(766);
+    // Thread composer: start would overflow, end fits, so it opens end-aligned.
+    expect(
+      resolveMenuCoordinates({ ...base, anchor: { x: 788, y: 752, width: 166, height: 28 } }).left,
+    ).toBe(658);
+  });
+
   it("opens from its anchor and dismisses from item, backdrop, and Escape", async () => {
     const onAction = rs.fn();
     const onOpenChange = rs.fn();

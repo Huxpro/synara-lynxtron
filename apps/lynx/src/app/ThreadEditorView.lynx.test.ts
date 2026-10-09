@@ -28,8 +28,10 @@ describe("Lynx Editor view", () => {
     const environmentSource = source("./EnvironmentPanel.lynx.tsx");
 
     const handoffIndex = routerSource.indexOf("<ThreadHeaderActions");
-    const environmentIndex = routerSource.indexOf("<EnvironmentToggle");
-    const diffIndex = routerSource.indexOf("<ThreadDiffToggle");
+    // The landing header renders the same toggles earlier in the file; order is checked
+    // within the thread header, which starts at its actions.
+    const environmentIndex = routerSource.indexOf("<EnvironmentToggle", handoffIndex);
+    const diffIndex = routerSource.indexOf("<ThreadRightSidebarToggle", environmentIndex);
     expect(handoffIndex).toBeGreaterThan(-1);
     expect(environmentIndex).toBeGreaterThan(handoffIndex);
     expect(diffIndex).toBeGreaterThan(environmentIndex);
@@ -42,7 +44,8 @@ describe("Lynx Editor view", () => {
     expect(actionsSource).toContain(
       '<text className="ThreadHeaderTextActionLabel">Add action</text>',
     );
-    expect(actionsSource).toContain("resolveNativeThreadHandoffTargets(thread)");
+    expect(actionsSource).toContain("queryFn: () => fetchNativeThreadHandoffProviderContext()");
+    expect(actionsSource).toContain("resolveNativeThreadHandoffTargets(");
     expect(actionsSource).toContain("await createNativeThreadHandoff({");
     expect(routerSource).toContain("subscribeOpenThreadPathInTerminal(");
     expect(routerSource).toContain("consumeOpenThreadPathInTerminal(threadId)");
@@ -65,8 +68,7 @@ describe("Lynx Editor view", () => {
 
   it("reuses the real explorer preview beside the live chat rail", () => {
     const routerSource = source("./router.tsx");
-    const editorStateSource = source("../../../web/src/editorViewState.ts");
-    const webEditorSource = source("../../../web/src/components/EditorWorkspaceView.tsx");
+    const editorStateSource = source("./editorViewState.lynx.ts");
     expect(routerSource).toContain('editorChatOpen ? "" : " ThreadEditorCenter--chat-hidden"');
     expect(routerSource).toContain('editorChatOpen ? "" : " ThreadEditorChat--hidden"');
     expect(routerSource).toContain("explorerFileSyntaxHighlight");
@@ -81,9 +83,6 @@ describe("Lynx Editor view", () => {
     );
     expect(editorStateSource).toContain("export const EDITOR_CHAT_PANE_MIN_WIDTH = 320");
     expect(editorStateSource).toContain("export const EDITOR_CHAT_PANE_MAX_WIDTH = 600");
-    expect(webEditorSource).toContain("readEditorChatPaneVisible()");
-    expect(webEditorSource).toContain("useState(readEditorChatPaneWidth)");
-    expect(webEditorSource).toContain("storeEditorChatPaneVisible(next)");
     expect(routerSource).toContain("initialEditorChatOpen ?? readEditorChatPaneVisible()");
     expect(routerSource).toContain(
       'aria-label={editorChatOpen ? "Hide chat panel" : "Show chat panel"}',
@@ -117,7 +116,8 @@ describe("Lynx Editor view", () => {
     expect(routerSource).toContain('if (event.key === "Escape") setEditorChatHistoryOpen(false)');
     expect(routerSource).toContain("resolveEditorChatHistoryThreads({");
     expect(routerSource).toContain("onNavigateToThread={(threadId) => {");
-    expect(routerSource).toContain("setEditorEntryThreadId(threadId);");
+    // Only navigation from inside the Editor carries the Editor into the next thread.
+    expect(routerSource).toContain("if (editorModeOpen) setEditorEntryThreadId(threadId);");
     expect(routerSource).toContain("navigate(`/thread/${threadId}`);");
     const historyOverlaySource = routerSource.slice(
       routerSource.indexOf("{editorChatHistoryOpen ? ("),
@@ -411,9 +411,12 @@ describe("Lynx Editor view", () => {
       "setDockOpenInState",
     ]) {
       expect(routerSource).toContain(transition);
+      // Upstream keeps this policy in `rightDockStore.logic.ts`; the shared
+      // module mirrors its transitions for Lynx, so both must define each one.
       expect(sharedSource).toContain(`function ${transition}`);
+      expect(webPolicySource).toContain(`function ${transition}`);
     }
-    expect(webPolicySource).toContain('export * from "@synara/shared/rightDock"');
+    expect(routerSource).toContain('from "@synara/shared/rightDock"');
     expect(routerSource).toContain("<ThreadRightDockTabs");
     expect(routerSource).toContain('kind: "file"');
     expect(tabsSource).toContain("<EditorSurfaceTab");
@@ -485,7 +488,8 @@ describe("Lynx Editor view", () => {
     const desktopSource = source("../main/desktop/shellRuntime.ts");
     expect(appSource).toContain("const initialEditorOpen = initData.initialEditorOpen === true");
     expect(appSource).toContain("await hydrateStorage()");
-    expect(appSource).toContain("useTerminalStateStore.persist.rehydrate()");
+    expect(appSource).toContain("rehydratePersistedStores()");
+    expect(source("./persistedStoreHydration.lynx.ts")).toContain("useTerminalStateStore,");
     expect(appSource).not.toContain("Promise.all([fetchSidebarSnapshot(), fetchThreads()])");
     expect(webHostSource).toContain('get("editor") === "open"');
     expect(webHostSource).toContain('get("editorMode") === "diff"');

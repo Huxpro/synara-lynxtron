@@ -7,7 +7,7 @@ import { Button } from "~/components/ui/button";
 import { ChevronRightIcon, PlusIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
 
-type ChildrenProps = { readonly children?: ReactNode };
+type ChildrenProps = { readonly children?: ReactNode | undefined };
 
 export function KanbanOverviewEmptyRootElement(props: ChildrenProps) {
   return <div className="flex h-full items-center justify-center px-6">{props.children}</div>;
@@ -18,11 +18,11 @@ export function KanbanOverviewEmptyCopyElement(props: ChildrenProps) {
 }
 
 export function KanbanOverviewEmptyTitleElement(props: ChildrenProps) {
-  return <div className="text-sm font-medium text-foreground/85">{props.children}</div>;
+  return <div className="text-ui font-medium text-foreground/85">{props.children}</div>;
 }
 
 export function KanbanOverviewEmptyBodyElement(props: ChildrenProps) {
-  return <div className="mt-1 text-sm text-muted-foreground">{props.children}</div>;
+  return <div className="mt-1 text-ui text-muted-foreground">{props.children}</div>;
 }
 
 export function KanbanOverviewProjectsElement(props: ChildrenProps) {
@@ -60,14 +60,14 @@ export function KanbanOverviewProjectHeaderElement(
 
 export function KanbanOverviewProjectTitleElement(props: ChildrenProps) {
   return (
-    <h2 className="min-w-0 truncate text-[13px] font-semibold text-foreground/90">
+    <h2 className="min-w-0 truncate text-ui-lg font-semibold text-foreground/90">
       {props.children}
     </h2>
   );
 }
 
 export function KanbanOverviewProjectCountElement(props: ChildrenProps) {
-  return <span className="text-xs text-muted-foreground/70">{props.children}</span>;
+  return <span className="text-ui text-muted-foreground/70">{props.children}</span>;
 }
 
 export function KanbanOverviewProjectChevronElement() {
@@ -112,7 +112,7 @@ export function KanbanOverviewShowMoreElement(props: {
     <button
       type="button"
       onClick={props.onActivate}
-      className="w-full rounded-lg px-3 py-1.5 text-center text-xs text-muted-foreground/80 transition-colors hover:bg-muted/40 hover:text-foreground"
+      className="w-full rounded-lg px-3 py-1.5 text-center text-ui text-muted-foreground/80 transition-colors hover:bg-muted/40 hover:text-foreground"
     >
       {props.label}
     </button>

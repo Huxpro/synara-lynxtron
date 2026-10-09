@@ -106,8 +106,8 @@ async function probeRpc(serverUrl, origin, label) {
       "bootstrap.negotiate",
       {
         protocolEpoch: 1,
-        minRevision: 1,
-        maxRevision: 1,
+        minRevision: 3,
+        maxRevision: 3,
         clientBuild: CLIENT_BUILD,
         requiredCapabilities: REQUIRED_CAPABILITIES,
       },

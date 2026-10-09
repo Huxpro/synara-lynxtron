@@ -34,7 +34,6 @@ const ORIGIN_ORDER = [
   "antigravity",
   "grok",
   "droid",
-  "kilo",
   "opencode",
   "pi",
   "agents",
@@ -47,7 +46,6 @@ const PROVIDER_ORDER: readonly ProviderKind[] = [
   "antigravity",
   "grok",
   "droid",
-  "kilo",
   "opencode",
   "pi",
 ];
@@ -80,7 +78,6 @@ function originInfo(origin: string): {
     case "antigravity":
     case "grok":
     case "droid":
-    case "kilo":
     case "opencode":
     case "pi":
       return {

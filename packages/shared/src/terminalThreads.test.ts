@@ -6,13 +6,12 @@ import { describe, expect, it } from "vitest";
 
 import {
   deriveTerminalCommandIdentity,
-  deriveTerminalOutputIdentity,
   deriveTerminalProcessIdentity,
-  deriveTerminalTitleSignalIdentity,
   resolveTerminalVisualIdentity,
   TERMINAL_BOLD_FONT_WEIGHT,
   TERMINAL_FONT_WEIGHT,
   terminalCliKindFromValue,
+  terminalScopeIdsForThread,
 } from "./terminalThreads";
 
 describe("terminal typography", () => {
@@ -22,27 +21,23 @@ describe("terminal typography", () => {
   });
 });
 
+it("includes the independent dock scope when cleaning up a host thread", () => {
+  expect(terminalScopeIdsForThread("thread-1")).toEqual(["thread-1", "dock-terminal:thread-1"]);
+});
+
 describe("Antigravity CLI identity", () => {
-  it.each(["agy", "antigravity", "antigravity-cli"])("detects the %s command", (command) => {
-    expect(deriveTerminalCommandIdentity(command)).toEqual({
+  it("detects the agy command", () => {
+    expect(deriveTerminalCommandIdentity("agy")).toEqual({
       cliKind: "antigravity",
       iconKey: "antigravity",
       title: "Antigravity CLI",
     });
   });
 
-  it("detects the Antigravity CLI process, banner, and terminal title", () => {
+  it("detects the Antigravity CLI process", () => {
     expect(deriveTerminalProcessIdentity("/Users/dev/.local/bin/agy --model fast")).toMatchObject({
       cliKind: "antigravity",
       iconKey: "antigravity",
-    });
-    expect(deriveTerminalOutputIdentity("Welcome to Antigravity CLI")).toMatchObject({
-      cliKind: "antigravity",
-      title: "Antigravity CLI",
-    });
-    expect(deriveTerminalTitleSignalIdentity("AGY CLI")).toMatchObject({
-      cliKind: "antigravity",
-      title: "Antigravity CLI",
     });
   });
 
@@ -76,7 +71,7 @@ describe("resolveTerminalVisualIdentity", () => {
     });
   });
 
-  it("still infers provider identity from title when cliKind is omitted", () => {
+  it("infers provider identity from the title when cliKind is omitted", () => {
     expect(
       resolveTerminalVisualIdentity({
         fallbackTitle: "Terminal 1",

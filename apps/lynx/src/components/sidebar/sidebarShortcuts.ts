@@ -3,6 +3,5 @@ export const LYNX_PRIMARY_SHORTCUT_LABELS = {
   importThread: "⌘I",
   newChat: "⌥⌘N",
   newThread: "⌘N",
-  search: "⌘K",
   usageSettings: "⇧⌘U",
 } as const;

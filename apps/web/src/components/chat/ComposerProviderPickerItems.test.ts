@@ -8,6 +8,8 @@ function status(
 ): ServerProviderStatus {
   return {
     provider,
+    driver: provider,
+    instanceId: provider as ServerProviderStatus["instanceId"],
     status: "ready",
     available: true,
     authStatus: "authenticated",

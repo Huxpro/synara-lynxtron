@@ -30,7 +30,7 @@ describe("buildCanonicalSliceKanbanBoard", () => {
           latestUserMessageAt: "2026-07-30T09:00:00.000Z",
           latestTurn: null,
           session: null,
-          modelSelection: { provider: "codex", model: null, options: {} },
+          modelSelection: { provider: "codex", providerInstanceId: null, model: null, options: {} },
           hasPendingApprovals: false,
           hasPendingUserInput: false,
           hasLiveTailWork: false,
@@ -80,6 +80,7 @@ describe("buildCanonicalSliceKanbanBoard", () => {
         prompt: "Verify Kanban fidelity in both themes.",
         hasAttachments: false,
         provider: "codex",
+        providerInstanceId: null,
       },
     });
 
@@ -102,8 +103,10 @@ describe("selectKanbanProjectBoard", () => {
       projectKind: "project",
       draft: [],
       inProgress: [],
+      awaitingYou: [],
       done: [],
       totalCount: 0,
+      hiddenCount: 0,
     };
     const board: KanbanBoard = { projects: [project], totalCount: 0 };
 
@@ -129,7 +132,7 @@ describe("buildCanonicalSlicePullRequestList", () => {
 
     expect(list.entries).toEqual([pinned, regular]);
     expect(list.entries[0]?.mergeability).toBe("unknown");
-    expect(list.grouped?.map((group) => group.label)).toEqual(["Pinned", "Review requested"]);
+    expect(list.grouped?.map((group) => group.label)).toEqual(["Pinned", "Needs my review"]);
   });
 
   it("provides a stable empty fallback before the query resolves", () => {

@@ -26,12 +26,6 @@ afterEach(() => {
 });
 
 describe("desktopUserDataProfile", () => {
-  it("bypasses the single-instance lock only for an explicit isolated run", () => {
-    expect(shouldAcquireDesktopSingleInstanceLock(undefined)).toBe(true);
-    expect(shouldAcquireDesktopSingleInstanceLock("0")).toBe(true);
-    expect(shouldAcquireDesktopSingleInstanceLock("1")).toBe(false);
-  });
-
   it("resolves the canonical Synara profile names", () => {
     const appDataBase = "/Users/tester/Library/Application Support";
     expect(resolveDesktopUserDataPath({ appDataBase, userDataDirectoryName: "synara-dev" })).toBe(
@@ -45,6 +39,16 @@ describe("desktopUserDataProfile", () => {
     ).toBe("/Users/tester/Library/Application Support/synara-canary");
   });
 
+  it("uses an explicit smoke profile instead of the development profile", () => {
+    expect(
+      resolveDesktopUserDataPath({
+        appDataBase: "/Users/tester/Library/Application Support",
+        userDataDirectoryName: "synara-dev",
+        testOverridePath: "/tmp/synara-desktop-smoke/electron-user-data",
+      }),
+    ).toBe("/tmp/synara-desktop-smoke/electron-user-data");
+  });
+
   it("uses XDG_CONFIG_HOME on Linux when available", () => {
     expect(
       resolveDesktopAppDataBase({
@@ -53,23 +57,6 @@ describe("desktopUserDataProfile", () => {
         homeDir: "/home/tester",
       }),
     ).toBe("/tmp/xdg");
-  });
-
-  it("supports an explicit absolute profile for isolated desktop comparisons", () => {
-    expect(
-      resolveDesktopUserDataPath({
-        appDataBase: "/Users/tester/Library/Application Support",
-        userDataDirectoryName: "synara-dev",
-        override: " /tmp/synara-comparison-profile ",
-      }),
-    ).toBe("/tmp/synara-comparison-profile");
-    expect(() =>
-      resolveDesktopUserDataPath({
-        appDataBase: "/Users/tester/Library/Application Support",
-        userDataDirectoryName: "synara-dev",
-        override: "relative/profile",
-      }),
-    ).toThrow("SYNARA_DESKTOP_USER_DATA_DIR must be an absolute path.");
   });
 
   it("repairs missing browser data from the profile recorded by the bridge", () => {
@@ -232,5 +219,13 @@ describe("desktopUserDataProfile", () => {
       sourcePath: null,
       copiedEntries: [],
     });
+  });
+});
+
+describe("shouldAcquireDesktopSingleInstanceLock", () => {
+  it("bypasses the single-instance lock only for an explicit isolated run", () => {
+    expect(shouldAcquireDesktopSingleInstanceLock(undefined)).toBe(true);
+    expect(shouldAcquireDesktopSingleInstanceLock("0")).toBe(true);
+    expect(shouldAcquireDesktopSingleInstanceLock("1")).toBe(false);
   });
 });

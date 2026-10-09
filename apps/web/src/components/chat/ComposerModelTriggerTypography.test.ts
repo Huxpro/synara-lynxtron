@@ -8,6 +8,6 @@ describe("composer model trigger typography", () => {
       "utf8",
     );
 
-    expect(source).toContain('"shrink-0 text-[10px] leading-[15px]"');
+    expect(source).toContain('"shrink-0 text-ui-xs leading-[15px]"');
   });
 });

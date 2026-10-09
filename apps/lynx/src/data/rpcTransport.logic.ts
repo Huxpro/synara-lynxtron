@@ -45,6 +45,8 @@ export interface RpcStreamHandle {
   readonly cancel: () => void;
 }
 
+import { describeRpcFailureCause } from "../main/rpcFailure.logic";
+
 export class RpcTransportError extends Error {
   readonly name = "RpcTransportError";
 }
@@ -389,8 +391,12 @@ export function createRpcSocketManager(input: {
       if (response.exit._tag === "Success") {
         pending.resolve(response.exit.value);
       } else {
+        // `rpcFailure` keeps the typed error (code, retry hints) the message flattens.
         pending.reject(
-          new Error(`Synara RPC ${pending.tag} failed: ${JSON.stringify(response.exit.cause)}`),
+          Object.assign(
+            new Error(`Synara RPC ${pending.tag} failed: ${JSON.stringify(response.exit.cause)}`),
+            { rpcFailure: describeRpcFailureCause(response.exit.cause) },
+          ),
         );
       }
       if (input.closeWhenIdle && context && context.pending.size === 0) {

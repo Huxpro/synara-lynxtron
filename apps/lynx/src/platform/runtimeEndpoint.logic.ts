@@ -26,5 +26,5 @@ export function resolveRuntimeHttpOrigin(configuredUrl: unknown): string {
   const value = typeof configuredUrl === "string" ? configuredUrl.trim() : "";
   const match = value?.match(/^(ws|wss):\/\/([^/]+)/i);
   if (!match) return DEFAULT_SYNARA_HTTP_ORIGIN;
-  return `${match[1].toLowerCase() === "wss" ? "https" : "http"}://${match[2]}`;
+  return `${match[1]!.toLowerCase() === "wss" ? "https" : "http"}://${match[2]}`;
 }

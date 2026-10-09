@@ -8,15 +8,12 @@ describe("ComposerChoiceRow responsive copy", () => {
     new URL("./ComposerPendingApprovalPanel.tsx", import.meta.url),
     "utf8",
   );
-  const userInput = readFileSync(
-    new URL("./ComposerPendingUserInputPanel.tsx", import.meta.url),
-    "utf8",
-  );
+  const userInput = readFileSync(new URL("./UserInputQuestionForm.tsx", import.meta.url), "utf8");
 
   it("allows labels and descriptions to break inside a narrow composer card", () => {
     expect(source).toContain("min-w-0 flex-1 break-words leading-snug");
-    expect(source).toContain("break-words text-[13px] font-medium");
-    expect(source).toContain("ml-1.5 break-words text-[12px]");
+    expect(source).toContain("break-words text-ui-lg font-medium");
+    expect(source).toContain("ml-1.5 break-words text-ui");
   });
 
   it("keeps both decision cards vertically reachable in short windows", () => {

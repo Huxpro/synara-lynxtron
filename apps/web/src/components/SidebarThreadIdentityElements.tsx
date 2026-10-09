@@ -4,7 +4,7 @@ import { cn } from "../lib/utils";
 import { SIDEBAR_ROW_LABEL_TEXT_CLASS_NAME } from "../sidebarRowStyles";
 
 interface ChildrenProps {
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }
 
 export function SidebarThreadIdentityCopyElement({
@@ -31,12 +31,12 @@ export function SidebarThreadIdentityTitleElement({
 }: ChildrenProps & {
   readonly active: boolean;
   readonly subagent: boolean;
-  readonly testId?: string;
+  readonly testId?: string | undefined;
 }) {
   return (
     <span
       className={cn(
-        "min-w-0 flex-1 truncate-fade text-[length:var(--app-font-size-ui,12px)]",
+        "min-w-0 flex-1 truncate-fade text-ui",
         active ? "text-foreground" : SIDEBAR_ROW_LABEL_TEXT_CLASS_NAME,
         subagent ? "leading-[18px] text-foreground/80" : "leading-5",
       )}
@@ -54,7 +54,7 @@ export function SidebarThreadIdentityPendingElement({
   return (
     <span
       aria-label="Pending approval"
-      className={cn("shrink-0 text-[10px] font-medium", colorClass)}
+      className={cn("shrink-0 text-ui-xs font-medium", colorClass)}
     >
       {children}
     </span>

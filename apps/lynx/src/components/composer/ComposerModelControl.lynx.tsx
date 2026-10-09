@@ -31,6 +31,7 @@ import {
 } from "@synara-web/providerModelOptions";
 import {
   FAVORITE_MODEL_STORAGE_KEYS,
+  migrateLegacyKiloFavoriteModelSlugs,
   parseFavoriteModelSlugs,
   supportsModelFavorites,
   toggleFavoriteModelSlug,
@@ -165,10 +166,7 @@ export function ComposerModelControl(props: {
     [catalogActiveModel, catalogProvider, props.modelOptionsOverride, props.runtimeModels],
   );
   const shouldShowModelSearch =
-    (catalogProvider === "kilo" ||
-      catalogProvider === "opencode" ||
-      catalogProvider === "cursor" ||
-      catalogProvider === "pi") &&
+    (catalogProvider === "opencode" || catalogProvider === "cursor" || catalogProvider === "pi") &&
     options.length >= SEARCHABLE_MODEL_PICKER_THRESHOLD;
   const normalizedModelSearchQuery = modelSearchQuery.trim().toLowerCase();
   const filteredOptions = useMemo(
@@ -182,12 +180,15 @@ export function ComposerModelControl(props: {
   );
   const [favoriteModelSlugsByProvider, setFavoriteModelSlugsByProvider] = useState<
     Record<FavoriteModelProvider, ReadonlyArray<string>>
-  >(() => ({
-    cursor: parseFavoriteModelSlugs(webStorage.getItem(FAVORITE_MODEL_STORAGE_KEYS.cursor)),
-    kilo: parseFavoriteModelSlugs(webStorage.getItem(FAVORITE_MODEL_STORAGE_KEYS.kilo)),
-    opencode: parseFavoriteModelSlugs(webStorage.getItem(FAVORITE_MODEL_STORAGE_KEYS.opencode)),
-    pi: parseFavoriteModelSlugs(webStorage.getItem(FAVORITE_MODEL_STORAGE_KEYS.pi)),
-  }));
+  >(() => {
+    // Electron folds legacy Kilo favorites into OpenCode's (Kilo was migrated to OpenCode).
+    migrateLegacyKiloFavoriteModelSlugs(webStorage);
+    return {
+      cursor: parseFavoriteModelSlugs(webStorage.getItem(FAVORITE_MODEL_STORAGE_KEYS.cursor)),
+      opencode: parseFavoriteModelSlugs(webStorage.getItem(FAVORITE_MODEL_STORAGE_KEYS.opencode)),
+      pi: parseFavoriteModelSlugs(webStorage.getItem(FAVORITE_MODEL_STORAGE_KEYS.pi)),
+    };
+  });
   const favoriteProvider = supportsModelFavorites(catalogProvider) ? catalogProvider : null;
   const favoriteModelSlugSet = useMemo(
     () =>
@@ -256,8 +257,7 @@ export function ComposerModelControl(props: {
     ? (traitSelection.effortLevels.find((level) => level.value === traitSelection.effort)?.label ??
       traitSelection.effort)
     : null;
-  const traitSectionLabel =
-    activeProvider === "kilo" || activeProvider === "opencode" ? "Variant" : "Effort";
+  const traitSectionLabel = activeProvider === "opencode" ? "Variant" : "Effort";
   const supportsFastModeControl =
     traitSelection.fastModeDescriptor !== null || traitSelection.caps.supportsFastMode;
   const popupContent = resolveComposerModelPopupContent({

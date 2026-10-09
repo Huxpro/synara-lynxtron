@@ -2,26 +2,35 @@
 // Purpose: Reduces ordered orchestration domain events into normalized client state.
 // Exports: Normal and hot-path event batch reducers.
 
-import { type OrchestrationEvent, type OrchestrationPendingInteraction } from "@synara/contracts";
+import {
+  type OrchestrationEvent,
+  type OrchestrationPendingInteraction,
+  type ThreadId,
+} from "@synara/contracts";
 import { resolveThreadBranchRegressionGuard } from "@synara/shared/git";
+import { isSidechatThread } from "@synara/shared/sidechatThread";
+import {
+  clearRemovedAsyncUserInputResponses,
+  mergeAsyncUserInput,
+} from "@synara/shared/asyncUserInput";
 import {
   addPinnedMessage,
   removePinnedMessage,
   setPinnedMessageDone,
   setPinnedMessageLabel,
 } from "@synara/shared/pinnedMessages";
+import { deriveThreadSummaryMetadata, resolveHumanMessageAt } from "@synara/shared/threadSummary";
 import {
-  addThreadMarker,
-  removeThreadMarker,
-  setThreadMarkerDone,
-  setThreadMarkerLabel,
-} from "@synara/shared/threadMarkers";
+  createStalePendingInteractionMatcher,
+  isPendingInteractionResponseClaimable,
+} from "@synara/shared/pendingInteractions";
 
 import { isSessionRunningTurn } from "./session-logic";
 import {
   MAX_THREAD_MESSAGES,
   arraysShallowEqual,
   asActivityRecord,
+  createThreadActivityAccumulator,
   deepEqualJson,
   normalizeActivities,
   normalizeChatMessage,
@@ -107,7 +116,11 @@ function markInteractionResponding(
       interaction.interactionKind !== interactionKind ||
       interaction.requestId !== event.payload.requestId ||
       interaction.lifecycleGeneration !== lifecycleGeneration ||
-      (interaction.status !== "pending" && interaction.status !== "retryable")
+      !isPendingInteractionResponseClaimable({
+        status: interaction.status,
+        responseRequestedAt: interaction.responseRequestedAt,
+        requestedAt: event.payload.createdAt,
+      })
     ) {
       return interaction;
     }
@@ -124,8 +137,11 @@ function markInteractionResponding(
   return changed ? next : thread.pendingInteractions;
 }
 
+/** Pure reconciliation over the pending-interaction list alone: batch callers thread the
+ *  accumulated list through directly instead of cloning the whole `Thread` per event. */
 function reconcilePendingInteractionsFromActivity(
-  thread: Thread,
+  threadId: ThreadId,
+  pendingInteractions: Thread["pendingInteractions"],
   event: ThreadActivityAppendedEvent,
 ): Thread["pendingInteractions"] {
   const activity = event.payload.activity;
@@ -140,18 +156,18 @@ function reconcilePendingInteractionsFromActivity(
         ? ("userInput" as const)
         : null;
   if (interactionKind === null) {
-    return thread.pendingInteractions;
+    return pendingInteractions;
   }
   const payload = asActivityRecord(activity.payload);
   const requestId = payload?.requestId;
   if (typeof requestId !== "string" || requestId.length === 0) {
-    return thread.pendingInteractions;
+    return pendingInteractions;
   }
   const lifecycleGeneration =
     typeof payload?.lifecycleGeneration === "string" && payload.lifecycleGeneration.length > 0
       ? payload.lifecycleGeneration
       : null;
-  const existing = thread.pendingInteractions ?? [];
+  const existing = pendingInteractions ?? [];
   const matchesIdentity = (interaction: OrchestrationPendingInteraction) =>
     interaction.interactionKind === interactionKind &&
     interaction.requestId === requestId &&
@@ -159,7 +175,7 @@ function reconcilePendingInteractionsFromActivity(
 
   if (activity.kind === "approval.resolved" || activity.kind === "user-input.resolved") {
     const next = existing.filter((interaction) => !matchesIdentity(interaction));
-    return next.length === existing.length ? thread.pendingInteractions : next;
+    return next.length === existing.length ? pendingInteractions : next;
   }
 
   if (
@@ -167,24 +183,29 @@ function reconcilePendingInteractionsFromActivity(
     activity.kind === "provider.user-input.respond.failed"
   ) {
     const responseCommandId = payload?.responseCommandId;
-    if (typeof responseCommandId !== "string" || responseCommandId.length === 0) {
-      return thread.pendingInteractions;
-    }
+    const hasResponseCommand =
+      typeof responseCommandId === "string" && responseCommandId.length > 0;
+    const isStale = createStalePendingInteractionMatcher([activity]);
     const settlementStatus: OrchestrationPendingInteraction["status"] =
       payload?.settlementStatus === "retryable" ? "retryable" : "uncertain";
     let changed = false;
     const next = existing.map((interaction) => {
       if (
         !matchesIdentity(interaction) ||
-        interaction.status !== "responding" ||
-        interaction.responseCommandId !== responseCommandId
+        interaction.status === "confirmed" ||
+        (hasResponseCommand
+          ? interaction.status !== "responding" ||
+            interaction.responseCommandId !== responseCommandId
+          : !isStale(interaction))
       ) {
         return interaction;
       }
       changed = true;
-      return { ...interaction, status: settlementStatus, resolvedAt: null };
+      return isStale(interaction)
+        ? { ...interaction, status: "confirmed" as const, resolvedAt: activity.createdAt }
+        : { ...interaction, status: settlementStatus, resolvedAt: null };
     });
-    return changed ? next : thread.pendingInteractions;
+    return changed ? next : pendingInteractions;
   }
 
   const exactIndex = existing.findIndex(
@@ -199,12 +220,12 @@ function reconcilePendingInteractionsFromActivity(
       current.status === "confirmed" ||
       current.status === "uncertain")
   ) {
-    return thread.pendingInteractions;
+    return pendingInteractions;
   }
   const pending: OrchestrationPendingInteraction = {
     interactionKind,
     requestId: requestId as OrchestrationPendingInteraction["requestId"],
-    threadId: thread.id,
+    threadId,
     turnId: activity.turnId,
     lifecycleGeneration,
     status: "pending",
@@ -340,10 +361,17 @@ function reconcileLatestTurnFromSession(
         : session.status === "ready"
           ? ("completed" as const)
           : null;
+  // A non-error session snapshot whose updatedAt predates the running turn's
+  // start reflects the state from before that turn existed; settling on it
+  // would close a just-started turn with a bogus fresh completedAt (and fire a
+  // phantom completion notification). Errors still settle regardless: an error
+  // snapshot is terminal whatever its ordering.
   if (
     settledState !== null &&
     thread.latestTurn?.state === "running" &&
-    (session.activeTurnId == null || settledState === "error")
+    (session.activeTurnId == null || settledState === "error") &&
+    (settledState === "error" ||
+      session.updatedAt >= (thread.latestTurn.startedAt ?? thread.latestTurn.requestedAt))
   ) {
     return buildLatestTurn({
       previous: thread.latestTurn,
@@ -566,6 +594,20 @@ function applyTurnDiffSummaryToThread(
   };
 }
 
+const STREAM_TEXT_AFFIX_LENGTH = 48;
+
+function describeStreamText(text: string): {
+  length: number;
+  prefix: string;
+  suffix: string;
+} {
+  return {
+    length: text.length,
+    prefix: text.slice(0, STREAM_TEXT_AFFIX_LENGTH),
+    suffix: text.slice(-STREAM_TEXT_AFFIX_LENGTH),
+  };
+}
+
 function mergeStreamingMessage(
   existingMessage: ChatMessage,
   incomingMessage: ChatMessage,
@@ -579,14 +621,28 @@ function mergeStreamingMessage(
     nextText = incomingMessage.text;
   } else if (incomingMessage.streaming || incomingMessage.text.length === 0) {
     nextText = `${existingMessage.text}${incomingMessage.text}`;
-  } else if (incomingMessage.text.startsWith(existingMessage.text)) {
-    nextText = incomingMessage.text;
-  } else if (existingMessage.text.startsWith(incomingMessage.text)) {
-    nextText = existingMessage.text;
   } else {
-    nextText = `${existingMessage.text}${incomingMessage.text}`;
+    // Non-streaming completions carry the server's authoritative accumulated
+    // text. Always prefer them so a duplicated or divergent local stream cannot
+    // survive after the turn settles.
+    if (
+      import.meta.env.DEV &&
+      incomingMessage.text !== existingMessage.text &&
+      !incomingMessage.text.startsWith(existingMessage.text)
+    ) {
+      console.warn("[transcript] completion text diverged from local stream", {
+        messageId: existingMessage.id,
+        existing: describeStreamText(existingMessage.text),
+        incoming: describeStreamText(incomingMessage.text),
+      });
+    }
+    nextText = incomingMessage.text;
   }
   const nextAttachments = incomingMessage.attachments ?? existingMessage.attachments;
+  const nextAsyncUserInput = mergeAsyncUserInput(
+    existingMessage.asyncUserInput,
+    incomingMessage.asyncUserInput,
+  );
   const nextSkills =
     incomingMessage.skills && incomingMessage.skills.length > 0
       ? incomingMessage.skills
@@ -598,6 +654,8 @@ function mergeStreamingMessage(
   const nextCompletedAt = incomingMessage.streaming
     ? existingMessage.completedAt
     : (incomingMessage.completedAt ?? existingMessage.completedAt);
+  const nextUpdatedAt =
+    incomingMessage.updatedAt ?? existingMessage.updatedAt ?? incomingMessage.createdAt;
   const nextTurnId =
     incomingMessage.turnId !== undefined ? incomingMessage.turnId : existingMessage.turnId;
   const nextDispatchMode =
@@ -608,18 +666,25 @@ function mergeStreamingMessage(
     incomingMessage.dispatchOrigin !== undefined
       ? incomingMessage.dispatchOrigin
       : existingMessage.dispatchOrigin;
+  const nextStartsNewTurn =
+    incomingMessage.startsNewTurn !== undefined
+      ? incomingMessage.startsNewTurn
+      : existingMessage.startsNewTurn;
   const nextSource = incomingMessage.source ?? existingMessage.source;
 
   if (
     existingMessage.text === nextText &&
+    existingMessage.asyncUserInput === nextAsyncUserInput &&
     existingMessage.streaming === incomingMessage.streaming &&
     existingMessage.attachments === nextAttachments &&
     providerReferenceArraysEqual(existingMessage.skills, nextSkills) &&
     providerReferenceArraysEqual(existingMessage.mentions, nextMentions) &&
     existingMessage.completedAt === nextCompletedAt &&
+    existingMessage.updatedAt === nextUpdatedAt &&
     existingMessage.turnId === nextTurnId &&
     existingMessage.dispatchMode === nextDispatchMode &&
     existingMessage.dispatchOrigin === nextDispatchOrigin &&
+    existingMessage.startsNewTurn === nextStartsNewTurn &&
     existingMessage.source === nextSource
   ) {
     return null;
@@ -628,6 +693,8 @@ function mergeStreamingMessage(
   return {
     ...existingMessage,
     text: nextText,
+    updatedAt: nextUpdatedAt,
+    ...(nextAsyncUserInput ? { asyncUserInput: nextAsyncUserInput } : {}),
     streaming: incomingMessage.streaming,
     ...(nextAttachments ? { attachments: nextAttachments } : {}),
     ...(nextSkills && nextSkills.length > 0 ? { skills: [...nextSkills] } : {}),
@@ -635,6 +702,7 @@ function mergeStreamingMessage(
     ...(nextTurnId !== undefined ? { turnId: nextTurnId } : {}),
     ...(nextDispatchMode !== undefined ? { dispatchMode: nextDispatchMode } : {}),
     ...(nextDispatchOrigin !== undefined ? { dispatchOrigin: nextDispatchOrigin } : {}),
+    ...(nextStartsNewTurn !== undefined ? { startsNewTurn: nextStartsNewTurn } : {}),
     ...(nextSource !== undefined ? { source: nextSource } : {}),
     ...(nextCompletedAt !== undefined ? { completedAt: nextCompletedAt } : {}),
   };
@@ -642,13 +710,26 @@ function mergeStreamingMessage(
 
 function applyThreadMessageSentEvent(thread: Thread, event: ThreadMessageSentEvent): Thread {
   const payload = event.payload;
+  // Single backward scan: streaming deltas target the newest message, so walking from the tail
+  // finds it in O(1) instead of scanning the (up to MAX_THREAD_MESSAGES) list front-to-back on
+  // every delta. Message ids are unique per thread, so scan direction cannot change the match.
+  let existingIndex = -1;
+  for (let index = thread.messages.length - 1; index >= 0; index -= 1) {
+    if (thread.messages[index]!.id === payload.messageId) {
+      existingIndex = index;
+      break;
+    }
+  }
+  const existingMessage = existingIndex >= 0 ? thread.messages[existingIndex] : undefined;
   const incomingMessage = normalizeChatMessage(
     {
       id: payload.messageId,
       role: payload.role,
       text: payload.text,
+      ...(payload.asyncUserInput ? { asyncUserInput: payload.asyncUserInput } : {}),
       dispatchMode: payload.dispatchMode,
       dispatchOrigin: payload.dispatchOrigin,
+      startsNewTurn: payload.startsNewTurn,
       turnId: payload.turnId,
       attachments: payload.attachments ?? [],
       ...(payload.skills !== undefined ? { skills: payload.skills } : {}),
@@ -658,21 +739,15 @@ function applyThreadMessageSentEvent(thread: Thread, event: ThreadMessageSentEve
       createdAt: payload.createdAt,
       updatedAt: payload.updatedAt,
     },
-    thread.messages.find((message) => message.id === payload.messageId),
+    existingMessage,
   );
-  const existingIndex = thread.messages.findIndex((message) => message.id === payload.messageId);
   let messages = thread.messages;
 
-  if (existingIndex >= 0) {
-    const existingMessage = thread.messages[existingIndex];
-    if (!existingMessage) {
-      return thread;
-    }
+  if (existingMessage) {
     const mergedMessage = mergeStreamingMessage(existingMessage, incomingMessage);
     if (mergedMessage !== null) {
-      messages = thread.messages.map((message, index) =>
-        index === existingIndex ? mergedMessage : message,
-      );
+      // Only the affected slot is replaced; every other message stays reference-identical.
+      messages = thread.messages.with(existingIndex, mergedMessage);
     }
   } else {
     messages = [...thread.messages, incomingMessage].slice(-MAX_THREAD_MESSAGES);
@@ -712,12 +787,18 @@ function applyThreadMessageSentEvent(thread: Thread, event: ThreadMessageSentEve
     });
   }
 
+  const humanMessageAt = resolveHumanMessageAt(incomingMessage);
+  const latestHumanMessageAt =
+    humanMessageAt !== null && humanMessageAt > (thread.latestHumanMessageAt ?? "")
+      ? humanMessageAt
+      : thread.latestHumanMessageAt;
   const updatedAt =
     thread.updatedAt && thread.updatedAt > payload.updatedAt ? thread.updatedAt : payload.updatedAt;
   if (
     messages === thread.messages &&
     turnDiffSummaries === thread.turnDiffSummaries &&
     latestTurn === thread.latestTurn &&
+    latestHumanMessageAt === thread.latestHumanMessageAt &&
     updatedAt === thread.updatedAt
   ) {
     return thread;
@@ -728,6 +809,7 @@ function applyThreadMessageSentEvent(thread: Thread, event: ThreadMessageSentEve
     messages,
     turnDiffSummaries,
     latestTurn,
+    ...(latestHumanMessageAt !== undefined ? { latestHumanMessageAt } : {}),
     updatedAt,
   };
 }
@@ -778,6 +860,7 @@ function applyOrchestrationEvent(
           scripts: event.payload.scripts,
           isPinned: event.payload.isPinned ?? false,
           spaceId: event.payload.spaceId ?? null,
+          additionalFolders: event.payload.additionalFolders ?? [],
           createdAt: event.payload.createdAt,
           updatedAt: event.payload.updatedAt,
         },
@@ -808,6 +891,7 @@ function applyOrchestrationEvent(
             event.payload.spaceId !== undefined
               ? event.payload.spaceId
               : (existingProject.spaceId ?? null),
+          additionalFolders: existingProject.additionalFolders,
           createdAt: existingProject.createdAt ?? event.payload.updatedAt,
           updatedAt: event.payload.updatedAt,
         },
@@ -816,12 +900,12 @@ function applyOrchestrationEvent(
     }
 
     case "project.deleted": {
-      return removeDeletedProjectFromClientState(state, event.payload.projectId);
+      return removeDeletedProjectFromClientState(state, event.payload.projectId, event.sequence);
     }
 
     case "thread.deleted":
       // Deletion is terminal for both active sidebar rows and archived settings rows.
-      return removeDeletedThreadFromClientState(state, event.payload.threadId);
+      return removeDeletedThreadFromClientState(state, event.payload.threadId, event.sequence);
 
     case "thread.meta-updated":
       return applyThreadUpdate(
@@ -843,6 +927,10 @@ function applyOrchestrationEvent(
             event.payload.worktreePath !== undefined
               ? event.payload.worktreePath
               : thread.worktreePath;
+          const nextWorkingDirectory =
+            event.payload.workingDirectory !== undefined
+              ? event.payload.workingDirectory
+              : (thread.workingDirectory ?? null);
           const nextAssociatedWorktreePath =
             event.payload.associatedWorktreePath !== undefined
               ? event.payload.associatedWorktreePath
@@ -873,7 +961,9 @@ function applyOrchestrationEvent(
             (thread.updatedAt ?? thread.createdAt) > event.payload.updatedAt
               ? thread.updatedAt
               : event.payload.updatedAt;
-          const cwdChanged = thread.worktreePath !== nextWorktreePath;
+          const cwdChanged =
+            thread.worktreePath !== nextWorktreePath ||
+            (thread.workingDirectory ?? null) !== nextWorkingDirectory;
 
           if (
             (event.payload.title === undefined || event.payload.title === thread.title) &&
@@ -881,12 +971,22 @@ function applyOrchestrationEvent(
             (event.payload.envMode === undefined || event.payload.envMode === thread.envMode) &&
             nextBranch === thread.branch &&
             nextWorktreePath === thread.worktreePath &&
+            nextWorkingDirectory === (thread.workingDirectory ?? null) &&
             nextAssociatedWorktreePath === (thread.associatedWorktreePath ?? null) &&
             nextAssociatedWorktreeBranch === (thread.associatedWorktreeBranch ?? null) &&
             nextAssociatedWorktreeRef === (thread.associatedWorktreeRef ?? null) &&
             nextCreateBranchFlowCompleted === (thread.createBranchFlowCompleted ?? false) &&
             (event.payload.isPinned === undefined ||
               event.payload.isPinned === (thread.isPinned ?? false)) &&
+            (event.payload.settledAt === undefined ||
+              (event.payload.settledAt ?? null) === (thread.settledAt ?? null)) &&
+            (event.payload.snoozedUntil === undefined ||
+              (event.payload.snoozedUntil ?? null) === (thread.snoozedUntil ?? null)) &&
+            (event.payload.snoozeReminderAt === undefined ||
+              (event.payload.snoozeReminderAt ?? null) === (thread.snoozeReminderAt ?? null)) &&
+            ((event.payload.snoozedUntil === undefined &&
+              event.payload.snoozeReminderAt === undefined) ||
+              thread.snoozeSequence === event.sequence) &&
             (event.payload.parentThreadId === undefined ||
               (event.payload.parentThreadId ?? null) === (thread.parentThreadId ?? null)) &&
             (event.payload.subagentAgentId === undefined ||
@@ -901,9 +1001,14 @@ function applyOrchestrationEvent(
               (event.payload.handoff ?? null) === (thread.handoff ?? null)) &&
             (event.payload.pinnedMessages === undefined ||
               deepEqualJson(event.payload.pinnedMessages, thread.pinnedMessages ?? null)) &&
-            (event.payload.threadMarkers === undefined ||
-              deepEqualJson(event.payload.threadMarkers, thread.threadMarkers ?? null)) &&
             (event.payload.notes === undefined || event.payload.notes === (thread.notes ?? "")) &&
+            (event.payload.goal === undefined || event.payload.goal === (thread.goal ?? "")) &&
+            (event.payload.goalStartedAt === undefined ||
+              (event.payload.goalStartedAt ?? null) === (thread.goalStartedAt ?? null)) &&
+            (event.payload.goalPausedAt === undefined ||
+              (event.payload.goalPausedAt ?? null) === (thread.goalPausedAt ?? null)) &&
+            (event.payload.goalAchievements === undefined ||
+              deepEqualJson(event.payload.goalAchievements, thread.goalAchievements ?? null)) &&
             nextUpdatedAt === thread.updatedAt
           ) {
             return thread;
@@ -916,11 +1021,25 @@ function applyOrchestrationEvent(
             ...(event.payload.envMode !== undefined ? { envMode: event.payload.envMode } : {}),
             branch: nextBranch,
             worktreePath: nextWorktreePath,
+            workingDirectory: nextWorkingDirectory,
             associatedWorktreePath: nextAssociatedWorktreePath,
             associatedWorktreeBranch: nextAssociatedWorktreeBranch,
             associatedWorktreeRef: nextAssociatedWorktreeRef,
             createBranchFlowCompleted: nextCreateBranchFlowCompleted,
             ...(event.payload.isPinned !== undefined ? { isPinned: event.payload.isPinned } : {}),
+            ...(event.payload.settledAt !== undefined
+              ? { settledAt: event.payload.settledAt }
+              : {}),
+            ...(event.payload.snoozedUntil !== undefined
+              ? { snoozedUntil: event.payload.snoozedUntil }
+              : {}),
+            ...(event.payload.snoozeReminderAt !== undefined
+              ? { snoozeReminderAt: event.payload.snoozeReminderAt }
+              : {}),
+            ...(event.payload.snoozedUntil !== undefined ||
+            event.payload.snoozeReminderAt !== undefined
+              ? { snoozeSequence: event.sequence }
+              : {}),
             ...(event.payload.parentThreadId !== undefined
               ? { parentThreadId: event.payload.parentThreadId }
               : {}),
@@ -944,14 +1063,22 @@ function applyOrchestrationEvent(
                   >,
                 }
               : {}),
-            ...(event.payload.threadMarkers !== undefined
+
+            ...(event.payload.notes !== undefined ? { notes: event.payload.notes } : {}),
+            ...(event.payload.goal !== undefined ? { goal: event.payload.goal } : {}),
+            ...(event.payload.goalStartedAt !== undefined
+              ? { goalStartedAt: event.payload.goalStartedAt }
+              : {}),
+            ...(event.payload.goalPausedAt !== undefined
+              ? { goalPausedAt: event.payload.goalPausedAt }
+              : {}),
+            ...(event.payload.goalAchievements !== undefined
               ? {
-                  threadMarkers: event.payload.threadMarkers as NonNullable<
-                    Thread["threadMarkers"]
+                  goalAchievements: event.payload.goalAchievements as NonNullable<
+                    Thread["goalAchievements"]
                   >,
                 }
               : {}),
-            ...(event.payload.notes !== undefined ? { notes: event.payload.notes } : {}),
             updatedAt: nextUpdatedAt,
             ...(cwdChanged ? { session: null } : {}),
           };
@@ -1049,89 +1176,25 @@ function applyOrchestrationEvent(
         { ...options, updateSidebarSummary: false },
       );
 
-    case "thread.marker-added":
+    case "thread.async-user-input-answered":
       return applyThreadUpdate(
         state,
         event.payload.threadId,
-        (thread) => {
-          const threadMarkers = addThreadMarker(thread.threadMarkers, event.payload.marker);
-          const updatedAt = resolveEventUpdatedAt(thread, event.payload.updatedAt);
-          if (thread.threadMarkers === threadMarkers && thread.updatedAt === updatedAt) {
-            return thread;
-          }
-          return {
-            ...thread,
-            threadMarkers,
-            updatedAt,
-          };
-        },
-        { ...options, updateSidebarSummary: false },
-      );
-
-    case "thread.marker-removed":
-      return applyThreadUpdate(
-        state,
-        event.payload.threadId,
-        (thread) => {
-          const threadMarkers = removeThreadMarker(thread.threadMarkers, event.payload.markerId);
-          const updatedAt = resolveEventUpdatedAt(thread, event.payload.updatedAt);
-          if (thread.threadMarkers === threadMarkers && thread.updatedAt === updatedAt) {
-            return thread;
-          }
-          return {
-            ...thread,
-            threadMarkers,
-            updatedAt,
-          };
-        },
-        { ...options, updateSidebarSummary: false },
-      );
-
-    case "thread.marker-done-set":
-      return applyThreadUpdate(
-        state,
-        event.payload.threadId,
-        (thread) => {
-          const threadMarkers = setThreadMarkerDone(
-            thread.threadMarkers,
-            event.payload.markerId,
-            event.payload.done,
-            event.payload.updatedAt,
-          );
-          const updatedAt = resolveEventUpdatedAt(thread, event.payload.updatedAt);
-          if (thread.threadMarkers === threadMarkers && thread.updatedAt === updatedAt) {
-            return thread;
-          }
-          return {
-            ...thread,
-            threadMarkers,
-            updatedAt,
-          };
-        },
-        { ...options, updateSidebarSummary: false },
-      );
-
-    case "thread.marker-label-set":
-      return applyThreadUpdate(
-        state,
-        event.payload.threadId,
-        (thread) => {
-          const threadMarkers = setThreadMarkerLabel(
-            thread.threadMarkers,
-            event.payload.markerId,
-            event.payload.label,
-            event.payload.updatedAt,
-          );
-          const updatedAt = resolveEventUpdatedAt(thread, event.payload.updatedAt);
-          if (thread.threadMarkers === threadMarkers && thread.updatedAt === updatedAt) {
-            return thread;
-          }
-          return {
-            ...thread,
-            threadMarkers,
-            updatedAt,
-          };
-        },
+        (thread) => ({
+          ...thread,
+          messages: thread.messages.map((message) =>
+            message.id === event.payload.messageId && message.asyncUserInput
+              ? {
+                  ...message,
+                  asyncUserInput: mergeAsyncUserInput(message.asyncUserInput, {
+                    ...message.asyncUserInput,
+                    response: event.payload.response,
+                    responseSequence: event.sequence,
+                  }),
+                }
+              : message,
+          ),
+        }),
         { ...options, updateSidebarSummary: false },
       );
 
@@ -1148,6 +1211,30 @@ function applyOrchestrationEvent(
         },
       );
 
+    case "thread.claude-cache-set":
+      return applyThreadUpdate(
+        state,
+        event.payload.threadId,
+        (thread) => {
+          if (
+            event.sequence <=
+            Math.max(thread.claudeCacheReviewSequence ?? 0, state.shellSnapshotSequence ?? 0)
+          ) {
+            return thread;
+          }
+          const updatedAt = resolveEventUpdatedAt(thread, event.payload.updatedAt);
+          return {
+            ...thread,
+            claudeCacheReview: deepEqualJson(thread.claudeCacheReview ?? null, event.payload.review)
+              ? (thread.claudeCacheReview ?? null)
+              : event.payload.review,
+            claudeCacheReviewSequence: event.sequence,
+            updatedAt,
+          };
+        },
+        options,
+      );
+
     case "thread.session-set":
       return applyThreadUpdate(
         state,
@@ -1159,7 +1246,10 @@ function applyOrchestrationEvent(
           if (
             session === thread.session &&
             error === thread.error &&
-            latestTurn === thread.latestTurn
+            latestTurn === thread.latestTurn &&
+            (!isSidechatThread(thread) ||
+              thread.sidechatExpiredAt ||
+              thread.sidechatLastActivityAt === event.payload.session.updatedAt)
           ) {
             return thread;
           }
@@ -1168,6 +1258,9 @@ function applyOrchestrationEvent(
             session,
             error,
             latestTurn,
+            ...(isSidechatThread(thread) && !thread.sidechatExpiredAt
+              ? { sidechatLastActivityAt: event.payload.session.updatedAt }
+              : {}),
             updatedAt:
               (thread.updatedAt ?? thread.createdAt) > event.occurredAt
                 ? thread.updatedAt
@@ -1178,6 +1271,48 @@ function applyOrchestrationEvent(
           ...options,
           updateSidebarSummary: true,
         },
+      );
+
+    case "thread.sidechat-activity-recorded":
+      return applyThreadUpdate(
+        state,
+        event.payload.threadId,
+        (thread) => {
+          const updatedAt = resolveEventUpdatedAt(thread, event.payload.lastActivityAt);
+          if (
+            thread.sidechatLastActivityAt === event.payload.lastActivityAt &&
+            thread.updatedAt === updatedAt
+          ) {
+            return thread;
+          }
+          return {
+            ...thread,
+            sidechatLastActivityAt: event.payload.lastActivityAt,
+            updatedAt,
+          };
+        },
+        { ...options, updateSidebarSummary: true },
+      );
+
+    case "thread.sidechat-expired":
+      return applyThreadUpdate(
+        state,
+        event.payload.threadId,
+        (thread) => {
+          const updatedAt = resolveEventUpdatedAt(thread, event.payload.expiredAt);
+          if (
+            thread.sidechatExpiredAt === event.payload.expiredAt &&
+            thread.updatedAt === updatedAt
+          ) {
+            return thread;
+          }
+          return {
+            ...thread,
+            sidechatExpiredAt: event.payload.expiredAt,
+            updatedAt,
+          };
+        },
+        { ...options, updateSidebarSummary: true },
       );
 
     case "thread.turn-interrupt-requested": {
@@ -1239,11 +1374,21 @@ function applyOrchestrationEvent(
             event.payload.modelSelection !== undefined
               ? normalizeModelSelection(event.payload.modelSelection, thread.modelSelection)
               : thread.modelSelection;
+          // Automation-dispatched turns must not repaint the thread's persisted
+          // modes (mirrors the server projection): the automation's modes govern
+          // its own turn only, while the user's composer selection stays put.
+          const adoptTurnModes = event.payload.dispatchOrigin !== "automation";
+          const runtimeMode = adoptTurnModes ? event.payload.runtimeMode : thread.runtimeMode;
+          const interactionMode = adoptTurnModes
+            ? event.payload.interactionMode
+            : thread.interactionMode;
           if (
             modelSelection === thread.modelSelection &&
-            thread.runtimeMode === event.payload.runtimeMode &&
-            thread.interactionMode === event.payload.interactionMode &&
+            thread.runtimeMode === runtimeMode &&
+            thread.interactionMode === interactionMode &&
             thread.pendingSourceProposedPlan === event.payload.sourceProposedPlan &&
+            (!isSidechatThread(thread) ||
+              thread.sidechatLastActivityAt === event.payload.createdAt) &&
             (thread.updatedAt ?? thread.createdAt) >= event.payload.createdAt
           ) {
             return thread;
@@ -1251,9 +1396,12 @@ function applyOrchestrationEvent(
           return {
             ...thread,
             modelSelection,
-            runtimeMode: event.payload.runtimeMode,
-            interactionMode: event.payload.interactionMode,
+            runtimeMode,
+            interactionMode,
             pendingSourceProposedPlan: event.payload.sourceProposedPlan,
+            ...(isSidechatThread(thread)
+              ? { sidechatLastActivityAt: event.payload.createdAt }
+              : {}),
             updatedAt:
               (thread.updatedAt ?? thread.createdAt) > event.payload.createdAt
                 ? thread.updatedAt
@@ -1321,7 +1469,11 @@ function applyOrchestrationEvent(
             [...thread.activities, sequencedActivity],
             thread.activities,
           );
-          const pendingInteractions = reconcilePendingInteractionsFromActivity(thread, event);
+          const pendingInteractions = reconcilePendingInteractionsFromActivity(
+            thread.id,
+            thread.pendingInteractions,
+            event,
+          );
           if (
             nextActivities === thread.activities &&
             pendingInteractions === thread.pendingInteractions
@@ -1427,10 +1579,15 @@ function applyOrchestrationEvent(
                 (right.checkpointTurnCount ?? Number.MAX_SAFE_INTEGER),
             );
           const retainedTurnIds = new Set(turnDiffSummaries.map((entry) => entry.turnId));
-          const messages = retainThreadMessagesAfterRevert(
+          const retainedMessages = retainThreadMessagesAfterRevert(
             thread.messages,
             retainedTurnIds,
             event.payload.turnCount,
+          );
+          const messages = clearRemovedAsyncUserInputResponses(
+            retainedMessages,
+            new Set(retainedMessages.map((message) => message.id)),
+            event.sequence,
           ).slice(-MAX_THREAD_MESSAGES);
           const proposedPlans = retainThreadProposedPlansAfterRevert(
             thread.proposedPlans,
@@ -1446,6 +1603,8 @@ function applyOrchestrationEvent(
             proposedPlans,
             activities,
             pendingSourceProposedPlan: undefined,
+            latestHumanMessageAt: deriveThreadSummaryMetadata({ ...thread, messages })
+              .latestHumanMessageAt,
             latestTurn:
               latestCheckpoint === null
                 ? null
@@ -1507,10 +1666,18 @@ function applyOrchestrationEvent(
           return {
             ...thread,
             turnDiffSummaries,
-            messages: rollback.messages.slice(-MAX_THREAD_MESSAGES),
+            messages: clearRemovedAsyncUserInputResponses(
+              rollback.messages,
+              new Set(rollback.messages.map((message) => message.id)),
+              event.sequence,
+            ).slice(-MAX_THREAD_MESSAGES),
             proposedPlans,
             activities,
             pendingSourceProposedPlan: undefined,
+            latestHumanMessageAt: deriveThreadSummaryMetadata({
+              ...thread,
+              messages: rollback.messages,
+            }).latestHumanMessageAt,
             latestTurn:
               latestCheckpoint === null
                 ? null
@@ -1541,6 +1708,9 @@ function applyOrchestrationEvent(
         (thread) => ({
           ...thread,
           archivedAt: event.payload.archivedAt ?? event.occurredAt,
+          snoozedUntil: null,
+          snoozeReminderAt: null,
+          snoozeSequence: event.sequence,
           updatedAt: event.payload.updatedAt ?? event.occurredAt,
         }),
         {
@@ -1583,7 +1753,9 @@ function applyThreadActivityEventBatch(
     state,
     firstEvent.payload.threadId,
     (thread) => {
-      let nextActivities = thread.activities;
+      // One accumulator for the whole batch: appending N activities used to re-normalize the
+      // full activity list N times (O(batch x activities)); it is now O(batch) amortised.
+      const activityAccumulator = createThreadActivityAccumulator(thread.activities);
       let nextPendingInteractions = thread.pendingInteractions;
       let updatedAt = thread.updatedAt ?? thread.createdAt;
       for (const event of events) {
@@ -1591,25 +1763,20 @@ function applyThreadActivityEventBatch(
           event.payload.activity,
           event.sequence,
         );
-        const normalizedActivities = normalizeActivities(
-          [...nextActivities, sequencedActivity],
-          nextActivities,
-        );
+        const activitiesChanged = activityAccumulator.append(sequencedActivity);
         const reconciledPendingInteractions = reconcilePendingInteractionsFromActivity(
-          nextPendingInteractions === undefined
-            ? thread
-            : { ...thread, pendingInteractions: nextPendingInteractions },
+          thread.id,
+          nextPendingInteractions,
           event,
         );
         const changed =
-          normalizedActivities !== nextActivities ||
-          reconciledPendingInteractions !== nextPendingInteractions;
-        nextActivities = normalizedActivities;
+          activitiesChanged || reconciledPendingInteractions !== nextPendingInteractions;
         nextPendingInteractions = reconciledPendingInteractions;
         if (changed && sequencedActivity.createdAt > updatedAt) {
           updatedAt = sequencedActivity.createdAt;
         }
       }
+      const nextActivities = activityAccumulator.result();
       if (
         nextActivities === thread.activities &&
         nextPendingInteractions === thread.pendingInteractions

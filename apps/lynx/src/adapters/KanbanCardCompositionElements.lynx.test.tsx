@@ -104,12 +104,13 @@ describe("Kanban card metadata icon fidelity", () => {
       /\.SharedKanbanCard\.ui-hover,[\s\S]*?\{[^}]*background-color:\s*var\(--card\);/s,
     );
     expect(styles).toMatch(
-      /\.SharedKanbanCardTitle\s*\{[^}]*max-height:\s*35\.75px;[^}]*overflow:\s*hidden;/s,
+      /\.SharedKanbanCardTitle\s*\{[^}]*max-height:\s*38\.5px;[^}]*overflow:\s*hidden;/s,
     );
     expect(styles).not.toMatch(
       /\.SharedKanbanCard\.ui-hover\s*\{[^}]*border-color:\s*var\(--ring\);/s,
     );
-    expect(styles).toContain(".SharedKanbanCardActions.ui-hover");
+    // Upstream's card has no per-card actions button; the context menu carries them.
+    expect(styles).not.toContain(".SharedKanbanCardActions");
   });
 
   it("reuses the canonical status icon instead of a substitute dot", () => {

@@ -11,7 +11,11 @@ export interface SidebarThreadStatusPresentation {
     | "Working"
     | "Connecting"
     | "Plan Ready"
-    | "Completed";
+    | "Completed"
+    // Upstream statuses the shared indicator shows with its default glyph until ported.
+    | "Preparing worktree"
+    | "In Background"
+    | "Reminder";
   readonly colorClass: string;
   readonly dotClass: string;
   readonly pulse: boolean;

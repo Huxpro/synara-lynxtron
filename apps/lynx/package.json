@@ -56,6 +56,7 @@
   },
   "devDependencies": {
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "@fontsource/cal-sans": "5.3.0",
     "@lynx-js/config-rsbuild-plugin": "0.2.4",
     "@lynx-js/css-serializer": "0.1.9",
     "@lynx-js/lynx-core": "0.1.4",
@@ -75,13 +76,14 @@
     "@lynx-js/websocket": "^0.0.4",
     "@rsbuild/core": "2.1.5",
     "@rsbuild/plugin-type-check": "1.5.0",
+    "@rspack/core": "2.1.5",
     "@rstest/core": "0.11.4",
     "@synara/contracts": "workspace:*",
     "@synara/shared": "workspace:*",
     "@tabler/icons": "^3.44.0",
     "@tanstack/history": "^1.162.0",
-    "@tanstack/react-query": "^5.101.4",
-    "@tanstack/react-router": "^1.170.18",
+    "@tanstack/react-query": "^5.90.0",
+    "@tanstack/react-router": "^1.160.2",
     "@testing-library/jest-dom": "^6.9.0",
     "@types/react": "^18.3.24",
     "@types/ws": "^8.18.1",
@@ -106,7 +108,7 @@
     "unified": "^11.0.5",
     "url-search-params-polyfill": "^8.2.5",
     "ws": "^8.21.1",
-    "zustand": "^5.0.14"
+    "zustand": "^5.0.11"
   },
   "engines": {
     "node": ">=22.18.0"

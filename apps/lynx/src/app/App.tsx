@@ -64,17 +64,12 @@ async function readPersistedAppearance(): Promise<{
   const { hydrateLynxComposerDraftStore } = await import(
     /* webpackMode: "eager" */ "../adapters/composerDraftStore.lynx"
   );
-  const { useWorkspaceStore } = await import(
-    /* webpackMode: "eager" */ "@synara-web/workspaceStore"
+  const { rehydratePersistedStores } = await import(
+    /* webpackMode: "eager" */ "./persistedStoreHydration.lynx"
   );
-  const { useTerminalStateStore } = await import(
-    /* webpackMode: "eager" */ "@synara-web/terminalStateStore"
-  );
-  await Promise.all([
-    hydrateLynxComposerDraftStore(),
-    useWorkspaceStore.persist.rehydrate(),
-    useTerminalStateStore.persist.rehydrate(),
-  ]);
+  // The shared stores were created while the mirror was empty; load what was saved
+  // before SessionSync (gated on this function) can make any of them write.
+  await Promise.all([hydrateLynxComposerDraftStore(), rehydratePersistedStores()]);
   const themeRaw = webStorage.getItem(THEME_STORAGE_KEY);
   return {
     appearance: readSettingsAppearanceProjection(
@@ -103,7 +98,6 @@ export function App() {
     readonly initialTerminalOpen?: unknown;
     readonly initialTemporaryOpen?: unknown;
     readonly initialSettingsTarget?: unknown;
-    readonly initialWorkspaceVisible?: unknown;
     readonly initialExplorerOpen?: unknown;
     readonly initialExplorerPresentationMode?: unknown;
     readonly initialExplorerActionMenuOpen?: unknown;
@@ -150,7 +144,6 @@ export function App() {
     typeof initData.initialSettingsTarget === "string" && initData.initialSettingsTarget.trim()
       ? initData.initialSettingsTarget.trim()
       : null;
-  const initialWorkspaceVisible = initData.initialWorkspaceVisible === true;
   const initialRoute =
     typeof initData.initialRoute === "string" && initData.initialRoute.startsWith("/")
       ? initData.initialRoute
@@ -309,7 +302,6 @@ export function App() {
               initialTerminalOpen={initialTerminalOpen}
               initialTemporaryOpen={initialTemporaryOpen}
               initialSettingsTarget={initialSettingsTarget}
-              initialWorkspaceVisible={initialWorkspaceVisible}
               initialRoute={initialRoute}
               initialExplorerOpen={initialExplorerOpen}
               initialExplorerPresentationMode={initialExplorerPresentationMode}

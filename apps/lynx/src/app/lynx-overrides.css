@@ -20,6 +20,14 @@
   --color-emerald-700: #047857;
   --color-indigo-500: #6366f1;
   --color-zinc-500: #71717a;
+  /* Project palette (tokens.css --project-*): Tailwind v4 oklch values in sRGB. */
+  --color-orange-500: #ff6900;
+  --color-yellow-400: #fdc700;
+  --color-yellow-500: #f0b100;
+  --color-green-500: #00c950;
+  --color-blue-500: #2b7fff;
+  --color-violet-500: #8e51ff;
+  --color-pink-500: #f6339a;
 
   /* Lynx 4.1 desktop currently drops semantic custom properties whose value
      is another custom property from an imported sheet. Restate the small
@@ -32,7 +40,7 @@
   --popover-foreground: #262626;
   --primary: #171717;
   --primary-foreground: #ffffff;
-  --secondary: rgba(0, 0, 0, 0.04);
+  --secondary: rgba(0, 0, 0, 0.03);
   --secondary-foreground: #262626;
   --muted: rgba(0, 0, 0, 0.04);
   --muted-foreground: #737373;
@@ -64,14 +72,14 @@
   --color-text-accent: #0169cc;
   --color-background-surface: #fcfcfc;
   --color-background-elevated-primary: #ffffff;
-  --color-background-elevated-secondary: rgba(0, 0, 0, 0.04);
+  --color-background-elevated-secondary: rgba(0, 0, 0, 0.03);
   --color-background-button-secondary-hover: rgba(0, 0, 0, 0.06);
   --app-user-message-background: rgba(13, 13, 13, 0.04);
   --sidebar: #ffffff;
   --sidebar-foreground: #262626;
   --sidebar-primary: #171717;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: rgba(0, 0, 0, 0.04);
+  --sidebar-accent: rgba(0, 0, 0, 0.03);
   --sidebar-accent-active: rgba(0, 0, 0, 0.06);
   --sidebar-accent-foreground: #262626;
   --sidebar-border: rgba(0, 0, 0, 0.08);

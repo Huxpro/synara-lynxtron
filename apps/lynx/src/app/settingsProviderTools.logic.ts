@@ -31,12 +31,6 @@ function providerFieldRawValue(settings: ServerSettingsView, id: ProviderTextFie
       return settings.providers.grok.binaryPath;
     case "droidBinaryPath":
       return settings.providers.droid.binaryPath;
-    case "kiloBinaryPath":
-      return settings.providers.kilo.binaryPath;
-    case "kiloServerUrl":
-      return settings.providers.kilo.serverUrl;
-    case "kiloServerPassword":
-      return "";
     case "openCodeBinaryPath":
       return settings.providers.opencode.binaryPath;
     case "openCodeServerUrl":
@@ -74,12 +68,6 @@ export function providerFieldPatch(id: ProviderTextFieldId, value: string): Serv
       return { providers: { grok: { binaryPath: value } } };
     case "droidBinaryPath":
       return { providers: { droid: { binaryPath: value } } };
-    case "kiloBinaryPath":
-      return { providers: { kilo: { binaryPath: value } } };
-    case "kiloServerUrl":
-      return { providers: { kilo: { serverUrl: value } } };
-    case "kiloServerPassword":
-      return { providers: { kilo: { serverPassword: value } } };
     case "openCodeBinaryPath":
       return { providers: { opencode: { binaryPath: value } } };
     case "openCodeServerUrl":
@@ -116,11 +104,6 @@ export function providerToolResetPatch(): ServerSettingsPatch {
       droid: {
         binaryPath: DEFAULT_SERVER_SETTINGS_VIEW.providers.droid.binaryPath,
       },
-      kilo: {
-        binaryPath: DEFAULT_SERVER_SETTINGS_VIEW.providers.kilo.binaryPath,
-        serverUrl: DEFAULT_SERVER_SETTINGS_VIEW.providers.kilo.serverUrl,
-        serverPassword: "",
-      },
       opencode: {
         binaryPath: DEFAULT_SERVER_SETTINGS_VIEW.providers.opencode.binaryPath,
         serverUrl: DEFAULT_SERVER_SETTINGS_VIEW.providers.opencode.serverUrl,
@@ -148,9 +131,7 @@ export function isProviderToolDirty(
       );
     }
     if (field.kind === "password") {
-      return field.settingsKey === "kiloServerPassword"
-        ? settings.providers.kilo.serverPasswordConfigured
-        : settings.providers.opencode.serverPasswordConfigured;
+      return settings.providers.opencode.serverPasswordConfigured;
     }
     return providerFieldValue(settings, field.settingsKey) !== "";
   });

@@ -15,7 +15,6 @@ const defaults: SettingsGeneralValues = {
   sidebarThreadSortOrder: "updated_at",
   showChatsSection: true,
   showStudioSection: true,
-  showWorkspaceSection: false,
   environmentPanelDefaultOpen: false,
   showEnvironmentUsage: true,
   showEnvironmentRepository: true,
@@ -23,7 +22,6 @@ const defaults: SettingsGeneralValues = {
   showEnvironmentEditor: true,
   showEnvironmentRecap: true,
   showEnvironmentPinned: true,
-  showEnvironmentMarkers: true,
   showEnvironmentInstructions: true,
   showEnvironmentNotepad: true,
 };
@@ -36,7 +34,7 @@ describe("SettingsGeneralComposition", () => {
       "Sidebar sections",
       "Environment panel",
     ]);
-    expect(SETTINGS_GENERAL_SECTIONS.flatMap((section) => section.rows)).toHaveLength(17);
+    expect(SETTINGS_GENERAL_SECTIONS.flatMap((section) => section.rows)).toHaveLength(15);
   });
 
   it("renders canonical copy and changed-row reset availability", () => {
@@ -48,7 +46,7 @@ describe("SettingsGeneralComposition", () => {
       />,
     );
     expect(markup).toContain("Choose the provider used for new chats.");
-    expect(markup).toContain("Show the Workspace tab in the sidebar switcher.");
+    expect(markup).toContain("Show the Studio tab in the sidebar switcher.");
     expect(markup).toContain("Reset chats section to default");
     expect(markup).not.toContain("Reset studio section to default");
   });

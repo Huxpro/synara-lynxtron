@@ -12,18 +12,18 @@ import {
 } from "~/components/SidebarSurfaceContentElements";
 
 export function SidebarSurfaceContent(props: {
-  readonly prelude?: ReactNode;
+  readonly prelude?: ReactNode | undefined;
   /**
    * When present the settings navigation replaces the surface itself: no segment
    * picker, no primary navigation and no surface body are rendered. Prelude and
    * trailing stay mounted so their own visibility rules keep deciding.
    */
-  readonly settingsNavigation?: ReactNode;
-  readonly picker?: ReactNode;
+  readonly settingsNavigation?: ReactNode | undefined;
+  readonly picker?: ReactNode | undefined;
   readonly surfaceKey: string;
-  readonly navigation?: ReactNode;
-  readonly body?: ReactNode;
-  readonly trailing?: ReactNode;
+  readonly navigation?: ReactNode | undefined;
+  readonly body?: ReactNode | undefined;
+  readonly trailing?: ReactNode | undefined;
 }) {
   return (
     <SidebarContentFrameElement>

@@ -2,11 +2,12 @@
 // Purpose: Lynx replacement for `@tanstack/react-router` (resolved in its place
 //   by lynx.config.ts). The router's component layer crashes on ReactLynx
 //   (P2-V1), so Lynx routes with a bare memory history (`app/router.tsx`). The
-//   upstream state layer still asks the router where the app is, through four
+//   upstream state layer still asks the router where the app is, through a few
 //   hooks; they are served here from that same history.
 // Layer: L1 platform adapter (lynx implementation)
-// Exports: useRouterState, useParams, useSearch, useNavigate — the subset the
-//   generated `EventRouter` and `hooks/useDiffRouteSearch` use. Anything else
+// Exports: useRouter, useRouterState, useParams, useSearch, useNavigate — the
+//   subset the generated `EventRouter`, `hooks/useDiffRouteSearch` and
+//   `hooks/useCommittedPathname` use. Anything else
 //   imported from the package is undefined on Lynx by design.
 //
 // Thread-neutral at module scope. Until `bindLynxRouterHistory` runs (a
@@ -30,6 +31,11 @@ export interface LynxRouterLocation {
 
 export interface LynxRouterState {
   readonly location: LynxRouterLocation;
+  /**
+   * Always false: the memory history publishes a navigation in one update, so
+   * pathname and params never disagree (what `useCommittedPathname` guards).
+   */
+  readonly isLoading: false;
 }
 
 export interface LynxNavigateOptions {
@@ -103,7 +109,7 @@ function resolveLocation(href: string): ResolvedLocation {
   // not percent-decoded, matching `parseRoute` in app/router.tsx.
   const threadMatch = THREAD_ROUTE_PATTERN.exec(pathname);
   return {
-    state: { location: { href, pathname, search } },
+    state: { location: { href, pathname, search }, isLoading: false },
     params: threadMatch ? { threadId: threadMatch[1]! } : {},
   };
 }
@@ -116,6 +122,18 @@ function useResolvedLocation(): ResolvedLocation {
   const href = useSyncExternalStore(subscribe, readHref, readHref);
   if (lastResolved?.href !== href) lastResolved = { href, value: resolveLocation(href) };
   return lastResolved.value;
+}
+
+/** Identity only: upstream keys per-router caches on the router object. */
+export interface LynxRouter {
+  readonly navigate: (options: LynxNavigateOptions) => Promise<void>;
+}
+
+const lynxRouter: LynxRouter = { navigate: (options) => navigate(options) };
+
+/** One router for the app's one history; stable across renders. */
+export function useRouter(): LynxRouter {
+  return lynxRouter;
 }
 
 export function useRouterState<T = LynxRouterState>(options?: {

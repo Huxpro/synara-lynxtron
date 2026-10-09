@@ -4,14 +4,42 @@
  * Keeps the sidebar search UX aligned with the shared command primitives so
  * keyboard navigation and shortcut labels behave like the rest of the app.
  */
-import { type FilesystemBrowseResult, type ProviderKind } from "@synara/contracts";
+import {
+  BugReportIcon,
+  CheckIcon,
+  ChevronRightIcon,
+  DeviceLaptopIcon,
+  DownloadIcon,
+  FolderAddIcon,
+  ImportThreadIcon,
+  MoonIcon,
+  NewThreadIcon,
+  SettingsIcon,
+  SidechatIcon,
+  SunIcon,
+  UsageGaugeIcon,
+  FolderIcon,
+  FolderOpenIcon,
+} from "~/lib/icons";
+import {
+  type FilesystemBrowseResult,
+  ORCHESTRATION_SEARCH_THREADS_MAX_LIMIT,
+  ORCHESTRATION_SEARCH_THREADS_MIN_QUERY_LENGTH,
+  type ProjectImportProvider,
+  PROVIDER_DISPLAY_NAMES,
+  type ProviderInstanceId,
+} from "@synara/contracts";
 import { isGenericChatThreadTitle } from "@synara/shared/chatThreads";
-import { type ComponentType, useEffect, useState } from "react";
+import { Autocomplete as AutocompletePrimitive } from "@base-ui/react/autocomplete";
+import { LuArrowLeft, LuCornerLeftUp } from "react-icons/lu";
+import { type ComponentType, useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { formatRelativeTime } from "~/lib/relativeTime";
+import { useDebouncedValue } from "@tanstack/react-pacer";
+import { ProjectSidebarIcon } from "./ProjectSidebarIcon";
+import { ProviderIcon as SharedProviderIcon } from "./ProviderIcon";
 import { readNativeApi } from "~/nativeApi";
-import { isMacPlatform } from "~/lib/utils";
-import { Kbd, KbdGroup } from "~/components/ui/kbd";
+import { cn, getNavigatorPlatform, isMacPlatform } from "~/lib/utils";
+import { ShortcutKbd } from "./ui/kbd";
 import {
   appendBrowsePathSegment,
   canNavigateUp,
@@ -30,70 +58,77 @@ import {
   type SidebarSearchProject,
   type SidebarSearchTheme,
   type SidebarSearchThread,
-  SIDEBAR_SEARCH_LIMITS,
+  buildSidebarSearchServerThreadMatches,
   matchSidebarSearchActions,
   matchSidebarSearchProjects,
   matchSidebarSearchThemes,
   matchSidebarSearchThreads,
 } from "./SidebarSearchPalette.logic";
-import {
-  SidebarSearchPaletteGlyph as PaletteGlyph,
-  type SidebarSearchPaletteGlyphKind,
-  SidebarSearchPaletteMark as PaletteMark,
-  SidebarSearchPaletteText as PaletteText,
-  SidebarSearchPaletteView as PaletteView,
-} from "~/components/SidebarSearchPaletteElements";
-import { useTheme } from "~/hooks/useTheme";
+import { useTheme } from "../hooks/useTheme";
 import { getAvailableCodeThemes, getCodeThemeSeed } from "../theme/theme.logic";
 import {
   Command,
   CommandDialog,
   CommandDialogPopup,
-  CommandEmpty,
-  CommandFooter,
   CommandGroup,
   CommandGroupLabel,
-  CommandInput,
   CommandItem,
   CommandList,
-  CommandPanel,
-  CommandSeparator,
-} from "~/components/ui/command";
-import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { ShortcutKbd } from "~/components/ui/shortcut-kbd";
+  CommandStatus,
+} from "./ui/command";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import type { ThreadImportTarget } from "~/lib/threadImport";
+import type { SettingsSectionId } from "~/settingsNavigation";
+import {
+  rankSettingsSearchEntries,
+  settingsSearchEntryTarget,
+  settingsSectionLabel,
+} from "~/settingsSearchIndex";
 
-import { getNavigatorPlatform } from "~/platform/env";
-export type SidebarSearchPaletteMode = "search" | "import";
+// Palette skin — shared with the ⌘P workspace palette so both surfaces read as one
+// menu: 44px bare input, settings-scale type, 30px squircle rows, single keycap pills.
+const PALETTE_INPUT_CLASS =
+  "font-system-ui h-11 w-full min-w-0 bg-transparent px-3.5 text-ui-lg text-foreground outline-none placeholder:text-muted-foreground/70";
+const PALETTE_GROUP_LABEL_CLASS =
+  "flex items-center justify-between px-2.5 pt-2 pb-1 font-normal text-ui-xs text-muted-foreground/70";
+const PALETTE_ITEM_CLASS =
+  "palette-row squircle min-h-[30px] cursor-pointer items-center gap-3 rounded-[20px] px-2.5 py-0 text-foreground data-highlighted:bg-zinc-500/8 data-highlighted:text-foreground sm:min-h-[30px] dark:data-highlighted:bg-zinc-400/10";
+const PALETTE_ICON_CLASS = "size-3.5 shrink-0 text-muted-foreground";
+const PALETTE_TEXT_CLASS = "min-w-0 flex-1 truncate text-ui";
+const PALETTE_META_CLASS = "max-w-[45%] shrink-0 truncate text-ui-meta text-muted-foreground/70";
+const PALETTE_KBD_CLASS = "h-[17px] min-w-0 text-ui-xs";
+const PALETTE_STATUS_CLASS = "px-4 pt-1 pb-3 text-ui text-muted-foreground/79";
+
+// Actions that live under the "Settings" heading when the palette is idle.
+const SETTINGS_ACTION_IDS: ReadonlySet<string> = new Set([
+  "settings",
+  "usage-settings",
+  "feedback",
+]);
+
+export type SidebarSearchPaletteMode = "search" | "import" | "import-projects";
 
 interface SidebarSearchPaletteProps {
   open: boolean;
-  initialQuery?: string;
-  query?: string;
   mode: SidebarSearchPaletteMode;
   onModeChange: (mode: SidebarSearchPaletteMode) => void;
-  onQueryChange?: (query: string) => void;
   onOpenChange: (open: boolean) => void;
   actions: readonly SidebarSearchAction[];
   projects: readonly SidebarSearchProject[];
   threads: readonly SidebarSearchThread[];
-  searchStatus?: "ready" | "loading" | "error";
-  searchErrorMessage?: string | null;
-  onRetrySearch?: () => void;
   onCreateChat: () => void;
   onCreateThread: () => void;
   onAddProjectPath: (path: string, options?: { createIfMissing?: boolean }) => Promise<void>;
   homeDir: string | null;
-  onOpenSettings: () => void;
+  onOpenSettings: (section?: SettingsSectionId, options?: { target?: string }) => void;
   onOpenFeedback: () => void;
   onOpenUsageSettings: () => void;
   onOpenProject: (projectId: string) => void;
   onOpenThread: (threadId: string) => void;
-  importProviders: readonly ImportProviderKind[];
-  onImportThread: (provider: ImportProviderKind, externalId: string) => Promise<void>;
-  onBrowseFilesystem?: (partialPath: string) => Promise<FilesystemBrowseResult | null>;
-  filesystemBrowseEnabled?: boolean;
-  appearanceEnabled?: boolean;
+  importTargets: readonly ThreadImportTarget[];
+  onImportThread: (target: ThreadImportTarget, externalId: string) => Promise<void>;
+  onImportProjects: (providers: readonly ProjectImportProvider[]) => void;
 }
 
 // Structural so the Lynx CommandInput (which has no DOM input target) can
@@ -109,10 +144,16 @@ interface BrowseInputKeyEvent {
   preventDefault(): void;
 }
 
-export type ImportProviderKind = Extract<
-  ProviderKind,
-  "codex" | "claudeAgent" | "cursor" | "kilo" | "opencode"
->;
+// Second page of the "Import projects" command: pick which local tool to import from.
+const IMPORT_PROJECTS_SOURCES: readonly {
+  id: string;
+  label: string;
+  providers: readonly ProjectImportProvider[];
+}[] = [
+  { id: "claude-code", label: "From Claude Code", providers: ["claudeAgent"] },
+  { id: "codex", label: "From Codex", providers: ["codex"] },
+  { id: "all", label: "From Claude Code and Codex", providers: ["claudeAgent", "codex"] },
+];
 
 function actionHandler(
   actionId: string,
@@ -139,17 +180,20 @@ function actionHandler(
 
 type IconComponent = ComponentType<{ className?: string }>;
 
-const ACTION_GLYPHS: Record<string, SidebarSearchPaletteGlyphKind> = {
-  "new-chat": "chat",
-  "new-thread": "new-thread",
-  "add-project": "folder-closed",
-  "import-thread": "arrow-down-to-line",
-  feedback: "bug",
-  settings: "settings",
-  "usage-settings": "settings",
+const ACTION_ICONS: Record<string, IconComponent> = {
+  "new-chat": SidechatIcon,
+  "new-thread": NewThreadIcon,
+  "add-project": FolderAddIcon,
+  "import-thread": ImportThreadIcon,
+  "import-projects": DownloadIcon,
+  feedback: BugReportIcon,
+  settings: SettingsIcon,
+  "usage-settings": UsageGaugeIcon,
 };
 
 const BROWSE_STALE_TIME_MS = 10_000;
+const THREAD_SEARCH_DEBOUNCE_MS = 150;
+const THREAD_SEARCH_STALE_TIME_MS = 10_000;
 
 const EMPTY_BROWSE_ENTRIES: FilesystemBrowseResult["entries"] = [];
 
@@ -160,15 +204,6 @@ function expandHomeInPath(value: string, homeDir: string | null): string {
     return `${homeDir}${value.slice(1)}`;
   }
   return value;
-}
-
-function PaletteIcon(props: { icon: IconComponent }) {
-  const Icon = props.icon;
-  return (
-    <PaletteView className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
-      <Icon className="size-[15px]" />
-    </PaletteView>
-  );
 }
 
 type ThemeCommandItem = {
@@ -271,9 +306,9 @@ function buildThemeCommandItems(input: {
 
 function CodeThemeBadge(props: { accent: string; background: string; foreground: string }) {
   return (
-    <PaletteText
+    <span
       aria-hidden="true"
-      className="inline-flex size-6 shrink-0 items-center justify-center rounded-full border font-medium text-[10px] leading-none tracking-[-0.01em]"
+      className="inline-flex size-6 shrink-0 items-center justify-center rounded-full border font-medium text-ui-xs leading-none tracking-[-0.01em]"
       style={{
         backgroundColor: props.background,
         borderColor: `${props.foreground}26`,
@@ -281,23 +316,15 @@ function CodeThemeBadge(props: { accent: string; background: string; foreground:
       }}
     >
       Aa
-    </PaletteText>
+    </span>
   );
 }
 
-const THEME_MODE_GLYPHS: Record<"system" | "light" | "dark", SidebarSearchPaletteGlyphKind> = {
-  system: "device-laptop",
-  light: "sun",
-  dark: "moon",
+const THEME_MODE_ICONS: Record<"system" | "light" | "dark", IconComponent> = {
+  system: DeviceLaptopIcon,
+  light: SunIcon,
+  dark: MoonIcon,
 };
-
-function ProviderIcon(props: { provider: ProviderKind }) {
-  return (
-    <PaletteView className="flex size-5 shrink-0 items-center justify-center">
-      <PaletteGlyph kind="provider" provider={props.provider} className="size-[15px]" />
-    </PaletteView>
-  );
-}
 
 function threadMatchLabel(input: {
   matchKind: "message" | "project" | "title";
@@ -319,11 +346,11 @@ function tokenizeHighlightQuery(query: string): string[] {
     .split(/\s+/)
     .filter((token) => token.length > 0)
     .filter((token, index, allTokens) => allTokens.indexOf(token) === index);
-  return tokens.sort((left, right) => right.length - left.length);
+  return tokens.toSorted((left, right) => right.length - left.length);
 }
 
 function escapeRegExp(value: string): string {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return value.replaceAll(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function HighlightedText(props: { text: string; query: string; className?: string }) {
@@ -347,46 +374,40 @@ function HighlightedText(props: { text: string; query: string; className?: strin
   }
 
   return (
-    <PaletteText className={props.className}>
+    <span className={props.className}>
       {segments.map((segment) =>
         segment.highlighted ? (
-          <PaletteMark
+          <mark
             key={segment.key}
             className="rounded-[3px] bg-amber-200/80 px-[1px] text-current dark:bg-amber-300/25"
           >
             {segment.text}
-          </PaletteMark>
+          </mark>
         ) : (
-          <PaletteText key={segment.key}>{segment.text}</PaletteText>
+          <span key={segment.key}>{segment.text}</span>
         ),
       )}
-    </PaletteText>
+    </span>
   );
 }
 
 export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
   const { activeTheme, resolvedTheme, setCodeThemeId, setTheme, theme } = useTheme();
-  const [localQuery, setLocalQuery] = useState(() => props.initialQuery ?? "");
-  const [localSearchQuery, setLocalSearchQuery] = useState(() => props.initialQuery ?? "");
-  const query = props.query ?? localQuery;
-  const searchQuery = props.query ?? localSearchQuery;
-  const setQuery = (value: string) => {
-    props.onQueryChange?.(value);
-    if (props.query === undefined) setLocalQuery(value);
-  };
-  const setSearchQuery = setLocalSearchQuery;
+  const [query, setQuery] = useState("");
   const [highlightedItemValue, setHighlightedItemValue] = useState<string | null>(null);
-  const [importProviderState, setImportProvider] = useState<ImportProviderKind>(
-    props.importProviders[0] ?? "codex",
+  const [importTargetId, setImportTargetId] = useState<ProviderInstanceId | null>(
+    props.importTargets[0]?.instanceId ?? null,
   );
   const [importId, setImportId] = useState("");
   const [importError, setImportError] = useState<string | null>(null);
   const [isImporting, setIsImporting] = useState(false);
   // Derived fallback (no syncing effect): an unavailable provider renders as
   // the first available one, and the user's pick resurfaces if it comes back.
-  const importProvider = props.importProviders.includes(importProviderState)
-    ? importProviderState
-    : (props.importProviders[0] ?? "codex");
+  const importTarget =
+    props.importTargets.find((target) => target.instanceId === importTargetId) ??
+    props.importTargets[0] ??
+    null;
+  const importProvider = importTarget?.provider ?? "codex";
   // Error keyed to the query it was produced for: editing the query derives
   // straight back to null with no state-clearing effect.
   const [addProjectErrorState, setAddProjectErrorState] = useState<{
@@ -407,40 +428,23 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
     }
     // Timeout-0 keeps the reset writes asynchronous (the palette is already
     // hidden), which keeps this component eligible for React Compiler.
-    const timeoutId = setTimeout(() => {
-      setLocalQuery("");
-      setLocalSearchQuery("");
+    const timeoutId = window.setTimeout(() => {
+      setQuery("");
       setHighlightedItemValue(null);
-      setImportProvider(props.importProviders[0] ?? "codex");
+      setImportTargetId(props.importTargets[0]?.instanceId ?? null);
       setImportId("");
       setImportError(null);
       setIsImporting(false);
       setAddProjectError(null);
       setIsAddingProject(false);
     }, 0);
-    return () => clearTimeout(timeoutId);
-  }, [props.importProviders, props.open]);
+    return () => window.clearTimeout(timeoutId);
+  }, [props.importTargets, props.open]);
 
   const platform = getNavigatorPlatform();
   const trimmedQuery = query.trim();
   const unsupportedWindowsPath = isUnsupportedWindowsProjectPath(trimmedQuery, platform);
-  const isBrowsing =
-    props.filesystemBrowseEnabled !== false &&
-    trimmedQuery.length > 0 &&
-    isFilesystemBrowseQuery(trimmedQuery, platform);
-  useEffect(() => {
-    if (isBrowsing) {
-      setSearchQuery(query);
-      return;
-    }
-    const timeoutId = setTimeout(() => {
-      setSearchQuery(query);
-    }, SIDEBAR_SEARCH_LIMITS.debounceMs);
-    return () => clearTimeout(timeoutId);
-  }, [isBrowsing, query]);
-  const isSearchPending = !isBrowsing && searchQuery !== query;
-  const searchStatus = props.searchStatus ?? "ready";
-  const searchUnavailable = searchStatus !== "ready";
+  const isBrowsing = trimmedQuery.length > 0 && isFilesystemBrowseQuery(trimmedQuery, platform);
   const canBrowse = isBrowsing && !unsupportedWindowsPath;
   const browseDirectoryPath = canBrowse ? getBrowseDirectoryPath(query) : "";
   const leafSegment =
@@ -452,9 +456,6 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
       queryKey: ["sidebar-palette-browse", expandedBrowsePath],
       queryFn: async () => {
         if (!canBrowse || expandedBrowsePath.length === 0) return null;
-        if (props.onBrowseFilesystem) {
-          return await props.onBrowseFilesystem(expandedBrowsePath);
-        }
         const api = readNativeApi();
         if (!api) return null;
         return await api.filesystem.browse({ partialPath: expandedBrowsePath });
@@ -480,51 +481,87 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
   const browseParentPath = canBrowse ? getBrowseParentPath(query) : null;
   const canBrowseUp = canBrowse && canNavigateUp(query);
 
-  const matchedActions =
-    isBrowsing || isSearchPending || searchUnavailable
-      ? []
-      : matchSidebarSearchActions(props.actions, searchQuery);
-  const themeCommandItems =
-    props.appearanceEnabled === false || isBrowsing || isSearchPending || searchUnavailable
-      ? []
-      : buildThemeCommandItems({
-          query: searchQuery,
-          resolvedTheme,
-          theme,
-        });
-  const currentCodeThemeItems: SidebarSearchTheme[] =
-    props.appearanceEnabled === false
-      ? []
-      : getAvailableCodeThemes(resolvedTheme).map((option) => ({
-          id: `theme-code:${resolvedTheme}:${option.id}`,
-          type: "code-theme",
-          label: option.label,
-          description: `Apply to the current ${resolvedTheme} theme slot.`,
-          keywords: ["appearance", "theme", resolvedTheme, option.id],
-          codeThemeId: option.id,
-          variant: resolvedTheme,
-          isActive: activeTheme.codeThemeId === option.id,
-        }));
+  const matchedActions = isBrowsing ? [] : matchSidebarSearchActions(props.actions, query);
+  // Idle: "Quick actions" then "Settings", like the ⌘P menu. Searching: one flat
+  // "Actions" group so a query never has to guess which heading a hit sits under.
+  const quickActions = query
+    ? matchedActions
+    : matchedActions.filter((action) => !SETTINGS_ACTION_IDS.has(action.id));
+  const settingsActions = query
+    ? []
+    : matchedActions.filter((action) => SETTINGS_ACTION_IDS.has(action.id));
+  const themeCommandItems = buildThemeCommandItems({
+    query,
+    resolvedTheme,
+    theme,
+  });
+  const currentCodeThemeItems: SidebarSearchTheme[] = getAvailableCodeThemes(resolvedTheme).map(
+    (option) => ({
+      id: `theme-code:${resolvedTheme}:${option.id}`,
+      type: "code-theme",
+      label: option.label,
+      description: `Apply to the current ${resolvedTheme} theme slot.`,
+      keywords: ["appearance", "theme", resolvedTheme, option.id],
+      codeThemeId: option.id,
+      variant: resolvedTheme,
+      isActive: activeTheme.codeThemeId === option.id,
+    }),
+  );
   const matchedCurrentThemes =
-    isBrowsing || isSearchPending || searchUnavailable || searchQuery.trim().length === 0
+    isBrowsing || query.trim().length === 0
       ? []
-      : matchSidebarSearchThemes(currentCodeThemeItems, searchQuery);
+      : matchSidebarSearchThemes(currentCodeThemeItems, query);
   const showThemeSection =
     !isBrowsing &&
-    searchQuery.trim().length > 0 &&
+    query.trim().length > 0 &&
     (themeCommandItems.length > 0 || matchedCurrentThemes.length > 0);
-  const matchedProjects =
-    isBrowsing || isSearchPending || searchUnavailable
-      ? []
-      : matchSidebarSearchProjects(props.projects, searchQuery);
-  const matchedThreads =
-    isBrowsing || isSearchPending || searchUnavailable
-      ? []
-      : matchSidebarSearchThreads(props.threads, searchQuery);
+  const matchedProjects = isBrowsing ? [] : matchSidebarSearchProjects(props.projects, query);
+  // Message bodies are only loaded for recently opened threads, so message
+  // matches for the rest come from the server's persisted history.
+  const [debouncedThreadQuery] = useDebouncedValue(trimmedQuery, {
+    wait: THREAD_SEARCH_DEBOUNCE_MS,
+  });
+  const { data: serverThreadSearch } = useQuery({
+    queryKey: ["sidebar-palette-thread-search", debouncedThreadQuery],
+    queryFn: async () => {
+      const api = readNativeApi();
+      if (!api) return null;
+      const result = await api.orchestration.searchThreads({
+        query: debouncedThreadQuery,
+        limit: ORCHESTRATION_SEARCH_THREADS_MAX_LIMIT,
+      });
+      return { query: debouncedThreadQuery, matches: result.matches };
+    },
+    enabled:
+      props.open &&
+      !isBrowsing &&
+      debouncedThreadQuery.length >= ORCHESTRATION_SEARCH_THREADS_MIN_QUERY_LENGTH,
+    staleTime: THREAD_SEARCH_STALE_TIME_MS,
+    placeholderData: (previous) => previous,
+  });
+  const serverThreadMatches = useMemo(
+    () =>
+      trimmedQuery.length >= ORCHESTRATION_SEARCH_THREADS_MIN_QUERY_LENGTH
+        ? buildSidebarSearchServerThreadMatches(serverThreadSearch, trimmedQuery)
+        : undefined,
+    [serverThreadSearch, trimmedQuery],
+  );
+  const matchedSettings = isBrowsing ? [] : rankSettingsSearchEntries(query, 12);
+  // Scoring normalizes and scans every message of every thread; keep it keyed
+  // on the thread set and query so highlight/keyboard/state re-renders and
+  // unrelated store flushes do not rescore the whole workspace.
+  const matchedThreads = useMemo(
+    () =>
+      isBrowsing
+        ? []
+        : matchSidebarSearchThreads(props.threads, query, undefined, serverThreadMatches),
+    [isBrowsing, props.threads, query, serverThreadMatches],
+  );
   const hasSearchResults =
     matchedActions.length > 0 ||
     themeCommandItems.length > 0 ||
     matchedCurrentThemes.length > 0 ||
+    matchedSettings.length > 0 ||
     matchedProjects.length > 0 ||
     matchedThreads.length > 0;
   const importFieldLabel = importProvider === "codex" ? "Thread ID" : "Session ID";
@@ -533,8 +570,8 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
       ? "Paste a Claude session id"
       : importProvider === "cursor"
         ? "Paste a Cursor session id"
-        : importProvider === "kilo"
-          ? "Paste a Kilo session id"
+        : importProvider === "droid"
+          ? "Paste a Droid session id"
           : importProvider === "opencode"
             ? "Paste an OpenCode session id"
             : "Paste a Codex thread id";
@@ -632,12 +669,12 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
 
   const submitImport = () => {
     const normalizedImportId = importId.trim();
-    if (!normalizedImportId || isImporting) {
+    if (!normalizedImportId || !importTarget || isImporting) {
       return;
     }
     setImportError(null);
     setIsImporting(true);
-    void Promise.resolve(props.onImportThread(importProvider, normalizedImportId))
+    void Promise.resolve(props.onImportThread(importTarget, normalizedImportId))
       .then(() => {
         props.onOpenChange(false);
       })
@@ -649,13 +686,64 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
       });
   };
 
+  const renderActionItem = (action: SidebarSearchAction) => {
+    const onSelect = action.run ?? actionHandler(action.id, props);
+    const Icon = action.icon ?? ACTION_ICONS[action.id];
+    return (
+      <CommandItem
+        key={action.id}
+        value={`action:${action.id}`}
+        className={PALETTE_ITEM_CLASS}
+        onMouseDown={(event) => {
+          event.preventDefault();
+        }}
+        onClick={() => {
+          if (action.id === "import-thread") {
+            setImportError(null);
+            setImportId("");
+            setImportTargetId(props.importTargets[0]?.instanceId ?? null);
+            props.onModeChange("import");
+            return;
+          }
+          if (action.id === "import-projects") {
+            setQuery("");
+            props.onModeChange("import-projects");
+            return;
+          }
+          if (!onSelect) return;
+          props.onOpenChange(false);
+          onSelect();
+        }}
+      >
+        {Icon ? (
+          <Icon className={PALETTE_ICON_CLASS} />
+        ) : (
+          <span className="size-3.5 shrink-0" aria-hidden="true" />
+        )}
+        <span className={PALETTE_TEXT_CLASS}>{action.label}</span>
+        {action.metaLabel ? <span className={PALETTE_META_CLASS}>{action.metaLabel}</span> : null}
+        {action.shortcutLabel ? (
+          <ShortcutKbd shortcutLabel={action.shortcutLabel} className={PALETTE_KBD_CLASS} />
+        ) : null}
+        {action.id === "import-projects" ? (
+          <ChevronRightIcon className={PALETTE_ICON_CLASS} />
+        ) : null}
+      </CommandItem>
+    );
+  };
+
+  const normalizedSourceQuery = query.trim().toLowerCase();
+  const importProjectsSources = IMPORT_PROJECTS_SOURCES.filter((source) =>
+    source.label.toLowerCase().includes(normalizedSourceQuery),
+  );
+
   return (
     <CommandDialog open={props.open} onOpenChange={props.onOpenChange}>
-      <CommandDialogPopup>
+      <CommandDialogPopup className="max-w-lg rounded-3xl border-transparent before:rounded-[calc(var(--radius-3xl)-1px)] before:shadow-none dark:before:shadow-none">
         {props.mode === "import" ? (
-          <PaletteView className="flex flex-col overflow-hidden">
-            <PaletteView className="border-b border-border/70 px-4 py-3">
-              <PaletteView className="flex items-start gap-3">
+          <div className="flex flex-col overflow-hidden">
+            <div className="border-b border-border/70 px-4 py-3">
+              <div className="flex items-start gap-3">
                 <Button
                   size="icon"
                   variant="ghost"
@@ -665,64 +753,63 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                     props.onModeChange("search");
                   }}
                 >
-                  <PaletteGlyph kind="arrow-left" className="size-4" />
+                  <LuArrowLeft className="size-4" />
                 </Button>
-                <PaletteView>
-                  <PaletteText className="text-sm font-medium text-foreground">
+                <div>
+                  <p className="text-ui-lg leading-snug font-medium text-foreground">
                     Import thread from provider
-                  </PaletteText>
-                  <PaletteText className="mt-1 text-xs text-muted-foreground">
+                  </p>
+                  <p className="mt-1 text-ui leading-snug text-muted-foreground">
                     Create a local app thread and resume it from an existing provider id.
-                  </PaletteText>
-                </PaletteView>
-              </PaletteView>
-            </PaletteView>
-            <PaletteView className="space-y-4 px-4 py-4">
-              <PaletteView className="space-y-2">
-                <PaletteText className="text-xs font-medium text-muted-foreground">
-                  Provider
-                </PaletteText>
-                <PaletteView className="flex gap-2">
-                  {props.importProviders.map((provider) => (
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-4 px-4 py-4">
+              <div className="space-y-2">
+                <p className="text-ui leading-snug font-medium text-muted-foreground">Provider</p>
+                <div
+                  role="radiogroup"
+                  aria-label="Provider account"
+                  className="grid max-h-44 grid-cols-1 gap-2 overflow-y-auto overscroll-contain pe-1 sm:grid-cols-2"
+                  data-testid="import-target-options"
+                >
+                  {props.importTargets.map((target) => (
                     <Button
-                      key={provider}
-                      className={
-                        importProvider === provider
-                          ? "flex-1 justify-start border-border bg-muted text-foreground hover:bg-muted/80"
-                          : "flex-1 justify-start"
-                      }
+                      key={target.instanceId}
+                      role="radio"
+                      aria-checked={importTarget?.instanceId === target.instanceId}
+                      aria-label={`${target.label}, ${PROVIDER_DISPLAY_NAMES[target.provider]}`}
+                      className="h-auto min-h-11 w-full min-w-0 justify-start gap-2 rounded-lg px-3 py-2 text-left aria-checked:bg-muted aria-checked:hover:bg-muted/80 sm:h-auto sm:w-full"
                       variant="outline"
-                      onClick={() => setImportProvider(provider)}
+                      onClick={() => setImportTargetId(target.instanceId)}
                     >
-                      <ProviderIcon provider={provider} />
-                      {provider === "claudeAgent"
-                        ? "Claude"
-                        : provider === "cursor"
-                          ? "Cursor"
-                          : provider === "kilo"
-                            ? "Kilo"
-                            : provider === "opencode"
-                              ? "OpenCode"
-                              : "Codex"}
+                      <SharedProviderIcon provider={target.provider} className="size-[15px]" />
+                      <span className="min-w-0 flex-1">
+                        <span className="block truncate text-ui font-medium">{target.label}</span>
+                        <span className="block truncate text-ui-xs text-muted-foreground">
+                          {PROVIDER_DISPLAY_NAMES[target.provider]}
+                        </span>
+                      </span>
                     </Button>
                   ))}
-                </PaletteView>
-                {props.importProviders.length === 0 ? (
-                  <PaletteText className="text-xs text-muted-foreground">
+                </div>
+                {props.importTargets.length === 0 ? (
+                  <p className="text-ui leading-snug text-muted-foreground">
                     No connected providers expose chat import in this build.
-                  </PaletteText>
+                  </p>
                 ) : null}
-              </PaletteView>
-              <PaletteView className="space-y-2">
-                <PaletteText className="text-xs font-medium text-muted-foreground">
+              </div>
+              <div className="space-y-2">
+                <p className="text-ui leading-snug font-medium text-muted-foreground">
                   {importFieldLabel}
-                </PaletteText>
+                </p>
                 <Input
                   autoFocus
                   nativeInput
                   placeholder={importPlaceholder}
                   value={importId}
-                  disabled={props.importProviders.length === 0}
+                  disabled={props.importTargets.length === 0}
                   onChange={(event) => setImportId(event.currentTarget.value)}
                   onKeyDown={(event) => {
                     if (event.key === "Enter") {
@@ -731,24 +818,26 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                     }
                   }}
                 />
-                <PaletteText className="text-xs text-muted-foreground">
+                <p className="text-ui leading-snug text-muted-foreground">
                   {importProvider === "claudeAgent"
                     ? "Claude resumes a persisted session by session id."
                     : importProvider === "cursor"
                       ? "Cursor resumes a persisted session by session id."
-                      : importProvider === "kilo"
-                        ? "Kilo resumes a persisted session by session id."
+                      : importProvider === "droid"
+                        ? "Droid resumes a persisted session by session id."
                         : importProvider === "opencode"
                           ? "OpenCode resumes a persisted session by session id."
-                          : "Codex resumes a persisted thread by thread id."}
-                </PaletteText>
-              </PaletteView>
+                          : importProvider === "omp"
+                            ? "Oh My Pi resumes a persisted session by session id."
+                            : "Codex resumes a persisted thread by thread id."}
+                </p>
+              </div>
               {importError ? (
-                <PaletteText className="rounded-md border border-destructive/20 bg-destructive/5 px-3 py-2 text-sm text-destructive">
+                <p className="rounded-md border border-destructive/20 bg-destructive/5 px-3 py-2 text-ui leading-snug text-destructive">
                   {importError}
-                </PaletteText>
+                </p>
               ) : null}
-              <PaletteView className="flex justify-end gap-2">
+              <div className="flex justify-end gap-2">
                 <Button
                   variant="ghost"
                   onClick={() => {
@@ -760,17 +849,84 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                 </Button>
                 <Button
                   disabled={
-                    props.importProviders.length === 0 ||
-                    importId.trim().length === 0 ||
-                    isImporting
+                    props.importTargets.length === 0 || importId.trim().length === 0 || isImporting
                   }
                   onClick={submitImport}
                 >
                   {isImporting ? "Importing..." : "Import"}
                 </Button>
-              </PaletteView>
-            </PaletteView>
-          </PaletteView>
+              </div>
+            </div>
+          </div>
+        ) : props.mode === "import-projects" ? (
+          <Command autoHighlight="always" mode="none">
+            <div className="flex items-center ps-2">
+              <Button
+                size="icon"
+                variant="ghost"
+                aria-label="Back to commands"
+                className="size-7 shrink-0"
+                onClick={() => {
+                  setQuery("");
+                  props.onModeChange("search");
+                }}
+              >
+                <LuArrowLeft className="size-3.5" />
+              </Button>
+              <AutocompletePrimitive.Input
+                autoFocus
+                className={cn(PALETTE_INPUT_CLASS, "ps-2")}
+                placeholder="Import projects from…"
+                value={query}
+                onChange={(event) => setQuery(event.currentTarget.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Backspace" && query.length === 0) {
+                    event.preventDefault();
+                    props.onModeChange("search");
+                  }
+                }}
+              />
+            </div>
+            <CommandList className="max-h-[min(30rem,60vh)] not-empty:px-1.5 not-empty:pt-0 not-empty:pb-2">
+              {importProjectsSources.length > 0 ? (
+                <CommandGroup>
+                  <CommandGroupLabel className={PALETTE_GROUP_LABEL_CLASS}>
+                    <span>Import projects</span>
+                  </CommandGroupLabel>
+                  {importProjectsSources.map((source) => (
+                    <CommandItem
+                      key={source.id}
+                      value={`import-projects:${source.id}`}
+                      className={PALETTE_ITEM_CLASS}
+                      onMouseDown={(event) => {
+                        event.preventDefault();
+                      }}
+                      onClick={() => {
+                        props.onOpenChange(false);
+                        props.onImportProjects(source.providers);
+                      }}
+                    >
+                      <span className="flex shrink-0 items-center gap-1">
+                        {source.providers.map((provider) => (
+                          <SharedProviderIcon
+                            key={provider}
+                            provider={provider}
+                            className={PALETTE_ICON_CLASS}
+                          />
+                        ))}
+                      </span>
+                      <span className={PALETTE_TEXT_CLASS}>{source.label}</span>
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              ) : null}
+            </CommandList>
+            <CommandStatus className="p-0">
+              {importProjectsSources.length === 0 ? (
+                <div className={PALETTE_STATUS_CLASS}>No matching import source.</div>
+              ) : null}
+            </CommandStatus>
+          </Command>
         ) : (
           <>
             <Command
@@ -780,320 +936,269 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                 setHighlightedItemValue(typeof value === "string" ? value : null);
               }}
             >
-              <CommandPanel className="overflow-hidden">
-                <PaletteView className="relative">
-                  <CommandInput
-                    placeholder={
-                      isBrowsing
-                        ? "Enter project path (e.g. ~/projects/my-app)"
-                        : "Search projects, threads, and actions"
+              {/* Bare input, no hairline: the header row IS the input, like ⌘P. */}
+              <div className="relative">
+                <AutocompletePrimitive.Input
+                  autoFocus
+                  className={cn(
+                    PALETTE_INPUT_CLASS,
+                    isBrowsing ? (willCreateMissingFolder ? "pe-36" : "pe-24") : undefined,
+                  )}
+                  placeholder={
+                    isBrowsing
+                      ? "Enter project path (e.g. ~/projects/my-app)"
+                      : "Search chats or run a command"
+                  }
+                  value={query}
+                  onChange={(event) => setQuery(event.currentTarget.value)}
+                  onKeyDown={handleBrowseInputKeyDown}
+                />
+                {isBrowsing ? (
+                  <Button
+                    variant="outline"
+                    size="xs"
+                    tabIndex={-1}
+                    className="-translate-y-1/2 absolute end-3 top-1/2 gap-1.5 pe-1 ps-2"
+                    disabled={
+                      isAddingProject ||
+                      unsupportedWindowsPath ||
+                      (trimmedQuery.length === 0 && !highlightedFolderPath) ||
+                      (!highlightedFolderPath && isExplicitRelativeProjectPath(trimmedQuery))
                     }
-                    value={query}
-                    onChange={(event) => setQuery(event.currentTarget.value)}
-                    onKeyDown={handleBrowseInputKeyDown}
-                    startAddon={
-                      isBrowsing ? (
-                        <PaletteGlyph kind="folder-plus" className="text-muted-foreground" />
-                      ) : (
-                        <PaletteGlyph kind="search" className="text-muted-foreground" />
-                      )
+                    onMouseDown={(event) => {
+                      event.preventDefault();
+                    }}
+                    onClick={() => void submitBrowsePath()}
+                    title={
+                      hasHighlightedFolderItem
+                        ? `${browseSubmitLabel} highlighted folder (${submitModifierLabel} Enter)`
+                        : `${browseSubmitLabel} (Enter)`
                     }
-                    className={
-                      isBrowsing ? (willCreateMissingFolder ? "pe-36" : "pe-24") : undefined
-                    }
-                  />
-                  {isBrowsing ? (
-                    <Button
-                      variant="outline"
-                      size="xs"
-                      tabIndex={-1}
-                      className="-translate-y-1/2 absolute end-3 top-1/2 gap-1.5 pe-1 ps-2"
-                      disabled={
-                        isAddingProject ||
-                        unsupportedWindowsPath ||
-                        (trimmedQuery.length === 0 && !highlightedFolderPath) ||
-                        (!highlightedFolderPath && isExplicitRelativeProjectPath(trimmedQuery))
+                  >
+                    <span>{browseSubmitLabel}</span>
+                    <ShortcutKbd
+                      shortcutLabel={
+                        hasHighlightedFolderItem ? `${submitModifierLabel} Enter` : "Enter"
                       }
-                      onMouseDown={(event) => {
-                        event.preventDefault();
-                      }}
-                      onClick={() => void submitBrowsePath()}
-                      title={
-                        hasHighlightedFolderItem
-                          ? `${browseSubmitLabel} highlighted folder (${submitModifierLabel} Enter)`
-                          : `${browseSubmitLabel} (Enter)`
-                      }
-                    >
-                      <PaletteText>{browseSubmitLabel}</PaletteText>
-                      <KbdGroup className="pointer-events-none -me-0.5 items-center gap-1">
-                        <Kbd>
-                          {hasHighlightedFolderItem ? `${submitModifierLabel} Enter` : "Enter"}
-                        </Kbd>
-                      </KbdGroup>
-                    </Button>
-                  ) : null}
-                </PaletteView>
-                <CommandList className="max-h-[min(24rem,60vh)] not-empty:px-1.5 not-empty:pt-0 not-empty:pb-1.5">
-                  {isBrowsing ? (
-                    unsupportedWindowsPath ? (
-                      <CommandEmpty className="py-10">
-                        <PaletteText className="text-center text-sm text-muted-foreground/79">
-                          Windows paths are not supported on this platform.
-                        </PaletteText>
-                      </CommandEmpty>
-                    ) : (
-                      <>
-                        {canBrowseUp || filteredBrowseEntries.length > 0 ? (
-                          <CommandGroup>
-                            {canBrowseUp ? (
-                              <CommandItem
-                                key="browse-up"
-                                value="__browse_up__"
-                                className="cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5"
-                                onMouseDown={(event) => {
-                                  event.preventDefault();
-                                }}
-                                onClick={() => {
-                                  if (browseParentPath) setQuery(browseParentPath);
-                                }}
-                              >
-                                <PaletteGlyph
-                                  kind="corner-left-up"
-                                  className="size-3.5 text-muted-foreground/60"
-                                />
-                                <PaletteText className="min-w-0 flex-1 truncate text-sm text-foreground">
-                                  ..
-                                </PaletteText>
-                              </CommandItem>
-                            ) : null}
-                            {filteredBrowseEntries.map((entry) => (
-                              <CommandItem
-                                key={entry.fullPath}
-                                value={`folder:${entry.fullPath}`}
-                                className="cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5"
-                                onMouseDown={(event) => {
-                                  event.preventDefault();
-                                }}
-                                onClick={() => setQuery(appendBrowsePathSegment(query, entry.name))}
-                              >
-                                <PaletteGlyph
-                                  kind="folder-closed"
-                                  className="size-3.5 text-muted-foreground/60"
-                                />
-                                <PaletteText className="min-w-0 flex-1 truncate text-sm text-foreground">
-                                  {entry.name}
-                                </PaletteText>
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        ) : !isBrowseFetching ? (
-                          <PaletteText className="px-3 py-2 text-sm text-muted-foreground">
-                            No matching folders.
-                          </PaletteText>
-                        ) : null}
-                        {willCreateMissingFolder ? (
-                          <PaletteText className="mx-1.5 mt-2 rounded-md border border-dashed border-[color:var(--color-border)] px-3 py-2 text-sm text-muted-foreground">
-                            Press Enter to create{" "}
-                            <PaletteText className="text-foreground">{trimmedQuery}</PaletteText>{" "}
-                            and add it as a project.
-                          </PaletteText>
-                        ) : null}
-                        {addProjectError ? (
-                          <PaletteText className="mx-1.5 mt-2 rounded-md border border-destructive/20 bg-destructive/5 px-3 py-2 text-sm text-destructive">
-                            {addProjectError}
-                          </PaletteText>
-                        ) : null}
-                      </>
-                    )
-                  ) : null}
+                      groupClassName="-me-0.5"
+                    />
+                  </Button>
+                ) : null}
+              </div>
+              <CommandList className="max-h-[min(30rem,60vh)] not-empty:px-1.5 not-empty:pt-0 not-empty:pb-2">
+                {canBrowse && (canBrowseUp || filteredBrowseEntries.length > 0) ? (
+                  <CommandGroup>
+                    {canBrowseUp ? (
+                      <CommandItem
+                        key="browse-up"
+                        value="__browse_up__"
+                        className={PALETTE_ITEM_CLASS}
+                        onMouseDown={(event) => {
+                          event.preventDefault();
+                        }}
+                        onClick={() => {
+                          if (browseParentPath) setQuery(browseParentPath);
+                        }}
+                      >
+                        <LuCornerLeftUp className={PALETTE_ICON_CLASS} />
+                        <span className={PALETTE_TEXT_CLASS}>..</span>
+                      </CommandItem>
+                    ) : null}
+                    {filteredBrowseEntries.map((entry) => (
+                      <CommandItem
+                        key={entry.fullPath}
+                        value={`folder:${entry.fullPath}`}
+                        className={PALETTE_ITEM_CLASS}
+                        onMouseDown={(event) => {
+                          event.preventDefault();
+                        }}
+                        onClick={() => setQuery(appendBrowsePathSegment(query, entry.name))}
+                      >
+                        <FolderIcon className={PALETTE_ICON_CLASS} />
+                        <span className={PALETTE_TEXT_CLASS}>{entry.name}</span>
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                ) : null}
 
-                  {!isBrowsing && matchedActions.length > 0 ? (
-                    <CommandGroup>
-                      <CommandGroupLabel className="pt-0 pb-1.5 pl-3">Suggested</CommandGroupLabel>
-                      {matchedActions.map((action) => {
-                        const onSelect = action.run ?? actionHandler(action.id, props);
-                        const Icon = action.icon;
-                        const glyph = ACTION_GLYPHS[action.id];
-                        return (
-                          <CommandItem
-                            key={action.id}
-                            value={`action:${action.id}`}
-                            className="cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5"
-                            onMouseDown={(event) => {
-                              event.preventDefault();
-                            }}
-                            onClick={() => {
-                              if (action.id === "import-thread") {
-                                setImportError(null);
-                                setImportId("");
-                                setImportProvider(props.importProviders[0] ?? "codex");
-                                props.onModeChange("import");
-                                return;
-                              }
-                              if (!onSelect) return;
-                              props.onOpenChange(false);
-                              onSelect();
-                            }}
-                          >
-                            {Icon ? (
-                              <PaletteIcon icon={Icon} />
-                            ) : glyph ? (
-                              <PaletteView className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
-                                <PaletteGlyph kind={glyph} className="size-[15px]" />
-                              </PaletteView>
-                            ) : null}
-                            <PaletteText className="min-w-0 flex-1 truncate text-sm text-foreground">
-                              {action.label}
-                            </PaletteText>
-                            {action.shortcutLabel ? (
-                              <ShortcutKbd
-                                shortcutLabel={action.shortcutLabel}
-                                groupClassName="shrink-0"
-                              />
-                            ) : null}
-                          </CommandItem>
-                        );
-                      })}
-                    </CommandGroup>
-                  ) : null}
-
-                  {!isBrowsing &&
-                  matchedActions.length > 0 &&
-                  (matchedThreads.length > 0 || matchedProjects.length > 0 || showThemeSection) ? (
-                    <CommandSeparator />
-                  ) : null}
-
-                  {!isBrowsing && matchedThreads.length > 0 ? (
-                    <CommandGroup>
-                      <CommandGroupLabel className="py-1.5 pl-3">
-                        {searchQuery ? "Threads" : "Recent"}
-                      </CommandGroupLabel>
-                      {matchedThreads.map(
-                        ({ id, matchKind, messageMatchCount, snippet, thread }) => (
-                          <CommandItem
-                            key={id}
-                            value={id}
-                            className="cursor-pointer items-center gap-2 rounded-lg px-2.5 py-2"
-                            onMouseDown={(event) => {
-                              event.preventDefault();
-                            }}
-                            onClick={() => {
-                              props.onOpenChange(false);
-                              props.onOpenThread(thread.id);
-                            }}
-                          >
-                            {isGenericChatThreadTitle(thread.title) ? null : (
-                              <ProviderIcon provider={thread.provider} />
-                            )}
-                            <PaletteView className="min-w-0 flex-1">
-                              <PaletteView className="flex items-baseline gap-3">
-                                <PaletteView className="min-w-0 flex-1 truncate text-[length:var(--app-font-size-ui,12px)] text-foreground">
-                                  <HighlightedText
-                                    text={thread.title || "Untitled thread"}
-                                    query={searchQuery}
-                                  />
-                                </PaletteView>
-                                {/* Project only, not "project · space": this column is
-                                    96px, and a thread's Space is already implied by its
-                                    project. Space stays searchable — it just does not
-                                    get to eat the name the user is scanning for. */}
-                                <PaletteText className="w-24 shrink-0 truncate text-right text-[length:var(--app-font-size-ui-meta,10px)] text-muted-foreground/79">
-                                  {thread.projectName}
-                                </PaletteText>
-                                {thread.updatedAt || thread.createdAt ? (
-                                  <PaletteText className="w-10 shrink-0 text-right text-[length:var(--app-font-size-ui-timestamp,10px)] text-muted-foreground/79">
-                                    {formatRelativeTime(thread.updatedAt ?? thread.createdAt)}
-                                  </PaletteText>
-                                ) : (
-                                  <PaletteText className="w-10 shrink-0" />
-                                )}
-                              </PaletteView>
-                              {snippet ? (
-                                <PaletteView className="mt-0.5 flex items-start gap-3">
-                                  <PaletteView className="min-w-0 flex-1 line-clamp-1 text-[length:var(--app-font-size-ui-meta,10px)] leading-5 text-muted-foreground/78">
-                                    <HighlightedText text={snippet} query={searchQuery} />
-                                  </PaletteView>
-                                  <PaletteView className="flex w-[8.5rem] shrink-0 justify-end">
-                                    {threadMatchLabel({ matchKind, messageMatchCount }) ? (
-                                      <PaletteText className="truncate text-[length:var(--app-font-size-ui-meta,10px)] text-muted-foreground/58">
-                                        {threadMatchLabel({ matchKind, messageMatchCount })}
-                                      </PaletteText>
-                                    ) : null}
-                                  </PaletteView>
-                                </PaletteView>
-                              ) : threadMatchLabel({ matchKind, messageMatchCount }) ? (
-                                <PaletteText className="mt-0.5 text-[length:var(--app-font-size-ui-meta,10px)] text-muted-foreground/58">
-                                  {threadMatchLabel({ matchKind, messageMatchCount })}
-                                </PaletteText>
-                              ) : null}
-                            </PaletteView>
-                          </CommandItem>
-                        ),
-                      )}
-                    </CommandGroup>
-                  ) : null}
-
-                  {!isBrowsing &&
-                  matchedThreads.length > 0 &&
-                  (matchedProjects.length > 0 || showThemeSection) ? (
-                    <CommandSeparator />
-                  ) : null}
-
-                  {!isBrowsing && matchedProjects.length > 0 ? (
-                    <CommandGroup>
-                      <CommandGroupLabel className="py-1.5 pl-3">Projects</CommandGroupLabel>
-                      {matchedProjects.map(({ id, project }) => (
+                {/* Recent threads lead when idle (mirrors the Ctrl+Tab switcher order);
+                    with a query the group turns into the thread matches. */}
+                {!isBrowsing && matchedThreads.length > 0 ? (
+                  <CommandGroup>
+                    <CommandGroupLabel className={PALETTE_GROUP_LABEL_CLASS}>
+                      <span>{query ? "Threads" : "Recent chats"}</span>
+                    </CommandGroupLabel>
+                    {matchedThreads.map(({ id, matchKind, messageMatchCount, snippet, thread }) => {
+                      const matchLabel = threadMatchLabel({ matchKind, messageMatchCount });
+                      const normalizedQuery = trimmedQuery.replaceAll(/\s+/g, " ").toLowerCase();
+                      const matchContext =
+                        snippet ??
+                        (matchKind === "project"
+                          ? [
+                              ...new Set([
+                                thread.projectName,
+                                thread.projectRemoteName,
+                                thread.spaceName,
+                              ]),
+                            ]
+                              .filter((name) =>
+                                name
+                                  .trim()
+                                  .replaceAll(/\s+/g, " ")
+                                  .toLowerCase()
+                                  .includes(normalizedQuery),
+                              )
+                              .join(" · ")
+                          : null);
+                      return (
                         <CommandItem
                           key={id}
                           value={id}
-                          className="cursor-pointer items-center gap-2 rounded-lg px-2.5 py-1.5"
+                          className={cn(PALETTE_ITEM_CLASS, matchContext ? "py-1" : undefined)}
                           onMouseDown={(event) => {
                             event.preventDefault();
                           }}
                           onClick={() => {
                             props.onOpenChange(false);
-                            props.onOpenProject(project.id);
+                            props.onOpenThread(thread.id);
                           }}
                         >
-                          <PaletteView className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
-                            <PaletteGlyph kind="folder-open" className="size-[15px]" />
-                          </PaletteView>
-                          <PaletteView className="min-w-0 flex-1">
-                            <PaletteView className="flex items-baseline gap-3">
-                              <PaletteText className="min-w-0 flex-1 truncate text-[length:var(--app-font-size-ui,12px)] text-foreground">
-                                {project.name || "Untitled project"}
-                              </PaletteText>
-                              {/* Opening a project from here can switch Space, so the
-                                  destination is worth naming. It rides in the same right-hand
-                                  column the thread rows use for their parent, rather than
-                                  in front of the path, which is what identifies a project. */}
-                              <PaletteText className="w-24 shrink-0 truncate text-right text-[length:var(--app-font-size-ui-meta,10px)] text-muted-foreground/79">
-                                {project.spaceName}
-                              </PaletteText>
-                            </PaletteView>
-                            <PaletteText className="truncate text-[length:var(--app-font-size-ui-meta,10px)] text-muted-foreground/79">
-                              {project.localName
-                                ? `${project.folderName} · ${project.cwd}`
-                                : project.cwd}
-                            </PaletteText>
-                          </PaletteView>
+                          <span className="flex size-3.5 shrink-0 items-center justify-center">
+                            {isGenericChatThreadTitle(thread.title) ? null : (
+                              <SharedProviderIcon
+                                provider={thread.provider}
+                                className={PALETTE_ICON_CLASS}
+                              />
+                            )}
+                          </span>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-baseline gap-3">
+                              <div className={PALETTE_TEXT_CLASS}>
+                                <HighlightedText
+                                  text={thread.title || "Untitled thread"}
+                                  query={query}
+                                />
+                              </div>
+                              {/* Keep the idle row compact; metadata search context appears below. */}
+                              <span className={PALETTE_META_CLASS}>{thread.projectName}</span>
+                            </div>
+                            {matchContext ? (
+                              <div className="flex items-start gap-3">
+                                <div className="min-w-0 flex-1 line-clamp-1 text-ui-meta leading-4 text-muted-foreground/78">
+                                  <HighlightedText text={matchContext} query={query} />
+                                </div>
+                                {matchLabel ? (
+                                  <span className="shrink-0 text-ui-meta leading-4 text-muted-foreground/58">
+                                    {matchLabel}
+                                  </span>
+                                ) : null}
+                              </div>
+                            ) : null}
+                          </div>
                         </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  ) : null}
+                      );
+                    })}
+                  </CommandGroup>
+                ) : null}
 
-                  {showThemeSection && matchedProjects.length > 0 ? <CommandSeparator /> : null}
+                {!isBrowsing && quickActions.length > 0 ? (
+                  <CommandGroup>
+                    <CommandGroupLabel className={PALETTE_GROUP_LABEL_CLASS}>
+                      <span>{query ? "Actions" : "Quick actions"}</span>
+                    </CommandGroupLabel>
+                    {quickActions.map(renderActionItem)}
+                  </CommandGroup>
+                ) : null}
 
-                  {showThemeSection ? (
-                    <>
-                      {themeCommandItems.length > 0 ? (
-                        <CommandGroup>
-                          <CommandGroupLabel className="py-1.5 pl-3">Configure</CommandGroupLabel>
-                          {themeCommandItems.map((themeCommandItem) => (
+                {!isBrowsing && settingsActions.length > 0 ? (
+                  <CommandGroup>
+                    <CommandGroupLabel className={PALETTE_GROUP_LABEL_CLASS}>
+                      <span>Settings</span>
+                    </CommandGroupLabel>
+                    {settingsActions.map(renderActionItem)}
+                  </CommandGroup>
+                ) : null}
+
+                {matchedSettings.length > 0 ? (
+                  <CommandGroup>
+                    <CommandGroupLabel className={PALETTE_GROUP_LABEL_CLASS}>
+                      <span>Settings</span>
+                    </CommandGroupLabel>
+                    {matchedSettings.map((entry) =>
+                      renderActionItem({
+                        id: `setting:${entry.id}`,
+                        label: entry.title,
+                        description: entry.keywords,
+                        metaLabel: settingsSectionLabel(entry.section),
+                        icon: SettingsIcon,
+                        run: () => {
+                          const target = settingsSearchEntryTarget(entry);
+                          props.onOpenSettings(entry.section, target ? { target } : undefined);
+                        },
+                      }),
+                    )}
+                  </CommandGroup>
+                ) : null}
+
+                {!isBrowsing && matchedProjects.length > 0 ? (
+                  <CommandGroup>
+                    <CommandGroupLabel className={PALETTE_GROUP_LABEL_CLASS}>
+                      <span>Projects</span>
+                    </CommandGroupLabel>
+                    {matchedProjects.map(({ id, project }) => (
+                      <CommandItem
+                        key={id}
+                        value={id}
+                        className={PALETTE_ITEM_CLASS}
+                        onMouseDown={(event) => {
+                          event.preventDefault();
+                        }}
+                        onClick={() => {
+                          props.onOpenChange(false);
+                          props.onOpenProject(project.id);
+                        }}
+                      >
+                        {project.appearance ? (
+                          <span className="relative inline-flex size-3.5 shrink-0 items-center justify-center text-muted-foreground">
+                            <ProjectSidebarIcon
+                              cwd={project.cwd}
+                              expanded
+                              appearance={project.appearance}
+                              glyphClassName="size-3.5"
+                            />
+                          </span>
+                        ) : (
+                          <FolderOpenIcon className={PALETTE_ICON_CLASS} />
+                        )}
+                        <span className={PALETTE_TEXT_CLASS}>
+                          {project.name || "Untitled project"}
+                        </span>
+                        {/* Opening a project from here can switch Space, so the destination
+                            is worth naming; the path is what identifies the project. */}
+                        <span className={PALETTE_META_CLASS}>
+                          {project.spaceName
+                            ? `${project.spaceName} · ${project.cwd}`
+                            : project.cwd}
+                        </span>
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                ) : null}
+
+                {showThemeSection ? (
+                  <>
+                    {themeCommandItems.length > 0 ? (
+                      <CommandGroup>
+                        <CommandGroupLabel className={PALETTE_GROUP_LABEL_CLASS}>
+                          <span>Configure</span>
+                        </CommandGroupLabel>
+                        {themeCommandItems.map((themeCommandItem) => {
+                          const ThemeIcon = THEME_MODE_ICONS[themeCommandItem.mode];
+                          return (
                             <CommandItem
                               key={themeCommandItem.id}
                               value={themeCommandItem.id}
-                              className="cursor-pointer items-center gap-3 rounded-lg px-3 py-1.5"
+                              className={PALETTE_ITEM_CLASS}
                               onMouseDown={(event) => {
                                 event.preventDefault();
                               }}
@@ -1103,161 +1208,120 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
                                 setTheme(themeCommandItem.mode);
                               }}
                             >
-                              <PaletteView className="flex size-5 shrink-0 items-center justify-center text-muted-foreground">
-                                <PaletteGlyph
-                                  kind={THEME_MODE_GLYPHS[themeCommandItem.mode]}
-                                  className="size-[15px]"
-                                />
-                              </PaletteView>
-                              <PaletteText className="min-w-0 flex-1 truncate text-[length:var(--app-font-size-ui,12px)] text-foreground">
-                                {themeCommandItem.label}
-                              </PaletteText>
-                              <PaletteText
+                              <ThemeIcon className={PALETTE_ICON_CLASS} />
+                              <span className={PALETTE_TEXT_CLASS}>{themeCommandItem.label}</span>
+                              <span
                                 className="flex size-3.5 shrink-0 items-center justify-center"
                                 aria-hidden={!themeCommandItem.isActive}
                               >
                                 {themeCommandItem.isActive ? (
-                                  <PaletteGlyph
-                                    kind="check"
-                                    className="size-3.5 text-muted-foreground/79"
-                                  />
+                                  <CheckIcon className={PALETTE_ICON_CLASS} />
                                 ) : null}
-                              </PaletteText>
+                              </span>
                             </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      ) : null}
-                      {matchedCurrentThemes.length > 0 ? (
-                        <CommandGroup>
-                          <CommandGroupLabel className="py-1.5 pl-3">
-                            {resolvedTheme === "dark" ? "Dark themes" : "Light themes"}
-                          </CommandGroupLabel>
-                          {matchedCurrentThemes.map((themeItem) => {
-                            const seed =
-                              themeItem.codeThemeId && themeItem.variant
-                                ? getCodeThemeSeed(themeItem.codeThemeId, themeItem.variant)
-                                : null;
-                            return (
-                              <CommandItem
-                                key={themeItem.id}
-                                value={themeItem.id}
-                                className="cursor-pointer items-center gap-3 rounded-lg px-3 py-1.5"
-                                onMouseDown={(event) => {
-                                  event.preventDefault();
-                                }}
-                                onClick={() => {
-                                  if (!themeItem.codeThemeId || !themeItem.variant) return;
-                                  props.onOpenChange(false);
-                                  setCodeThemeId(themeItem.variant, themeItem.codeThemeId);
-                                }}
+                          );
+                        })}
+                      </CommandGroup>
+                    ) : null}
+                    {matchedCurrentThemes.length > 0 ? (
+                      <CommandGroup>
+                        <CommandGroupLabel className={PALETTE_GROUP_LABEL_CLASS}>
+                          <span>{resolvedTheme === "dark" ? "Dark themes" : "Light themes"}</span>
+                        </CommandGroupLabel>
+                        {matchedCurrentThemes.map((themeItem) => {
+                          const seed =
+                            themeItem.codeThemeId && themeItem.variant
+                              ? getCodeThemeSeed(themeItem.codeThemeId, themeItem.variant)
+                              : null;
+                          return (
+                            <CommandItem
+                              key={themeItem.id}
+                              value={themeItem.id}
+                              className={PALETTE_ITEM_CLASS}
+                              onMouseDown={(event) => {
+                                event.preventDefault();
+                              }}
+                              onClick={() => {
+                                if (!themeItem.codeThemeId || !themeItem.variant) return;
+                                props.onOpenChange(false);
+                                setCodeThemeId(themeItem.variant, themeItem.codeThemeId);
+                              }}
+                            >
+                              {seed ? (
+                                <CodeThemeBadge
+                                  accent={seed.accent}
+                                  background={seed.surface}
+                                  foreground={seed.ink}
+                                />
+                              ) : null}
+                              <span className={PALETTE_TEXT_CLASS}>{themeItem.label}</span>
+                              <span className={PALETTE_META_CLASS}>
+                                {resolvedTheme === "dark"
+                                  ? "Dark color theme"
+                                  : "Light color theme"}
+                              </span>
+                              <span
+                                className="flex size-3.5 shrink-0 items-center justify-center"
+                                aria-hidden={!themeItem.isActive}
                               >
-                                {seed ? (
-                                  <CodeThemeBadge
-                                    accent={seed.accent}
-                                    background={seed.surface}
-                                    foreground={seed.ink}
-                                  />
+                                {themeItem.isActive ? (
+                                  <CheckIcon className={PALETTE_ICON_CLASS} />
                                 ) : null}
-                                <PaletteText className="min-w-0 flex-1 truncate text-[length:var(--app-font-size-ui,12px)] text-foreground">
-                                  {themeItem.label}
-                                </PaletteText>
-                                <PaletteText className="shrink-0 text-[length:var(--app-font-size-ui-meta,10px)] text-muted-foreground/79">
-                                  {resolvedTheme === "dark"
-                                    ? "Dark color theme"
-                                    : "Light color theme"}
-                                </PaletteText>
-                                <PaletteText
-                                  className="flex size-3.5 shrink-0 items-center justify-center"
-                                  aria-hidden={!themeItem.isActive}
-                                >
-                                  {themeItem.isActive ? (
-                                    <PaletteGlyph
-                                      kind="check"
-                                      className="size-3.5 text-muted-foreground/79"
-                                    />
-                                  ) : null}
-                                </PaletteText>
-                              </CommandItem>
-                            );
-                          })}
-                        </CommandGroup>
-                      ) : null}
-                    </>
-                  ) : null}
-
-                  {!isBrowsing && isSearchPending ? (
-                    <CommandEmpty className="py-10">
-                      <PaletteView className="flex flex-col items-center justify-center gap-2 text-center text-sm text-muted-foreground/79">
-                        <PaletteGlyph kind="search" className="size-4 opacity-70" />
-                        <PaletteText>Searching…</PaletteText>
-                      </PaletteView>
-                    </CommandEmpty>
-                  ) : null}
-
-                  {!isBrowsing && !isSearchPending && searchStatus === "loading" ? (
-                    <CommandEmpty className="py-10">
-                      <PaletteText className="text-center text-sm text-muted-foreground/79">
-                        Loading search sources…
-                      </PaletteText>
-                    </CommandEmpty>
-                  ) : null}
-
-                  {!isBrowsing && !isSearchPending && searchStatus === "error" ? (
-                    <CommandEmpty className="py-10">
-                      <PaletteView className="flex flex-col items-center justify-center gap-2 text-center text-sm text-muted-foreground/79">
-                        <PaletteText>Search sources are unavailable.</PaletteText>
-                        {props.searchErrorMessage ? (
-                          <PaletteText className="text-[length:var(--app-font-size-ui-meta,10px)]">
-                            {props.searchErrorMessage}
-                          </PaletteText>
-                        ) : null}
-                        {props.onRetrySearch ? (
-                          <Button size="xs" variant="outline" onClick={props.onRetrySearch}>
-                            Retry
-                          </Button>
-                        ) : null}
-                      </PaletteView>
-                    </CommandEmpty>
-                  ) : null}
-
-                  {!isBrowsing && !isSearchPending && !searchUnavailable && !hasSearchResults ? (
-                    <CommandEmpty className="py-10">
-                      <PaletteView className="flex flex-col items-center justify-center gap-2 text-center text-sm text-muted-foreground/79">
-                        <PaletteGlyph kind="search" className="size-4 opacity-70" />
-                        <PaletteText>No matches.</PaletteText>
-                      </PaletteView>
-                    </CommandEmpty>
-                  ) : null}
-                </CommandList>
-                <PaletteView className="h-1.5" />
-              </CommandPanel>
-              <CommandFooter>
+                              </span>
+                            </CommandItem>
+                          );
+                        })}
+                      </CommandGroup>
+                    ) : null}
+                  </>
+                ) : null}
+              </CommandList>
+              {/* Status copy and banners live outside the listbox: assistive
+                  tech treats listbox children as options, so anything that is
+                  not selectable goes in this polite live region instead. */}
+              <CommandStatus className="p-0">
                 {isBrowsing ? (
-                  <>
-                    <PaletteText>
-                      {isAddingProject
-                        ? "Adding project..."
-                        : "Type a path, ↑↓ to navigate folders."}
-                    </PaletteText>
-                    <PaletteText>
-                      {hasHighlightedFolderItem
-                        ? `Enter to open · ${submitModifierLabel}+Enter to add`
-                        : hasHighlightedBrowseItem
-                          ? "Enter to go up"
-                          : "Enter to add project"}
-                    </PaletteText>
-                  </>
-                ) : (
-                  <>
-                    <PaletteText>
-                      {props.appearanceEnabled === false
-                        ? "Jump to threads, projects, or actions."
-                        : "Jump to threads, projects, actions, or appearance."}
-                    </PaletteText>
-                    <PaletteText>Enter to open</PaletteText>
-                  </>
-                )}
-              </CommandFooter>
+                  unsupportedWindowsPath ? (
+                    <div className={PALETTE_STATUS_CLASS}>
+                      Windows paths are not supported on this platform.
+                    </div>
+                  ) : (
+                    <>
+                      {!canBrowseUp && filteredBrowseEntries.length === 0 && !isBrowseFetching ? (
+                        <div className={PALETTE_STATUS_CLASS}>No matching folders.</div>
+                      ) : null}
+                      {willCreateMissingFolder ? (
+                        <div className="palette-row squircle mx-3 mb-2 rounded-lg border border-dashed border-[color:var(--color-border)] px-3 py-2 text-ui text-muted-foreground">
+                          Press Enter to create{" "}
+                          <span className="text-foreground">{trimmedQuery}</span> and add it as a
+                          project.
+                        </div>
+                      ) : null}
+                      {addProjectError ? (
+                        <div className="palette-row squircle mx-3 mb-2 rounded-lg border border-destructive/20 bg-destructive/5 px-3 py-2 text-ui text-destructive">
+                          {addProjectError}
+                        </div>
+                      ) : null}
+                      <div className={cn(PALETTE_STATUS_CLASS, "flex justify-between gap-3")}>
+                        <span>
+                          {isAddingProject
+                            ? "Adding project..."
+                            : "Type a path, ↑↓ to navigate folders."}
+                        </span>
+                        <span>
+                          {hasHighlightedFolderItem
+                            ? `Enter to open · ${submitModifierLabel}+Enter to add`
+                            : hasHighlightedBrowseItem
+                              ? "Enter to go up"
+                              : "Enter to add project"}
+                        </span>
+                      </div>
+                    </>
+                  )
+                ) : !hasSearchResults ? (
+                  <div className={PALETTE_STATUS_CLASS}>No results.</div>
+                ) : null}
+              </CommandStatus>
             </Command>
           </>
         )}

@@ -2,9 +2,15 @@
 // Purpose: Keep pure selection-action positioning helpers separate from the browser-heavy drawer.
 // Layer: Chat terminal workspace helpers
 
-import { getViewportHeight, getViewportWidth, isBrowser } from "~/platform/env";
+import type { ContextMenuItem } from "@synara/contracts";
 
 const MULTI_CLICK_SELECTION_ACTION_DELAY_MS = 260;
+
+export function resolveTerminalSelectionContextMenuItems(
+  hasComposerTarget: boolean,
+): readonly ContextMenuItem<"add-to-chat">[] {
+  return hasComposerTarget ? [{ id: "add-to-chat", label: "Add to chat" }] : [];
+}
 
 export function resolveTerminalSelectionActionPosition(options: {
   bounds: { left: number; top: number; width: number; height: number };
@@ -14,9 +20,11 @@ export function resolveTerminalSelectionActionPosition(options: {
 }): { x: number; y: number } {
   const { bounds, selectionRect, pointer, viewport } = options;
   const viewportWidth =
-    viewport?.width ?? (isBrowser() ? getViewportWidth() : bounds.left + bounds.width + 8);
+    viewport?.width ??
+    (typeof window === "undefined" ? bounds.left + bounds.width + 8 : window.innerWidth);
   const viewportHeight =
-    viewport?.height ?? (isBrowser() ? getViewportHeight() : bounds.top + bounds.height + 8);
+    viewport?.height ??
+    (typeof window === "undefined" ? bounds.top + bounds.height + 8 : window.innerHeight);
   const drawerLeft = Math.round(bounds.left);
   const drawerTop = Math.round(bounds.top);
   const drawerRight = Math.round(bounds.left + bounds.width);

@@ -12,6 +12,7 @@ function makeDraftCard(): KanbanCard {
     column: "draft",
     title: "Document the release",
     provider: "codex",
+    providerInstanceId: null,
     isTerminal: false,
     branch: "feature/release",
     envMode: null,

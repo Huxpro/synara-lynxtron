@@ -188,7 +188,7 @@ function projectSidebarSnapshotFromInputs(
     forkSourceThreadId: thread.forkSourceThreadId ?? null,
     sidechatSourceThreadId: thread.sidechatSourceThreadId ?? null,
     handoffSourceProvider: thread.handoff?.sourceProvider ?? null,
-    envMode: thread.envMode,
+    envMode: thread.envMode ?? "local",
     branch: thread.branch,
     worktreePath: thread.worktreePath,
     associatedWorktreePath: thread.associatedWorktreePath,

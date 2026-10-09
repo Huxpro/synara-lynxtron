@@ -1,6 +1,5 @@
-import { isMacPlatform } from "./lib/utils";
+import { getNavigatorPlatform, isMacPlatform } from "./lib/utils";
 
-import { getNavigatorPlatform } from "~/platform/env";
 export type TerminalLinkKind = "url" | "path";
 
 export interface TerminalLinkMatch {

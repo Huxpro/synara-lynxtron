@@ -2,11 +2,6 @@
 // Purpose: Helpers for reading assistant text selections from the transcript without re-render churn.
 // Layer: Chat transcript interaction helpers
 
-import { getViewportHeight, getViewportWidth, isBrowser } from "~/platform/env";
-import { resolveSelectionActionLayout } from "@synara/shared/selectionActionLayout";
-export { resolveTranscriptMarkerRange } from "@synara/shared/threadMarkers";
-
-import { getWindowSelection } from "./chatSelectionDom";
 export interface TranscriptAssistantSelection {
   assistantMessageId: string;
   text: string;
@@ -16,19 +11,14 @@ export interface TranscriptSelectionActionLayout {
   left: number;
   top: number;
   placement: "top" | "bottom";
-  width: number;
 }
 
-export function resolveSelectionViewportElement(container: HTMLElement | null): HTMLElement | null {
-  let candidate = container;
-  while (candidate) {
-    const rect = candidate.getBoundingClientRect();
-    if (rect.width > 0 && rect.height > 0) return candidate;
-    candidate = candidate.parentElement;
-  }
-  return null;
-}
-
+// Slot the layout reserves for the toolbar. The toolbar itself sizes to its labels and
+// centers inside this slot, so the width only needs to be a close estimate for viewport
+// clamping. Height must match the toolbar exactly (h-7 + 1px border top and bottom).
+export const TRANSCRIPT_SELECTION_ACTION_WIDTH_PX = 320;
+export const TRANSCRIPT_SELECTION_ACTION_HEIGHT_PX = 30;
+const TRANSCRIPT_SELECTION_ACTION_GAP_PX = 8;
 function getSelectionRect(selection: Selection): DOMRect | null {
   if (selection.rangeCount === 0 || selection.isCollapsed) {
     return null;
@@ -46,7 +36,7 @@ function getSelectionRect(selection: Selection): DOMRect | null {
 
 // Rect of the active window selection, for positioning floating selection actions.
 export function getActiveSelectionRect(): DOMRect | null {
-  const selection = getWindowSelection();
+  const selection = window.getSelection();
   if (!selection) {
     return null;
   }
@@ -80,7 +70,7 @@ function selectionContainerForNode(node: Node | null): HTMLElement | null {
 export function readTranscriptAssistantSelection(input: {
   container: HTMLElement | null;
 }): { selection: TranscriptAssistantSelection; selectionRect: DOMRect | null } | null {
-  const selection = getWindowSelection();
+  const selection = window.getSelection();
   if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
     return null;
   }
@@ -117,28 +107,48 @@ export function readTranscriptAssistantSelection(input: {
 export function resolveTranscriptSelectionActionLayout(input: {
   selectionRect: DOMRect | null;
   pointer: { x: number; y: number };
-  viewport?: { left?: number; top?: number; width: number; height: number } | null;
+  viewport?: { width: number; height: number } | null;
+  size?: { width: number; height: number } | null;
 }): TranscriptSelectionActionLayout {
+  const surfaceWidth = input.size?.width ?? TRANSCRIPT_SELECTION_ACTION_WIDTH_PX;
+  const surfaceHeight = input.size?.height ?? TRANSCRIPT_SELECTION_ACTION_HEIGHT_PX;
   const viewportWidth =
-    input.viewport?.width ?? (isBrowser() ? getViewportWidth() : input.pointer.x + 8);
+    input.viewport?.width ??
+    (typeof window === "undefined" ? input.pointer.x + 8 : window.innerWidth);
   const viewportHeight =
-    input.viewport?.height ?? (isBrowser() ? getViewportHeight() : input.pointer.y + 8);
+    input.viewport?.height ??
+    (typeof window === "undefined" ? input.pointer.y + 8 : window.innerHeight);
 
-  return resolveSelectionActionLayout({
-    selectionRect: input.selectionRect
-      ? {
-          left: input.selectionRect.left,
-          top: input.selectionRect.top,
-          width: input.selectionRect.width,
-          height: input.selectionRect.height,
-        }
-      : null,
-    pointer: input.pointer,
-    viewport: {
-      ...(input.viewport?.left !== undefined ? { left: input.viewport.left } : {}),
-      ...(input.viewport?.top !== undefined ? { top: input.viewport.top } : {}),
-      width: viewportWidth,
-      height: viewportHeight,
-    },
-  });
+  const anchorCenterX =
+    input.selectionRect !== null
+      ? input.selectionRect.left + input.selectionRect.width / 2
+      : input.pointer.x;
+  const selectionTop = input.selectionRect?.top ?? input.pointer.y;
+  const selectionBottom = input.selectionRect?.bottom ?? input.pointer.y;
+  const availableAbove = selectionTop;
+  const availableBelow = viewportHeight - selectionBottom;
+  const placement =
+    availableAbove >= surfaceHeight + TRANSCRIPT_SELECTION_ACTION_GAP_PX ||
+    availableAbove >= availableBelow
+      ? "top"
+      : "bottom";
+  const unclampedTop =
+    placement === "top"
+      ? selectionTop - surfaceHeight - TRANSCRIPT_SELECTION_ACTION_GAP_PX
+      : selectionBottom + TRANSCRIPT_SELECTION_ACTION_GAP_PX;
+
+  return {
+    left: Math.max(
+      8,
+      Math.min(
+        Math.round(anchorCenterX - surfaceWidth / 2),
+        Math.max(viewportWidth - surfaceWidth - 8, 8),
+      ),
+    ),
+    top: Math.max(
+      8,
+      Math.min(Math.round(unclampedTop), Math.max(viewportHeight - surfaceHeight - 8, 8)),
+    ),
+    placement,
+  };
 }

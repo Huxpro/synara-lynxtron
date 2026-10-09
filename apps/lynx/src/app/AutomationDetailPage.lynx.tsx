@@ -41,7 +41,7 @@ import {
   scheduleKindFromSchedule,
   weekdayLabel,
 } from "@synara-web/lib/automationForm";
-import { completionPolicyFromStopWhen } from "@synara-web/lib/automationCompletionPolicy";
+import { completionPolicyFromStopWhen } from "@synara/shared/automationCompletionPolicy";
 import { automationApprovalGaps } from "@synara-web/lib/automationDraft";
 
 async function confirmAutomationDelete(name: string): Promise<boolean> {

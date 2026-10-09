@@ -20,6 +20,7 @@ import path from "path";
 import {
   appendShellLog,
   buildSynaraRelaunchArguments,
+  buildModelPickerShortcutMenuItems,
   buildSearchNavigationMenuItems,
   buildRecentViewNavigationMenuItems,
   buildTerminalInputMenuItems,
@@ -46,6 +47,7 @@ import {
   type ShellWindowState,
   writeJsonAtomic,
 } from "./shellRuntime";
+import { decodeBridgeRpcData } from "../bridgeRpcPayload";
 import fs from "node:fs";
 import type { KeybindingCommand } from "@synara/contracts";
 import { handleUpdater } from "./updateService";
@@ -57,8 +59,10 @@ import {
   handleNativeRpc,
   resetNativeRpcStreams,
   runNativeRpcStream,
+  subscribeNativeRpcCompatibility,
   subscribeNativeRpcTransportState,
 } from "./nativeRpcHost";
+import { rpcFailureReplyFields } from "../rpcFailure.logic";
 import {
   createNativeNotificationService,
   type NativeNotificationConstructor,
@@ -69,6 +73,7 @@ import { DesktopAppSnapManager } from "../../../../desktop/src/appSnapManager";
 import type { DesktopAppSnapErrorEvent, DesktopAppSnapState } from "@synara/contracts";
 import { SYSTEM_APPEARANCE_EVENT } from "../systemAppearanceEvent.logic";
 import {
+  NATIVE_RPC_COMPATIBILITY_EVENT,
   NATIVE_RPC_STREAM_CANCEL_METHOD,
   NATIVE_RPC_STREAM_ITEM_EVENT,
   NATIVE_RPC_STREAM_RESET_METHOD,
@@ -103,6 +108,7 @@ const nativeLynxtron = require("lynxtron") as {
 
 let mainWindow: LynxWindow | null = null;
 let searchNavigationEnabled = false;
+let modelPickerShortcutsEnabled = false;
 let recentViewNavigationEnabled = false;
 let terminalInputOwner: string | null = null;
 let terminalSelectionOwner: string | null = null;
@@ -266,6 +272,18 @@ function initializeAppSnapManager(): DesktopAppSnapManager {
 function dispatchShellEvent(event: string, ...args: unknown[]): void {
   if (!mainWindow || mainWindow.isDestroyed()) return;
   dispatchRendererGlobalEvent(mainWindow, event, ...args);
+}
+
+// View-menu digits the open model picker borrows to pick its rows.
+const MODEL_PICKER_BOUND_DIGITS: ReadonlySet<number> = new Set([1, 2, 3]);
+
+function dispatchModelPickerRow(rowIndex: number): void {
+  dispatchShellEvent("shell:model-picker-key", { rowIndex });
+}
+
+function routeOrModelPickerRow(digit: number, route: string): () => void {
+  return () =>
+    modelPickerShortcutsEnabled ? dispatchModelPickerRow(digit - 1) : dispatchRoute(route);
 }
 
 function dispatchShellCommand(command: KeybindingCommand): void {
@@ -559,6 +577,11 @@ function installApplicationMenu(w: LynxWindow): void {
           click: () => dispatchShellCommand("sidebar.toggle"),
         },
         {
+          label: "Activity View",
+          accelerator: "CmdOrCtrl+Alt+U",
+          click: () => dispatchShellCommand("sidebar.activity"),
+        },
+        {
           label: "Toggle Browser",
           accelerator: "CmdOrCtrl+Shift+B",
           click: () => dispatchShellCommand("browser.toggle"),
@@ -591,21 +614,26 @@ function installApplicationMenu(w: LynxWindow): void {
         ...buildSearchNavigationMenuItems(searchNavigationEnabled, (event) =>
           dispatchShellEvent("shell:search-key", event),
         ),
+        ...buildModelPickerShortcutMenuItems(
+          modelPickerShortcutsEnabled,
+          MODEL_PICKER_BOUND_DIGITS,
+          dispatchModelPickerRow,
+        ),
         { type: "separator" },
         {
           label: "Threads",
           accelerator: "CmdOrCtrl+1",
-          click: () => dispatchRoute("/"),
+          click: routeOrModelPickerRow(1, "/"),
         },
         {
           label: "Projects",
           accelerator: "CmdOrCtrl+2",
-          click: () => dispatchRoute("/kanban"),
+          click: routeOrModelPickerRow(2, "/kanban"),
         },
         {
           label: "Pull Requests",
           accelerator: "CmdOrCtrl+3",
-          click: () => dispatchRoute("/pull-requests"),
+          click: routeOrModelPickerRow(3, "/pull-requests"),
         },
         { type: "separator" },
         {
@@ -844,15 +872,15 @@ app.whenReady().then(() => {
                     : data.tag;
         const rpcData =
           name === "synaraRpc" || name === "synaraRpcStream"
-            ? data
+            ? decodeBridgeRpcData(data)
             : { tag: rpcName, payload: data };
         const result =
           name === "synaraRpc" && data.tag === NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG
             ? await import("../syntaxHighlightingHost").then(
                 ({ highlightCodeThemesForNativePreview }) =>
                   highlightCodeThemesForNativePreview({
-                    code: typeof data.payload?.code === "string" ? data.payload.code : "",
-                    path: typeof data.payload?.path === "string" ? data.payload.path : "",
+                    code: typeof rpcData.payload?.code === "string" ? rpcData.payload.code : "",
+                    path: typeof rpcData.payload?.path === "string" ? rpcData.payload.path : "",
                   }),
               )
             : name === "synaraRpcStream" && typeof data.streamId === "string"
@@ -1037,6 +1065,13 @@ app.whenReady().then(() => {
                 ? "terminal"
                 : "disabled",
           );
+          installApplicationMenu(w);
+        }
+        callback.sendReply(JSON.stringify({ ok: true }));
+      } else if (name === "shellSetModelPickerShortcutsEnabled") {
+        const enabled = data?.enabled === true;
+        if (modelPickerShortcutsEnabled !== enabled) {
+          modelPickerShortcutsEnabled = enabled;
           installApplicationMenu(w);
         }
         callback.sendReply(JSON.stringify({ ok: true }));
@@ -1272,6 +1307,7 @@ app.whenReady().then(() => {
           ...(error && typeof error === "object" && "errorKind" in error
             ? { errorKind: error.errorKind }
             : {}),
+          ...rpcFailureReplyFields(error),
         }),
       );
     }
@@ -1279,6 +1315,9 @@ app.whenReady().then(() => {
 
   const unsubscribeTransportState = subscribeNativeRpcTransportState((state) => {
     w.sendGlobalEvent(NATIVE_TRANSPORT_STATE_EVENT, state);
+  });
+  const unsubscribeCompatibility = subscribeNativeRpcCompatibility((compatibility) => {
+    w.sendGlobalEvent(NATIVE_RPC_COMPATIBILITY_EVENT, compatibility);
   });
 
   if (windowPresentation.showInactiveAfterSetup) {
@@ -1317,6 +1356,7 @@ app.whenReady().then(() => {
   loadLynxBundle(w);
   w.on("close", () => {
     unsubscribeTransportState();
+    unsubscribeCompatibility();
     disposeNativeRpcHost();
     appSnapManager?.dispose();
     appSnapManager = null;

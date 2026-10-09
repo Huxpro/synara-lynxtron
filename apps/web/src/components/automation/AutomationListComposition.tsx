@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { AutomationDefinition, ThreadId } from "@synara/contracts";
+import type { AutomationDefinition, AutomationRun, ThreadId } from "@synara/contracts";
 import type {
   AutomationDefinitionRow,
   AutomationListProjection,
@@ -8,7 +8,25 @@ import type {
 
 import { CentralIcon } from "~/lib/central-icons";
 import { cn } from "~/lib/utils";
-import { automationStatusDotClass, RunStatusIndicator } from "~/routes/-automations.shared";
+import { isTriageRun, RunStatusIndicator } from "~/routes/-automations.shared";
+
+// This composition predates Electron's redesigned automations list (row icons
+// instead of status dots); it keeps the old dot until that design is ported.
+function automationStatusDotClass(
+  definition: AutomationDefinition,
+  latestRun: AutomationRun | null,
+): string {
+  if (!definition.enabled) return "text-muted-foreground/40";
+  if (
+    latestRun?.status === "running" ||
+    latestRun?.status === "pending" ||
+    latestRun?.status === "claimed"
+  ) {
+    return "text-blue-500";
+  }
+  if (latestRun && isTriageRun(latestRun)) return "text-destructive";
+  return "text-emerald-500";
+}
 
 function AutomationListRow({
   onClick,
@@ -23,9 +41,9 @@ function AutomationListRow({
   readonly leading: ReactNode;
   readonly title: string;
   readonly detail: string;
-  readonly meta?: ReactNode;
-  readonly trailing?: ReactNode;
-  readonly onDelete?: () => void;
+  readonly meta?: ReactNode | undefined;
+  readonly trailing?: ReactNode | undefined;
+  readonly onDelete?: (() => void) | undefined;
 }) {
   return (
     <div className="group flex w-full items-center rounded-md transition-colors hover:bg-[var(--color-background-elevated-secondary)]">
@@ -38,9 +56,9 @@ function AutomationListRow({
         <span className="min-w-0 max-w-[45%] truncate text-[0.8125rem] text-foreground">
           {title}
         </span>
-        <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground">{detail}</span>
+        <span className="min-w-0 flex-1 truncate text-ui text-muted-foreground">{detail}</span>
         {meta == null ? null : (
-          <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{meta}</span>
+          <span className="shrink-0 text-ui tabular-nums text-muted-foreground">{meta}</span>
         )}
         {trailing}
       </button>
@@ -108,7 +126,7 @@ export function AutomationListComposition({
   const renderSection = (title: string, rows: readonly AutomationDefinitionRow[]) =>
     rows.length > 0 ? (
       <section className="flex flex-col gap-0.5">
-        <h2 className="px-2 pb-1 text-sm font-medium text-foreground">{title}</h2>
+        <h2 className="px-2 pb-1 text-ui font-medium text-foreground">{title}</h2>
         <div className="flex flex-col">{rows.map(renderRow)}</div>
       </section>
     ) : null;
@@ -138,13 +156,13 @@ export function AutomationListComposition({
           Automations
         </h1>
         {isLoading ? (
-          <div className="py-16 text-center text-sm text-muted-foreground">
+          <div className="py-16 text-center text-ui text-muted-foreground">
             Loading automations...
           </div>
         ) : definitionsCount === 0 ? (
           <div className="flex flex-col items-center gap-1 py-16 text-center">
-            <p className="text-sm font-medium text-foreground">No automations yet</p>
-            <p className="max-w-xs text-xs text-muted-foreground">
+            <p className="text-ui font-medium text-foreground">No automations yet</p>
+            <p className="max-w-xs text-ui text-muted-foreground">
               Schedule a prompt to run on its own, or wake an existing thread on a loop.
             </p>
           </div>
@@ -153,8 +171,8 @@ export function AutomationListComposition({
             {projection.allTriage.length > 0 ? (
               <section className="flex flex-col gap-0.5">
                 <div className="flex items-center justify-between gap-3 px-2 pb-1">
-                  <h2 className="text-sm font-medium text-foreground">Needs review</h2>
-                  <div className="flex items-center gap-0.5 rounded-md bg-[var(--color-background-elevated-secondary)] p-0.5 text-xs">
+                  <h2 className="text-ui font-medium text-foreground">Needs review</h2>
+                  <div className="flex items-center gap-0.5 rounded-md bg-[var(--color-background-elevated-secondary)] p-0.5 text-ui">
                     {(["unread", "all"] as const).map((value) => (
                       <button
                         key={value}
@@ -175,7 +193,7 @@ export function AutomationListComposition({
                   </div>
                 </div>
                 {triageRows.length === 0 ? (
-                  <div className="px-2 py-4 text-xs text-muted-foreground">No unread runs.</div>
+                  <div className="px-2 py-4 text-ui text-muted-foreground">No unread runs.</div>
                 ) : (
                   <div className="flex flex-col">{triageRows.map(renderTriageRow)}</div>
                 )}

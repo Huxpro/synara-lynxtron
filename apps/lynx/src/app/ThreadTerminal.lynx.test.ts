@@ -255,13 +255,4 @@ describe("Lynx thread terminal", () => {
     expect(routerSource).toContain("fontSizePx={appearance.terminalFontSizePx}");
     expect(routerSource).toContain("workspaceRoot={currentThread.workspaceRoot}");
   });
-
-  it("applies the same appearance projection to workspace terminals", () => {
-    const workspaceSource = readFileSync(
-      new URL("./WorkspacePage.lynx.tsx", import.meta.url),
-      "utf8",
-    );
-    expect(workspaceSource).toContain("fontFamily={appearance.terminalFontFamily}");
-    expect(workspaceSource).toContain("fontSizePx={appearance.terminalFontSizePx}");
-  });
 });

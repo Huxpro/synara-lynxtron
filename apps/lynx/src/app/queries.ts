@@ -1,6 +1,7 @@
 // P2-V6: react-query selectors over the real Synara Effect-RPC WebSocket
 // snapshot. The transport is a singleton; both queries share its latest read.
 
+import { pullRequestListEntryHasProject } from "@synara/shared/githubRepository";
 import { QueryClient } from "@tanstack/react-query";
 import {
   APP_SETTINGS_STORAGE_KEY,
@@ -21,8 +22,8 @@ import type {
   OrchestrationThreadPullRequest,
   PinnedMessage,
   ProjectId,
+  ProviderInteractionMode,
   ProviderKind,
-  ThreadMarker,
   PullRequestDetail,
   PullRequestDetailInput,
   PullRequestDiffResult,
@@ -30,8 +31,6 @@ import type {
   PullRequestActionResult,
   PullRequestCommentInput,
   PullRequestListEntry,
-  PullRequestsListRepositoryBatch,
-  PullRequestsListResult,
   PullRequestSetPinnedInput,
   PullRequestSetPinnedResult,
   PullRequestState,
@@ -48,6 +47,8 @@ import type {
   OrchestrationCheckpointSummary,
   OrchestrationThreadActivity,
   ThreadHandoff,
+  TurnId,
+  RuntimeMode,
 } from "@synara/contracts";
 import type { SidebarStatusPresentation } from "@synara-web/components/SidebarStatus.logic";
 import {
@@ -56,7 +57,10 @@ import {
   deriveMessagesTimelineRows,
   type MessagesTimelineRow,
 } from "@synara-web/components/chat/MessagesTimeline.logic";
-import { filterSidechatTranscriptMessages } from "@synara-web/components/ChatView.logic";
+import {
+  filterSidechatTranscriptMessages,
+  threadHasProviderLockingActivity,
+} from "@synara-web/components/ChatView.logic";
 import {
   formatAgentActivityEntryPreview,
   isReasoningUpdateWorkEntry,
@@ -131,7 +135,7 @@ export interface ThreadSummary {
 
 export interface ProjectSummary {
   readonly id: string;
-  readonly kind: "project" | "chat" | "studio";
+  readonly kind: "project" | "chat" | "studio" | "group";
   readonly title: string;
   readonly remoteName: string;
   readonly folderName: string;
@@ -167,22 +171,24 @@ export interface ThreadHeaderSummary {
   readonly associatedWorktreeRef: string | null;
   readonly createBranchFlowCompleted: boolean;
   readonly provider?: ProviderKind;
+  /** Electron's `lockedProvider`: a thread with native activity keeps its provider. */
+  readonly lockedProvider: ProviderKind | null;
   readonly modelSelection: ModelSelection;
-  readonly runtimeMode: "full-access" | "approval-required";
-  readonly interactionMode: "default" | "plan";
+  readonly runtimeMode: RuntimeMode;
+  readonly interactionMode: ProviderInteractionMode;
   readonly sessionStatus: string | null;
   readonly error: string | null;
   readonly errorRevision: string | null;
-  readonly activeTurnId: string | null;
+  readonly activeTurnId: TurnId | null;
   readonly sidechatSourceThreadId: string | null;
+  readonly parentThreadId: string | null;
+  readonly workingDirectory: string | null;
   readonly latestTurnState: string | null;
   readonly workspaceRoot: string | null;
   readonly notes: string;
   readonly pinnedMessages: readonly PinnedMessage[];
   readonly pinnedMessageTextById: Readonly<Record<string, string>>;
   readonly pinnedRevision: string;
-  readonly threadMarkers: readonly ThreadMarker[];
-  readonly markerRevision: string;
   readonly lastKnownPr: OrchestrationThreadPullRequest | null;
   readonly pendingApprovals: readonly PendingApproval[];
   readonly pendingUserInputs: readonly PendingUserInput[];
@@ -408,13 +414,25 @@ const transcriptRowsByThreadId = new Map<
   }
 >();
 
-type PullRequestsListError = PullRequestsListResult["errors"][number];
+/** A project or repository whose pull requests are missing or stale. */
+export interface PullRequestListError {
+  readonly projectId: ProjectId;
+  readonly projectTitle: string;
+  readonly message: string;
+}
+
+export interface PullRequestRepositoryBatch {
+  readonly repository: string;
+  readonly projectIds: readonly ProjectId[];
+  /** More pull requests exist in the listed state than the server returned. */
+  readonly truncated: boolean;
+}
 
 export interface PullRequestSnapshot {
   readonly viewer: string | null;
   readonly entries: readonly PullRequestListEntry[];
-  readonly errors: readonly PullRequestsListError[];
-  readonly repositoryBatches: readonly PullRequestsListRepositoryBatch[];
+  readonly errors: readonly PullRequestListError[];
+  readonly repositoryBatches: readonly PullRequestRepositoryBatch[];
 }
 
 /** Message windows for the sidebar search palette; a server read upstream does not have. */
@@ -608,9 +626,11 @@ export async function fetchThreadHeaderSummary(
     title: thread.title,
     projectId: thread.projectId,
     project: project?.title ?? "Synara",
-    branch: thread.branch,
+    // The snapshot omits null keys; commands built from this summary (Side, fork) must
+    // send them as explicit nulls or the server rejects the missing key.
+    branch: thread.branch ?? null,
     envMode: thread.envMode ?? "local",
-    handoff: thread.handoff,
+    handoff: thread.handoff ?? null,
     messages: thread.messages,
     activities: thread.activities,
     worktreePath: thread.worktreePath ?? null,
@@ -619,6 +639,14 @@ export async function fetchThreadHeaderSummary(
     associatedWorktreeRef: thread.associatedWorktreeRef ?? null,
     createBranchFlowCompleted: thread.createBranchFlowCompleted ?? false,
     provider: resolveSnapshotThreadProvider(thread),
+    lockedProvider: threadHasProviderLockingActivity({
+      messages: thread.messages as never,
+      sidechatSourceThreadId: thread.sidechatSourceThreadId ?? null,
+      latestTurn: thread.latestTurn as never,
+      session: thread.session as never,
+    })
+      ? resolveSnapshotThreadProvider(thread)
+      : null,
     modelSelection: thread.modelSelection,
     runtimeMode: thread.runtimeMode,
     interactionMode: thread.interactionMode,
@@ -627,6 +655,8 @@ export async function fetchThreadHeaderSummary(
     errorRevision: thread.session?.updatedAt ?? null,
     activeTurnId: thread.session?.activeTurnId ?? null,
     sidechatSourceThreadId: thread.sidechatSourceThreadId ?? null,
+    parentThreadId: thread.parentThreadId ?? null,
+    workingDirectory: thread.workingDirectory ?? null,
     latestTurnState: thread.latestTurn?.state ?? null,
     workspaceRoot: project?.workspaceRoot ?? null,
     notes: thread.notes ?? "",
@@ -641,8 +671,6 @@ export async function fetchThreadHeaderSummary(
         .map((message) => [message.id as MessageId, message.text]),
     ),
     pinnedRevision: JSON.stringify(thread.pinnedMessages ?? []),
-    threadMarkers: thread.threadMarkers ?? [],
-    markerRevision: JSON.stringify(thread.threadMarkers ?? []),
     lastKnownPr: thread.lastKnownPr ?? null,
     pendingApprovals: derivePendingApprovals(thread.activities, thread.pendingInteractions),
     pendingUserInputs: derivePendingUserInputs(thread.activities, thread.pendingInteractions),
@@ -892,20 +920,42 @@ export async function generatePreparedThreadRecap(input: {
   return persisted;
 }
 
+/**
+ * Pull requests for the Lynx list. Upstream replaced `pullRequests.list` with the GitHub
+ * inbox (`githubInbox.list`: pull requests and issues of every project in one superset); this
+ * keeps the pull-request rows and scopes them to `projectId` on the client, as upstream does.
+ * The inbox knows open and closed; merged pull requests arrive in the closed list.
+ */
 export async function fetchPullRequests(input: {
   readonly state: PullRequestState;
   readonly projectId: ProjectId | null;
 }): Promise<PullRequestSnapshot> {
   "background only";
-  const { fetchSynaraPullRequests } = await import(
-    /* webpackMode: "eager" */ "../data/synaraClient"
-  );
-  const result = await fetchSynaraPullRequests(input);
+  const { ensureNativeApi } = await import(/* webpackMode: "eager" */ "~/nativeApi");
+  const result = await ensureNativeApi().githubInbox.list({
+    state: input.state === "open" ? "open" : "closed",
+  });
+  const inProject = (projectIds: readonly ProjectId[]) =>
+    input.projectId === null || projectIds.includes(input.projectId);
   return {
     viewer: result.viewer,
-    entries: result.entries,
-    errors: result.errors,
-    repositoryBatches: result.repositoryBatches,
+    entries: result.items.flatMap((item) => {
+      if (item.kind !== "pullRequest" || item.state !== input.state) return [];
+      const { kind: _kind, ...entry } = item;
+      return input.projectId === null || pullRequestListEntryHasProject(entry, input.projectId)
+        ? [entry]
+        : [];
+    }),
+    errors: result.errors
+      .filter((error) => !error.showingCachedData && inProject([error.projectId]))
+      .map(({ projectId, projectTitle, message }) => ({ projectId, projectTitle, message })),
+    repositoryBatches: result.repositoryBatches
+      .filter((batch) => inProject(batch.projectIds))
+      .map((batch) => ({
+        repository: batch.repository,
+        projectIds: batch.projectIds,
+        truncated: batch.truncatedPullRequests,
+      })),
   };
 }
 

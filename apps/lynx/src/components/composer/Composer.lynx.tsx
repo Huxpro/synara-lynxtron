@@ -10,13 +10,15 @@ import type {
   ProviderSkillReference,
   ServerProviderStatus,
   OrchestrationThreadActivity,
+  RuntimeMode,
 } from "@synara/contracts";
 import agentMentionSvg from "@synara-central-icons/robot.svg?raw";
 import skillSvg from "@synara-central-icons/building-blocks.svg?raw";
 import terminalSvg from "@synara-central-icons/console.svg?raw";
 import {
-  DEFAULT_CHAT_COMPOSER_PLACEHOLDER,
+  resolveChatComposerPlaceholder,
   resolveEmptyComposerEditorMinHeightPx,
+  resolveSessionPhase,
 } from "@synara/shared/composerPlaceholder";
 import { DEFAULT_CHAT_FONT_SIZE_PX, normalizeChatFontSizePx } from "@synara-web/chatFontSize";
 
@@ -59,7 +61,7 @@ import { shouldUseCompactComposerFooter } from "@synara-web/components/composerF
 import {
   deriveCumulativeCostUsd,
   deriveContextWindowMeterDisplay,
-  deriveLatestContextWindowSnapshot,
+  deriveLatestContextWindowState,
 } from "@synara-web/lib/contextWindow";
 import { ComposerContextWindowMeterElement } from "../../adapters/ComposerInputCompositionElements.lynx";
 import { ComposerReferenceAttachmentsComposition } from "@synara-web/components/chat/ComposerReferenceAttachmentsComposition";
@@ -103,7 +105,6 @@ import {
   runComposerSendTransaction,
 } from "./composerDispatch.logic";
 import { resolveComposerInputTransition } from "./composerPastedTextInput.logic";
-import { resolveCatalogModelSelection } from "./composerModelCatalog.logic";
 import {
   cutComposerNativeEditorSelection,
   normalizeComposerNativeEditorSnapshot,
@@ -134,7 +135,7 @@ import {
   type NativeComposerFileAttachment,
   type NativeComposerImageAttachment,
 } from "./composerAttachments.lynx";
-import { ComposerModelControl } from "./ComposerModelControl.lynx";
+import { ComposerModelPicker } from "./ComposerModelPicker.lynx";
 import { ComposerVoiceButton, ComposerVoiceRecorderBar } from "./ComposerVoiceControls.lynx";
 import { useNativeComposerVoice } from "./useNativeComposerVoice.lynx";
 import { ExpandedImageOverlay, type NativeExpandedImagePreview } from "./ExpandedImageOverlay.lynx";
@@ -316,12 +317,18 @@ interface ComposerProps {
   readonly activeTurnId: string | null;
   readonly interactionMode: "default" | "plan" | undefined;
   readonly modelSelection: ModelSelection | undefined;
-  readonly runtimeMode: "full-access" | "approval-required" | undefined;
+  readonly runtimeMode: RuntimeMode | undefined;
   readonly sessionStatus: string | null;
   readonly threadId: string;
   readonly draftId?: string;
   readonly workspaceRoot?: string | null;
   readonly emptyLanding?: boolean;
+  /** Provider a started thread is pinned to; the model picker hides every other provider. */
+  readonly lockedProvider?: ProviderKind | null;
+  /** "Add providers" in the model picker: Settings → Providers. */
+  readonly onOpenProviderSettings?: () => void;
+  /** Electron's thread composer placeholder (resolveChatComposerPlaceholder). */
+  readonly placeholder?: string;
   readonly voiceInputEnabled?: boolean;
   readonly providerStatuses?: readonly ServerProviderStatus[];
   readonly pendingUserInputCount?: number;
@@ -329,14 +336,12 @@ interface ComposerProps {
   readonly onBeforeSend?: (input: {
     readonly interactionMode: "default" | "plan";
     readonly modelSelection: ModelSelection;
-    readonly runtimeMode: "full-access" | "approval-required";
+    readonly runtimeMode: RuntimeMode;
     readonly text: string;
   }) => Promise<void>;
   readonly onProviderStatusesChange?: (statuses: readonly ServerProviderStatus[]) => void;
   readonly onSetInteractionMode?: (interactionMode: "default" | "plan") => void | Promise<void>;
-  readonly onSetRuntimeMode?: (
-    runtimeMode: "full-access" | "approval-required",
-  ) => void | Promise<void>;
+  readonly onSetRuntimeMode?: (runtimeMode: RuntimeMode) => void | Promise<void>;
   readonly onSendSucceeded?: () => void | Promise<void>;
 }
 
@@ -357,6 +362,9 @@ export function Composer({
   draftId,
   workspaceRoot,
   emptyLanding = false,
+  lockedProvider,
+  onOpenProviderSettings,
+  placeholder: placeholderProp,
   voiceInputEnabled = false,
   providerStatuses,
   pendingUserInputCount = 0,
@@ -368,19 +376,33 @@ export function Composer({
   onSendSucceeded,
 }: ComposerProps) {
   const compactFooter = shouldUseCompactComposerFooter(availableWidth);
-  const contextWindow = useMemo(() => deriveLatestContextWindowSnapshot(activities), [activities]);
+  // Electron reads the latest usage epoch, which a completed compaction clears.
+  const contextWindow = useMemo(
+    () => deriveLatestContextWindowState(activities).snapshot,
+    [activities],
+  );
   const contextWindowDisplay = useMemo(
     () => (contextWindow === null ? null : deriveContextWindowMeterDisplay(contextWindow)),
     [contextWindow],
   );
   const cumulativeCostUsd = useMemo(() => deriveCumulativeCostUsd(activities), [activities]);
   const normalizedChatFontSizePx = normalizeChatFontSizePx(chatFontSizePx);
+  // Hosts with more context (approvals, question options, subagents) pass their own.
+  const placeholder =
+    placeholderProp ??
+    (emptyLanding
+      ? "Ask for follow-up changes or attach images"
+      : resolveChatComposerPlaceholder({
+          approvalPending: false,
+          pendingQuestion: pendingUserInputCount > 0 ? { freeform: false } : null,
+          planFollowUp: false,
+          subagent: false,
+          phase: resolveSessionPhase(sessionStatus),
+        }));
   const emptyEditorMinHeightPx = resolveEmptyComposerEditorMinHeightPx({
     availableWidthPx: availableWidth,
     chatFontSizePx: normalizedChatFontSizePx,
-    placeholder: emptyLanding
-      ? "Ask for follow-up changes or attach images"
-      : DEFAULT_CHAT_COMPOSER_PLACEHOLDER,
+    placeholder,
   });
   const initData = useInitData() as {
     readonly initialComposerModelProvider?: unknown;
@@ -1624,7 +1646,7 @@ export function Composer({
     }
   }
 
-  async function setRuntimeMode(nextRuntimeMode: "full-access" | "approval-required") {
+  async function setRuntimeMode(nextRuntimeMode: RuntimeMode) {
     "background only";
     setSendError(null);
     try {
@@ -1783,11 +1805,7 @@ export function Composer({
             accessibility-label="Message composer"
             focusable={true}
             default-value={draftProjection.displayText}
-            placeholder={
-              emptyLanding
-                ? "Ask for follow-up changes or attach images"
-                : DEFAULT_CHAT_COMPOSER_PLACEHOLDER
-            }
+            placeholder={placeholder}
             maxlength={8000}
             maxlines={nativeEditorMaxLines}
             enable-scroll-bar={true}
@@ -1974,25 +1992,21 @@ export function Composer({
                 />
               ) : null}
               {!isVoiceRecording && !isVoiceTranscribing && activeModelSelection ? (
-                <ComposerModelControl
-                  compact={compactFooter}
+                <ComposerModelPicker
+                  hideModelLabel={compactFooter}
+                  hideStatusLabel={compactFooter}
                   modelSelection={activeModelSelection as never}
+                  lockedProvider={emptyLanding ? null : (lockedProvider ?? null)}
                   catalogProvider={discoveryProvider ?? activeModelSelection.provider}
-                  catalogModelSelection={resolveCatalogModelSelection({
-                    provider: discoveryProvider ?? activeModelSelection.provider,
-                    activeSelection: modelSelection,
-                    rememberedSelection:
-                      draftModelSelectionByProvider?.[
-                        discoveryProvider ?? activeModelSelection.provider
-                      ],
-                  })}
-                  initialPanel={initialModelMenuProvider ? "models" : "providers"}
+                  rememberedSelectionFor={(provider) =>
+                    draftModelSelectionByProvider?.[provider] as ModelSelection | undefined
+                  }
+                  initialOpen={Boolean(initialModelMenuProvider)}
                   runtimeModels={runtimeModelCatalog?.models ?? []}
                   modelsLoading={
                     runtimeModelsPending || (runtimeModelsFetching && !runtimeModelCatalog)
                   }
                   providers={providerStatuses ?? serverConfig?.providers ?? []}
-                  splitTraits={emptyLanding}
                   onCatalogProviderChange={(provider) => {
                     "background only";
                     setModelCatalogProvider(provider);
@@ -2002,6 +2016,7 @@ export function Composer({
                     setModelSelection(brandedThreadId, nextModelSelection);
                     setModelCatalogProvider(null);
                   }}
+                  onOpenProviderSettings={onOpenProviderSettings}
                 />
               ) : null}
               {!isVoiceRecording && !isVoiceTranscribing && showVoiceNotesControl ? (

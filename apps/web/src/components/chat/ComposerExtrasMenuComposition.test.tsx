@@ -6,26 +6,26 @@ import type { ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("~/components/ui/menu", () => ({
-  Menu: ({ children }: { children?: ReactNode }) => <div data-menu>{children}</div>,
-  MenuTrigger: ({ render }: { render?: ReactNode }) => <>{render}</>,
-  MenuCheckboxItem: ({ children }: { children?: ReactNode }) => (
+  Menu: ({ children }: { children?: ReactNode | undefined }) => <div data-menu>{children}</div>,
+  MenuTrigger: ({ render }: { render?: ReactNode | undefined }) => <>{render}</>,
+  MenuCheckboxItem: ({ children }: { children?: ReactNode | undefined }) => (
     <div data-checkbox-item>{children}</div>
   ),
-  MenuRadioGroup: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
-  MenuRadioItem: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
+  MenuRadioGroup: ({ children }: { children?: ReactNode | undefined }) => <div>{children}</div>,
+  MenuRadioItem: ({ children }: { children?: ReactNode | undefined }) => <div>{children}</div>,
   MenuSeparator: () => <hr />,
-  MenuSub: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
-  MenuSubTrigger: ({ children }: { children?: ReactNode }) => <div>{children}</div>,
+  MenuSub: ({ children }: { children?: ReactNode | undefined }) => <div>{children}</div>,
+  MenuSubTrigger: ({ children }: { children?: ReactNode | undefined }) => <div>{children}</div>,
 }));
 
 vi.mock("./ComposerExtrasMenuCompositionElements", () => ({
   ComposerExtrasMenuTriggerHostElement: ({ open }: { open: boolean }) => (
     <button aria-label="Composer extras" aria-expanded={open} />
   ),
-  ComposerExtrasMenuPopupElement: ({ children }: { children?: ReactNode }) => (
+  ComposerExtrasMenuPopupElement: ({ children }: { children?: ReactNode | undefined }) => (
     <div data-popup>{children}</div>
   ),
-  ComposerExtrasSubPopupElement: ({ children }: { children?: ReactNode }) => (
+  ComposerExtrasSubPopupElement: ({ children }: { children?: ReactNode | undefined }) => (
     <div data-sub-popup>{children}</div>
   ),
   ComposerExtrasImageItemElement: () => <div data-image-item>Add image</div>,

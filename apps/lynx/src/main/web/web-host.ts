@@ -8,6 +8,7 @@ import { COMPONENT_LAB_RELAY_STORAGE_KEY } from "@synara/shared/componentLab";
 import { installLynxWebInteractionStateBridge } from "./web-interaction-state";
 import { type LynxWebInteractionEvent } from "../webInteractionEvent.logic";
 import { resolveWebInitialRoute } from "./webInitialRoute.logic";
+import { decodeBridgeRpcData } from "../bridgeRpcPayload";
 import {
   buildWebRelaySocketUrl,
   normalizeWebRelayUrl,
@@ -15,12 +16,20 @@ import {
 } from "./webRelayEndpoint.logic";
 import { NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG } from "../syntaxHighlightingContract.logic";
 import {
+  NATIVE_RPC_COMPATIBILITY_EVENT,
   NATIVE_RPC_STREAM_CANCEL_METHOD,
   NATIVE_RPC_STREAM_ITEM_EVENT,
   NATIVE_RPC_STREAM_RESET_METHOD,
+  parseNativeRpcCompatibility,
+  type NativeRpcCompatibility,
   type NativeRpcStreamItemEvent,
   type NativeRpcStreamResetReply,
 } from "../nativeEventStreams.logic";
+import {
+  describeRpcFailureCause,
+  rpcFailureReplyFields,
+  type RpcFailureDetails,
+} from "../rpcFailure.logic";
 import { createScopedStreamRegistry } from "../scopedStreamRegistry.logic";
 import { openWebRelayScopedStream } from "./webRelayScopedStream.logic";
 import { REDUCED_MOTION_EVENT } from "../reducedMotionEvent.logic";
@@ -35,6 +44,12 @@ import {
 } from "./webRpcFrame.logic";
 import { summarizeRelayPendingRequests } from "./webRelayDiagnostics.logic";
 import { isWebSocketOpen } from "./webSocketState.logic";
+import {
+  WS_CLIENT_REQUIRED_CAPABILITIES,
+  WS_PROTOCOL_EPOCH,
+  WS_PROTOCOL_MAX_REVISION,
+  WS_PROTOCOL_MIN_REVISION,
+} from "@synara/contracts";
 
 const bundleUrl = "./main.web.bundle";
 const nodejsAdapterUrl = "./nodejs-adapter-web.js";
@@ -66,11 +81,15 @@ const TERMINAL_EVENT = "synara:terminal-event";
 const COMPOSER_MODEL_MENU_QUERY = "composerModelMenu";
 const COMPOSER_MODEL_PROVIDER_QUERY = "composerModelProvider";
 const STORAGE_PREFIX = "synara.lynx.";
+// Negotiated with the same constants the Electron renderer uses, so a server
+// protocol bump can never strand Lynx on a revision the server rejects. The
+// required capabilities are the upstream client's too: the shared transport
+// compat runs the same streams (thread detail snapshots, worktree setup).
 const PROTOCOL = {
-  epoch: 1,
-  minRevision: 1,
-  maxRevision: 1,
-  capabilities: ["orchestration.cursor-safe-streams", "rpc.typed-errors"],
+  epoch: WS_PROTOCOL_EPOCH,
+  minRevision: WS_PROTOCOL_MIN_REVISION,
+  maxRevision: WS_PROTOCOL_MAX_REVISION,
+  capabilities: WS_CLIENT_REQUIRED_CAPABILITIES,
 } as const;
 
 interface PendingRelayRequest {
@@ -85,7 +104,17 @@ interface PendingRelayRequest {
 
 class SynaraRpcResponseError extends Error {
   readonly name = "SynaraRpcResponseError";
+  /** The typed server error the message flattens (see `rpcFailure.logic.ts`). */
+  readonly rpcFailure: RpcFailureDetails | null;
+
+  constructor(message: string, rpcFailure: RpcFailureDetails | null = null) {
+    super(message);
+    this.rpcFailure = rpcFailure;
+  }
 }
+
+/** The last negotiation of the relay socket; `null` before the first connect. */
+let relayCompatibility: NativeRpcCompatibility | null = null;
 
 let relaySocket: WebSocket | null = null;
 let relaySocketBaseUrl: string | null = null;
@@ -279,11 +308,7 @@ function connectWithPath(baseUrl: string, path: string): Promise<WebSocket> {
   });
 }
 
-async function negotiate(baseUrl: string): Promise<{
-  readonly protocolEpoch: number;
-  readonly negotiatedRevision: number;
-  readonly serverInstanceId: string;
-}> {
+async function negotiate(baseUrl: string): Promise<NativeRpcCompatibility> {
   const socket = await connectWithPath(baseUrl, "/ws/bootstrap");
   try {
     return await new Promise((resolve, reject) => {
@@ -296,13 +321,9 @@ async function negotiate(baseUrl: string): Promise<{
         if (!message || message._tag !== "Exit" || message.requestId !== id) return;
         clearTimeout(timer);
         if (message.exit._tag === "Success") {
-          resolve(
-            message.exit.value as {
-              readonly protocolEpoch: number;
-              readonly negotiatedRevision: number;
-              readonly serverInstanceId: string;
-            },
-          );
+          const result = parseNativeRpcCompatibility(message.exit.value);
+          if (result) resolve(result);
+          else reject(new Error("Synara bootstrap negotiation returned an unreadable result"));
           return;
         }
         reject(
@@ -369,6 +390,9 @@ function rejectPendingRpcDefect(error: SynaraRpcResponseError): void {
 
 async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
   const compatibility = await negotiate(baseUrl);
+  // Published before the negotiated socket opens, so before it reports connected.
+  relayCompatibility = compatibility;
+  lynxView.sendGlobalEvent?.(NATIVE_RPC_COMPATIBILITY_EVENT, [compatibility]);
   const query = new URLSearchParams({
     "x-synara-client-build": CLIENT_BUILD,
     "x-synara-protocol-epoch": String(compatibility.protocolEpoch),
@@ -432,6 +456,7 @@ async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
     }
     const error = new SynaraRpcResponseError(
       `Synara RPC ${pending.tag} failed: ${JSON.stringify(exitMessage.exit.cause)}`,
+      describeRpcFailureCause(exitMessage.exit.cause),
     );
     relayLastRpcError = error.message;
     pending.reject(error);
@@ -707,8 +732,12 @@ async function renderSvgToPngBlob(svg: string): Promise<Blob> {
 
 async function handleBridgeCall(
   method: string,
-  params: Record<string, unknown> = {},
+  rawParams: Record<string, unknown> = {},
 ): Promise<unknown> {
+  const params =
+    method === "synaraRpc" || method === "synaraRpcStream"
+      ? decodeBridgeRpcData(rawParams)
+      : rawParams;
   try {
     if (method === "synaraRpc") {
       if (params.tag === NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG) {
@@ -771,6 +800,7 @@ async function handleBridgeCall(
       const reply: NativeRpcStreamResetReply = {
         generation: scopedStreams.reset(),
         transportState: relayTransportStateView(),
+        compatibility: relayCompatibility,
       };
       return reply;
     }
@@ -1008,6 +1038,7 @@ async function handleBridgeCall(
     return {
       error: describeError(error),
       errorKind: error instanceof SynaraRpcResponseError ? "rpc" : "transport",
+      ...rpcFailureReplyFields(error),
     };
   }
 }
@@ -1043,8 +1074,6 @@ const initialTerminalOpen =
   new URLSearchParams(globalThis.location.search).get("terminal") === "open";
 const initialTemporaryOpen =
   new URLSearchParams(globalThis.location.search).get("temporary") === "open";
-const initialWorkspaceSettingsOpen =
-  new URLSearchParams(globalThis.location.search).get("workspaceSettings") === "open";
 const initialDiffFileTreeOpen =
   new URLSearchParams(globalThis.location.search).get("diffFileTree") === "open";
 const initialDiffOpen = ["open", "1"].includes(
@@ -1052,8 +1081,6 @@ const initialDiffOpen = ["open", "1"].includes(
 );
 const initialDiffTurnId = new URLSearchParams(globalThis.location.search).get("diffTurnId");
 const initialDiffFilePath = new URLSearchParams(globalThis.location.search).get("diffFilePath");
-const initialWorkspaceVisible =
-  new URLSearchParams(globalThis.location.search).get("workspaceVisible") === "open";
 const initialExplorerOpen =
   new URLSearchParams(globalThis.location.search).get("explorer") === "open";
 const initialExplorerPresentationMode =
@@ -1122,8 +1149,6 @@ webDocument.body.innerHTML = `
     initialRenameOpen,
     initialTerminalOpen,
     initialTemporaryOpen,
-    initialWorkspaceSettingsOpen,
-    initialWorkspaceVisible,
     initialExplorerOpen,
     initialExplorerPresentationMode,
     initialExplorerActionMenuOpen,

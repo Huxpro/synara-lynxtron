@@ -41,8 +41,8 @@ export function ComposerTraitFastModeToggleElement(props: {
 export function ComposerTraitSectionElement(props: {
   readonly children: ReactNode;
   readonly label: string;
-  readonly labelTrailing?: ReactNode;
-  readonly note?: ReactNode;
+  readonly labelTrailing?: ReactNode | undefined;
+  readonly note?: ReactNode | undefined;
 }) {
   return (
     <MenuGroup>
@@ -69,13 +69,13 @@ export function ComposerTraitRadioGroupElement(props: {
 
 export function ComposerTraitRadioItemElement(props: {
   readonly active: boolean;
-  readonly description?: string | null;
+  readonly description?: string | null | undefined;
   readonly disabled: boolean;
   readonly isDefault: boolean;
   readonly label: string;
   readonly value: string;
   readonly onSelect: () => void;
-  readonly onSelectionComplete?: () => void;
+  readonly onSelectionComplete?: (() => void) | undefined;
 }) {
   const item = (
     <MenuRadioItem

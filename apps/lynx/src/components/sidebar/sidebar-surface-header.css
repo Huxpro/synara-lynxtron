@@ -1,0 +1,169 @@
+/* Electron Sidebar header row: `flex items-center gap-1 pt-0 pb-1 pr-2.5 pl-1.5`. */
+.SidebarSurfaceHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  padding: 0 10px 4px 6px;
+}
+
+/* SidebarSurfacePicker trigger: `h-8 gap-1.5 rounded-lg px-2.5` with the row hover. */
+.SidebarSurfacePickerTrigger {
+  height: 32px;
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  border-radius: 10px;
+}
+
+.SidebarSurfacePickerTrigger.ui-hover,
+.SidebarSurfacePickerTrigger.ui-pressed {
+  background-color: var(--sidebar-accent);
+}
+
+.SidebarSurfacePickerTrigger.ui-focus {
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+/* SIDEBAR_PANEL_TITLE_CLASS_NAME: `font-display` (Cal Sans) at 17px. */
+.SidebarSurfacePickerTitle {
+  min-width: 0;
+  color: var(--foreground);
+  font-family: var(--font-display-family);
+  font-size: 17px;
+  line-height: 25.5px;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* DisclosureChevron (open) in `text-muted-foreground/70`. */
+.SidebarSurfacePickerChevron {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+}
+
+.SidebarSurfaceHeaderActions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+/* SidebarIconButton size="header": `size-6 rounded-md p-0.5`, --color-icon-secondary glyph. */
+.SidebarHeaderIconButton {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.SidebarHeaderIconButton.ui-hover,
+.SidebarHeaderIconButton.ui-pressed {
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.SidebarHeaderIconButton.ui-focus {
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.SidebarHeaderIconButtonGlyph {
+  width: 15px;
+  height: 15px;
+}
+
+/* ComposerPickerMenuPopup with `.sidebar-surface-picker-menu min-w-64`. */
+.LxMenuPopup.SidebarSurfacePickerMenu {
+  width: 256px;
+}
+
+.SidebarSurfacePickerMenu .LxMenuGroup {
+  gap: 2px;
+}
+
+/* Electron `py-[9px] px-3`; LxMenuItem's 1px transparent button border is part of the inset. */
+.SidebarSurfacePickerMenu .SidebarSurfacePickerItem {
+  min-height: 0;
+  padding: 8px 11px;
+  border-radius: 10px;
+}
+
+.SidebarSurfacePickerMenu .SidebarSurfacePickerItem--checked {
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.SidebarSurfacePickerItemCopy {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.SidebarSurfacePickerItemTitle {
+  color: var(--foreground);
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 500;
+}
+
+.SidebarSurfacePickerItemDescription {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16.5px;
+}
+
+/* Activity bell: `text-muted-foreground/75` at rest, accent on a 15% accent tint when on. */
+.SidebarActivityBell {
+  position: relative;
+}
+
+.SidebarActivityBell .SidebarActivityBellGlyph {
+  opacity: 0.75;
+}
+
+.SidebarActivityBell.ui-hover .SidebarActivityBellGlyph,
+.SidebarActivityBell--active .SidebarActivityBellGlyph {
+  opacity: 1;
+}
+
+.SidebarActivityBell--active,
+.SidebarActivityBell--active.ui-hover,
+.SidebarActivityBell--active.ui-pressed {
+  background-color: rgba(1, 105, 204, 0.15);
+}
+
+.SliceRoot--theme-dark .SidebarActivityBell--active,
+.SliceRoot--theme-dark .SidebarActivityBell--active.ui-hover,
+.SliceRoot--theme-dark .SidebarActivityBell--active.ui-pressed {
+  background-color: rgba(51, 134, 214, 0.15);
+}
+
+/* `absolute top-0.5 right-0.5 size-1.5` accent dot with a 2px sidebar-colored ring. */
+.SidebarActivityBellDot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-width: 2px;
+  border-style: solid;
+  border-left-color: var(--sidebar);
+  border-right-color: var(--sidebar);
+  border-top-color: var(--sidebar);
+  border-bottom-color: var(--sidebar);
+  border-radius: 999px;
+  background-color: var(--color-text-accent);
+}

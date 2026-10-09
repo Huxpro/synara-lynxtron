@@ -48,7 +48,7 @@ export interface PullRequestDiffLineView {
 export interface PullRequestCodeSyntaxToken {
   readonly color: string;
   readonly content: string;
-  readonly emphasized?: boolean;
+  readonly emphasized?: boolean | undefined;
   readonly fontStyle: number;
 }
 

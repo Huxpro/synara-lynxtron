@@ -120,7 +120,7 @@ describe("Native monospace typography inventory", () => {
       );
       for (const declaration of declarations) {
         expect(declaration, `${file}: ${declaration}`).toMatch(
-          /^var\(--font-(?:ui|heading|mono|chat-code)-family\)$/,
+          /^var\(--font-(?:ui|heading|display|mono|chat-code)-family\)$/,
         );
       }
     }

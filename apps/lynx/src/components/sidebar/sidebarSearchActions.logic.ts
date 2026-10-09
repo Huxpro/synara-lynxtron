@@ -42,11 +42,9 @@ export function buildNativeSearchImportThreadCreateCommand(input: {
       ? "Claude session"
       : input.provider === "cursor"
         ? "Cursor session"
-        : input.provider === "kilo"
-          ? "Kilo session"
-          : input.provider === "opencode"
-            ? "OpenCode session"
-            : "Codex thread";
+        : input.provider === "opencode"
+          ? "OpenCode session"
+          : "Codex thread";
   return {
     type: "thread.create",
     commandId: newCommandId(),

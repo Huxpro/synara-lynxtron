@@ -21,7 +21,7 @@ import {
   PR_QUIET_INK_CLASS_NAME,
 } from "./pullRequestText";
 
-type ChildrenProps = { readonly children?: ReactNode };
+type ChildrenProps = { readonly children?: ReactNode | undefined };
 
 export function PullRequestRowRootElement(props: ChildrenProps & { readonly selected: boolean }) {
   return (
@@ -126,7 +126,7 @@ export function PullRequestRowMetaSegmentsElement(props: ChildrenProps) {
 export function PullRequestRowMetaSegmentElement(
   props: ChildrenProps & {
     readonly title?: string | undefined;
-    readonly truncateWidth?: string;
+    readonly truncateWidth?: string | undefined;
     readonly showSeparator: boolean;
   },
 ) {

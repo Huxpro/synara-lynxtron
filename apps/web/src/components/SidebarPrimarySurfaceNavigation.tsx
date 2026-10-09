@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 
+import { ClockIcon, KanbanIcon, NewThreadIcon } from "~/lib/icons";
 import { splitShortcutLabel } from "~/keybindings";
 import { SidebarGlyph } from "~/components/sidebarGlyphs";
 import {
@@ -13,25 +14,27 @@ export interface SidebarPrimarySurfaceIcons {
   readonly automations: Icon;
   readonly kanban: Icon;
   readonly newThread: Icon;
-  readonly newWorkspace: Icon;
-  readonly search: Icon;
 }
+
+const DEFAULT_ICONS: SidebarPrimarySurfaceIcons = {
+  automations: ClockIcon,
+  kanban: KanbanIcon,
+  newThread: NewThreadIcon,
+};
 
 function item(input: {
   icon: Icon;
-  elementId?: string;
   label: string;
-  onActivate?: () => void;
-  onMouseEnter?: () => void;
-  onFocus?: () => void;
-  active?: boolean;
-  disabled?: boolean;
-  shortcutLabel?: string | null;
-  badge?: Badge;
+  onActivate?: (() => void) | undefined;
+  onMouseEnter?: (() => void) | undefined;
+  onFocus?: (() => void) | undefined;
+  active?: boolean | undefined;
+  disabled?: boolean | undefined;
+  shortcutLabel?: string | null | undefined;
+  badge?: Badge | undefined;
 }): SidebarPrimaryNavigationItem {
   return {
     id: input.label,
-    elementId: input.elementId,
     icon: <SidebarGlyph icon={input.icon} variant="leading" />,
     label: input.label,
     active: input.active,
@@ -44,96 +47,70 @@ function item(input: {
   };
 }
 
+/**
+ * Primary destinations under the sidebar header. Search lives in the header row next to
+ * the surface picker, so neither surface lists it here.
+ */
 export function SidebarPrimarySurfaceNavigation(props: {
-  surface: "threads" | "studio" | "workspace";
+  surface: "threads" | "studio";
   pullRequestIcon: Icon;
-  /** Platform icon set; each renderer supplies its own glyph implementation. */
-  icons: SidebarPrimarySurfaceIcons;
-  searchOpen?: boolean;
-  kanbanActive?: boolean;
-  pullRequestsActive?: boolean;
-  automationsActive?: boolean;
-  pullRequestsBadge?: Badge;
-  automationsBadge?: Badge;
-  newThreadShortcutLabel?: string | null;
-  searchShortcutLabel?: string | null;
-  searchElementId?: string;
-  onCreateWorkspace?: () => void;
-  onCreateStudioChat?: () => void;
-  onCreateThread?: () => void;
-  onCreateThreadPrewarm?: () => void;
-  onOpenSearch?: () => void;
-  onOpenKanban?: () => void;
-  onOpenPullRequests?: () => void;
-  onOpenAutomations?: () => void;
+  icons?: SidebarPrimarySurfaceIcons | undefined;
+  kanbanActive?: boolean | undefined;
+  pullRequestsActive?: boolean | undefined;
+  automationsActive?: boolean | undefined;
+  pullRequestsBadge?: Badge | undefined;
+  automationsBadge?: Badge | undefined;
+  newThreadShortcutLabel?: string | null | undefined;
+  onCreateStudioChat?: (() => void) | undefined;
+  onCreateThread?: (() => void) | undefined;
+  onCreateThreadPrewarm?: (() => void) | undefined;
+  onOpenKanban?: (() => void) | undefined;
+  onOpenPullRequests?: (() => void) | undefined;
+  onOpenAutomations?: (() => void) | undefined;
 }) {
-  const icons = props.icons;
+  const icons = props.icons ?? DEFAULT_ICONS;
   const items =
-    props.surface === "workspace"
+    props.surface === "studio"
       ? [
           item({
-            icon: icons.newWorkspace,
-            label: "New workspace",
-            onActivate: props.onCreateWorkspace,
+            icon: icons.newThread,
+            label: "New studio chat",
+            onActivate: props.onCreateStudioChat,
           }),
         ]
-      : props.surface === "studio"
-        ? [
-            item({
-              icon: icons.newThread,
-              label: "New studio chat",
-              onActivate: props.onCreateStudioChat,
-            }),
-            item({
-              icon: icons.search,
-              elementId: props.searchElementId,
-              label: "Search",
-              active: props.searchOpen,
-              onActivate: props.onOpenSearch ? () => props.onOpenSearch?.() : undefined,
-              shortcutLabel: props.searchShortcutLabel,
-            }),
-          ]
-        : [
-            item({
-              icon: icons.newThread,
-              label: "New thread",
-              onActivate: props.onCreateThread,
-              onMouseEnter: props.onCreateThreadPrewarm,
-              onFocus: props.onCreateThreadPrewarm,
-              shortcutLabel: props.newThreadShortcutLabel,
-            }),
-            item({
-              icon: icons.search,
-              elementId: props.searchElementId,
-              label: "Search",
-              active: props.searchOpen,
-              onActivate: props.onOpenSearch ? () => props.onOpenSearch?.() : undefined,
-              shortcutLabel: props.searchShortcutLabel,
-            }),
-            item({
-              icon: icons.kanban,
-              label: "Kanban",
-              active: props.kanbanActive,
-              onActivate: props.onOpenKanban,
-              disabled: !props.onOpenKanban,
-            }),
-            item({
-              icon: props.pullRequestIcon,
-              label: "Pull requests",
-              active: props.pullRequestsActive,
-              badge: props.pullRequestsBadge,
-              onActivate: props.onOpenPullRequests,
-              disabled: !props.onOpenPullRequests,
-            }),
-            item({
-              icon: icons.automations,
-              label: "Automations",
-              active: props.automationsActive,
-              badge: props.automationsBadge,
-              onActivate: props.onOpenAutomations,
-              disabled: !props.onOpenAutomations,
-            }),
-          ];
+      : [
+          item({
+            icon: icons.newThread,
+            label: "New thread",
+            onActivate: props.onCreateThread,
+            onMouseEnter: props.onCreateThreadPrewarm,
+            onFocus: props.onCreateThreadPrewarm,
+            shortcutLabel: props.newThreadShortcutLabel,
+          }),
+          item({
+            icon: icons.kanban,
+            label: "Kanban",
+            active: props.kanbanActive,
+            onActivate: props.onOpenKanban,
+            disabled: !props.onOpenKanban,
+          }),
+          item({
+            icon: props.pullRequestIcon,
+            label: "Pull requests",
+            active: props.pullRequestsActive,
+            badge: props.pullRequestsBadge,
+            onActivate: props.onOpenPullRequests,
+            disabled: !props.onOpenPullRequests,
+          }),
+          item({
+            icon: icons.automations,
+            label: "Automations",
+            active: props.automationsActive,
+            badge: props.automationsBadge,
+            onActivate: props.onOpenAutomations,
+            disabled: !props.onOpenAutomations,
+          }),
+        ];
 
   return <SidebarPrimaryNavigation items={items} />;
 }

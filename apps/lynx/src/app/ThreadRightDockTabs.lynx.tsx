@@ -1,17 +1,13 @@
 import type { RightDockPane, RightDockPaneKind } from "@synara/shared/rightDock";
-import differenceSvg from "@synara-central-icons/difference-modified.svg?raw";
-import foldersSvg from "@synara-central-icons/folders.svg?raw";
-import terminalSvg from "@synara-central-icons/console.svg?raw";
-import sidechatSvg from "@synara-central-icons/bubble-text.svg?raw";
-import gitSvg from "@synara-central-icons/fork.svg?raw";
-
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
-import { GlobeIcon, PanelRightCloseIcon, PlusIcon } from "../lib/icons.lynx";
+import sidebarRightSvg from "@synara-central-icons/sidebar-simple-right-wide.svg?raw";
+import { PlusIcon } from "../lib/icons.lynx";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { Menu, MenuGroup, MenuItem, MenuPopup, MenuTrigger } from "../components/ui/menu.lynx";
 import { EditorSurfaceTab } from "./EditorSurfaceTab.lynx";
 import { FileEntryIcon } from "../components/FileEntryIcon.lynx";
+import { RIGHT_DOCK_PANE_GLYPHS } from "./rightDockGlyphs.lynx";
 
 import "./thread-right-dock-tabs.css";
 
@@ -22,31 +18,27 @@ const DEFAULT_ADD_KINDS: readonly RightDockPaneKind[] = [
   "sidechat",
 ];
 
+/** Electron's RIGHT_DOCK_PANE_META labels, used for tabs and the add menu. */
+const PANE_KIND_LABELS: Partial<Record<RightDockPaneKind, string>> = {
+  browser: "Browser",
+  diff: "Diff",
+  explorer: "Explorer",
+  git: "Git",
+  sidechat: "Side chats",
+  terminal: "Terminal",
+};
+
 function paneLabel(pane: RightDockPane): string {
-  if (pane.kind === "browser") return "Browser";
-  if (pane.kind === "diff") return "Diff";
-  if (pane.kind === "explorer") return "Explorer";
-  if (pane.kind === "terminal") return "Terminal";
-  if (pane.kind === "sidechat") return "Side";
-  if (pane.kind === "git") return "Git";
   if (pane.kind === "file" && pane.filePath) {
-    return pane.filePath.replace(/\\/g, "/").split("/").filter(Boolean).at(-1) ?? pane.filePath;
+    const segments = pane.filePath.replace(/\\/g, "/").split("/").filter(Boolean);
+    return segments[segments.length - 1] ?? pane.filePath;
   }
-  return pane.kind;
+  return PANE_KIND_LABELS[pane.kind] ?? pane.kind;
 }
 
 function PaneIcon(props: { readonly kind: RightDockPaneKind }) {
   const { semanticIconColor } = useTheme();
-  const content =
-    props.kind === "diff"
-      ? differenceSvg
-      : props.kind === "git"
-        ? gitSvg
-        : props.kind === "terminal"
-          ? terminalSvg
-          : props.kind === "sidechat"
-            ? sidechatSvg
-            : foldersSvg;
+  const content = RIGHT_DOCK_PANE_GLYPHS[props.kind] ?? RIGHT_DOCK_PANE_GLYPHS.explorer!;
   return (
     <svg
       className="ThreadRightDockTabIcon"
@@ -56,10 +48,6 @@ function PaneIcon(props: { readonly kind: RightDockPaneKind }) {
 }
 
 function RightDockPaneIcon(props: { readonly pane: RightDockPane }) {
-  const { semanticIconColor } = useTheme();
-  if (props.pane.kind === "browser") {
-    return <GlobeIcon color={semanticIconColor("secondary")} size={14} />;
-  }
   if (props.pane.kind === "file" && props.pane.filePath) {
     return <FileEntryIcon pathValue={props.pane.filePath} />;
   }
@@ -75,7 +63,10 @@ function CollapseButton(props: { readonly onCollapse: () => void }) {
   });
   return (
     <view className={interaction.className} {...interaction.eventProps}>
-      <PanelRightCloseIcon color={semanticIconColor("secondary")} size={14} />
+      <svg
+        className="ThreadRightDockHeaderIcon"
+        content={colorizeLynxSvg(sidebarRightSvg, semanticIconColor("secondary"))}
+      />
     </view>
   );
 }
@@ -111,7 +102,8 @@ export function ThreadRightDockTabs(props: {
           ))}
         </view>
       </scroll-view>
-      {addKinds.length > 0 ? (
+      {/* Electron offers "Add panel" only once a pane is open; the launcher covers the rest. */}
+      {addKinds.length > 0 && props.panes.length > 0 ? (
         <Menu defaultOpen={props.defaultAddMenuOpen}>
           <MenuTrigger ariaLabel="Add panel" className="ThreadRightDockHeaderButton">
             <PlusIcon color={semanticIconColor("secondary")} size={14} />
@@ -120,24 +112,8 @@ export function ThreadRightDockTabs(props: {
             <MenuGroup>
               {addKinds.map((kind) => (
                 <MenuItem key={kind} onClick={() => props.onAddPane(kind)}>
-                  {kind === "browser" ? (
-                    <GlobeIcon color={semanticIconColor("secondary")} size={14} />
-                  ) : (
-                    <PaneIcon kind={kind} />
-                  )}
-                  <text>
-                    {kind === "browser"
-                      ? "Browser"
-                      : kind === "diff"
-                        ? "Diff"
-                        : kind === "git"
-                          ? "Git"
-                          : kind === "terminal"
-                            ? "Terminal"
-                            : kind === "sidechat"
-                              ? "Side"
-                              : "Explorer"}
-                  </text>
+                  <PaneIcon kind={kind} />
+                  <text>{PANE_KIND_LABELS[kind] ?? kind}</text>
                 </MenuItem>
               ))}
             </MenuGroup>

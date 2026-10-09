@@ -18,3 +18,17 @@ export const use = undefined;
 // ref compatibility branch. ReactLynx's compat build intentionally omits the
 // informational version string, so expose the React 18 contract it implements.
 export const version = "18.3.1";
+
+// React 19.2's `useEffectEvent` does not exist on ReactLynx. Upstream state-layer
+// hooks reached by session sync (`hooks/useDeviceEventBridge.ts`) import it, so
+// the export must exist at link time. Same contract: a stable function that
+// always calls the latest callback, meant to be invoked from effects only.
+import { useCallback, useRef } from "@lynx-js/react/compat";
+
+export function useEffectEvent<Args extends unknown[], Result>(
+  callback: (...args: Args) => Result,
+): (...args: Args) => Result {
+  const latest = useRef(callback);
+  latest.current = callback;
+  return useCallback((...args: Args) => latest.current(...args), []);
+}

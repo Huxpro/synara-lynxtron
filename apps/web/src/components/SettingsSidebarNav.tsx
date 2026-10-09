@@ -5,18 +5,23 @@
 // Layer: UI component
 // Exports: SettingsSidebarNav
 
-import { useState } from "react";
+import { type KeyboardEvent as ReactKeyboardEvent, useState } from "react";
 
 import { CentralIcon } from "~/lib/central-icons";
 import { cn } from "~/lib/utils";
+import { Badge } from "./ui/badge";
+import { SearchInput } from "./ui/search-input";
 import { SidebarLeadingIcon } from "./SidebarLeadingIcon";
-import { SETTINGS_NAV_ITEMS, type SettingsSectionId } from "../settingsNavigation";
-import { SettingsNavigationComposition } from "./SettingsNavigationComposition";
-import { SettingsSidebarChromeComposition } from "./settings/SettingsSidebarChromeComposition";
+import {
+  SETTINGS_NAV_GROUPS,
+  SETTINGS_NAV_ITEMS,
+  type SettingsSectionId,
+} from "../settingsNavigation";
 import {
   rankSettingsSearchEntries,
   settingsSearchEntryTarget,
   settingsSectionLabel,
+  type SettingsSearchContext,
   type SettingsSearchEntry,
 } from "../settingsSearchIndex";
 import {
@@ -29,7 +34,9 @@ import {
   SETTINGS_SIDEBAR_ITEM_CLASS_NAME,
   SETTINGS_SIDEBAR_ITEM_LABEL_CLASS_NAME,
   SETTINGS_SIDEBAR_LIST_GAP_CLASS_NAME,
+  SETTINGS_SIDEBAR_ROW_FILL_ACTIVE_CLASS_NAME,
   SETTINGS_SIDEBAR_ROW_FILL_HOVER_CLASS_NAME,
+  SETTINGS_SIDEBAR_SECTION_CLASS_NAME,
   SETTINGS_SIDEBAR_SECTION_LABEL_CLASS_NAME,
 } from "../settingsSidebarNavStyles";
 
@@ -80,14 +87,24 @@ function SettingsSearchResultRow(props: {
 
 export function SettingsSidebarNav(props: {
   activeSection: SettingsSectionId;
-  onBack: () => void;
   onSelectSection: (section: SettingsSectionId, options?: { target?: string }) => void;
+  /**
+   * Which conditionally-rendered rows exist on this machine, so the search
+   * cannot offer a row the panel does not draw. Passed in rather than read here:
+   * this component is a pure nav, and the one fact it needs is owned by a
+   * surface that already has it.
+   */
+  searchContext?: SettingsSearchContext | undefined;
 }) {
   const { onSelectSection } = props;
   const [query, setQuery] = useState("");
   const trimmedQuery = query.trim();
   const isSearching = trimmedQuery.length > 0;
-  const results = rankSettingsSearchEntries(trimmedQuery, SETTINGS_SEARCH_RESULTS_LIMIT);
+  const results = rankSettingsSearchEntries(
+    trimmedQuery,
+    SETTINGS_SEARCH_RESULTS_LIMIT,
+    props.searchContext,
+  );
 
   const handleSelectResult = (entry: SettingsSearchEntry) => {
     const target = settingsSearchEntryTarget(entry);
@@ -95,49 +112,114 @@ export function SettingsSidebarNav(props: {
     setQuery("");
   };
 
+  const handleSearchKeyDown = (event: ReactKeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      const topMatch = results[0];
+      if (topMatch) {
+        handleSelectResult(topMatch);
+      }
+      return;
+    }
+    if (event.key === "Escape" && query.length > 0) {
+      event.stopPropagation();
+      setQuery("");
+    }
+  };
+
   return (
-    <div className="flex h-full min-h-0 flex-1 flex-col">
-      <div className="shrink-0 px-1.5 pt-1.5">
-        <SettingsSidebarChromeComposition
-          onBack={props.onBack}
-          searchCapability="available"
-          searchValue={query}
-          onSearchValueChange={setQuery}
-          onSubmitSearch={() => {
-            const topMatch = results[0];
-            if (topMatch) handleSelectResult(topMatch);
-          }}
-          onEscapeSearch={() => {
-            if (query.length > 0) setQuery("");
-          }}
+    <div className="px-1.5 py-1.5">
+      <div className="mb-3 px-1">
+        <SearchInput
+          shape="capsule"
+          value={query}
+          spellCheck={false}
+          autoCorrect="off"
+          autoCapitalize="off"
+          placeholder="Search settings..."
+          aria-label="Search settings"
+          onChange={(event) => setQuery(event.target.value)}
+          onKeyDown={handleSearchKeyDown}
         />
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-1.5 pb-1.5">
-        {isSearching ? (
-          results.length === 0 ? (
-            <p className={SETTINGS_SIDEBAR_SECTION_LABEL_CLASS_NAME}>No matching settings.</p>
-          ) : (
-            <ul
-              aria-label="Settings search results"
-              className={cn("flex flex-col", SETTINGS_SIDEBAR_LIST_GAP_CLASS_NAME)}
-            >
-              {results.map((entry) => (
-                <SettingsSearchResultRow
-                  key={entry.id}
-                  entry={entry}
-                  onSelect={handleSelectResult}
-                />
-              ))}
-            </ul>
-          )
+      {isSearching ? (
+        results.length === 0 ? (
+          <p className={SETTINGS_SIDEBAR_SECTION_LABEL_CLASS_NAME}>No matching settings.</p>
         ) : (
-          <SettingsNavigationComposition
-            activeSection={props.activeSection}
-            onSelectSection={props.onSelectSection}
-          />
-        )}
-      </div>
+          <ul
+            aria-label="Settings search results"
+            className={cn("flex flex-col", SETTINGS_SIDEBAR_LIST_GAP_CLASS_NAME)}
+          >
+            {results.map((entry) => (
+              <SettingsSearchResultRow key={entry.id} entry={entry} onSelect={handleSelectResult} />
+            ))}
+          </ul>
+        )
+      ) : (
+        <nav aria-label="Settings sections" className="flex flex-col">
+          {SETTINGS_NAV_GROUPS.map((group) => {
+            const items = SETTINGS_NAV_ITEMS.filter((item) => item.group === group.id);
+            if (items.length === 0) {
+              return null;
+            }
+
+            return (
+              <section
+                key={group.id}
+                aria-labelledby={`settings-nav-${group.id}`}
+                className={SETTINGS_SIDEBAR_SECTION_CLASS_NAME}
+              >
+                <h2
+                  id={`settings-nav-${group.id}`}
+                  className={SETTINGS_SIDEBAR_SECTION_LABEL_CLASS_NAME}
+                >
+                  {group.label}
+                </h2>
+                <ul className={cn("flex flex-col", SETTINGS_SIDEBAR_LIST_GAP_CLASS_NAME)}>
+                  {items.map((item) => {
+                    const isActive = item.id === props.activeSection;
+                    return (
+                      <li key={item.id}>
+                        <button
+                          type="button"
+                          aria-current={isActive ? "page" : undefined}
+                          className={cn(
+                            SETTINGS_SIDEBAR_ITEM_CLASS_NAME,
+                            isActive
+                              ? SETTINGS_SIDEBAR_ROW_FILL_ACTIVE_CLASS_NAME
+                              : SETTINGS_SIDEBAR_ROW_FILL_HOVER_CLASS_NAME,
+                          )}
+                          onClick={() => props.onSelectSection(item.id)}
+                        >
+                          <SidebarLeadingIcon size="sm" tone="text-inherit">
+                            <CentralIcon
+                              name={item.icon}
+                              className={SETTINGS_SIDEBAR_ICON_CLASS_NAME}
+                            />
+                          </SidebarLeadingIcon>
+                          <span className={SETTINGS_SIDEBAR_ITEM_LABEL_CLASS_NAME}>
+                            {item.label}
+                          </span>
+                          {item.badge ? (
+                            <Badge
+                              variant="outline"
+                              size="sm"
+                              className="ml-auto rounded-full px-1.5 font-normal text-muted-foreground"
+                            >
+                              {item.badge}
+                            </Badge>
+                          ) : null}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+            );
+          })}
+        </nav>
+      )}
     </div>
   );
 }

@@ -11,12 +11,12 @@ import {
 
 export function ChatSurfaceHeaderIdentity(props: {
   readonly title: string;
-  readonly displayTitle?: string;
-  readonly icon?: ReactNode;
-  readonly iconTitle?: string;
-  readonly highlighted?: boolean;
-  readonly suffix?: ReactNode;
-  readonly onRename?: () => void;
+  readonly displayTitle?: string | undefined;
+  readonly icon?: ReactNode | undefined;
+  readonly iconTitle?: string | undefined;
+  readonly highlighted?: boolean | undefined;
+  readonly suffix?: ReactNode | undefined;
+  readonly onRename?: (() => void) | undefined;
 }) {
   return (
     <ChatSurfaceHeaderIdentityRootElement highlighted={props.highlighted ?? false}>

@@ -14,14 +14,14 @@ import { PullRequestRowComposition } from "./PullRequestRowComposition";
 
 export function PullRequestListComposition(props: {
   readonly entries: readonly PullRequestListEntry[];
-  readonly grouped: readonly PullRequestListGroup[] | null;
+  readonly grouped: readonly PullRequestListGroup<PullRequestListEntry>[] | null;
   readonly selectedProjectId?: ProjectId | undefined;
   readonly selectedRepo?: string | undefined;
   readonly selectedNumber?: number | undefined;
-  readonly showProjectTitle?: boolean;
+  readonly showProjectTitle?: boolean | undefined;
   readonly onSelect?: ((entry: PullRequestListEntry) => void) | undefined;
   readonly onTogglePinned?: ((entry: PullRequestListEntry) => void) | undefined;
-  readonly nowMs?: number;
+  readonly nowMs?: number | undefined;
 }) {
   const renderEntry = (entry: PullRequestListEntry) => (
     <PullRequestRowComposition
@@ -54,8 +54,8 @@ export function PullRequestListComposition(props: {
 }
 
 export function PullRequestListLoadingComposition(props: {
-  readonly rowCount?: number;
-  readonly label?: string;
+  readonly rowCount?: number | undefined;
+  readonly label?: string | undefined;
 }) {
   return (
     <PullRequestListLoadingElement
@@ -68,7 +68,7 @@ export function PullRequestListLoadingComposition(props: {
 export function PullRequestListEmptyComposition(props: {
   readonly title: string;
   readonly description: string;
-  readonly intent?: "empty" | "alert";
+  readonly intent?: "empty" | "alert" | undefined;
 }) {
   return (
     <PullRequestListEmptyElement

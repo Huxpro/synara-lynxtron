@@ -11,6 +11,7 @@ function card(overrides: Partial<KanbanCard> = {}): KanbanCard {
     column: "draft",
     title: "Task A",
     provider: "codex",
+    providerInstanceId: null,
     isTerminal: false,
     branch: null,
     envMode: null,

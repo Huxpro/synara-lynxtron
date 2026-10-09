@@ -3,7 +3,7 @@ export type SidebarThreadMetaKind = "automation" | "handoff" | "fork" | "worktre
 export interface SidebarThreadMetaDescriptor {
   readonly id: SidebarThreadMetaKind;
   readonly tooltip: string;
-  readonly active?: boolean;
+  readonly active?: boolean | undefined;
 }
 
 export interface SidebarThreadAutomationMetaInput {
@@ -13,13 +13,13 @@ export interface SidebarThreadAutomationMetaInput {
 }
 
 export interface SidebarThreadMetaModelInput {
-  readonly forkSourceThreadId?: string | null;
-  readonly sidechatSourceThreadId?: string | null;
-  readonly handoffBadgeLabel?: string | null;
-  readonly includeHandoffBadge?: boolean;
-  readonly handoffShownInAvatar?: boolean;
-  readonly worktreeBadgeLabel?: string | null;
-  readonly automations?: readonly SidebarThreadAutomationMetaInput[];
+  readonly forkSourceThreadId?: string | null | undefined;
+  readonly sidechatSourceThreadId?: string | null | undefined;
+  readonly handoffBadgeLabel?: string | null | undefined;
+  readonly includeHandoffBadge?: boolean | undefined;
+  readonly handoffShownInAvatar?: boolean | undefined;
+  readonly worktreeBadgeLabel?: string | null | undefined;
+  readonly automations?: readonly SidebarThreadAutomationMetaInput[] | undefined;
 }
 
 /**

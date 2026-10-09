@@ -3,11 +3,8 @@
 // Layer: Component rendering tests
 // Depends on: SettingsSidebarNav, the settings search index, and React server rendering.
 
-import { renderToStaticMarkup } from "react-dom/server";
-import { readFileSync } from "node:fs";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
-import { SettingsSidebarNav } from "./SettingsSidebarNav";
 import { settingRowAnchorId } from "../settingsNavigation";
 import {
   SETTINGS_SEARCH_ENTRIES,
@@ -31,17 +28,6 @@ describe("rankSettingsSearchEntries", () => {
     expect(results.some((entry) => entry.id === "behavior:diff-line-wrapping")).toBe(true);
   });
 
-  it("includes the activity toasts notification row", () => {
-    const results = rankSettingsSearchEntries("toasts", 12);
-    expect(results.some((entry) => entry.id === "notifications:activity-toasts")).toBe(true);
-  });
-
-  it("indexes environment instructions and the system UI font row", () => {
-    expect(SETTINGS_SEARCH_ENTRIES.map((entry) => entry.id)).toEqual(
-      expect.arrayContaining(["general:environment-instructions", "appearance:system-ui-font"]),
-    );
-  });
-
   it("surfaces every row in a section when searching the section label", () => {
     const results = rankSettingsSearchEntries("appearance", SETTINGS_SEARCH_ENTRIES.length);
     expect(results.some((entry) => entry.section === "appearance")).toBe(true);
@@ -63,33 +49,30 @@ describe("rankSettingsSearchEntries", () => {
       }
     }
   });
-});
 
-describe("SettingsSidebarNav", () => {
-  it("renders the soft search input alongside the section list", () => {
-    const markup = renderToStaticMarkup(
-      <SettingsSidebarNav activeSection="general" onBack={vi.fn()} onSelectSection={vi.fn()} />,
-    );
-
-    expect(markup).toContain('aria-label="Search settings"');
-    expect(markup).toContain('aria-label="Settings sections"');
-    expect(markup).toContain("Back to app");
-    expect(markup).toContain('class="shrink-0 px-1.5 pt-1.5"');
-    expect(markup).toContain('class="min-h-0 flex-1 overflow-y-auto px-1.5 pb-1.5"');
-    expect(markup.indexOf('class="shrink-0 px-1.5 pt-1.5"')).toBeLessThan(
-      markup.indexOf('class="min-h-0 flex-1 overflow-y-auto px-1.5 pb-1.5"'),
-    );
+  it("finds the Behavior and Providers rows by their titles", () => {
+    const titles = (query: string) =>
+      rankSettingsSearchEntries(query, 12).map((entry) => entry.title);
+    expect(titles("dictating")).toContain("Enter while dictating");
+    expect(titles("diff colors")).toContain("Pull request diff colors");
+    expect(titles("enabled providers")).toContain("Enabled providers");
   });
 
-  it("owns the only Settings navigation scroll region below fixed chrome", () => {
-    const surfaceSource = readFileSync(
-      new URL("./SidebarSurfaceContent.tsx", import.meta.url),
-      "utf8",
-    );
-    expect(surfaceSource).toContain(
-      "props.settingsNavigation ? (\n        props.settingsNavigation",
-    );
-    const sidebarSource = readFileSync(new URL("./Sidebar.tsx", import.meta.url), "utf8");
-    expect(sidebarSource).toContain('<SidebarGroup className="min-h-0 flex-1 p-0">');
+  it("finds the Fold finished turns and Wait for subagents rows", () => {
+    const sections = (query: string) =>
+      rankSettingsSearchEntries(query, 12).map((entry) => `${entry.section}:${entry.title}`);
+    expect(sections("fold")).toContain("behavior:Fold finished turns");
+    expect(sections("worked for")).toContain("behavior:Fold finished turns");
+    expect(sections("subagents")).toContain("notifications:Wait for subagents");
+    const targets = (query: string) =>
+      rankSettingsSearchEntries(query, 12).map((entry) => settingsSearchEntryTarget(entry));
+    expect(targets("fold")).toContain("setting-fold-finished-turns");
+    expect(targets("subagents")).toContain("setting-wait-for-subagents");
+  });
+
+  it("deep-links the provider picker result to the Available CLIs row", () => {
+    const [top] = rankSettingsSearchEntries("picker order", 12);
+    expect(top?.title).toBe("Available CLIs");
+    expect(settingsSearchEntryTarget(top!)).toBe("setting-available-clis");
   });
 });

@@ -39,7 +39,7 @@ describe("KeyboardShortcutsSettingsComposition", () => {
     expect(markup).toContain('aria-label="Search shortcuts"');
     expect(markup).toContain("Command");
     expect(markup).toContain("Keybinding");
-    expect(markup).toContain("Show keyboard shortcuts");
+    expect(markup).toContain("Show keybindings");
     expect(markup).toContain("Search projects and threads");
     expect(markup).toContain("New thread");
     expect(markup).toContain("⌘");
@@ -95,12 +95,16 @@ describe("KeyboardShortcutsSettingsComposition", () => {
           entries: [
             {
               id: "reload",
+              command: null,
+              binding: null,
               label: "Reload app",
               description: "Reload the current Lynx bundle.",
               shortcutLabel: "⌘R",
             },
             {
               id: "force-reload",
+              command: null,
+              binding: null,
               label: "Force reload app",
               description: "Force reload the current Lynx bundle.",
               shortcutLabel: "⌘⇧R",

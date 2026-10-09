@@ -12,7 +12,6 @@ export type SettingsGeneralValues = {
   readonly sidebarThreadSortOrder: "updated_at" | "created_at";
   readonly showChatsSection: boolean;
   readonly showStudioSection: boolean;
-  readonly showWorkspaceSection: boolean;
   readonly environmentPanelDefaultOpen: boolean;
   readonly showEnvironmentUsage: boolean;
   readonly showEnvironmentRepository: boolean;
@@ -20,7 +19,6 @@ export type SettingsGeneralValues = {
   readonly showEnvironmentEditor: boolean;
   readonly showEnvironmentRecap: boolean;
   readonly showEnvironmentPinned: boolean;
-  readonly showEnvironmentMarkers: boolean;
   readonly showEnvironmentInstructions: boolean;
   readonly showEnvironmentNotepad: boolean;
 };
@@ -51,7 +49,7 @@ export type SettingsGeneralRowDefinition =
 
 export type SettingsGeneralSectionDefinition = {
   readonly title: string;
-  readonly targetId?: string;
+  readonly targetId?: string | undefined;
   readonly rows: readonly SettingsGeneralRowDefinition[];
 };
 
@@ -137,15 +135,6 @@ export const SETTINGS_GENERAL_SECTIONS: readonly SettingsGeneralSectionDefinitio
         ariaLabel: "Show the Studio section in the sidebar",
         resetLabel: "studio section",
       },
-      {
-        kind: "boolean",
-        key: "showWorkspaceSection",
-        title: "Workspace",
-        description:
-          "Show the Workspace tab in the sidebar switcher. The Threads tab always stays visible.",
-        ariaLabel: "Show the Workspace section in the sidebar",
-        resetLabel: "workspace section",
-      },
     ],
   },
   {
@@ -211,14 +200,6 @@ export const SETTINGS_GENERAL_SECTIONS: readonly SettingsGeneralSectionDefinitio
         description: "Show the pinned-messages checklist in the Environment panel.",
         ariaLabel: "Show the Pinned messages section in the Environment panel",
         resetLabel: "pinned messages section",
-      },
-      {
-        kind: "boolean",
-        key: "showEnvironmentMarkers",
-        title: "Text markers",
-        description: "Show highlighted and underlined transcript text in the Environment panel.",
-        ariaLabel: "Show the Text markers section in the Environment panel",
-        resetLabel: "text markers section",
       },
       {
         kind: "boolean",

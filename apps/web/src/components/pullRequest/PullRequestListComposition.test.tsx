@@ -51,7 +51,7 @@ function entry(overrides: Partial<PullRequestListEntry> = {}): PullRequestListEn
 describe("PullRequestListComposition", () => {
   it("owns group order and canonical row anatomy", () => {
     const item = entry();
-    const groups: PullRequestListGroup[] = [
+    const groups: PullRequestListGroup<PullRequestListEntry>[] = [
       { key: "reviewRequested", label: "Review requested", entries: [item] },
     ];
     const markup = renderToStaticMarkup(

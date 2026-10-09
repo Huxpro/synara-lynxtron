@@ -15,7 +15,7 @@ import {
 import { cn } from "../lib/utils";
 
 export function SidebarSettingsEntryElement(props: {
-  readonly active?: boolean;
+  readonly active?: boolean | undefined;
   readonly icon: unknown;
   readonly label: string;
   readonly onActivate: () => void;
@@ -23,7 +23,7 @@ export function SidebarSettingsEntryElement(props: {
   return (
     <SidebarMenuButton
       size="sm"
-      isActive={props.active}
+      isActive={props.active ?? false}
       className={cn(
         SIDEBAR_HEADER_ROW_CLASS_NAME,
         SIDEBAR_ROW_IDLE_TEXT_CLASS_NAME,

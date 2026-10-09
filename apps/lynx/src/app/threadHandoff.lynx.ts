@@ -1,16 +1,29 @@
-import type { ClientOrchestrationCommand, ModelSelection, ProviderKind } from "@synara/contracts";
+import { PROVIDER_DISPLAY_NAMES } from "@synara/contracts";
+import { isProviderKind } from "@synara-web/providerOrdering";
+import type {
+  ClientOrchestrationCommand,
+  ModelSelection,
+  ProviderKind,
+  ServerProviderStatus,
+  ServerSettingsView,
+} from "@synara/contracts";
 import {
   buildThreadHandoffImportedActivities,
   buildThreadHandoffImportedMessages,
   canCreateThreadHandoff,
-  resolveAvailableHandoffTargetProviders,
+  resolveAvailableHandoffTargets,
   resolveThreadHandoffModelSelection,
   resolveThreadHandoffTitle,
 } from "@synara-web/lib/threadHandoff";
 import { resolveProviderSendAvailability } from "@synara-web/lib/providerAvailability";
 import { newCommandId, newThreadId } from "@synara-web/lib/utils";
 
-import { fetchFreshServerConfig, dispatchSynaraCommand } from "../data/synaraClient.lynx";
+import {
+  dispatchSynaraCommand,
+  fetchFreshServerConfig,
+  fetchServerConfig,
+  fetchServerSettings,
+} from "../data/synaraClient.lynx";
 import type { ThreadHeaderSummary } from "./queries";
 
 export interface NativeThreadHandoffProject {
@@ -18,8 +31,26 @@ export interface NativeThreadHandoffProject {
   readonly defaultModelSelection: ModelSelection | null;
 }
 
+/** Which providers can receive a handoff: enabled in settings and currently usable. */
+export interface NativeThreadHandoffProviderContext {
+  readonly providerSettings: ServerSettingsView["providers"] | null | undefined;
+  readonly providerStatuses: readonly ServerProviderStatus[];
+}
+
+export async function fetchNativeThreadHandoffProviderContext(options?: {
+  readonly fresh?: boolean;
+}): Promise<NativeThreadHandoffProviderContext> {
+  "background only";
+  const [config, settings] = await Promise.all([
+    options?.fresh ? fetchFreshServerConfig() : fetchServerConfig(),
+    fetchServerSettings(),
+  ]);
+  return { providerSettings: settings.providers, providerStatuses: config.providers };
+}
+
 export function resolveNativeThreadHandoffTargets(
   thread: ThreadHeaderSummary | undefined,
+  providers: NativeThreadHandoffProviderContext,
 ): readonly ProviderKind[] {
   if (
     !thread ||
@@ -34,7 +65,32 @@ export function resolveNativeThreadHandoffTargets(
     })
   )
     return [];
-  return resolveAvailableHandoffTargetProviders(thread.modelSelection.provider);
+  // Lynx hands off between the built-in providers' default accounts (provider accounts are
+  // not ported): one instance per provider kind, enabled as the server settings say.
+  const providerInstances = providers.providerStatuses.flatMap((status) => {
+    const provider = status.provider;
+    if (!isProviderKind(provider) || status.instanceId !== provider) return [];
+    return [
+      {
+        instanceId: status.instanceId,
+        provider,
+        driver: provider,
+        label: PROVIDER_DISPLAY_NAMES[provider],
+        enabled: providers.providerSettings?.[provider]?.enabled !== false,
+        isDefault: true,
+        supported: true as const,
+      },
+    ];
+  });
+  return [
+    ...new Set(
+      resolveAvailableHandoffTargets({
+        sourceProvider: thread.modelSelection.provider,
+        providerInstances,
+        providerStatuses: providers.providerStatuses,
+      }).map((target) => target.provider),
+    ),
+  ];
 }
 
 export function buildNativeThreadHandoffCreateCommand(input: {
@@ -77,14 +133,14 @@ export async function createNativeThreadHandoff(input: {
   readonly thread: ThreadHeaderSummary;
 }): Promise<string> {
   "background only";
-  const targets = resolveNativeThreadHandoffTargets(input.thread);
+  const providers = await fetchNativeThreadHandoffProviderContext({ fresh: true });
+  const targets = resolveNativeThreadHandoffTargets(input.thread, providers);
   if (!targets.includes(input.targetProvider)) {
     throw new Error("This handoff target is not available for the current thread.");
   }
-  const config = await fetchFreshServerConfig();
   const availability = resolveProviderSendAvailability({
     provider: input.targetProvider,
-    statuses: config.providers,
+    statuses: providers.providerStatuses,
   });
   if (!availability.usable) throw new Error(availability.unavailableReason);
 

@@ -9,7 +9,7 @@ import {
 } from "~/components/chat/chatHeaderControls";
 import { cn } from "~/lib/utils";
 
-type ChildrenProps = { readonly children?: ReactNode };
+type ChildrenProps = { readonly children?: ReactNode | undefined };
 
 export function PullRequestDetailTabsRootElement(props: ChildrenProps) {
   return (
@@ -44,5 +44,5 @@ export function PullRequestDetailTabElement(props: {
 }
 
 export function PullRequestDetailCapabilityElement(props: ChildrenProps) {
-  return <p className="text-xs text-muted-foreground">{props.children}</p>;
+  return <p className="text-ui text-muted-foreground">{props.children}</p>;
 }

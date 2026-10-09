@@ -67,7 +67,7 @@ export function ComposerModelTriggerStatusIconElement(props: { readonly accessib
 export function ComposerModelTriggerStatusLabelElement(props: { readonly children: ReactNode }) {
   return (
     <span
-      className={cn("shrink-0 text-[10px] leading-[15px]", COMPOSER_MUTED_ACCENT_TEXT_CLASS_NAME)}
+      className={cn("shrink-0 text-ui-xs leading-[15px]", COMPOSER_MUTED_ACCENT_TEXT_CLASS_NAME)}
     >
       {props.children}
     </span>

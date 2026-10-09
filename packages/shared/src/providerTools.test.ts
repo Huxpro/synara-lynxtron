@@ -11,7 +11,6 @@ describe("provider tools configuration", () => {
       "antigravity",
       "grok",
       "droid",
-      "kilo",
       "opencode",
       "pi",
     ]);
@@ -35,11 +34,6 @@ describe("provider tools configuration", () => {
       antigravity: [["text", "antigravityBinaryPath"]],
       grok: [["text", "grokBinaryPath"]],
       droid: [["text", "droidBinaryPath"]],
-      kilo: [
-        ["text", "kiloBinaryPath"],
-        ["text", "kiloServerUrl"],
-        ["password", "kiloServerPassword"],
-      ],
       opencode: [
         ["text", "openCodeBinaryPath"],
         ["text", "openCodeServerUrl"],
@@ -54,15 +48,11 @@ describe("provider tools configuration", () => {
   });
 
   it("retains password redaction keys, docs, and platform-neutral descriptions", () => {
-    const kiloPassword = PROVIDER_TOOL_CONFIGS.find(
-      (config) => config.provider === "kilo",
-    )?.fields.find((field) => field.kind === "password");
     const openCode = PROVIDER_TOOL_CONFIGS.find((config) => config.provider === "opencode");
     const openCodePassword = openCode?.fields.find((field) => field.kind === "password");
     const codex = PROVIDER_TOOL_CONFIGS.find((config) => config.provider === "codex");
     const codexBinary = codex?.fields.find((field) => field.settingsKey === "codexBinaryPath");
 
-    expect(kiloPassword?.configuredKey).toBe("kiloServerPasswordConfigured");
     expect(openCodePassword?.configuredKey).toBe("openCodeServerPasswordConfigured");
     expect(openCode?.docs.map((doc) => doc.label)).toEqual(["Install", "Update", "Config"]);
     expect(providerToolDescriptionText(codexBinary?.description ?? [])).toBe(

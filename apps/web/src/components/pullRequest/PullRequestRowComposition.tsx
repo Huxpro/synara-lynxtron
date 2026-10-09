@@ -25,10 +25,10 @@ import {
 export function PullRequestRowComposition(props: {
   readonly entry: PullRequestListEntry;
   readonly selected: boolean;
-  readonly showProjectTitle?: boolean;
+  readonly showProjectTitle?: boolean | undefined;
   readonly onClick?: ((entry: PullRequestListEntry) => void) | undefined;
   readonly onTogglePinned?: ((entry: PullRequestListEntry) => void) | undefined;
-  readonly nowMs?: number;
+  readonly nowMs?: number | undefined;
 }) {
   const { entry } = props;
   const isPinned = entry.isPinned === true;

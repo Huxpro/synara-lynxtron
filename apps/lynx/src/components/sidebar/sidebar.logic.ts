@@ -18,6 +18,8 @@ import {
   type SidebarProjectSortOrderValue,
   type SidebarThreadSortOrderValue,
 } from "@synara-web/sidebarSortDefaults";
+import type { PullRequestListEntry } from "@synara/contracts";
+import { pullRequestListEntryKey } from "@synara-web/components/pullRequest/pullRequestList.logic";
 
 export interface SidebarProjectGroup {
   readonly id: string;
@@ -110,7 +112,8 @@ export function deriveSidebarSections(input: {
     treeThreads: threads,
     projectSortOrder: input.projectSortOrder ?? DEFAULT_SIDEBAR_PROJECT_SORT_ORDER,
     threadSortOrder: input.threadSortOrder ?? DEFAULT_SIDEBAR_THREAD_SORT_ORDER,
-    resolveProjectSection: (project) => project.kind,
+    // Hubs ("group" containers) are not on Lynx yet; they stay out of every section.
+    resolveProjectSection: (project) => (project.kind === "group" ? null : project.kind),
   });
   const groups: SidebarProjectGroup[] = sections.projectPartitions.projects.map((project) => ({
     id: project.id,
@@ -136,4 +139,14 @@ export function deriveSidebarSections(input: {
     chatThreads: sections.chatThreads,
     studioThreads: sections.studioThreads,
   };
+}
+
+/**
+ * Pull requests awaiting the viewer's review, counted once per repository PR. Electron reads
+ * this from the `pullRequests.reviewRequestCount` RPC; Lynx still derives it from the list.
+ */
+export function countUniqueViewerReviewRequests(entries: readonly PullRequestListEntry[]): number {
+  return new Set(
+    entries.filter((entry) => entry.viewerReviewRequested).map(pullRequestListEntryKey),
+  ).size;
 }

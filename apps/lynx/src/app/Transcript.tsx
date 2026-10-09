@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "@lyn
 import arrowDownSvg from "@tabler/icons/outline/arrow-down.svg?raw";
 
 import {
-  PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
   type ModelSelection,
   type ProviderInteractionMode,
   type RuntimeMode,
@@ -12,7 +11,10 @@ import {
   resolveLatestTailUserMessageEditTarget,
   resolvePromptEffortFromModelSelection,
 } from "@synara/shared/conversationEdit";
-import { resolveAssistantMessageDisplayText } from "@synara-web/components/chat/MessagesTimeline.logic";
+import {
+  resolveAssistantMessageCopyState,
+  resolveAssistantMessageDisplayText,
+} from "@synara-web/components/chat/MessagesTimeline.logic";
 import { chunkCollapsedTurnItems } from "@synara-web/components/chat/MessagesTimeline.logic";
 import {
   classifyToolCallSummaryCategory,
@@ -31,10 +33,9 @@ import {
   appendOriginalComposerPromptBlocks,
   deriveDisplayedUserMessageState,
 } from "@synara-web/lib/terminalContext";
-import { resolveTranscriptMarkerRange } from "@synara/shared/threadMarkers";
 import { resolveSelectionActionLayout } from "@synara/shared/selectionActionLayout";
 import { pinActionLabel } from "@synara-web/lib/pin.logic";
-import { formatShortTimestamp } from "@synara-web/timestampFormat";
+import { formatDayAwareTimestamp, formatShortTimestamp } from "@synara-web/timestampFormat";
 import {
   createMarkdownCodeFence,
   formatShellTranscript,
@@ -45,6 +46,7 @@ import {
 // hand-tuned CSS on each side.
 import {
   getChatTranscriptLineHeightPx,
+  getChatMessageFooterTextStyle,
   getChatTranscriptTextStyle,
   getChatTranscriptUserMessageTextStyle,
 } from "@synara-web/components/chat/chatTypography";
@@ -64,23 +66,15 @@ import {
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { useComposerDraftStore } from "../adapters/composerDraftStore.lynx";
-import {
-  ChevronRightIcon,
-  CopyIcon,
-  MessageCircleIcon,
-  NewThreadIcon,
-  PencilIcon,
-  TextWrapIcon,
-  Undo2Icon,
-} from "../lib/icons.lynx";
+import { ChevronRightIcon, MessageCircleIcon, NewThreadIcon, Undo2Icon } from "../lib/icons.lynx";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import branchSvg from "@synara-central-icons/branch.svg?raw";
+import copySvg from "@synara-central-icons/square-behind-square-6.svg?raw";
 import pinSvg from "@synara-central-icons/pin.svg?raw";
 import { MessageActionButtonLynx } from "../components/ui/MessageActionButton.lynx";
 import { ChatMarkdown, type MarkdownTextSelection } from "../components/markdown/ChatMarkdown";
-import {
-  createAssistantSelectionAttachment,
-  getAssistantSelectionValidationError,
-} from "@synara-web/lib/assistantSelections";
+import { createAssistantSelectionAttachment } from "@synara-web/lib/assistantSelections";
+import type { TranscriptAssistantSelection } from "@synara-web/components/chat/chatSelectionActions";
 import { bridgeCall } from "../platform/bridge";
 import { queryClient, type ThreadTranscriptRow } from "./queries";
 import { TranscriptUserMessageEditForm } from "./TranscriptUserMessageEditForm.lynx";
@@ -446,10 +440,71 @@ function TranscriptToolGroup(props: {
   );
 }
 
+/** Where the selection toolbar sits, so the new-chat composer can open in its place. */
+export interface TranscriptSelectionAnchor {
+  readonly left: number;
+  readonly top: number;
+  readonly placement: "top" | "bottom";
+}
+
+/** Upstream's transcript selection actions beyond Add to Chat (Side, new chat). */
+export interface TranscriptSelectionHandlers {
+  /** False inside a Side chat, which cannot open another Side. */
+  readonly canAddToSide: boolean;
+  readonly onAddToSide: (selection: TranscriptAssistantSelection) => Promise<void>;
+  readonly onAddToNewChat: (
+    selection: TranscriptAssistantSelection,
+    anchor: TranscriptSelectionAnchor,
+  ) => void;
+}
+
+function TranscriptSelectionToolbarButton(props: {
+  readonly label: string;
+  readonly disabled?: boolean;
+  readonly onActivate: () => void;
+}) {
+  // Acting on press keeps the native text selection alive; the tap that follows the same
+  // press is swallowed so it cannot fire twice.
+  const pressActivatedRef = useRef(false);
+  const interaction = useLynxInteractiveState({
+    baseClassName: `TranscriptSelectionAction${
+      props.disabled ? " TranscriptSelectionAction--disabled" : ""
+    }`,
+    accessibleLabel: props.label,
+    disabled: props.disabled,
+    onActivate: () => {
+      if (!pressActivatedRef.current) props.onActivate();
+    },
+  });
+  return (
+    <view
+      className={interaction.className}
+      {...interaction.eventProps}
+      catchmousedown={() => {
+        "background only";
+        if (props.disabled || pressActivatedRef.current) return;
+        pressActivatedRef.current = true;
+        interaction.eventProps.bindmousedown?.();
+        props.onActivate();
+        setTimeout(() => {
+          pressActivatedRef.current = false;
+        }, 300);
+      }}
+    >
+      <text className="TranscriptSelectionActionLabel">{props.label}</text>
+    </view>
+  );
+}
+
+/**
+ * Electron's TranscriptSelectionAction: a divided strip of text actions sized to its labels
+ * and centered in the layout's 320px slot, so no label clips at any font size.
+ */
 function TranscriptSelectionAction(props: {
+  readonly assistantMessageId: string;
+  readonly handlers?: TranscriptSelectionHandlers;
   readonly onAddToChat: () => void;
-  readonly onHighlight: () => void;
-  readonly onUnderline: () => void;
+  readonly onDismiss: () => void;
   readonly selection: MarkdownTextSelection;
   readonly viewport: {
     readonly left: number;
@@ -458,50 +513,18 @@ function TranscriptSelectionAction(props: {
     readonly height: number;
   };
 }) {
-  const highlightPointerActivationRef = useRef(false);
-  const underlinePointerActivationRef = useRef(false);
-  const addToChatPointerActivationRef = useRef(false);
-  const pointerActivate = (
-    lock: { current: boolean },
-    activate: () => void,
-    beginPress?: () => void,
-  ) => {
-    "background only";
-    if (lock.current) return;
-    lock.current = true;
-    beginPress?.();
-    activate();
-    setTimeout(() => {
-      lock.current = false;
-    }, 300);
-  };
-  const highlight = useLynxInteractiveState({
-    baseClassName: "TranscriptSelectionAction",
-    accessibleLabel: "Highlight",
-    onActivate: () => {
-      if (!highlightPointerActivationRef.current) props.onHighlight();
-    },
-  });
-  const underline = useLynxInteractiveState({
-    baseClassName: "TranscriptSelectionAction",
-    accessibleLabel: "Underline",
-    onActivate: () => {
-      if (!underlinePointerActivationRef.current) props.onUnderline();
-    },
-  });
-  const addToChat = useLynxInteractiveState({
-    baseClassName: "TranscriptSelectionAction",
-    accessibleLabel: "Add to chat",
-    onActivate: () => {
-      if (!addToChatPointerActivationRef.current) props.onAddToChat();
-    },
-  });
+  const [sideBusy, setSideBusy] = useState(false);
+  const [sideError, setSideError] = useState<string | null>(null);
   const layout = resolveSelectionActionLayout({
     selectionRect: props.selection,
     pointer: { x: props.selection.left, y: props.selection.top },
     viewport: props.viewport,
   });
-  const compact = layout.width < 292;
+  const selection: TranscriptAssistantSelection = {
+    assistantMessageId: props.assistantMessageId,
+    text: props.selection.text,
+  };
+  const handlers = props.handlers;
   return (
     <view
       className={`TranscriptSelectionToolbar TranscriptSelectionToolbar--${layout.placement}`}
@@ -514,48 +537,47 @@ function TranscriptSelectionAction(props: {
       accessibility-label="Selection actions"
       accessibility-trait="summary"
     >
-      <view
-        className={highlight.className}
-        {...highlight.eventProps}
-        catchmousedown={() =>
-          pointerActivate(
-            highlightPointerActivationRef,
-            props.onHighlight,
-            highlight.eventProps.bindmousedown,
-          )
-        }
-      >
-        <PencilIcon className="TranscriptSelectionActionIcon" size={14} />
-        {compact ? null : <text className="TranscriptSelectionActionLabel">Highlight</text>}
+      <view className="TranscriptSelectionToolbarStrip">
+        <TranscriptSelectionToolbarButton
+          label="Add to Chat"
+          disabled={sideBusy}
+          onActivate={props.onAddToChat}
+        />
+        {handlers ? (
+          <TranscriptSelectionToolbarButton
+            label="Add to Side"
+            disabled={sideBusy || !handlers.canAddToSide}
+            onActivate={() => {
+              "background only";
+              setSideBusy(true);
+              setSideError(null);
+              void handlers
+                .onAddToSide(selection)
+                .then(() => props.onDismiss())
+                .catch((error: unknown) =>
+                  setSideError(error instanceof Error ? error.message : "Try again."),
+                )
+                .finally(() => setSideBusy(false));
+            }}
+          />
+        ) : null}
+        {handlers ? (
+          <TranscriptSelectionToolbarButton
+            label="Add to new Chat"
+            disabled={sideBusy}
+            onActivate={() => {
+              "background only";
+              handlers.onAddToNewChat(selection, layout);
+              props.onDismiss();
+            }}
+          />
+        ) : null}
       </view>
-      <view
-        className={underline.className}
-        {...underline.eventProps}
-        catchmousedown={() =>
-          pointerActivate(
-            underlinePointerActivationRef,
-            props.onUnderline,
-            underline.eventProps.bindmousedown,
-          )
-        }
-      >
-        <TextWrapIcon className="TranscriptSelectionActionIcon" size={13} />
-        {compact ? null : <text className="TranscriptSelectionActionLabel">Underline</text>}
-      </view>
-      <view
-        className={addToChat.className}
-        {...addToChat.eventProps}
-        catchmousedown={() =>
-          pointerActivate(
-            addToChatPointerActivationRef,
-            props.onAddToChat,
-            addToChat.eventProps.bindmousedown,
-          )
-        }
-      >
-        <MessageCircleIcon className="TranscriptSelectionActionIcon" size={13} />
-        {compact ? null : <text className="TranscriptSelectionActionLabel">Add to chat</text>}
-      </view>
+      {sideError ? (
+        <text className="TranscriptSelectionToolbarError" accessibility-trait="text">
+          {`Could not add selection to Side. ${sideError}`}
+        </text>
+      ) : null}
     </view>
   );
 }
@@ -576,6 +598,8 @@ function TranscriptMessage({
   onThreadError,
   onOpenFileReference,
   onOpenTurnDiff,
+  onForkFromMessage,
+  selectionHandlers,
   pinnedMessageIds,
   row,
   threadId,
@@ -598,6 +622,8 @@ function TranscriptMessage({
   readonly onThreadError?: (error: string | null) => void;
   readonly onOpenFileReference?: (relativePath: string) => void;
   readonly onOpenTurnDiff?: (turnId: string) => void;
+  readonly onForkFromMessage?: (messageId: string) => void;
+  readonly selectionHandlers?: TranscriptSelectionHandlers;
   readonly pinnedMessageIds: ReadonlySet<string>;
   row: MessageTranscriptRow;
   threadId: string;
@@ -619,33 +645,7 @@ function TranscriptMessage({
   // Same empty/streaming/"(empty response)" resolution the Web timeline uses,
   // so an assistant turn with no text renders identically on both targets.
   const assistantText = isUser ? null : resolveAssistantMessageDisplayText(row);
-  const draftAttachmentCount = useComposerDraftStore((state) => {
-    const draft = state.draftsByThreadId[threadId];
-    return (draft?.files.length ?? 0) + (draft?.assistantSelections.length ?? 0);
-  });
-  const assistantSelectionUnavailable =
-    assistantText === null ||
-    getAssistantSelectionValidationError({
-      assistantMessageId: message.id,
-      text: assistantText ?? "",
-    }) !== null ||
-    draftAttachmentCount >= PROVIDER_SEND_TURN_MAX_ATTACHMENTS;
   const addAssistantSelection = useComposerDraftStore((state) => state.addAssistantSelection);
-  const addToChat = useLynxInteractiveState({
-    baseClassName: "TranscriptMessageAction",
-    accessibleLabel: "Reference whole assistant message",
-    disabled: assistantSelectionUnavailable,
-    onActivate: () => {
-      if (assistantText === null) return;
-      const selection = createAssistantSelectionAttachment({
-        assistantMessageId: message.id,
-        text: assistantText,
-      });
-      // The web helper widens the id to string; keep the row's branded MessageId.
-      if (selection)
-        addAssistantSelection(threadId, { ...selection, assistantMessageId: message.id });
-    },
-  });
   const messageHover = useLynxInteractiveState({
     // The Web host maps DOM mouseover onto Lynx's ui-hover state only for
     // focusable controls or explicit hover owners. Message rows intentionally
@@ -705,7 +705,19 @@ function TranscriptMessage({
       });
     },
   });
-  const displayedUserMessage = isUser ? deriveDisplayedUserMessageState(message.text) : null;
+  const displayedUserMessage = isUser
+    ? deriveDisplayedUserMessageState(message.text, {
+        // Same rule as Electron's MessagesTimeline: any image, file or quoted
+        // selection gives the bubble visible content, so the bootstrap prompt hides.
+        hideImageOnlyBootstrapPrompt: (message.attachments ?? []).some(
+          (attachment) =>
+            attachment.type === "image" ||
+            attachment.type === "file" ||
+            attachment.type === "assistant-selection",
+        ),
+        messageId: message.id,
+      })
+    : null;
   const edit = useLynxInteractiveState({
     baseClassName: "TranscriptMessageAction",
     accessibleLabel: "Edit message",
@@ -737,6 +749,25 @@ function TranscriptMessage({
     },
   });
   const timestamp = formatShortTimestamp(message.createdAt, timestampFormat);
+  // Electron's footer rules: copy, fork and pin belong to a settled, persisted answer;
+  // a pinned message keeps its pin so it can always be unpinned.
+  const assistantCopyState = resolveAssistantMessageCopyState({
+    text: assistantText,
+    showCopyButton: row.showAssistantCopyButton,
+    streaming: row.assistantCopyStreaming,
+  });
+  const showPinToggle = !isUser && (assistantCopyState.visible || pinned);
+  const showForkAction = !isUser && assistantCopyState.visible && onForkFromMessage !== undefined;
+  const isTerminalAssistantMessage =
+    !isUser && row.showAssistantCopyButton && !row.assistantTurnInProgress;
+  const assistantMeta = isTerminalAssistantMessage
+    ? formatDayAwareTimestamp(message.createdAt, timestampFormat)
+    : "";
+  const fork = useLynxInteractiveState({
+    baseClassName: "TranscriptMessageAction",
+    accessibleLabel: "Fork thread from this turn",
+    onActivate: () => onForkFromMessage?.(message.id),
+  });
   const turnSummary = row.assistantTurnDiffSummary;
   const turnChangedFileCount = turnSummary?.files.length ?? 0;
   const turnAdditions =
@@ -763,36 +794,6 @@ function TranscriptMessage({
     if (selection)
       addAssistantSelection(threadId, { ...selection, assistantMessageId: message.id });
     onTextSelectionChange(null);
-  }
-  function addMarker(style: "highlight" | "underline") {
-    "background only";
-    if (!activeTextSelection || assistantText === null) return;
-    const range = resolveTranscriptMarkerRange({
-      messageText: assistantText,
-      selectedText: activeTextSelection.text,
-    });
-    if (!range) return;
-    const now = Date.now();
-    void import(/* webpackMode: "eager" */ "../data/synaraClient").then(
-      ({ dispatchSynaraCommand }) =>
-        dispatchSynaraCommand({
-          type: "thread.marker.add",
-          commandId: `lynx-command-${now}-${Math.random().toString(16).slice(2)}` as never,
-          threadId: threadId as never,
-          markerId: `lynx-marker-${now}-${Math.random().toString(16).slice(2)}` as never,
-          messageId: message.id,
-          startOffset: range.startOffset,
-          endOffset: range.endOffset,
-          selectedText: activeTextSelection.text,
-          style,
-          color: style === "highlight" ? "yellow" : "blue",
-        }).then(() => {
-          onTextSelectionChange(null);
-          return queryClient.invalidateQueries({
-            queryKey: ["thread-detail", threadId],
-          });
-        }),
-    );
   }
   if (message.role === "system") {
     return (
@@ -846,10 +847,9 @@ function TranscriptMessage({
           <view className="TranscriptMessageFooter TranscriptMessageFooter--user">
             <text className="TranscriptMessageTimestamp">{timestamp}</text>
             <MessageActionButtonLynx className={copy.className} eventProps={copy.eventProps}>
-              <CopyIcon
-                color={svgColors.iconSecondary}
+              <svg
                 className="TranscriptMessageActionIcon"
-                size={13}
+                content={colorizeLynxSvg(copySvg, svgColors.iconSecondary)}
               />
             </MessageActionButtonLynx>
             {editable && displayedUserMessage?.copyText.trim() ? (
@@ -961,45 +961,61 @@ function TranscriptMessage({
         />
         {activeTextSelection ? (
           <TranscriptSelectionAction
+            assistantMessageId={message.id}
+            handlers={selectionHandlers}
             selection={activeTextSelection}
             onAddToChat={addSelectedTextToChat}
-            onHighlight={() => addMarker("highlight")}
-            onUnderline={() => addMarker("underline")}
+            onDismiss={() => onTextSelectionChange(null)}
             viewport={selectionViewport}
           />
         ) : null}
-        {assistantText === null ? null : (
+        {assistantCopyState.visible || showPinToggle || assistantMeta.length > 0 ? (
+          // Turn-end actions read Copy → Fork → Pin → time and stay visible at rest, as
+          // in Electron: they belong to a settled turn.
           <view
-            className={`TranscriptMessageFooter${
-              pinned ? " TranscriptMessageFooter--persistent" : ""
+            className={`TranscriptMessageFooter TranscriptMessageFooter--assistant${
+              assistantCopyState.visible || showPinToggle
+                ? " TranscriptMessageFooter--leading-action"
+                : ""
             }`}
           >
-            <MessageActionButtonLynx className={pin.className} eventProps={pin.eventProps}>
-              <svg
-                className="TranscriptMessageActionIcon"
-                content={colorizeLynxSvg(pinSvg, svgColors.iconSecondary)}
-              />
-            </MessageActionButtonLynx>
-            <MessageActionButtonLynx className={copy.className} eventProps={copy.eventProps}>
-              <CopyIcon
-                color={svgColors.iconSecondary}
-                className="TranscriptMessageActionIcon"
-                size={13}
-              />
-            </MessageActionButtonLynx>
-            <view
-              className={`${addToChat.className}${addToChat.disabled ? " ui-disabled" : ""}`}
-              {...addToChat.eventProps}
-            >
-              <MessageCircleIcon
-                color={svgColors.iconSecondary}
-                className="TranscriptMessageActionIcon"
-                size={13}
-              />
-            </view>
-            <text className="TranscriptMessageTimestamp">{timestamp}</text>
+            {assistantCopyState.visible ? (
+              <MessageActionButtonLynx className={copy.className} eventProps={copy.eventProps}>
+                <svg
+                  className="TranscriptMessageActionIcon"
+                  content={colorizeLynxSvg(copySvg, svgColors.iconSecondary)}
+                />
+              </MessageActionButtonLynx>
+            ) : null}
+            {showForkAction ? (
+              <MessageActionButtonLynx className={fork.className} eventProps={fork.eventProps}>
+                <svg
+                  className="TranscriptMessageActionIcon"
+                  content={colorizeLynxSvg(branchSvg, svgColors.iconSecondary)}
+                />
+              </MessageActionButtonLynx>
+            ) : null}
+            {showPinToggle ? (
+              <MessageActionButtonLynx className={pin.className} eventProps={pin.eventProps}>
+                <svg
+                  className="TranscriptMessageActionIcon"
+                  content={colorizeLynxSvg(
+                    pinSvg,
+                    pinned ? svgColors.foreground : svgColors.iconSecondary,
+                  )}
+                />
+              </MessageActionButtonLynx>
+            ) : null}
+            {assistantMeta.length > 0 ? (
+              <text
+                className="TranscriptMessageMeta"
+                style={getChatMessageFooterTextStyle(chatFontSizePx) as Record<string, string>}
+              >
+                {assistantMeta}
+              </text>
+            ) : null}
           </view>
-        )}
+        ) : null}
       </MessageAssistantRowComposition>
     </view>
   );
@@ -1022,6 +1038,8 @@ function TranscriptRowContent({
   onThreadError,
   onOpenFileReference,
   onOpenTurnDiff,
+  onForkFromMessage,
+  selectionHandlers,
   pinnedMessageIds,
   row,
   threadId,
@@ -1048,6 +1066,8 @@ function TranscriptRowContent({
   readonly onThreadError?: (error: string | null) => void;
   readonly onOpenFileReference?: (relativePath: string) => void;
   readonly onOpenTurnDiff?: (turnId: string) => void;
+  readonly onForkFromMessage?: (messageId: string) => void;
+  readonly selectionHandlers?: TranscriptSelectionHandlers;
   readonly pinnedMessageIds: ReadonlySet<string>;
   row: ThreadTranscriptRow;
   threadId: string;
@@ -1078,6 +1098,8 @@ function TranscriptRowContent({
         onThreadError={onThreadError}
         onOpenFileReference={onOpenFileReference}
         onOpenTurnDiff={onOpenTurnDiff}
+        onForkFromMessage={onForkFromMessage}
+        selectionHandlers={selectionHandlers}
         pinnedMessageIds={pinnedMessageIds}
         row={row}
         threadId={threadId}
@@ -1149,6 +1171,8 @@ export function Transcript({
   modelSelection,
   onOpenFileReference,
   onOpenTurnDiff,
+  onForkFromMessage,
+  selectionHandlers,
   pinnedMessageIds,
   rows,
   threadId,
@@ -1168,6 +1192,8 @@ export function Transcript({
   readonly modelSelection: ModelSelection | null;
   readonly onOpenFileReference?: (relativePath: string) => void;
   readonly onOpenTurnDiff?: (turnId: string) => void;
+  readonly onForkFromMessage?: (messageId: string) => void;
+  readonly selectionHandlers?: TranscriptSelectionHandlers;
   readonly pinnedMessageIds: ReadonlySet<string>;
   readonly rows: readonly ThreadTranscriptRow[];
   readonly threadId: string;
@@ -1540,6 +1566,8 @@ export function Transcript({
                 onThreadError={onThreadError}
                 onOpenFileReference={onOpenFileReference}
                 onOpenTurnDiff={onOpenTurnDiff}
+                onForkFromMessage={onForkFromMessage}
+                selectionHandlers={selectionHandlers}
                 pinnedMessageIds={pinnedMessageIds}
                 row={row}
                 threadId={threadId}

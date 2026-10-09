@@ -7,9 +7,9 @@ export function clampSidebarWidth(
   width: number,
   input: {
     readonly minWidth: number;
-    readonly maxWidth?: number;
-    readonly viewportWidth?: number;
-    readonly minimumContentWidth?: number;
+    readonly maxWidth?: number | undefined;
+    readonly viewportWidth?: number | undefined;
+    readonly minimumContentWidth?: number | undefined;
   },
 ): number {
   const finiteWidth = Number.isFinite(width) ? width : input.minWidth;

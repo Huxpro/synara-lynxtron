@@ -4,7 +4,7 @@ import {
   readEditorRailChatTabs,
   storeEditorRailChatTabs,
   type EditorRailChatTabSnapshot,
-} from "@synara-web/editorViewState";
+} from "./editorViewState.lynx";
 
 import { ClockIcon, PlusIcon } from "../lib/icons.lynx";
 import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";

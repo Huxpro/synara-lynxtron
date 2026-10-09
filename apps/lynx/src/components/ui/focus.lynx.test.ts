@@ -6,6 +6,7 @@ import {
   consumeProgrammaticLynxFocus,
   focusLynxElementBySelector,
   focusLynxNode,
+  scheduleLynxInputFocus,
 } from "./focus.lynx";
 
 const select = rs.fn();
@@ -98,5 +99,28 @@ describe("Lynx focus helpers", () => {
     expect(select).not.toHaveBeenCalled();
     expect(invoke).not.toHaveBeenCalled();
     expect(exec).not.toHaveBeenCalled();
+  });
+});
+
+describe("scheduleLynxInputFocus", () => {
+  it("focuses on each timer and survives hosts whose field throws", () => {
+    rs.useFakeTimers();
+    const focus = rs.fn(() => {
+      throw new Error("not implemented");
+    });
+    scheduleLynxInputFocus({ current: { focus } }, [0, 60]);
+    rs.advanceTimersByTime(60);
+    expect(focus).toHaveBeenCalledTimes(2);
+    rs.useRealTimers();
+  });
+
+  it("cancels pending attempts with one-argument clearTimeout calls", () => {
+    // Lynx's clearTimeout throws on extra arguments, so forEach(clearTimeout) breaks unmount.
+    const clear = rs.spyOn(globalThis, "clearTimeout");
+    const cancel = scheduleLynxInputFocus({ current: null }, [0, 60, 240]);
+    cancel();
+    expect(clear).toHaveBeenCalledTimes(3);
+    for (const call of clear.mock.calls) expect(call).toHaveLength(1);
+    clear.mockRestore();
   });
 });

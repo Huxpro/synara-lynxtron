@@ -63,8 +63,23 @@ function shellThread(id: ThreadId, title: string) {
 function createFakeNativeApi() {
   const shellListeners = new Set<(item: OrchestrationShellStreamItem) => void>();
   const threadListeners = new Set<(item: OrchestrationThreadStreamItem) => void>();
+  const deviceListeners = new Set<(event: unknown) => void>();
+  const computerListeners = new Set<(event: unknown) => void>();
   const calls: string[] = [];
   const api = {
+    // Upstream's EventRouter mounts the device and computer event bridges.
+    device: {
+      onEvent: (listener: (event: unknown) => void) => {
+        deviceListeners.add(listener);
+        return () => deviceListeners.delete(listener);
+      },
+    },
+    computer: {
+      onEvent: (listener: (event: unknown) => void) => {
+        computerListeners.add(listener);
+        return () => computerListeners.delete(listener);
+      },
+    },
     orchestration: {
       onShellEvent: (listener: (item: OrchestrationShellStreamItem) => void) => {
         shellListeners.add(listener);
@@ -102,7 +117,12 @@ function createFakeNativeApi() {
     pushThread: (item: OrchestrationThreadStreamItem) => {
       for (const listener of Array.from(threadListeners)) listener(item);
     },
-    listenerCounts: () => ({ shell: shellListeners.size, thread: threadListeners.size }),
+    listenerCounts: () => ({
+      shell: shellListeners.size,
+      thread: threadListeners.size,
+      device: deviceListeners.size,
+      computer: computerListeners.size,
+    }),
   };
 }
 
@@ -259,12 +279,18 @@ describe("generated EventRouter on the Lynx shims", () => {
     await settle();
     expect(fake.calls).toContain(`subscribeThread:${THREAD_2}`);
 
+    // A route without a thread opens no further lease. (Counted from here: the
+    // engine may itself renew a lease it already holds, e.g. once the shell
+    // snapshot makes the thread known.)
+    const subscribeCalls = () =>
+      fake.calls.filter((call) => call.startsWith("subscribeThread:")).length;
+    const leasesBeforeSettings = subscribeCalls();
     await act(async () => {
       history.push("/settings/general");
       await Promise.resolve();
     });
     await settle();
-    expect(fake.calls.filter((call) => call.startsWith("subscribeThread:")).length).toBe(2);
+    expect(subscribeCalls()).toBe(leasesBeforeSettings);
   });
 
   it("stays the only writer of thread detail while the polling path projects its own snapshot", async () => {
@@ -475,13 +501,13 @@ describe("generated EventRouter on the Lynx shims", () => {
 
   it("releases every listener and lease on unmount", async () => {
     await mount(`/thread/${THREAD_1}`);
-    expect(fake.listenerCounts()).toEqual({ shell: 1, thread: 1 });
+    expect(fake.listenerCounts()).toEqual({ shell: 1, thread: 1, device: 1, computer: 1 });
 
     unmount?.();
     unmount = null;
     await settle();
 
-    expect(fake.listenerCounts()).toEqual({ shell: 0, thread: 0 });
+    expect(fake.listenerCounts()).toEqual({ shell: 0, thread: 0, device: 0, computer: 0 });
     expect(fake.calls).toContain("unsubscribeShell");
     expect(fake.calls).toContain(`unsubscribeThread:${THREAD_1}`);
   });

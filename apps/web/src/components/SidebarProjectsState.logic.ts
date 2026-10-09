@@ -9,7 +9,7 @@ export function resolveSidebarProjectsSectionState(input: {
   readonly loading: boolean;
   readonly error: boolean;
   readonly projectCount: number;
-  readonly shouldShowProjectPathEntry?: boolean;
+  readonly shouldShowProjectPathEntry?: boolean | undefined;
 }): SidebarProjectsSectionState {
   if (input.projectCount > 0 || input.shouldShowProjectPathEntry) return "ready";
   if (input.loading) return "loading";

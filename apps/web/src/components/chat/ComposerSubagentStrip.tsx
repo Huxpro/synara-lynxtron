@@ -12,7 +12,6 @@ import {
   BackgroundTrayIcon,
   BackToParentIcon,
   BotIcon,
-  LoaderIcon,
   PanelCollapseIcon,
   PanelExpandIcon,
   StopIcon,
@@ -21,8 +20,10 @@ import {
   subagentStatusDotClassName,
   subagentStatusTextToneClassName,
 } from "~/lib/subagentPresentation";
+import { StatusDot } from "~/components/ui/status-chip";
 import { cn } from "~/lib/utils";
 import { Button } from "../ui/button";
+import { LiveStatusSpinner } from "../ui/spinner";
 import { DisclosureRegion } from "../ui/DisclosureRegion";
 import type {
   ComposerSubagentStripItem,
@@ -38,6 +39,7 @@ import {
   COMPOSER_STACKED_PANEL_BODY_PADDING_CLASS_NAME,
   COMPOSER_STACKED_PANEL_ICON_BUTTON_CLASS_NAME,
   COMPOSER_STACKED_PANEL_ICON_CLASS_NAME,
+  COMPOSER_STACKED_PANEL_SCROLL_REGION_CLASS_NAME,
 } from "./composerStackedPanelStyles";
 
 interface ComposerSubagentStripProps {
@@ -59,8 +61,9 @@ export const ComposerSubagentStrip = function ComposerSubagentStrip({
   onBackgroundItem,
   onStopItem,
   onStopAll,
-  attachedToPrevious = false,
+  attachedToPrevious: attachedToPreviousProp,
 }: ComposerSubagentStripProps) {
+  const attachedToPrevious = attachedToPreviousProp ?? false;
   const subagentItems = items.filter(
     (item): item is ComposerSubagentStripItem => item.kind === "subagent",
   );
@@ -75,7 +78,7 @@ export const ComposerSubagentStrip = function ComposerSubagentStrip({
       <ComposerStackedPanelHeaderRow>
         <ComposerStackedPanelRowMain>
           {compact && runningCount > 0 ? (
-            <LoaderIcon className={cn(COMPOSER_STACKED_PANEL_ICON_CLASS_NAME, "animate-spin")} />
+            <LiveStatusSpinner className={COMPOSER_STACKED_PANEL_ICON_CLASS_NAME} />
           ) : (
             <BotIcon className={COMPOSER_STACKED_PANEL_ICON_CLASS_NAME} />
           )}
@@ -108,15 +111,21 @@ export const ComposerSubagentStrip = function ComposerSubagentStrip({
           title={compact ? "Expand subagent strip" : "Collapse subagent strip"}
         >
           {compact ? (
-            <PanelExpandIcon className="size-3" />
+            <PanelExpandIcon className="size-3" strokeWidth={2} />
           ) : (
-            <PanelCollapseIcon className="size-3" />
+            <PanelCollapseIcon className="size-3" strokeWidth={2} />
           )}
         </Button>
       </ComposerStackedPanelHeaderRow>
 
       <DisclosureRegion open={!compact}>
-        <div className={cn("space-y-0", COMPOSER_STACKED_PANEL_BODY_PADDING_CLASS_NAME)}>
+        <div
+          className={cn(
+            "space-y-0",
+            COMPOSER_STACKED_PANEL_BODY_PADDING_CLASS_NAME,
+            COMPOSER_STACKED_PANEL_SCROLL_REGION_CLASS_NAME,
+          )}
+        >
           {items.map((item) =>
             item.kind === "parent" ? (
               <div
@@ -131,7 +140,7 @@ export const ComposerSubagentStrip = function ComposerSubagentStrip({
                   onClick={() => onOpenThread(item.threadId)}
                 >
                   <BackToParentIcon className="size-3 shrink-0 text-muted-foreground/55" />
-                  <span className="min-w-0 flex-1 truncate text-[12px] font-medium text-foreground/85">
+                  <span className="min-w-0 flex-1 truncate text-ui font-medium text-foreground/85">
                     {item.label}
                   </span>
                 </button>
@@ -152,26 +161,21 @@ export const ComposerSubagentStrip = function ComposerSubagentStrip({
                   title={item.fullLabel}
                   onClick={() => onOpenThread(item.threadId)}
                 >
-                  <span
-                    className={cn(
-                      "size-1.5 shrink-0 rounded-full",
-                      subagentStatusDotClassName(item.statusKind),
-                    )}
-                  />
-                  <span className="min-w-0 flex-1 truncate text-[12px] font-medium text-foreground/85">
+                  <StatusDot className={subagentStatusDotClassName(item.statusKind)} />
+                  <span className="min-w-0 flex-1 truncate text-ui font-medium text-foreground/85">
                     <span>{item.primaryLabel}</span>
                     {item.role ? (
-                      <span className="ml-1 text-[11px] font-normal text-muted-foreground/55">
+                      <span className="ml-1 text-ui-sm font-normal text-muted-foreground/55">
                         ({item.role})
                       </span>
                     ) : null}
                     {item.modelLabel ? (
-                      <span className="ml-1.5 text-[11px] font-normal text-muted-foreground/45">
+                      <span className="ml-1.5 text-ui-sm font-normal text-muted-foreground/45">
                         {item.modelLabel}
                       </span>
                     ) : null}
                     {item.isBackground ? (
-                      <span className="ml-1.5 text-[11px] font-normal text-muted-foreground/45">
+                      <span className="ml-1.5 text-ui-sm font-normal text-muted-foreground/45">
                         background
                       </span>
                     ) : null}
@@ -179,7 +183,7 @@ export const ComposerSubagentStrip = function ComposerSubagentStrip({
                   {item.statusLabel ? (
                     <span
                       className={cn(
-                        "shrink-0 text-[11px]",
+                        "shrink-0 text-ui-sm",
                         subagentStatusTextToneClassName(item.statusKind),
                       )}
                     >

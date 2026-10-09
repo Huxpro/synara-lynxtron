@@ -9,7 +9,7 @@ export function CenteredEmptyLandingStack({
   className,
   children,
 }: {
-  readonly className?: string;
+  readonly className?: string | undefined;
   readonly children: ReactNode;
 }) {
   return (

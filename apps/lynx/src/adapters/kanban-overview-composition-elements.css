@@ -88,16 +88,18 @@
   min-width: 0;
   max-width: 220px;
   color: var(--foreground);
-  font-size: 13px;
-  font-weight: 650;
-  /* Electron h2: text-[13px] with the default 1.5 line box (19.5px). */
-  line-height: 19.5px;
+  /* KanbanOverview h2: `text-ui-lg font-semibold text-foreground/90`, 1.5 line box. */
+  font-size: var(--app-font-size-ui-lg, 14px);
+  font-weight: 600;
+  line-height: 21px;
+  opacity: 0.9;
 }
 
 .SharedKanbanOverviewProjectCount {
-  color: color-mix(in srgb, var(--muted-foreground) 70%, transparent);
-  font-size: 12px;
-  line-height: 16px;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 17.875px;
+  opacity: 0.7;
 }
 
 .SharedKanbanOverviewProjectCount {

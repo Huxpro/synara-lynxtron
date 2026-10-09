@@ -69,9 +69,7 @@ describe("Native stable right dock host", () => {
     );
     expect(router).not.toContain("availableDockWidth < VIEWPORT_BREAKPOINTS.md");
     expect(router).toContain("rightDockState.open &&");
-    expect(router).toContain(
-      "dockOpen: rightDockState.open && Boolean(rightDockState.activePaneId),",
-    );
+    expect(router).toContain("dockOpen: rightDockState.open,");
     expect(readFileSync(new URL("./threadDock.lynx.tsx", import.meta.url), "utf8")).toContain(
       "input.dockOpen && !overlaysMainContent",
     );

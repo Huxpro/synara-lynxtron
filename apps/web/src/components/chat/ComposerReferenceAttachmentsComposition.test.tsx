@@ -6,9 +6,11 @@ import { type ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 
 vi.mock("./ComposerReferenceAttachmentsCompositionElements", () => ({
-  ComposerReferenceAttachmentsContainerElement: ({ children }: { children?: ReactNode }) => (
-    <div data-attachments>{children}</div>
-  ),
+  ComposerReferenceAttachmentsContainerElement: ({
+    children,
+  }: {
+    children?: ReactNode | undefined;
+  }) => <div data-attachments>{children}</div>,
   ComposerAssistantSelectionsAttachmentElement: ({
     selections,
   }: {

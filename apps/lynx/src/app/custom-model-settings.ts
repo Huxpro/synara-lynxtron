@@ -6,7 +6,6 @@ export const CUSTOM_MODEL_PROVIDERS = [
   { provider: "cursor", example: "composer-2" },
   { provider: "antigravity", example: "Gemini 4 Pro" },
   { provider: "grok", example: "grok-build-0.1" },
-  { provider: "kilo", example: "kilo/kilo-auto/free" },
   { provider: "opencode", example: "openai/gpt-5" },
   { provider: "pi", example: "anthropic/claude-sonnet-4-5" },
 ] as const satisfies readonly {
@@ -32,8 +31,6 @@ export function customModelsProviderPatch(
       return { providers: { antigravity: value } };
     case "grok":
       return { providers: { grok: value } };
-    case "kilo":
-      return { providers: { kilo: value } };
     case "opencode":
       return { providers: { opencode: value } };
     case "pi":

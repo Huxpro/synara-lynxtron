@@ -1,143 +1,34 @@
-import { type AutomationDefinition } from "@synara/contracts";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { projectAutomationList } from "@synara/shared/automationList";
 
-import { getProviderStartOptions, useAppSettings } from "~/appSettings";
-import {
-  CHAT_SURFACE_HEADER_DIVIDER_CLASS_NAME,
-  CHAT_SURFACE_HEADER_HEIGHT_CLASS,
-  CHAT_SURFACE_HEADER_PADDING_X_CLASS,
-} from "~/components/chat/chatHeaderControls";
 import { CHAT_BACKGROUND_CLASS_NAME } from "~/components/chat/composerPickerStyles";
-import { SidebarHeaderNavigationControls } from "~/components/SidebarHeaderNavigationControls";
-import { AutomationListComposition } from "~/components/automation/AutomationListComposition";
 import { Button } from "~/components/ui/button";
 import { RouteInsetSurface } from "~/components/RouteInsetSurface";
-import {
-  hasBlockingAutomationDraftWarnings,
-  updateAutomationDraftWarningAcknowledgement,
-  type AutomationDraftWarning,
-  type AutomationDraftWarningId,
-} from "~/lib/automationDraft";
-import {
-  useDesktopTopBarTrafficLightGutterClassName,
-  useDesktopTopBarWindowControlsGutterClassName,
-} from "~/hooks/useDesktopTopBarGutter";
+import { RouteSurfaceHeader } from "~/components/RouteSurface";
 import { CentralIcon } from "~/lib/central-icons";
+import { ClockIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
-import { ensureNativeApi } from "~/nativeApi";
 import { useStore } from "~/store";
-import { createAllThreadsSelector } from "~/storeSelectors";
-import {
-  type AutomationFormState,
-  AutomationDialog,
-  acknowledgedRiskIdsForFormWarnings,
-  buildAutomationFormWarnings,
-  createInputFromForm,
-  formFromDefinition,
-  isFormSubmittable,
-  providerOptionsForAutomationEdit,
-  projectModelSelection,
-  updateInputFromForm,
-  useAutomations,
-} from "./-automations.shared";
-import { resolveThreadPickerTitle } from "./-chatThreadRoute.logic";
+import { useAutomations } from "./-automations.shared";
+import { AutomationCreateDialog } from "./-automations.list";
 
 export const Route = createFileRoute("/_chat/automations/")({
   component: AutomationsRouteView,
 });
 
-const selectAllThreads = createAllThreadsSelector();
-
+// The Automations panel lists every automation, so this page is the "pick one or create
+// one" landing instead of a second copy of the list.
 function AutomationsRouteView() {
   const navigate = useNavigate();
-  const { settings } = useAppSettings();
-  const desktopTopBarTrafficLightGutterClassName = useDesktopTopBarTrafficLightGutterClassName();
-  const desktopTopBarWindowControlsGutterClassName =
-    useDesktopTopBarWindowControlsGutterClassName();
   const projects = useStore((state) => state.projects);
-  const threads = useStore(selectAllThreads);
-  const [editingDefinition, setEditingDefinition] = useState<AutomationDefinition | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogWarnings, setDialogWarnings] = useState<readonly AutomationDraftWarning[]>([]);
-  const [acknowledgedWarningIds, setAcknowledgedWarningIds] = useState<
-    ReadonlySet<AutomationDraftWarningId>
-  >(() => new Set());
-  const [triageFilter, setTriageFilter] = useState<"unread" | "all">("unread");
-  const fallbackProjectId = projects[0]?.id ?? "";
-  const [form, setForm] = useState<AutomationFormState>(() =>
-    formFromDefinition(null, fallbackProjectId, projectModelSelection(projects, fallbackProjectId)),
+
+  const { refetch, createMutation } = useAutomations(
+    (threadId) => void navigate({ to: "/$threadId", params: { threadId } }),
   );
 
-  const { data, isLoading, refetch, createMutation, updateMutation, deleteMutation } =
-    useAutomations((threadId) => void navigate({ to: "/$threadId", params: { threadId } }));
-  const providerOptionsForDispatch = getProviderStartOptions(settings);
+  const openCreateDialog = () => setDialogOpen(true);
 
-  const updateDialogForm = (nextForm: AutomationFormState) => {
-    setForm(nextForm);
-    setDialogWarnings(buildAutomationFormWarnings(nextForm));
-  };
-
-  const toggleWarning = (id: AutomationDraftWarningId, checked: boolean) => {
-    setAcknowledgedWarningIds((current) =>
-      updateAutomationDraftWarningAcknowledgement(current, id, checked),
-    );
-  };
-
-  const openCreateDialog = () => {
-    setEditingDefinition(null);
-    const nextForm = formFromDefinition(
-      null,
-      fallbackProjectId,
-      projectModelSelection(projects, fallbackProjectId),
-    );
-    setForm(nextForm);
-    setDialogWarnings(buildAutomationFormWarnings(nextForm));
-    setAcknowledgedWarningIds(new Set());
-    setDialogOpen(true);
-  };
-
-  const submitForm = () => {
-    if (!isFormSubmittable(form)) return;
-    if (hasBlockingAutomationDraftWarnings(dialogWarnings, acknowledgedWarningIds)) return;
-    const acknowledgedRisks = acknowledgedRiskIdsForFormWarnings(
-      dialogWarnings,
-      acknowledgedWarningIds,
-    );
-    const closeOnSuccess = { onSuccess: () => setDialogOpen(false) };
-    if (editingDefinition) {
-      updateMutation.mutate(
-        updateInputFromForm(
-          editingDefinition,
-          form,
-          providerOptionsForAutomationEdit(editingDefinition, form, providerOptionsForDispatch),
-          acknowledgedRisks,
-        ),
-        closeOnSuccess,
-      );
-      return;
-    }
-    createMutation.mutate(
-      createInputFromForm(form, providerOptionsForDispatch, acknowledgedRisks),
-      closeOnSuccess,
-    );
-  };
-
-  const deleteDefinition = async (definition: AutomationDefinition) => {
-    const confirmed = await ensureNativeApi().dialogs.confirm(`Delete "${definition.name}"?`);
-    if (!confirmed) return;
-    deleteMutation.mutate(definition);
-  };
-
-  const projection = projectAutomationList({
-    data,
-    projects: projects.map((project) => ({ id: project.id, name: project.name })),
-    threads: threads.map((thread) => ({
-      id: thread.id,
-      title: resolveThreadPickerTitle(thread.title),
-    })),
-  });
   return (
     <RouteInsetSurface>
       <div
@@ -146,72 +37,47 @@ function AutomationsRouteView() {
           CHAT_BACKGROUND_CLASS_NAME,
         )}
       >
-        <header
-          className={cn(
-            CHAT_SURFACE_HEADER_DIVIDER_CLASS_NAME,
-            CHAT_SURFACE_HEADER_PADDING_X_CLASS,
-            "drag-region",
-            desktopTopBarTrafficLightGutterClassName,
-            desktopTopBarWindowControlsGutterClassName,
-          )}
-        >
-          <div className={cn("flex items-center gap-2 sm:gap-3", CHAT_SURFACE_HEADER_HEIGHT_CLASS)}>
-            <SidebarHeaderNavigationControls />
-            <div className="min-w-0 flex-1" />
-            <div className="flex shrink-0 items-center gap-1 [-webkit-app-region:no-drag]">
-              <Button
-                type="button"
-                size="icon-sm"
-                variant="ghost"
-                aria-label="Refresh"
-                title="Refresh"
-                onClick={() => void refetch()}
-              >
-                <CentralIcon name="arrow-rotate-clockwise" className="size-4" />
-              </Button>
-              <Button
-                type="button"
-                size="sm"
-                onClick={openCreateDialog}
-                disabled={projects.length === 0}
-              >
-                <CentralIcon name="plus-small" className="size-4" />
-                New automation
-              </Button>
-            </div>
+        <RouteSurfaceHeader>
+          <div className="min-w-0 flex-1" />
+          <div className="flex shrink-0 items-center gap-1 [-webkit-app-region:no-drag]">
+            <Button
+              type="button"
+              size="icon-sm"
+              variant="ghost"
+              aria-label="Refresh"
+              title="Refresh"
+              onClick={() => void refetch()}
+            >
+              <CentralIcon name="arrow-rotate-clockwise" className="size-4" />
+            </Button>
           </div>
-        </header>
+        </RouteSurfaceHeader>
 
-        <AutomationListComposition
-          definitionsCount={data.definitions.length}
-          isLoading={isLoading}
-          projection={projection}
-          triageFilter={triageFilter}
-          onTriageFilterChange={setTriageFilter}
-          onOpen={(automationId) =>
-            void navigate({
-              to: "/automations/$automationId",
-              params: { automationId: automationId as AutomationDefinition["id"] },
-            })
-          }
-          onOpenThread={(threadId) => void navigate({ to: "/$threadId", params: { threadId } })}
-          onDelete={(definition) => void deleteDefinition(definition)}
-        />
+        <main className="flex min-h-0 flex-1 flex-col items-center justify-center gap-1 px-6 pb-16 text-center">
+          <ClockIcon className="mb-3 size-8 text-muted-foreground" />
+          <p className="text-ui-lg font-medium text-foreground">Automations</p>
+          <p className="max-w-xs text-ui leading-snug text-muted-foreground">
+            Pick an automation in the panel to see its runs, or schedule a new one.
+          </p>
+          <Button
+            type="button"
+            size="sm"
+            className="mt-4"
+            onClick={openCreateDialog}
+            disabled={projects.length === 0}
+          >
+            New automation
+          </Button>
+        </main>
       </div>
 
-      <AutomationDialog
+      <AutomationCreateDialog
         open={dialogOpen}
-        editing={editingDefinition !== null}
-        form={form}
-        projects={projects}
-        threads={threads}
-        warnings={dialogWarnings}
-        acknowledgedWarningIds={acknowledgedWarningIds}
-        onToggleWarning={toggleWarning}
         onOpenChange={setDialogOpen}
-        onFormChange={updateDialogForm}
-        onSubmit={submitForm}
-        busy={createMutation.isPending || updateMutation.isPending}
+        createAutomation={(input, onCreated) =>
+          createMutation.mutate(input, { onSuccess: onCreated })
+        }
+        busy={createMutation.isPending}
       />
     </RouteInsetSurface>
   );

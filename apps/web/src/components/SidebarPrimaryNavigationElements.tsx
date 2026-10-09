@@ -9,7 +9,7 @@ import { SidebarGroup, SidebarMenu } from "~/components/ui/sidebar";
 export function SidebarPrimaryNavigationRootElement({
   children,
 }: {
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <SidebarGroup className="px-1.5 pt-1 pb-1.5">
@@ -27,7 +27,7 @@ export function SidebarPrimaryNavigationBadgeElement({
 }) {
   return (
     <span
-      className="inline-flex h-4 min-w-4 items-center justify-center rounded-md bg-muted px-1 text-[10px] font-medium text-muted-foreground"
+      className="inline-flex h-4 min-w-4 items-center justify-center rounded-md bg-muted px-1 text-ui-xs font-medium text-muted-foreground"
       aria-label={accessibleLabel}
       title={accessibleLabel}
     >

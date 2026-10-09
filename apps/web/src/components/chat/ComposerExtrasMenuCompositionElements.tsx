@@ -40,11 +40,15 @@ export function ComposerExtrasMenuTriggerHostElement(props: { readonly open: boo
   );
 }
 
-export function ComposerExtrasMenuPopupElement(props: { readonly children?: ReactNode }) {
+export function ComposerExtrasMenuPopupElement(props: {
+  readonly children?: ReactNode | undefined;
+}) {
   return <ComposerPickerMenuPopup align="start">{props.children}</ComposerPickerMenuPopup>;
 }
 
-export function ComposerExtrasSubPopupElement(props: { readonly children?: ReactNode }) {
+export function ComposerExtrasSubPopupElement(props: {
+  readonly children?: ReactNode | undefined;
+}) {
   return <ComposerPickerMenuSubPopup>{props.children}</ComposerPickerMenuSubPopup>;
 }
 

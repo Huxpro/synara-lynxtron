@@ -15,7 +15,7 @@ export function SemanticIconTone(props: { readonly tone: SemanticIconToneName })
       >
         <CopyIcon className="size-4" />
       </span>
-      <span className="text-[10px] text-muted-foreground">{props.tone}</span>
+      <span className="text-ui-xs text-muted-foreground">{props.tone}</span>
     </div>
   );
 }

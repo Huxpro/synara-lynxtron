@@ -21,13 +21,13 @@ import {
   KanbanOverviewProjectsElement,
   KanbanOverviewShowMoreElement,
 } from "~/components/kanban/KanbanOverviewCompositionElements";
-import { KanbanCardView } from "./KanbanCardView";
-import {
-  flattenProjectBoardForOverview,
-  type KanbanBoard,
-  type KanbanCard,
-  type KanbanProjectBoard,
-} from "./kanban.logic";
+import { KanbanCardComposition } from "./KanbanCardComposition";
+import { type KanbanBoard, type KanbanCard, type KanbanProjectBoard } from "./kanban.logic";
+
+/** Overview order: what needs the user first, then live work, drafts and finished threads. */
+function flattenProjectBoardForOverview(board: KanbanProjectBoard): KanbanCard[] {
+  return [...board.awaitingYou, ...board.inProgress, ...board.draft, ...board.done];
+}
 
 const OVERVIEW_RENDER_CAP = 20;
 
@@ -35,9 +35,9 @@ function KanbanOverviewProjectComposition(props: {
   readonly projectBoard: KanbanProjectBoard;
   readonly onOpenProject: (projectId: ProjectId) => void;
   readonly onOpenCard: (card: KanbanCard) => void;
-  readonly onCardContextMenu?: (card: KanbanCard, event: React.MouseEvent) => void;
-  readonly onNewTask?: (projectId: ProjectId) => void;
-  readonly nowMs?: number;
+  readonly onCardContextMenu?: ((card: KanbanCard, event: React.MouseEvent) => void) | undefined;
+  readonly onNewTask?: ((projectId: ProjectId) => void) | undefined;
+  readonly nowMs?: number | undefined;
 }) {
   const cards = flattenProjectBoardForOverview(props.projectBoard);
   const visibleCards =
@@ -68,7 +68,7 @@ function KanbanOverviewProjectComposition(props: {
       <KanbanOverviewCardListElement>
         {visibleCards.map((card) => (
           <KanbanOverviewCardItemElement key={card.cardId}>
-            <KanbanCardView
+            <KanbanCardComposition
               card={card}
               onOpen={props.onOpenCard}
               {...(props.onCardContextMenu ? { onContextMenu: props.onCardContextMenu } : {})}
@@ -93,9 +93,9 @@ export function KanbanOverviewComposition(props: {
   readonly board: KanbanBoard;
   readonly onOpenProject: (projectId: ProjectId) => void;
   readonly onOpenCard: (card: KanbanCard) => void;
-  readonly onCardContextMenu?: (card: KanbanCard, event: React.MouseEvent) => void;
-  readonly onNewTask?: (projectId: ProjectId) => void;
-  readonly nowMs?: number;
+  readonly onCardContextMenu?: ((card: KanbanCard, event: React.MouseEvent) => void) | undefined;
+  readonly onNewTask?: ((projectId: ProjectId) => void) | undefined;
+  readonly nowMs?: number | undefined;
 }) {
   const visibleProjects = props.board.projects.filter(
     (projectBoard) => projectBoard.totalCount > 0,

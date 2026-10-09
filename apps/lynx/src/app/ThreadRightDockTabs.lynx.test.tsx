@@ -78,8 +78,9 @@ describe("Lynx thread right dock tabs", () => {
       /ThreadRightDockHeaderButton\.ui-hover[\s\S]{0,500}color:\s*var\(--foreground\)/s,
     );
     const source = readFileSync(new URL("./ThreadRightDockTabs.lynx.tsx", import.meta.url), "utf8");
+    // Every dock glyph (pane kinds, add, collapse) paints in the secondary icon tone.
     expect(source.match(/semanticIconColor\(["']secondary["']\)/g)?.length).toBeGreaterThanOrEqual(
-      5,
+      3,
     );
   });
 
@@ -130,7 +131,9 @@ describe("Lynx thread right dock tabs", () => {
 
     const source = readFileSync(new URL("./ThreadRightDockTabs.lynx.tsx", import.meta.url), "utf8");
     expect(source).toContain('"terminal",');
-    expect(source).toContain("terminalSvg");
+    expect(source).toContain("RIGHT_DOCK_PANE_GLYPHS[props.kind]");
+    const glyphSource = readFileSync(new URL("./rightDockGlyphs.lynx.ts", import.meta.url), "utf8");
+    expect(glyphSource).toContain('import consoleSvg from "@synara-central-icons/console.svg?raw"');
   });
 
   it("can open the real add menu deterministically for Components Lab", () => {

@@ -16,7 +16,11 @@ import {
   type ThreadBrowserState,
   type ThreadId,
 } from "@synara/contracts";
-import { createWsNativeApi } from "@synara-web/wsNativeApi";
+import {
+  createWsNativeApi,
+  onWsServerCapabilitiesChange,
+  readWsServerCapabilities,
+} from "@synara-web/wsNativeApi";
 import { requireHttpExternalUrl } from "@synara-web/lib/externalUrl";
 
 import { nativeRpcRequest } from "../data/nativeRpcBridge";
@@ -38,6 +42,21 @@ export function readNativeApi(): NativeApi | null {
 /** Same contract as the Web `ensureNativeApi`; on Lynx the facade always exists. */
 export function ensureNativeApi(): NativeApi {
   return readNativeApi() as NativeApi;
+}
+
+/**
+ * Same contract as the Web module. Capabilities come from the negotiation the
+ * host performed for its socket, exposed by the transport compat.
+ */
+export function readNativeApiServerCapability(capability: string): boolean {
+  return readWsServerCapabilities()?.includes(capability) === true;
+}
+
+export function onNativeApiServerCapabilitiesChange(
+  listener: () => void,
+  options?: { readonly replayCurrent?: boolean },
+): () => void {
+  return onWsServerCapabilitiesChange(listener, options);
 }
 
 const BROWSER_UNAVAILABLE = "The embedded browser is not available on this renderer.";
@@ -135,7 +154,7 @@ function createLynxNativeApi(): NativeApi {
       copyLink: unavailable(BROWSER_UNAVAILABLE),
       copyScreenshotToClipboard: unavailable(BROWSER_UNAVAILABLE),
       captureScreenshot: unavailable(BROWSER_UNAVAILABLE),
-      executeCdp: unavailable(BROWSER_UNAVAILABLE),
+      capturePreview: async () => null,
       navigate: unavailable(BROWSER_UNAVAILABLE),
       reload: async (input) => closedBrowserState(input.threadId),
       goBack: async (input) => closedBrowserState(input.threadId),
@@ -144,6 +163,12 @@ function createLynxNativeApi(): NativeApi {
       closeTab: async (input) => closedBrowserState(input.threadId),
       selectTab: async (input) => closedBrowserState(input.threadId),
       openDevTools: async () => undefined,
+      annotations: {
+        start: unavailable(BROWSER_UNAVAILABLE),
+        cancel: unavailable(BROWSER_UNAVAILABLE),
+        syncMarkers: unavailable(BROWSER_UNAVAILABLE),
+        onEvent: () => () => undefined,
+      },
       onState: () => () => undefined,
       onCopyLink: () => () => undefined,
     },

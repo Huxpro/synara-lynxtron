@@ -3,13 +3,15 @@
 
 import {
   DEFAULT_GIT_TEXT_GENERATION_MODEL,
+  GIT_TEXT_GENERATION_PROVIDERS,
   PROVIDER_DISPLAY_NAMES,
   type ProviderKind,
   type ServerSettingsView,
 } from "@synara/contracts";
 import { getModelOptions, normalizeModelSlug } from "@synara/shared/model";
 
-export const GIT_WRITING_MODEL_PROVIDERS = ["codex", "kilo", "opencode"] as const;
+// Electron's Models settings offer exactly the contract's Git text-generation providers.
+export const GIT_WRITING_MODEL_PROVIDERS = GIT_TEXT_GENERATION_PROVIDERS;
 export type GitWritingModelProvider = (typeof GIT_WRITING_MODEL_PROVIDERS)[number];
 
 export type SettingsGitWritingModelValues = {
@@ -56,7 +58,7 @@ export function formatSettingsGitWritingModelOptionLabel(
 }
 
 export function buildSettingsGitWritingModelOptions(input: {
-  readonly settings?: Pick<ServerSettingsView, "providers"> | null;
+  readonly settings?: Pick<ServerSettingsView, "providers"> | null | undefined;
   readonly selected: SettingsGitWritingModelValues;
 }): SettingsGitWritingModelOption[] {
   const options: SettingsGitWritingModelOption[] = [];

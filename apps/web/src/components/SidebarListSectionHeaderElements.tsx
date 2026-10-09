@@ -27,7 +27,7 @@ const AddPlusIcon = createCentralIconComponent("plus-medium");
 const SortFilterIcon = createCentralIconComponent("filter-2");
 
 interface ChildrenProps {
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }
 
 export function SidebarListSectionHeaderContainerElement({ children }: ChildrenProps) {
@@ -56,7 +56,7 @@ export function SidebarListSectionHeaderToolbarElement({ children }: ChildrenPro
 }
 
 export function SidebarListSectionHeaderAddProjectElement(props: {
-  readonly elementId?: string;
+  readonly elementId?: string | undefined;
   readonly onActivate: () => void;
 }) {
   return (

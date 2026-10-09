@@ -1,38 +1,12 @@
-import { assert, describe, expect, it, vi } from "vitest";
+import { afterEach, assert, describe, it, vi } from "vitest";
 
-import { isMacPlatform, isWindowsPlatform, randomUUID } from "./utils";
-
-describe("randomUUID", () => {
-  it("uses the platform implementation when Web Crypto is available", () => {
-    const nativeRandomUUID = vi
-      .spyOn(globalThis.crypto, "randomUUID")
-      .mockReturnValue("00000000-0000-4000-8000-000000000001");
-
-    expect(randomUUID()).toBe("00000000-0000-4000-8000-000000000001");
-    expect(nativeRandomUUID).toHaveBeenCalledOnce();
-
-    nativeRandomUUID.mockRestore();
-  });
-
-  it("falls back when the runtime does not define global crypto", () => {
-    const originalCrypto = globalThis.crypto;
-    Object.defineProperty(globalThis, "crypto", {
-      configurable: true,
-      value: undefined,
-    });
-
-    try {
-      expect(randomUUID()).toMatch(
-        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
-      );
-    } finally {
-      Object.defineProperty(globalThis, "crypto", {
-        configurable: true,
-        value: originalCrypto,
-      });
-    }
-  });
-});
+import {
+  getNavigatorPlatform,
+  isLinuxPlatform,
+  isMacNavigatorPlatform,
+  isMacPlatform,
+  isWindowsPlatform,
+} from "./utils";
 
 describe("isMacPlatform", () => {
   it("matches browser and Node.js macOS platform identifiers", () => {
@@ -55,5 +29,39 @@ describe("isWindowsPlatform", () => {
 
   it("does not match darwin", () => {
     assert.isFalse(isWindowsPlatform("darwin"));
+  });
+});
+
+describe("isLinuxPlatform", () => {
+  it("matches Linux platform identifiers", () => {
+    assert.isTrue(isLinuxPlatform("Linux x86_64"));
+    assert.isTrue(isLinuxPlatform("linux"));
+  });
+
+  it("does not match macOS or Windows", () => {
+    assert.isFalse(isLinuxPlatform("MacIntel"));
+    assert.isFalse(isLinuxPlatform("Win32"));
+  });
+});
+
+describe("navigator platform helpers", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("reads the host platform, falling back to an empty string without a navigator", () => {
+    vi.stubGlobal("navigator", undefined);
+    assert.equal(getNavigatorPlatform(), "");
+
+    vi.stubGlobal("navigator", { platform: "MacIntel" });
+    assert.equal(getNavigatorPlatform(), "MacIntel");
+  });
+
+  it("is false on other hosts and without a navigator", () => {
+    vi.stubGlobal("navigator", { platform: "Win32" });
+    assert.isFalse(isMacNavigatorPlatform());
+
+    vi.stubGlobal("navigator", undefined);
+    assert.isFalse(isMacNavigatorPlatform());
   });
 });

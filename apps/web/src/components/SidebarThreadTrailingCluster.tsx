@@ -20,13 +20,13 @@ export function SidebarThreadTrailingCluster({
   status,
   hoverActions,
 }: {
-  readonly className?: string;
-  readonly fadeClassName?: string;
-  readonly statusClassName?: string;
-  readonly metaContent?: ReactNode;
-  readonly shortcutParts?: readonly string[];
-  readonly status?: SidebarThreadStatusPresentation | null;
-  readonly hoverActions?: ReactNode;
+  readonly className?: string | undefined;
+  readonly fadeClassName?: string | undefined;
+  readonly statusClassName?: string | undefined;
+  readonly metaContent?: ReactNode | undefined;
+  readonly shortcutParts?: readonly string[] | undefined;
+  readonly status?: SidebarThreadStatusPresentation | null | undefined;
+  readonly hoverActions?: ReactNode | undefined;
 }) {
   const hasShortcut = shortcutParts.length > 0;
 

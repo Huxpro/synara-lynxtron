@@ -7,13 +7,15 @@ import { SettingResetButton, SettingsSelectControl } from "./SettingControls";
 import { SettingsRow, SettingsSection } from "./SettingsPanelPrimitives";
 import { SelectItem } from "../ui/select";
 
-export function SettingsGitWritingModelRootElement(props: { readonly children?: ReactNode }) {
+export function SettingsGitWritingModelRootElement(props: {
+  readonly children?: ReactNode | undefined;
+}) {
   return <div className="space-y-6">{props.children}</div>;
 }
 
 export function SettingsGitWritingModelSectionElement(props: {
   readonly title: string;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }) {
   return <SettingsSection title={props.title}>{props.children}</SettingsSection>;
 }
@@ -23,7 +25,7 @@ export function SettingsGitWritingModelRowElement(props: {
   readonly description: string;
   readonly changed: boolean;
   readonly onReset: () => void;
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
 }) {
   return (
     <SettingsRow

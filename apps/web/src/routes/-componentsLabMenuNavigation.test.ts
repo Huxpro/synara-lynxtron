@@ -12,12 +12,14 @@ describe("Electron Components Lab menu navigation", () => {
     expect(root).toContain('navigate({ to: "/components-lab", search: {} })');
   });
 
-  it("isolates the lab from product-global notification surfaces", () => {
+  it("keeps every global service mounted on the lab route", () => {
     const root = readFileSync(new URL("./__root.tsx", import.meta.url), "utf8");
-    expect(root).toContain('const componentsLabActive = pathname === "/components-lab"');
-    expect(root).toContain("componentsLabActive ? null : <ProviderUpdateNotifications />");
-    expect(root).toContain("componentsLabActive ? null : <TaskCompletionNotifications />");
-    expect(root).toContain('if (activeToast?.kind !== "prompt") return');
-    expect(root).toContain("toastManager.close(activeToast.toastId)");
+    // Unmounting the session-sync engine on navigation strands its in-flight
+    // subscriptions, and an unmounted notifier leaves its prompt toast behind.
+    expect(root).not.toContain("componentsLabActive");
+    expect(root).not.toMatch(/\? null : \(\s*<>\s*<GitProgressToastPreviewDev/);
+    expect(root).toContain(
+      "<GlobalComponentsLabMenuNavigation />\n          <GitProgressToastPreviewDev />",
+    );
   });
 });

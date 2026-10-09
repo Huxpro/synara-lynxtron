@@ -71,7 +71,7 @@ export function KeyboardShortcutsHeaderElement({
   readonly keybindingLabel: string;
 }) {
   return (
-    <div className="flex items-center justify-between gap-4 px-3 py-2 text-[11px] font-medium text-muted-foreground">
+    <div className="flex items-center justify-between gap-4 px-3 py-2 text-ui-sm font-medium text-muted-foreground">
       <span>{commandLabel}</span>
       <span>{keybindingLabel}</span>
     </div>
@@ -122,7 +122,7 @@ export function KeyboardShortcutsEmptyElement({ children }: ChildrenProps) {
     <div
       className={cn(
         SETTINGS_EMPTY_STATE_CLASS_NAME,
-        "px-4 py-10 text-center text-sm text-muted-foreground",
+        "px-4 py-10 text-center text-ui text-muted-foreground",
       )}
     >
       {children}

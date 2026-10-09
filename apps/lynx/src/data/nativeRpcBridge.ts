@@ -6,13 +6,17 @@
 
 import {
   NATIVE_EVENT_STREAM_CHANNELS,
+  NATIVE_RPC_COMPATIBILITY_EVENT,
   NATIVE_RPC_STREAM_CANCEL_METHOD,
   NATIVE_RPC_STREAM_ITEM_EVENT,
   NATIVE_RPC_STREAM_RESET_METHOD,
   NATIVE_TRANSPORT_STATE_EVENT,
   isNativeRpcStreamItemEvent,
+  parseNativeRpcCompatibility,
+  type NativeRpcCompatibility,
   type NativeRpcStreamResetReply,
 } from "../main/nativeEventStreams.logic";
+import { parseRpcFailureReply, type RpcFailureDetails } from "../main/rpcFailure.logic";
 import type { RpcTransportState } from "./rpcTransport.logic";
 
 export type NativeRpcErrorKind = "rpc" | "transport";
@@ -24,13 +28,24 @@ export type NativeRpcErrorKind = "rpc" | "transport";
  */
 export class NativeRpcError extends Error {
   readonly name: "SynaraRpcResponseError" | "RpcTransportError";
+  /**
+   * The server's typed error fields, as upstream callers read them off a failed
+   * RPC (`code`, `retryAfterMs`, `retryable`). Absent for untyped failures.
+   */
+  readonly code?: string;
+  readonly retryAfterMs?: number;
+  readonly retryable?: boolean;
 
   constructor(
     message: string,
     readonly errorKind: NativeRpcErrorKind,
+    details: RpcFailureDetails | null = null,
   ) {
     super(message);
     this.name = errorKind === "rpc" ? "SynaraRpcResponseError" : "RpcTransportError";
+    if (details?.code != null) this.code = details.code;
+    if (details?.retryAfterMs != null) this.retryAfterMs = details.retryAfterMs;
+    if (details?.retryable != null) this.retryable = details.retryable;
   }
 }
 
@@ -50,6 +65,7 @@ export function hostBridgeRequest<A>(method: string, params: Record<string, unkn
               new NativeRpcError(
                 String(parsed.error),
                 "errorKind" in parsed && parsed.errorKind === "rpc" ? "rpc" : "transport",
+                parseRpcFailureReply(parsed),
               ),
             );
             return;
@@ -103,6 +119,7 @@ export function nativeRpcResetStreams(): Promise<NativeRpcStreamResetReply> {
     return {
       generation: reply.generation,
       transportState: typeof reply.transportState === "string" ? reply.transportState : "idle",
+      compatibility: parseNativeRpcCompatibility(reply.compatibility),
     };
   });
 }
@@ -154,6 +171,18 @@ export async function subscribeNativeTerminalEvents(
   "background only";
   const { onGlobalEvent } = await import(/* webpackMode: "eager" */ "../platform/bridge");
   return onGlobalEvent(NATIVE_EVENT_STREAM_CHANNELS["terminal.subscribeEvents"], listener);
+}
+
+/** Subscribe to the host socket's negotiated compatibility; returns the unsubscribe. */
+export async function subscribeNativeRpcCompatibility(
+  listener: (compatibility: NativeRpcCompatibility) => void,
+): Promise<() => void> {
+  "background only";
+  const { onGlobalEvent } = await import(/* webpackMode: "eager" */ "../platform/bridge");
+  return onGlobalEvent(NATIVE_RPC_COMPATIBILITY_EVENT, (value: unknown) => {
+    const compatibility = parseNativeRpcCompatibility(value);
+    if (compatibility) listener(compatibility);
+  });
 }
 
 const HOST_TRANSPORT_STATES: ReadonlySet<string> = new Set([

@@ -5,3 +5,9 @@
   font-family: "JetBrains Mono Variable";
   src: url("../../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2");
 }
+
+/* Display face for sidebar panel titles (Electron --font-display-family). */
+@font-face {
+  font-family: "Cal Sans";
+  src: url("../../node_modules/@fontsource/cal-sans/files/cal-sans-latin-400-normal.woff2");
+}

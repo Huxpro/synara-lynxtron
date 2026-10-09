@@ -18,8 +18,9 @@ import {
   KanbanColumnStatusElement,
   KanbanColumnTitleElement,
 } from "~/components/kanban/KanbanColumnCompositionElements";
-import { KanbanCardView } from "./KanbanCardView";
-import { KANBAN_COLUMN_LABELS, type KanbanCard, type KanbanColumnKey } from "./kanban.logic";
+import { KanbanCardComposition } from "./KanbanCardComposition";
+import { KANBAN_COLUMN_V2_LABELS as KANBAN_COLUMN_LABELS } from "@synara/shared/kanban";
+import { type KanbanCard, type KanbanColumnKey } from "./kanban.logic";
 import type { KanbanDragPoint } from "./kanbanDnd.logic";
 
 export const KANBAN_DONE_RENDER_CAP = 30;
@@ -33,13 +34,14 @@ export function KanbanColumnComposition(props: {
     event: React.MouseEvent,
     restoreFocus?: () => void,
   ) => void;
-  readonly onCardActions?: (card: KanbanCard, event: React.MouseEvent) => void;
-  readonly onCardDragPointerStart?: (card: KanbanCard, point: KanbanDragPoint) => void;
-  readonly dragSourceCardId?: string | null;
-  readonly onNewCard?: () => void;
-  readonly showDispatchTarget?: boolean;
-  readonly dispatchTargetLabel?: string;
-  readonly nowMs?: number;
+  readonly onCardDragPointerStart?:
+    | ((card: KanbanCard, point: KanbanDragPoint) => void)
+    | undefined;
+  readonly dragSourceCardId?: string | null | undefined;
+  readonly onNewCard?: (() => void) | undefined;
+  readonly showDispatchTarget?: boolean | undefined;
+  readonly dispatchTargetLabel?: string | undefined;
+  readonly nowMs?: number | undefined;
 }) {
   const [showAll, setShowAll] = useState(false);
   const visibleCards =
@@ -68,11 +70,10 @@ export function KanbanColumnComposition(props: {
       <KanbanColumnCardListElement>
         {visibleCards.map((card) => (
           <KanbanColumnCardItemElement key={card.cardId}>
-            <KanbanCardView
+            <KanbanCardComposition
               card={card}
               onOpen={props.onOpenCard}
               {...(props.onCardContextMenu ? { onContextMenu: props.onCardContextMenu } : {})}
-              {...(props.onCardActions ? { onOpenActions: props.onCardActions } : {})}
               {...(props.onCardDragPointerStart
                 ? { onDragPointerStart: props.onCardDragPointerStart }
                 : {})}

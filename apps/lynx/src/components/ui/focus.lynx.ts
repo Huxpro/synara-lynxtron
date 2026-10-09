@@ -56,3 +56,27 @@ export function focusLynxElementBySelector(selector: string): boolean {
     return false;
   }
 }
+
+/**
+ * Focuses a text field once it has mounted, for surfaces that open with the caret in place
+ * (Electron's autofocused picker search and composers). Attempts run on timers: a ref invoke
+ * issued during the first render is deferred into the render flush, where a host without a
+ * native field (the test renderer) would throw. Returns the cleanup.
+ */
+export function scheduleLynxInputFocus(
+  ref: { readonly current: unknown },
+  delaysMs: ReadonlyArray<number>,
+): () => void {
+  const focus = () => {
+    try {
+      void Promise.resolve((ref.current as { focus?: () => unknown } | null)?.focus?.()).catch(
+        () => undefined,
+      );
+    } catch {
+      // Focus is a convenience; the field stays usable without it.
+    }
+  };
+  const timers = delaysMs.map((delay) => setTimeout(focus, delay));
+  // Lynx's clearTimeout rejects extra arguments, so it cannot be passed to forEach directly.
+  return () => timers.forEach((timer) => clearTimeout(timer));
+}

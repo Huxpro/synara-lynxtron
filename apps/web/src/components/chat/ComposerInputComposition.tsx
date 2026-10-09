@@ -15,11 +15,11 @@ import {
 } from "~/components/chat/ComposerInputCompositionElements";
 
 export function ComposerInputSurfaceComposition(props: {
-  readonly children?: ReactNode;
-  readonly focused?: boolean;
-  readonly overflowVisible?: boolean;
-  readonly providerFrameClassName?: string;
-  readonly providerSurfaceClassName?: string;
+  readonly children?: ReactNode | undefined;
+  readonly focused?: boolean | undefined;
+  readonly overflowVisible?: boolean | undefined;
+  readonly providerFrameClassName?: string | undefined;
+  readonly providerSurfaceClassName?: string | undefined;
 }) {
   return (
     <ComposerInputShellElement
@@ -39,8 +39,8 @@ export function ComposerInputSurfaceComposition(props: {
 }
 
 export function ComposerEditorRegionComposition(props: {
-  readonly children?: ReactNode;
-  readonly overflowVisible?: boolean;
+  readonly children?: ReactNode | undefined;
+  readonly overflowVisible?: boolean | undefined;
 }) {
   return (
     <ComposerEditorRegionElement overflowVisible={props.overflowVisible ?? false}>
@@ -50,8 +50,8 @@ export function ComposerEditorRegionComposition(props: {
 }
 
 export function ComposerFooterRowComposition(props: {
-  readonly children?: ReactNode;
-  readonly compact?: boolean;
+  readonly children?: ReactNode | undefined;
+  readonly compact?: boolean | undefined;
 }) {
   return (
     <ComposerFooterRowElement compact={props.compact ?? false}>
@@ -61,10 +61,10 @@ export function ComposerFooterRowComposition(props: {
 }
 
 export function ComposerFooterContentComposition(props: {
-  readonly actions?: ReactNode;
-  readonly compact?: boolean;
-  readonly leading?: ReactNode;
-  readonly voiceBusy?: boolean;
+  readonly actions?: ReactNode | undefined;
+  readonly compact?: boolean | undefined;
+  readonly leading?: ReactNode | undefined;
+  readonly voiceBusy?: boolean | undefined;
 }) {
   const leadingVisible = props.leading !== null && props.leading !== undefined;
   const actionsVisible = props.actions !== null && props.actions !== undefined;
@@ -94,8 +94,8 @@ export function ComposerFooterContentComposition(props: {
 export type ComposerPrimaryActionMode = "send" | "sending" | "stop";
 
 export function ComposerPrimaryActionComposition(props: {
-  readonly accessibleLabel?: string;
-  readonly disabled?: boolean;
+  readonly accessibleLabel?: string | undefined;
+  readonly disabled?: boolean | undefined;
   readonly mode: ComposerPrimaryActionMode;
   readonly onActivate: () => void;
 }) {

@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 
 import { SidebarFooter, SidebarMenu, SidebarMenuItem } from "./ui/sidebar";
 
-export function SidebarFooterFrameElement(props: { readonly children?: ReactNode }) {
+export function SidebarFooterFrameElement(props: { readonly children?: ReactNode | undefined }) {
   return (
     <SidebarFooter className="gap-2 p-2 font-system-ui">
       <SidebarMenu>
@@ -15,10 +15,10 @@ export function SidebarFooterFrameElement(props: { readonly children?: ReactNode
   );
 }
 
-export function SidebarFooterStackElement(props: { readonly children?: ReactNode }) {
+export function SidebarFooterStackElement(props: { readonly children?: ReactNode | undefined }) {
   return <div className="flex flex-col gap-1">{props.children}</div>;
 }
 
-export function SidebarFooterRowElement(props: { readonly children?: ReactNode }) {
+export function SidebarFooterRowElement(props: { readonly children?: ReactNode | undefined }) {
   return <div className="flex items-center gap-2">{props.children}</div>;
 }

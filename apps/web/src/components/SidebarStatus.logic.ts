@@ -9,22 +9,22 @@ export interface SidebarStatusPresentation {
   readonly colorClass: string;
   readonly dotClass: string;
   readonly pulse: boolean;
-  readonly dismissible?: boolean;
-  readonly dismissalKey?: string;
+  readonly dismissible?: boolean | undefined;
+  readonly dismissalKey?: string | undefined;
 }
 
 export interface SidebarDismissibleStatusInput {
-  readonly dismissalKey?: string | null;
-  readonly dismissed?: boolean;
+  readonly dismissalKey?: string | null | undefined;
+  readonly dismissed?: boolean | undefined;
 }
 
 export interface SidebarStatusInput {
-  readonly pendingApproval?: SidebarDismissibleStatusInput | null;
-  readonly pendingUserInput?: SidebarDismissibleStatusInput | null;
-  readonly working?: boolean;
-  readonly connecting?: boolean;
-  readonly planReady?: SidebarDismissibleStatusInput | null;
-  readonly completed?: SidebarDismissibleStatusInput | null;
+  readonly pendingApproval?: SidebarDismissibleStatusInput | null | undefined;
+  readonly pendingUserInput?: SidebarDismissibleStatusInput | null | undefined;
+  readonly working?: boolean | undefined;
+  readonly connecting?: boolean | undefined;
+  readonly planReady?: SidebarDismissibleStatusInput | null | undefined;
+  readonly completed?: SidebarDismissibleStatusInput | null | undefined;
 }
 
 const PRESENTATION: Record<

@@ -578,8 +578,19 @@ describe("Electron and Lynxtron comparison launcher", () => {
       "synara:appsnap-welcome:v1": '{"acknowledged":true}',
       "synara:terminal-state:v1": '{"state":{"terminal":true}}',
       "synara:right-dock-state:v1": '{"state":{"browser":true}}',
+      "synara:safari-access-onboarding:v1": '"later"',
     });
     expect(reloadCount).toBe(1);
+
+    values.clear();
+    Function(
+      "localStorage",
+      "location",
+      comparisonRendererResetExpression("dark", "acknowledged", null, null, "/fixture/worktrees"),
+    )(localStorage, location);
+    expect(values.get("synara:project-import-announcement:v1")).toBe('["/fixture/worktrees"]');
+    // Upstream's feature tour sheet records seen installations the same way.
+    expect(values.get("synara:feature-tour:since-0.9.2:v1")).toBe('["/fixture/worktrees"]');
   });
 
   it("can explicitly retain the AppSnap welcome state for dialog comparison", () => {
@@ -708,7 +719,8 @@ describe("Electron and Lynxtron comparison launcher", () => {
         SYNARA_HOME: "/repo/.synara-desktop-comparison/electron",
         SYNARA_ALLOW_PARALLEL_INSTANCE: "1",
         SYNARA_DESKTOP_AUTH_TOKEN: "comparison-token",
-        SYNARA_DESKTOP_USER_DATA_DIR: "/repo/.synara-desktop-comparison/electron-profile",
+        SYNARA_SOURCE_DESKTOP_BUILD_MARKER: "synara-source-desktop-build-v2",
+        SYNARA_DESKTOP_SMOKE_USER_DATA: "/repo/.synara-desktop-comparison/electron-profile",
         SYNARA_DISABLE_THREAD_RETENTION: "1",
         SYNARA_SKIP_SHELL_ENVIRONMENT_SYNC: "1",
         SYNARA_SKIP_MEDIA_PERMISSION_SETUP: "1",
@@ -1051,6 +1063,9 @@ describe("Electron and Lynxtron comparison launcher", () => {
       "synara:terminal-state:v1",
       "synara:right-dock-state:v1",
       "synara:recent-views:v1",
+      "synara:safari-access-onboarding:v1",
+      "synara:project-import-announcement:v1",
+      "synara:feature-tour:since-0.9.2:v1",
     ]);
     writeComparisonRendererState(paths, {
       "synara:theme": "dark",

@@ -18,7 +18,7 @@ export type SettingsNavigationCompositionGroup = {
 
 export function resolveSettingsNavigationCompositionGroups(input: {
   readonly activeSection: SettingsSectionId;
-  readonly availableSections?: readonly SettingsSectionId[];
+  readonly availableSections?: readonly SettingsSectionId[] | undefined;
 }): readonly SettingsNavigationCompositionGroup[] {
   return SETTINGS_NAV_GROUPS.map((group) => ({
     id: group.id,

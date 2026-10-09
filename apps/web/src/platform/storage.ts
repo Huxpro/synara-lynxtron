@@ -61,6 +61,15 @@ function resolveWebStorage(): KeyValueStorage {
  * global localStorage is available the store degrades to process-local memory
  * instead of throwing, matching the previous isomorphic fallback behavior.
  */
+/**
+ * True when a `StorageEvent.storageArea` is the store `webStorage` writes to.
+ * `webStorage` is a wrapper, so comparing an event's area with it by identity
+ * never matches; this compares with the real `localStorage` behind it.
+ */
+export function isWebStorageArea(area: unknown): boolean {
+  return area === resolveWebStorage();
+}
+
 export const webStorage: KeyValueStorage = {
   getItem: (key) => resolveWebStorage().getItem(key),
   setItem: (key, value) => resolveWebStorage().setItem(key, value),
@@ -124,12 +133,21 @@ export function flushStorageBeforePageHide(
     document: typeof document !== "undefined" ? document : undefined,
   },
 ): void {
-  env.window?.addEventListener("beforeunload", flush);
-  env.window?.addEventListener("pagehide", flush);
+  // Guard each capability separately: SSR-style test environments stub partial
+  // globals (e.g. a `document` with only `documentElement`), and this runs at
+  // module scope in store files — a missing listener API must degrade to a
+  // no-op, never crash module evaluation.
+  const win = env.window;
+  if (typeof win?.addEventListener === "function") {
+    win.addEventListener("beforeunload", flush);
+    win.addEventListener("pagehide", flush);
+  }
   const doc = env.document;
-  doc?.addEventListener("visibilitychange", () => {
-    if (doc.visibilityState === "hidden") {
-      flush();
-    }
-  });
+  if (typeof doc?.addEventListener === "function") {
+    doc.addEventListener("visibilitychange", () => {
+      if (doc.visibilityState === "hidden") {
+        flush();
+      }
+    });
+  }
 }

@@ -49,7 +49,7 @@ describe("Kanban overview fidelity", () => {
     );
 
     expect(styles).toMatch(
-      /\.SharedKanbanOverviewProjectCount\s*\{[^}]*color:\s*color-mix\(in srgb, var\(--muted-foreground\) 70%, transparent\);/s,
+      /\.SharedKanbanOverviewProjectCount\s*\{[^}]*color:\s*var\(--muted-foreground\);[^}]*opacity:\s*0\.7;/s,
     );
     expect(styles).toMatch(
       /\.SharedKanbanOverviewProjectChevron\s*\{[^}]*color:\s*color-mix\(in srgb, var\(--muted-foreground\) 50%, transparent\);/s,

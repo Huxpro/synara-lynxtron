@@ -10,12 +10,12 @@ import {
 import { cn } from "~/lib/utils";
 
 export function PanelStateMessageElement(props: {
-  readonly children?: ReactNode;
+  readonly children?: ReactNode | undefined;
   readonly density: "comfortable" | "compact";
   readonly fill: "full" | "flex";
-  readonly className?: string;
+  readonly className?: string | undefined;
   readonly intent: SystemStateIntent;
-  readonly announcement?: string;
+  readonly announcement?: string | undefined;
 }) {
   const semantics = resolveSystemStateSemantics(props.intent);
   return (
@@ -28,8 +28,8 @@ export function PanelStateMessageElement(props: {
         "flex w-full items-center justify-center text-center",
         props.fill === "full" ? "h-full min-h-0" : "flex-1",
         props.density === "comfortable"
-          ? "p-6 text-sm text-muted-foreground"
-          : "px-5 text-xs text-muted-foreground/70",
+          ? "p-6 text-ui leading-snug text-muted-foreground"
+          : "px-5 text-ui leading-snug text-muted-foreground/70",
         props.className,
       )}
     >

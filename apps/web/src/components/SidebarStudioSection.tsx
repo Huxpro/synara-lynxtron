@@ -14,9 +14,9 @@ export function SidebarStudioSection<Row>(props: {
   readonly rows: readonly Row[];
   readonly renderRow: (row: Row) => ReactNode;
   readonly hydrated: boolean;
-  readonly prelude?: ReactNode;
-  readonly headerActions?: ReactNode;
-  readonly listRef?: unknown;
+  readonly prelude?: ReactNode | undefined;
+  readonly headerActions?: ReactNode | undefined;
+  readonly listRef?: unknown | undefined;
 }) {
   return (
     <SidebarStudioSectionRootElement>

@@ -1,7 +1,8 @@
 // FILE: SettingsPanelPrimitives.tsx
 // Purpose: Shared settings section card and row primitives (Codex-style bordered groups).
 // Layer: Settings UI components
-// Exports: SettingsCard, SettingsSection, SettingsListRow, SettingsRow, SettingsSelectPopup
+// Exports: SettingsCard, SettingsSectionShell, SettingsSection, SettingsEmptyState,
+//          SettingsListRow, SettingsRow, SettingsSelectPopup
 
 import { type ComponentProps, type ReactNode } from "react";
 import { cn } from "~/lib/utils";
@@ -9,20 +10,98 @@ import {
   SETTINGS_CARD_ROW_CLASS_NAME,
   SETTINGS_CARD_ROW_DESCRIPTION_CLASS_NAME,
   SETTINGS_CARD_ROW_TITLE_CLASS_NAME,
+  SETTINGS_EMPTY_STATE_CLASS_NAME,
+  SETTINGS_PANEL_SECTION_CLASS_NAME,
+  SETTINGS_SECTION_LABEL_CLASS_NAME,
 } from "~/settingsPanelStyles";
 import { SelectPopup } from "~/components/ui/select";
 import { composerPickerMenuShellClassName } from "~/components/chat/composerPickerSize";
 
+// Card, section and row are compositions over platform elements so the Lynx renderer
+// shares them; see SettingsSection.tsx and SettingsRow.tsx.
 export { SettingsCard, SettingsSection } from "./SettingsSection";
 export { SettingsRow } from "./SettingsRow";
 
+/**
+ * Labelled settings group without the card — the `<section>`, its heading, and an
+ * optional trailing header action (Refresh, …). Use it when a group holds something
+ * other than a single card (a card plus editors, a loading/empty swap); use
+ * {@link SettingsSection} for the common card-only case.
+ *
+ * `id` exposes the section itself as a search/deep-link target for the case where
+ * the header owns the setting (a toggle in the action slot) and no row carries it.
+ */
+export function SettingsSectionShell({
+  title,
+  action,
+  id,
+  children,
+}: {
+  title: string;
+  action?: ReactNode;
+  id?: string;
+  children: ReactNode;
+}) {
+  return (
+    <section id={id} className={cn(SETTINGS_PANEL_SECTION_CLASS_NAME, id && "scroll-mt-24")}>
+      {action != null ? (
+        <div className="flex items-center justify-between gap-2">
+          <h2 className={SETTINGS_SECTION_LABEL_CLASS_NAME}>{title}</h2>
+          {action}
+        </div>
+      ) : (
+        <h2 className={SETTINGS_SECTION_LABEL_CLASS_NAME}>{title}</h2>
+      )}
+      {children}
+    </section>
+  );
+}
+
+/**
+ * Dashed placeholder block for "nothing here yet" / "nothing matched" / status copy.
+ * `layout` picks the two shapes in use: a one-line left-aligned status strip, or a
+ * taller centered empty block. `tone` switches to the destructive treatment for
+ * failures (worktree load errors).
+ */
+export function SettingsEmptyState({
+  layout: layoutProp,
+  tone: toneProp,
+  className,
+  children,
+}: {
+  layout?: "block" | "status";
+  tone?: "muted" | "destructive";
+  className?: string;
+  children: ReactNode;
+}) {
+  const layout = layoutProp ?? "block";
+  const tone = toneProp ?? "muted";
+  return (
+    <div
+      className={cn(
+        SETTINGS_EMPTY_STATE_CLASS_NAME,
+        "px-4 text-ui leading-snug",
+        layout === "block" ? "py-10 text-center" : "py-6",
+        tone === "destructive"
+          ? "border-destructive/30 bg-destructive/5 text-destructive"
+          : "text-muted-foreground",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
 /** Frosted select dropdown panel with settings `rounded-lg` chrome. */
 export function SettingsSelectPopup({
-  align = "end",
-  alignItemWithTrigger = false,
+  align: alignProp,
+  alignItemWithTrigger: alignItemWithTriggerProp,
   shellClassName,
   ...props
 }: Omit<ComponentProps<typeof SelectPopup>, "surface">) {
+  const align = alignProp ?? "end";
+  const alignItemWithTrigger = alignItemWithTriggerProp ?? false;
   return (
     <SelectPopup
       align={align}
@@ -48,7 +127,7 @@ export function SettingsListRow({
   title,
   description,
   actions,
-  align = "center",
+  align: alignProp,
   onContextMenu,
 }: {
   title: ReactNode;
@@ -57,6 +136,7 @@ export function SettingsListRow({
   align?: "center" | "start";
   onContextMenu?: ComponentProps<"div">["onContextMenu"];
 }) {
+  const align = alignProp ?? "center";
   return (
     <div
       className={SETTINGS_CARD_ROW_CLASS_NAME}

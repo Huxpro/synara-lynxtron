@@ -20,6 +20,7 @@ function card(overrides: Partial<KanbanCard> = {}): KanbanCard {
     column: "draft",
     title: "Mutation task",
     provider: "codex",
+    providerInstanceId: null,
     isTerminal: false,
     branch: null,
     envMode: "local",

@@ -13,15 +13,18 @@ import { SidebarPrimaryActionRow } from "~/components/SidebarPrimaryActionRow";
 export interface SidebarPrimaryNavigationItem {
   readonly id: string;
   readonly icon: ReactNode;
-  readonly elementId?: string;
+  readonly elementId?: string | undefined;
   readonly label: string;
-  readonly active?: boolean;
-  readonly disabled?: boolean;
-  readonly shortcutParts?: readonly string[];
-  readonly badge?: {
-    readonly text: string;
-    readonly accessibleLabel: string;
-  } | null;
+  readonly active?: boolean | undefined;
+  readonly disabled?: boolean | undefined;
+  readonly shortcutParts?: readonly string[] | undefined;
+  readonly badge?:
+    | {
+        readonly text: string;
+        readonly accessibleLabel: string;
+      }
+    | null
+    | undefined;
   readonly onActivate?: (() => void) | undefined;
   readonly onMouseEnter?: (() => void) | undefined;
   readonly onFocus?: (() => void) | undefined;

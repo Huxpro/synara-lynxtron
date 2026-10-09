@@ -1,0 +1,418 @@
+/* Electron SidebarActivityView inside `SidebarGroup px-1.5 py-1.5`: `flex flex-col gap-3`. */
+.AppSidebarActivity {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 6px;
+}
+
+.AppSidebarActivitySection {
+  display: flex;
+  flex-direction: column;
+}
+
+.AppSidebarActivityRows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* SIDEBAR_SECTION_LABEL_CLASS_NAME: text-ui in muted-foreground/58. */
+.AppSidebarActivityLabelText {
+  min-width: 0;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 19.5px;
+  opacity: 0.58;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.AppSidebarActivityLabelText--scoped {
+  color: var(--foreground);
+  opacity: 0.85;
+}
+
+/* `mb-1.5 px-2`; the label sits in a 24px line box. */
+.AppSidebarActivitySectionLabel {
+  height: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 6px;
+  padding: 0 8px;
+}
+
+/* Collapsible section header: `h-7 gap-1 rounded-md px-2 py-0.5`. */
+.AppSidebarActivityDisclosure {
+  height: 28px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 8px;
+}
+
+.AppSidebarActivityDisclosure.ui-focus {
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.AppSidebarActivityDisclosure + .AppSidebarActivityRows {
+  padding-top: 2px;
+}
+
+.AppSidebarActivityChevron {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.58;
+}
+
+/* Header row: `relative flex h-7 items-center gap-1 px-2 py-0.5`. */
+.AppSidebarActivityHeader {
+  position: relative;
+  height: 28px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+}
+
+/* The scope trigger is Electron's `flex-1` button; Menu wraps it in LxMenuRoot. */
+.AppSidebarActivityScopeSlot {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+}
+
+.AppSidebarActivityScopeSlot .LxMenuRoot {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+}
+
+.AppSidebarActivityScope {
+  height: 24px;
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  border-radius: 6px;
+}
+
+.AppSidebarActivityScope.ui-focus {
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.AppSidebarActivityScopeChevron {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.55;
+}
+
+/* SidebarSectionToolbar revealOnHover: New chat and Add project fade in on header hover. */
+.AppSidebarActivityHeaderToolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.AppSidebarActivityHeader.ui-hover .AppSidebarActivityHeaderToolbar {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* `.sidebar-icon-button size-5 p-0.5` with a 14px glyph. */
+.AppSidebarActivityIconButton {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.AppSidebarActivityIconButton.ui-hover,
+.AppSidebarActivityIconButton.ui-pressed {
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.AppSidebarActivityIconButton.ui-focus {
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.AppSidebarActivityIconButtonGlyph {
+  width: 14px;
+  height: 14px;
+}
+
+/* Task row: `flex-col gap-1 rounded-lg px-2.5 py-2`. */
+.AppSidebarActivityRow {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+.AppSidebarActivityRow.ui-hover,
+.AppSidebarActivityRow.ui-pressed {
+  background-color: var(--sidebar-accent);
+}
+
+.AppSidebarActivityRow.ui-focus {
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.AppSidebarActivityRow--active,
+.AppSidebarActivityRow--active.ui-hover,
+.AppSidebarActivityRow--active.ui-pressed {
+  background-color: var(--sidebar-accent-active);
+}
+
+.AppSidebarActivityRow--settled {
+  opacity: 0.55;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.AppSidebarActivityRow--settled.ui-hover {
+  opacity: 0.85;
+}
+
+/* Title line yields to the hover cluster (pin, archive, done): `pr-5` → `pr-[4.25rem]`. */
+.AppSidebarActivityRowTitleLine {
+  height: 20px;
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  padding-right: 20px;
+  overflow: hidden;
+  transition: padding-right 150ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.AppSidebarActivityRow.ui-hover .AppSidebarActivityRowTitleLine,
+.AppSidebarActivityRow.ui-focus .AppSidebarActivityRowTitleLine {
+  padding-right: 68px;
+}
+
+.AppSidebarActivityRowProvider {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.AppSidebarActivityRowTitle {
+  min-width: 0;
+  flex-shrink: 1;
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 20px;
+  opacity: 0.95;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.AppSidebarActivityRow--active .AppSidebarActivityRowTitle {
+  opacity: 1;
+}
+
+.AppSidebarActivityRowMetaLine {
+  height: 18px;
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+/* sidebarGlyphClass("meta", "text-muted-foreground/70"). */
+.AppSidebarActivityRowMetaIcon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.AppSidebarActivityRowProject {
+  min-width: 0;
+  flex-shrink: 1;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 18px;
+  opacity: 0.8;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.AppSidebarActivityRowBranch {
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.AppSidebarActivityRowBranchText {
+  max-width: 144px;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 18px;
+  opacity: 0.7;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* One top-right slot for the status glyph; the hover cluster replaces it. */
+.AppSidebarActivityRowStatus {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.AppSidebarActivityRow.ui-hover .AppSidebarActivityRowStatus,
+.AppSidebarActivityRow.ui-focus .AppSidebarActivityRowStatus {
+  opacity: 0;
+}
+
+.AppSidebarActivityRow .AppSidebarRowHoverActions {
+  top: 4px;
+  right: 4px;
+  bottom: auto;
+  height: 20px;
+  padding-left: 0;
+}
+
+.AppSidebarActivityRow.ui-hover .AppSidebarRowHoverActions,
+.AppSidebarActivityRow.ui-focus .AppSidebarRowHoverActions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.AppSidebarActivityRow .AppSidebarHoverActionIcon {
+  width: 15px;
+  height: 15px;
+}
+
+.AppSidebarActivityShowMore {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.AppSidebarActivityShowMoreButton {
+  height: 28px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 10px;
+}
+
+.AppSidebarActivityShowMoreButton--grow {
+  flex: 1;
+}
+
+.AppSidebarActivityShowMoreText {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 19.5px;
+  opacity: 0.79;
+}
+
+.AppSidebarActivityShowMoreButton.ui-hover .AppSidebarActivityShowMoreText {
+  color: var(--foreground);
+  opacity: 1;
+}
+
+.AppSidebarActivityEmpty {
+  display: flex;
+  justify-content: center;
+  padding: 16px 8px 0;
+}
+
+.AppSidebarActivityEmptyText {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 19.5px;
+  opacity: 0.58;
+  text-align: center;
+}
+
+/* Scope and group-by menus: ComposerPickerMenuPopup `min-w-44` with compact rows. */
+.LxMenuPopup.AppSidebarActivityMenu {
+  width: 176px;
+}
+
+/* `min-h-7 py-1 sm:text-ui leading-snug` inside the picker shell: 26px rows, px-2. The
+   LxMenuItem's 1px transparent button border is part of the inset. */
+.AppSidebarActivityMenu .AppSidebarActivityMenuItem {
+  min-height: 26px;
+  padding: 0 7px;
+}
+
+.AppSidebarActivityMenu .LxMenuItem__text {
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 17.875px;
+}
+
+.AppSidebarActivityMenuLabel {
+  padding: 4px 8px;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 17.875px;
+  font-weight: 500;
+  opacity: 1;
+}
+
+.AppSidebarActivityScopeOption {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+}
+
+.AppSidebarActivityScopeOptionLabel {
+  min-width: 0;
+  flex: 1;
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 17.875px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.AppSidebarActivityScopeOptionCount {
+  margin-left: 8px;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 17.875px;
+  opacity: 0.6;
+}

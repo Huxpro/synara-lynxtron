@@ -6,7 +6,7 @@ import {
   SidebarSearchPalette,
   type SidebarSearchPaletteMode,
   type ImportProviderKind,
-} from "@synara-web/components/SidebarSearchPalette";
+} from "@synara-web/components/SidebarSearchPaletteComposition";
 import { newCommandId } from "@synara-web/lib/utils";
 import {
   APP_SETTINGS_STORAGE_KEY,
@@ -19,13 +19,12 @@ import {
   buildNativeSearchProjectCreateCommand,
 } from "./sidebarSearchActions.logic";
 import { buildLynxSidebarSearchActions } from "./sidebarSearchSpaceActions.logic";
-import { FeedbackDialogLynx } from "./FeedbackDialog.lynx";
+import { FeedbackDialogLynx, resolveNativeFeedbackContext } from "./FeedbackDialog.lynx";
 
 const IMPORT_PROVIDERS: readonly ImportProviderKind[] = [
   "codex",
   "claudeAgent",
   "cursor",
-  "kilo",
   "opencode",
 ];
 
@@ -142,21 +141,7 @@ export function SidebarSearchPaletteLynx(props: {
     ? props.snapshot?.projects.find((project) => project.id === activeThread.projectId)
     : null;
   const feedbackContext = useMemo(
-    () => ({
-      provider: activeThread?.provider ?? null,
-      model: null,
-      projectKind: activeProject?.kind ?? null,
-      environmentMode: null,
-      runtimeMode: null,
-      interactionMode: null,
-      sessionStatus: activeThread?.sessionStatus ?? null,
-      latestTurnState: activeThread?.latestTurnState ?? null,
-      messageCount: activeThread?.messageCount ?? 0,
-      activityCount: 0,
-      hasPendingApproval: activeThread?.hasPendingApprovals === true,
-      hasPendingUserInput: activeThread?.hasPendingUserInput === true,
-      hasThreadError: false,
-    }),
+    () => resolveNativeFeedbackContext(activeThread, activeProject?.kind),
     [activeProject?.kind, activeThread],
   );
 

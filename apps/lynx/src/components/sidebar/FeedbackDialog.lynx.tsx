@@ -6,10 +6,44 @@ import {
   type FeedbackThreadContext,
 } from "@synara-web/feedback";
 
+import type { ProjectSummary, ThreadSummary } from "../../app/queries";
 import { Button } from "../ui/button.lynx";
 import { Dialog, DialogHeader, DialogPanel, DialogPopup, DialogTitle } from "../ui/dialog.lynx";
 import { useLynxInteractiveState } from "../ui/interactive-state.lynx";
 import "./feedback-dialog.css";
+
+/** Feedback context from the sidebar snapshot's view of the active thread and project. */
+export function resolveNativeFeedbackContext(
+  thread:
+    | Pick<
+        ThreadSummary,
+        | "provider"
+        | "sessionStatus"
+        | "latestTurnState"
+        | "messageCount"
+        | "hasPendingApprovals"
+        | "hasPendingUserInput"
+      >
+    | null
+    | undefined,
+  projectKind: ProjectSummary["kind"] | null | undefined,
+): FeedbackThreadContext {
+  return {
+    provider: thread?.provider ?? null,
+    model: null,
+    projectKind: projectKind ?? null,
+    environmentMode: null,
+    runtimeMode: null,
+    interactionMode: null,
+    sessionStatus: thread?.sessionStatus ?? null,
+    latestTurnState: thread?.latestTurnState ?? null,
+    messageCount: thread?.messageCount ?? 0,
+    activityCount: 0,
+    hasPendingApproval: thread?.hasPendingApprovals === true,
+    hasPendingUserInput: thread?.hasPendingUserInput === true,
+    hasThreadError: false,
+  };
+}
 
 interface NativeFeedbackInputEvent {
   readonly detail: { readonly value: string };

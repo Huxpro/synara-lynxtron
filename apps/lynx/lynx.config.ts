@@ -65,6 +65,17 @@ const resourceReplacementPattern = new RegExp(
     .map((entry) => entry.webSource.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&"))
     .join("|")})$`,
 );
+// Lynx injects `window` into every background bundle as a wrapper parameter
+// with no value, so a member read on it throws. `wsNativeApi.ts` runs here
+// verbatim and probes the Electron preload bridge (`window.desktopBridge`)
+// while it builds the facade; there is no such bridge on Lynx, so the member is
+// compiled to `undefined`. `typeof window` checks are untouched. Do not add
+// called members here (`window.setTimeout(...)`): Rspack's DefinePlugin does not
+// rewrite a member expression in callee position. The generated `EventRouter`
+// gets its timers from `platform/windowTimers.ts` instead.
+export const lynxWindowMemberDefines: Readonly<Record<string, string>> = {
+  "window.desktopBridge": "undefined",
+};
 console.log("rootPath: ", path.resolve(rootPath, "./src/assets"));
 export default defineConfig({
   server: {
@@ -86,10 +97,6 @@ export default defineConfig({
       "~/components/CenteredEmptyLandingStackElements$": path.resolve(
         __dirname,
         "src/adapters/CenteredEmptyLandingStackElements.lynx.tsx",
-      ),
-      "~/components/SidebarSegmentedPickerElements$": path.resolve(
-        __dirname,
-        "src/adapters/SidebarSegmentedPickerElements.lynx.tsx",
       ),
       "~/components/SidebarListSectionHeaderElements$": path.resolve(
         __dirname,
@@ -369,6 +376,9 @@ export default defineConfig({
       "~/platform/env$": path.resolve(rootPath, "./src/platform/env.lynx.ts"),
       "~/platform/motion$": path.resolve(rootPath, "./src/platform/motion.lynx.ts"),
       "~/hooks/useTheme$": path.resolve(rootPath, "./src/adapters/useTheme.lynx.ts"),
+      // Upstream's icon module inlines DOM `<svg>` JSX; shared Web modules get
+      // the Lynx glyph set and the icon-name constants instead.
+      "~/lib/icons$": path.resolve(rootPath, "./src/adapters/webIcons.lynx.ts"),
       "~/hooks/useViewportLayout$": path.resolve(rootPath, "./src/hooks/useViewportLayout.lynx.ts"),
       "~/nativeApi$": path.resolve(rootPath, "./src/adapters/nativeApi.lynx.ts"),
       // Shared state layer (plan/shared-state-architecture.md): the upstream
@@ -433,6 +443,15 @@ export default defineConfig({
   tools: {
     rspack: (config, { rspack }) => {
       config.plugins ??= [];
+      // Lynx has no `localStorage` (the wrapper injects the name with no
+      // value). Upstream stores that persist through the bare global, and are
+      // now reached by session sync (`workspacePathsStore.ts`), get the Lynx
+      // storage port instead: the same synchronous getItem/setItem contract.
+      config.plugins.push(
+        new rspack.ProvidePlugin({
+          localStorage: [path.resolve(__dirname, "src/platform/storage.ts"), "webStorage"],
+        }),
+      );
       config.plugins.push(
         new rspack.NormalModuleReplacementPlugin(resourceReplacementPattern, (result) => {
           const createData = (
@@ -454,6 +473,7 @@ export default defineConfig({
       source: {
         preEntry: "./src/runtime-polyfills.ts",
         define: {
+          ...lynxWindowMemberDefines,
           "process.env.SYNARA_WS_URL": JSON.stringify(configuredSynaraWsUrl),
           "process.env.SYNARA_APP_VERSION": JSON.stringify(appVersion),
           "process.env.SYNARA_LYNX_WEB_RELAY": JSON.stringify(buildHostInputProbe ? "0" : "1"),
@@ -482,6 +502,7 @@ export default defineConfig({
         // platform/runtimeEndpointSource.ts). Compiling a port in would let a
         // reused bundle talk to a different server than its host.
         define: {
+          ...lynxWindowMemberDefines,
           "process.env.SYNARA_WS_URL": JSON.stringify(""),
           "process.env.SYNARA_APP_VERSION": JSON.stringify(appVersion),
           "process.env.SYNARA_LYNX_WEB_RELAY": JSON.stringify("0"),

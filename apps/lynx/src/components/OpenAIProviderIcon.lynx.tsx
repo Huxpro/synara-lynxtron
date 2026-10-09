@@ -5,7 +5,6 @@ import antigravitySvg from "@synara-provider-icons/antigravity.svg?raw";
 import grokSvg from "@synara-provider-icons/grok.svg?raw";
 import openCodeSvg from "@synara-provider-icons/opencode.svg?raw";
 import droidSvg from "@synara-provider-icons/droid.svg?raw";
-import kiloSvg from "@synara-provider-icons/kilo.svg?raw";
 import piSvg from "@synara-provider-icons/pi.svg?raw";
 
 import { useTheme } from "../adapters/useTheme.lynx";
@@ -18,10 +17,20 @@ const PROVIDER_SVG: Readonly<Record<string, string>> = {
   antigravity: antigravitySvg,
   grok: grokSvg,
   droid: droidSvg,
-  kilo: kiloSvg,
   opencode: openCodeSvg,
   pi: piSvg,
 };
+
+// Electron's ClaudeAI glyph paints its brand fill unless a caller passes an explicit color;
+// every other provider glyph follows the text color.
+const PROVIDER_BRAND_COLOR: Readonly<Record<string, string>> = {
+  claudeAgent: "#D97757",
+};
+
+/** The color Electron's provider glyph renders with where the caller only sets a text tint. */
+export function resolveProviderGlyphColor(provider: string, textColor: string): string {
+  return PROVIDER_BRAND_COLOR[provider] ?? textColor;
+}
 
 export function hasLynxProviderIcon(provider: string): boolean {
   return PROVIDER_SVG[provider] !== undefined;

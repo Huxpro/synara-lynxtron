@@ -9,6 +9,10 @@
 // itself (@tanstack/history) is pure JS and works fine, so routes are matched
 // and rendered by hand here (see synara-lynx plan 04 pattern P-08).
 
+import {
+  resolveChatComposerPlaceholder,
+  resolveSessionPhase,
+} from "@synara/shared/composerPlaceholder";
 import { createMemoryHistory } from "@tanstack/history";
 import {
   useCallback,
@@ -38,6 +42,7 @@ import {
   resolveActivePane,
   setActivePaneInState,
   setDockOpenInState,
+  type RightDockPaneKind,
   type RightDockThreadState,
 } from "@synara/shared/rightDock";
 import { resolveThreadHeaderActionState } from "@synara/shared/threadHeaderActions";
@@ -50,7 +55,6 @@ import type { Project } from "@synara-web/types";
 import { useSessionShellProjects, useSessionShellSpaces } from "./sessionShell.lynx";
 import { useRouteThreadSummaries } from "./sidebarSnapshot.lynx";
 import { useSpacesUiStore } from "@synara-web/spacesUiStore";
-import { useWorkspaceStore } from "@synara-web/workspaceStore";
 import { useRecentViewsStore } from "@synara-web/recentViewsStore";
 import {
   buildRecentViewDisplayEntries,
@@ -63,6 +67,7 @@ import {
 import { dockTerminalThreadId } from "@synara-web/lib/dockTerminalScope";
 import { quotePosixShellArgument } from "@synara-web/lib/shellQuote";
 import { DEFAULT_THREAD_TERMINAL_ID } from "@synara-web/types";
+import { newCommandId } from "@synara-web/lib/utils";
 import {
   flushTerminalStatePersistence,
   selectThreadTerminalState,
@@ -106,14 +111,19 @@ import { parseSettingsRouteLocation, settingsRouteLocation } from "./settingsRou
 import { projectExplorerDirectories, toggleExpandedDirectory } from "./explorerTree.logic";
 import { threadRecapRevision } from "./environmentRecap.logic";
 import type { EnvironmentBootstrapData } from "./environmentBootstrap.lynx";
-import { Transcript, type TranscriptController } from "./Transcript";
+import {
+  Transcript,
+  type TranscriptController,
+  type TranscriptSelectionAnchor,
+  type TranscriptSelectionHandlers,
+} from "./Transcript";
+import type { TranscriptAssistantSelection } from "@synara-web/components/chat/chatSelectionActions";
 import { SettingsPage } from "./SettingsPage";
 import { UpdatePage } from "./UpdatePage";
 import { KanbanProjectPage, ProjectsPage, PullRequestsPage } from "./FeatureListsPage";
 import { AutomationsPage } from "./AutomationsPage.lynx";
 import { PluginLibraryPage } from "./PluginLibraryPage.lynx";
 import { resolveLandingRoutePresentation } from "./landingRoutePresentation.logic";
-import { WorkspacePage } from "./WorkspacePage.lynx";
 import { RecentViewSwitcherLynx } from "./RecentViewSwitcher.lynx";
 import { Composer } from "../components/composer/Composer.lynx";
 import { PendingApprovalPanel } from "../components/composer/PendingApprovalPanel.lynx";
@@ -164,7 +174,7 @@ import {
   storeEditorChatPaneVisible,
   storeEditorSidebarVisible,
   storeEditorViewState,
-} from "@synara-web/editorViewState";
+} from "./editorViewState.lynx";
 import { sleepOnHost } from "../platform/timer";
 import { EmptyThreadContextTray } from "./EmptyThreadContextTray.lynx";
 import { ThreadTerminal } from "./ThreadTerminal.lynx";
@@ -173,14 +183,19 @@ import { GitDockPane } from "./GitDockPane.lynx";
 import { BrowserDockPane } from "./BrowserDockPane.lynx";
 import { browserView } from "../platform/browserView.lynx";
 import { EmbeddedSidechatPane } from "./EmbeddedSidechatPane.lynx";
-import { buildLynxSidechatCreateCommand, canCreateLynxSidechat } from "./sidechatCreate.logic";
-import { newCommandId, newThreadId } from "@synara-web/lib/utils";
+import { createNativeSidechat } from "./sidechatCreate.lynx";
+import { usePersistedActivityViewEnabled } from "./activityViewState.lynx";
+import { addSelectionToNativeSide } from "./selectionChat.lynx";
+import { ThreadSelectionNewChat } from "./ThreadSelectionNewChat.lynx";
+import { canCreateLynxSidechat } from "./sidechatCreate.logic";
 import { DiffDock } from "./DiffDock.lynx";
 import { ThreadRightDockTabs } from "./ThreadRightDockTabs.lynx";
 import { ThreadRightDockHost } from "./ThreadRightDockHost.lynx";
+import { ThreadRightDockLauncher } from "./ThreadRightDockLauncher.lynx";
+import { resolveRightDockLauncherEntries } from "@synara-web/components/chat/rightDockLauncher.logic";
 import { readRightDockThreadState, storeRightDockThreadState } from "./rightDockState.lynx";
 import {
-  ThreadDiffToggle,
+  ThreadRightSidebarToggle,
   usePersistedRightDockState,
   useRightDockLayout,
   useWorkspaceHeaderDiff,
@@ -192,7 +207,7 @@ import {
   EDITOR_CHAT_PANE_MAX_WIDTH,
   EDITOR_CHAT_PANE_MIN_WIDTH,
   EDITOR_CHAT_PANE_STORAGE_KEY,
-} from "@synara-web/editorViewState";
+} from "./editorViewState.lynx";
 import { EnvironmentPanel, EnvironmentToggle } from "./EnvironmentPanel.lynx";
 import { useTemporaryThreadLifecycle } from "./temporaryThreadLifecycle.lynx";
 import { DesktopTitlebarControls } from "../adapters/DesktopTitlebarControls.lynx";
@@ -234,6 +249,7 @@ import {
   subscribeOpenThreadPathInTerminal,
 } from "./threadTerminalIntent.lynx";
 import { EditorProjectSwitchMenu } from "./EditorProjectSwitchMenu.lynx";
+import { createNativeThreadFork } from "./threadFork.lynx";
 export const history = createMemoryHistory({ initialEntries: ["/"] });
 
 async function readPersistedLastThreadRoute(): Promise<LastThreadRoute | null> {
@@ -275,10 +291,10 @@ interface RouteState {
 }
 
 function parseRoute(pathname: string): RouteState {
-  const [routePathname, routeSearch = ""] = pathname.split("?", 2);
+  const [routePathname = "", routeSearch = ""] = pathname.split("?", 2);
   const threadMatch = routePathname.match(/^\/thread\/([^/]+)$/);
   if (threadMatch) {
-    return { pathname: "/thread/$threadId", params: { threadId: threadMatch[1] } };
+    return { pathname: "/thread/$threadId", params: { threadId: threadMatch[1]! } };
   }
   const settingsRoute = parseSettingsRouteLocation(pathname);
   if (settingsRoute) {
@@ -294,7 +310,7 @@ function parseRoute(pathname: string): RouteState {
   if (newThreadMatch) {
     return {
       pathname: "/new-thread/$projectId",
-      params: { projectId: decodeURIComponent(newThreadMatch[1]) },
+      params: { projectId: decodeURIComponent(newThreadMatch[1]!) },
     };
   }
   if (routePathname === "/studio") {
@@ -312,16 +328,6 @@ function parseRoute(pathname: string): RouteState {
       },
     };
   }
-  const workspaceMatch = routePathname.match(/^\/workspace\/([^/]+)$/);
-  if (workspaceMatch) {
-    return {
-      pathname: "/workspace/$workspaceId",
-      params: { workspaceId: decodeURIComponent(workspaceMatch[1]) },
-    };
-  }
-  if (routePathname === "/workspace") {
-    return { pathname: "/workspace", params: {} };
-  }
   if (routePathname === "/kanban") {
     return { pathname: "/kanban", params: {} };
   }
@@ -329,7 +335,7 @@ function parseRoute(pathname: string): RouteState {
   if (kanbanProjectMatch) {
     return {
       pathname: "/kanban/$projectId",
-      params: { projectId: decodeURIComponent(kanbanProjectMatch[1]) },
+      params: { projectId: decodeURIComponent(kanbanProjectMatch[1]!) },
     };
   }
   if (routePathname === "/pull-requests") {
@@ -345,7 +351,7 @@ function parseRoute(pathname: string): RouteState {
   if (automationMatch) {
     return {
       pathname: "/automations/$automationId",
-      params: { automationId: decodeURIComponent(automationMatch[1]) },
+      params: { automationId: decodeURIComponent(automationMatch[1]!) },
     };
   }
   if (routePathname === "/update") {
@@ -401,54 +407,24 @@ function useProviderHealthBanner(
 
 // --- pages ----------------------------------------------------------------------
 function ThreadsLandingHeader(props: {
-  // Omitted when the page has no environment to toggle (e.g. Studio bootstrapping).
-  readonly environment?: {
-    readonly open: boolean;
-    readonly onOpenChange: (open: boolean) => void;
-  };
-  // Landing projects come from the shell snapshot, where `kind` is optional.
-  readonly project:
-    | (Pick<ProjectSummary, "id" | "workspaceRoot" | "defaultModelSelection" | "scripts"> & {
-        readonly kind?: ProjectSummary["kind"];
-      })
-    | null;
-  readonly title?: "New Chat" | "New thread";
+  readonly environmentOpen: boolean;
+  readonly environmentAvailable: boolean;
+  readonly onEnvironmentOpenChange: (open: boolean) => void;
   readonly diffToggle?: ReactNode;
-  readonly compact?: boolean;
 }) {
-  const project = props.project;
+  // Electron renders the empty landing's header with minimalChrome: no title, hand-off or
+  // project actions, only the panel toggles.
   return (
     <ChatSurfaceHeaderFrame className="ThreadsLandingHeader">
-      <view className="ThreadsLandingHeaderIdentity">
-        <ChatSurfaceHeaderIdentity title={props.title ?? "New Chat"} />
-      </view>
+      <view className="ThreadsLandingHeaderIdentity" />
       <view className="ThreadHeaderControls">
-        <ThreadHeaderActions
-          actionState={{ showHandoff: true, showProjectActions: project?.kind === "project" }}
-          compact={props.compact ?? false}
-          project={
-            project
-              ? {
-                  id: project.id,
-                  cwd: project.workspaceRoot,
-                  defaultModelSelection: project.defaultModelSelection,
-                  scripts: project.scripts,
-                }
-              : null
-          }
-          thread={undefined}
-          onNavigateToThread={() => {}}
-          onOpenTerminal={() => {}}
-        />
-        {props.environment ? (
+        {props.environmentAvailable ? (
           <EnvironmentToggle
-            open={props.environment.open}
-            onChange={props.environment.onOpenChange}
+            open={props.environmentOpen}
+            onChange={props.onEnvironmentOpenChange}
           />
         ) : null}
-        {props.diffToggle ?? (
-          <ThreadDiffToggle open={false} disabled stats={null} onToggle={() => {}} />
-        )}
+        {props.diffToggle ?? <ThreadRightSidebarToggle open={false} onToggle={() => {}} />}
       </view>
     </ChatSurfaceHeaderFrame>
   );
@@ -522,7 +498,8 @@ function ThreadsLandingPage(props: {
   );
   const [diffFileTreeOpen, setDiffFileTreeOpen] = useState(false);
   const activeDockPane = resolveActivePane(rightDockState);
-  const dockOpen = rightDockState.open && Boolean(rightDockState.activePaneId);
+  // The dock opens on its launcher when no pane is active, as Electron's does.
+  const dockOpen = rightDockState.open;
   const diffOpen = rightDockState.open && activeDockPane?.kind === "diff";
   const explorerOpen =
     rightDockState.open && (activeDockPane?.kind === "explorer" || activeDockPane?.kind === "file");
@@ -562,60 +539,52 @@ function ThreadsLandingPage(props: {
         }
       >
         <ThreadsLandingHeader
-          environment={
-            environmentProject !== null
-              ? { open: environmentOpen, onOpenChange: setEnvironmentOpen }
-              : undefined
-          }
-          project={selectedProject}
-          title={routePresentation.headerTitle}
-          // Same rule as the thread page header (compactThreadHeader).
-          compact={dockLayout.mainWidth < 700}
+          environmentOpen={environmentOpen}
+          environmentAvailable={environmentProject !== null}
+          onEnvironmentOpenChange={setEnvironmentOpen}
           diffToggle={
             headerActionState.showDiff ? (
-              <ThreadDiffToggle
-                open={diffOpen}
-                disabled={headerActionState.diffDisabled}
-                stats={headerActionState.diffStats}
+              <ThreadRightSidebarToggle
+                open={rightDockState.open}
                 onToggle={() => {
                   setEnvironmentOpen(false);
-                  updateRightDockState((current) =>
-                    diffOpen
-                      ? setDockOpenInState(current, false)
-                      : openPaneInState(current, { paneId: "diff", kind: "diff" }),
-                  );
+                  updateRightDockState((current) => setDockOpenInState(current, !current.open));
                 }}
               />
             ) : null
           }
         />
         <ProviderHealthBanner status={providerHealth.status} onDismiss={providerHealth.dismiss} />
-        <scroll-view className="ThreadsLandingBody" scroll-orientation="vertical">
-          <view className="ThreadsLandingBodyInner">
-            <CenteredEmptyLandingStack>
-              <CenteredEmptyLanding projectName={routePresentation.projectName} />
-              <ComposerColumnFrameSurface>
-                <LandingComposer
-                  availableWidth={dockLayout.mainWidth}
-                  containerKind={props.containerKind}
-                  branch={branch}
-                  envMode={envMode}
-                  initialModelProvider={initialModelProvider}
-                  initialProjectId={selectedProjectId}
-                  notes={notes}
-                  onEnvModeChange={(nextEnvMode) => {
-                    envModeTouchedRef.current = true;
-                    setEnvMode(nextEnvMode);
-                  }}
-                  onProjectSelectionChange={setSelectedProjectId}
-                  onTemporaryChange={() => setTemporary((current) => !current)}
-                  onThreadCreated={props.onThreadCreated}
-                  temporary={temporary}
-                />
-              </ComposerColumnFrameSurface>
-            </CenteredEmptyLandingStack>
+        {/* Upstream anchors the composer to the bottom of the pane and floats the heading
+            centered in the space above it, so starting a chat keeps the composer where it
+            lives for the rest of the conversation. */}
+        <view className="ThreadsLandingBody">
+          <view className="ThreadsLandingHero">
+            <CenteredEmptyLanding projectName={routePresentation.projectName} />
           </view>
-        </scroll-view>
+          <view className="ThreadsLandingComposerDock">
+            <ComposerColumnFrameSurface>
+              <LandingComposer
+                availableWidth={dockLayout.mainWidth}
+                onOpenProviderSettings={() => history.push("/settings/providers")}
+                containerKind={props.containerKind}
+                branch={branch}
+                envMode={envMode}
+                initialModelProvider={initialModelProvider}
+                initialProjectId={selectedProjectId}
+                notes={notes}
+                onEnvModeChange={(nextEnvMode) => {
+                  envModeTouchedRef.current = true;
+                  setEnvMode(nextEnvMode);
+                }}
+                onProjectSelectionChange={setSelectedProjectId}
+                onTemporaryChange={() => setTemporary((current) => !current)}
+                onThreadCreated={props.onThreadCreated}
+                temporary={temporary}
+              />
+            </ComposerColumnFrameSurface>
+          </view>
+        </view>
         {environmentProject ? (
           <EnvironmentPanel
             branch={branch}
@@ -637,13 +606,16 @@ function ThreadsLandingPage(props: {
             pullRequest={null}
             recapRevision="0:empty:0:settled:no-turn"
             threadId={null}
-            threadMarkers={[]}
             workspaceRoot={environmentProject.workspaceRoot}
           />
         ) : null}
       </view>
       <ThreadRightDocks
         {...props.explorerDockProps}
+        launcherAvailability={{
+          hasGitRepository: headerDiff.isGitRepo,
+          hasReview: headerDiff.totals.hasChanges,
+        }}
         chatFontSizePx={props.appearance.chatFontSizePx}
         diffOpen={diffOpen}
         dockThread={
@@ -786,6 +758,17 @@ interface RightDockThread {
   readonly sidechatSource: NonNullable<ThreadPageProps["currentThread"]> | null;
 }
 
+function openSidechatPaneInState(
+  state: RightDockThreadState,
+  sidechatThreadId: string,
+): RightDockThreadState {
+  return openPaneInState(state, {
+    paneId: "sidechat:" + sidechatThreadId,
+    kind: "sidechat",
+    threadId: sidechatThreadId as import("@synara/contracts").ThreadId,
+  });
+}
+
 function ThreadRightDocks(
   props: Pick<
     ThreadPageProps,
@@ -824,6 +807,11 @@ function ThreadRightDocks(
     | "viewportWidth"
   > & {
     readonly dockThread: RightDockThread | undefined;
+    /** What the empty dock's launcher may offer (Review needs changes, Git a repository). */
+    readonly launcherAvailability: {
+      readonly hasGitRepository: boolean;
+      readonly hasReview: boolean;
+    };
     readonly diffOpen: boolean;
     readonly explorerOpen: boolean;
     readonly terminalOpen: boolean;
@@ -949,32 +937,50 @@ function ThreadRightDocks(
       setHydratedTerminalKey(terminalKey);
     }
   }, [terminalKey, terminalOpen]);
+  const addMenuKinds: readonly RightDockPaneKind[] = dockThread?.workspaceRoot
+    ? dockThread.sidechatSource
+      ? [
+          ...(browserSupported ? ["browser" as const] : []),
+          "diff",
+          "explorer",
+          "terminal",
+          "sidechat",
+          "git",
+        ]
+      : [...(browserSupported ? ["browser" as const] : []), "diff", "explorer", "terminal", "git"]
+    : dockThread?.sidechatSource
+      ? [...(browserSupported ? ["browser" as const] : []), "diff", "explorer", "sidechat"]
+      : [...(browserSupported ? ["browser" as const] : []), "diff", "explorer"];
+  const launcherEntries = resolveRightDockLauncherEntries({
+    hasWorkspace: Boolean(dockThread?.workspaceRoot),
+    hasGitRepository: props.launcherAvailability.hasGitRepository,
+    hasReview: props.launcherAvailability.hasReview,
+    // Lynx has no device (simulator) pane; the launcher offers what the add menu can open.
+    supportedKinds: new Set(addMenuKinds),
+  });
+  const openDockPane = (kind: RightDockPaneKind) => {
+    "background only";
+    if (kind === "sidechat") {
+      const source = dockThread?.sidechatSource;
+      if (!source) return;
+      setSidechatCreateError(null);
+      void createNativeSidechat({ source })
+        .then((sidechatThreadId) =>
+          updateRightDockState((current) => openSidechatPaneInState(current, sidechatThreadId)),
+        )
+        .catch((error) =>
+          setSidechatCreateError(error instanceof Error ? error.message : String(error)),
+        );
+      return;
+    }
+    if (kind === "explorer") setExplorerPresentationMode("dock");
+    updateRightDockState((current) => openPaneInState(current, { paneId: kind, kind }));
+  };
   const dockTabs = (
     <ThreadRightDockTabs
       activePaneId={rightDockState.activePaneId}
       paneLabelOverrides={paneLabelOverrides}
-      addMenuKinds={
-        dockThread?.workspaceRoot
-          ? dockThread.sidechatSource
-            ? [
-                ...(browserSupported ? ["browser" as const] : []),
-                "diff",
-                "explorer",
-                "terminal",
-                "sidechat",
-                "git",
-              ]
-            : [
-                ...(browserSupported ? ["browser" as const] : []),
-                "diff",
-                "explorer",
-                "terminal",
-                "git",
-              ]
-          : dockThread?.sidechatSource
-            ? [...(browserSupported ? ["browser" as const] : []), "diff", "explorer", "sidechat"]
-            : [...(browserSupported ? ["browser" as const] : []), "diff", "explorer"]
-      }
+      addMenuKinds={addMenuKinds}
       panes={rightDockState.panes.filter(
         (pane) =>
           pane.kind === "browser" ||
@@ -985,41 +991,7 @@ function ThreadRightDocks(
           pane.kind === "sidechat" ||
           pane.kind === "git",
       )}
-      onAddPane={(kind) => {
-        "background only";
-        if (kind === "sidechat") {
-          const source = dockThread?.sidechatSource;
-          if (!source) return;
-          const sidechatThreadId = newThreadId();
-          setSidechatCreateError(null);
-          void dispatchSynaraCommand(
-            buildLynxSidechatCreateCommand({
-              commandId: newCommandId(),
-              createdAt: new Date().toISOString(),
-              source,
-              threadId: sidechatThreadId,
-            }),
-          )
-            .then(async () => {
-              await queryClient.invalidateQueries({
-                queryKey: ["thread-detail", sidechatThreadId],
-              });
-              updateRightDockState((current) =>
-                openPaneInState(current, {
-                  paneId: "sidechat:" + sidechatThreadId,
-                  kind: "sidechat",
-                  threadId: sidechatThreadId,
-                }),
-              );
-            })
-            .catch((error) =>
-              setSidechatCreateError(error instanceof Error ? error.message : String(error)),
-            );
-          return;
-        }
-        if (kind === "explorer") setExplorerPresentationMode("dock");
-        updateRightDockState((current) => openPaneInState(current, { paneId: kind, kind }));
-      }}
+      onAddPane={openDockPane}
       onClosePane={(paneId) => {
         const pane = rightDockState.panes.find((candidate) => candidate.id === paneId);
         if (pane?.kind === "terminal") {
@@ -1042,9 +1014,12 @@ function ThreadRightDocks(
     <ThreadRightDockHost
       availableWidth={availableWidth}
       onWidthChange={setRightDockWidth}
-      open={rightDockState.open && Boolean(rightDockState.activePaneId)}
+      open={rightDockState.open}
       tabs={dockTabs}
     >
+      {activePane === null ? (
+        <ThreadRightDockLauncher entries={launcherEntries} onOpen={openDockPane} />
+      ) : null}
       {diffOpen ? (
         <DiffDock
           availableWidth={availableWidth}
@@ -1305,6 +1280,11 @@ function ThreadPage(props: ThreadPageProps) {
     terminalPrimaryState.entryPoint === "terminal" &&
     terminalPrimaryState.workspaceLayout === "terminal-only";
   const [providerStatuses, setProviderStatuses] = useState<readonly ServerProviderStatus[]>([]);
+  // The transcript selection that "Add to new Chat" is composing a first message for.
+  const [selectionChat, setSelectionChat] = useState<{
+    readonly selection: TranscriptAssistantSelection;
+    readonly anchor: TranscriptSelectionAnchor;
+  } | null>(null);
   const environmentSettings = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
   );
@@ -1552,7 +1532,7 @@ function ThreadPage(props: ThreadPageProps) {
   const threadRenameInputRef = useRef<InputRef>(null);
   const threadRenameTouchedRef = useRef(false);
   const rightDockLayout = useRightDockLayout({
-    dockOpen: rightDockState.open && Boolean(rightDockState.activePaneId),
+    dockOpen: rightDockState.open,
     fallbackDockWidth: initialExplorerWidth,
     initialDockWidth:
       initialExplorerOpen && viewportWidth > 0
@@ -1622,6 +1602,23 @@ function ThreadPage(props: ThreadPageProps) {
           }
         : undefined,
   });
+  // Electron's TranscriptSelectionActionLayer: Side needs a main server thread; new chats
+  // open in the thread's project.
+  const transcriptSelectionHandlers: TranscriptSelectionHandlers | undefined =
+    currentThread && currentProject
+      ? {
+          canAddToSide: canCreateLynxSidechat(currentThread),
+          onAddToSide: async (selection) => {
+            "background only";
+            const sidechatThreadId = await addSelectionToNativeSide({
+              source: currentThread,
+              selection,
+            });
+            updateRightDockState((current) => openSidechatPaneInState(current, sidechatThreadId));
+          },
+          onAddToNewChat: (selection, anchor) => setSelectionChat({ selection, anchor }),
+        }
+      : undefined;
   const threadHeaderActionState = resolveThreadHeaderActionState({
     diffDisabledReason:
       currentThread?.workspaceRoot && headerDiff.isPending ? "Checking Git repository…" : null,
@@ -1791,10 +1788,23 @@ function ThreadPage(props: ThreadPageProps) {
         chatFontSizePx={appearance.chatFontSizePx}
         voiceInputEnabled
         pendingUserInputCount={currentThread?.pendingUserInputs.length ?? 0}
+        placeholder={resolveChatComposerPlaceholder({
+          approvalPending: activePendingApproval !== null,
+          pendingQuestion: activePendingUserInput
+            ? { freeform: activePendingUserInput.questions[0]?.options.length === 0 }
+            : null,
+          planFollowUp: false,
+          subagent: Boolean(currentThread?.parentThreadId),
+          phase: resolveSessionPhase(currentThread?.sessionStatus),
+        })}
         threadId={threadId}
         modelSelection={currentThread?.modelSelection}
+        lockedProvider={currentThread?.lockedProvider ?? null}
+        onOpenProviderSettings={() => history.push("/settings/providers")}
         runtimeMode={currentThread?.runtimeMode}
-        interactionMode={currentThread?.interactionMode}
+        interactionMode={
+          currentThread?.interactionMode === "debug" ? "default" : currentThread?.interactionMode
+        }
         sessionStatus={currentThread?.sessionStatus ?? null}
         activeTurnId={currentThread?.activeTurnId ?? null}
         workspaceRoot={currentThread?.workspaceRoot ?? null}
@@ -1907,9 +1917,31 @@ function ThreadPage(props: ThreadPageProps) {
             onOpenFileReference={openExplorerFileReference}
             onOpenTurnDiff={openTurnDiff}
             onThreadError={setLocalThreadError}
+            selectionHandlers={transcriptSelectionHandlers}
+            onForkFromMessage={(messageId) => {
+              "background only";
+              if (!currentThread) return;
+              void createNativeThreadFork({ thread: currentThread, throughMessageId: messageId })
+                .then(onNavigateToThread)
+                .catch((error: unknown) =>
+                  setLocalThreadError(
+                    error instanceof Error ? error.message : "Could not fork thread.",
+                  ),
+                );
+            }}
             runtimeMode={currentThread?.runtimeMode ?? null}
             sessionStatus={currentThread?.sessionStatus ?? null}
           />
+          {selectionChat && currentThread?.workspaceRoot ? (
+            <ThreadSelectionNewChat
+              thread={{ ...currentThread, workspaceRoot: currentThread.workspaceRoot }}
+              selectionChat={selectionChat}
+              defaultEnvMode={environmentSettings.defaultThreadEnvMode}
+              canUseWorktree={headerDiff.isGitRepo}
+              onClose={() => setSelectionChat(null)}
+              onNavigateToThread={onNavigateToThread}
+            />
+          ) : null}
         </view>
       </view>
     ) : bodyState.kind === "empty" ? (
@@ -2336,6 +2368,7 @@ function ThreadPage(props: ThreadPageProps) {
                       <CenteredEmptyLanding projectName={editorRailDraftProject?.name ?? null} />
                       <ComposerColumnFrameSurface>
                         <LandingComposer
+                          onOpenProviderSettings={() => history.push("/settings/providers")}
                           initialProjectId={editorRailDraftProject?.id ?? null}
                           onProjectSelectionChange={setEditorRailDraftProjectId}
                           onThreadCreated={(newThreadId) => onNavigateToThread(newThreadId)}
@@ -2506,14 +2539,11 @@ function ThreadPage(props: ThreadPageProps) {
               />
             ) : null}
             {threadHeaderActionState.showDiff ? (
-              <ThreadDiffToggle
-                open={diffOpen}
-                disabled={threadHeaderActionState.diffDisabled}
-                stats={threadHeaderActionState.diffStats}
+              <ThreadRightSidebarToggle
+                open={rightDockState.open}
                 onToggle={() => {
                   closeEnvironmentForAction();
-                  setExplorerOpen(false);
-                  setDiffOpen(!diffOpen);
+                  updateRightDockState((current) => setDockOpenInState(current, !current.open));
                 }}
               />
             ) : null}
@@ -2567,7 +2597,6 @@ function ThreadPage(props: ThreadPageProps) {
             projectId={currentThread.projectId}
             pinnedMessages={currentThread.pinnedMessages}
             pinnedMessageTextById={currentThread.pinnedMessageTextById}
-            threadMarkers={currentThread.threadMarkers}
             pullRequest={currentThread.lastKnownPr}
             provider={currentThread.provider ?? "codex"}
             recapRevision={threadRecapRevision(data ?? [], currentThread.latestTurnState)}
@@ -2592,6 +2621,10 @@ function ThreadPage(props: ThreadPageProps) {
         ) : null}
       </view>
       <ThreadRightDocks
+        launcherAvailability={{
+          hasGitRepository: headerDiff.isGitRepo,
+          hasReview: headerDiff.totals.hasChanges,
+        }}
         dockThread={
           currentThread
             ? {
@@ -2670,7 +2703,6 @@ export function SliceRouter({
   initialTerminalOpen,
   initialTemporaryOpen,
   initialSettingsTarget,
-  initialWorkspaceVisible,
   initialRoute,
   initialExplorerOpen,
   initialExplorerPresentationMode,
@@ -2704,7 +2736,6 @@ export function SliceRouter({
   readonly initialTerminalOpen: boolean;
   readonly initialTemporaryOpen: boolean;
   readonly initialSettingsTarget: string | null;
-  readonly initialWorkspaceVisible: boolean;
   readonly initialRoute: string | null;
   readonly initialExplorerOpen: boolean;
   readonly initialExplorerPresentationMode: "dock" | "single-file";
@@ -2740,6 +2771,15 @@ export function SliceRouter({
     "synara-sidebar-search-trigger",
   );
   const navigation = useMemoryNavigationState();
+  const [activityViewEnabled, setActivityViewEnabled] = usePersistedActivityViewEnabled();
+  const toggleActivityViewFromCommandRef = useRef(() => {});
+  toggleActivityViewFromCommandRef.current = () => {
+    // Like Electron: from Settings or Studio the shortcut always opens Activity.
+    const elsewhere = route.pathname === "/settings" || route.pathname === "/studio";
+    const next = elsewhere || !activityViewEnabled;
+    setActivityViewEnabled(next);
+    if (next && elsewhere) history.push("/");
+  };
   const setSearchPaletteOpen = useCallback(
     (open: boolean) => {
       "background only";
@@ -2806,7 +2846,6 @@ export function SliceRouter({
   const [routeThreads, routeThreadsHydrated] = useRouteThreadSummaries();
   const routeThreadsPending = !routeThreadsHydrated;
   const [routeProjects, sessionShellHydrated] = useSessionShellProjects();
-  const workspacePages = useWorkspaceStore((state) => state.workspacePages);
   const recentViews = useRecentViewsStore((state) => state.recentViews);
   const recordRecentView = useRecentViewsStore((state) => state.recordRecentView);
   const pruneRecentViewsStore = useRecentViewsStore((state) => state.pruneRecentViews);
@@ -2819,10 +2858,9 @@ export function SliceRouter({
   const studioSettings = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
   );
-  const workspaceEnabled = initialWorkspaceVisible || studioSettings.showWorkspaceSection;
   const activeThreadId =
     route.pathname === "/thread/$threadId"
-      ? route.params.threadId
+      ? (route.params.threadId ?? null)
       : initialRoute
         ? (parseRoute(initialRoute).params.threadId ?? null)
         : null;
@@ -2836,8 +2874,6 @@ export function SliceRouter({
       route.pathname === "/thread/$threadId"
         ? (route.params.threadId as import("@synara/contracts").ThreadId)
         : null,
-    routeWorkspaceId:
-      route.pathname === "/workspace/$workspaceId" ? (route.params.workspaceId ?? null) : null,
     settingsSection: route.pathname === "/settings" ? route.params.section : undefined,
   });
   const currentRecentViewKey = currentRecentView ? recentViewKey(currentRecentView) : null;
@@ -2846,10 +2882,9 @@ export function SliceRouter({
       availableThreadIds: new Set(
         routeThreads.map((thread) => thread.id as import("@synara/contracts").ThreadId),
       ),
-      availableWorkspaceIds: new Set(workspacePages.map((workspace) => workspace.id)),
       availableSplitViewIds: new Set<string>(),
     }),
-    [routeThreads, workspacePages],
+    [routeThreads],
   );
   const recentViewEntries = useMemo(
     () =>
@@ -2871,9 +2906,8 @@ export function SliceRouter({
         pinnedThreadIds: routeThreads
           .filter((thread) => thread.isPinned)
           .map((thread) => thread.id as import("@synara/contracts").ThreadId),
-        workspacePages,
       }),
-    [currentRecentViewKey, recentViews, routeProjects, routeThreads, workspacePages],
+    [currentRecentViewKey, recentViews, routeProjects, routeThreads],
   );
   useEffect(() => {
     recentViewsRef.current = recentViews;
@@ -3199,11 +3233,6 @@ export function SliceRouter({
     }
   }, [route.pathname, studioSettings.showStudioSection]);
   useEffect(() => {
-    if (route.pathname.startsWith("/workspace") && !workspaceEnabled) {
-      history.replace("/");
-    }
-  }, [route.pathname, workspaceEnabled]);
-  useEffect(() => {
     if (route.pathname !== "/studio") {
       setStudioLandingReady(false);
     }
@@ -3217,8 +3246,8 @@ export function SliceRouter({
   const navigate = useCallback((to: string) => {
     const threadMatch = to.match(/^\/thread\/([^/]+)$/);
     if (threadMatch) {
-      setPersistedLastRoute({ threadId: threadMatch[1] });
-      void persistLastThreadRoute(threadMatch[1]);
+      setPersistedLastRoute({ threadId: threadMatch[1]! });
+      void persistLastThreadRoute(threadMatch[1]!);
     }
     history.push(to);
   }, []);
@@ -3234,10 +3263,6 @@ export function SliceRouter({
     (view: RecentView) => {
       if (view.kind === "thread") {
         navigateToChat(`/thread/${view.threadId}`);
-        return;
-      }
-      if (view.kind === "workspace") {
-        navigateToChat(`/workspace/${view.workspaceId}`);
         return;
       }
       if (view.kind === "settings") {
@@ -3330,6 +3355,10 @@ export function SliceRouter({
           }
           if (command === "sidebar.search") {
             openSearchPalette();
+            return;
+          }
+          if (command === "sidebar.activity") {
+            toggleActivityViewFromCommandRef.current();
             return;
           }
           if (command === "view.recent.next") {
@@ -3488,11 +3517,13 @@ export function SliceRouter({
         {...explorerDockProps}
         onEditorModeChange={setEditorModeOpen}
         onNavigateToThread={(threadId) => {
-          setEditorEntryThreadId(threadId);
+          // Moving between threads inside the Editor keeps the Editor open; chat-surface
+          // navigation (fork, hand-off, a new chat from a selection) stays in chat.
+          if (editorModeOpen) setEditorEntryThreadId(threadId);
           navigate(`/thread/${threadId}`);
         }}
         projects={routeProjects}
-        threadId={route.params.threadId}
+        threadId={route.params.threadId!}
         threads={routeThreads}
         resolvedTheme={resolvedTheme}
         viewportWidth={viewportWidth}
@@ -3517,9 +3548,13 @@ export function SliceRouter({
       />
     ) : (
       <view className="ThreadsLanding">
-        <ThreadsLandingHeader project={null} />
+        <ThreadsLandingHeader
+          environmentOpen={false}
+          environmentAvailable={false}
+          onEnvironmentOpenChange={() => {}}
+        />
         <view className="ThreadsLandingBody">
-          <view className="ThreadsLandingBodyInner">
+          <view className="ThreadsLandingHero">
             <PanelStateMessage
               intent={studioRouteController.errorMessage ? "alert" : "status"}
               announcement={
@@ -3537,41 +3572,11 @@ export function SliceRouter({
         </view>
       </view>
     );
-  } else if (route.pathname === "/workspace" && workspaceEnabled) {
-    const workspaceId = workspacePages[0]?.id ?? null;
-    page = workspaceId ? (
-      <WorkspacePage
-        appearance={appearance}
-        workspaceId={workspaceId}
-        navigate={(to) => history.replace(to)}
-      />
-    ) : (
-      <ThreadsLandingPage
-        appearance={appearance}
-        explorerDockProps={explorerDockProps}
-        onDockWorkspaceChange={setLandingDockWorkspaceRoot}
-        resolvedTheme={resolvedTheme}
-        viewportHeight={viewportHeight}
-        viewportWidth={viewportWidth}
-        onThreadCreated={(threadId, options) => {
-          setLandingTemporaryThreadId(options.temporary ? threadId : null);
-          navigate(`/thread/${threadId}`);
-        }}
-      />
-    );
-  } else if (route.pathname === "/workspace/$workspaceId" && workspaceEnabled) {
-    page = (
-      <WorkspacePage
-        appearance={appearance}
-        workspaceId={route.params.workspaceId}
-        navigate={(to) => history.replace(to)}
-      />
-    );
   } else if (route.pathname === "/kanban") {
     page = <ProjectsPage navigate={(to) => history.push(to)} />;
   } else if (route.pathname === "/kanban/$projectId") {
     page = (
-      <KanbanProjectPage navigate={(to) => history.push(to)} projectId={route.params.projectId} />
+      <KanbanProjectPage navigate={(to) => history.push(to)} projectId={route.params.projectId!} />
     );
   } else if (route.pathname === "/pull-requests") {
     page = <PullRequestsPage />;
@@ -3615,25 +3620,16 @@ export function SliceRouter({
     route.pathname !== "/settings" && route.pathname !== "/components-lab" ? (
       <SidebarDisclosure open={sidebarOpen && !editorModeOpen}>
         <Sidebar
-          activeThreadId={route.pathname === "/thread/$threadId" ? route.params.threadId : null}
+          activeThreadId={route.pathname === "/thread/$threadId" ? route.params.threadId! : null}
           draftProjectId={
             route.pathname === "/new-thread/$projectId" ? route.params.projectId : null
           }
-          activeWorkspaceId={
-            route.pathname === "/workspace/$workspaceId"
-              ? route.params.workspaceId
-              : (workspacePages[0]?.id ?? null)
-          }
-          activePath={
-            route.pathname === "/kanban/$projectId"
-              ? "/kanban"
-              : route.pathname === "/workspace/$workspaceId"
-                ? "/workspace"
-                : route.pathname
-          }
+          activePath={route.pathname === "/kanban/$projectId" ? "/kanban" : route.pathname}
           navigate={navigateToChat}
           searchOpen={searchOpen}
           onOpenSearch={openSearchPalette}
+          activityViewEnabled={activityViewEnabled}
+          onActivityViewEnabledChange={setActivityViewEnabled}
           titlebarControls={openTitlebarControls}
         />
       </SidebarDisclosure>

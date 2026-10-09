@@ -10,7 +10,7 @@ describe("PanelStateMessage", () => {
     );
 
     expect(markup).toContain("h-full min-h-0");
-    expect(markup).toContain("p-6 text-sm text-muted-foreground");
+    expect(markup).toContain("p-6 text-ui leading-snug text-muted-foreground");
     expect(markup).toContain("Loading conversation…");
   });
 
@@ -22,7 +22,7 @@ describe("PanelStateMessage", () => {
     );
 
     expect(markup).toContain("flex-1");
-    expect(markup).toContain("px-5 text-xs text-muted-foreground/70");
+    expect(markup).toContain("px-5 text-ui leading-snug text-muted-foreground/70");
     expect(markup).toContain("items-start");
   });
 

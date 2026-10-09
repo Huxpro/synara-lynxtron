@@ -3,13 +3,13 @@ import type { ReactNode } from "react";
 import { SidebarThreadIdentity } from "./SidebarThreadIdentity";
 
 export interface SidebarThreadRowPresentationProps {
-  readonly leading?: ReactNode;
+  readonly leading?: ReactNode | undefined;
   readonly title: ReactNode;
   readonly active: boolean;
-  readonly subagent?: boolean;
-  readonly pendingStatusColorClass?: string | null;
-  readonly titleTestId?: string;
-  readonly suffix?: ReactNode;
+  readonly subagent?: boolean | undefined;
+  readonly pendingStatusColorClass?: string | null | undefined;
+  readonly titleTestId?: string | undefined;
+  readonly suffix?: ReactNode | undefined;
 }
 
 /**

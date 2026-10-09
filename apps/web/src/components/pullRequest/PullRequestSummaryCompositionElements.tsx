@@ -1,10 +1,12 @@
 import type { PullRequestActor, PullRequestCheck, PullRequestDetail } from "@synara/contracts";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, type ReactNode } from "react";
 
 import { Collapsible, CollapsiblePanel, CollapsibleTrigger } from "~/components/ui/collapsible";
 import { DisclosureChevron } from "~/components/ui/DisclosureChevron";
 import { ChatBubbleIcon, GitBranchIcon, UsersIcon } from "~/lib/icons";
 import { cn } from "~/lib/utils";
+import { pullRequestCommentMutationOptions } from "~/lib/pullRequestMutationOptions";
 import { ensureNativeApi } from "~/nativeApi";
 import { PullRequestActorLabel } from "./PullRequestActorLabel";
 import { PullRequestCheckStatusIcon } from "./PullRequestCheckStatusIcon";
@@ -23,7 +25,7 @@ import {
   PR_SECTION_TITLE_TEXT_CLASS_NAME,
 } from "./pullRequestText";
 
-type ChildrenProps = { readonly children?: ReactNode };
+type ChildrenProps = { readonly children?: ReactNode | undefined };
 
 export function PullRequestSummaryRootElement(props: ChildrenProps) {
   return <div className="h-full overflow-y-auto">{props.children}</div>;
@@ -240,6 +242,13 @@ export function PullRequestSummaryChecksElement(props: {
   );
 }
 
+/** Upstream's composer takes its target and mutation from the host; this is the PR host. */
+function PullRequestCommentComposerHost({ detail }: { detail: PullRequestDetail }) {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(pullRequestCommentMutationOptions(queryClient));
+  return <PullRequestCommentComposer target={detail} mutation={mutation} />;
+}
+
 export function PullRequestSummaryCommentsElement(props: {
   readonly detail: PullRequestDetail;
   readonly commentingAvailable: boolean;
@@ -271,7 +280,7 @@ export function PullRequestSummaryCommentsElement(props: {
           ))}
         </div>
       )}
-      {props.commentingAvailable ? <PullRequestCommentComposer detail={detail} /> : null}
+      {props.commentingAvailable ? <PullRequestCommentComposerHost detail={detail} /> : null}
     </div>
   );
 }

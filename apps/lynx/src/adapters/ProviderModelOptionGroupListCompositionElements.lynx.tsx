@@ -90,7 +90,7 @@ export function ProviderModelRadioItemElement(props: {
   readonly active: boolean;
   readonly costMultiplierLabel: string | null;
   readonly description?: string;
-  readonly favoriteProvider: "cursor" | "kilo" | "opencode" | "pi" | null;
+  readonly favoriteProvider: "cursor" | "opencode" | "pi" | null;
   readonly isFavorite: boolean;
   readonly modelName: string;
   readonly modelSlug: string;

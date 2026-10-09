@@ -12,7 +12,7 @@ import {
   type PullRequestDiffLineKind,
 } from "./pullRequestCode.logic";
 
-type ChildrenProps = { readonly children?: ReactNode };
+type ChildrenProps = { readonly children?: ReactNode | undefined };
 
 export function PullRequestCodeRootElement(props: ChildrenProps) {
   return <div className="flex flex-col gap-3 p-3">{props.children}</div>;
@@ -24,7 +24,7 @@ export function PullRequestCodeNoticeElement(
   return (
     <p
       className={cn(
-        "text-xs",
+        "text-ui",
         props.intent === "warning" ? "text-amber-700 dark:text-amber-300" : "text-muted-foreground",
       )}
     >
@@ -39,7 +39,7 @@ export function PullRequestCodeStatsElement(props: {
   readonly deletions: number;
 }) {
   return (
-    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+    <div className="flex items-center gap-2 text-ui text-muted-foreground">
       <span>
         {props.fileCount} {props.fileCount === 1 ? "file" : "files"}
       </span>
@@ -49,7 +49,9 @@ export function PullRequestCodeStatsElement(props: {
   );
 }
 
-export function PullRequestCodeFileElement(props: ChildrenProps & { readonly id?: string }) {
+export function PullRequestCodeFileElement(
+  props: ChildrenProps & { readonly id?: string | undefined },
+) {
   return (
     <section id={props.id} className="overflow-hidden rounded-md border border-border">
       {props.children}
@@ -64,8 +66,8 @@ export function PullRequestCodeFileHeaderElement(props: {
   readonly additions: number;
   readonly deletions: number;
   readonly expanded: boolean;
-  readonly pathPresentation?: "full" | "basename-first";
-  readonly trailingActions?: ReactNode;
+  readonly pathPresentation?: "full" | "basename-first" | undefined;
+  readonly trailingActions?: ReactNode | undefined;
   readonly onActivate: () => void;
 }) {
   const path = formatGitPathForDisplay(props.path);
@@ -76,7 +78,7 @@ export function PullRequestCodeFileHeaderElement(props: {
   return (
     <button
       type="button"
-      className="flex w-full items-center gap-2 bg-muted/35 px-3 py-2 text-left text-xs"
+      className="flex w-full items-center gap-2 bg-muted/35 px-3 py-2 text-left text-ui"
       aria-expanded={props.expanded}
       aria-label={`${props.expanded ? "Collapse" : "Expand"} ${path}`}
       onClick={props.onActivate}
@@ -127,7 +129,7 @@ export function PullRequestCodeLinesElement(props: ChildrenProps & { readonly wo
   return (
     <div
       className={cn(
-        "bg-background font-mono text-[11px] leading-5",
+        "bg-background font-mono text-ui-sm leading-5",
         props.wordWrap ? "overflow-x-hidden" : "overflow-x-auto",
       )}
     >
@@ -140,8 +142,8 @@ export function PullRequestCodeLineElement(props: {
   readonly kind: PullRequestDiffLineKind;
   readonly oldLine: number | null;
   readonly newLine: number | null;
-  readonly side?: "left" | "right";
-  readonly syntaxTokens?: readonly PullRequestCodeSyntaxToken[];
+  readonly side?: "left" | "right" | undefined;
+  readonly syntaxTokens?: readonly PullRequestCodeSyntaxToken[] | undefined;
   readonly text: string;
   readonly wordWrap: boolean;
 }) {
@@ -213,8 +215,8 @@ export function PullRequestCodeLineElement(props: {
 }
 
 export function PullRequestCodeSplitRowElement(props: {
-  readonly left?: ReactNode;
-  readonly right?: ReactNode;
+  readonly left?: ReactNode | undefined;
+  readonly right?: ReactNode | undefined;
 }) {
   return (
     <div className="grid min-w-full grid-cols-2">
@@ -234,7 +236,7 @@ export function PullRequestCodeSplitRowElement(props: {
 }
 
 export function PullRequestCodeMoreElement(props: {
-  readonly disabled?: boolean;
+  readonly disabled?: boolean | undefined;
   readonly label: string;
   readonly onActivate: () => void;
 }) {
@@ -242,7 +244,7 @@ export function PullRequestCodeMoreElement(props: {
     <button
       type="button"
       disabled={props.disabled}
-      className="w-full border-t border-border px-3 py-2 text-xs text-muted-foreground hover:text-foreground disabled:opacity-64"
+      className="w-full border-t border-border px-3 py-2 text-ui text-muted-foreground hover:text-foreground disabled:opacity-64"
       onClick={props.onActivate}
     >
       {props.label}

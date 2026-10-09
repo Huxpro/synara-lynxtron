@@ -6,6 +6,7 @@ import {
   ThreadId,
   type ModelSelection,
   type ProviderKind,
+  type RuntimeMode,
 } from "@synara/contracts";
 import { PanelStateMessage } from "@synara-web/components/chat/PanelStateMessage";
 import { ComposerProjectPickerComposition } from "@synara-web/components/chat/ComposerProjectPickerComposition";
@@ -27,7 +28,6 @@ import {
   fetchServerSettings,
   fetchSynaraSidebarShellSnapshot,
 } from "../../data/synaraClient.lynx";
-import { defaultModelSelectionForProvider } from "../../lib/defaultModelSelection";
 import { dialogs } from "../../platform/dialogs";
 import { webStorage } from "../../platform/storage";
 import { Button } from "../ui/button";
@@ -40,6 +40,7 @@ import { landingDraftId } from "./landingDraftIdentity.logic";
 import { resolveLandingWorkspaceContext } from "./landingStudioFolder.logic";
 
 import "./landing-composer.css";
+import { defaultModelSelectionForProvider } from "../../lib/defaultModelSelection";
 
 function landingId(kind: "command"): CommandId;
 function landingId(kind: "project"): ProjectId;
@@ -172,6 +173,8 @@ export async function loadLandingBootstrap(
 export function LandingComposer(props: {
   /** Main-column width, so the footer compacts like the thread composer. */
   readonly availableWidth?: number;
+  /** "Add providers" in the model picker: Settings → Providers. */
+  readonly onOpenProviderSettings?: () => void;
   readonly branch?: string | null;
   readonly containerKind?: "chat" | "studio";
   readonly envMode?: "local" | "worktree";
@@ -380,7 +383,7 @@ export function LandingComposer(props: {
   async function ensureThread(input: {
     readonly interactionMode: "default" | "plan";
     readonly modelSelection: ModelSelection;
-    readonly runtimeMode: "full-access" | "approval-required";
+    readonly runtimeMode: RuntimeMode;
   }): Promise<void> {
     "background only";
     if (!targetProject || !workspaceContext) {
@@ -464,30 +467,6 @@ export function LandingComposer(props: {
           </Button>
         </view>
       ) : null}
-      <Composer
-        availableWidth={props.availableWidth}
-        voiceInputEnabled
-        draftId={draftId}
-        threadId={threadIdRef.current}
-        modelSelection={modelSelection}
-        runtimeMode={runtimeMode}
-        interactionMode={interactionMode}
-        sessionStatus={null}
-        activeTurnId={null}
-        workspaceRoot={workspaceContext?.workspaceRoot ?? readyProject.workspaceRoot}
-        providerStatuses={data.serverConfig.providers}
-        emptyLanding={true}
-        onBeforeSend={ensureThread}
-        onSetInteractionMode={(nextInteractionMode) =>
-          setInteractionMode(draftId, nextInteractionMode)
-        }
-        onSetRuntimeMode={(nextRuntimeMode) => setRuntimeMode(draftId, nextRuntimeMode)}
-        onSendSucceeded={() => {
-          "background only";
-          props.onThreadCreated(threadIdRef.current, { temporary });
-          void queryClient.invalidateQueries({ queryKey: ["landing-composer-bootstrap"] });
-        }}
-      />
       <EmptyThreadContextTray
         branch={props.branch ?? null}
         className="LandingComposerTray"
@@ -597,6 +576,31 @@ export function LandingComposer(props: {
             triggerClassName="LandingComposerProjectTrigger"
           />
         }
+      />
+      <Composer
+        availableWidth={props.availableWidth}
+        voiceInputEnabled
+        draftId={draftId}
+        threadId={threadIdRef.current}
+        modelSelection={modelSelection}
+        runtimeMode={runtimeMode}
+        interactionMode={interactionMode}
+        sessionStatus={null}
+        activeTurnId={null}
+        workspaceRoot={workspaceContext?.workspaceRoot ?? readyProject.workspaceRoot}
+        providerStatuses={data.serverConfig.providers}
+        emptyLanding={true}
+        onOpenProviderSettings={props.onOpenProviderSettings}
+        onBeforeSend={ensureThread}
+        onSetInteractionMode={(nextInteractionMode) =>
+          setInteractionMode(draftId, nextInteractionMode)
+        }
+        onSetRuntimeMode={(nextRuntimeMode) => setRuntimeMode(draftId, nextRuntimeMode)}
+        onSendSucceeded={() => {
+          "background only";
+          props.onThreadCreated(threadIdRef.current, { temporary });
+          void queryClient.invalidateQueries({ queryKey: ["landing-composer-bootstrap"] });
+        }}
       />
     </view>
   );

@@ -15,6 +15,9 @@ type TurnMessageLike<TTurnId extends string = string> = {
 type EditableMessageLike = TurnMessageLike & {
   readonly role: string;
   readonly source?: string | undefined;
+  readonly asyncUserInput?:
+    | { readonly response?: { readonly messageId: string } | undefined }
+    | undefined;
 };
 
 export type TailUserMessageEditTarget =
@@ -32,6 +35,7 @@ export type TailUserMessageEditTarget =
         | "missing-message"
         | "not-user-message"
         | "non-native-message"
+        | "structured-answer"
         | "not-latest-native-user-message"
         | "missing-turn-metadata"
         | "spans-multiple-turns";
@@ -58,10 +62,16 @@ export function collectTailTurnIds<TTurnId extends string>(input: {
   return collectUniqueTurnIds(input.messages.slice(messageIndex));
 }
 
-function findLatestNativeUserMessageIndex(messages: ReadonlyArray<EditableMessageLike>): number {
+function findLatestConversationUserMessageIndex(
+  messages: ReadonlyArray<EditableMessageLike>,
+): number {
   for (let index = messages.length - 1; index >= 0; index -= 1) {
     const message = messages[index];
-    if (message?.role === "user" && isNativeEditableSource(message.source)) {
+    // Structured replies are not editable, but still close the preceding prompt tail.
+    if (
+      message?.role === "user" &&
+      (isNativeEditableSource(message.source) || message.source === "async-user-input")
+    ) {
       return index;
     }
   }
@@ -86,8 +96,11 @@ export function resolveTailUserMessageEditTarget(input: {
   if (!isNativeEditableSource(message.source)) {
     return { editable: false, reason: "non-native-message" };
   }
+  if (input.messages.some((entry) => entry.asyncUserInput?.response?.messageId === message.id)) {
+    return { editable: false, reason: "structured-answer" };
+  }
 
-  const latestNativeUserIndex = findLatestNativeUserMessageIndex(input.messages);
+  const latestNativeUserIndex = findLatestConversationUserMessageIndex(input.messages);
   if (messageIndex !== latestNativeUserIndex) {
     return { editable: false, reason: "not-latest-native-user-message" };
   }
@@ -129,7 +142,7 @@ export function resolveLatestTailUserMessageEditTarget(input: {
   readonly messages: ReadonlyArray<EditableMessageLike>;
   readonly activeTurnId?: string | null | undefined;
 }): TailUserMessageEditTarget {
-  const latestNativeUserIndex = findLatestNativeUserMessageIndex(input.messages);
+  const latestNativeUserIndex = findLatestConversationUserMessageIndex(input.messages);
   const latestNativeUserMessage = input.messages[latestNativeUserIndex];
   if (!latestNativeUserMessage) {
     return { editable: false, reason: "missing-message" };
@@ -165,13 +178,14 @@ export function resolvePromptEffortFromModelSelection(
     case "claudeAgent":
       return modelSelection.options?.effort ?? null;
     case "cursor":
+    case "devin":
       return modelSelection.options?.reasoningEffort ?? null;
     case "grok":
     case "droid":
       return modelSelection.options?.reasoningEffort ?? null;
     case "pi":
+    case "omp":
       return modelSelection.options?.thinkingLevel ?? null;
-    case "kilo":
     case "opencode":
       return null;
   }

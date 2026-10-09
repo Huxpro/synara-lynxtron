@@ -4,6 +4,7 @@
     "jsx": "react-jsx",
     "jsxImportSource": "@lynx-js/react",
     "verbatimModuleSyntax": false,
+    "noUncheckedIndexedAccess": true,
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "moduleSuffixes": [".lynx", ""],
@@ -264,9 +265,6 @@
       "~/components/SidebarSearchPaletteElements": [
         "./src/adapters/SidebarSearchPaletteElements.lynx.tsx"
       ],
-      "~/components/SidebarSegmentedPickerElements": [
-        "./src/adapters/SidebarSegmentedPickerElements.lynx.tsx"
-      ],
       "~/components/SidebarSettingsEntryElements": [
         "./src/adapters/SidebarSettingsEntryElements.lynx.tsx"
       ],
@@ -314,6 +312,7 @@
       "~/composerDraftStore": ["./src/adapters/composerDraftStore.lynx.ts"],
       "~/hooks/useTheme": ["./src/adapters/useTheme.lynx.ts"],
       "~/hooks/useViewportLayout": ["./src/hooks/useViewportLayout.lynx.ts"],
+      "~/lib/icons": ["./src/adapters/webIcons.lynx.ts"],
       "~/nativeApi": ["./src/adapters/nativeApi.lynx.ts"],
       "~/platform/env": ["./src/platform/env.lynx.ts"],
       "~/platform/events": ["./src/platform/events.ts"],

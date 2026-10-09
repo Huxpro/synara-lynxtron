@@ -40,7 +40,7 @@ export function deriveSidebarSectionCollections<
 >(input: {
   readonly projects: readonly TProject[];
   readonly treeThreads: readonly TThread[];
-  readonly projectSortThreads?: readonly TThread[];
+  readonly projectSortThreads?: readonly TThread[] | undefined;
   readonly projectSortOrder: ProjectSortOrder;
   readonly threadSortOrder: ThreadSortOrder;
   readonly resolveProjectSection: (project: TProject) => SidebarProjectSection | null;

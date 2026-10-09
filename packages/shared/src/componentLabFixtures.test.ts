@@ -31,11 +31,8 @@ describe("Components Lab model fixture", () => {
         (model) => model.slug === COMPONENT_LAB_MODEL_SELECTION.model,
       ),
     ).toBe(true);
-    expect(COMPONENT_LAB_MODEL_SELECTION.provider).toBe("codex");
-    if (COMPONENT_LAB_MODEL_SELECTION.provider !== "codex") {
-      throw new Error("Expected the Components Lab fixture to use Codex.");
-    }
-    expect(COMPONENT_LAB_MODEL_SELECTION.options?.reasoningEffort).toBe("low");
+    const selection = COMPONENT_LAB_MODEL_SELECTION;
+    expect(selection.provider === "codex" ? selection.options?.reasoningEffort : null).toBe("low");
   });
 
   it("uses a genuinely overflowing model catalog for the overflow state", () => {

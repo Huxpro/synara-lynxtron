@@ -519,8 +519,8 @@ interface ComposerPromptEditorProps {
   mentionReferences?: ReadonlyArray<ProviderMentionReference>;
   disabled: boolean;
   placeholder: string;
+  ariaLabel?: string | undefined;
   className?: string;
-  emptyMinHeightPx?: number;
   onRemoveTerminalContext: (contextId: string) => void;
   /**
    * Invoked when a sufficiently large text paste should collapse into an attachment
@@ -937,11 +937,11 @@ function ComposerPromptEditorInner({
   value,
   cursor,
   terminalContexts,
-  mentionReferences = [],
+  mentionReferences: mentionReferencesProp,
   disabled,
   placeholder,
+  ariaLabel,
   className,
-  emptyMinHeightPx,
   onRemoveTerminalContext,
   onCollapsePastedText,
   onChange,
@@ -949,6 +949,7 @@ function ComposerPromptEditorInner({
   onPaste,
   editorRef,
 }: ComposerPromptEditorInnerProps) {
+  const mentionReferences = mentionReferencesProp ?? [];
   const [editor] = useLexicalComposerContext();
   const onChangeRef = useRef(onChange);
   const initialCursor = clampCollapsedComposerCursor(value, cursor);
@@ -1044,7 +1045,6 @@ function ComposerPromptEditorInner({
     value,
   ]);
 
-  // Manual memoization kept: this file does not compile under React Compiler (see compile-report).
   const focusAt = useCallback(
     (nextCursor: number) => {
       const rootElement = editor.getRootElement();
@@ -1198,14 +1198,7 @@ function ComposerPromptEditorInner({
 
   return (
     <ComposerRemoveTerminalContextContext.Provider value={onRemoveTerminalContext}>
-      <div
-        className="relative"
-        style={
-          value.length === 0 && emptyMinHeightPx !== undefined
-            ? { minHeight: `${emptyMinHeightPx}px` }
-            : undefined
-        }
-      >
+      <div className="relative">
         <PlainTextPlugin
           contentEditable={
             <ContentEditable
@@ -1218,6 +1211,7 @@ function ComposerPromptEditorInner({
               )}
               data-testid="composer-editor"
               aria-placeholder={placeholder}
+              aria-label={ariaLabel}
               placeholder={<span />}
               onPaste={onPaste}
             />
@@ -1266,8 +1260,8 @@ export const ComposerPromptEditor = forwardRef<
     mentionReferences,
     disabled,
     placeholder,
+    ariaLabel,
     className,
-    emptyMinHeightPx,
     onRemoveTerminalContext,
     onCollapsePastedText,
     onChange,
@@ -1306,7 +1300,7 @@ export const ComposerPromptEditor = forwardRef<
         mentionReferences={normalizedMentionReferences}
         disabled={disabled}
         placeholder={placeholder}
-        emptyMinHeightPx={emptyMinHeightPx}
+        ariaLabel={ariaLabel}
         onRemoveTerminalContext={onRemoveTerminalContext}
         onChange={onChange}
         onPaste={onPaste}

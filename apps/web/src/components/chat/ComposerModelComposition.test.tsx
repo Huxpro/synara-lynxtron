@@ -13,15 +13,15 @@ vi.mock("./ComposerModelTriggerCompositionElements", () => ({
     <span>provider:{provider}</span>
   ),
   ComposerModelTriggerModelLabelElement: ({
-    children,
+    modelLabel,
     hidden,
   }: {
-    children: ReactNode;
+    modelLabel: string;
     hidden: boolean;
   }) => (
     <span>
       {hidden ? "hidden-model:" : "model:"}
-      {children}
+      {modelLabel}
     </span>
   ),
   ComposerModelTriggerFastBadgeElement: () => <span>fast</span>,
@@ -78,8 +78,7 @@ import { ComposerModelTriggerComposition } from "./ComposerModelTriggerCompositi
 import { ProviderModelOptionGroupListComposition } from "./ProviderModelOptionGroupListComposition";
 
 describe("Composer model shared compositions", () => {
-  // Quarantined: fails on the default branch, see Huxpro/synara-lynxtron#28.
-  it.skip("owns provider, model, fast, status, and chevron order", () => {
+  it("owns provider, model, fast, status, and chevron order", () => {
     const markup = renderToStaticMarkup(
       <ComposerModelTriggerComposition
         provider="codex"

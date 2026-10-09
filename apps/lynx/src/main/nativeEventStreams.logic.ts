@@ -35,10 +35,49 @@ export const NATIVE_RPC_STREAM_CANCEL_METHOD = "synaraRpcStreamCancel";
  */
 export const NATIVE_RPC_STREAM_RESET_METHOD = "synaraRpcStreamReset";
 export const NATIVE_TRANSPORT_STATE_EVENT = "synara:transport-state";
+/**
+ * The compatibility the host negotiated for its feature socket, published each
+ * time a (re)connect negotiates and before that socket is reported connected.
+ * The renderer needs the server instance id (a new instance invalidates resume
+ * cursors and replayed push state) and the capability list (optional features).
+ */
+export const NATIVE_RPC_COMPATIBILITY_EVENT = "synara:rpc-compatibility";
+
+/** Structural twin of the contracts `WsBootstrapNegotiateResult`. */
+export interface NativeRpcCompatibility {
+  readonly protocolEpoch: number;
+  readonly negotiatedRevision: number;
+  readonly serverBuild: string;
+  readonly serverInstanceId: string;
+  readonly capabilities: readonly string[];
+}
+
+export function parseNativeRpcCompatibility(value: unknown): NativeRpcCompatibility | null {
+  if (!value || typeof value !== "object") return null;
+  const candidate = value as Partial<Record<keyof NativeRpcCompatibility, unknown>>;
+  if (
+    typeof candidate.protocolEpoch !== "number" ||
+    typeof candidate.negotiatedRevision !== "number" ||
+    typeof candidate.serverInstanceId !== "string"
+  ) {
+    return null;
+  }
+  return {
+    protocolEpoch: candidate.protocolEpoch,
+    negotiatedRevision: candidate.negotiatedRevision,
+    serverBuild: typeof candidate.serverBuild === "string" ? candidate.serverBuild : "",
+    serverInstanceId: candidate.serverInstanceId,
+    capabilities: Array.isArray(candidate.capabilities)
+      ? candidate.capabilities.filter((entry): entry is string => typeof entry === "string")
+      : [],
+  };
+}
 
 export interface NativeRpcStreamResetReply {
   readonly generation: number;
   readonly transportState: string;
+  /** The last negotiation of the host socket; `null` before the first connect. */
+  readonly compatibility: NativeRpcCompatibility | null;
 }
 
 export function scopedStreamId(generation: number, key: string, sequence: number): string {

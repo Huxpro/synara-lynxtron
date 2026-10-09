@@ -244,12 +244,12 @@ export interface ComposerCommandMenuCompositionProps {
   readonly resolvedTheme: "light" | "dark";
   readonly isLoading: boolean;
   readonly triggerKind: ComposerTriggerKind | null;
-  readonly groupSlashCommandSections?: boolean;
-  readonly emptyStateText?: string;
+  readonly groupSlashCommandSections?: boolean | undefined;
+  readonly emptyStateText?: string | undefined;
   readonly activeItemId: string | null;
   readonly onHighlightedItemChange: (itemId: string | null) => void;
   readonly onSelect: (item: ComposerCommandItem) => void;
-  readonly onItemRef?: (itemId: string, node: unknown | null) => void;
+  readonly onItemRef?: ((itemId: string, node: unknown | null) => void) | undefined;
 }
 
 function emptyStateText(props: ComposerCommandMenuCompositionProps): string {

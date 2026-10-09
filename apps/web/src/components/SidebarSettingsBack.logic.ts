@@ -14,7 +14,7 @@ export function resolveSettingsBackTarget(input: {
   lastThreadRoute: LastThreadRoute | null;
   availableThreadIds: ReadonlySet<string>;
   latestThreadId: string | null;
-  availableSplitViewIds?: ReadonlySet<string>;
+  availableSplitViewIds?: ReadonlySet<string> | undefined;
 }): SettingsBackTarget {
   const restorableRoute = resolveRestorableThreadRoute({
     lastThreadRoute: input.lastThreadRoute,

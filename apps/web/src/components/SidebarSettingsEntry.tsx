@@ -5,7 +5,7 @@ import { SidebarSettingsEntryElement } from "~/components/SidebarSettingsEntryEl
 
 export function SidebarSettingsEntry(props: {
   readonly visible: boolean;
-  readonly active?: boolean;
+  readonly active?: boolean | undefined;
   readonly icon: unknown;
   readonly onActivate: () => void;
 }) {

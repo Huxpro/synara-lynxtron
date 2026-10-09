@@ -26,7 +26,8 @@ describe("chat surface header identity fidelity", () => {
     expect(styles).toMatch(
       /\.SharedChatHeaderIdentityTitle\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;[^}]*font-weight:\s*400;/s,
     );
-    expect(routerSource).toContain("title={routePresentation.headerTitle}");
+    // Electron's empty landing renders its header with minimalChrome: an empty identity slot.
+    expect(routerSource).toContain('<view className="ThreadsLandingHeaderIdentity" />');
     expect(styles).toMatch(
       /\.ThreadsLandingHeaderIdentity\s*\{[^}]*display:\s*flex;[^}]*flex:\s*1;[^}]*min-width:\s*0;/s,
     );
