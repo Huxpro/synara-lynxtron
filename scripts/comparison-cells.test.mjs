@@ -1,4 +1,4 @@
-import { describe, expect, it, namedOffsetExemption } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import {
   compareControls,

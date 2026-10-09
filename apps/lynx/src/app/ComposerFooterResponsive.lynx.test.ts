@@ -33,7 +33,7 @@ describe("Native composer footer responsiveness", () => {
   it("compacts the shared footer anatomy and hides verbose labels", () => {
     expect(composerSource).toContain("<ComposerFooterRowComposition compact={compactFooter}>");
     expect(composerSource).toContain(
-      "<ComposerFooterContentComposition\n          compact={compactFooter}",
+      "<ComposerFooterContentComposition\n            compact={compactFooter}",
     );
     expect(composerSource).toContain("voiceBusy={isVoiceRecording || isVoiceTranscribing}");
     // The recording lifecycle lives in the composer's voice hook.
@@ -43,12 +43,23 @@ describe("Native composer footer responsiveness", () => {
     expect(voiceHookSource).toContain("}, 50);");
     expect(voiceHookSource).toContain("setIsTranscribing(true);\n    setDurationMs(0);");
     expect(composerSource).toContain(
-      "if (isVoiceRecording) {\n                      void submitVoiceRecording();",
+      "if (isVoiceRecording) {\n                        void submitVoiceRecording();",
     );
     expect(css).toMatch(
       /\.ComposerFooterActionsLynx--voice-busy\s*\{[^}]*min-width:\s*0;[^}]*flex:\s*1;/s,
     );
-    expect(composerSource).toContain("hideLabel={compactFooter}");
+    // Labels follow upstream's measured footer tiers (context meter, effort, model name)
+    // and its 480px container rule for the access-mode label, not the compact breakpoint.
+    expect(composerSource).toContain("resolveNextComposerFooterTier({");
+    expect(composerSource).toContain(
+      "const footerPlan = composerFooterPlanForTier(footerTier.tier, true);",
+    );
+    expect(composerSource).toContain("hideModelLabel={!footerPlan.showModelLabel}");
+    expect(composerSource).toContain("hideStatusLabel={!footerPlan.showTraitsLabel}");
+    expect(composerSource).toContain(
+      "footerRowWidth <= COMPOSER_RUNTIME_LABEL_MIN_FOOTER_WIDTH_PX",
+    );
+    expect(compositionSource).toContain('useFooterWidthReport("actions")');
     expect(composerSource).toContain("compact={compactFooter}");
     expect(modelSource).toContain("readonly compact?: boolean");
     expect(modelSource).toContain("hideModelLabel={props.compact ?? false}");
