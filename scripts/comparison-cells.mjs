@@ -11,6 +11,19 @@ import { dirname } from "node:path";
 
 import { nativeNodesMatchingClasses } from "./comparison-measure.mjs";
 import {
+  NAVIGATION_TARGETS,
+  showAppSidebar,
+  DOCK_ADD_PANEL,
+  DOCK_TOGGLE,
+  openAutomationsSurface,
+  openDockWithPane,
+  openKanbanSurface,
+  openPullRequestsSurface,
+  openSettings,
+  pick,
+  settingsShown,
+} from "./comparison-navigation.mjs";
+import {
   openElectronDriver,
   openNativeDriver,
   readCertifiedRun,
@@ -72,23 +85,17 @@ export const COVERAGE_EXEMPTIONS = Object.freeze([
 
 const sleep = (ms) => new Promise((resolveSleep) => setTimeout(resolveSleep, ms));
 const FIXTURE_TRANSCRIPT_THREAD_ID = "comparison-fixture-transcript-v2";
-const pick = (driver, targets) => targets[driver.kind] ?? targets.both;
 const textTarget = (selector, text, label) => ({
   electron: { selector, text },
   native: { label: label ?? text },
 });
-const BACK_TO_APP = textTarget("button", "Back to app");
-
-async function leaveSettings(driver) {
-  if (await driver.find(pick(driver, BACK_TO_APP))) await driver.tap(pick(driver, BACK_TO_APP));
-}
 
 /** How each base surface is reached, and what proves it is ready. */
 export const SURFACES = Object.freeze({
   landing: {
     open: async (driver) => {
-      await leaveSettings(driver);
-      await driver.tap(pick(driver, textTarget("a, button", "New thread")));
+      await showAppSidebar(driver);
+      await driver.tap(pick(driver, NAVIGATION_TARGETS.newThread));
     },
     ready: (driver) =>
       driver.find(
@@ -100,40 +107,32 @@ export const SURFACES = Object.freeze({
   },
   thread: {
     open: async (driver) => {
-      await leaveSettings(driver);
+      await showAppSidebar(driver);
       await driver.tap({ attribute: ["data-thread-id", FIXTURE_TRANSCRIPT_THREAD_ID] });
     },
     ready: (driver) => driver.find({ label: "Copy message" }),
   },
   settings: {
-    open: (driver) => driver.tap(pick(driver, textTarget("button", "Settings"))),
-    ready: (driver) => driver.find(pick(driver, BACK_TO_APP)),
+    open: openSettings,
+    ready: settingsShown,
   },
   kanban: {
-    open: async (driver) => {
-      await leaveSettings(driver);
-      await driver.tap(pick(driver, textTarget("a, button", "Kanban")));
-    },
+    open: openKanbanSurface,
     ready: (driver) => driver.find(pick(driver, textTarget("main button", "New task"))),
   },
   pr: {
-    open: async (driver) => {
-      await leaveSettings(driver);
-      await driver.tap(pick(driver, textTarget("a, button", "Pull requests")));
-    },
+    open: openPullRequestsSurface,
     ready: (driver) =>
       driver.find(
         pick(driver, {
-          electron: { selector: "button", text: "Merged" },
+          // Upstream's Code review page: the inbox toolbar, no state tabs.
+          electron: { label: "More code review actions" },
           native: { text: "Merged" },
         }),
       ),
   },
   automations: {
-    open: async (driver) => {
-      await leaveSettings(driver);
-      await driver.tap(pick(driver, textTarget("a, button", "Automations")));
-    },
+    open: openAutomationsSurface,
     ready: (driver) => driver.find(pick(driver, textTarget("button", "New automation"))),
   },
 });
@@ -157,11 +156,11 @@ export const INCREMENTS = Object.freeze({
   "landing-diff-dock": {
     workflow: "J3",
     base: "landing",
-    // The web landing is the draft thread: its diff toggle opens the right dock.
-    open: (driver) => driver.tap({ label: "Toggle right sidebar" }),
-    ready: (driver) => driver.find({ label: "Show file tree" }),
+    // The web landing is the draft thread: its toggle opens the empty dock's launcher.
+    open: (driver) => driver.tap(DOCK_TOGGLE),
+    ready: (driver) => driver.find({ label: "Open Review" }),
     probes: [],
-    close: (driver) => driver.tap({ label: "Toggle right sidebar" }),
+    close: (driver) => driver.tap(DOCK_TOGGLE),
   },
   "model-menu": {
     workflow: "J1",
@@ -174,23 +173,26 @@ export const INCREMENTS = Object.freeze({
     workflow: "J3",
     base: "thread",
     open: async (driver) => {
-      if (!(await driver.find({ label: "Add panel" }))) {
-        await driver.tap({ label: "Toggle right sidebar" });
-        await waitFor(() => driver.find({ label: "Add panel" }), { label: "the dock" });
-      }
-      await driver.tap({ label: "Add panel" });
+      await openDockWithPane(driver, "Open Review");
+      await driver.tap(DOCK_ADD_PANEL);
     },
-    // The diff toolbar is part of this state; wait until its files have loaded.
-    ready: async (driver) =>
-      (await probeBox(driver, MENU_PROBE)) && driver.find({ label: "Show file tree" }),
+    // The dock keeps whichever panes earlier steps opened, so only the menu is awaited.
+    ready: (driver) => probeBox(driver, MENU_PROBE),
     probes: [MENU_PROBE],
-    close: (driver) => driver.tap({ label: "Add panel" }),
+    close: (driver) => driver.tap(DOCK_ADD_PANEL),
   },
   "settings-appearance": {
     workflow: "J4",
     base: "settings",
     open: (driver) => driver.tap(pick(driver, textTarget("button", "Appearance"))),
-    ready: (driver) => driver.find({ label: "Use system UI font" }),
+    ready: (driver) =>
+      driver.find(
+        pick(driver, {
+          // Upstream's Appearance panel edits theme packs; the font switch is gone there.
+          electron: { label: "Theme preference" },
+          native: { label: "Use system UI font" },
+        }),
+      ),
     probes: [],
     close: () => undefined,
   },

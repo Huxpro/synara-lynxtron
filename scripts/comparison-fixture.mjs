@@ -19,7 +19,7 @@ import { fileURLToPath } from "node:url";
 // Plain Node cannot load @synara/contracts (TypeScript with extensionless
 // imports), so the fixture keeps a copy that comparison-fixture.test.mjs pins to
 // WS_PROTOCOL_* — a server protocol bump fails that test instead of the run.
-export const COMPARISON_WS_PROTOCOL = Object.freeze({ epoch: 1, minRevision: 2, maxRevision: 2 });
+export const COMPARISON_WS_PROTOCOL = Object.freeze({ epoch: 1, minRevision: 3, maxRevision: 3 });
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 

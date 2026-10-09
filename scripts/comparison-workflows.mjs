@@ -8,15 +8,22 @@ import { join } from "node:path";
 import { readComparisonFixtureManifest } from "./comparison-fixture.mjs";
 import { COMPARISON_UNKNOWN_SETTING } from "./dev-electron-lynxtron.mjs";
 import { nativeNodesMatchingClasses } from "./comparison-measure.mjs";
+import {
+  NAVIGATION_TARGETS,
+  showAppSidebar,
+  openAutomationsSurface,
+  openDockWithPane,
+  openKanbanSurface,
+  openPullRequestsSurface,
+  openSettings,
+  pick,
+  settingsShown,
+} from "./comparison-navigation.mjs";
 import { waitFor } from "./comparison-workflow.mjs";
 
 const sleep = (ms) => new Promise((resolveSleep) => setTimeout(resolveSleep, ms));
 
 export const FIXTURE_PROJECT_TITLE = "synara-fixture-app";
-
-function pick(driver, targets) {
-  return targets[driver.kind] ?? targets.both;
-}
 
 /** Message rows as the renderer shows them: [{ id }] in transcript order. */
 export async function renderedMessageIds(driver) {
@@ -762,7 +769,12 @@ async function renderedTextIncludes(driver, needle, scope = null) {
       scope === "explorer"
         ? `document.querySelector('[aria-label="Search files"]')?.closest("aside")?.parentElement`
         : "document.body";
-    return driver.evaluate(`(${root})?.innerText.includes(${JSON.stringify(needle)}) === true`);
+    // File previews render inside a shadow root (<diffs-container>), which
+    // innerText does not cross; read the rendered text of both (displayed
+    // shadow children only: innerText of a hidden <style> is its source).
+    return driver.evaluate(
+      `(() => { const root = ${root}; if (!root) return false; const shadowText = Array.from(root.querySelectorAll("*")).flatMap((node) => Array.from(node.shadowRoot?.children ?? [])).filter((child) => getComputedStyle(child).display !== "none").map((child) => child.innerText ?? "").join("\\n"); return (root.innerText + "\\n" + shadowText).includes(${JSON.stringify(needle)}); })()`,
+    );
   }
   const documentNode = await driver.documentRoot();
   const root =
@@ -803,6 +815,22 @@ function dockTab(driver, title) {
   });
 }
 
+/** Selects a dock tab, adding its pane from the Add panel menu when the dock lacks it. */
+async function openDockTab(driver, title) {
+  const tab = dockTab(driver, title);
+  if (!(await driver.find(tab))) {
+    await driver.tap(DOCK_TARGETS.addPanel);
+    await driver.tap(
+      pick(driver, {
+        electron: { selector: '[role="menuitem"]', text: title },
+        native: { text: title, within: ".LxMenuLayer" },
+      }),
+    );
+    await waitFor(() => driver.find(tab), { label: `the ${title} tab` });
+  }
+  await driver.tap(tab);
+}
+
 function treeRow(driver, path, kind) {
   return pick(driver, {
     electron: { selector: `button[title=${JSON.stringify(path)}]` },
@@ -811,12 +839,12 @@ function treeRow(driver, path, kind) {
 }
 
 async function openExplorerFromDock(driver) {
-  if (!(await driver.find(DOCK_TARGETS.addPanel))) {
-    await driver.tap({ label: "Toggle right sidebar" });
-    await waitFor(() => driver.find(DOCK_TARGETS.addPanel), { label: "the dock" });
+  // From the empty dock's launcher Files opens directly; otherwise add it as a tab.
+  await openDockWithPane(driver, "Open Files");
+  if (!(await driver.find(DOCK_TARGETS.search))) {
+    await driver.tap(DOCK_TARGETS.addPanel);
+    await driver.tap(pick(driver, DOCK_TARGETS.explorerItem));
   }
-  await driver.tap(DOCK_TARGETS.addPanel);
-  await driver.tap(pick(driver, DOCK_TARGETS.explorerItem));
   await waitFor(() => driver.find(DOCK_TARGETS.search), { label: "the Explorer pane" });
 }
 
@@ -948,7 +976,8 @@ export async function workflowJ3(context) {
     ).trim();
     const [added, removed] = numstat.split(/\s+/);
     if (!added) throw new Error("The fixture workspace has no src/math.ts change to show.");
-    await driver.tap(dockTab(driver, "Diff"));
+    // The dock opened on Files from the launcher, so Diff may not be a tab yet.
+    await openDockTab(driver, "Diff");
     await waitFor(
       () =>
         driver.kind === "electron"
@@ -1001,12 +1030,7 @@ export async function workflowJ3(context) {
 }
 
 const SETTINGS_TARGETS = {
-  open: { electron: { selector: "button", text: "Settings" }, native: { label: "Settings" } },
-  back: { electron: { selector: "button", text: "Back to app" }, native: { label: "Back to app" } },
-  newThread: {
-    electron: { selector: "a, button", text: "New thread" },
-    native: { label: "New thread" },
-  },
+  newThread: NAVIGATION_TARGETS.newThread,
   section: (name) => ({ electron: { selector: "button", text: name }, native: { label: name } }),
   segment: (group, option) => ({
     electron: { selector: `[aria-label=${JSON.stringify(group)}] [role="radio"]`, text: option },
@@ -1017,6 +1041,10 @@ const SETTINGS_TARGETS = {
     native: { label: "Stream assistant messages" },
   },
 };
+
+// Electron lists automations in the sidebar surface; a row is a `div[role="button"]`
+// (it nests its own buttons), not a <button>.
+const AUTOMATION_ROW_SELECTOR = '[role="button"]';
 
 /** Settings nav label of the section that owns the streaming switch (`settingsNavigation.ts`). */
 const BEHAVIOR_SECTION = "Chat behavior";
@@ -1111,9 +1139,8 @@ async function switchIsOn(driver, target) {
 }
 
 async function openSettingsSection(driver, section) {
-  if (!(await driver.find(pick(driver, SETTINGS_TARGETS.back))))
-    await driver.tap(pick(driver, SETTINGS_TARGETS.open));
-  await waitFor(() => driver.find(pick(driver, SETTINGS_TARGETS.back)), { label: "Settings" });
+  if (!(await settingsShown(driver))) await openSettings(driver);
+  await waitFor(() => settingsShown(driver), { label: "Settings" });
   await driver.tap(pick(driver, SETTINGS_TARGETS.section(section)));
   await sleep(500);
 }
@@ -1128,28 +1155,24 @@ export async function workflowJ4(context) {
   const contentPoint = { x: 700, y: 420 };
 
   await step("switch between a thread and Settings with one correct sidebar", async () => {
-    if (await driver.find(pick(driver, SETTINGS_TARGETS.back))) {
-      await driver.tap(pick(driver, SETTINGS_TARGETS.back));
-    }
+    await showAppSidebar(driver);
     await driver.tap({ attribute: ["data-thread-id", FIXTURE_TRANSCRIPT_THREAD_ID] });
     const rounds = [];
     for (let round = 0; round < 3; round += 1) {
       const openedAt = Date.now();
-      await driver.tap(pick(driver, SETTINGS_TARGETS.open));
-      await waitFor(() => driver.find(pick(driver, SETTINGS_TARGETS.back)), {
-        label: "the Settings sidebar",
-      });
+      await openSettings(driver);
+      await waitFor(() => settingsShown(driver), { label: "the Settings sidebar" });
       if (await driver.find(pick(driver, SETTINGS_TARGETS.newThread)))
         throw new Error("The app sidebar stayed next to Settings.");
       if (!(await driver.find(pick(driver, SETTINGS_TARGETS.section("Appearance"))))) {
         throw new Error("Settings sections are missing.");
       }
       const settingsMs = Date.now() - openedAt;
-      await driver.tap(pick(driver, SETTINGS_TARGETS.back));
+      await showAppSidebar(driver);
       await waitFor(() => driver.find(pick(driver, SETTINGS_TARGETS.newThread)), {
         label: "the app sidebar",
       });
-      if (await driver.find(pick(driver, SETTINGS_TARGETS.back)))
+      if (await settingsShown(driver))
         throw new Error("The Settings sidebar stayed after returning.");
       const returned = await waitFor(
         async () => (await activeThreadId(driver)) === FIXTURE_TRANSCRIPT_THREAD_ID,
@@ -1250,7 +1273,7 @@ export async function workflowJ4(context) {
       label: "the server to store streaming on",
     });
     const driverSaw = await observe(driver, streaming, true);
-    await peer.tap(pick(peer, SETTINGS_TARGETS.back));
+    await showAppSidebar(peer);
     return {
       [`${driver.kind}To${peer.kind}`]: peerSaw,
       [`${peer.kind}To${driver.kind}`]: driverSaw,
@@ -1275,7 +1298,7 @@ export async function workflowJ4(context) {
       },
       { label: "the canonical appearance" },
     );
-    await driver.tap(pick(driver, SETTINGS_TARGETS.back));
+    await showAppSidebar(driver);
     return await persistedAppearance(driver, run);
   });
 
@@ -1324,18 +1347,11 @@ export async function workflowJ5(context) {
 
   try {
     await step("create an automation", async () => {
-      if (await driver.find(pick(driver, SETTINGS_TARGETS.back))) {
-        await driver.tap(pick(driver, SETTINGS_TARGETS.back));
-      }
+      await showAppSidebar(driver);
       // Start from a thread: Electron's sidebar entry does not leave an open
       // automation detail (it stays on the current automations route).
       await driver.tap({ attribute: ["data-thread-id", FIXTURE_TRANSCRIPT_THREAD_ID] });
-      await driver.tap(
-        pick(driver, {
-          electron: { selector: "a, button", text: "Automations" },
-          native: { label: "Automations" },
-        }),
-      );
+      await openAutomationsSurface(driver);
       await driver.tap(
         pick(driver, {
           electron: { selector: "button", text: "New automation" },
@@ -1375,7 +1391,7 @@ export async function workflowJ5(context) {
         () =>
           driver.find(
             pick(driver, {
-              electron: { selector: "button", text: name },
+              electron: { selector: AUTOMATION_ROW_SELECTOR, text: name },
               native: { label: new RegExp(`^${name}\\. `) },
             }),
           ),
@@ -1390,7 +1406,7 @@ export async function workflowJ5(context) {
 
     const row = () =>
       pick(driver, {
-        electron: { selector: "button", text: name },
+        electron: { selector: AUTOMATION_ROW_SELECTOR, text: name },
         native: { label: new RegExp(`^${name}\\. `) },
       });
 
@@ -1461,8 +1477,10 @@ export async function workflowJ5(context) {
 async function kanbanCards(driver, knownTitles) {
   let labels;
   if (driver.kind === "electron") {
+    // Electron's cards carry no label: a card is `li > button` whose text lines are
+    // the title first and the status last (branch and age in between).
     labels = await driver.evaluate(
-      `Array.from(document.querySelectorAll("main [aria-label]")).filter((node) => node.getBoundingClientRect().width > 0).map((node) => node.getAttribute("aria-label"))`,
+      `Array.from(document.querySelectorAll("main li > button")).filter((node) => node.getBoundingClientRect().width > 0).map((node) => (node.innerText ?? "").split("\\n").map((line) => line.trim()).filter(Boolean)).filter((lines) => lines.length >= 2).map((lines) => lines[0] + ", " + lines.at(-1))`,
     );
   } else {
     labels = [];
@@ -1518,15 +1536,23 @@ const KANBAN_NEW_TASK = {
 };
 
 async function openKanban(driver) {
-  if (await driver.find(pick(driver, SETTINGS_TARGETS.back))) {
-    await driver.tap(pick(driver, SETTINGS_TARGETS.back));
+  await openKanbanSurface(driver);
+  // Electron opens on its Attention board, which regroups cards by what needs the
+  // user; Classic is the status board the store and Native describe.
+  if (driver.kind === "electron") {
+    const classic = (pressed) => ({
+      selector: `[aria-label="Board view"] button[aria-pressed="${pressed}"]`,
+      text: "Classic",
+    });
+    await waitFor(
+      async () => {
+        if (await driver.find(classic(true))) return true;
+        if (await driver.find(classic(false))) await driver.tap(classic(false));
+        return false;
+      },
+      { label: "the Classic board" },
+    );
   }
-  await driver.tap(
-    pick(driver, {
-      electron: { selector: "a, button", text: "Kanban" },
-      native: { label: "Kanban" },
-    }),
-  );
   await waitFor(() => driver.find(pick(driver, KANBAN_NEW_TASK)), { label: "the Kanban board" });
 }
 
@@ -1624,7 +1650,7 @@ export async function workflowJ6(context) {
     await step("open the task and return to the board", async () => {
       const cardFor = (title) =>
         pick(driver, {
-          electron: { selector: `[aria-label^=${JSON.stringify(`${title}, `)}]` },
+          electron: { selector: "main li > button", text: title },
           native: { label: new RegExp(`^${escapeRegExp(title)}, `) },
         });
       // The title can change (title generation), so resolve it right before tapping.
@@ -1683,13 +1709,11 @@ export async function workflowJ6(context) {
     });
 
     await step("pull requests: same empty state (named blocked cell)", async () => {
-      await driver.tap(
-        pick(driver, {
-          electron: { selector: "a, button", text: "Pull requests" },
-          native: { label: "Pull requests" },
-        }),
-      );
-      const empty = await waitFor(() => renderedTextIncludes(driver, "No pull requests found"), {
+      await openPullRequestsSurface(driver);
+      // Electron's Code review page lists pull requests and issues together.
+      const emptyText =
+        driver.kind === "electron" ? "No pull requests and issues found" : "No pull requests found";
+      const empty = await waitFor(() => renderedTextIncludes(driver, emptyText), {
         label: "the pull requests page",
         timeoutMs: 20_000,
       });
