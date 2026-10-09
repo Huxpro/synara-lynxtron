@@ -82,6 +82,51 @@
   border-bottom: 1px solid var(--border);
 }
 
+/* SurfaceTabStrip `-my-1 flex-1 gap-0.5 py-1`: the list scrolls sideways under the popup. */
+.ComposerModelPickerTabStripLynx {
+  min-width: 0;
+  height: 36px;
+  flex: 1;
+  margin: -4px 0;
+}
+
+.ComposerModelPickerTabStripScrollerLynx {
+  width: 100%;
+  height: 36px;
+}
+
+.ComposerModelPickerTabStripListLynx {
+  height: 36px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+}
+
+/* A handoff target's tab in a started thread: the setup block's `px-3 py-4 gap-2`, centered. */
+.ComposerModelPickerNoticeLynx {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 12px;
+}
+
+.ComposerModelPickerNoticeTitleLynx {
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+}
+
+.ComposerModelPickerNoticeBodyLynx {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 16px;
+  text-align: center;
+}
+
 .ComposerModelPickerTabLynx {
   position: relative;
   width: 28px;
@@ -283,25 +328,32 @@
   white-space: nowrap;
 }
 
-/* `Kbd h-4 min-w-4 px-1 text-ui-2xs text-muted-foreground`. */
+/* `ShortcutKbd h-4 min-w-4 gap-0.5 rounded-full px-2 text-ui-2xs`, foreground/5 (dark /12)
+   under foreground/80 text. */
 .ComposerModelPickerKbdLynx {
   height: 16px;
   min-width: 16px;
   display: flex;
+  flex-direction: row;
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  padding: 0 4px;
-  border-radius: 4px;
-  background-color: rgba(13, 13, 13, 0.041);
+  gap: 2px;
+  padding: 0 8px;
+  border-radius: 8px;
+  background-color: rgba(13, 13, 13, 0.05);
 }
 
 .SliceRoot--theme-dark .ComposerModelPickerKbdLynx {
-  background-color: rgba(252, 252, 252, 0.009);
+  background-color: rgba(252, 252, 252, 0.12);
 }
 
 .ComposerModelPickerKbdTextLynx {
-  color: var(--muted-foreground);
+  /* Lynx lays a text run out about 1.3px wider than Chromium; the capsule holds two. */
+  margin-right: -1px;
+  color: var(--foreground);
+  opacity: 0.8;
+  font-weight: 500;
   font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 12px;
 }

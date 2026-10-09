@@ -54,11 +54,6 @@ export function ComposerEffortSlider(props: {
   return (
     <view
       className={`ComposerEffortSliderLynx${props.disabled ? " ComposerEffortSliderLynx--disabled" : ""}`}
-      accessibility-element={true}
-      accessibility-label="Reasoning effort"
-      accessibility-value={props.labels[props.index] ?? ""}
-      accessibility-trait="adjustable"
-      aria-label="Reasoning effort"
       bindlayoutchange={(event: { readonly detail?: { readonly width?: number } }) => {
         const width = event.detail?.width;
         if (typeof width === "number" && width > 0 && width !== trackWidth) setTrackWidth(width);
@@ -86,9 +81,15 @@ export function ComposerEffortSlider(props: {
           style={{ left: `${Math.round(resolveEffortSliderThumbLeft(index, step) + half - 2)}px` }}
         />
       ))}
+      {/* The thumb carries the slider's name and value, as Base UI's thumb input does. */}
       <view
         className="ComposerEffortSliderThumbLynx"
         style={{ left: `${Math.round(thumbLeft)}px` }}
+        accessibility-element={true}
+        accessibility-label="Reasoning effort"
+        accessibility-value={props.labels[props.index] ?? ""}
+        accessibility-trait="adjustable"
+        aria-label="Reasoning effort"
       />
       {props.labels.map((label, index) => {
         const center = resolveEffortSliderThumbLeft(index, step) + half;

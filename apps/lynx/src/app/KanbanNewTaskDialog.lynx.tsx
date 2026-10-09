@@ -9,6 +9,7 @@ import type {
 } from "@synara/contracts";
 import { ensureNativeApi } from "~/nativeApi";
 import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
+import { providerModelsQueryOptions } from "@synara-web/lib/providerDiscoveryReactQuery";
 import { createElement, useRef, useState } from "@lynx-js/react";
 import { useQuery } from "@tanstack/react-query";
 import { ComposerReferenceAttachmentsComposition } from "@synara-web/components/chat/ComposerReferenceAttachmentsComposition";
@@ -316,24 +317,13 @@ export function KanbanNewTaskDialog(props: {
     modelSelection.provider,
   );
   const serverConfig = useQuery(serverConfigQueryOptions());
-  const modelCatalog = useQuery({
-    queryKey: [
-      "kanban-new-task",
-      "models",
-      modelCatalogProvider,
-      currentProject?.workspaceRoot ?? null,
-    ],
-    queryFn: () => {
-      "background only";
-      const cwd = currentProject?.workspaceRoot;
-      // The server schema takes a missing `cwd`, not a null one.
-      return ensureNativeApi().provider.listModels({
-        provider: modelCatalogProvider,
-        ...(cwd ? { cwd } : {}),
-      });
-    },
-    staleTime: 60_000,
-  });
+  const modelCatalog = useQuery(
+    // Upstream's catalog query (and key), shared with the composer's picker.
+    providerModelsQueryOptions({
+      provider: modelCatalogProvider,
+      cwd: currentProject?.workspaceRoot ?? null,
+    }),
+  );
   const images = useComposerDraftStore(
     (state) => state.draftsByThreadId[threadId]?.images ?? NO_ATTACHMENTS,
   ) as readonly NativeComposerImageAttachment[];

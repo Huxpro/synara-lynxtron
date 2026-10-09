@@ -1,7 +1,10 @@
 import { useEffect, useInitData, useMemo, useRef, useState } from "@lynx-js/react";
 import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { projectSearchEntriesQueryOptions } from "@synara-web/lib/projectReactQuery";
-import { providerSkillsQueryOptions } from "@synara-web/lib/providerDiscoveryReactQuery";
+import {
+  providerModelsQueryOptions,
+  providerSkillsQueryOptions,
+} from "@synara-web/lib/providerDiscoveryReactQuery";
 import { getRectByRef } from "@lynx-js/lynx-ui";
 import type { NodesRef } from "@lynx-js/types";
 import { useQuery } from "@tanstack/react-query";
@@ -616,22 +619,16 @@ export function Composer({
     data: runtimeModelCatalog,
     isFetching: runtimeModelsFetching,
     isPending: runtimeModelsPending,
-  } = useQuery({
-    queryKey: ["provider-model-catalog", discoveryProvider ?? null, workspaceRoot ?? null],
-    queryFn: () => {
-      "background only";
-      if (!discoveryProvider) {
-        throw new Error("Provider model discovery requires an active provider.");
-      }
-      // The server schema takes a missing `cwd`, not a null one.
-      return ensureNativeApi().provider.listModels({
-        provider: discoveryProvider,
-        ...(workspaceRoot ? { cwd: workspaceRoot } : {}),
-      });
-    },
-    enabled: Boolean(discoveryProvider),
-    staleTime: 60_000,
-  });
+  } = useQuery(
+    // Upstream's catalog query (and key): one discovery at a time, the picker's first.
+    providerModelsQueryOptions({
+      // Disabled without a provider; the placeholder only completes the key.
+      provider: discoveryProvider ?? "codex",
+      cwd: workspaceRoot ?? null,
+      enabled: Boolean(discoveryProvider),
+      priority: "foreground",
+    }),
+  );
   const { data: serverConfig } = useQuery({ ...serverConfigQueryOptions(), retry: false });
   const voice = useNativeComposerVoice({
     enabled: voiceInputEnabled,

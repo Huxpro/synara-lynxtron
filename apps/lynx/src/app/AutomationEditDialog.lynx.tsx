@@ -1,6 +1,6 @@
 import { useEffect, useState } from "@lynx-js/react";
-import { ensureNativeApi } from "~/nativeApi";
 import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
+import { providerModelsQueryOptions } from "@synara-web/lib/providerDiscoveryReactQuery";
 import { useQuery } from "@tanstack/react-query";
 import type { AutomationDefinition, AutomationUpdateInput, ProviderKind } from "@synara/contracts";
 import { AUTOMATION_TEMPLATES } from "@synara/shared/automationTemplates";
@@ -127,25 +127,14 @@ export function AutomationEditDialog({
   const canSave = !pending && isFormSubmittable(form) && !hasBlockingWarning;
 
   const serverConfig = useQuery({ ...serverConfigQueryOptions(), enabled: open });
-  const modelCatalog = useQuery({
-    queryKey: [
-      "automation-edit",
-      "models",
-      modelCatalogProvider,
-      selectedProject?.workspaceRoot ?? null,
-    ],
-    queryFn: () => {
-      "background only";
-      const cwd = selectedProject?.workspaceRoot;
-      // The server schema takes a missing `cwd`, not a null one.
-      return ensureNativeApi().provider.listModels({
-        provider: modelCatalogProvider,
-        ...(cwd ? { cwd } : {}),
-      });
-    },
-    enabled: open && Boolean(selectedProject),
-    staleTime: 30_000,
-  });
+  const modelCatalog = useQuery(
+    // Upstream's catalog query (and key), shared with the composer's picker.
+    providerModelsQueryOptions({
+      provider: modelCatalogProvider,
+      cwd: selectedProject?.workspaceRoot ?? null,
+      enabled: open && Boolean(selectedProject),
+    }),
+  );
 
   const setField = <K extends keyof AutomationFormState>(key: K, value: AutomationFormState[K]) =>
     setForm((current) => updateFormField(current, key, value));

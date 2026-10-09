@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-09T21:25:53.744Z",
+  "generatedAt": "2026-10-09T22:37:58.998Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -66,6 +66,7 @@
       "@synara-central-icons/chat-bubble-7.svg?raw",
       "@synara-central-icons/checklist.svg?raw",
       "@synara-central-icons/chevron-down-small.svg?raw",
+      "@synara-central-icons/chevron-top-small.svg?raw",
       "@synara-central-icons/circle-check.svg?raw",
       "@synara-central-icons/circle-info.svg?raw",
       "@synara-central-icons/circle-questionmark.svg?raw",
@@ -288,15 +289,15 @@
   "lynxParallelImplementation": {
     "baseline": {
       "synaraClientImporters": 0,
-      "useQueryCallSites": 29,
+      "useQueryCallSites": 24,
       "refetchIntervalSites": 1,
-      "routerTsxLines": 3589
+      "routerTsxLines": 3581
     },
     "current": {
       "synaraClientImporters": 0,
-      "useQueryCallSites": 29,
+      "useQueryCallSites": 24,
       "refetchIntervalSites": 1,
-      "routerTsxLines": 3589
+      "routerTsxLines": 3581
     }
   },
   "screens": [

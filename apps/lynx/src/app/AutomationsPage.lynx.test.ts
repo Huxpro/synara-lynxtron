@@ -272,9 +272,9 @@ describe("Lynx Automations route", () => {
     expect(dialogSource).toContain("<ComposerModelControl");
     expect(dialogSource).toContain("hideStatusLabel");
     expect(dialogSource).toContain("...serverConfigQueryOptions(), enabled: open");
-    expect(dialogSource).toContain("ensureNativeApi().provider.listModels({");
-    // The server schema takes a missing `cwd`, never a null one.
-    expect(dialogSource).toContain("...(cwd ? { cwd } : {}),");
+    // Upstream's catalog query and key (it omits a null `cwd` from the request itself).
+    expect(dialogSource).toContain("providerModelsQueryOptions({");
+    expect(dialogSource).not.toContain("provider.listModels(");
     expect(queriesSource).not.toContain("fetchAutomationCreateServerConfig");
     expect(queriesSource).not.toContain("fetchAutomationCreateModels");
     expect(dialogSource).toContain("enabled: open");

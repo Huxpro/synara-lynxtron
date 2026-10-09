@@ -203,7 +203,7 @@ PR #37（Settings）、#40（Environment、Git、Explorer、dock）、#41（删�
 
 `synaraClient.lynx.ts` 删除之后还留在 Lynx 一侧的（都经门面发请求，只是还没用上游的 query options 和 key，属于 M4 后续各屏）：
 
-- **模型目录（5 处）**：`Composer`、`KanbanNewTaskDialog`、`AutomationCreateDialog`、`AutomationEditDialog`、`AutomationDetailPage`。上游的 `providerModelsQueryOptions` 带发现队列、`AbortSignal` 和超时，要先在 PrimJS 上验证。
+- **模型目录（5 处）：已完成。** `Composer`、`KanbanNewTaskDialog`、`AutomationCreateDialog`、`AutomationEditDialog`、`AutomationDetailPage` 都用上游的 `providerModelsQueryOptions`（上游的 key 和发现队列），棘轮 `useQueryCallSites` 29 → 24。在 Native（PrimJS）上验证过的：目录能加载，模型菜单的行和 J1/J5/J6 都通过。PrimJS 的 `AbortSignal` 有 `addEventListener`/`removeEventListener`，但没有 `throwIfAborted`（上游的 `abortReason` 捕获后把那个 `TypeError` 当作取消原因），也不遵守 `{ once: true }`、重复 `abort()` 会再次派发（上游队列的 `taskSettled` 保证只结算一次）。取消和 90 秒超时两条路径没有在 Native 上实际触发过。
 - **Automations**：`AutomationsPage` 的列表和四个变更。上游的 `useAutomations` 在路由文件里，没有可派生的 query options。
 - **PR 详情**：`FeatureListsPage` 的 detail / diff / action / pin 和评论框。上游的变更 options 按上游的 key 改缓存，要和列表一起换。
 - **插件库**：`PluginLibraryPage` 的三个读取。
