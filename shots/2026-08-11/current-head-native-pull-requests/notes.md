@@ -14,7 +14,7 @@
   - root PID `73788`, app PID `73793`
   - PID-derived `localhost:8902`, session `1`
   - staged workspace bundle URL
-  - unrelated `@t3tools/lynxtron` on 8901 untouched.
+  - unrelated `another-project` on 8901 untouched.
 - Final Native runtime:
   - root `1280x820`; screenshot `2560x1640`
   - route page `1024x820 @ (256,0)`

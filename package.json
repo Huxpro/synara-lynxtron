@@ -109,7 +109,6 @@
   },
   "trustedDependencies": [
     "@lynx-js/lynxtron",
-    "@lynx-js/lynxtron-builder",
     "electron-winstaller"
   ]
 }

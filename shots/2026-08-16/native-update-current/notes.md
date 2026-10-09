@@ -229,7 +229,7 @@ The owned Native/server processes, shim, runtime, user data, and state were
 removed. Ports `58090`, `8891`, and `8901` were free, browser state ended at
 `sessions: []` with zero owned processes, and screenshot count remained `100`.
 Before commit, port `8901` was later occupied by an unrelated
-`/Users/bytedance/github/t3code-archaeology-verify3` verification process
+`/Users/bytedance/github/another-project-archaeology-verify3` verification process
 (PID `44768`) that started after this loop's cleanup. It was not terminated and
 is external port competition, not a Synara-owned leak.
 
@@ -326,7 +326,7 @@ text. Exact-client warning/error console remained empty.
   `8901` were free; browser cleanup ended at `sessions: []` with zero owned
   processes.
   Before commit, port `8901` was later occupied by an unrelated
-  `/Users/bytedance/github/t3code-archaeology-verify3` verification process
+  `/Users/bytedance/github/another-project-archaeology-verify3` verification process
   (PID `73718`) started after this loop's cleanup. It was not terminated and is
   external contention, not a Synara leak.
 - No screenshot was retained; local screenshot count remained `100`.

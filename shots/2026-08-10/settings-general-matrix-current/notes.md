@@ -73,7 +73,7 @@ No invalid frame is retained as a passing matrix cell.
 The paired `0.0.9-dev` diagnostic host was restored from the published npm
 package into `/tmp` without changing workspace dependencies. It registered a
 separate exact-owned `@synara/lynx` client on `8902`; unrelated
-`@t3tools/lynxtron` remained on `8901`.
+`another-project` remained on `8901`.
 
 The first diagnostic-host launch exposed a real current-head startup
 regression: the document remained an empty `PAGE` and the console reported
@@ -114,6 +114,6 @@ changes used rendered controls. Native was restored to System before shutdown.
   backup was written.
 - The temporary diagnostic runtime and bisect worktree were removed after
   verification.
-- The unrelated `@t3tools/lynxtron` client on `8901` remained running and was
+- The unrelated `another-project` client on `8901` remained running and was
   not touched.
 - Historical `.p10-view*` and older evidence directories were not modified.

@@ -87,7 +87,7 @@ the repaired contract.
 - Lynx-for-Web logged only the known upstream initialization deprecation
   warning. Browser page-error files and Native warning/error console are empty.
 - Owned server/static/Native processes and named Browser sessions exited.
-- The `8903` port was later reused by a separately owned `t3code` Lynxtron
+- The `8903` port was later reused by a separately owned `another-project` Lynxtron
   process after PIDs `28092/28096` had exited; it was not touched.
 - Normal SQLite, settings, Native KV, and window-state hashes remained
   byte-exact.
