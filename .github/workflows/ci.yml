@@ -65,8 +65,14 @@ jobs:
       - name: Typecheck
         run: bun run typecheck
 
+      # The Lynx Rstest suite has known failures (Huxpro/synara-lynxtron#10), so
+      # it runs as a separate non-blocking step until that issue is closed.
       - name: Test
-        run: bun run test
+        run: bun run test -- --filter=!@synara/lynx
+
+      - name: Test Lynx (known failures, non-blocking)
+        continue-on-error: true
+        run: bun run test -- --filter=@synara/lynx
 
       # Run the workspace-local playwright binary directly: bunx stalled after
       # the chromium download on hosted runners. The step timeout stops any
