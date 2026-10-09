@@ -39,11 +39,12 @@ How to apply:
 - These are defaults, not limits. You have standing permission to override them: if a cheaper model's output doesn't meet the bar, rerun or redo the work with a smarter model without asking. Judge the output, not the price tag. Escalating costs less than shipping mediocre work.
 - Cost is a tie-breaker only; when axes conflict for anything that ships, intelligence > taste > cost.
 - Don't let cost prevent you from using the right model for the job. Instead, take advantage of cheaper options to get more information and try things before moving the work to a more expensive option.
-- Bulk/mechanical work (clear-spec implementation, data analysis, migrations): gpt-5.6-sol — it's effectively free.
+- Bulk/mechanical work (clear-spec implementation, data analysis, migrations): gpt-5.6-sol is a good fit and effectively free, but it is an option, not a requirement. Use it when it buys parallelism or saves time; do the work yourself when that is simpler.
+- Merges and conflict resolution are judgment work, not bulk work: the session that owns the merge resolves it (or reviews every resolution). Codex may help in parallel on well-separated parts.
 - Anything user-facing (UI, copy, API design) needs taste ≥ 7.
 - Reviews of plans/implementations: fable-5 or opus-4.8, optionally gpt-5.6-sol as an extra independent perspective.
 - Never use Haiku.
-- Mechanics: gpt-5.6-sol is only reachable through the Codex CLI — `codex exec` / `codex review` (my `~/.codex/config.toml` defaults to gpt-5.6-sol). Use the codex-implementation, codex-review, and codex-computer-use skills; for work they don't cover (investigation, data analysis), run `codex exec -s read-only` directly with a self-contained prompt.
+- Mechanics: gpt-5.6-sol is only reachable through the Codex CLI — `codex exec` / `codex review` (pass `-m gpt-5.6-sol` explicitly and close stdin with `< /dev/null`; `gpt-6.1-sol` is rejected for this account). Use the codex-implementation, codex-review, and codex-computer-use skills; for work they don't cover (investigation, data analysis), run `codex exec -s read-only` directly with a self-contained prompt.
 - Claude models (sonnet-5, opus-4.8, fable-5) run via the Agent/Workflow model parameter.
 
 Using gpt-5.5 inside workflows and subagents (the model parameter only takes Claude models, so use a wrapper):
