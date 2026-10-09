@@ -28,6 +28,7 @@ import React, {
   isValidElement,
   memo,
   use,
+  useDeferredValue,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -106,7 +107,6 @@ import {
   FindAwareShikiHtml,
 } from "./ChatMarkdownFind";
 
-import { useDebouncedValue } from "@tanstack/react-pacer";
 const EXTERNAL_HTTP_HREF_PATTERN = /^https?:\/\//i;
 // Trailing `:line` / `:line:col` position suffix on a resolved file link. Kept on
 // the href (so opening jumps to the line) but stripped for icon/title resolution.
@@ -1458,7 +1458,7 @@ function ChatMarkdown({
   // fast token stream (one flush per ~100ms) doesn't re-render the full ReactMarkdown
   // tree on every flush. The deferred value always converges to the latest text, and
   // completed messages render the exact current text immediately (no visual change).
-  const [deferredNormalizedText] = useDebouncedValue(normalizedText, { wait: 100 });
+  const deferredNormalizedText = useDeferredValue(normalizedText);
   const renderedText = isStreaming ? deferredNormalizedText : normalizedText;
   const sourceText = useMemo(
     () => (isUserVariant ? text : repairMarkdownTableDelimiters(text)),
