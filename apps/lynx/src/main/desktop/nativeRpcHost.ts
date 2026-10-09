@@ -7,7 +7,11 @@ import {
   type RpcTransportState,
   type StartRpcTimeout,
 } from "../../data/rpcTransport.logic";
-import { nativeEventStreamChannel } from "../nativeEventStreams.logic";
+import {
+  nativeEventStreamChannel,
+  type NativeRpcStreamResetReply,
+} from "../nativeEventStreams.logic";
+import { createScopedStreamRegistry } from "../scopedStreamRegistry.logic";
 import { resolveSynaraWsUrl } from "./runtimeEndpoint.logic";
 import { normalizeLynxRpcPayload } from "../rpcPayload.logic";
 
@@ -140,20 +144,27 @@ export async function handleNativeRpc(
     }
     return await featureManager.request(tag, normalizeLynxRpcPayload(tag, data.payload), {
       // `null` disables the watchdog for calls the renderer declared long-running
-      // (provider updates, recap generation); anything else keeps the host default.
-      timeoutMs: data.timeoutMs === null ? null : undefined,
+      // (provider updates, recap generation); a number is the renderer's own
+      // deadline; anything else keeps the host default.
+      timeoutMs:
+        data.timeoutMs === null
+          ? null
+          : typeof data.timeoutMs === "number"
+            ? data.timeoutMs
+            : undefined,
     });
   } catch (error) {
     throw toRelayError(error);
   }
 }
 
-const scopedStreams = new Map<string, () => void>();
+const scopedStreams = createScopedStreamRegistry();
 
 /**
  * Request-scoped stream for the shared `WsTransport` compat class: every item
  * goes to `onItem` as it arrives, the promise settles when the server ends the
- * stream or the renderer cancels it (`cancelNativeRpcStream`).
+ * stream or the renderer cancels it (`cancelNativeRpcStream`). Ownership and
+ * renderer generations live in `scopedStreamRegistry.logic.ts`.
  */
 export async function runNativeRpcStream(
   streamId: string,
@@ -162,30 +173,23 @@ export async function runNativeRpcStream(
 ): Promise<void> {
   const tag = String(data.tag ?? "").trim();
   if (!tag) throw new Error("Synara RPC tag is required");
-  if (!streamId) throw new Error("Synara RPC stream id is required");
-  const previous = scopedStreams.get(streamId);
-  previous?.();
-  const handle = featureManager.openStream(tag, data.payload, onItem);
-  scopedStreams.set(streamId, handle.cancel);
   try {
-    await handle.settled;
+    await scopedStreams.run(streamId, () => featureManager.openStream(tag, data.payload, onItem));
   } catch (error) {
     throw toRelayError(error);
-  } finally {
-    if (scopedStreams.get(streamId) === handle.cancel) scopedStreams.delete(streamId);
   }
 }
 
 export function cancelNativeRpcStream(streamId: string): boolean {
-  const cancel = scopedStreams.get(streamId);
-  if (!cancel) return false;
-  scopedStreams.delete(streamId);
-  cancel();
-  return true;
+  return scopedStreams.cancel(streamId);
+}
+
+/** Renderer-generation handshake; see `NATIVE_RPC_STREAM_RESET_METHOD`. */
+export function resetNativeRpcStreams(): NativeRpcStreamResetReply {
+  return { generation: scopedStreams.reset(), transportState: featureManager.getState() };
 }
 
 export function disposeNativeRpcHost(): void {
-  for (const cancel of scopedStreams.values()) cancel();
-  scopedStreams.clear();
+  scopedStreams.cancelAll();
   featureManager.dispose();
 }

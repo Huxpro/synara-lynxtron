@@ -31,14 +31,17 @@ import {
 import type { WsTransportState } from "@synara-web/wsTransportEvents";
 import type { RpcTransportState } from "../data/rpcTransport.logic";
 import {
+  isHostTransportState,
   isNativeTransportError,
   nativeRpcCancelStream,
   nativeRpcOpenStream,
   nativeRpcRequest,
+  nativeRpcResetStreams,
   subscribeNativeRpcStreamItems,
   subscribeNativeTerminalEvents,
   subscribeNativeTransportState,
 } from "../data/nativeRpcBridge";
+import { scopedStreamGeneration, scopedStreamId } from "../main/nativeEventStreams.logic";
 
 type PushListener<C extends WsPushChannel> = (message: WsPushMessage<C>) => void;
 
@@ -52,21 +55,28 @@ export class WsTransportRequestInterruptedError extends Error {
   readonly _tag = "WsTransportRequestInterruptedError";
   readonly code: "WS_REQUEST_TIMEOUT" | "WS_REQUEST_ABORTED";
   readonly method: string;
+  readonly timeoutMs?: number;
+  override readonly cause?: unknown;
 
   constructor(input: {
     readonly message: string;
     readonly code: "WS_REQUEST_TIMEOUT" | "WS_REQUEST_ABORTED";
     readonly method: string;
+    readonly timeoutMs?: number;
+    readonly cause?: unknown;
   }) {
     super(input.message);
     this.name = "WsTransportRequestInterruptedError";
     this.code = input.code;
     this.method = input.method;
+    if (input.timeoutMs !== undefined) this.timeoutMs = input.timeoutMs;
+    if (input.cause !== undefined) this.cause = input.cause;
   }
 }
 
 interface ActiveStream {
-  readonly streamId: string;
+  /** Minted once the host links (and so the renderer generation) are known. */
+  streamId: string | null;
   /** Resolves with whether the open request reached the host bridge. */
   readonly opened: Promise<boolean>;
   readonly settled: Promise<void>;
@@ -75,6 +85,85 @@ interface ActiveStream {
 
 const STREAM_RESTART_DELAY_MS = 500;
 const STREAM_RESTART_MAX_DELAY_MS = 5_000;
+/** Upstream default request watchdog (`wsTransport.ts` REQUEST_TIMEOUT_MS). */
+const REQUEST_TIMEOUT_MS = 60_000;
+
+interface RequestAbortScope {
+  /** Settles like `promise`, or rejects with the interruption error first. */
+  readonly race: <T>(promise: Promise<T>) => Promise<T>;
+  readonly interrupted: () => WsTransportRequestInterruptedError | null;
+  readonly cleanup: () => void;
+  /** What the host should apply: `null` no watchdog, a number, or the host default. */
+  readonly hostTimeoutMs: number | null | undefined;
+}
+
+/**
+ * Upstream `makeRequestAbortScope` semantics at the compat boundary: validate
+ * `timeoutMs`, apply the default deadline, honor an external `AbortSignal`,
+ * and reject with the upstream interruption error. Built on a plain promise
+ * so it does not need `AbortController` on PrimJS. The host also receives the
+ * numeric deadline; cancelling the host-side request itself is a follow-up.
+ */
+export function makeRequestAbortScope(
+  method: string,
+  options?: WsRequestOptions,
+): RequestAbortScope {
+  const timeoutMs = options?.timeoutMs;
+  if (timeoutMs !== undefined && timeoutMs !== null) {
+    if (!Number.isFinite(timeoutMs) || timeoutMs < 0) {
+      throw new RangeError("WebSocket RPC timeoutMs must be a finite non-negative number or null.");
+    }
+  }
+  const effectiveTimeoutMs = timeoutMs === undefined ? REQUEST_TIMEOUT_MS : timeoutMs;
+  const signal = options?.signal;
+  let interruption: WsTransportRequestInterruptedError | null = null;
+  let rejectInterrupted: (error: WsTransportRequestInterruptedError) => void = () => undefined;
+  const interrupted = new Promise<never>((_resolve, reject) => {
+    rejectInterrupted = reject;
+  });
+  interrupted.catch(() => undefined);
+  const interrupt = (error: WsTransportRequestInterruptedError) => {
+    if (interruption) return;
+    interruption = error;
+    rejectInterrupted(error);
+  };
+  const onAbort = () =>
+    interrupt(
+      new WsTransportRequestInterruptedError({
+        message: `WebSocket RPC ${method} was cancelled.`,
+        code: "WS_REQUEST_ABORTED",
+        method,
+        cause: signal?.reason,
+      }),
+    );
+  if (signal?.aborted) {
+    onAbort();
+  } else {
+    signal?.addEventListener("abort", onAbort, { once: true });
+  }
+  const timer =
+    effectiveTimeoutMs === null
+      ? null
+      : setTimeout(() => {
+          interrupt(
+            new WsTransportRequestInterruptedError({
+              message: `WebSocket RPC ${method} timed out after ${effectiveTimeoutMs}ms.`,
+              code: "WS_REQUEST_TIMEOUT",
+              method,
+              timeoutMs: effectiveTimeoutMs,
+            }),
+          );
+        }, effectiveTimeoutMs);
+  return {
+    race: (promise) => Promise.race([promise, interrupted]),
+    interrupted: () => interruption,
+    cleanup: () => {
+      if (timer !== null) clearTimeout(timer);
+      signal?.removeEventListener("abort", onAbort);
+    },
+    hostTimeoutMs: timeoutMs,
+  };
+}
 
 function deferred<T>(): { readonly promise: Promise<T>; readonly resolve: (value: T) => void } {
   let resolve: (value: T) => void = () => undefined;
@@ -111,6 +200,8 @@ export function mapHostTransportState(
 let nextStreamSequence = 0;
 
 export class WsTransport {
+  /** Renderer generation granted by the host reset handshake (`ensureHostLinks`). */
+  private generation: number | null = null;
   private readonly listeners = new Map<string, Set<(message: WsPush) => void>>();
   private readonly stateListeners = new Set<(state: WsTransportState) => void>();
   private readonly compatibilityListeners = new Set<(issue: WsCompatibilityError | null) => void>();
@@ -138,49 +229,58 @@ export class WsTransport {
     options?: WsRequestOptions,
   ): Promise<T> {
     if (this.disposed) throw new Error("Transport disposed");
-    await this.ensureHostLinks();
-    if (method === ORCHESTRATION_WS_METHODS.unsubscribeShell) {
-      this.shellSubscribed = false;
-      await this.stopStream("orchestration.shell");
-      return undefined as T;
-    }
-    if (method === ORCHESTRATION_WS_METHODS.unsubscribeThread) {
-      const threadId = (params as { threadId: string }).threadId;
-      this.threadSubscriptions.delete(threadId);
-      await this.stopStream(`orchestration.thread:${threadId}`);
-      return undefined as T;
-    }
-    if (method === ORCHESTRATION_WS_METHODS.subscribeShell) {
-      this.shellSubscribed = true;
-      this.startShellStream();
-      return undefined as T;
-    }
-    if (method === ORCHESTRATION_WS_METHODS.subscribeThread) {
-      const threadId = (params as { threadId: string }).threadId;
-      this.threadSubscriptions.set(threadId, params);
-      await this.startThreadStream(threadId, params);
-      return undefined as T;
-    }
-    if (method === WS_METHODS.gitRunStackedAction) {
-      return (await this.runGitActionStream(params)) as T;
-    }
-    const payload =
-      method === ORCHESTRATION_WS_METHODS.dispatchCommand
-        ? (params as { command: unknown }).command
-        : (params ?? {});
+    const scope = makeRequestAbortScope(method, options);
     try {
-      const result = await nativeRpcRequest<T>(method, payload, {
-        timeoutMs: options?.timeoutMs,
-      });
-      this.noteHostResult();
-      return result;
-    } catch (error) {
-      if (isNativeTransportError(error)) {
-        this.setState("closed");
-      } else {
-        this.noteHostResult();
+      await scope.race(this.ensureHostLinks());
+      if (method === ORCHESTRATION_WS_METHODS.unsubscribeShell) {
+        this.shellSubscribed = false;
+        await scope.race(this.stopStream("orchestration.shell"));
+        return undefined as T;
       }
-      throw error;
+      if (method === ORCHESTRATION_WS_METHODS.unsubscribeThread) {
+        const threadId = (params as { threadId: string }).threadId;
+        this.threadSubscriptions.delete(threadId);
+        await scope.race(this.stopStream(`orchestration.thread:${threadId}`));
+        return undefined as T;
+      }
+      if (method === ORCHESTRATION_WS_METHODS.subscribeShell) {
+        this.shellSubscribed = true;
+        this.startShellStream();
+        return undefined as T;
+      }
+      if (method === ORCHESTRATION_WS_METHODS.subscribeThread) {
+        const threadId = (params as { threadId: string }).threadId;
+        this.threadSubscriptions.set(threadId, params);
+        await scope.race(this.startThreadStream(threadId, params));
+        return undefined as T;
+      }
+      if (method === WS_METHODS.gitRunStackedAction) {
+        return (await this.runGitActionStream(params, scope)) as T;
+      }
+      const payload =
+        method === ORCHESTRATION_WS_METHODS.dispatchCommand
+          ? (params as { command: unknown }).command
+          : (params ?? {});
+      try {
+        const result = await scope.race(
+          nativeRpcRequest<T>(method, payload, { timeoutMs: scope.hostTimeoutMs }),
+        );
+        this.noteHostResult();
+        return result;
+      } catch (error) {
+        if (scope.interrupted()) throw error;
+        if (isNativeTransportError(error)) {
+          this.setState("closed");
+        } else {
+          this.noteHostResult();
+        }
+        throw error;
+      }
+    } catch (error) {
+      // The interruption wins over whatever the host reports afterwards.
+      throw scope.interrupted() ?? error;
+    } finally {
+      scope.cleanup();
     }
   }
 
@@ -255,6 +355,7 @@ export class WsTransport {
     this.setState("disposed");
     for (const timer of this.streamRestartTimers.values()) clearTimeout(timer);
     this.streamRestartTimers.clear();
+    // Channel, shell, thread and in-flight git streams alike.
     const keys = [...this.streams.keys()];
     await Promise.all(keys.map((key) => this.stopStream(key)));
     this.stopChannelStream(WS_CHANNELS.terminalEvent);
@@ -270,13 +371,21 @@ export class WsTransport {
   private ensureHostLinks(): Promise<() => void> {
     if (!this.hostLinks) {
       this.hostLinks = (async () => {
-        const releaseState = await subscribeNativeTransportState((state) => {
-          if (state === "connected") this.everConnected = true;
-          this.setState(mapHostTransportState(state, this.everConnected));
-        });
+        const releaseState = await subscribeNativeTransportState((state) =>
+          this.applyHostState(state),
+        );
         const releaseItems = await subscribeNativeRpcStreamItems((streamId, item) => {
+          // A stale generation's items (streams the host is still winding down
+          // after a renderer reload) never reach this renderer's handlers.
+          if (scopedStreamGeneration(streamId) !== this.generation) return;
           this.streamItemHandlers.get(streamId)?.(item);
         });
+        // Generation handshake: the host cancels every scoped stream an earlier
+        // renderer left behind and reports its current socket state, which a
+        // renderer attaching to an already-connected host would otherwise miss.
+        const reset = await nativeRpcResetStreams();
+        this.generation = reset.generation;
+        if (isHostTransportState(reset.transportState)) this.applyHostState(reset.transportState);
         return () => {
           releaseState();
           releaseItems();
@@ -284,6 +393,11 @@ export class WsTransport {
       })();
     }
     return this.hostLinks;
+  }
+
+  private applyHostState(state: RpcTransportState): void {
+    if (state === "connected") this.everConnected = true;
+    this.setState(mapHostTransportState(state, this.everConnected));
   }
 
   private noteHostResult(): void {
@@ -472,10 +586,16 @@ export class WsTransport {
     );
   }
 
-  private async startThreadStream(threadId: string, input: unknown): Promise<void> {
+  private async startThreadStream(
+    threadId: string,
+    input: unknown,
+    options: { readonly automaticRestart?: boolean } = {},
+  ): Promise<void> {
     const key = `orchestration.thread:${threadId}`;
     if (this.disposed || this.threadSubscriptions.get(threadId) !== input) return;
-    await this.stopStream(key);
+    // An automatic restart keeps the failure count so the backoff grows; an
+    // explicit (re)subscription starts over.
+    await this.stopStream(key, { resetFailures: options.automaticRestart !== true });
     if (this.disposed || this.threadSubscriptions.get(threadId) !== input) return;
     this.startStream(
       key,
@@ -484,38 +604,42 @@ export class WsTransport {
       (event) => this.emit(ORCHESTRATION_WS_CHANNELS.threadEvent, event as never),
       () => {
         const desired = this.threadSubscriptions.get(threadId);
-        if (desired !== undefined) void this.startThreadStream(threadId, desired);
+        if (desired !== undefined) {
+          void this.startThreadStream(threadId, desired, { automaticRestart: true });
+        }
       },
     );
   }
 
-  private startStream<T>(
+  /**
+   * Registers a request-scoped host stream under `key`. The stream id is
+   * minted only once the host links (and the renderer generation) exist; a
+   * stop or dispose before that point never opens anything on the host.
+   */
+  private openScopedStream<T>(
     key: string,
     tag: string,
     payload: unknown,
     listener: (item: T) => void,
-    restart: () => void,
-  ): void {
-    if (isMainThread() || this.disposed || this.streams.has(key)) return;
-    this.clearRestartTimer(key);
-    const streamId = `${key}#${++nextStreamSequence}`;
-    this.streamItemHandlers.set(streamId, (item) => {
-      this.streamFailures.delete(key);
-      this.noteHostResult();
-      listener(item as T);
-    });
+  ): ActiveStream {
     const { promise: opened, resolve: resolveOpened } = deferred<boolean>();
     const entry: ActiveStream = {
-      streamId,
+      streamId: null,
       opened,
       stopped: false,
       settled: this.ensureHostLinks().then(
         () => {
-          // Stopped while the host links were still being set up: never open.
-          if (entry.stopped) {
+          if (entry.stopped || this.disposed || this.generation === null) {
             resolveOpened(false);
             return;
           }
+          const streamId = scopedStreamId(this.generation, key, ++nextStreamSequence);
+          entry.streamId = streamId;
+          this.streamItemHandlers.set(streamId, (item) => {
+            this.streamFailures.delete(key);
+            this.noteHostResult();
+            listener(item as T);
+          });
           const pending = nativeRpcOpenStream(streamId, tag, payload);
           resolveOpened(true);
           return pending;
@@ -527,6 +651,19 @@ export class WsTransport {
       ),
     };
     this.streams.set(key, entry);
+    return entry;
+  }
+
+  private startStream<T>(
+    key: string,
+    tag: string,
+    payload: unknown,
+    listener: (item: T) => void,
+    restart: () => void,
+  ): void {
+    if (isMainThread() || this.disposed || this.streams.has(key)) return;
+    this.clearRestartTimer(key);
+    const entry = this.openScopedStream(key, tag, payload, listener);
     void entry.settled
       .then(
         () => true,
@@ -536,7 +673,7 @@ export class WsTransport {
         },
       )
       .then((endedCleanly) => {
-        this.streamItemHandlers.delete(streamId);
+        if (entry.streamId !== null) this.streamItemHandlers.delete(entry.streamId);
         if (this.streams.get(key) !== entry) return; // replaced or stopped
         this.streams.delete(key);
         if (this.disposed) return;
@@ -564,41 +701,59 @@ export class WsTransport {
     this.streamRestartTimers.delete(key);
   }
 
-  private async stopStream(key: string): Promise<void> {
+  private async stopStream(
+    key: string,
+    options: { readonly resetFailures?: boolean } = {},
+  ): Promise<void> {
     this.clearRestartTimer(key);
-    this.streamFailures.delete(key);
+    if (options.resetFailures !== false) this.streamFailures.delete(key);
     const entry = this.streams.get(key);
     if (!entry) return;
     this.streams.delete(key);
-    this.streamItemHandlers.delete(entry.streamId);
     entry.stopped = true;
     // Cancel only once the open request is on the bridge, so the host never
     // receives the cancel first and then starts an orphaned stream.
-    if (await entry.opened) {
+    if ((await entry.opened) && entry.streamId !== null) {
+      this.streamItemHandlers.delete(entry.streamId);
       await nativeRpcCancelStream(entry.streamId).catch(() => false);
     }
     await entry.settled.catch(() => undefined);
   }
 
-  private async runGitActionStream(params: unknown): Promise<GitRunStackedActionResult> {
+  /**
+   * One-shot git stream, registered like every other scoped stream so dispose
+   * and request interruption cancel it on the host; `timeoutMs`/`signal` apply
+   * through the caller's abort scope (upstream passes `timeoutMs: null`).
+   */
+  private async runGitActionStream(
+    params: unknown,
+    scope: RequestAbortScope,
+  ): Promise<GitRunStackedActionResult> {
+    if (isMainThread()) throw new Error("Git actions run on the background thread.");
     let result: GitRunStackedActionResult | null = null;
-    const streamId = `git.runStackedAction#${++nextStreamSequence}`;
-    this.streamItemHandlers.set(streamId, (item) => {
-      const event = item as GitActionProgressEvent;
-      this.emit(WS_CHANNELS.gitActionProgress, event);
-      if (event.kind === "action_finished") {
-        result = (event as Extract<GitActionProgressEvent, { kind: "action_finished" }>).result;
-      }
-    });
+    const key = `git.runStackedAction#${++nextStreamSequence}`;
+    const entry = this.openScopedStream<GitActionProgressEvent>(
+      key,
+      WS_METHODS.gitRunStackedAction,
+      params,
+      (event) => {
+        this.emit(WS_CHANNELS.gitActionProgress, event);
+        if (event.kind === "action_finished") {
+          result = (event as Extract<GitActionProgressEvent, { kind: "action_finished" }>).result;
+        }
+      },
+    );
     try {
-      await this.ensureHostLinks();
-      await nativeRpcOpenStream(streamId, WS_METHODS.gitRunStackedAction, params);
+      await scope.race(entry.settled);
+      if (this.disposed) throw new Error("Transport disposed");
       this.noteHostResult();
     } catch (error) {
-      if (isNativeTransportError(error)) this.setState("closed");
+      if (this.streams.get(key) === entry) await this.stopStream(key);
+      if (!scope.interrupted() && isNativeTransportError(error)) this.setState("closed");
       throw error;
     } finally {
-      this.streamItemHandlers.delete(streamId);
+      if (this.streams.get(key) === entry) this.streams.delete(key);
+      if (entry.streamId !== null) this.streamItemHandlers.delete(entry.streamId);
     }
     if (!result) throw new Error("Git action stream completed without a final result.");
     return result;

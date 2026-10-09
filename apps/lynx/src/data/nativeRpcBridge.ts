@@ -8,8 +8,10 @@ import {
   NATIVE_EVENT_STREAM_CHANNELS,
   NATIVE_RPC_STREAM_CANCEL_METHOD,
   NATIVE_RPC_STREAM_ITEM_EVENT,
+  NATIVE_RPC_STREAM_RESET_METHOD,
   NATIVE_TRANSPORT_STATE_EVENT,
   isNativeRpcStreamItemEvent,
+  type NativeRpcStreamResetReply,
 } from "../main/nativeEventStreams.logic";
 import type { RpcTransportState } from "./rpcTransport.logic";
 
@@ -82,7 +84,26 @@ export function nativeRpcRequest<A>(
   return hostBridgeRequest<A>("synaraRpc", {
     tag,
     payload,
-    ...(options.timeoutMs === null ? { timeoutMs: null } : {}),
+    // `null` disables the host watchdog, a number replaces it, `undefined`
+    // keeps the host default.
+    ...(options.timeoutMs !== undefined ? { timeoutMs: options.timeoutMs } : {}),
+  });
+}
+
+/** Renderer-generation handshake; see `NATIVE_RPC_STREAM_RESET_METHOD`. */
+export function nativeRpcResetStreams(): Promise<NativeRpcStreamResetReply> {
+  "background only";
+  return hostBridgeRequest<Partial<NativeRpcStreamResetReply> | null>(
+    NATIVE_RPC_STREAM_RESET_METHOD,
+    {},
+  ).then((reply) => {
+    if (typeof reply?.generation !== "number") {
+      throw new NativeRpcError("Host did not acknowledge the stream generation.", "transport");
+    }
+    return {
+      generation: reply.generation,
+      transportState: typeof reply.transportState === "string" ? reply.transportState : "idle",
+    };
   });
 }
 
@@ -143,6 +164,10 @@ const HOST_TRANSPORT_STATES: ReadonlySet<string> = new Set([
   "offline",
 ]);
 
+export function isHostTransportState(value: unknown): value is RpcTransportState {
+  return typeof value === "string" && HOST_TRANSPORT_STATES.has(value);
+}
+
 /** Subscribe to the host relay's socket state; returns the unsubscribe. */
 export async function subscribeNativeTransportState(
   listener: (state: RpcTransportState) => void,
@@ -150,8 +175,6 @@ export async function subscribeNativeTransportState(
   "background only";
   const { onGlobalEvent } = await import(/* webpackMode: "eager" */ "../platform/bridge");
   return onGlobalEvent(NATIVE_TRANSPORT_STATE_EVENT, (state: unknown) => {
-    if (typeof state === "string" && HOST_TRANSPORT_STATES.has(state)) {
-      listener(state as RpcTransportState);
-    }
+    if (isHostTransportState(state)) listener(state);
   });
 }

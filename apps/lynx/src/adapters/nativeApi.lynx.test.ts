@@ -152,7 +152,7 @@ describe("Lynx NativeApi facade", () => {
     // Channel streams start in the background as soon as the facade exists.
     const hostPortCalls = host.calls
       .map((call) => call.name)
-      .filter((name) => name !== "synaraRpcStream");
+      .filter((name) => name !== "synaraRpcStream" && name !== "synaraRpcStreamReset");
     expect(hostPortCalls).toEqual([
       "dialogsConfirm",
       "dialogsPickFolder",

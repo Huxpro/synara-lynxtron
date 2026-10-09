@@ -7,8 +7,17 @@ import {
 } from "@synara/contracts";
 
 import { NATIVE_EVENT_STREAM_CHANNELS } from "../main/nativeEventStreams.logic";
-import { WsTransport, mapHostTransportState } from "./wsTransport.lynx";
-import { flushHost, installFakeNativeHost, type FakeNativeHost } from "./fakeNativeHost.testUtils";
+import {
+  WsTransport,
+  WsTransportRequestInterruptedError,
+  mapHostTransportState,
+} from "./wsTransport.lynx";
+import {
+  HOLD_REPLY,
+  flushHost,
+  installFakeNativeHost,
+  type FakeNativeHost,
+} from "./fakeNativeHost.testUtils";
 
 describe("Lynx WsTransport compat", () => {
   let host: FakeNativeHost;
@@ -221,6 +230,154 @@ describe("Lynx WsTransport compat", () => {
     unsubscribe();
     await flushHost();
     expect(host.listenerCount(NATIVE_EVENT_STREAM_CHANNELS["terminal.subscribeEvents"])).toBe(0);
+  });
+
+  it("mints generation-prefixed ids and drops the previous renderer's streams on reload", async () => {
+    const received: unknown[] = [];
+    transport.subscribe(WS_CHANNELS.serverSettingsUpdated, (message) => received.push(message));
+    await flushHost();
+    const [first] = [...host.streams.values()];
+    expect(first?.streamId).toMatch(/^g1:server\.settings#\d+$/);
+    expect(host.generation).toBe(1);
+
+    // A LynxView reload: the old renderer is gone without disposing anything,
+    // a fresh transport instance performs the handshake.
+    const reloaded = new WsTransport();
+    const reloadedReceived: unknown[] = [];
+    reloaded.subscribe(WS_CHANNELS.serverSettingsUpdated, (message) =>
+      reloadedReceived.push(message),
+    );
+    await flushHost();
+    expect(host.generation).toBe(2);
+    expect([...host.streams.keys()]).toEqual([expect.stringMatching(/^g2:server\.settings#/)]);
+    expect(host.registrySize).toBe(1);
+
+    // A stale item for the old id reaches neither renderer.
+    host.pushStreamItem(first!.streamId, { settings: {} });
+    const [fresh] = [...host.streams.values()];
+    host.pushStreamItem(fresh!.streamId, { settings: { theme: "light" } });
+    expect(received).toEqual([]);
+    expect(reloadedReceived).toHaveLength(1);
+    await reloaded.dispose();
+  });
+
+  it("cancels an in-flight git stacked action on dispose and rejects it as disposed", async () => {
+    const pending = transport.request(WS_METHODS.gitRunStackedAction, { action: "commit" });
+    await flushHost();
+    const [stream] = [...host.streams.values()];
+    expect(stream?.tag).toBe(WS_METHODS.gitRunStackedAction);
+
+    await transport.dispose();
+    await expect(pending).rejects.toThrow("Transport disposed");
+    expect(host.cancelledStreamIds).toEqual([stream!.streamId]);
+    expect(host.streams.size).toBe(0);
+    expect(host.registrySize).toBe(0);
+  });
+
+  it("never opens a stream whose stop arrived while the host was still connecting", async () => {
+    const release = host.holdStreamOpens();
+    const unsubscribe = transport.subscribe(WS_CHANNELS.automationEvent, () => undefined);
+    await flushHost();
+    expect(host.registrySize).toBe(1);
+    expect(host.streams.size).toBe(0);
+
+    unsubscribe();
+    release();
+    await flushHost();
+    expect(host.streams.size).toBe(0);
+    expect(host.registrySize).toBe(0);
+    expect(host.cancelledStreamIds).toHaveLength(1);
+  });
+
+  it("rejects with the upstream interruption error on abort and numeric timeout", async () => {
+    rs.useFakeTimers();
+    await transport.request(WS_METHODS.serverGetConfig);
+    host.calls.length = 0;
+    const held = installFakeNativeHost({ rpc: () => HOLD_REPLY });
+    void held;
+    const heldTransport = new WsTransport();
+
+    const timedOut = heldTransport.request(WS_METHODS.serverGetConfig, {}, { timeoutMs: 25 });
+    const timedOutSettled = timedOut.then(
+      () => null,
+      (error: unknown) => error,
+    );
+    await flushHostWithFakeTimers();
+    await rs.advanceTimersByTimeAsync(25);
+    const timeoutError = (await timedOutSettled) as WsTransportRequestInterruptedError;
+    expect(timeoutError).toBeInstanceOf(WsTransportRequestInterruptedError);
+    expect(timeoutError.code).toBe("WS_REQUEST_TIMEOUT");
+    expect(timeoutError.method).toBe(WS_METHODS.serverGetConfig);
+    expect(timeoutError.timeoutMs).toBe(25);
+    expect(timeoutError.message).toBe("WebSocket RPC server.getConfig timed out after 25ms.");
+
+    const controller = new AbortController();
+    const aborted = heldTransport.request(
+      WS_METHODS.serverGetSettings,
+      {},
+      {
+        signal: controller.signal,
+      },
+    );
+    const abortedSettled = aborted.then(
+      () => null,
+      (error: unknown) => error,
+    );
+    await flushHostWithFakeTimers();
+    controller.abort(new Error("navigated away"));
+    const abortError = (await abortedSettled) as WsTransportRequestInterruptedError;
+    expect(abortError.code).toBe("WS_REQUEST_ABORTED");
+    expect(abortError.message).toBe("WebSocket RPC server.getSettings was cancelled.");
+    expect((abortError.cause as Error).message).toBe("navigated away");
+
+    await expect(
+      heldTransport.request(WS_METHODS.serverGetConfig, {}, { timeoutMs: -1 }),
+    ).rejects.toThrow(RangeError);
+    await heldTransport.dispose();
+  });
+
+  it("forwards numeric request deadlines to the host", async () => {
+    await transport.request(WS_METHODS.serverGetConfig, {}, { timeoutMs: 5_000 });
+    expect(host.callsNamed("synaraRpc").at(-1)?.params).toEqual({
+      tag: "server.getConfig",
+      payload: {},
+      timeoutMs: 5_000,
+    });
+  });
+
+  it("grows the thread stream backoff across automatic restarts and resets on resubscribe", async () => {
+    rs.useFakeTimers();
+    await transport.request(ORCHESTRATION_WS_METHODS.subscribeThread, { threadId: "thread-1" });
+    await flushHostWithFakeTimers();
+    const opensAfter = async (ms: number) => {
+      await rs.advanceTimersByTimeAsync(ms);
+      await flushHostWithFakeTimers();
+      return host.callsNamed("synaraRpcStream").length;
+    };
+    const failCurrent = async () => {
+      const [stream] = [...host.streams.values()];
+      stream!.fail("socket closed");
+      await flushHostWithFakeTimers();
+    };
+
+    expect(host.callsNamed("synaraRpcStream")).toHaveLength(1);
+    await failCurrent();
+    expect(await opensAfter(499)).toBe(1);
+    expect(await opensAfter(1)).toBe(2); // 500 ms
+    await failCurrent();
+    expect(await opensAfter(999)).toBe(2);
+    expect(await opensAfter(1)).toBe(3); // 1 000 ms
+    await failCurrent();
+    expect(await opensAfter(1_999)).toBe(3);
+    expect(await opensAfter(1)).toBe(4); // 2 000 ms
+
+    // An explicit resubscription starts over at the base delay.
+    await failCurrent();
+    await transport.request(ORCHESTRATION_WS_METHODS.subscribeThread, { threadId: "thread-1" });
+    await flushHostWithFakeTimers();
+    expect(host.callsNamed("synaraRpcStream")).toHaveLength(5);
+    await failCurrent();
+    expect(await opensAfter(500)).toBe(6);
   });
 
   it("stops every stream and reports disposed on dispose", async () => {

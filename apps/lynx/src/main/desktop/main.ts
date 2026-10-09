@@ -55,6 +55,7 @@ import {
   cancelNativeRpcStream,
   disposeNativeRpcHost,
   handleNativeRpc,
+  resetNativeRpcStreams,
   runNativeRpcStream,
   subscribeNativeRpcTransportState,
 } from "./nativeRpcHost";
@@ -70,6 +71,7 @@ import { SYSTEM_APPEARANCE_EVENT } from "../systemAppearanceEvent.logic";
 import {
   NATIVE_RPC_STREAM_CANCEL_METHOD,
   NATIVE_RPC_STREAM_ITEM_EVENT,
+  NATIVE_RPC_STREAM_RESET_METHOD,
   NATIVE_TRANSPORT_STATE_EVENT,
   nativeEventStreamChannel,
   type NativeRpcStreamItemEvent,
@@ -881,6 +883,8 @@ app.whenReady().then(() => {
         callback.sendReply(
           JSON.stringify({ cancelled: cancelNativeRpcStream(String(data?.streamId ?? "")) }),
         );
+      } else if (name === NATIVE_RPC_STREAM_RESET_METHOD) {
+        callback.sendReply(JSON.stringify(resetNativeRpcStreams()));
       } else if (name === "showDialog") {
         const { message } = data;
         dialog.showMessageBox({ message });
