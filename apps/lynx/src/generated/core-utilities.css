@@ -14,9 +14,6 @@
 .z-50 {
   z-index: 50;
 }
-.z-\[10000\] {
-  z-index: 10000;
-}
 .z-\[15\] {
   z-index: 15;
 }
@@ -426,9 +423,6 @@
 .min-w-9 {
   min-width: 2.25rem;
 }
-.min-w-\[180px\] {
-  min-width: 180px;
-}
 .min-w-full {
   min-width: 100%;
 }
@@ -773,9 +767,6 @@
 .border-transparent {
   border-color: transparent;
 }
-.border-white\/\[0\.08\] {
-  border-color: rgb(255 255 255 / 0.08);
-}
 .bg-\[color-mix\(in_srgb\2c var\(--color-text-accent\)_16\%\2c transparent\)\] {
   background-color: color-mix(in srgb, var(--color-text-accent) 16%, transparent);
 }
@@ -811,9 +802,6 @@
 }
 .bg-\[var\(--composer-surface\)\] {
   background-color: var(--composer-surface);
-}
-.bg-\[var\(--sidebar-accent\)\] {
-  background-color: var(--sidebar-accent);
 }
 .bg-\[var\(--sidebar-accent-active\)\] {
   background-color: var(--sidebar-accent-active);
