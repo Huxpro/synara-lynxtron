@@ -49,11 +49,12 @@ describe("Lynx pending user-input capability", () => {
     expect(querySource).toContain("pendingUserInputs: readonly PendingUserInput[]");
   });
 
-  it("dispatches the canonical response and refreshes the thread", () => {
+  it("dispatches the canonical response; session sync delivers the settled interaction", () => {
     expect(routerSource).toContain('type: "thread.user-input.respond"');
     expect(routerSource).toContain("requestId: activePendingUserInput.requestId");
     expect(routerSource).toContain("answers,");
     expect(routerSource).toContain("<PendingUserInputPanel");
-    expect(routerSource).toContain('queryKey: ["thread-detail", threadId]');
+    // The page reads the shared store, so there is no query to refresh.
+    expect(routerSource).not.toContain('"thread-detail"');
   });
 });

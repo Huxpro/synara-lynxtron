@@ -23,7 +23,10 @@ describe("Native embedded Side-chat pane", () => {
   });
 
   it("filters fork-import history in the shared transcript projection", () => {
-    const queries = readFileSync(new URL("./queries.ts", import.meta.url), "utf8");
+    const queries = readFileSync(
+      new URL("./threadPageProjection.logic.ts", import.meta.url),
+      "utf8",
+    );
     expect(queries).toContain("filterSidechatTranscriptMessages(");
     expect(queries).toContain("Boolean(thread.sidechatSourceThreadId)");
     expect(queries).toContain("visibleMessages as Parameters<typeof deriveTimelineEntries>[0]");

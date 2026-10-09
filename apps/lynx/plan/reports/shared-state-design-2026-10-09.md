@@ -325,12 +325,12 @@ relative import leaving `apps/web/src`; import attributes on a kept import; a ba
 not listed in `EVENT_ROUTER_IGNORED_SIDE_EFFECT_IMPORTS` (empty); module-level code outside the
 extraction that uses, or any excluded code that assigns to, an extracted binding.
 
-### Upstream defects the engine carries (not patched: the generator does not transform logic)
+### Upstream defects the engine carries
 
-| Defect                                                                                                                                                                           | upstream/main `6f54f53c6`                                                                                                                                         | Lynx today                                                                                                                                                                                                                        | Blocks                                                                                             |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| A replacement thread snapshot does not drop deltas it already contains from `pendingDomainEvents`; the 100 ms flush appends them again (`Hello worldld`).                        | Not fixed by inspection: the snapshot handler still clears only `pendingThreadEventsById`, and `applyThreadMessageSentEvent` has no sequence guard. Not executed. | Reproduced; pinned as `it.fails` in `src/generated/eventRouter.generated.test.tsx`. Nothing renders thread messages from the store yet.                                                                                           | **Step 4** (thread page reads the store): fix upstream first, or filter at the Lynx read boundary. |
-| `reconcileThreadSubscriptions` and the continuation after `subscribeShell` do not check `disposed`; a reconcile resuming after unmount can open a thread lease with no listener. | Not fixed: no `disposed` check after the removal await or before the additions.                                                                                   | Unreachable: `SessionSync` mounts once per renderer lifetime (`storageReady` only goes false → true) and never swaps the engine; pinned by `src/app/SessionSync.lynx.test.ts`. A LynxView reload is a new host stream generation. | Any change that unmounts or re-keys `SessionSync`.                                                 |
+| Defect                                                                                                                                                                           | upstream/main `6f54f53c6`                                                                                               | Lynx today                                                                                                                                                                                                                        | Blocks                                                                           |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| A replacement thread snapshot does not drop deltas it already contains from `pendingDomainEvents`; the 100 ms flush appends them again (`Hello worldld`).                        | Not fixed: neither snapshot path (`onThreadEvent` snapshot, `reconcileThreadProjection`) touches `pendingDomainEvents`. | **Patched in the generator** (§9): `drop-queued-thread-events-covered-by-snapshot`. The former `it.fails` is three passing tests.                                                                                                 | Nothing. Delete the patch when the generator reports upstream handles the queue. |
+| `reconcileThreadSubscriptions` and the continuation after `subscribeShell` do not check `disposed`; a reconcile resuming after unmount can open a thread lease with no listener. | Not fixed: no `disposed` check after the removal await or before the additions.                                         | Unreachable: `SessionSync` mounts once per renderer lifetime (`storageReady` only goes false → true) and never swaps the engine; pinned by `src/app/SessionSync.lynx.test.ts`. A LynxView reload is a new host stream generation. | Any change that unmounts or re-keys `SessionSync`.                               |
 
 ### Open checks for Steps 3–4
 
@@ -396,3 +396,61 @@ actions no longer wait for a refetch after a command.
 
 Still request-backed, for Step 4: `fetchThreadHeaderSummary` (thread page) calls
 `orchestration.getSidebarShellSnapshot`; `LandingComposer` reads the bounded snapshot for its bootstrap.
+
+## 9. Step 4 as built (branch `huxcc/m3b-thread-reads-store`)
+
+**The blocker.** A thread event that passes the sequence fence goes through `applyFencedThreadEvent` →
+`queueDomainEvent` into `pendingDomainEvents`; `domainEventFlushThrottler` (100 ms, trailing) hands the
+batch to the store. Only the first streaming delta of an assistant message flushes at once. A thread
+snapshot is applied synchronously by `syncServerThreadDetailHotPath` in two places: the `onThreadEvent`
+snapshot branch (first subscribe, resubscribe without a usable cursor, `refreshThreadSnapshot`) and
+`reconcileThreadProjection` (`getThreadDetailSnapshot`; the catch-up interval runs it while a turn is
+live, and several event paths call it). Both move the fence (`threadSnapshotSequenceById`) and drop
+`pendingThreadEventsById`; neither looks at `pendingDomainEvents`. The fence stops redelivery of an
+event, not the flush of one already queued. `mergeReadModelMessagesWithLiveHotPath` takes the
+snapshot's text when it is at least as long as the local text, then the flush appends the queued delta
+to it.
+
+Why dropping is safe: the server commits the hot projection (streamed text chunks included) and the
+`projection.hot` cursor in the transaction that appends the event, and reads the detail and the cursor
+in one transaction (`getThreadDetailSnapshotById`), so every thread event with
+`sequence <= snapshotSequence` is in the snapshot. The patch keeps later events queued.
+
+Reachable on Lynx without any reconnect: the catch-up read runs during every streamed turn, and a
+delta is queued most of the time. Until now it was invisible because nothing rendered messages from
+the store.
+
+**Where it is fixed.** `scripts/event-router-patches.mjs`, applied by the generator to the source text
+before extraction. It inserts, before each of the two `syncServerThreadDetailHotPath(X.thread,
+X.snapshotSequence)` statements, a filter of `pendingDomainEvents` by thread and sequence. Guards (the
+generator stops and writes nothing): not exactly two such calls in `EventRouter`; a call that is not
+`(X.thread, X.snapshotSequence)` or not a statement of its own in a block; `pendingDomainEvents` not a
+`let` array declared once, or nothing pushing to it; only one of the two paths already handling the
+queue. If both paths reference `pendingDomainEvents` or `flushPendingDomainEvents` before the apply,
+upstream has fixed it: nothing is patched and the generator says to delete the patch. A read-boundary
+filter was rejected: the duplicate is in the store's text by then and cannot be told from content.
+
+**Read path.** `app/threadPageStore.lynx.ts` (`useThreadPageData`) reads `createThreadSelector(id)`,
+`createProjectSelector`, `threadDetailSyncById[id]` and `threadsHydrated`, as `ChatView.tsx` does, and
+decides loading / failed with upstream's `resolveThreadDetailHydration`. `threadPageProjection.logic.ts`
+holds the wiring of upstream's derivations into transcript rows (moved out of `queries.ts`, with a
+per-thread markdown tree cache) and the header summary from the store's `Thread`. The result goes
+through `replaceEqualDeep`, so unchanged rows stay reference-equal as they did under the query cache.
+
+| State                              | Before (query)                             | Now (store)                                                              |
+| ---------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------ |
+| Thread never opened                | 2 requests (detail + shell), then content  | stream lease → snapshot, then content; "Loading conversation…" meanwhile |
+| Thread opened earlier this session | cached rows at once, refetch               | retained detail at once (upstream retention, 15 min idle, 32 threads)    |
+| Streaming                          | shell event → 50 ms → refetch whole thread | deltas at the engine's cadence (first at once, then every 100 ms)        |
+| Server unreachable, nothing loaded | request error → "offline"                  | transport closed → "offline"                                             |
+| Connection drops with content      | refetch error (not shown on the page)      | content stays; the transport resumes the stream from its cursor          |
+| Detail stream failed               | —                                          | `threadDetailSyncById === "failed"` → "Unable to load this conversation" |
+| Unknown thread id, shell hydrated  | empty page                                 | empty page                                                               |
+
+Retention: the hook calls upstream's `retainThreadDetailSubscription` for the routed thread (upstream's
+sidebar does this for the active thread). Without it `releaseOrphanedThreadDetail` frees the detail as
+soon as the route leaves and reopening a thread shows the loading state first.
+
+Still request-backed thread detail (`queries.ts`, projected, never committed): `EmbeddedSidechatPane`,
+`Sidebar.lynx.tsx` and `useNativeKanbanCardActions` thread actions, `TaskCompletionToastHost`,
+`EnvironmentPanel` recap.

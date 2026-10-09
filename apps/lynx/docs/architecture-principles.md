@@ -15,7 +15,10 @@ Lynx 通过构建时的**派生层**消费原样的上游源码。派生层有�
 | 模块替换        | 上游模块整体换成 Lynx 实现                         | `~/wsTransport`、`~/nativeApi`、`~/platform/*`、UI 原语            |
 | 环境注入        | 上游代码直接用的全局对象，由 Lynx 的构建提供       | `window`、`document`、`navigator`、`localStorage`（见下）          |
 | 生成            | 需要上游文件里的一部分（未导出的函数、常量、逻辑） | `EventRouter` 从 `routes/__root.tsx` 生成，带 `--check` 防漂移     |
+| 带守卫的补丁    | 上游的缺陷，Lynx 无法绕开，上游又不能改            | 生成器在抽取前应用 `scripts/event-router-patches.mjs` 里的补丁     |
 | Lynx 自己的界面 | 上游把逻辑和 DOM 标记写在一起、无法派生的界面      | Lynx 的页面和 `.lynx.tsx`，只复用上游导出的逻辑、store 和 selector |
+
+带守卫的补丁只用于修正上游的缺陷，不用于改行为或加功能。每个补丁用 AST 定位锚点：上游的代码不是补丁所针对的形状时生成器停止且不写文件；检测到上游自己修了就什么都不改，并提示删除补丁；每个补丁有一个去掉它就失败的行为测试。补丁在生成物里以 `LYNX PATCH` 标出，并列在文件头。现有一个：`drop-queued-thread-events-covered-by-snapshot`（线程快照替换线程时，丢掉队列里已被该快照包含的流式增量，否则助手文字会重复）。
 
 手工编辑上游文件不是允许的手段。这条结论来自同一次上游合并里的对照：用派生的部分（会话同步）在 567 个上游提交之后不用改；用手工接缝的部分让 41 个上游测试在 Electron 上失败，并且每次合并都要解冲突。
 
@@ -61,35 +64,36 @@ npm 包默认看到真实运行时，只有一个例外：`@tanstack/query-core`
 5. **Lynx 不自建数据通道。** 读写都走上游的 `NativeApi` 门面、`store` selector 和上游的 query options，使用上游的 query key。不新增轮询，不新增 `synaraClient` 中继函数。
 6. **破坏性操作读权威数据。** 删除、强制清理之类的操作在决定前向服务器取一次最新快照，不依赖可能过期的 `store`。
 7. **Lynx 专属代码只在专属层。** `apps/lynx/src/{adapters,platform,main,data}` 和 `*.lynx.*` 文件。
-8. **生成物不手改。** `src/generated/eventRouter.generated.tsx` 由 `scripts/generate-event-router.mjs` 从上游的 `routes/__root.tsx` 生成。上游改了就重新生成；生成器不认识的形状要扩展生成器并加测试。
+8. **生成物不手改。** `src/generated/eventRouter.generated.tsx` 由 `scripts/generate-event-router.mjs` 从上游的 `routes/__root.tsx` 生成。上游改了就重新生成；生成器不认识的形状要扩展生成器并加测试。与上游逐字不同的地方只能来自 `scripts/event-router-patches.mjs` 里带守卫的补丁。
 9. **持久化的 store 在存储就绪后才可写。** Lynx 的本地存储是异步加载的，共享 store 的初始化和写入必须在 `persistedStoreHydration` 边界之后。
 10. **依赖解析跟随上游。** `bun.lock` 以上游的为基础，用上游固定的 bun 版本生成。Lynx 与 Web 共用的包，Lynx 的版本范围不得高于 Web 的范围；Lynx 构建工具链的版本单独钉住。
 
 ## 靠什么保证
 
-| 不变量 | 机制                                                                                                                |
-| ------ | ------------------------------------------------------------------------------------------------------------------- |
-| 1      | `audit:upstream-footprint:check`（CI 的 "Upstream footprint" 任务）：上游路径里的 fork 差异任何一项增加即失败       |
-| 2      | GitHub CI 用上游的工作流和上游的测试；fork 自己的门禁在单独的 `lynx-fork.yml` 里                                    |
-| 3、5   | `audit:reuse:check` 的平行实现棘轮：`synaraClient` 引用文件数、`useQuery` 直连数、轮询点数、`router.tsx` 行数只许降 |
-| 4      | `eventRouter.generated.test.tsx` 和 `sidebarStoreReadPath.lynx.test.ts` 固定"轮询路径不提交"                        |
-| 8      | 生成器的 `--check` 在 `typecheck` 和 `audit:reuse:check` 里运行，发现漂移即失败；遇到不认识的形状不产出文件         |
-| 传输层 | `wsTransport.lynx.test.ts` 里的类型断言：上游给 `WsTransport` 增加公开成员时，Lynx 的 typecheck 失败                |
-| 9      | `persistedStoreHydration.lynx.test.ts` 先复现覆盖再验证修复                                                         |
-| 10     | CI 用冻结锁文件安装                                                                                                 |
-| 方向   | `bun run --cwd apps/lynx audit:upstream-merge <基点> upstream/main`：上游改动按层统计，哪些自动到达、哪些要手工移植 |
+| 不变量 | 机制                                                                                                                                                                                                    |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1      | `audit:upstream-footprint:check`（CI 的 "Upstream footprint" 任务）：上游路径里的 fork 差异任何一项增加即失败                                                                                           |
+| 2      | GitHub CI 用上游的工作流和上游的测试；fork 自己的门禁在单独的 `lynx-fork.yml` 里                                                                                                                        |
+| 3、5   | `audit:reuse:check` 的平行实现棘轮：`synaraClient` 引用文件数、`useQuery` 直连数、轮询点数、`router.tsx` 行数只许降                                                                                     |
+| 4      | `eventRouter.generated.test.tsx`、`sidebarStoreReadPath.lynx.test.ts` 和 `threadPageStore.lynx.test.tsx` 固定"读取路径不提交"                                                                           |
+| 8      | 生成器的 `--check` 在 `typecheck` 和 `audit:reuse:check` 里运行，发现漂移即失败；遇到不认识的形状不产出文件；补丁的守卫和行为由 `generate-event-router.test.mjs`、`eventRouter.generated.test.tsx` 固定 |
+| 传输层 | `wsTransport.lynx.test.ts` 里的类型断言：上游给 `WsTransport` 增加公开成员时，Lynx 的 typecheck 失败                                                                                                    |
+| 9      | `persistedStoreHydration.lynx.test.ts` 先复现覆盖再验证修复                                                                                                                                             |
+| 10     | CI 用冻结锁文件安装                                                                                                                                                                                     |
+| 方向   | `bun run --cwd apps/lynx audit:upstream-merge <基点> upstream/main`：上游改动按层统计，哪些自动到达、哪些要手工移植                                                                                     |
 
 ## 兼容层由哪些部件构成
 
-| 部件         | 位置                                                                | 作用                                                                                        |
-| ------------ | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| 兼容传输     | `src/adapters/wsTransport.lynx.ts`                                  | 与上游 `WsTransport` 同形，底下走宿主进程的中继；流按渲染器代号归属，可取消，重载后自动清理 |
-| 门面         | `src/adapters/nativeApi.lynx.ts`                                    | 返回上游的 `createWsNativeApi()`，只覆盖依赖 DOM 或 `desktopBridge` 的命名空间              |
-| 模块替换     | `lynx.config.ts` 的别名和 `lynxResourceReplacements`                | 把上游的 `wsTransport`、`nativeApi`、`platform/*` 等解析到 Lynx 的实现，含相对路径引用      |
-| 会话同步     | `scripts/generate-event-router.mjs`、`src/app/SessionSync.lynx.tsx` | 生成并挂载上游的 `EventRouter`，全程只挂载一次                                              |
-| 垫片         | `adapters/reactRouter.lynx.ts`、`components/ui/toast.lynx.ts` 等    | 提供 `EventRouter` 用到的路由 hook、toast、计时器和 React 19 的 `useEffectEvent`            |
-| 读路径       | `src/app/sidebarSnapshot.{logic,lynx}.ts`                           | 用上游的 selector 从 `store` 投影侧边栏相关界面的数据                                       |
-| 存储就绪边界 | `src/app/persistedStoreHydration.lynx.ts`                           | 存储加载完后重读共享 store 的持久化部分                                                     |
+| 部件          | 位置                                                                | 作用                                                                                                                                |
+| ------------- | ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| 兼容传输      | `src/adapters/wsTransport.lynx.ts`                                  | 与上游 `WsTransport` 同形，底下走宿主进程的中继；流按渲染器代号归属，可取消，重载后自动清理                                         |
+| 门面          | `src/adapters/nativeApi.lynx.ts`                                    | 返回上游的 `createWsNativeApi()`，只覆盖依赖 DOM 或 `desktopBridge` 的命名空间                                                      |
+| 模块替换      | `lynx.config.ts` 的别名和 `lynxResourceReplacements`                | 把上游的 `wsTransport`、`nativeApi`、`platform/*` 等解析到 Lynx 的实现，含相对路径引用                                              |
+| 会话同步      | `scripts/generate-event-router.mjs`、`src/app/SessionSync.lynx.tsx` | 生成并挂载上游的 `EventRouter`，全程只挂载一次                                                                                      |
+| 垫片          | `adapters/reactRouter.lynx.ts`、`components/ui/toast.lynx.ts` 等    | 提供 `EventRouter` 用到的路由 hook、toast、计时器和 React 19 的 `useEffectEvent`                                                    |
+| 读路径        | `src/app/sidebarSnapshot.{logic,lynx}.ts`                           | 用上游的 selector 从 `store` 投影侧边栏相关界面的数据                                                                               |
+| Thread 读路径 | `src/app/threadPageStore.lynx.ts`、`threadPageProjection.logic.ts`  | 用上游的 `createThreadSelector` 和 `threadDetailSyncById` 读路由线程，投影成转录行和头部摘要；用上游的 retention 保留最近打开的线程 |
+| 存储就绪边界  | `src/app/persistedStoreHydration.lynx.ts`                           | 存储加载完后重读共享 store 的持久化部分                                                                                             |
 
 ## 合上游的做法
 
@@ -110,7 +114,7 @@ npm 包默认看到真实运行时，只有一个例外：`@tanstack/query-core`
 
 - **编排层仍是两份。** 合并成本的大头在 `ChatView.tsx`、`Sidebar.tsx` 这类容器和 Lynx 自己的对应物上，状态层共享并没有消掉它。
 - **fork 在上游文件里的差异仍然很多。** 2026-10-09 合并后的基线是 260 个上游文件被改过（6,672 行），另有 400 个 fork 文件放在上游的目录里；`~/platform` 改写的第一批还原、并删掉一个 fork 自加的 RPC 之后是 184 个文件（5,883 行）和 395 个 fork 文件。原因见最近一次合并报告的附录；它直接决定下一次合并的成本，也是 Electron 行为回退的来源。
-- **Thread 页还没有读 `store`。** 上游 `EventRouter` 在替换线程快照时会重复应用排队中的流式增量，测试已固定这一行为；改读之前要在 Lynx 的读取边界处理。
+- **线程详情还有请求式的读取方。** Thread 页已经读 `store`。右侧 dock 里的 Side 面板、侧边栏和 Kanban 的线程操作、任务完成通知、Environment 面板的 recap 仍用 `queries.ts` 里的 `getThreadDetailSnapshot` 读取（只投影、不提交）。Side 面板要先让上游的 `EventRouter` 知道 Lynx 的 dock 状态才能拿到流租约。
 - **仍有读取用 Lynx 自己的 query key。** `synaraClient.lynx.ts` 已删除，请求全部走门面；但模型目录、Automations、PR 详情、插件库等读取还没有换成上游的 query options，清单见计划文档。
 - **单元格矩阵只恢复了一部分。** 应用外壳（图标栏、面板列、线程标签页）已按上游移植，landing、thread、settings、kanban、automations 五个基础单元格重新通过；Code review 页面、模型菜单、Dock 的 Diff 工具栏、主题包编辑器等属于移植队列里的其他条目，对应的单元格仍然是红的。清单见最近一次合并报告的移植队列。工作流 J2–J6 仍是有效门禁。
 - **宿主里还有没有调用方的旧流路径**（不带 `streamId` 的 `synaraRpcStream` 和固定通道表里的终端、shell 通道）。它和在用的代码交织在两个宿主里，删除前要先把 Lynx-for-Web 宿主跑通一遍。

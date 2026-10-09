@@ -260,14 +260,12 @@ describe("Lynx Editor view", () => {
   it("keeps thread data and the Editor shell stable while local resources refresh", () => {
     const routerSource = source("./router.tsx");
 
-    expect(routerSource).toContain('queryKey: ["thread-detail", activeThreadId]');
+    expect(routerSource).toContain("useThreadPageData(activeThreadId)");
     expect(routerSource).toContain(
       "useExplorerEntries({ workspaceRoot, query: explorerTrimmedQuery })",
     );
     expect(routerSource).toContain("useExplorerFile({");
-    expect(routerSource).not.toContain(
-      "'thread-detail',\n      activeThreadId,\n      explorerTrimmedQuery",
-    );
+    expect(routerSource).not.toContain("thread-detail");
     expect(routerSource).not.toContain("if (editorMode && !currentThread)");
     expect(routerSource).not.toContain("ThreadEditorCenterLoading");
     expect(routerSource).not.toContain("Loading editor content…");

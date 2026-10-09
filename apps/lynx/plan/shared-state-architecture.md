@@ -1,6 +1,6 @@
 # Web / Lynx 共享架构：把共享边界下推到状态与会话层
 
-状态：v2.0（2026-10-09）。M0–M3a、M5（合上游）、M4 的请求路径收敛和 M6 收尾已合入默认分支。未做完的部分列在文末"尚未完成"。长期有效的原则与不变量见 [architecture-principles.md](../docs/architecture-principles.md)，本文保留过程、里程碑和指标记录。
+状态：v2.1（2026-10-09）。M0–M3a、M5（合上游）、M4 的请求路径收敛和 M6 收尾已合入默认分支；M3b（Thread 页读 `store`）在分支 `huxcc/m3b-thread-reads-store`。未做完的部分列在文末"尚未完成"。长期有效的原则与不变量见 [architecture-principles.md](../docs/architecture-principles.md)，本文保留过程、里程碑和指标记录。
 
 ## 结论
 
@@ -123,6 +123,7 @@
 | M3a 合入后（M0–M3a） |               34,742 |                 19,131 |                35,726 |    3,490 |                39 |       66 |      8 |         3,705 |
 | M5 合上游后          |                    — |                      — |                     — |        — |                39 |       66 |      8 |         3,701 |
 | M4/M6 收尾后         |                    — |                      — |                     — |        — |                 0 |       30 |      1 |         3,659 |
+| M3b 之后             |                    — |                      — |                     — |        — |                 0 |       29 |      1 |         3,612 |
 
 里程碑检查（M0–M3a 合入后，默认分支 `d576ba279`，2026-10-09）：单元格矩阵 4 种配置（深色、浅色 × 1280×820、1440×900）共 24 个基础格 + 28 个状态增量，全部通过；工作流 J3 12/12、J4 12/12、J5 8/8、J6 10/10（两端合计）。直接把默认分支合 `upstream/main` 的冲突文件数为 256；经由上游同步分支分两段合，第二段上次试合为 60。
 
@@ -183,11 +184,18 @@ PR #37（Settings）、#40（Environment、Git、Explorer、dock）、#41（删�
 | GitHub CI            | #41、#42、#43 各 25/25                                                                                                                   |
 | Lynx rstest          | 25 个文件 / 22 个用例失败，与改动前的集合相同（#10）                                                                                     |
 
+### M3b：Thread 页读 `store`（2026-10-09）
+
+- **挡路的上游缺陷在生成器里修。** `EventRouter` 把通过序号栅栏的线程事件放进 `pendingDomainEvents`，约 100 ms 后才写入 `store`；线程快照（流里的 snapshot，或回合进行中周期性的 `getThreadDetailSnapshot` 对账）立即替换线程，却不处理这个队列，于是快照已包含的增量在 flush 时又被追加一次。服务端在事件自己的事务里提交 hot 投影和游标，所以序号不大于快照序号的事件一定已在快照里，可以安全丢弃。补丁 `drop-queued-thread-events-covered-by-snapshot`（`scripts/event-router-patches.mjs`）在两处快照应用之前过滤队列；上游形状变化时生成器停止，上游自己修复后补丁不再生效并提示删除。没有选"在读取边界过滤"：重复的文字已经写进 `store`，读取方无法区分它和真实内容。
+- **Thread 页不再发请求。** `router.tsx` 的 `thread-detail` 查询、shell 事件触发的失效和三处手动失效都删了，换成 `useThreadPageData`：上游的 `createThreadSelector` 加 `threadDetailSyncById`，加载/失败的判定用上游的 `resolveThreadDetailHydration`。转录行和头部摘要的推导还是上游的函数（`session-logic`、`MessagesTimeline.logic`），接线在 `threadPageProjection.logic.ts`。
+- **最近打开的线程靠上游的 retention 保留**（`retainThreadDetailSubscription`）。不保留的话路由一离开详情就被释放，回到刚看过的线程会先出现加载态；以前由 query 缓存兜住。
+- **行为变化**：流式增量按 `EventRouter` 的节奏到达（首个增量立即，其后每 100 ms），不再等 shell 事件加一次整线程请求；断线时已加载的内容保留、不显示错误；头部的项目名用 `store` 里的名字（本地改过名的显示本地名，与侧边栏一致）。
+
 ### 尚未完成
 
 | 项                           | 状态                                                                                                                                    |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| M3b Thread 页改读 `store`    | 未开始。被上游 `EventRouter` 的增量重复缺陷挡住，需在 Lynx 的读取边界处理                                                               |
+| M3b Thread 页改读 `store`    | Thread 页完成。其余线程详情读取方（Side 面板、侧边栏和 Kanban 的线程操作、完成通知、recap）仍是请求式                                   |
 | M4 逐屏收敛                  | 请求路径已全部收敛。读取换成上游 query options 的屏：Settings、Environment/Git、Explorer、Composer 的 skills 和文件搜索；其余见下方清单 |
 | 删除 `synaraClient.lynx.ts`  | 完成。请求、终端事件和连接状态都走上游门面与兼容传输；棘轮 `synaraClientImporters` 为 0                                                 |
 | 缩小 fork 在上游文件里的差异 | 进行中：260 → 184 个文件。剩余按类别处理：其余 16 个平台端口文件、放在上游目录里的 395 个 fork 文件、`data-*` 钩子、被改写的共享逻辑    |
@@ -200,7 +208,7 @@ PR #37（Settings）、#40（Environment、Git、Explorer、dock）、#41（删�
 - **PR 详情**：`FeatureListsPage` 的 detail / diff / action / pin 和评论框。上游的变更 options 按上游的 key 改缓存，要和列表一起换。
 - **插件库**：`PluginLibraryPage` 的三个读取。
 - **Sidebar**：dev server 列表、local servers（上游的 `sidebarLocalServersQueryOptions` 会带来新的轮询，单独评估）。
-- **Thread 页**：`queries.ts` 里的线程详情读取（M3b）。
+- **线程详情的其余读取方**：`EmbeddedSidechatPane`（`fetchThreadTranscriptRows` + `fetchThreadHeaderSummary`，仍用 `thread-detail` query key；上游的 `EventRouter` 按上游的 `useRightDockStore` 给 dock 里的 Side 线程租约，Lynx 的 dock 状态不在那里）、`Sidebar.lynx.tsx` 和 `useNativeKanbanCardActions` 的线程操作（`fetchThreadHeaderSummary`，一次性读取）、`TaskCompletionToastHost`（没有租约的后台线程）、`EnvironmentPanel` 的 `prepareThreadRecap`。
 - **没有门面方法的 RPC**：`orchestration.getSidebarSearchSnapshot` 是 fork 自己加的，直接走 `nativeRpcRequest`。`orchestration.getSidebarShellSnapshot` 已从契约和服务端删除（Lynx 改用上游的 `getShellSnapshot`）。
 - **宿主里的旧流路径**：`NATIVE_EVENT_STREAM_CHANNELS` 的终端和 shell 通道、不带 `streamId` 的 `synaraRpcStream` 已经没有渲染器调用方，可以删。
 

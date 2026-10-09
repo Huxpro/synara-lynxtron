@@ -1,8 +1,8 @@
 import { describe, expect, it } from "@rstest/core";
 import { readFileSync } from "node:fs";
 
-describe("Lynx thread transcript polling", () => {
-  it("polls from the proven SliceRouter query owner", () => {
+describe("Lynx thread page read path", () => {
+  it("reads the routed thread from the shared store in the SliceRouter owner", () => {
     const routerSource = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
     const routerOwnerSource = routerSource.slice(
       routerSource.indexOf("export function SliceRouter"),
@@ -10,27 +10,35 @@ describe("Lynx thread transcript polling", () => {
     );
 
     expect(routerSource).not.toContain("function useThreadTranscriptPolling");
-    expect(routerOwnerSource).toContain('queryKey: ["thread-detail", activeThreadId]');
-    expect(routerOwnerSource).not.toContain(
-      "'thread-detail',\n      activeThreadId,\n      explorerTrimmedQuery",
-    );
     expect(routerOwnerSource).toContain("parseRoute(initialRoute).params.threadId ?? null");
     expect(routerOwnerSource).toContain('"background only"');
-    expect(routerOwnerSource).toContain("fetchThreadTranscriptRows(threadId)");
-    expect(routerOwnerSource).toContain("fetchThreadHeaderSummary(threadId)");
-    expect(routerOwnerSource).toContain("retry: false");
-    expect(routerOwnerSource).toContain("ensureNativeApi().orchestration.onShellEvent((item) => {");
-    // Sidebar, Kanban and route threads follow shell changes through the shared
-    // store; only the thread page still polls (plan Step 4).
+    // Session sync is the only source of thread detail: no request, no query
+    // key, no shell-event invalidation and no timer in the router (plan Step 4).
+    expect(routerOwnerSource).toContain("useThreadPageData(activeThreadId)");
+    expect(routerSource).not.toContain("thread-detail");
+    expect(routerSource).not.toContain("fetchThreadTranscriptRows");
+    expect(routerSource).not.toContain("fetchThreadHeaderSummary");
+    expect(routerSource).not.toContain("onShellEvent");
+    expect(routerSource).not.toContain("getThreadDetailSnapshot");
     expect(routerOwnerSource).toContain("useRouteThreadSummaries()");
     expect(routerOwnerSource).not.toContain("refetchInterval");
     expect(routerSource).not.toContain('queryKey: ["threads"]');
     expect(routerSource).not.toContain('queryKey: ["sidebar-snapshot"]');
     expect(routerOwnerSource).toContain("className={`AppNotificationStack${");
     expect(routerOwnerSource).toContain('route.pathname === "/components-lab"');
-    expect(routerOwnerSource).toContain('queryKey: ["thread-detail", activeThreadId]');
-    expect(routerOwnerSource).toContain('item.kind !== "thread-upserted"');
-    expect(routerOwnerSource).toContain("item.thread.id !== activeThreadId");
+
+    const storeReadSource = readFileSync(
+      new URL("./threadPageStore.lynx.ts", import.meta.url),
+      "utf8",
+    );
+    expect(storeReadSource).toContain("createThreadSelector(id)");
+    expect(storeReadSource).toContain("state.threadDetailSyncById?.[id]");
+    expect(storeReadSource).not.toMatch(/ensureNativeApi|useQuery|invalidateQueries|setState\(/);
+    const projectionSource = readFileSync(
+      new URL("./threadPageProjection.logic.ts", import.meta.url),
+      "utf8",
+    );
+    expect(projectionSource).not.toMatch(/ensureNativeApi|syncServer\w+|setState\(/);
   });
 
   it("passes the query state into the thread surface", () => {
