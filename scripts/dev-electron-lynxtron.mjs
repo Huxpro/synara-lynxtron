@@ -79,6 +79,10 @@ export const DEFAULT_DESKTOP_COMPARISON_OPTIONS = Object.freeze({
   chatFontSize: null,
   skipLynxDevtool: false,
   skipBuild: false,
+  // Stages Lynxtron as a regular application instead of an agent, so tools
+  // that resolve targets from the running-application list (Computer Use) can
+  // find it. A regular app gets a Dock icon and may take focus once at launch.
+  regularApp: false,
 });
 
 function parsePositiveInteger(raw, flag) {
@@ -99,6 +103,10 @@ export function parseDesktopComparisonArgs(argv) {
     }
     if (argument === "--skip-lynx-devtool") {
       options.skipLynxDevtool = true;
+      continue;
+    }
+    if (argument === "--regular-app") {
+      options.regularApp = true;
       continue;
     }
     if (argument === "--exit-after-certify") {
@@ -271,8 +279,8 @@ export function prepareOwnedLynxtronRuntime(paths, options = {}) {
     ["CFBundleVersion", sourceVersion],
     ["SynaraLynxtronSourceVersion", sourceVersion],
     // An agent (UI element) app never activates, so comparisons cannot pull
-    // focus from the user's foreground app.
-    ["LSUIElement", true],
+    // focus from the user's foreground app. --regular-app opts out.
+    ["LSUIElement", options.regularApp !== true],
   ]) {
     const type = typeof value === "boolean" ? "-bool" : "-string";
     const rewrite = spawnSync("plutil", ["-replace", key, type, String(value), infoPlist], {
@@ -1940,7 +1948,7 @@ async function main() {
 
     stopExistingOwnedElectronRuntime(paths, electronExecutable);
     prepareDesktopComparisonHome(paths);
-    prepareOwnedLynxtronRuntime(paths);
+    prepareOwnedLynxtronRuntime(paths, { regularApp: options.regularApp });
     run.lynxtron = {
       packageVersion: JSON.parse(readFileSync(paths.lynxtronPackageJson, "utf8")).version,
       sourceApp: paths.sourceLynxtronApp,
