@@ -93,14 +93,16 @@
   }
 }
 
+/* Upstream DiffPanelToolbar row: `h-[44px] px-1.5`, `gap-2` between the source pill and
+   the right-hand groups. */
 .DiffDockHeader {
   display: flex;
-  height: 46px;
-  min-height: 46px;
+  height: 44px;
+  min-height: 44px;
   padding: 0 6px;
+  flex-direction: row;
   align-items: center;
   gap: 8px;
-  justify-content: space-between;
 }
 
 .DiffDockBody {
@@ -419,15 +421,6 @@
   color: var(--destructive);
 }
 
-.DiffDockIdentity {
-  display: flex;
-  min-width: 0;
-  flex: 1;
-  align-items: center;
-  gap: 8px;
-  overflow: hidden;
-}
-
 .DiffDockTitle {
   min-width: 0;
   overflow: hidden;
@@ -441,8 +434,8 @@
 
 .DiffDockStats {
   color: var(--muted-foreground);
-  font-size: 11px;
-  line-height: 16.5px;
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 18px;
 }
 
 .DiffDockActiveStats {
@@ -465,6 +458,8 @@
   color: var(--color-decoration-deleted);
 }
 
+/* Upstream DIFF_PANEL_PICKER_TRIGGER: a 32px pill on the button-group surface
+   (`rounded-full border bg-button-secondary`, `pl-2.5 pr-2.5 gap-1.5`). */
 .LxMenuTrigger.DiffDockPickerTrigger,
 .LxMenuTrigger.DiffDockTurnTrigger {
   display: flex;
@@ -473,23 +468,31 @@
   min-height: 32px;
   padding: 0;
   align-items: center;
-  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background-color: var(--color-background-button-secondary);
 }
 
+/* `max-w-[min(70%,18rem)]`, shrinking to what the right-hand groups leave. */
 .LxMenuTrigger.DiffDockPickerTrigger {
-  max-width: 176px;
+  max-width: min(70%, 288px);
+  flex-shrink: 1;
 }
 
+/* `max-w-[min(32%,9.5rem)]`. */
 .LxMenuTrigger.DiffDockTurnTrigger {
-  max-width: 152px;
+  max-width: min(32%, 152px);
+  flex-shrink: 0;
 }
 
 .DiffDockPickerContent {
   display: flex;
   min-width: 0;
   width: 100%;
-  height: 32px;
-  padding: 0 8px 0 6px;
+  height: 30px;
+  padding: 0 10px;
+  flex-direction: row;
   align-items: center;
   gap: 6px;
 }
@@ -519,11 +522,13 @@
 }
 
 .DiffDockPickerCount {
-  padding: 1px 6px;
+  padding: 0 6px;
   border-radius: 999px;
   color: var(--muted-foreground);
   background-color: var(--muted);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-xs, 11px);
+  font-weight: 500;
+  line-height: 16.5px;
 }
 
 .DiffDockSourceMenu {
@@ -532,15 +537,6 @@
 
 .DiffDockTurnsMenu {
   width: 240px;
-}
-
-.DiffDockToolbarDivider {
-  width: 1px;
-  height: 16px;
-  margin: 0 4px;
-  flex-shrink: 0;
-  /* Electron DiffPanelToolbar: bg-border/60 */
-  background-color: color-mix(in oklab, var(--color-border) 60%, transparent);
 }
 
 .DiffDockClose {
@@ -552,18 +548,66 @@
   border-radius: 8px;
 }
 
-/* Web DiffPanelToolbar: gap-1.5 between groups, gap-1 inside the icon group. */
+/* Web DiffPanelToolbar: `ml-auto shrink-0 gap-1.5` holding the button groups. */
 .DiffDockHeaderActions {
   display: flex;
+  margin-left: auto;
+  flex-direction: row;
   flex-shrink: 0;
   align-items: center;
   gap: 6px;
 }
 
-.DiffDockToolbarGroup {
+/* Upstream ui/button-group: `inline-flex gap-px p-px rounded-full border`, 28px round
+   segments on the button-secondary surface. */
+.DiffDockButtonGroup,
+.DiffDockHeader .DiffDockGitSplitControl {
   display: flex;
+  height: 32px;
+  padding: 1px;
+  flex-direction: row;
+  flex-shrink: 0;
   align-items: center;
-  gap: 4px;
+  gap: 1px;
+  overflow: visible;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background-color: var(--color-background-button-secondary);
+}
+
+.DiffDockButtonGroup .DiffDockHeaderIconButton.DiffDockToolbarIconButton,
+.DiffDockButtonGroup .LxButton.DiffDockFileJumpTrigger,
+.DiffDockButtonGroup .LxMenuTrigger.DiffDockToolbarMenuTrigger,
+.DiffDockButtonGroup .DiffDockClose,
+.DiffDockHeader .DiffDockGitQuickAction,
+.DiffDockHeader .LxMenuTrigger.DiffDockGitMenuTrigger {
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  min-height: 28px;
+  flex-shrink: 0;
+  border-radius: 14px;
+}
+
+/* ButtonGroupSeparator `mx-0.5 h-4 w-px`. */
+.DiffDockHeader .DiffDockGitSplitDivider {
+  height: 16px;
+  margin: 0 2px;
+  align-self: center;
+}
+
+.DiffDockHeaderIconButton--disabled {
+  opacity: 0.5;
+}
+
+/* BUTTON_GROUP_ACTIVE: an accent tint on the pressed toggle (the file tree). */
+.DiffDockToolbarIconButton--active {
+  background-color: color-mix(in srgb, var(--color-text-accent) 16%, transparent);
+}
+
+.DiffDockToolbarGlyph {
+  width: 14px;
+  height: 14px;
 }
 
 .DiffDockPickerTrailing {

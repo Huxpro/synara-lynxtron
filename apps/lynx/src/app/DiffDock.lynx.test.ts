@@ -35,10 +35,19 @@ describe("Diff Dock chrome fidelity", () => {
     const source = readFileSync(new URL("./DiffDock.lynx.tsx", import.meta.url), "utf8");
     expect(styles).not.toMatch(/\.DiffDockHeader\s*\{[^}]*border-bottom/s);
     expect(source).toContain('className="DiffDockHeader chat-surface-divider"');
-    // Electron DiffPanelToolbar separators: bg-border/60.
+    // Electron DiffPanelToolbar: a 44px row of button groups (ui/button-group pills), no
+    // free-standing separators.
+    expect(styles).toMatch(/\.DiffDockHeader\s*\{[^}]*height:\s*44px;/s);
+    expect(styles).not.toContain(".DiffDockToolbarDivider");
     expect(styles).toMatch(
-      /\.DiffDockToolbarDivider\s*\{[^}]*background-color:\s*color-mix\(in oklab, var\(--color-border\) 60%, transparent\);/s,
+      /\.DiffDockButtonGroup,[^{]*\{[^}]*padding:\s*1px;[^}]*gap:\s*1px;[^}]*border:\s*1px solid var\(--color-border\);[^}]*background-color:\s*var\(--color-background-button-secondary\);/s,
     );
+    for (const label of ["Diff tools", "Panel"]) {
+      expect(source).toContain(`accessibility-label="${label}"`);
+    }
+    for (const label of ["Reload diff", "Previous change", "Next change"]) {
+      expect(source).toContain(`label="${label}"`);
+    }
   });
 
   it("uses Web neutral hover material for close and retry controls", () => {

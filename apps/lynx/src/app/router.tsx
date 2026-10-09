@@ -984,17 +984,9 @@ function ThreadRightDocks(
     <ThreadRightDockTabs
       activePaneId={rightDockState.activePaneId}
       paneLabelOverrides={paneLabelOverrides}
-      addMenuKinds={addMenuKinds}
-      panes={rightDockState.panes.filter(
-        (pane) =>
-          pane.kind === "browser" ||
-          pane.kind === "diff" ||
-          pane.kind === "explorer" ||
-          pane.kind === "file" ||
-          pane.kind === "terminal" ||
-          pane.kind === "sidechat" ||
-          pane.kind === "git",
-      )}
+      addMenuKinds={launcherEntries.map((entry) => entry.kind)}
+      openableKinds={addMenuKinds}
+      panes={rightDockState.panes}
       onAddPane={openDockPane}
       onClosePane={(paneId) => {
         const pane = rightDockState.panes.find((candidate) => candidate.id === paneId);

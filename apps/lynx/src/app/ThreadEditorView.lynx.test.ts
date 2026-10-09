@@ -416,7 +416,9 @@ describe("Lynx Editor view", () => {
     expect(routerSource).toContain('kind: "file"');
     expect(tabsSource).toContain("<EditorSurfaceTab");
     expect(tabsSource).toContain('ariaLabel="Add panel"');
-    expect(tabsSource).toContain('accessibleLabel: "Collapse panel"');
+    expect(tabsSource).toContain('label="Collapse panel"');
+    expect(tabsSource).toContain('"Maximize panel"');
+    expect(tabsSource).toContain('accessibility-label="Open panels"');
   });
 
   it("matches the Web authority rail boundaries", () => {
