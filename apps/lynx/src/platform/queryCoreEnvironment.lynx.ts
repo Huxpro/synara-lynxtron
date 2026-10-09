@@ -10,28 +10,16 @@
 // timers, so query-core stays in server mode there (`undefined`). The
 // background thread, where effects and observers run, is the client.
 
-type Listener = () => void;
+import { dispatchWindowEvent } from "./events";
+import { window as browserWindow } from "./browserEnvironment.lynx";
 
-export interface QueryCoreWindow {
-  readonly addEventListener: (type: string, listener: Listener, options?: unknown) => void;
-  readonly removeEventListener: (type: string, listener: Listener) => void;
-}
-
-const listenersByType = new Map<string, Set<Listener>>();
-
-const backgroundWindow: QueryCoreWindow = {
-  addEventListener: (type, listener) => {
-    let listeners = listenersByType.get(type);
-    if (!listeners) {
-      listeners = new Set();
-      listenersByType.set(type, listeners);
-    }
-    listeners.add(listener);
-  },
-  removeEventListener: (type, listener) => {
-    listenersByType.get(type)?.delete(listener);
-  },
-};
+// One event target for the whole renderer: this is the same `window` upstream
+// Web source is bound to, so a host focus or connectivity signal dispatched
+// once reaches upstream listeners and query-core's managers alike.
+export type QueryCoreWindow = Pick<
+  typeof browserWindow,
+  "addEventListener" | "removeEventListener"
+>;
 
 // Rspeedy defines `__MAIN_THREAD__` per bundle; the typeof guard keeps the
 // module loadable where the macro is absent (tests, tools).
@@ -39,7 +27,7 @@ const isMainThread = typeof __MAIN_THREAD__ === "undefined" ? false : __MAIN_THR
 
 export const queryCoreWindow: QueryCoreWindow | undefined = isMainThread
   ? undefined
-  : backgroundWindow;
+  : browserWindow;
 
 /**
  * Host signals for query-core's focus and online managers. `visibilitychange`
@@ -52,5 +40,5 @@ export const queryCoreWindow: QueryCoreWindow | undefined = isMainThread
 export function dispatchQueryCoreWindowEvent(
   type: "visibilitychange" | "online" | "offline",
 ): void {
-  for (const listener of Array.from(listenersByType.get(type) ?? [])) listener();
+  dispatchWindowEvent({ type } as Event);
 }

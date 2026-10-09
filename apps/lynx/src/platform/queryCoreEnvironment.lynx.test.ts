@@ -170,7 +170,7 @@ describe("query-core environment loader", () => {
       "utf8",
     );
     expect(environmentSource).toMatch(
-      /export const queryCoreWindow: QueryCoreWindow \| undefined = isMainThread\s*\? undefined\s*: backgroundWindow;/,
+      /export const queryCoreWindow: QueryCoreWindow \| undefined = isMainThread\s*\? undefined\s*: browserWindow;/,
     );
   });
 });

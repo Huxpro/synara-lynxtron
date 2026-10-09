@@ -7,10 +7,11 @@
 // no value), so every react-query interval was dead there.
 //
 // The dependency is not edited: each query-core module that mentions `window`
-// gets a module-local `window` binding from `src/platform/queryCoreEnvironment.lynx.ts`
-// (an event target on the background thread, `undefined` on the main thread,
-// which must stay timer-free). When the shared browser-environment loader for
-// upstream sources lands, this rule becomes one more include path of it.
+// gets a module-local `window` binding from `src/platform/queryCoreEnvironment.lynx.ts`:
+// the Lynx browser environment's `window` on the background thread (the same
+// object upstream Web source is bound to), `undefined` on the main thread,
+// which must stay timer-free. That thread rule is why this is its own rule and
+// not one more include path of the browser-environment loader.
 //
 // The loader refuses to run on a query-core it does not recognize, so an
 // upgrade that moves the probe fails the build instead of silently disabling
