@@ -24,10 +24,7 @@ import {
   type SkillToggleQueueState,
 } from "./settingsSkillToggleQueue.logic";
 import { queryClient } from "./queries";
-import {
-  LEGACY_COMPOSER_PROVIDER_SKILLS_QUERY_KEY,
-  writeServerSettings,
-} from "./settingsServerData.lynx";
+import { writeServerSettings } from "./settingsServerData.lynx";
 
 import "./settings-skills-panel.css";
 
@@ -84,11 +81,7 @@ export function SettingsSkillsPanel() {
         writeServerSettings(queryClient, { skills: { disabled: [...disabled] } }),
       onState: setQueueState,
       // Composer skill pickers are served filtered by these toggles.
-      afterSaved: () =>
-        Promise.all([
-          queryClient.invalidateQueries({ queryKey: providerDiscoveryQueryKeys.all }),
-          queryClient.invalidateQueries({ queryKey: LEGACY_COMPOSER_PROVIDER_SKILLS_QUERY_KEY }),
-        ]),
+      afterSaved: () => queryClient.invalidateQueries({ queryKey: providerDiscoveryQueryKeys.all }),
     });
     await queueRef.current.toggle(skillName, enabled);
   }

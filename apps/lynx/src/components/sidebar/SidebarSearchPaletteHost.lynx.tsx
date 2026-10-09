@@ -1,4 +1,5 @@
 import { useEffect, useState } from "@lynx-js/react";
+import { ensureNativeApi } from "~/nativeApi";
 import type { ProjectId, SpaceIconName, SpaceId } from "@synara/contracts";
 import { newSpaceId } from "@synara-web/lib/utils";
 import { useSpacesUiStore } from "@synara-web/spacesUiStore";
@@ -45,11 +46,8 @@ export function SidebarSearchPaletteHost(props: {
     "background only";
     setSpaceActionError(null);
     try {
-      const { dispatchSynaraCommand } = await import(
-        /* webpackMode: "eager" */ "../../data/synaraClient"
-      );
       const spaceId = newSpaceId();
-      await dispatchSynaraCommand(
+      await ensureNativeApi().orchestration.dispatchCommand(
         buildNativeSpaceCreateCommand({
           icon: value.icon,
           name: value.name,
@@ -72,12 +70,9 @@ export function SidebarSearchPaletteHost(props: {
   const assignProjects = async (projectIds: readonly ProjectId[]) => {
     "background only";
     if (!createdSpaceTarget) return projectIds;
-    const { dispatchSynaraCommand, fetchSynaraSidebarShellSnapshot } = await import(
-      /* webpackMode: "eager" */ "../../data/synaraClient"
-    );
     const failedIds = await assignNativeProjectsToSpace({
-      dispatch: dispatchSynaraCommand,
-      getSnapshot: fetchSynaraSidebarShellSnapshot,
+      dispatch: ensureNativeApi().orchestration.dispatchCommand,
+      getSnapshot: ensureNativeApi().orchestration.getShellSnapshot,
       projectIds,
       spaceId: createdSpaceTarget.id,
     });

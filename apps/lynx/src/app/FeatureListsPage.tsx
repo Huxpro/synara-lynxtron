@@ -1,4 +1,5 @@
 import type { PullRequestInvolvement } from "@synara-web/components/pullRequest/PullRequestRouteControlsComposition";
+import { ensureNativeApi } from "~/nativeApi";
 import { useCallback, useMemo, useRef, useState } from "@lynx-js/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
@@ -49,14 +50,7 @@ import { PullRequestTimelineComposition } from "@synara-web/components/pullReque
 import { resolvePullRequestPrimaryAction } from "@synara-web/components/pullRequest/pullRequestDetail.logic";
 import type { PullRequestDetailTab } from "@synara-web/components/pullRequest/PullRequestDetailTabsComposition";
 import { pullRequestPinToggleInputs } from "@synara-web/components/pullRequest/pullRequestList.logic";
-import {
-  fetchPullRequestDetail,
-  fetchPullRequestDiff,
-  fetchPullRequests,
-  performPullRequestAction,
-  queryClient,
-  setPullRequestPinned,
-} from "./queries";
+import { fetchPullRequests, queryClient } from "./queries";
 import { useSidebarSnapshot } from "./sidebarSnapshot.lynx";
 import { Button } from "../components/ui/button";
 import {
@@ -525,7 +519,7 @@ export function PullRequestsPage() {
       if (!selectedInput) {
         throw new Error("Pull request detail identity is unavailable.");
       }
-      return fetchPullRequestDetail(selectedInput);
+      return ensureNativeApi().pullRequests.detail(selectedInput);
     },
     enabled: selectedInput !== null,
     retry: false,
@@ -547,7 +541,7 @@ export function PullRequestsPage() {
       if (!selectedInput) {
         throw new Error("Pull request diff identity is unavailable.");
       }
-      return fetchPullRequestDiff(selectedInput);
+      return ensureNativeApi().pullRequests.diff(selectedInput);
     },
     enabled: selectedInput !== null && activeDetailTab === "code",
     retry: false,
@@ -556,7 +550,7 @@ export function PullRequestsPage() {
     mutationFn: async (entry: PullRequestListEntry) => {
       const inputs = pullRequestPinToggleInputs(entry);
       for (const input of inputs) {
-        await setPullRequestPinned(input);
+        await ensureNativeApi().pullRequests.setPinned(input);
       }
     },
     onSuccess: () => {
@@ -564,7 +558,7 @@ export function PullRequestsPage() {
     },
   });
   const actionMutation = useMutation({
-    mutationFn: performPullRequestAction,
+    mutationFn: (input: PullRequestActionInput) => ensureNativeApi().pullRequests.action(input),
     onSuccess: () => {
       setLastFailedAction(null);
       void refetchSelectedDetail();

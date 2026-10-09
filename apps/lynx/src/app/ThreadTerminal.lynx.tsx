@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "@lynx-js/react";
+import { ensureNativeApi } from "~/nativeApi";
 import arrowDownSvg from "@tabler/icons/outline/arrow-down.svg?raw";
 import { getRectById, getRectByRef, type InputRef } from "@lynx-js/lynx-ui";
 import type { NodesRef, SelectionChangeEvent } from "@lynx-js/types";
@@ -749,7 +750,6 @@ export function ThreadTerminal({
 
   useEffect(() => {
     "background only";
-    let disposeTerminalStream: (() => void) | null = null;
     const acceptEvent = (event: TerminalEvent) => {
       if (event.threadId !== threadId || event.terminalId !== terminalId) return;
       onTerminalEvent?.(event);
@@ -787,19 +787,8 @@ export function ThreadTerminal({
         return next;
       });
     };
-    const disposeGlobalEvent = onGlobalEvent("synara:terminal-event", (event: unknown) => {
-      if (!event || typeof event !== "object" || !("type" in event)) return;
-      acceptEvent(event as TerminalEvent);
-    });
-    void import(/* webpackMode: "eager" */ "../data/synaraClient.lynx").then(
-      ({ subscribeTerminalEvents }) => {
-        disposeTerminalStream = subscribeTerminalEvents(() => {});
-      },
-    );
-    return () => {
-      disposeGlobalEvent();
-      disposeTerminalStream?.();
-    };
+    // The shared facade owns the one `terminal.events` stream of this socket.
+    return ensureNativeApi().terminal.onEvent(acceptEvent);
   }, [terminalId, threadId]);
 
   const enqueueTerminalInput = (data: string) => {

@@ -1,8 +1,13 @@
-import type { ClientOrchestrationCommand, ModelSelection, ProviderKind } from "@synara/contracts";
+import type {
+  ClientOrchestrationCommand,
+  ModelSelection,
+  NativeApi,
+  ProviderKind,
+} from "@synara/contracts";
 
 import type { LynxAppSnapCapture } from "../platform/appSnap";
 import type { loadLandingBootstrap } from "../components/composer/LandingComposer.lynx";
-import { dispatchSynaraCommand, fetchSynaraSidebarShellSnapshot } from "../data/synaraClient.lynx";
+import { ensureNativeApi } from "~/nativeApi";
 import { defaultModelSelectionForProvider } from "../lib/defaultModelSelection";
 
 type LandingBootstrap = Awaited<ReturnType<typeof loadLandingBootstrap>>;
@@ -69,15 +74,15 @@ export function buildFreshAppSnapThreadCreateCommand(input: {
 export async function createFreshAppSnapTask(input: {
   readonly defaultProvider: ProviderKind;
   readonly loadBootstrap: typeof loadLandingBootstrap;
-  readonly dispatchCommand?: typeof dispatchSynaraCommand;
-  readonly fetchSnapshot?: typeof fetchSynaraSidebarShellSnapshot;
+  readonly dispatchCommand?: NativeApi["orchestration"]["dispatchCommand"];
+  readonly fetchSnapshot?: NativeApi["orchestration"]["getShellSnapshot"];
   readonly createCommandId?: () => string;
   readonly createThreadId?: () => string;
   readonly now?: () => Date;
 }): Promise<string> {
   "background only";
-  const dispatchCommand = input.dispatchCommand ?? dispatchSynaraCommand;
-  const fetchSnapshot = input.fetchSnapshot ?? fetchSynaraSidebarShellSnapshot;
+  const dispatchCommand = input.dispatchCommand ?? ensureNativeApi().orchestration.dispatchCommand;
+  const fetchSnapshot = input.fetchSnapshot ?? ensureNativeApi().orchestration.getShellSnapshot;
   const threadId = (input.createThreadId ?? (() => appSnapId("thread")))();
   const bootstrap = await input.loadBootstrap(input.defaultProvider, "chat");
   const command = buildFreshAppSnapThreadCreateCommand({

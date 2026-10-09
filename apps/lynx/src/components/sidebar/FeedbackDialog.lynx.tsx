@@ -1,4 +1,6 @@
 import { createElement, useEffect, useState } from "@lynx-js/react";
+import type { ThreadId } from "@synara/contracts";
+import { ensureNativeApi } from "~/nativeApi";
 import {
   buildFeedbackSubmission,
   FEEDBACK_CATEGORIES,
@@ -93,10 +95,8 @@ export function FeedbackDialogLynx(props: {
     setContext(props.fallbackContext);
     if (!props.open || !props.activeThreadId) return;
     let cancelled = false;
-    void import(/* webpackMode: "eager" */ "../../data/synaraClient.lynx")
-      .then(({ fetchSynaraThreadDetailSnapshot }) =>
-        fetchSynaraThreadDetailSnapshot(props.activeThreadId!),
-      )
+    void ensureNativeApi()
+      .orchestration.getThreadDetailSnapshot({ threadId: props.activeThreadId as ThreadId })
       .then((snapshot) => {
         if (cancelled || !snapshot?.thread) return;
         const thread = snapshot.thread;

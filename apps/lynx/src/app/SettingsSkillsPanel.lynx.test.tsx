@@ -39,9 +39,8 @@ describe("Settings Skills fidelity", () => {
     expect(panelSource).toContain(
       "queryClient.invalidateQueries({ queryKey: providerDiscoveryQueryKeys.all })",
     );
-    expect(panelSource).toContain(
-      "queryClient.invalidateQueries({ queryKey: LEGACY_COMPOSER_PROVIDER_SKILLS_QUERY_KEY })",
-    );
+    // The composer reads upstream's skill query, so there is no second key.
+    expect(panelSource).not.toContain("LEGACY_COMPOSER_PROVIDER_SKILLS_QUERY_KEY");
   });
 
   it("matches the Web portable summary and grouped-row anatomy", () => {

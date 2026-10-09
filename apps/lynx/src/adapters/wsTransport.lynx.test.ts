@@ -21,10 +21,7 @@ import {
 } from "@synara-web/threadDetailResumeCursors";
 import type { WsTransport as UpstreamWsTransport } from "../../../web/src/wsTransport";
 
-import {
-  NATIVE_EVENT_STREAM_CHANNELS,
-  type NativeRpcCompatibility,
-} from "../main/nativeEventStreams.logic";
+import type { NativeRpcCompatibility } from "../main/nativeEventStreams.logic";
 import {
   MAX_THREAD_SNAPSHOT_BOOTSTRAP_RETRY_ATTEMPTS,
   SNAPSHOT_FAULT_RETRY_MS,
@@ -256,24 +253,58 @@ describe("Lynx WsTransport compat", () => {
     expect(second?.streamId).not.toBe(first!.streamId);
   });
 
-  it("mirrors the host's legacy terminal broadcast instead of opening a second terminal stream", async () => {
+  it("owns the terminal event stream and reopens it after the host loses its socket", async () => {
+    rs.useFakeTimers();
     const received: unknown[] = [];
     const unsubscribe = transport.subscribe(WS_CHANNELS.terminalEvent, (message) =>
       received.push(message.data),
     );
-    await flushHost();
-    expect(host.streams.size).toBe(0);
+    await rs.advanceTimersByTimeAsync(0);
+    const [first] = [...host.streams.values()];
+    expect(first?.tag).toBe(WS_METHODS.subscribeTerminalEvents);
+    expect(first?.payload).toEqual({});
 
-    host.emitGlobal(NATIVE_EVENT_STREAM_CHANNELS["terminal.subscribeEvents"], {
-      type: "output",
-      threadId: "thread-1",
-      terminalId: "terminal-1",
-    });
-    expect(received).toEqual([{ type: "output", threadId: "thread-1", terminalId: "terminal-1" }]);
+    const event = { type: "output", threadId: "thread-1", terminalId: "terminal-1" };
+    host.pushStreamItem(first!.streamId, event);
+    expect(received).toEqual([event]);
+
+    // No legacy stream and no retry loop beside it: the transport resubscribes.
+    first!.fail("socket closed");
+    await rs.advanceTimersByTimeAsync(500);
+    const [second] = [...host.streams.values()];
+    expect(second?.tag).toBe(WS_METHODS.subscribeTerminalEvents);
+    expect(second?.streamId).not.toBe(first!.streamId);
+    host.pushStreamItem(second!.streamId, event);
+    expect(received).toEqual([event, event]);
 
     unsubscribe();
+    await rs.advanceTimersByTimeAsync(0);
+    expect(host.cancelledStreamIds).toContain(second!.streamId);
+    expect(host.streams.size).toBe(0);
+  });
+
+  it("sends payloads as JSON so explicit nulls survive the bridge", async () => {
+    const command = {
+      type: "thread.fork.create",
+      threadId: "thread-1",
+      worktreePath: null,
+      branch: null,
+    };
+    await transport.request(ORCHESTRATION_WS_METHODS.dispatchCommand, { command });
+    transport.subscribe(WS_CHANNELS.serverSettingsUpdated, () => undefined);
     await flushHost();
-    expect(host.listenerCount(NATIVE_EVENT_STREAM_CHANNELS["terminal.subscribeEvents"])).toBe(0);
+
+    // What crossed the bridge: no object the marshaller could drop keys from.
+    const raw = host.rawCalls.find((call) => call.name === "synaraRpc");
+    expect(raw?.params).toEqual({
+      tag: "orchestration.dispatchCommand",
+      payloadJson: JSON.stringify(command),
+    });
+    const rawStream = host.rawCalls.find((call) => call.name === "synaraRpcStream");
+    expect(rawStream?.params.payloadJson).toBe("{}");
+    expect(rawStream?.params).not.toHaveProperty("payload");
+    // What the host handler decodes: the command, nulls included.
+    expect(host.callsNamed("synaraRpc").at(-1)?.params.payload).toEqual(command);
   });
 
   it("mints generation-prefixed ids and drops the previous renderer's streams on reload", async () => {

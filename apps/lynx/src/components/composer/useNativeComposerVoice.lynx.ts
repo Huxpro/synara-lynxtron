@@ -14,7 +14,7 @@ import {
 } from "@synara/shared/composerVoice";
 
 import { useLynxVoiceNotificationStore } from "../../app/voiceNotificationStore.lynx";
-import { refreshProviderStatuses, transcribeVoice } from "../../data/synaraClient.lynx";
+import { ensureNativeApi } from "~/nativeApi";
 import { nativeVoiceRecorder } from "../../platform/voiceRecorder.lynx";
 import { scaleNativeVoiceWaveformLevel } from "./composerVoiceWaveform.logic";
 
@@ -184,7 +184,7 @@ export function useNativeComposerVoice(input: {
         showVoiceNotification({ title: "No audio was captured." });
         return;
       }
-      const result = await transcribeVoice({
+      const result = await ensureNativeApi().server.transcribeVoice({
         provider: "codex",
         cwd: workspaceRoot,
         threadId: input.threadId as never,
@@ -202,9 +202,11 @@ export function useNativeComposerVoice(input: {
           transcriptionFailedTitle: "Couldn't transcribe voice note",
         });
         const refreshStatuses = () => {
-          void refreshProviderStatuses().then((result) => {
-            input.onProviderStatusesChange?.(result.providers);
-          });
+          void ensureNativeApi()
+            .server.refreshProviders()
+            .then((result) => {
+              input.onProviderStatusesChange?.(result.providers);
+            });
         };
         if (failure.authExpired) refreshStatuses();
         showVoiceNotification({

@@ -15,6 +15,7 @@ import {
   NATIVE_TRANSPORT_STATE_EVENT,
   type NativeRpcCompatibility,
 } from "../main/nativeEventStreams.logic";
+import { decodeBridgeRpcData } from "../main/bridgeRpcPayload";
 import { rpcFailureReplyFields, type RpcFailureDetails } from "../main/rpcFailure.logic";
 import { createScopedStreamRegistry } from "../main/scopedStreamRegistry.logic";
 
@@ -59,7 +60,10 @@ function reply(callback: (reply: string) => void, value: unknown): void {
 }
 
 export interface FakeNativeHost {
+  /** Calls as the host handlers see them: RPC payloads decoded from `payloadJson`. */
   readonly calls: FakeBridgeCall[];
+  /** Calls exactly as they crossed the bridge. */
+  readonly rawCalls: FakeBridgeCall[];
   /** Streams the host has opened (after any held connection was released). */
   readonly streams: Map<string, FakeOpenStream>;
   readonly cancelledStreamIds: string[];
@@ -86,6 +90,7 @@ export function installFakeNativeHost(
   } = {},
 ): FakeNativeHost {
   const calls: FakeBridgeCall[] = [];
+  const rawCalls: FakeBridgeCall[] = [];
   const streams = new Map<string, FakeOpenStream>();
   const cancelledStreamIds: string[] = [];
   const listeners = new Map<string, Set<GlobalEventListener>>();
@@ -97,6 +102,7 @@ export function installFakeNativeHost(
 
   const host: FakeNativeHost = {
     calls,
+    rawCalls,
     streams,
     cancelledStreamIds,
     get generation() {
@@ -134,7 +140,17 @@ export function installFakeNativeHost(
 
   rs.stubGlobal("NativeModules", {
     bridge: {
-      call: (name: string, params: Record<string, unknown>, callback: (reply: string) => void) => {
+      call: (
+        name: string,
+        rawParams: Record<string, unknown>,
+        callback: (reply: string) => void,
+      ) => {
+        rawCalls.push({ name, params: rawParams });
+        // Both real hosts decode `payloadJson` before they route an RPC.
+        const params: Record<string, unknown> =
+          name === "synaraRpc" || name === "synaraRpcStream"
+            ? decodeBridgeRpcData(rawParams)
+            : rawParams;
         calls.push({ name, params });
         if (name === "synaraRpc") {
           let value: unknown;

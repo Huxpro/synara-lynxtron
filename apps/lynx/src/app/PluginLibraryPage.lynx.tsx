@@ -1,4 +1,5 @@
 import { useState } from "@lynx-js/react";
+import { ensureNativeApi } from "~/nativeApi";
 import { useQuery } from "@tanstack/react-query";
 import type {
   ProviderKind,
@@ -20,11 +21,7 @@ import { Input } from "../components/ui/input.lynx";
 import { CheckIcon, ListChecksIcon, PuzzleIcon, SearchIcon } from "../lib/icons.lynx";
 import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
-import {
-  fetchPluginLibraryCapabilities,
-  fetchPluginLibraryPlugins,
-  fetchPluginLibrarySkills,
-} from "./queries";
+import {} from "./queries";
 import "./plugin-library-page.css";
 import { PluginLibraryWarning } from "./PluginLibraryWarning.lynx";
 
@@ -97,17 +94,28 @@ export function PluginLibraryPage() {
   const [search, setSearch] = useState("");
   const capabilities = useQuery({
     queryKey: ["plugin-library", "capabilities", provider],
-    queryFn: () => fetchPluginLibraryCapabilities(provider),
+    queryFn: () => {
+      "background only";
+      return ensureNativeApi().provider.getComposerCapabilities({ provider });
+    },
   });
   const plugins = useQuery({
     queryKey: ["plugin-library", "plugins", provider],
-    queryFn: () => fetchPluginLibraryPlugins(provider),
+    queryFn: async () => {
+      "background only";
+      const config = await ensureNativeApi().server.getConfig();
+      return ensureNativeApi().provider.listPlugins({ provider, cwd: config.cwd });
+    },
     enabled: tab === "plugins" && capabilities.data?.supportsPluginDiscovery === true,
     retry: false,
   });
   const skills = useQuery({
     queryKey: ["plugin-library", "skills", provider],
-    queryFn: () => fetchPluginLibrarySkills(provider),
+    queryFn: async () => {
+      "background only";
+      const config = await ensureNativeApi().server.getConfig();
+      return ensureNativeApi().provider.listSkills({ provider, cwd: config.cwd });
+    },
     enabled: tab === "skills" && capabilities.data?.supportsSkillDiscovery === true,
     retry: false,
   });

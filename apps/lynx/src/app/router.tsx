@@ -133,11 +133,10 @@ import { Composer } from "../components/composer/Composer.lynx";
 import { PendingApprovalPanel } from "../components/composer/PendingApprovalPanel.lynx";
 import { PendingUserInputPanel } from "../components/composer/PendingUserInputPanel.lynx";
 import { Button } from "../components/ui/button";
-import type { RpcTransportState } from "../data/rpcTransport.logic";
+import type { TransportNoticeState } from "./transportRecovery.logic";
 import { Input } from "../components/ui/input.lynx";
 import { platformTerminal } from "../platform/terminal";
-import { dispatchSynaraCommand } from "../data/synaraClient.lynx";
-import { subscribeOrchestrationShellEvents } from "../data/synaraClient.lynx";
+import { ensureNativeApi } from "~/nativeApi";
 import { Sidebar } from "../components/sidebar/Sidebar.lynx";
 import { SidebarSearchPaletteHost } from "../components/sidebar/SidebarSearchPaletteHost.lynx";
 import { focusLynxElementById } from "../components/ui/focus.lynx";
@@ -1707,7 +1706,7 @@ function ThreadPage(props: ThreadPageProps) {
     if (!activePendingApproval || respondingApprovalRequestId !== null) return;
     setRespondingApprovalRequestId(activePendingApproval.requestId);
     try {
-      await dispatchSynaraCommand({
+      await ensureNativeApi().orchestration.dispatchCommand({
         type: "thread.approval.respond",
         commandId: newCommandId(),
         threadId: threadId as never,
@@ -1731,7 +1730,7 @@ function ThreadPage(props: ThreadPageProps) {
     if (!activePendingUserInput || respondingUserInputRequestId !== null) return;
     setRespondingUserInputRequestId(activePendingUserInput.requestId);
     try {
-      await dispatchSynaraCommand({
+      await ensureNativeApi().orchestration.dispatchCommand({
         type: "thread.user-input.respond",
         commandId: newCommandId(),
         threadId: threadId as never,
@@ -1833,7 +1832,7 @@ function ThreadPage(props: ThreadPageProps) {
     setThreadRenamePending(true);
     setThreadRenameError(null);
     try {
-      await dispatchSynaraCommand({
+      await ensureNativeApi().orchestration.dispatchCommand({
         type: "thread.meta.update",
         commandId: newCommandId(),
         threadId: threadId as never,
@@ -2742,7 +2741,7 @@ export function SliceRouter({
   readonly viewportHeight: number;
   readonly onAppearanceChange: (appearance: SettingsAppearanceValues) => void;
   readonly onThemeStateChange: (state: ThemeState) => void;
-  readonly transportState: RpcTransportState;
+  readonly transportState: TransportNoticeState;
   readonly onRetryTransport: () => void;
 }) {
   const [route, setRoute] = useRoute(initialRoute);
@@ -3007,7 +3006,7 @@ export function SliceRouter({
     if (!activeThreadId) return;
     let active = true;
     let invalidateTimer: ReturnType<typeof setTimeout> | null = null;
-    const unsubscribe = subscribeOrchestrationShellEvents((item) => {
+    const unsubscribe = ensureNativeApi().orchestration.onShellEvent((item) => {
       if (
         item.kind !== "snapshot" &&
         (item.kind !== "thread-upserted" || item.thread.id !== activeThreadId)

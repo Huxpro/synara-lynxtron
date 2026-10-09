@@ -1,4 +1,5 @@
 import { useLatestProjectStore } from "@synara-web/latestProjectStore";
+import { ensureNativeApi } from "~/nativeApi";
 import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import {
   resolveCurrentProjectTargetId,
@@ -394,22 +395,16 @@ export function Sidebar({
   const serverConfigQuery = useQuery(serverConfigQueryOptions());
   const projectDevServersQuery = useQuery({
     queryKey: ["project-dev-servers"],
-    queryFn: async () => {
+    queryFn: () => {
       "background only";
-      const { fetchProjectDevServers } = await import(
-        /* webpackMode: "eager" */ "../../data/synaraClient"
-      );
-      return fetchProjectDevServers();
+      return ensureNativeApi().projects.listDevServers();
     },
   });
   const localServersQuery = useQuery({
     queryKey: ["sidebar-local-servers-native"],
-    queryFn: async () => {
+    queryFn: () => {
       "background only";
-      const { fetchLocalServers } = await import(
-        /* webpackMode: "eager" */ "../../data/synaraClient"
-      );
-      return fetchLocalServers();
+      return ensureNativeApi().server.listLocalServers();
     },
     enabled: (data?.projects.length ?? 0) > 0,
   });
@@ -765,12 +760,9 @@ export function Sidebar({
     }
 
     if (action === "delete") {
-      const { dispatchSynaraCommand } = await import(
-        /* webpackMode: "eager" */ "../../data/synaraClient"
-      );
       const deletion = await deleteNativeProjectThreads({
         threads: [thread],
-        dispatch: dispatchSynaraCommand,
+        dispatch: ensureNativeApi().orchestration.dispatchCommand,
         closeTerminalHistory: async (threadId) => {
           await platformTerminal.close({ threadId, deleteHistory: true }).catch(() => undefined);
           await platformTerminal
@@ -805,10 +797,7 @@ export function Sidebar({
       threadId: thread.id,
     });
     if (!command) return;
-    const { dispatchSynaraCommand } = await import(
-      /* webpackMode: "eager" */ "../../data/synaraClient"
-    );
-    await dispatchSynaraCommand(command);
+    await ensureNativeApi().orchestration.dispatchCommand(command);
 
     if (action === "toggle-pin") {
       const { usePinnedThreadsStore } = await import(
@@ -836,10 +825,7 @@ export function Sidebar({
   }) {
     "background only";
     const isPinned = project.isPinned === true || persistedPinnedProjectIds.includes(project.id);
-    const { dispatchSynaraCommand } = await import(
-      /* webpackMode: "eager" */ "../../data/synaraClient"
-    );
-    await dispatchSynaraCommand({
+    await ensureNativeApi().orchestration.dispatchCommand({
       type: "project.meta.update",
       commandId: `lynx-command-${Date.now()}-${Math.random().toString(16).slice(2)}` as never,
       projectId: project.id as never,
@@ -925,10 +911,8 @@ export function Sidebar({
           projectId: projectSummary.id as ProjectId,
         });
         if (!saved) {
-          void import(/* webpackMode: "eager" */ "../../data/synaraClient")
-            .then(({ discoverProjectScripts }) =>
-              discoverProjectScripts({ cwd: projectSummary.workspaceRoot }),
-            )
+          void ensureNativeApi()
+            .projects.discoverScripts({ cwd: projectSummary.workspaceRoot })
             .then((discovered) => {
               const target = selectPrimaryProjectRunCommand({
                 project: {
@@ -955,10 +939,7 @@ export function Sidebar({
             });
         }
       } else if (action === "stop-dev") {
-        const { stopProjectDevServer } = await import(
-          /* webpackMode: "eager" */ "../../data/synaraClient"
-        );
-        const result = await stopProjectDevServer({
+        const result = await ensureNativeApi().projects.stopDevServer({
           projectId: project.id as ProjectId,
         });
         if (!result.stopped) {
@@ -985,11 +966,8 @@ export function Sidebar({
             ),
         );
         if (!confirmed) return;
-        const { dispatchSynaraCommand } = await import(
-          /* webpackMode: "eager" */ "../../data/synaraClient"
-        );
         const result = await archiveNativeProjectThreads({
-          dispatch: dispatchSynaraCommand,
+          dispatch: ensureNativeApi().orchestration.dispatchCommand,
           threadIds:
             archivePlan.archivableThreadIds as readonly import("@synara/contracts").ThreadId[],
         });
@@ -1039,12 +1017,9 @@ export function Sidebar({
           ({ dialogs }) => dialogs.confirm(confirmation),
         );
         if (!confirmed) return;
-        const { dispatchSynaraCommand } = await import(
-          /* webpackMode: "eager" */ "../../data/synaraClient"
-        );
         const deleteInput = {
           threads: removalThreads,
-          dispatch: dispatchSynaraCommand,
+          dispatch: ensureNativeApi().orchestration.dispatchCommand,
           closeTerminalHistory: async (threadId: ThreadId) => {
             await platformTerminal.close({ threadId, deleteHistory: true }).catch(() => undefined);
             await platformTerminal
@@ -1106,10 +1081,7 @@ export function Sidebar({
           targetSpaceId,
         });
         if (!command) return;
-        const { dispatchSynaraCommand } = await import(
-          /* webpackMode: "eager" */ "../../data/synaraClient"
-        );
-        await dispatchSynaraCommand(command);
+        await ensureNativeApi().orchestration.dispatchCommand(command);
         setActiveSpaceId(targetSpaceId);
       }
     } catch (cause) {
@@ -1144,10 +1116,9 @@ export function Sidebar({
         ({ dialogs }) => dialogs.confirm(nativeSpaceDeleteConfirmation(space.name, projectCount)),
       );
       if (!confirmed) return;
-      const { dispatchSynaraCommand } = await import(
-        /* webpackMode: "eager" */ "../../data/synaraClient"
+      await ensureNativeApi().orchestration.dispatchCommand(
+        buildNativeSpaceDeleteCommand(space.id),
       );
-      await dispatchSynaraCommand(buildNativeSpaceDeleteCommand(space.id));
       if (activeSpaceId === space.id) {
         setActiveSpaceId(null);
         navigate("/");
@@ -1159,9 +1130,6 @@ export function Sidebar({
 
   async function saveSpaceEdit(value: { readonly name: string; readonly icon: SpaceIconName }) {
     "background only";
-    const { dispatchSynaraCommand } = await import(
-      /* webpackMode: "eager" */ "../../data/synaraClient"
-    );
     if (spaceEditorMode === "create") {
       const spaceId = newSpaceId();
       const pendingProject = projectIdAfterSpaceCreate
@@ -1176,7 +1144,7 @@ export function Sidebar({
           import("@synara/contracts").ClientOrchestrationCommand,
           { type: "space.create" }
         >,
-        dispatch: dispatchSynaraCommand,
+        dispatch: ensureNativeApi().orchestration.dispatchCommand,
         projectId: projectIdAfterSpaceCreate,
         projectSpaceId: pendingProject?.spaceId ?? null,
       });
@@ -1209,18 +1177,15 @@ export function Sidebar({
       spaceId: editingSpace.id,
     });
     if (!command) return;
-    await dispatchSynaraCommand(command);
+    await ensureNativeApi().orchestration.dispatchCommand(command);
   }
 
   async function assignProjectsToSpace(projectIds: readonly ProjectId[]) {
     "background only";
     if (!spaceProjectPickerTarget) return [];
-    const { dispatchSynaraCommand, fetchSynaraSidebarShellSnapshot } = await import(
-      /* webpackMode: "eager" */ "../../data/synaraClient"
-    );
     const failedProjectIds = await assignNativeProjectsToSpace({
-      dispatch: dispatchSynaraCommand,
-      getSnapshot: fetchSynaraSidebarShellSnapshot,
+      dispatch: ensureNativeApi().orchestration.dispatchCommand,
+      getSnapshot: ensureNativeApi().orchestration.getShellSnapshot,
       projectIds,
       spaceId: spaceProjectPickerTarget.id,
     });
@@ -1232,25 +1197,24 @@ export function Sidebar({
     if (!runProjectState || !data) return;
     const project = data.projects.find((candidate) => candidate.id === runProjectState.projectId);
     if (!project) throw new Error("Project is no longer available.");
-    const { dispatchSynaraCommand, runProjectDevServer } = await import(
-      /* webpackMode: "eager" */ "../../data/synaraClient"
-    );
     const nextScripts = upsertProjectRunCommandScripts({
       scripts: [...project.scripts],
       command,
     });
     if (nextScripts) {
-      await dispatchSynaraCommand({
-        type: "project.meta.update",
-        commandId: `lynx-project-run-script-${Date.now()}-${Math.random()
-          .toString(16)
-          .slice(2)}` as never,
-        projectId: project.id as ProjectId,
-        scripts: nextScripts,
-      }).catch(() => undefined);
+      await ensureNativeApi()
+        .orchestration.dispatchCommand({
+          type: "project.meta.update",
+          commandId: `lynx-project-run-script-${Date.now()}-${Math.random()
+            .toString(16)
+            .slice(2)}` as never,
+          projectId: project.id as ProjectId,
+          scripts: nextScripts,
+        })
+        .catch(() => undefined);
     }
     try {
-      await runProjectDevServer({
+      await ensureNativeApi().projects.runDevServer({
         projectId: project.id as ProjectId,
         command,
         cwd: runProjectState.cwd,
@@ -1334,10 +1298,7 @@ export function Sidebar({
     const modelSelection =
       project.defaultModelSelection ??
       defaultModelSelectionForProvider(initialSortSettings.defaultProvider);
-    const { dispatchSynaraCommand } = await import(
-      /* webpackMode: "eager" */ "../../data/synaraClient"
-    );
-    await dispatchSynaraCommand({
+    await ensureNativeApi().orchestration.dispatchCommand({
       type: "thread.create",
       commandId: newCommandId(),
       threadId,
@@ -2195,10 +2156,7 @@ export function Sidebar({
         onSave={async (title) => {
           "background only";
           if (!renameThreadId) return;
-          const { dispatchSynaraCommand } = await import(
-            /* webpackMode: "eager" */ "../../data/synaraClient"
-          );
-          await dispatchSynaraCommand({
+          await ensureNativeApi().orchestration.dispatchCommand({
             type: "thread.meta.update",
             commandId: `lynx-thread-rename-${Date.now()}-${Math.random()
               .toString(16)

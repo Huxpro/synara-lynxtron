@@ -164,18 +164,19 @@ PR #34，merge commit `c5672fe7f`。默认分支与 `upstream/main`（`6f54f53c6
 | ----------------------------------- | ------------------------------------------------------------------------------------------- |
 | M3b Thread 页改读 `store`           | 未开始。被上游 `EventRouter` 的增量重复缺陷挡住，需在 Lynx 的读取边界处理                   |
 | M4 逐屏收敛                         | 进行中，Settings 为第一屏。之后是 Environment/Git、Kanban/PR、Automations、Composer、Thread |
-| 删除 `synaraClient.lynx.ts`         | 未完成。803 行、80 个导出，被 39 个文件引用（清单见下）                                     |
+| 删除 `synaraClient.lynx.ts`         | 完成。请求、终端事件和连接状态都走上游门面与兼容传输；棘轮 `synaraClientImporters` 为 0     |
 | 缩小 fork 在上游文件里的差异（270） | 未开始。它决定下一次合并的成本                                                              |
 | 移植上游的新界面                    | 队列见合并报告，第 1 项是应用外壳                                                           |
 
-`synaraClient.lynx.ts` 的剩余引用（M5 合入后，按界面分组）：
+`synaraClient.lynx.ts` 删除之后还留在 Lynx 一侧的（都经门面发请求，只是还没用上游的 query options 和 key，属于 M4 后续各屏）：
 
-- **Settings（10）**：`SettingsPage`、`SettingsAdvancedPanel`、`SettingsArchivedPanel`、`SettingsCustomModelsPanel`、`SettingsIntegrationsPanel`、`SettingsProfilePanel`、`SettingsProviderToolsPanel`、`SettingsSkillsPanel`、`SettingsUsagePanel`、`SettingsWorktreesPanel`
-- **Environment / Git / Explorer（8）**：`EnvironmentPanel`、`environmentBootstrap`、`DiffDock`、`GitDockPane`、`threadDock`、`BrowserDockPane`、`ExplorerPdfFallback`、`ExplorerPreviewHeader`
-- **Thread 页（6）**：`router`、`queries`、`Transcript`、`ThreadHeaderActions`、`ThreadTerminal`、`ChatMarkdown`
-- **Composer（3）**：`Composer`、`LandingComposer`、`useNativeComposerVoice`
-- **Sidebar（4）**：`Sidebar`、`SidebarSearchPalette`、`SidebarSearchPaletteHost`、`FeedbackDialog`
-- **Kanban（2）**：`KanbanNewTaskDialog`、`useNativeKanbanCardActions`
-- **其它（6）**：`AppSnapCoordinator`、`appSnapRouting`、`TaskCompletionToastHost`、`temporaryThreadLifecycle`、`threadHandoff`、`useSynaraTransportState`
+- **模型目录（5 处）**：`Composer`、`KanbanNewTaskDialog`、`AutomationCreateDialog`、`AutomationEditDialog`、`AutomationDetailPage`。上游的 `providerModelsQueryOptions` 带发现队列、`AbortSignal` 和超时，要先在 PrimJS 上验证。
+- **Automations**：`AutomationsPage` 的列表和四个变更。上游的 `useAutomations` 在路由文件里，没有可派生的 query options。
+- **PR 详情**：`FeatureListsPage` 的 detail / diff / action / pin 和评论框。上游的变更 options 按上游的 key 改缓存，要和列表一起换。
+- **插件库**：`PluginLibraryPage` 的三个读取。
+- **Sidebar**：dev server 列表、local servers（上游的 `sidebarLocalServersQueryOptions` 会带来新的轮询，单独评估）。
+- **Thread 页**：`queries.ts` 里的线程详情读取（M3b）。
+- **没有门面方法的 RPC**：`orchestration.getSidebarSearchSnapshot` 是 fork 自己加的，直接走 `nativeRpcRequest`。`orchestration.getSidebarShellSnapshot` 不再被 Lynx 使用（改用上游的 `getShellSnapshot`），服务端和契约里的 fork 差异可以删。
+- **宿主里的旧流路径**：`NATIVE_EVENT_STREAM_CHANNELS` 的终端和 shell 通道、不带 `streamId` 的 `synaraRpcStream` 已经没有渲染器调用方，可以删。
 
 未关闭的相关问题：#10（Lynx Rstest 套件）、#16（Stop 过早被丢）、#19 和 #20（Computer Use 验收发现的输入与界面问题）、#35（Stop 延迟）。

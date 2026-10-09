@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-09T18:50:36.491Z",
+  "generatedAt": "2026-10-09T19:08:18.918Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -12,7 +12,7 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxGraph": {
     "entries": ["src/app/index.tsx"],
-    "modules": 869,
+    "modules": 867,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/checkbox",
@@ -38,7 +38,6 @@
       "@lynx-js/preact-devtools",
       "@lynx-js/react",
       "@lynx-js/types",
-      "@lynx-js/websocket/impl",
       "@pierre/diffs",
       "@pierre/diffs/react",
       "@synara-central-icons-fill/pin.svg?raw",
@@ -285,16 +284,16 @@
   },
   "lynxParallelImplementation": {
     "baseline": {
-      "synaraClientImporters": 19,
-      "useQueryCallSites": 32,
+      "synaraClientImporters": 0,
+      "useQueryCallSites": 30,
       "refetchIntervalSites": 1,
-      "routerTsxLines": 3660
+      "routerTsxLines": 3659
     },
     "current": {
-      "synaraClientImporters": 19,
-      "useQueryCallSites": 32,
+      "synaraClientImporters": 0,
+      "useQueryCallSites": 30,
       "refetchIntervalSites": 1,
-      "routerTsxLines": 3660
+      "routerTsxLines": 3659
     }
   },
   "screens": [

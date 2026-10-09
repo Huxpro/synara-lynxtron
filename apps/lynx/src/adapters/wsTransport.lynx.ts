@@ -66,7 +66,6 @@ import {
   nativeRpcResetStreams,
   subscribeNativeRpcCompatibility,
   subscribeNativeRpcStreamItems,
-  subscribeNativeTerminalEvents,
   subscribeNativeTransportState,
 } from "../data/nativeRpcBridge";
 import {
@@ -509,7 +508,6 @@ export class WsTransport {
    * serves the caller, so the call is absorbed.
    */
   private shellSnapshotDelivered = false;
-  private legacyTerminalEvents: Promise<() => void> | null = null;
   private sequence = 0;
   private state: WsTransportState = "connecting";
   private everConnected = false;
@@ -868,7 +866,6 @@ export class WsTransport {
     // Channel, shell, thread and in-flight git streams alike.
     const keys = [...this.streams.keys()];
     await Promise.all(keys.map((key) => this.stopStream(key)));
-    this.stopChannelStream(WS_CHANNELS.terminalEvent);
     const hostLinks = this.hostLinks;
     this.hostLinks = null;
     if (hostLinks) {
@@ -1072,11 +1069,14 @@ export class WsTransport {
         );
         return;
       case WS_CHANNELS.terminalEvent:
-        // Transitional: the legacy relay stream already holds the per-socket
-        // `terminal.events` lease for the Lynx terminal consumers; a second
-        // stream would be rejected as a duplicate. Mirror its broadcast.
-        this.legacyTerminalEvents ??= subscribeNativeTerminalEvents((event) =>
-          this.emit(WS_CHANNELS.terminalEvent, event as never),
+        // The server admits one `terminal.events` stream per socket; this is
+        // the only opener (upstream's stream key and method).
+        this.startStream(
+          "terminal.events",
+          WS_METHODS.subscribeTerminalEvents,
+          {},
+          (event) => this.emit(WS_CHANNELS.terminalEvent, event as never),
+          restart,
         );
         return;
       case WS_CHANNELS.projectDevServerEvent:
@@ -1150,12 +1150,6 @@ export class WsTransport {
   }
 
   private stopChannelStream(channel: WsPushChannel): void {
-    if (channel === WS_CHANNELS.terminalEvent) {
-      const release = this.legacyTerminalEvents;
-      this.legacyTerminalEvents = null;
-      void release?.then((unsubscribe) => unsubscribe()).catch(() => undefined);
-      return;
-    }
     const key =
       channel === WS_CHANNELS.serverWelcome || channel === WS_CHANNELS.serverMaintenanceUpdated
         ? this.listeners.has(WS_CHANNELS.serverWelcome) ||
@@ -1168,21 +1162,23 @@ export class WsTransport {
             ? "server.providers"
             : channel === WS_CHANNELS.serverSettingsUpdated
               ? "server.settings"
-              : channel === WS_CHANNELS.projectDevServerEvent
-                ? "project.devServers"
-                : channel === WS_CHANNELS.automationEvent
-                  ? "automation.events"
-                  : channel === WS_CHANNELS.serverKeepAwakeUpdated
-                    ? "server.keep-awake"
-                    : channel === WS_CHANNELS.todoEvent
-                      ? "todo.events"
-                      : channel === DEVICE_WS_CHANNELS.event
-                        ? "device.events"
-                        : channel === COMPUTER_WS_CHANNELS.event
-                          ? "computer.events"
-                          : channel === ORCHESTRATION_WS_CHANNELS.domainEvent
-                            ? "orchestration.domain"
-                            : null;
+              : channel === WS_CHANNELS.terminalEvent
+                ? "terminal.events"
+                : channel === WS_CHANNELS.projectDevServerEvent
+                  ? "project.devServers"
+                  : channel === WS_CHANNELS.automationEvent
+                    ? "automation.events"
+                    : channel === WS_CHANNELS.serverKeepAwakeUpdated
+                      ? "server.keep-awake"
+                      : channel === WS_CHANNELS.todoEvent
+                        ? "todo.events"
+                        : channel === DEVICE_WS_CHANNELS.event
+                          ? "device.events"
+                          : channel === COMPUTER_WS_CHANNELS.event
+                            ? "computer.events"
+                            : channel === ORCHESTRATION_WS_CHANNELS.domainEvent
+                              ? "orchestration.domain"
+                              : null;
     if (key) void this.stopStream(key);
   }
 

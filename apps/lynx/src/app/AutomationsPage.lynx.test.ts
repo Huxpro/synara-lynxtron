@@ -4,11 +4,6 @@ import { readFileSync } from "node:fs";
 describe("Lynx Automations route", () => {
   it("uses canonical automation data and host-backed polling", () => {
     const pageSource = readFileSync(new URL("./AutomationsPage.lynx.tsx", import.meta.url), "utf8");
-    const queriesSource = readFileSync(new URL("./queries.ts", import.meta.url), "utf8");
-    const clientSource = readFileSync(
-      new URL("../data/synaraClient.lynx.ts", import.meta.url),
-      "utf8",
-    );
 
     expect(pageSource).toContain('queryKey: ["automations"]');
     expect(pageSource).toContain("projectAutomationList({");
@@ -17,9 +12,9 @@ describe("Lynx Automations route", () => {
     expect(pageSource).toContain("await pollRef.current().catch(() => undefined)");
     expect(pageSource).not.toContain("pollRef.current().finally(schedule)");
     expect(pageSource).not.toContain("refetchInterval: 5_000");
-    expect(queriesSource).toContain('"background only"');
-    expect(queriesSource).toContain("fetchAutomationList()");
-    expect(clientSource).toContain('transportRequest<AutomationListResult>("automation.list", {})');
+    // The shared facade carries the request; the wire payload stays `{}`.
+    expect(pageSource).toContain("queryFn: () => ensureNativeApi().automation.list({})");
+    expect(pageSource).not.toContain("synaraClient");
   });
 
   it("routes the real page and sidebar entry", () => {
@@ -53,12 +48,12 @@ describe("Lynx Automations route", () => {
     expect(detailSource).toContain("Previous runs");
     expect(detailSource).toContain("No runs yet.");
     expect(detailSource).toContain('"Pause" : "Resume"');
-    expect(pageSource).toContain("mutationFn: updateAutomation");
-    expect(pageSource).toContain("mutationFn: deleteAutomation");
-    expect(pageSource).toContain("mutationFn: runAutomationNow");
+    expect(pageSource).toContain("ensureNativeApi().automation.update(input)");
+    expect(pageSource).toContain("ensureNativeApi().automation.delete(input)");
+    expect(pageSource).toContain("ensureNativeApi().automation.runNow(input)");
     // Like the web list, Create closes the dialog and stays on the list.
     const createMutation = pageSource.slice(
-      pageSource.indexOf("mutationFn: createAutomation"),
+      pageSource.indexOf("ensureNativeApi().automation.create(input)"),
       pageSource.indexOf("const runNowMutation"),
     );
     expect(createMutation).toContain("setCreateOpen(false)");
@@ -157,7 +152,7 @@ describe("Lynx Automations route", () => {
     const queriesSource = readFileSync(new URL("./queries.ts", import.meta.url), "utf8");
     const styles = readFileSync(new URL("./automations-page.css", import.meta.url), "utf8");
 
-    expect(pageSource).toContain("mutationFn: createAutomation");
+    expect(pageSource).toContain("ensureNativeApi().automation.create(input)");
     expect(pageSource).toContain("<AutomationDialog");
     expect(pageSource).toContain("threads={sidebar.data?.threads ?? []}");
     expect(pageSource).not.toContain(
@@ -263,9 +258,11 @@ describe("Lynx Automations route", () => {
     expect(dialogSource).toContain("<ComposerModelControl");
     expect(dialogSource).toContain("hideStatusLabel");
     expect(dialogSource).toContain("...serverConfigQueryOptions(), enabled: open");
-    expect(dialogSource).toContain("fetchAutomationCreateModels");
+    expect(dialogSource).toContain("ensureNativeApi().provider.listModels({");
+    // The server schema takes a missing `cwd`, never a null one.
+    expect(dialogSource).toContain("...(cwd ? { cwd } : {}),");
     expect(queriesSource).not.toContain("fetchAutomationCreateServerConfig");
-    expect(queriesSource).toContain("export async function fetchAutomationCreateModels(");
+    expect(queriesSource).not.toContain("fetchAutomationCreateModels");
     expect(dialogSource).toContain("enabled: open");
     expect(dialogSource).toContain("runtimeModels={modelCatalog.data?.models ?? []}");
     expect(dialogSource.indexOf("const generalSettings")).toBeGreaterThan(

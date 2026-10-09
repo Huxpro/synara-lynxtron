@@ -5,7 +5,6 @@
 // Lynx threads; every host call is a `'background only'` function.
 
 import {
-  NATIVE_EVENT_STREAM_CHANNELS,
   NATIVE_RPC_COMPATIBILITY_EVENT,
   NATIVE_RPC_STREAM_CANCEL_METHOD,
   NATIVE_RPC_STREAM_ITEM_EVENT,
@@ -91,6 +90,16 @@ export function hostBridgeRequest<A>(method: string, params: Record<string, unkn
   });
 }
 
+/**
+ * The bridge drops null-valued keys when it marshals objects, and the server
+ * schemas tell an explicit null from a missing key (`thread.fork.create`'s
+ * `worktreePath`, a cleared setting), so every RPC payload crosses as JSON.
+ * Both hosts restore it with `decodeBridgeRpcData` (`main/bridgeRpcPayload.ts`).
+ */
+function encodeBridgePayload(payload: unknown): string {
+  return JSON.stringify(payload ?? null);
+}
+
 export function nativeRpcRequest<A>(
   tag: string,
   payload: unknown,
@@ -99,7 +108,7 @@ export function nativeRpcRequest<A>(
   "background only";
   return hostBridgeRequest<A>("synaraRpc", {
     tag,
-    payload,
+    payloadJson: encodeBridgePayload(payload),
     // `null` disables the host watchdog, a number replaces it, `undefined`
     // keeps the host default.
     ...(options.timeoutMs !== undefined ? { timeoutMs: options.timeoutMs } : {}),
@@ -134,9 +143,11 @@ export function nativeRpcOpenStream(
   payload: unknown,
 ): Promise<void> {
   "background only";
-  return hostBridgeRequest<unknown>("synaraRpcStream", { streamId, tag, payload }).then(
-    () => undefined,
-  );
+  return hostBridgeRequest<unknown>("synaraRpcStream", {
+    streamId,
+    tag,
+    payloadJson: encodeBridgePayload(payload),
+  }).then(() => undefined);
 }
 
 export function nativeRpcCancelStream(streamId: string): Promise<boolean> {
@@ -155,22 +166,6 @@ export async function subscribeNativeRpcStreamItems(
   return onGlobalEvent(NATIVE_RPC_STREAM_ITEM_EVENT, (event: unknown) => {
     if (isNativeRpcStreamItemEvent(event)) listener(event.streamId, event.item);
   });
-}
-
-/**
- * Terminal events as the host already broadcasts them for the legacy
- * `terminal.subscribeEvents` relay stream (`NATIVE_EVENT_STREAM_CHANNELS`).
- * The server admits one `terminal.events` stream per socket, so the shared
- * facade must not open a second one while the legacy consumers
- * (`ThreadTerminal`, `TaskCompletionToastHost`) still hold it; this seam goes
- * away when they move to `api.terminal.onEvent`.
- */
-export async function subscribeNativeTerminalEvents(
-  listener: (event: unknown) => void,
-): Promise<() => void> {
-  "background only";
-  const { onGlobalEvent } = await import(/* webpackMode: "eager" */ "../platform/bridge");
-  return onGlobalEvent(NATIVE_EVENT_STREAM_CHANNELS["terminal.subscribeEvents"], listener);
 }
 
 /** Subscribe to the host socket's negotiated compatibility; returns the unsubscribe. */

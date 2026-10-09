@@ -1,4 +1,5 @@
 import { useEffect, useState } from "@lynx-js/react";
+import { ensureNativeApi } from "~/nativeApi";
 import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { useQuery } from "@tanstack/react-query";
 import type { AutomationDefinition, AutomationUpdateInput, ProviderKind } from "@synara/contracts";
@@ -64,7 +65,7 @@ import {
   AutomationComposerWarningRow,
 } from "./AutomationComposerPrimitives.lynx";
 import { AutomationTimeInput } from "./AutomationTimeInput.lynx";
-import { fetchAutomationCreateModels, type ProjectSummary, type ThreadSummary } from "./queries";
+import type { ProjectSummary, ThreadSummary } from "./queries";
 
 const MAX_ITERATION_OPTIONS = ["", "10", "25", "50", "100", "250"] as const;
 
@@ -133,11 +134,15 @@ export function AutomationEditDialog({
       modelCatalogProvider,
       selectedProject?.workspaceRoot ?? null,
     ],
-    queryFn: () =>
-      fetchAutomationCreateModels({
+    queryFn: () => {
+      "background only";
+      const cwd = selectedProject?.workspaceRoot;
+      // The server schema takes a missing `cwd`, not a null one.
+      return ensureNativeApi().provider.listModels({
         provider: modelCatalogProvider,
-        cwd: selectedProject?.workspaceRoot ?? null,
-      }),
+        ...(cwd ? { cwd } : {}),
+      });
+    },
     enabled: open && Boolean(selectedProject),
     staleTime: 30_000,
   });
