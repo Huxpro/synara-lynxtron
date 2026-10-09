@@ -21,6 +21,8 @@ Lynx 通过构建时的**派生层**消费原样的上游源码。派生层有�
 
 环境注入的实现：`scripts/browser-environment-loader.mjs` 只对 `apps/web/src` 生效，把文件里用到的浏览器全局名绑定到 `src/platform/browserEnvironment.lynx.ts` 的导出；npm 包和 Lynx 自己的代码仍然看到真实运行时。哪些名字要绑定由 TypeScript 编译器的作用域分析决定：只有模块里存在一个不被文件自身任何绑定解析的**值引用**时才注入，属性名、类型位置、字符串、注释、从别的模块转出的名字和嵌套作用域里自己声明的同名变量都不算。import 插在指令序言（`"use client"`、`'background only'`）和 hashbang 之后，不增加行。该环境模块的每个成员属于四类之一并在源码里标明：有 Lynx 实现、接受但无效果、故意缺席（让上游的特性探测走"不可用"分支）、调用即抛出带成员名的错误。rstest 挂同一条规则；`browser-environment-loader.test.mjs` 对 `apps/web/src` 的全部源文件验证两种加载顺序（原始 TS/TSX、去类型之后）结论一致、没有重复绑定、指令保持为指令。
 
+npm 包默认看到真实运行时，只有一个例外：`@tanstack/query-core` 在模块加载时用 `typeof window === "undefined"` 判断自己是否在服务端，服务端模式下不启动 `refetchInterval`、不做过期计时。`scripts/query-core-environment-loader.mjs` 给它的模块绑定同一个环境里的 `window`（后台线程）或 `undefined`（主线程，必须没有计时器）。整个渲染进程只有这一个 `window` 事件目标；宿主的焦点或联网信号从这里派发一次，上游监听器和 query-core 都能收到。升级 query-core 后如果这个判断挪了位置，loader 会让构建失败。
+
 **还原一个 Lynx 会执行的上游文件之前，要检查它的分支。** 注入之后 `typeof window` 在 Lynx 上恒为已定义。fork 以前把上游的同一个判断改写成了两种谓词：`isBrowser()`（Lynx 上为真）和 `getDocument() !== null`（Lynx 上为假）。还原后两者都变成"为真"，所以 fork 原先刻意关掉的分支会被打开。已知的三处：
 
 - `hooks/useSmoothStreamedText.ts`、`hooks/useThrottledStreamingValue.ts`：目前不在 Lynx 的模块图里；一旦有 Lynx 使用方，逐帧动画和节流会在 Lynx 上启用（以前被 `getDocument() === null` 关掉）。
