@@ -26,12 +26,11 @@ describe("chat surface header identity fidelity", () => {
     expect(styles).toMatch(
       /\.SharedChatHeaderIdentityTitle\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;[^}]*font-weight:\s*400;/s,
     );
-    // Electron's empty landing renders its header with minimalChrome: an empty identity slot.
-    expect(routerSource).toContain('<view className="ThreadsLandingHeaderIdentity" />');
-    expect(styles).toMatch(
-      /\.ThreadsLandingHeaderIdentity\s*\{[^}]*display:\s*flex;[^}]*flex:\s*1;[^}]*min-width:\s*0;/s,
-    );
-    expect(routerSource).toContain('title={currentThread?.title ?? "Thread"}');
+    // Upstream's chat header shows the open threads as tabs in place of the title; the
+    // landing (an unsent draft) shows the strip without a tab of its own.
+    expect(routerSource).toContain("<OpenThreadTabStrip activeThreadId={null} />");
+    expect(routerSource).toContain("<OpenThreadTabStrip\n      activeThreadId={threadId}");
+    // The Editor rail keeps the titled identity.
     expect(routerSource).toContain('title="New chat"');
   });
 
@@ -47,7 +46,10 @@ describe("chat surface header identity fidelity", () => {
     expect(adapterSource).toContain("if (!props.onRename) {");
     expect(adapterSource).not.toContain("disabled: !props.onRename");
     expect(routerSource).toContain('type: "thread.meta.update"');
-    expect(routerSource).toContain("onRename={currentThread ? beginThreadRename");
+    // The active tab carries the rename action (upstream: double-click on the tab title).
+    expect(routerSource).toContain(
+      "onRenameActiveThread={currentThread ? beginThreadRename : undefined}",
+    );
     expect(routerSource).toContain("onConfirm={() => void commitThreadRename()}");
   });
 });

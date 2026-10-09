@@ -22,7 +22,10 @@ import {
   type RailItemId,
   type RailOrderableItemId,
 } from "@synara-web/appRail.logic";
+import { resolvePullRequestReviewBadge } from "@synara-web/components/SidebarActionBadges.logic";
 import { useRailShellStore } from "@synara-web/railShellStore";
+import { useQuery } from "@tanstack/react-query";
+import { fetchPullRequests } from "../../app/queries";
 import { useTheme } from "../../adapters/useTheme.lynx";
 import { ClockIcon, FoldersIcon, HomeIcon } from "../../lib/icons.lynx";
 import { colorizeLynxSvg } from "../../lib/themedSvg.lynx";
@@ -32,6 +35,7 @@ import { toastManager } from "../ui/toast.lynx";
 import { AppRailHelp } from "./AppRailHelp.lynx";
 import { AppRailUsage } from "./AppRailUsage.lynx";
 import { PullRequestCompareIcon } from "./PullRequestCompareIcon.lynx";
+import { countUniqueViewerReviewRequests } from "./sidebar.logic";
 import "./app-rail.css";
 
 /** Upstream's `sidebarNavDescriptors` labels for the rail's route items. */
@@ -108,22 +112,26 @@ function AppRailButton(props: {
   readonly id: RailItemId;
   readonly label: string;
   readonly active: boolean;
+  /** Upstream SidebarActionBadge: a corner dot, with the count in the accessible name. */
+  readonly badge?: { readonly accessibleLabel: string } | null;
   readonly onSelect: () => void;
 }) {
+  const label = props.badge ? `${props.label} · ${props.badge.accessibleLabel}` : props.label;
   const interaction = useLynxInteractiveState({
     baseClassName: appRailButtonClassName(props.active),
-    accessibleLabel: props.label,
+    accessibleLabel: label,
     accessibilityValue: props.active ? "Current page" : undefined,
     onActivate: props.onSelect,
   });
   return (
     <view
       className={interaction.className}
-      aria-label={props.label}
+      aria-label={label}
       aria-current={props.active ? "page" : undefined}
       {...interaction.eventProps}
     >
       <RailGlyph id={props.id} active={props.active} />
+      {props.badge ? <view className="AppRailBadgeDot" /> : null}
     </view>
   );
 }
@@ -162,6 +170,20 @@ function AppRail(props: { readonly onHome: () => void }) {
   const selectPanelItem = useRailShellStore((store) => store.selectPanelItem);
   const selectRouteItem = useRailShellStore((store) => store.selectRouteItem);
   const upstreamPathname = railPathname(pathname);
+  // The viewer's open review requests, as upstream's Code review rail badge.
+  const { data: pullRequests } = useQuery({
+    queryKey: ["pull-requests", "sidebar-review-count"],
+    queryFn: () =>
+      fetchPullRequests({
+        state: "open",
+        projectId: null,
+      }),
+  });
+  const pullRequestsReviewBadge = resolvePullRequestReviewBadge(
+    pullRequests
+      ? { count: countUniqueViewerReviewRequests(pullRequests.entries), incomplete: false }
+      : undefined,
+  );
   useEffect(() => {
     "background only";
     reconcile({
@@ -227,6 +249,7 @@ function AppRail(props: { readonly onHome: () => void }) {
                   : RAIL_ROUTE_ITEM_LABELS[id]
               }
               active={slotActive === id}
+              badge={id === "pullRequests" ? pullRequestsReviewBadge : null}
               onSelect={() => selectItem(id)}
             />
           ))}

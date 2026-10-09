@@ -11,6 +11,10 @@ const desktopMainSource = fs.readFileSync(
   "utf8",
 );
 const appStyles = fs.readFileSync(path.resolve(__dirname, "../app/App.css"), "utf8");
+const railStyles = fs.readFileSync(
+  path.resolve(__dirname, "../components/sidebar/app-rail.css"),
+  "utf8",
+);
 
 describe("desktop titlebar controls", () => {
   it("publishes real toggle, back, and forward actions", () => {
@@ -57,18 +61,22 @@ describe("desktop titlebar controls", () => {
   it("keeps one action owner across distinct open and closed placements", () => {
     expect(routerSource).toContain("const renderTitlebarControls = (");
     expect(routerSource).toContain('const openTitlebarControls = renderTitlebarControls("open")');
+    // Upstream's rail layout paints the controls once, in the top strip over the rail and
+    // panel; they overflow the strip while the panel is collapsed, so no second placement.
+    expect(routerSource).not.toContain("closedTitlebarControls");
     expect(routerSource).toContain(
-      'const closedTitlebarControls = renderTitlebarControls("closed")',
+      "<AppRailShell titlebarControls={openTitlebarControls} onHome={navigateBackFromSettings}>",
     );
     expect(routerSource).toContain(
-      'const sidebar =\n    route.pathname !== "/settings" && route.pathname !== "/components-lab" ? (',
+      "const panelOpen = sidebarOpen && !editorModeOpen && railPanelShownForPathname(route.pathname);",
     );
-    expect(routerSource).toContain("<SidebarDisclosure open={sidebarOpen && !editorModeOpen}>");
+    expect(routerSource).toContain("<SidebarDisclosure open={panelOpen}>");
     expect(routerSource).toContain(
-      "{sidebarOpen || editorModeOpen ? null : closedTitlebarControls}",
+      'className={`AppMain AppMain--sidebar-${panelOpen ? "open" : "closed"}`}',
     );
-    expect(routerSource).toContain("className={`AppMain AppMain--sidebar-${");
-    expect(routerSource).toContain('sidebarOpen && !editorModeOpen ? "open" : "closed"');
+    expect(railStyles).toMatch(
+      /\.AppRailShellTopStrip\s*\{[^}]*position:\s*absolute;[^}]*height:\s*44px;[^}]*overflow:\s*visible;/s,
+    );
     expect(appStyles).toMatch(
       /\.SliceRoot--viewport-md-up \.AppMain--sidebar-open\s*\{[^}]*border-top-left-radius:\s*14\.4px;[^}]*border-bottom-left-radius:\s*14\.4px;[^}]*box-shadow:\s*inset 1px 0 0 rgba\(0,\s*0,\s*0,\s*0\.08\),\s*-6\.5px 0 12px -10px rgba\(0,\s*0,\s*0,\s*0\.1\);[^}]*overflow:\s*hidden;/s,
     );
@@ -81,14 +89,18 @@ describe("desktop titlebar controls", () => {
   });
 
   it("keeps Settings inside the same global shell and titlebar ownership", () => {
-    expect(routerSource).toContain('if (route.pathname === "/settings")');
-    expect(routerSource).toContain(`if (route.pathname === "/settings") {
-    return`);
+    // Settings brings its own shell frame (rail + settings panel); the router mounts the
+    // page without the threads shell and shares the overlays with every other route.
+    expect(routerSource).toContain(
+      '{route.pathname === "/settings" ? (\n        page\n      ) : (',
+    );
     expect(routerSource).toContain("sidebarOpen={sidebarOpen}");
     expect(routerSource).toContain("openTitlebarControls={openTitlebarControls}");
-    expect(routerSource).toContain("closedTitlebarControls={closedTitlebarControls}");
     expect(settingsSource).toContain("<AppShellFrame sidebar={settingsSidebar}>");
-    expect(settingsSource).toContain("{sidebarOpen ? null : closedTitlebarControls}");
+    expect(settingsSource).toContain(
+      "<AppRailShell titlebarControls={openTitlebarControls} onHome={onBack}>",
+    );
+    expect(settingsSource).not.toContain("closedTitlebarControls");
     expect(settingsSource).toContain(
       `SettingsPage--sidebar-\${
           sidebarOpen ? "open" : "closed"`,
@@ -105,10 +117,8 @@ describe("desktop titlebar controls", () => {
     expect(appStyles).toMatch(
       /\.SliceRoot--theme-dark \.SettingsSidebar\s*\{[^}]*box-shadow:\s*inset 0 1px 0 rgba\(255,\s*255,\s*255,\s*0\.025\);/s,
     );
-    // Settings keeps the app sidebar's desktop header (controls + mark), as on the web.
-    expect(settingsSource).toContain(
-      "<SidebarDesktopHeader leadingControls={openTitlebarControls} trafficLightGutter />",
-    );
+    // The rail shell's top strip holds the controls; the panel opens on its title.
+    expect(settingsSource).not.toContain("<SidebarDesktopHeader");
     expect(appStyles).toMatch(
       /\.SettingsSidebarBody\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*width:\s*100%;/s,
     );

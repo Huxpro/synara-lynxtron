@@ -19,8 +19,8 @@ describe("Lynx Automations route", () => {
 
   it("routes the real page and sidebar entry", () => {
     const routerSource = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
-    const sidebarSource = readFileSync(
-      new URL("../components/sidebar/Sidebar.lynx.tsx", import.meta.url),
+    const railSource = readFileSync(
+      new URL("../components/sidebar/AppRail.lynx.tsx", import.meta.url),
       "utf8",
     );
 
@@ -28,8 +28,12 @@ describe("Lynx Automations route", () => {
     expect(routerSource).toContain("<AutomationsPage");
     expect(routerSource).toContain('pathname: "/automations/$automationId"');
     expect(routerSource).toContain("automationId={route.params.automationId}");
-    expect(sidebarSource).toContain('automationsActive={activePath.startsWith("/automations")}');
-    expect(sidebarSource).toContain('onOpenAutomations={() => navigate("/automations")}');
+    // Upstream's rail owns the route destinations; its panel on these routes is the list.
+    expect(railSource).toContain('automations: "/automations",');
+    expect(railSource).toContain("railItemForPathname(upstreamPathname)");
+    expect(routerSource).toContain(
+      'route.pathname.startsWith("/automations") ? (\n          <AutomationsRailPanel />',
+    );
   });
 
   it("opens list rows into the actionable detail surface", () => {
@@ -123,16 +127,19 @@ describe("Lynx Automations route", () => {
     const pageSource = readFileSync(new URL("./AutomationsPage.lynx.tsx", import.meta.url), "utf8");
     const styles = readFileSync(new URL("./automations-page.css", import.meta.url), "utf8");
 
-    expect(pageSource).toContain('className="AutomationsNewAction"');
+    // Upstream's header holds Refresh only; "New automation" lives in the rail panel and
+    // in the index prompt, both opening the one create dialog.
+    const panelSource = readFileSync(
+      new URL("./AutomationsRailPanel.lynx.tsx", import.meta.url),
+      "utf8",
+    );
+    expect(pageSource).not.toContain('className="AutomationsNewAction"');
+    expect(pageSource).toContain('className="AutomationsIndexPromptAction"');
     expect(pageSource).toContain('aria-label="New automation"');
-    expect(pageSource).toContain('className="AutomationsNewActionIcon"');
-    expect(pageSource).toContain('color={semanticIconColor("inverse")}');
-    expect(styles).toMatch(
-      /\.SliceRoot--viewport-compact \.AutomationsNewAction\s*\{[^}]*width:\s*32px;/s,
-    );
-    expect(styles).toMatch(
-      /\.SliceRoot--viewport-compact \.AutomationsNewActionText\s*\{[^}]*display:\s*none;/s,
-    );
+    expect(panelSource).toContain('label: "New automation"');
+    expect(panelSource).toContain("onActivate: () => setAutomationCreateOpen(true)");
+    expect(pageSource).toContain("const createOpen = useAutomationCreateOpen();");
+    expect(styles).toMatch(/\.AutomationsHeader\s*\{[^}]*height:\s*44px;[^}]*min-height:\s*44px;/s);
   });
 
   it("creates a canonical daily automation from the real dialog", () => {
@@ -190,13 +197,13 @@ describe("Lynx Automations route", () => {
     expect(dialogSource).toContain("Stop when");
     expect(dialogSource).toContain('<DialogPanel className="AutomationCreatePanel">');
     expect(styles).toMatch(
-      /\.LxDialogPopup\.AutomationCreateDialog\s*\{[^}]*width:\s*768px;[^}]*max-width:\s*calc\(100vw - 32px\);[^}]*height:\s*465px;[^}]*max-height:\s*calc\(100vh - 32px\);/s,
+      /\.LxDialogPopup\.AutomationCreateDialog\s*\{[^}]*width:\s*768px;[^}]*max-width:\s*calc\(100vw - 32px\);[^}]*height:\s*498\.5px;[^}]*max-height:\s*calc\(100vh - 32px\);/s,
     );
     expect(styles).toMatch(
-      /\.LxDialogPopup\.AutomationCreateDialog--expanded\s*\{[^}]*height:\s*503px;/s,
+      /\.LxDialogPopup\.AutomationCreateDialog--expanded\s*\{[^}]*height:\s*540px;/s,
     );
     expect(styles).toMatch(
-      /\.LxDialogPopup\.AutomationCreateDialog--expanded-more\s*\{[^}]*height:\s*541px;/s,
+      /\.LxDialogPopup\.AutomationCreateDialog--expanded-more\s*\{[^}]*height:\s*582px;/s,
     );
     expect(dialogSource).toContain('? " AutomationCreateDialog--expanded-more"');
     expect(dialogSource).toContain('? " AutomationCreateDialog--expanded"');
@@ -215,7 +222,14 @@ describe("Lynx Automations route", () => {
       /\.AutomationCreateName\s*\{[^}]*flex:\s*1;[^}]*border-width:\s*0;[^}]*font-size:\s*18px;[^}]*line-height:\s*28px;/s,
     );
     expect(styles).toMatch(
-      /\.AutomationCreateFooter\s*\{[^}]*flex-shrink:\s*0;[^}]*height:\s*52px;[^}]*margin-top:\s*0;[^}]*padding:\s*4px 16px 16px;/s,
+      /\.AutomationCreateFooter\s*\{[^}]*flex-shrink:\s*0;[^}]*height:\s*auto;[^}]*margin-top:\s*0;[^}]*padding:\s*4px 16px 16px;/s,
+    );
+    // Upstream's chip row wraps beside the block reason and the buttons.
+    expect(styles).toMatch(/\.AutomationCreateToolbar\s*\{[^}]*flex-wrap:\s*wrap;/s);
+    expect(dialogSource).toContain("automationFormSubmitBlockReason(");
+    expect(dialogSource).toContain('className="AutomationCreateBlockReason"');
+    expect(styles).toMatch(
+      /\.AutomationCreateBlockReason\s*\{[^}]*font-size:\s*var\(--app-font-size-ui, 13px\);/s,
     );
     expect(dialogSource).toContain("AutomationCreateWarnings");
     expect(dialogSource).toContain("acknowledgedWarningIds");

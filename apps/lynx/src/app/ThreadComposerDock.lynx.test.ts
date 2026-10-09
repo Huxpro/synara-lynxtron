@@ -10,7 +10,10 @@ describe("Lynx thread composer dock fidelity", () => {
   );
 
   it("keeps normal thread composers above the window edge like Web", () => {
-    expect(routerSource).toContain('<view className="ThreadComposerDock">{composer}</view>');
+    expect(routerSource).toContain("<ThreadComposerDock>{composer}</ThreadComposerDock>");
+    expect(
+      readFileSync(new URL("./ThreadComposerDock.lynx.tsx", import.meta.url), "utf8"),
+    ).toContain('className="ThreadComposerDock"');
     expect(routerSource).toContain('className="ThreadPageMain"');
     expect(routerSource).toContain("(threadPageWidth || viewportWidth) - effectiveRightDockWidth");
     expect(styles).toMatch(

@@ -21,7 +21,9 @@ describe("Lynx Editor view", () => {
     const routerSource = source("./router.tsx");
     const actionsSource = source("./ThreadHeaderActions.lynx.tsx");
     expect(actionsSource).toContain("readonly compact: boolean;");
-    expect(actionsSource.match(/!props.compact ?/g)).toHaveLength(3);
+    // Upstream's header actions are icon-only at every width.
+    expect(actionsSource).not.toContain("!props.compact");
+    expect(actionsSource).not.toContain("ThreadHeaderTextActionLabel");
     expect(routerSource).toContain("const compactThreadHeader = threadHeaderAvailableWidth < 700");
     expect(routerSource).not.toContain("threadHeaderAvailableWidth < 240");
     expect(routerSource).not.toContain("displayTitle={compactThreadTitle}");
@@ -38,12 +40,9 @@ describe("Lynx Editor view", () => {
     expect(actionsSource).toContain("Hand off");
     expect(actionsSource).toContain("Add action");
     expect(actionsSource).toContain("export function ProjectActionAddButton");
-    expect(actionsSource).toContain(
-      '<text className="ThreadHeaderTextActionLabel">Hand off</text>',
-    );
-    expect(actionsSource).toContain(
-      '<text className="ThreadHeaderTextActionLabel">Add action</text>',
-    );
+    expect(actionsSource).toContain('ariaLabel="Hand off thread"');
+    expect(actionsSource).toContain('ariaLabel="Add action"');
+    expect(actionsSource).toContain('<view className="ThreadHeaderActionDivider" />');
     expect(actionsSource).toContain("queryFn: () => fetchNativeThreadHandoffProviderContext()");
     expect(actionsSource).toContain("resolveNativeThreadHandoffTargets(");
     expect(actionsSource).toContain("await createNativeThreadHandoff({");
@@ -216,8 +215,8 @@ describe("Lynx Editor view", () => {
     expect(routerSource).toContain('terminalPrimaryState.workspaceLayout === "terminal-only"');
     expect(routerSource).toContain('primary: terminalPrimary ? "terminal" : "chat"');
     expect(routerSource).toContain('scope="thread"');
-    expect(routerSource).toContain("resolveThreadHeaderIconKind(");
-    expect(routerSource).toContain('className="ThreadHeaderTerminalIcon"');
+    // A terminal-first thread's glyph comes from upstream's tab derivation (`isTerminal`).
+    expect(source("./OpenThreadTabStrip.lynx.tsx")).toContain("tab.isTerminal ? (");
     expect(routerSource).not.toContain("onClick={openEditorNewChat}");
     expect(routerSource).toContain("onNewChat={openEditorNewChat}");
     expect(routerSource).toContain("<LandingComposer");
@@ -444,7 +443,10 @@ describe("Lynx Editor view", () => {
     );
     expect(routerSource).toContain('className="ThreadEditorView"');
     expect(routerSource).not.toContain("ThreadEditorView--stacked");
-    expect(routerSource).toContain("<SidebarDisclosure open={sidebarOpen && !editorModeOpen}>");
+    expect(routerSource).toContain(
+      "const panelOpen = sidebarOpen && !editorModeOpen && railPanelShownForPathname(route.pathname);",
+    );
+    expect(routerSource).toContain("const sidebar = editorModeOpen ? null : (");
     expect(routerSource).toContain("onEditorModeChange={setEditorModeOpen}");
     expect(appStyles).toContain(".ThreadEditorChat > .AppWindowDragRegion {");
     expect(appStyles).toContain("min-height: 40px;");

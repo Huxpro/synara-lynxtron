@@ -24,7 +24,12 @@ describe("Lynx sidebar primary icons", () => {
   });
 
   it("injects renderer icons without forking shared navigation behavior", () => {
-    expect(sidebarSource).toContain("icons={LYNX_SIDEBAR_PRIMARY_ICONS}");
+    // Upstream's rail owns the route destinations, so the panel lists "New thread" only,
+    // through the shared primary navigation composition.
+    expect(sidebarSource).toContain(
+      '<SidebarGlyph icon={LYNX_SIDEBAR_PRIMARY_ICONS.newThread} variant="leading" />',
+    );
+    expect(sidebarSource).toContain("<SidebarPrimaryNavigation");
     // Upstream's navigation takes the renderer's icons as an optional override.
     expect(sharedSource).toContain("icons?: SidebarPrimarySurfaceIcons | undefined;");
     expect(sharedSource).toContain("const icons = props.icons ?? DEFAULT_ICONS;");

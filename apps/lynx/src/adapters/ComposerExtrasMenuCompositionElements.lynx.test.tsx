@@ -240,7 +240,7 @@ describe("native composer attachment menu item", () => {
     expect(composerStyles).not.toMatch(/\.ComposerModelTriggerLynx\.ui-pressed\s*\{[^}]*opacity:/s);
     expect(composerStyles).toMatch(/\.ComposerModelControlLynx\s*\{[^}]*gap:\s*8px;/s);
     expect(composerStyles).toMatch(
-      /\.ComposerTraitsTriggerLabelLynx\s*\{[^}]*line-height:\s*16\.5px;/s,
+      /\.ComposerTraitsTriggerLabelLynx\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
     );
     expect(composerStyles).toMatch(
       /\.ComposerTraitsTriggerLynx\s*\{[^}]*gap:\s*8px;[^}]*padding:\s*4px 10px;[^}]*border:\s*1px solid transparent;[^}]*border-radius:\s*10px;/s,

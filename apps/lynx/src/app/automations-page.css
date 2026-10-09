@@ -22,18 +22,6 @@
   min-width: 0;
 }
 
-.AutomationsNewAction {
-  flex-shrink: 0;
-  gap: 6px;
-}
-
-.AutomationsNewActionIcon {
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
-  opacity: 0.8;
-}
-
 .AutomationsScroller {
   flex: 1;
   min-height: 0;
@@ -302,17 +290,7 @@
   flex-direction: column;
 }
 
-.SliceRoot--viewport-compact .AutomationsNewAction {
-  width: 32px;
-  padding-left: 9px;
-  padding-right: 9px;
-}
-
-.SliceRoot--viewport-compact .AutomationsNewActionText {
-  display: none;
-}
-
-.SliceRoot--viewport-compact .AutomationDetailMain {
+.SliceRoot--viewport-compact .SliceRoot--viewport-compact .AutomationDetailMain {
   flex: 0 0 246px;
   width: 100%;
   height: 246px;

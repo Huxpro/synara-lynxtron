@@ -145,8 +145,19 @@
 .AppRailPanelTitle {
   padding: 0 10px;
   color: var(--foreground);
-  font-family: var(--font-display-family, var(--font-ui-family));
+  font-family: var(--font-display-family);
   font-size: 17px;
   font-weight: 400;
   line-height: 25.5px;
+}
+
+/* `absolute top-1 right-1 size-1.5 rounded-full bg-[var(--color-text-accent)]`. */
+.AppRailBadgeDot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background-color: var(--color-text-accent);
 }

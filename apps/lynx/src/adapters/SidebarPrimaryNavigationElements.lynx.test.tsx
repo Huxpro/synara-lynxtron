@@ -70,12 +70,10 @@ describe("sidebar primary navigation shortcut", () => {
     expect(sidebarStyles).toMatch(
       /\.AppSidebar\s*\{[^}]*background-color:\s*var\(--app-sidebar-surface, var\(--sidebar\)\);/s,
     );
-    expect(sidebarStyles).toMatch(
-      /\.AppSidebar\s*\{[^}]*box-shadow:\s*inset 0 1px 0 rgba\(0,\s*0,\s*0,\s*0\.03\);/s,
-    );
-    expect(sidebarStyles).toMatch(
-      /\.SliceRoot--theme-dark \.AppSidebar\s*\{[^}]*box-shadow:\s*inset 0 1px 0 rgba\(255,\s*255,\s*255,\s*0\.025\);/s,
-    );
+    // The panel sits under upstream's top strip: the title row's `pt-1.5` above, the
+    // footer's `p-2 pt-0` below, and no titlebar hairline of its own.
+    expect(sidebarStyles).toMatch(/\.AppSidebar\s*\{[^}]*padding:\s*6px 0 8px;/s);
+    expect(sidebarStyles).not.toMatch(/\.AppSidebar\s*\{[^}]*box-shadow:/s);
     expect(sidebarStyles).toMatch(
       /\.AppSidebarShortcutKey\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*4px;[^}]*background-color:\s*var\(--muted\);[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;[^}]*font-weight:\s*500;/s,
     );
@@ -99,7 +97,7 @@ describe("sidebar primary navigation shortcut", () => {
       /\.SharedSidebarListSectionHeaderText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui,\s*12px\);[^}]*line-height:\s*18px;[^}]*font-weight:\s*400;[^}]*opacity:\s*0\.58;/s,
     );
     expect(sidebarSource).toContain(
-      "newThreadShortcutLabel={LYNX_PRIMARY_SHORTCUT_LABELS.newThread}",
+      "shortcutParts: splitShortcutLabel(LYNX_PRIMARY_SHORTCUT_LABELS.newThread),",
     );
   });
 
