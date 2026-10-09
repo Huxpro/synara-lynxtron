@@ -364,9 +364,23 @@
   overflow: hidden;
 }
 
+/* Upstream's actions cluster is `gap-2 shrink-0` at every width; what gives under
+   pressure is decided by the measured footer tiers, not by a tighter gap. */
 .ComposerFooterRowLynx--compact .ComposerFooterActionsLynx {
   flex-shrink: 0;
-  gap: 2px;
+}
+
+/* The leading cluster's content at its natural width (the cluster itself may clip). */
+.ComposerFooterLeadingContentLynx {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: center;
+}
+
+.ComposerFooterLeadingLynx--compact .ComposerFooterLeadingContentLynx,
+.ComposerFooterLeadingLynx--voice-busy .ComposerFooterLeadingContentLynx {
+  gap: 4px;
 }
 
 .ComposerFooterLeadingLynx,
@@ -385,8 +399,9 @@
 .ComposerContextWindowMeterLynx {
   position: relative;
   display: flex;
-  width: 18px;
-  height: 18px;
+  /* Electron: a `size-4` ring inside `p-0.5`. */
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
@@ -743,8 +758,12 @@
   font-size: 11px;
 }
 
+/* Upstream's effort trigger is an `sm` button: `text-ui-sm` on an 18px line. The 1px trim
+   takes back Lynx's wider text run (see composer-model-picker.css). */
 .ComposerTraitsTriggerLabelLynx {
-  line-height: 16.5px;
+  margin-right: -1px;
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 18px;
 }
 
 .ComposerTraitsTriggerFastLynx,

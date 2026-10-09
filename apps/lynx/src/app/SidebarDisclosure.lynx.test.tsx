@@ -148,13 +148,12 @@ describe("Lynx sidebar disclosure", () => {
     );
     const appStyles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
 
-    expect(routerSource).toContain("<SidebarDisclosure open={sidebarOpen && !editorModeOpen}>");
+    // The panel column beside the rail: open on routes whose rail item shows a panel.
+    expect(routerSource).toContain("<SidebarDisclosure open={panelOpen}>");
     expect(settingsSource).toContain("<SidebarDisclosure open={sidebarOpen}>");
     expect(routerSource).toContain('key="settings-route-shell"');
     expect(routerSource).toContain('key="product-route-shell"');
-    expect(routerSource).toContain(
-      'route.pathname !== "/settings" && route.pathname !== "/components-lab"',
-    );
+    expect(routerSource).toContain("const sidebar = editorModeOpen ? null : (");
     expect(sidebarStyles).toMatch(/\.AppSidebar\s*\{[^}]*width:\s*100%;/s);
     expect(appStyles).toMatch(/\.SettingsSidebar\s*\{[^}]*width:\s*100%;/s);
   });

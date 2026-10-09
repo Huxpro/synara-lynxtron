@@ -46,7 +46,6 @@ import {
   type RightDockThreadState,
 } from "@synara/shared/rightDock";
 import { resolveThreadHeaderActionState } from "@synara/shared/threadHeaderActions";
-import { resolveThreadHeaderIconKind } from "@synara/shared/threadHeaderIdentity";
 import { buildPullRequestCodeView } from "@synara-web/components/pullRequest/pullRequestCode.logic";
 import type { SettingsAppearanceValues } from "@synara-web/components/settings/SettingsAppearanceComposition.logic";
 import type { ThemeState } from "@synara-web/theme/theme.logic";
@@ -126,6 +125,7 @@ import { SettingsPage } from "./SettingsPage";
 import { UpdatePage } from "./UpdatePage";
 import { KanbanProjectPage, ProjectsPage, PullRequestsPage } from "./FeatureListsPage";
 import { AutomationsPage } from "./AutomationsPage.lynx";
+import { AutomationsRailPanel } from "./AutomationsRailPanel.lynx";
 import { PluginLibraryPage } from "./PluginLibraryPage.lynx";
 import { resolveLandingRoutePresentation } from "./landingRoutePresentation.logic";
 import { RecentViewSwitcherLynx } from "./RecentViewSwitcher.lynx";
@@ -137,6 +137,7 @@ import type { TransportNoticeState } from "./transportRecovery.logic";
 import { Input } from "../components/ui/input.lynx";
 import { platformTerminal } from "../platform/terminal";
 import { ensureNativeApi } from "~/nativeApi";
+import { AppRailShell, railPanelShownForPathname } from "../components/sidebar/AppRail.lynx";
 import { Sidebar } from "../components/sidebar/Sidebar.lynx";
 import { SidebarSearchPaletteHost } from "../components/sidebar/SidebarSearchPaletteHost.lynx";
 import { focusLynxElementById } from "../components/ui/focus.lynx";
@@ -240,6 +241,9 @@ import { ProviderUpdatePrompt } from "./ProviderUpdatePrompt.lynx";
 import { AppSnapCoordinator } from "./AppSnapCoordinator.lynx";
 import { AppSnapWelcomeDialogLynx } from "./AppSnapWelcomeDialog.lynx";
 import { EditorRailTabs } from "./EditorRailTabs.lynx";
+import { OpenThreadTabStrip } from "./OpenThreadTabStrip.lynx";
+import { SponsorLandingBanner } from "./SponsorLandingBanner.lynx";
+import { ThreadComposerDock } from "./ThreadComposerDock.lynx";
 import { ThreadHeaderActions } from "./ThreadHeaderActions.lynx";
 import {
   consumeOpenThreadPathInTerminal,
@@ -415,7 +419,7 @@ function ThreadsLandingHeader(props: {
   // project actions, only the panel toggles.
   return (
     <ChatSurfaceHeaderFrame className="ThreadsLandingHeader">
-      <view className="ThreadsLandingHeaderIdentity" />
+      <OpenThreadTabStrip activeThreadId={null} />
       <view className="ThreadHeaderControls">
         {props.environmentAvailable ? (
           <EnvironmentToggle
@@ -559,6 +563,7 @@ function ThreadsLandingPage(props: {
             lives for the rest of the conversation. */}
         <view className="ThreadsLandingBody">
           <view className="ThreadsLandingHero">
+            <SponsorLandingBanner />
             <CenteredEmptyLanding projectName={routePresentation.projectName} />
           </view>
           <view className="ThreadsLandingComposerDock">
@@ -952,8 +957,10 @@ function ThreadRightDocks(
     hasWorkspace: Boolean(dockThread?.workspaceRoot),
     hasGitRepository: props.launcherAvailability.hasGitRepository,
     hasReview: props.launcherAvailability.hasReview,
-    // Lynx has no device (simulator) pane; the launcher offers what the add menu can open.
-    supportedKinds: new Set(addMenuKinds),
+    // Upstream lists Side chats and (on macOS) the iOS Simulator for every chat. Lynx lists
+    // them too; the launcher says so when this chat cannot open one (`openableKinds`).
+    hasDeviceSupport: true,
+    supportedKinds: new Set([...addMenuKinds, "sidechat", "device"]),
   });
   const openDockPane = (kind: RightDockPaneKind) => {
     "background only";
@@ -1015,7 +1022,11 @@ function ThreadRightDocks(
       tabs={dockTabs}
     >
       {activePane === null ? (
-        <ThreadRightDockLauncher entries={launcherEntries} onOpen={openDockPane} />
+        <ThreadRightDockLauncher
+          entries={launcherEntries}
+          openableKinds={addMenuKinds}
+          onOpen={openDockPane}
+        />
       ) : null}
       {diffOpen ? (
         <DiffDock
@@ -1861,21 +1872,9 @@ function ThreadPage(props: ThreadPageProps) {
       ) : null}
     </view>
   ) : (
-    <ChatSurfaceHeaderIdentity
-      title={currentThread?.title ?? "Thread"}
-      icon={
-        resolveThreadHeaderIconKind(terminalPrimary ? "terminal" : "chat", currentThread?.title) ===
-        "terminal" ? (
-          <svg
-            className="ThreadHeaderTerminalIcon"
-            content={colorizeLynxSvg(terminalSvg, semanticIconColor("accent"))}
-          />
-        ) : (
-          <OpenAIProviderIcon provider={currentThread?.provider} />
-        )
-      }
-      iconTitle={terminalPrimary ? "Terminal" : (currentThread?.project ?? "Synara")}
-      onRename={currentThread ? beginThreadRename : undefined}
+    <OpenThreadTabStrip
+      activeThreadId={threadId}
+      onRenameActiveThread={currentThread ? beginThreadRename : undefined}
     />
   );
   const chatBody =
@@ -2570,7 +2569,7 @@ function ThreadPage(props: ThreadPageProps) {
           chatBody
         )}
         {!terminalPrimary && bodyState.kind !== "empty" ? (
-          <view className="ThreadComposerDock">{composer}</view>
+          <ThreadComposerDock>{composer}</ThreadComposerDock>
         ) : null}
         {currentThread ? (
           <EnvironmentPanel
@@ -3231,7 +3230,6 @@ export function SliceRouter({
     />
   );
   const openTitlebarControls = renderTitlebarControls("open");
-  const closedTitlebarControls = renderTitlebarControls("closed");
   const navigateBackFromSettings = useCallback(() => {
     const target = resolveSettingsBackTarget({
       lastThreadRoute: persistedLastRoute,
@@ -3387,7 +3385,6 @@ export function SliceRouter({
         }}
         sidebarOpen={sidebarOpen}
         openTitlebarControls={openTitlebarControls}
-        closedTitlebarControls={closedTitlebarControls}
         resolvedTheme={resolvedTheme}
         onAppearanceChange={onAppearanceChange}
         onThemeStateChange={onThemeStateChange}
@@ -3527,48 +3524,29 @@ export function SliceRouter({
     );
   }
 
-  const sidebar =
-    route.pathname !== "/settings" && route.pathname !== "/components-lab" ? (
-      <SidebarDisclosure open={sidebarOpen && !editorModeOpen}>
-        <Sidebar
-          activeThreadId={route.pathname === "/thread/$threadId" ? route.params.threadId! : null}
-          draftProjectId={
-            route.pathname === "/new-thread/$projectId" ? route.params.projectId : null
-          }
-          activePath={route.pathname === "/kanban/$projectId" ? "/kanban" : route.pathname}
-          navigate={navigateToChat}
-          searchOpen={searchOpen}
-          onOpenSearch={openSearchPalette}
-          activityViewEnabled={activityViewEnabled}
-          onActivityViewEnabledChange={setActivityViewEnabled}
-          titlebarControls={openTitlebarControls}
-        />
-      </SidebarDisclosure>
-    ) : null;
-  if (route.pathname === "/settings") {
-    return (
-      <>
-        {page}
-        <SidebarSearchPaletteHost
-          activeThreadId={activeThreadId}
-          initialQuery={searchInitialQuery}
-          navigate={navigateToChat}
-          onOpenChange={setSearchPaletteOpen}
-          open={searchOpen}
-          paletteKey={searchPaletteKey}
-        />
-        {recentViewSelection ? (
-          <RecentViewSwitcherLynx
-            entries={recentViewEntries}
-            selectedIndex={recentViewSelection.selectedIndex}
+  const panelOpen = sidebarOpen && !editorModeOpen && railPanelShownForPathname(route.pathname);
+  const sidebar = editorModeOpen ? null : (
+    <AppRailShell titlebarControls={openTitlebarControls} onHome={navigateBackFromSettings}>
+      <SidebarDisclosure open={panelOpen}>
+        {route.pathname.startsWith("/automations") ? (
+          <AutomationsRailPanel />
+        ) : (
+          <Sidebar
+            activeThreadId={route.pathname === "/thread/$threadId" ? route.params.threadId! : null}
+            draftProjectId={
+              route.pathname === "/new-thread/$projectId" ? route.params.projectId : null
+            }
+            activePath={route.pathname === "/kanban/$projectId" ? "/kanban" : route.pathname}
+            navigate={navigateToChat}
+            searchOpen={searchOpen}
+            onOpenSearch={openSearchPalette}
+            activityViewEnabled={activityViewEnabled}
+            onActivityViewEnabledChange={setActivityViewEnabled}
           />
-        ) : null}
-        {appSnapCoordinator}
-        {appSnapWelcomeDialog}
-        {appNotifications}
-      </>
-    );
-  }
+        )}
+      </SidebarDisclosure>
+    </AppRailShell>
+  );
   if (route.pathname === "/components-lab") {
     return (
       <>
@@ -3580,16 +3558,15 @@ export function SliceRouter({
   return (
     <>
       {transportNotice}
-      <AppShellFrame key="product-route-shell" sidebar={sidebar}>
-        <view
-          className={`AppMain AppMain--sidebar-${
-            sidebarOpen && !editorModeOpen ? "open" : "closed"
-          }`}
-        >
-          {sidebarOpen || editorModeOpen ? null : closedTitlebarControls}
-          {page}
-        </view>
-      </AppShellFrame>
+      {route.pathname === "/settings" ? (
+        page
+      ) : (
+        <AppShellFrame key="product-route-shell" sidebar={sidebar}>
+          <view className={`AppMain AppMain--sidebar-${panelOpen ? "open" : "closed"}`}>
+            {page}
+          </view>
+        </AppShellFrame>
+      )}
       <SidebarSearchPaletteHost
         activeThreadId={activeThreadId}
         initialQuery={searchInitialQuery}

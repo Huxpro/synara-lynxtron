@@ -548,3 +548,10 @@
   top: 0;
   bottom: 0;
 }
+
+/* Lynx lays a text run out about 1.3px wider than Chromium measures the same string, and
+   the trigger holds two runs. Take the surplus back so the trigger keeps Electron's width. */
+.ComposerModelTriggerLynx--menu .ComposerModelTriggerLabelLynx,
+.ComposerModelTriggerLynx--menu .ComposerModelTriggerMetaLynx {
+  margin-right: -1px;
+}

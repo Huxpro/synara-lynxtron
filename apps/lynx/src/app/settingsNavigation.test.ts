@@ -77,7 +77,7 @@ describe("shared settings navigation projection", () => {
       Exclude<(typeof SETTINGS_SECTION_IDS)[number], "computer">,
       string
     > = {
-      general: "<SettingsGeneralComposition",
+      general: "<SettingsGeneralPanel",
       profile: "<SettingsProfilePanel />",
       appearance: "<SettingsAppearanceComposition",
       notifications: "<SettingsNotificationsPanel",

@@ -35,7 +35,8 @@ describe("empty Thread landing fidelity", () => {
     expect(traySource).toContain("onClick={props.onTemporaryChange}");
     expect(traySource).not.toContain("aria-disabled");
     expect(traySource).not.toContain("accessibility-state={{ disabled: true }}");
-    expect(traySource).toContain('props.envMode === "local" ? "Local" : "Worktree"');
+    expect(traySource).toContain('checked={props.envMode === "worktree"}');
+    expect(traySource).toContain('props.onEnvModeChange?.(checked ? "worktree" : "local")');
     expect(traySource).toContain("props.branch ? (");
     expect(traySource).toContain("{props.branch}");
     expect(traySource).not.toContain("props.branch ?? 'main'");

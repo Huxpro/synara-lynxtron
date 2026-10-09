@@ -3,17 +3,66 @@ import type { ReactNode } from "@lynx-js/react";
 
 import { useTheme } from "../adapters/useTheme.lynx";
 import { Button } from "../components/ui/button";
-import { Menu, MenuItem, MenuPopup, MenuTrigger } from "../components/ui/menu.lynx";
-import { DeviceLaptopIcon, FolderIcon, GitBranchIcon } from "../lib/icons.lynx";
+import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
+import { CheckIcon, FolderIcon, GitBranchIcon, XIcon } from "../lib/icons.lynx";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 
 import "./empty-thread-context-tray.css";
+
+/** Upstream ProjectPicker reset: a `size-5` button over the trigger's glyph, live on hover. */
+function ProjectResetButton(props: { readonly onReset: () => void }) {
+  const { semanticIconColor } = useTheme();
+  const interaction = useLynxInteractiveState({
+    baseClassName: "EmptyThreadProjectReset",
+    accessibleLabel: "Don't work in a project",
+    onActivate: props.onReset,
+  });
+  return (
+    <view className={interaction.className} {...interaction.eventProps}>
+      <view className="EmptyThreadProjectResetGlyph">
+        <XIcon color={semanticIconColor("inverse")} size={8} strokeWidth={3} />
+      </view>
+    </view>
+  );
+}
+
+/** Upstream's composer-row "Worktree" checkbox: new chats start in a fresh worktree. */
+function WorktreeToggle(props: {
+  readonly checked: boolean;
+  readonly onChange: (checked: boolean) => void;
+}) {
+  const { semanticIconColor } = useTheme();
+  const interaction = useLynxInteractiveState({
+    baseClassName: `EmptyThreadWorktreeToggle${
+      props.checked ? " EmptyThreadWorktreeToggle--checked" : ""
+    }`,
+    accessibleLabel: "Worktree",
+    accessibilityValue: props.checked ? "Checked" : "Unchecked",
+    onActivate: () => props.onChange(!props.checked),
+  });
+  return (
+    <view
+      className={interaction.className}
+      aria-checked={props.checked}
+      {...interaction.eventProps}
+    >
+      <text className="EmptyThreadTemporaryLabel">Worktree</text>
+      <view className="EmptyThreadWorktreeBox">
+        {props.checked ? (
+          <CheckIcon color={semanticIconColor("accent")} size={12} strokeWidth={2.5} />
+        ) : null}
+      </view>
+    </view>
+  );
+}
 
 export function EmptyThreadContextTray(props: {
   readonly branch: string | null;
   readonly className?: string;
   readonly envMode: "local" | "worktree";
   readonly onEnvModeChange?: (envMode: "local" | "worktree") => void;
+  /** Upstream's "Don't work in a project": shown over the project glyph on hover. */
+  readonly onResetProject?: () => void;
   readonly onTemporaryChange: () => void;
   readonly projectControl?: ReactNode;
   readonly projectName: string;
@@ -24,47 +73,15 @@ export function EmptyThreadContextTray(props: {
 
   return (
     <view className={`EmptyThreadContextTray${props.className ? ` ${props.className}` : ""}`}>
-      {props.projectControl ?? (
+      {props.projectControl ? (
+        <view className="EmptyThreadProjectPicker">
+          {props.projectControl}
+          {props.onResetProject ? <ProjectResetButton onReset={props.onResetProject} /> : null}
+        </view>
+      ) : (
         <view className="EmptyThreadContextIdentity">
           <FolderIcon className="EmptyThreadContextIcon" color={secondaryIconColor} size={14} />
           <text className="EmptyThreadContextLabel">{props.projectName}</text>
-        </view>
-      )}
-      {props.onEnvModeChange ? (
-        <Menu>
-          <MenuTrigger ariaLabel={props.envMode === "local" ? "Local" : "Worktree"}>
-            <view className="EmptyThreadContextStatus EmptyThreadContextStatus--interactive">
-              <DeviceLaptopIcon
-                className="EmptyThreadContextIcon"
-                color={secondaryIconColor}
-                size={14}
-              />
-              <text className="EmptyThreadContextLabel">
-                {props.envMode === "local" ? "Local" : "Worktree"}
-              </text>
-            </view>
-          </MenuTrigger>
-          <MenuPopup align="start" side="top">
-            <MenuItem onClick={() => props.onEnvModeChange?.("local")}>
-              <DeviceLaptopIcon color={secondaryIconColor} size={14} />
-              <text>Local</text>
-            </MenuItem>
-            <MenuItem onClick={() => props.onEnvModeChange?.("worktree")}>
-              <GitBranchIcon color={secondaryIconColor} size={14} />
-              <text>Worktree</text>
-            </MenuItem>
-          </MenuPopup>
-        </Menu>
-      ) : (
-        <view className="EmptyThreadContextStatus">
-          <DeviceLaptopIcon
-            className="EmptyThreadContextIcon"
-            color={secondaryIconColor}
-            size={14}
-          />
-          <text className="EmptyThreadContextLabel">
-            {props.envMode === "local" ? "Local" : "Worktree"}
-          </text>
         </view>
       )}
       {props.branch ? (
@@ -96,6 +113,17 @@ export function EmptyThreadContextTray(props: {
         />
         <text className="EmptyThreadTemporaryLabel">Temporary</text>
       </Button>
+      {props.onEnvModeChange ? (
+        <WorktreeToggle
+          checked={props.envMode === "worktree"}
+          onChange={(checked) => props.onEnvModeChange?.(checked ? "worktree" : "local")}
+        />
+      ) : props.envMode === "worktree" ? (
+        <view className="EmptyThreadContextStatus">
+          <GitBranchIcon className="EmptyThreadContextIcon" color={secondaryIconColor} size={14} />
+          <text className="EmptyThreadContextLabel">Worktree</text>
+        </view>
+      ) : null}
     </view>
   );
 }

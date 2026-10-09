@@ -1,9 +1,9 @@
 // How the comparison harness moves between the app's main surfaces in each
-// renderer. Electron follows upstream's shell: an icon rail whose buttons carry
-// only an aria-label, Settings without a "Back to app" row (the rail stays), a
-// Kanban board reached through Tasks, and pull requests under "Code review".
-// Native keeps the labelled sidebar rows. One table, so cells and workflows
-// cannot drift apart.
+// renderer. Both follow upstream's shell: an icon rail whose buttons carry only
+// an aria-label, Settings without a "Back to app" row (the rail stays), and pull
+// requests under "Code review". Electron reaches the Kanban board through Tasks
+// and its view switch; Native's Tasks button opens the board directly (the Tasks
+// list is not ported). One table, so cells and workflows cannot drift apart.
 import { waitFor } from "./comparison-workflow.mjs";
 
 export const pick = (driver, targets) => targets[driver.kind] ?? targets.both;
@@ -13,17 +13,17 @@ export const NAVIGATION_TARGETS = Object.freeze({
   // Proof that the Settings sidebar is the one on screen.
   settingsShown: {
     electron: { selector: "button", text: "Keybindings" },
-    native: { label: "Back to app" },
+    native: { label: "Keybindings" },
   },
-  appSidebar: { electron: { label: "Home" }, native: { label: "Back to app" } },
+  appSidebar: { both: { label: "Home" } },
   newThread: {
     electron: { selector: "a, button", text: "New thread" },
     native: { label: "New thread" },
   },
   automations: { both: { label: "Automations" } },
-  pullRequests: { electron: { label: "Code review" }, native: { label: "Pull requests" } },
-  // Electron's Kanban is a view of Tasks; Native has its own sidebar row.
-  kanban: { electron: { label: "Tasks" }, native: { label: "Kanban" } },
+  pullRequests: { both: { label: "Code review" } },
+  // Electron's Kanban is a view of Tasks; Native's Tasks button opens the board.
+  kanban: { both: { label: "Tasks" } },
   kanbanView: { electron: { selector: "button", text: "Kanban" } },
 });
 
@@ -32,23 +32,21 @@ export function settingsShown(driver) {
 }
 
 /**
- * Brings back the app sidebar (threads, New thread). Electron's rail swaps the
- * sidebar per destination (Settings sections, nothing on Tasks/Kanban); its Home
- * button returns to the last thread with the app sidebar and is a no-op there.
+ * Brings back the app sidebar (threads, New thread). The rail swaps the sidebar per
+ * destination (Settings sections, nothing on Tasks/Kanban); its Home button returns to
+ * the last thread with the app sidebar and is a no-op there.
  */
 export async function showAppSidebar(driver) {
-  if (driver.kind === "electron" || (await settingsShown(driver))) {
-    await driver.tap(pick(driver, NAVIGATION_TARGETS.appSidebar));
-    // Fully on screen: Electron slides the sidebar in from the left on the way back
-    // from Tasks/Kanban, and a row that is still partly off-window cannot be tapped.
-    await waitFor(
-      async () => {
-        const row = await driver.find(pick(driver, NAVIGATION_TARGETS.newThread));
-        return row !== null && row.x - row.width / 2 >= 0;
-      },
-      { label: "the app sidebar" },
-    );
-  }
+  await driver.tap(pick(driver, NAVIGATION_TARGETS.appSidebar));
+  // Fully on screen: the sidebar slides in from the left on the way back from
+  // Tasks/Kanban, and a row that is still partly off-window cannot be tapped.
+  await waitFor(
+    async () => {
+      const row = await driver.find(pick(driver, NAVIGATION_TARGETS.newThread));
+      return row !== null && row.x - row.width / 2 >= 0;
+    },
+    { label: "the app sidebar" },
+  );
 }
 
 export function openSettings(driver) {
@@ -92,10 +90,10 @@ export async function openDockWithPane(driver, launcherLabel) {
         : (await driver.find(launcher))
           ? "launcher"
           : null,
-    { label: "the dock" },
+    { label: `the dock on ${driver.kind}` },
   );
   if (shown === "launcher") {
     await driver.tap(launcher);
-    await waitFor(() => driver.find(DOCK_ADD_PANEL), { label: "the dock tabs" });
+    await waitFor(() => driver.find(DOCK_ADD_PANEL), { label: `the dock tabs on ${driver.kind}` });
   }
 }

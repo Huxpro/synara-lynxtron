@@ -38,7 +38,8 @@ describe("Native AppSnap welcome parity", () => {
     expect(source).toContain("colorizeLynxSvg(screenCaptureSvg");
     const routerSource = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
     expect(routerSource).toContain('onOpenSettings={() => history.push("/settings/appsnap")}');
-    expect(routerSource.match(/{appSnapWelcomeDialog}/g)).toHaveLength(2);
+    // One mount: Settings and the shell routes share the router's overlay block.
+    expect(routerSource.match(/{appSnapWelcomeDialog}/g)).toHaveLength(1);
     const popupStyles = styles.slice(
       styles.indexOf(".LxDialogPopup.AppSnapWelcomeDialog"),
       styles.indexOf(".AppSnapWelcomeBody"),

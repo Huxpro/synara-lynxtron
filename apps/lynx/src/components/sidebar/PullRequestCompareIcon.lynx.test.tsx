@@ -19,9 +19,12 @@ describe("sidebar pull request icon", () => {
   });
 
   it("maps Pull requests to the compare icon instead of a chat glyph", () => {
-    const sidebarSource = readFileSync(new URL("./Sidebar.lynx.tsx", import.meta.url), "utf8");
+    // Pull requests are the rail's "Code review" item.
+    const railSource = readFileSync(new URL("./AppRail.lynx.tsx", import.meta.url), "utf8");
 
-    expect(sidebarSource).toContain("pullRequestIcon={PullRequestCompareIcon}");
-    expect(sidebarSource).not.toContain("pullRequestIcon={MessageCircleIcon}");
+    expect(railSource).toContain(
+      'case "pullRequests":\n      return <PullRequestCompareIcon className="AppRailGlyph" color={color} />;',
+    );
+    expect(railSource).not.toContain("MessageCircleIcon");
   });
 });

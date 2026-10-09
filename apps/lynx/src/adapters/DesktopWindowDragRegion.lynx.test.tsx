@@ -42,9 +42,10 @@ describe("desktop window drag regions", () => {
       /\.SliceRoot--viewport-compact\s+\.AppMain--sidebar-closed\s+\.ThreadsLandingHeader,[\s\S]*?\.SliceRoot--viewport-compact\s+\.AppMain--sidebar-closed\s+\.ThreadPageHeader\s*\{[^}]*height:\s*92px;[^}]*padding:\s*46px 20px 0;/s,
     );
     expect(routerSource).toContain('<ChatSurfaceHeaderFrame className="ThreadsLandingHeader">');
-    expect(routerSource).toContain('<view className="ThreadsLandingHeaderIdentity" />');
+    expect(routerSource).toContain("<OpenThreadTabStrip activeThreadId={null} />");
+    // Upstream's top bar is 44px on every route (`CHAT_SURFACE_HEADER_HEIGHT_CLASS`).
     expect(appStyles).toMatch(
-      /\.ThreadsLandingHeader\s*\{[^}]*height:\s*46px;[^}]*min-height:\s*46px;[^}]*flex-shrink:\s*0;/s,
+      /\.ThreadsLandingHeader\s*\{[^}]*height:\s*44px;[^}]*min-height:\s*44px;[^}]*flex-shrink:\s*0;/s,
     );
     expect(routerSource).toContain('<ChatSurfaceHeaderFrame className="ThreadPageHeader">');
     expect(appStyles).toMatch(

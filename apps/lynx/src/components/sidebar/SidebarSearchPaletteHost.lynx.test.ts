@@ -22,8 +22,11 @@ describe("Native route-independent sidebar search palette host", () => {
     expect(routerSource).toContain(
       'if (command === "sidebar.search") {\n            openSearchPalette();',
     );
-    expect(routerSource.match(/<SidebarSearchPaletteHost/g)).toHaveLength(2);
-    expect(routerSource).toContain('route.pathname !== "/settings"');
+    // One mount below the route switch, so Settings and the shell routes share it.
+    expect(routerSource.match(/<SidebarSearchPaletteHost/g)).toHaveLength(1);
+    expect(routerSource).toContain(
+      '{route.pathname === "/settings" ? (\n        page\n      ) : (',
+    );
     expect(sidebarSource).not.toContain("<SidebarSearchPaletteLynx");
     expect(sidebarSource).toContain("onOpenSearch={() => onOpenSearch()}");
     const hostSource = readFileSync(

@@ -1,0 +1,82 @@
+/* Upstream RailAutomationsPanel: SidebarPanelTitle, a one-row primary action group, then
+   a `px-1.5 py-1.5` list. The panel's own `pt-1.5` comes from `.AppSidebar`. */
+.AutomationsRailPanel {
+  padding-top: 0;
+}
+
+.AutomationsRailNewIcon {
+  width: 15px;
+  height: 15px;
+}
+
+.AutomationsRailScroller {
+  flex: 1;
+  min-height: 0;
+}
+
+.AutomationsRailList {
+  display: flex;
+  padding: 6px;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* `px-2 pt-4 text-center text-ui text-muted-foreground/58`. */
+.AutomationsRailState {
+  padding: 16px 8px 0;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 19.5px;
+  text-align: center;
+  opacity: 0.58;
+}
+
+.AutomationsRailSection {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.AutomationsRailSectionLabel {
+  height: 28px;
+  padding: 4px 8px;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 19.5px;
+  opacity: 0.58;
+}
+
+.AutomationsRailRow {
+  display: flex;
+  height: var(--app-density-row-height, 28px);
+  padding: 0 8px;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.AutomationsRailRow.ui-hover,
+.AutomationsRailRow.ui-pressed {
+  background-color: var(--sidebar-accent);
+}
+
+.AutomationsRailRow--active,
+.AutomationsRailRow--active.ui-hover {
+  background-color: var(--sidebar-selected);
+}
+
+.AutomationsRailRow.ui-focus {
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.AutomationsRailRow--dimmed {
+  opacity: 0.6;
+}
+
+.AutomationsRailRowTitle {
+  min-width: 0;
+  flex: 1;
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 19.5px;
+}

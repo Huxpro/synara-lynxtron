@@ -27,50 +27,47 @@ function fakeDriver(kind, visible, onTap = () => undefined) {
 
 describe("comparison navigation", () => {
   it("resolves one target per renderer, shared ones for both", () => {
-    expect(pick({ kind: "electron" }, NAVIGATION_TARGETS.pullRequests)).toEqual({
-      label: "Code review",
-    });
-    expect(pick({ kind: "native" }, NAVIGATION_TARGETS.pullRequests)).toEqual({
-      label: "Pull requests",
-    });
     for (const kind of ["electron", "native"]) {
+      expect(pick({ kind }, NAVIGATION_TARGETS.pullRequests)).toEqual({ label: "Code review" });
       expect(pick({ kind }, NAVIGATION_TARGETS.settings)).toEqual({ label: "Settings" });
+      expect(pick({ kind }, NAVIGATION_TARGETS.appSidebar)).toEqual({ label: "Home" });
+    }
+    expect(pick({ kind: "electron" }, NAVIGATION_TARGETS.settingsShown)).toEqual({
+      selector: "button",
+      text: "Keybindings",
+    });
+    expect(pick({ kind: "native" }, NAVIGATION_TARGETS.settingsShown)).toEqual({
+      label: "Keybindings",
+    });
+  });
+
+  it("returns both renderers to the app sidebar through the rail's Home", async () => {
+    const newThread = (kind) => JSON.stringify(pick({ kind }, NAVIGATION_TARGETS.newThread));
+    for (const kind of ["electron", "native"]) {
+      const inApp = fakeDriver(kind, new Set([newThread(kind)]));
+      await showAppSidebar(inApp);
+      expect(inApp.taps).toEqual([{ label: "Home" }]);
+
+      const inSettings = fakeDriver(kind, new Set(), (_target, visible) =>
+        visible.add(newThread(kind)),
+      );
+      await showAppSidebar(inSettings);
+      expect(inSettings.taps).toEqual([{ label: "Home" }]);
     }
   });
 
-  it("returns Electron to the app sidebar through Home, Native only out of Settings", async () => {
+  it("reaches the Kanban board through Tasks; Electron also picks the Kanban view", async () => {
     const newThread = (kind) => JSON.stringify(pick({ kind }, NAVIGATION_TARGETS.newThread));
     const electron = fakeDriver("electron", new Set([newThread("electron")]));
-    await showAppSidebar(electron);
-    expect(electron.taps).toEqual([{ label: "Home" }]);
-
-    const nativeInApp = fakeDriver("native", new Set([newThread("native")]));
-    await showAppSidebar(nativeInApp);
-    expect(nativeInApp.taps).toEqual([]);
-
-    const nativeInSettings = fakeDriver(
-      "native",
-      new Set([JSON.stringify({ label: "Back to app" })]),
-      (_target, visible) => visible.add(newThread("native")),
-    );
-    await showAppSidebar(nativeInSettings);
-    expect(nativeInSettings.taps).toEqual([{ label: "Back to app" }]);
-  });
-
-  it("reaches Electron's Kanban through Tasks and Native's through its own row", async () => {
-    const electron = fakeDriver(
-      "electron",
-      new Set([JSON.stringify(pick({ kind: "electron" }, NAVIGATION_TARGETS.newThread))]),
-    );
     await openKanbanSurface(electron);
     expect(electron.taps).toEqual([
       { label: "Home" },
       { label: "Tasks" },
       { selector: "button", text: "Kanban" },
     ]);
-    const native = fakeDriver("native", new Set());
+    const native = fakeDriver("native", new Set([newThread("native")]));
     await openKanbanSurface(native);
-    expect(native.taps).toEqual([{ label: "Kanban" }]);
+    expect(native.taps).toEqual([{ label: "Home" }, { label: "Tasks" }]);
   });
 
   it("opens a pane from the empty dock's launcher and leaves a populated dock alone", async () => {

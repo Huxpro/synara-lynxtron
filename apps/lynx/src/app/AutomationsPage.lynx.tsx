@@ -6,13 +6,14 @@ import type { AutomationDefinitionRow, AutomationTriageRow } from "@synara/share
 import { projectAutomationList } from "@synara/shared/automationList";
 
 import { Button } from "../components/ui/button";
-import { PlusIcon, RefreshCwIcon } from "../lib/icons";
+import { ClockIcon, RefreshCwIcon } from "../lib/icons";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
 import { sleepOnHost } from "../platform/timer";
 import { queryClient } from "./queries";
 import { useSidebarSnapshot } from "./sidebarSnapshot.lynx";
 import { AutomationDialog } from "./AutomationDialog.lynx";
+import { setAutomationCreateOpen, useAutomationCreateOpen } from "./automationCreateIntent.lynx";
 import { AutomationDetailPage } from "./AutomationDetailPage.lynx";
 import "./automations-page.css";
 
@@ -201,6 +202,40 @@ export function AutomationsListContent({
   );
 }
 
+/** The automation list, shared by the route and the rail's Automations panel. */
+export function useAutomationsListQuery() {
+  return useQuery({
+    queryKey: ["automations"],
+    queryFn: () => ensureNativeApi().automation.list({}),
+  });
+}
+
+/** Upstream `_chat.automations.index`: the list lives in the rail panel; the route prompts. */
+function AutomationsIndexPrompt(props: {
+  readonly disabled: boolean;
+  readonly onCreate: () => void;
+}) {
+  const { semanticIconColor } = useTheme();
+  return (
+    <view className="AutomationsIndexPrompt">
+      <ClockIcon color={semanticIconColor("secondary")} size={32} />
+      <text className="AutomationsIndexPromptTitle">Automations</text>
+      <text className="AutomationsIndexPromptText">
+        Pick an automation in the panel to see its runs, or schedule a new one.
+      </text>
+      <Button
+        className="AutomationsIndexPromptAction"
+        size="sm"
+        disabled={props.disabled}
+        aria-label="New automation"
+        onClick={props.onCreate}
+      >
+        New automation
+      </Button>
+    </view>
+  );
+}
+
 export function AutomationsPage({
   automationId = null,
   navigate,
@@ -209,12 +244,10 @@ export function AutomationsPage({
   readonly navigate: (to: string) => void;
 }) {
   const { semanticIconColor } = useTheme();
-  const [createOpen, setCreateOpen] = useState(false);
+  const createOpen = useAutomationCreateOpen();
+  const setCreateOpen = setAutomationCreateOpen;
   const [editOpen, setEditOpen] = useState(false);
-  const automations = useQuery({
-    queryKey: ["automations"],
-    queryFn: () => ensureNativeApi().automation.list({}),
-  });
+  const automations = useAutomationsListQuery();
   const sidebar = useSidebarSnapshot();
   const updateMutation = useMutation({
     mutationFn: (input: Parameters<NativeApi["automation"]["update"]>[0]) =>
@@ -361,28 +394,10 @@ export function AutomationsPage({
         >
           <RefreshCwIcon size={16} color={semanticIconColor("secondary")} />
         </Button>
-        <Button
-          className="AutomationsNewAction"
-          size="sm"
-          disabled={(sidebar.data?.projects.length ?? 0) === 0}
-          aria-label="New automation"
-          onClick={() => setCreateOpen(true)}
-        >
-          <PlusIcon
-            className="AutomationsNewActionIcon"
-            color={semanticIconColor("inverse")}
-            size={14}
-          />
-          <text className="LxButton__text AutomationsNewActionText">New automation</text>
-        </Button>
       </view>
-      <AutomationsListContent
-        definitionsCount={automations.data?.definitions.length ?? 0}
-        error={Boolean(automations.error)}
-        isLoading={automations.isPending}
-        onOpen={openAutomation}
-        onRetry={() => void automations.refetch()}
-        projection={projection}
+      <AutomationsIndexPrompt
+        disabled={(sidebar.data?.projects.length ?? 0) === 0}
+        onCreate={() => setCreateOpen(true)}
       />
       <AutomationDialog
         variant="create"

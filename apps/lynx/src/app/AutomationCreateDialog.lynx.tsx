@@ -15,6 +15,7 @@ import { completionPolicyFromStopWhen } from "@synara/shared/automationCompletio
 import {
   applyScheduleToForm,
   automationFastIntervalLimitMessage,
+  automationFormSubmitBlockReason,
   formatCadence,
   formFromDefinition,
   isFormSubmittable,
@@ -235,6 +236,11 @@ export function AutomationCreateDialog({
   });
   const hasUnacknowledgedWarning = warnings.some(
     (warning) => warning.requiresAcknowledgement && !acknowledgedWarningIds.has(warning.id),
+  );
+  const submitBlockReason = automationFormSubmitBlockReason(
+    formForValidation,
+    warnings,
+    acknowledgedWarningIds,
   );
   const toggleWarning = (id: AutomationDraftWarningId) =>
     setAcknowledgedWarningIds((current) => {
@@ -726,6 +732,15 @@ export function AutomationCreateDialog({
             </Menu>
           </view>
           <view className="AutomationCreateFooterActions">
+            {submitBlockReason ? (
+              <text
+                className="AutomationCreateBlockReason"
+                accessibility-trait="updating"
+                text-maxline="1"
+              >
+                {submitBlockReason}
+              </text>
+            ) : null}
             <Button variant="ghost" disabled={pending} onClick={() => onOpenChange(false)}>
               Cancel
             </Button>

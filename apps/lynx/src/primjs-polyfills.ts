@@ -6,6 +6,16 @@ if (typeof Object.hasOwn !== "function") {
     Object.prototype.hasOwnProperty.call(object, key);
 }
 
+// The Lynx background runtime has no `queueMicrotask`. Upstream's `useLocalStorage` defers
+// its change notification with it after every write (app settings normalization at
+// startup), and without it each write logs a ReferenceError and subscribers miss the change.
+const microtaskGlobal = globalThis as { queueMicrotask?: (callback: () => void) => void };
+if (typeof microtaskGlobal.queueMicrotask !== "function") {
+  microtaskGlobal.queueMicrotask = (callback) => {
+    void Promise.resolve().then(callback);
+  };
+}
+
 // PrimJS has no DOM Event classes. The shared transport state bus
 // (`wsTransportEvents.ts`) publishes `CustomEvent`s through the
 // `~/platform/events` port and skips publishing when the constructor is

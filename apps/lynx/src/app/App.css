@@ -23,9 +23,18 @@
   --type-ui-supporting-size: 11px;
   --type-ui-meta-size: 10px;
   --type-composer-editor-size: 12px;
-  --type-settings-section-label-size: 12px;
-  --type-settings-row-title-size: 12px;
-  --type-settings-row-description-size: 12px;
+  /* Upstream's settings rows are `text-ui` (13px at the default size) on a 1.5 line box,
+     and the panel description is `text-ui leading-relaxed`; tokens.css still carries the
+     earlier 12px / 18px roles. Literal sizes: Lynx does not resolve a custom property
+     whose value is another `var()`. */
+  --type-settings-section-label-size: 13px;
+  --type-settings-section-label-line-height: 19.5px;
+  --type-settings-row-title-size: 13px;
+  --type-settings-row-title-line-height: 19.5px;
+  --type-settings-row-description-size: 13px;
+  --type-settings-row-description-line-height: 19.5px;
+  --type-settings-header-description-size: 13px;
+  --type-settings-header-description-line-height: 21.125px;
   --settings-usage-meter-healthy: #00bc7d;
   --settings-usage-meter-warning: #fe9a00;
   --settings-usage-meter-danger: #fb2c36;
@@ -163,7 +172,7 @@
   --app-density-settings-row-padding-y: 8.5px;
   --app-density-chat-gutter-x: 10.2px;
   --app-density-chat-gutter-x-lg: 17px;
-  --app-density-composer-editor-min-height: 33.15px;
+  --app-density-composer-editor-min-height: 35.9125px;
   --app-density-composer-editor-padding-top: 10.2px;
   --app-density-composer-editor-padding-bottom: 6.8px;
   --app-density-composer-editor-padding-x: 10.2px;
@@ -180,7 +189,7 @@
   --app-density-settings-row-padding-y: 10px;
   --app-density-chat-gutter-x: 12px;
   --app-density-chat-gutter-x-lg: 20px;
-  --app-density-composer-editor-min-height: 39px;
+  --app-density-composer-editor-min-height: 42.25px;
   --app-density-composer-editor-padding-top: 12px;
   --app-density-composer-editor-padding-bottom: 8px;
   --app-density-composer-editor-padding-x: 12px;
@@ -197,7 +206,7 @@
   --app-density-settings-row-padding-y: 11.5px;
   --app-density-chat-gutter-x: 13.8px;
   --app-density-chat-gutter-x-lg: 23px;
-  --app-density-composer-editor-min-height: 44.85px;
+  --app-density-composer-editor-min-height: 48.5875px;
   --app-density-composer-editor-padding-top: 13.8px;
   --app-density-composer-editor-padding-bottom: 9.2px;
   --app-density-composer-editor-padding-x: 13.8px;
@@ -215,7 +224,9 @@
 .AppMain {
   flex: 1;
   min-width: 0;
-  height: 100%;
+  /* Upstream `chat-content-card`: the route card is inset 3px from the window's right and
+     bottom edges. */
+  margin: 0 3px 3px 0;
   background-color: var(--background);
 }
 
@@ -237,7 +248,9 @@
 .AppMain--sidebar-closed .AppWindowDragRegion--padded,
 .AppMain--sidebar-closed .SharedKanbanRouteHeader,
 .AppMain--sidebar-closed .SharedPrRouteHeader {
-  padding-left: 212px;
+  /* Upstream: the leading window controls end at x=174 and the header row's `gap-3`
+     follows; the rail takes the first 51px. */
+  padding-left: 135px;
 }
 
 .SliceRoot--viewport-compact .AppMain--sidebar-closed .ThreadsLandingHeader,
@@ -642,8 +655,8 @@
 .ThreadsLandingHeader {
   display: flex;
   width: 100%;
-  height: 46px;
-  min-height: 46px;
+  height: 44px;
+  min-height: 44px;
   flex-shrink: 0;
   align-items: center;
 }
@@ -1434,9 +1447,17 @@
 }
 
 .FeatureOverviewBody {
+  display: flex;
   flex: 1;
   min-height: 0;
   padding-top: 12px;
+  flex-direction: column;
+}
+
+.FeatureOverviewBody .SharedKanbanOverviewScroller {
+  flex: 1;
+  min-height: 0;
+  height: auto;
 }
 
 .FeaturePageInner {
@@ -2530,7 +2551,7 @@
 .SettingsSidebarFixedChrome {
   flex-shrink: 0;
   width: 100%;
-  padding: 8px 6px 0;
+  padding: 0 6px;
 }
 
 .SettingsSidebarBodyInner {
@@ -2544,7 +2565,10 @@
 .SettingsContent {
   flex: 1;
   min-width: 0;
-  height: 100%;
+  /* Upstream: the settings scroller starts under the 44px window top bar, and the page
+     keeps the route card's 3px inset from the window's right edge. */
+  height: calc(100% - 44px);
+  margin: 44px 3px 0 0;
   background-color: var(--app-settings-surface);
 }
 

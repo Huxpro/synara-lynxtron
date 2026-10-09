@@ -12,8 +12,19 @@ export function SettingsSidebarChromeRootElement(props: ChildrenProps) {
   return <view className="SharedSettingsSidebarChrome">{props.children}</view>;
 }
 
-export function SettingsSidebarBackRegionElement(props: ChildrenProps) {
-  return <view className="SharedSettingsSidebarBackRegion">{props.children}</view>;
+/**
+ * Upstream's rail layout has no "Back to app" row: the rail's Home button is the way back,
+ * and the panel opens on its title (`SidebarPanelTitle title="Settings"`), like every
+ * section. The shared composition still passes the back row; it is not rendered.
+ */
+export function SettingsSidebarBackRegionElement(_props: ChildrenProps) {
+  return (
+    <view className="AppRailPanelTitleRow SharedSettingsSidebarTitleRow">
+      <text className="AppRailPanelTitle" accessibility-trait="header">
+        Settings
+      </text>
+    </view>
+  );
 }
 
 export function SettingsSidebarBackButtonElement(

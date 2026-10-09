@@ -9,7 +9,7 @@
     "synaraClientImporters": 0,
     "useQueryCallSites": 29,
     "refetchIntervalSites": 1,
-    "routerTsxLines": 3612
+    "routerTsxLines": 3589
   },
   "patchedSources": ["apps/web/src/routes/__root.tsx"],
   "hardIslandPackages": [

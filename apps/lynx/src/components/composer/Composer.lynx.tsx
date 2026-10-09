@@ -60,7 +60,13 @@ import {
 } from "@synara-web/lib/providerDiscovery";
 import { resolveRuntimeModelDescriptor } from "@synara-web/components/chat/runtimeModelCapabilities";
 import { ComposerRuntimeModeControlComposition } from "@synara-web/components/chat/ComposerRuntimeModeControlComposition";
-import { shouldUseCompactComposerFooter } from "@synara-web/components/composerFooterLayout";
+import {
+  COMPOSER_FOOTER_MAX_TIER,
+  composerFooterPlanForTier,
+  resolveNextComposerFooterTier,
+  shouldUseCompactComposerFooter,
+  type ComposerFooterTierStep,
+} from "@synara-web/components/composerFooterLayout";
 import {
   deriveCumulativeCostUsd,
   deriveContextWindowMeterDisplay,
@@ -76,6 +82,10 @@ import {
   ComposerPrimaryActionComposition,
 } from "@synara-web/components/chat/ComposerInputComposition";
 import { ComposerLifecycleStatus } from "@synara-web/components/chat/ComposerLifecycleStatus";
+import {
+  ComposerFooterMeasureContext,
+  type ComposerFooterMeasure,
+} from "../../adapters/ComposerInputCompositionElements.lynx";
 import {
   formatComposerSkillChipLabel,
   formatComposerSlashCommandChipLabel,
@@ -347,6 +357,20 @@ function createComposerDispatchId(kind: "command" | "message"): string {
   return `lynx-${kind}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
+/** The footer row's horizontal padding (`--app-density-composer-footer-padding[-end]`). */
+const COMPOSER_FOOTER_ROW_PADDING_PX = 14;
+/** The least space the row keeps between its two clusters (`.ComposerFooterRowLynx--compact`). */
+const COMPOSER_FOOTER_CLUSTER_GAP_PX = 6;
+/** Tier 4 (leading controls below the input) is not ported; the model name is the last to go. */
+const COMPOSER_FOOTER_LAST_PORTED_TIER = COMPOSER_FOOTER_MAX_TIER - 1;
+/** Upstream hides the access-mode label by container query: `@max-[480px]:sr-only`. */
+const COMPOSER_RUNTIME_LABEL_MIN_FOOTER_WIDTH_PX = 480;
+
+/** Tailwind `leading-relaxed`, the composer editor's line box in upstream. */
+const COMPOSER_EDITOR_LINE_HEIGHT_RATIO = 1.625;
+/** `COMPOSER_EDITOR_LINE_HEIGHT_PX` of `@synara/shared/composerPlaceholder`. */
+const SHARED_EMPTY_EDITOR_LINE_HEIGHT_PX = 19.5;
+
 export function Composer({
   availableWidth = null,
   chatFontSizePx = DEFAULT_CHAT_FONT_SIZE_PX,
@@ -373,6 +397,42 @@ export function Composer({
   onSendSucceeded,
 }: ComposerProps) {
   const compactFooter = shouldUseCompactComposerFooter(availableWidth);
+  // Upstream's measured footer tiers: the footer renders a tier, the clusters report their
+  // widths, and the tier steps down while they do not fit (context meter, then the effort
+  // label, then the model name). The last tier, moving the leading controls below the
+  // input, is not ported.
+  const [footerTier, setFooterTier] = useState<ComposerFooterTierStep>({
+    tier: 0,
+    demotionWidths: [],
+  });
+  const [footerRowWidth, setFooterRowWidth] = useState(0);
+  const footerPlan = composerFooterPlanForTier(footerTier.tier, true);
+  const footerWidthsRef = useRef({ row: 0, leading: 0, actions: 0 });
+  const footerMeasure = useMemo<ComposerFooterMeasure>(
+    () => ({
+      onWidth: (part, width) => {
+        "background only";
+        const widths = footerWidthsRef.current;
+        if (widths[part] === width) return;
+        widths[part] = width;
+        if (part === "row") setFooterRowWidth(width);
+        if (widths.row <= 0 || widths.actions <= 0) return;
+        const contentWidth = widths.leading + widths.actions + COMPOSER_FOOTER_CLUSTER_GAP_PX;
+        setFooterTier((current) => {
+          const next = resolveNextComposerFooterTier({
+            currentTier: current.tier,
+            clientWidth: widths.row,
+            isOverflowing:
+              current.tier < COMPOSER_FOOTER_LAST_PORTED_TIER &&
+              contentWidth > widths.row - COMPOSER_FOOTER_ROW_PADDING_PX,
+            demotionWidths: current.demotionWidths,
+          });
+          return next.tier === current.tier ? current : next;
+        });
+      },
+    }),
+    [],
+  );
   // Electron reads the latest usage epoch, which a completed compaction clears.
   const contextWindow = useMemo(
     () => deriveLatestContextWindowState(activities).snapshot,
@@ -396,11 +456,17 @@ export function Composer({
           subagent: false,
           phase: resolveSessionPhase(sessionStatus),
         }));
-  const emptyEditorMinHeightPx = resolveEmptyComposerEditorMinHeightPx({
-    availableWidthPx: availableWidth,
-    chatFontSizePx: normalizedChatFontSizePx,
-    placeholder,
-  });
+  // Upstream's editor is `text-chat leading-relaxed`: a 1.625 line box. The shared helper
+  // still returns whole lines of its older 19.5px line, so only its line count is used.
+  const editorLineHeightPx = normalizedChatFontSizePx * COMPOSER_EDITOR_LINE_HEIGHT_RATIO;
+  const emptyEditorMinHeightPx =
+    (resolveEmptyComposerEditorMinHeightPx({
+      availableWidthPx: availableWidth,
+      chatFontSizePx: normalizedChatFontSizePx,
+      placeholder,
+    }) /
+      SHARED_EMPTY_EDITOR_LINE_HEIGHT_PX) *
+    editorLineHeightPx;
   const initData = useInitData() as {
     readonly initialComposerModelProvider?: unknown;
   };
@@ -1761,6 +1827,11 @@ export function Composer({
             {
               "--type-composer-editor-size": `${normalizedChatFontSizePx}px`,
               "--composer-empty-editor-height": `${emptyEditorMinHeightPx}px`,
+              // Lynx drops custom properties set through `style`, so the empty editor's
+              // height (upstream `min-h-[2lh]`) is also set directly.
+              ...(draftProjection.displayText.length === 0
+                ? { minHeight: `${emptyEditorMinHeightPx}px` }
+                : {}),
             } as Record<string, string>
           }
           capture-bindtap={restoreNativeFocus}
@@ -1900,125 +1971,131 @@ export function Composer({
           />
         </view>
       </ComposerEditorRegionComposition>
-      <ComposerFooterRowComposition compact={compactFooter}>
-        <ComposerFooterContentComposition
-          compact={compactFooter}
-          voiceBusy={isVoiceRecording || isVoiceTranscribing}
-          leading={
-            <>
-              <ComposerExtrasMenuComposition
-                interactionMode={interactionMode ?? "default"}
-                supportsFastMode={supportsFastMode}
-                fastModeEnabled={activeTraitSelection?.fastModeEnabled ?? false}
-                imageAttachmentsAvailable={true}
-                onPickAttachments={() => {
-                  "background only";
-                  void pickNativeComposerFiles();
-                }}
-                onAddPhotos={() => {
-                  "background only";
-                  void pickNativeComposerFiles();
-                }}
-                onToggleFastMode={toggleFastMode}
-                onSetPlanMode={(enabled) => {
-                  "background only";
-                  void setPlanMode(enabled);
-                }}
-              />
-              {!isVoiceRecording && !isVoiceTranscribing ? (
-                <ComposerRuntimeModeControlComposition
-                  hideLabel={compactFooter}
-                  runtimeMode={runtimeMode}
-                  onRuntimeModeChange={(nextRuntimeMode) => {
+      <ComposerFooterMeasureContext.Provider value={footerMeasure}>
+        <ComposerFooterRowComposition compact={compactFooter}>
+          <ComposerFooterContentComposition
+            compact={compactFooter}
+            voiceBusy={isVoiceRecording || isVoiceTranscribing}
+            leading={
+              <>
+                <ComposerExtrasMenuComposition
+                  interactionMode={interactionMode ?? "default"}
+                  supportsFastMode={supportsFastMode}
+                  fastModeEnabled={activeTraitSelection?.fastModeEnabled ?? false}
+                  imageAttachmentsAvailable={true}
+                  onPickAttachments={() => {
                     "background only";
-                    void setRuntimeMode(nextRuntimeMode);
+                    void pickNativeComposerFiles();
+                  }}
+                  onAddPhotos={() => {
+                    "background only";
+                    void pickNativeComposerFiles();
+                  }}
+                  onToggleFastMode={toggleFastMode}
+                  onSetPlanMode={(enabled) => {
+                    "background only";
+                    void setPlanMode(enabled);
                   }}
                 />
-              ) : null}
-              {sendError ? <text className="ComposerSendError">{sendError}</text> : null}
-            </>
-          }
-          actions={
-            <>
-              {!isVoiceRecording &&
-              !isVoiceTranscribing &&
-              !compactFooter &&
-              contextWindow &&
-              contextWindowDisplay ? (
-                <ComposerContextWindowMeterElement
-                  display={contextWindowDisplay}
-                  usage={contextWindow}
-                  cumulativeCostUsd={cumulativeCostUsd}
-                />
-              ) : null}
-              {isVoiceRecording || isVoiceTranscribing ? (
-                <ComposerVoiceRecorderBar
-                  durationLabel={`${Math.floor(voiceDurationMs / 60000)}:${Math.floor(
-                    (voiceDurationMs % 60000) / 1000,
-                  )
-                    .toString()
-                    .padStart(2, "0")}`}
-                  waveformLevels={voiceWaveformLevels}
-                  transcribing={isVoiceTranscribing}
-                  onCancel={() => {
-                    if (isVoiceRecording) {
-                      void submitVoiceRecording();
-                      return;
+                {!isVoiceRecording && !isVoiceTranscribing ? (
+                  <ComposerRuntimeModeControlComposition
+                    hideLabel={
+                      footerRowWidth > 0
+                        ? footerRowWidth <= COMPOSER_RUNTIME_LABEL_MIN_FOOTER_WIDTH_PX
+                        : compactFooter
                     }
-                    cancelVoiceRecording();
-                  }}
-                  onSubmit={() => void submitVoiceRecording()}
-                />
-              ) : null}
-              {!isVoiceRecording && !isVoiceTranscribing && activeModelSelection ? (
-                <ComposerModelPicker
-                  hideModelLabel={compactFooter}
-                  hideStatusLabel={compactFooter}
-                  modelSelection={activeModelSelection as never}
-                  lockedProvider={emptyLanding ? null : (lockedProvider ?? null)}
-                  catalogProvider={discoveryProvider ?? activeModelSelection.provider}
-                  rememberedSelectionFor={(provider) =>
-                    draftModelSelectionByProvider?.[provider] as ModelSelection | undefined
-                  }
-                  initialOpen={Boolean(initialModelMenuProvider)}
-                  runtimeModels={runtimeModelCatalog?.models ?? []}
-                  modelsLoading={
-                    runtimeModelsPending || (runtimeModelsFetching && !runtimeModelCatalog)
-                  }
-                  providers={providerStatuses ?? serverConfig?.providers ?? []}
-                  onCatalogProviderChange={(provider) => {
-                    "background only";
-                    setModelCatalogProvider(provider);
-                  }}
-                  onModelSelectionChange={(nextModelSelection) => {
-                    "background only";
-                    setModelSelection(brandedThreadId, nextModelSelection);
-                    setModelCatalogProvider(null);
-                  }}
-                  onOpenProviderSettings={onOpenProviderSettings}
-                />
-              ) : null}
-              {!isVoiceRecording && !isVoiceTranscribing && showVoiceNotesControl ? (
-                <ComposerVoiceButton
-                  disabled={isSending || isConnecting || !workspaceRoot}
-                  onActivate={() => void startVoiceRecording()}
-                />
-              ) : null}
-              {!isVoiceRecording && !isVoiceTranscribing ? (
-                <ComposerPrimaryActionComposition
-                  mode={isRunning ? "stop" : isSending || isConnecting ? "sending" : "send"}
-                  accessibleLabel={isConnecting ? "Connecting" : undefined}
-                  disabled={!isRunning && sendDisabled}
-                  onActivate={() => {
-                    "background only";
-                    void activatePrimaryAction();
-                  }}
-                />
-              ) : null}
-            </>
-          }
-        />
-      </ComposerFooterRowComposition>
+                    runtimeMode={runtimeMode}
+                    onRuntimeModeChange={(nextRuntimeMode) => {
+                      "background only";
+                      void setRuntimeMode(nextRuntimeMode);
+                    }}
+                  />
+                ) : null}
+                {sendError ? <text className="ComposerSendError">{sendError}</text> : null}
+              </>
+            }
+            actions={
+              <>
+                {!isVoiceRecording &&
+                !isVoiceTranscribing &&
+                footerPlan.showContextMeter &&
+                contextWindow &&
+                contextWindowDisplay ? (
+                  <ComposerContextWindowMeterElement
+                    display={contextWindowDisplay}
+                    usage={contextWindow}
+                    cumulativeCostUsd={cumulativeCostUsd}
+                  />
+                ) : null}
+                {isVoiceRecording || isVoiceTranscribing ? (
+                  <ComposerVoiceRecorderBar
+                    durationLabel={`${Math.floor(voiceDurationMs / 60000)}:${Math.floor(
+                      (voiceDurationMs % 60000) / 1000,
+                    )
+                      .toString()
+                      .padStart(2, "0")}`}
+                    waveformLevels={voiceWaveformLevels}
+                    transcribing={isVoiceTranscribing}
+                    onCancel={() => {
+                      if (isVoiceRecording) {
+                        void submitVoiceRecording();
+                        return;
+                      }
+                      cancelVoiceRecording();
+                    }}
+                    onSubmit={() => void submitVoiceRecording()}
+                  />
+                ) : null}
+                {!isVoiceRecording && !isVoiceTranscribing && activeModelSelection ? (
+                  <ComposerModelPicker
+                    hideModelLabel={!footerPlan.showModelLabel}
+                    hideStatusLabel={!footerPlan.showTraitsLabel}
+                    modelSelection={activeModelSelection as never}
+                    lockedProvider={emptyLanding ? null : (lockedProvider ?? null)}
+                    catalogProvider={discoveryProvider ?? activeModelSelection.provider}
+                    rememberedSelectionFor={(provider) =>
+                      draftModelSelectionByProvider?.[provider] as ModelSelection | undefined
+                    }
+                    initialOpen={Boolean(initialModelMenuProvider)}
+                    runtimeModels={runtimeModelCatalog?.models ?? []}
+                    modelsLoading={
+                      runtimeModelsPending || (runtimeModelsFetching && !runtimeModelCatalog)
+                    }
+                    providers={providerStatuses ?? serverConfig?.providers ?? []}
+                    onCatalogProviderChange={(provider) => {
+                      "background only";
+                      setModelCatalogProvider(provider);
+                    }}
+                    onModelSelectionChange={(nextModelSelection) => {
+                      "background only";
+                      setModelSelection(brandedThreadId, nextModelSelection);
+                      setModelCatalogProvider(null);
+                    }}
+                    onOpenProviderSettings={onOpenProviderSettings}
+                  />
+                ) : null}
+                {!isVoiceRecording && !isVoiceTranscribing && showVoiceNotesControl ? (
+                  <ComposerVoiceButton
+                    disabled={isSending || isConnecting || !workspaceRoot}
+                    onActivate={() => void startVoiceRecording()}
+                  />
+                ) : null}
+                {!isVoiceRecording && !isVoiceTranscribing ? (
+                  <ComposerPrimaryActionComposition
+                    mode={isRunning ? "stop" : isSending || isConnecting ? "sending" : "send"}
+                    accessibleLabel={isConnecting ? "Connecting" : undefined}
+                    disabled={!isRunning && sendDisabled}
+                    onActivate={() => {
+                      "background only";
+                      void activatePrimaryAction();
+                    }}
+                  />
+                ) : null}
+              </>
+            }
+          />
+        </ComposerFooterRowComposition>
+      </ComposerFooterMeasureContext.Provider>
       <ComposerLifecycleStatus
         operation={sendError ? "error" : isStopping ? "stopping" : isSending ? "sending" : "idle"}
         sessionStatus={sessionStatus}

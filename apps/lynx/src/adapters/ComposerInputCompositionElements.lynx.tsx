@@ -1,6 +1,6 @@
 import sendArrowSvg from "@synara-central-icons/arrow-up.svg?raw";
 import type { ReactNode } from "react";
-import { useEffect, useRef, useState } from "@lynx-js/react";
+import { createContext, useContext, useEffect, useRef, useState } from "@lynx-js/react";
 
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import { useTheme } from "./useTheme.lynx";
@@ -57,12 +57,37 @@ export function ComposerEditorRegionElement(
   return <view className="ComposerEditorRegionLynx">{props.children}</view>;
 }
 
+/**
+ * Width reports for upstream's measured footer tiers (`composerFooterLayout.ts`): the
+ * row's width, and the natural widths of its leading and actions clusters. The composer
+ * provides it; the shared composition between them only passes `compact`.
+ */
+export interface ComposerFooterMeasure {
+  readonly onWidth: (part: "row" | "leading" | "actions", width: number) => void;
+}
+
+export const ComposerFooterMeasureContext = createContext<ComposerFooterMeasure | null>(null);
+
+type FooterLayoutEvent = { readonly detail?: { readonly width?: number } };
+
+function useFooterWidthReport(part: "row" | "leading" | "actions") {
+  const measure = useContext(ComposerFooterMeasureContext);
+  if (!measure) return undefined;
+  return (event: FooterLayoutEvent) => {
+    "background only";
+    const width = event.detail?.width;
+    if (typeof width === "number") measure.onWidth(part, width);
+  };
+}
+
 export function ComposerFooterRowElement(
   props: ComposerHostElementProps & { readonly compact: boolean },
 ) {
+  const reportWidth = useFooterWidthReport("row");
   return (
     <view
       className={`ComposerFooterRowLynx${props.compact ? " ComposerFooterRowLynx--compact" : ""}`}
+      bindlayoutchange={reportWidth}
     >
       {props.children}
     </view>
@@ -75,11 +100,15 @@ export function ComposerFooterLeadingElement(
     readonly voiceBusy: boolean;
   },
 ) {
+  const reportWidth = useFooterWidthReport("leading");
   return (
     <view
       className={`ComposerFooterLeadingLynx${props.compact ? " ComposerFooterLeadingLynx--compact" : ""}${props.voiceBusy ? " ComposerFooterLeadingLynx--voice-busy" : ""}`}
     >
-      {props.children}
+      {/* The cluster clips when the row is tight; this inner row keeps its natural width. */}
+      <view className="ComposerFooterLeadingContentLynx" bindlayoutchange={reportWidth}>
+        {props.children}
+      </view>
     </view>
   );
 }
@@ -87,9 +116,11 @@ export function ComposerFooterLeadingElement(
 export function ComposerFooterActionsElement(
   props: ComposerHostElementProps & { readonly compact: boolean; readonly voiceBusy: boolean },
 ) {
+  const reportWidth = useFooterWidthReport("actions");
   return (
     <view
       className={`ComposerFooterActionsLynx${props.compact ? " ComposerFooterActionsLynx--compact" : ""}${props.voiceBusy ? " ComposerFooterActionsLynx--voice-busy" : ""}`}
+      bindlayoutchange={reportWidth}
     >
       {props.children}
     </view>

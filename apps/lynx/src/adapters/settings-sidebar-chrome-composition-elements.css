@@ -121,3 +121,10 @@
   font-size: 10px;
   line-height: 16px;
 }
+
+/* The settings chrome is inset 6px (`.SettingsSidebarFixedChrome`), which is the title
+   row's own `pl-1.5`; the nav group's `py-1.5` follows the title. */
+.SharedSettingsSidebarTitleRow {
+  margin-bottom: 6px;
+  padding-left: 0;
+}

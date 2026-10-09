@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-09T20:34:07.570Z",
+  "generatedAt": "2026-10-09T21:25:53.744Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -12,7 +12,7 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxGraph": {
     "entries": ["src/app/index.tsx"],
-    "modules": 869,
+    "modules": 879,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/checkbox",
@@ -64,6 +64,7 @@
       "@synara-central-icons/chain-link-3.svg?raw",
       "@synara-central-icons/changes.svg?raw",
       "@synara-central-icons/chat-bubble-7.svg?raw",
+      "@synara-central-icons/checklist.svg?raw",
       "@synara-central-icons/chevron-down-small.svg?raw",
       "@synara-central-icons/circle-check.svg?raw",
       "@synara-central-icons/circle-info.svg?raw",
@@ -79,6 +80,7 @@
       "@synara-central-icons/compose-pencil.svg?raw",
       "@synara-central-icons/console.svg?raw",
       "@synara-central-icons/difference-modified.svg?raw",
+      "@synara-central-icons/dot-grid-1x3-horizontal.svg?raw",
       "@synara-central-icons/edit-small-2.svg?raw",
       "@synara-central-icons/expand-45.svg?raw",
       "@synara-central-icons/file-chart.svg?raw",
@@ -98,6 +100,7 @@
       "@synara-central-icons/globe-2.svg?raw",
       "@synara-central-icons/globe.svg?raw",
       "@synara-central-icons/image-alt-text.svg?raw",
+      "@synara-central-icons/inbox-empty.svg?raw",
       "@synara-central-icons/info-simple.svg?raw",
       "@synara-central-icons/java.svg?raw",
       "@synara-central-icons/javascript.svg?raw",
@@ -119,6 +122,7 @@
       "@synara-central-icons/phyton.svg?raw",
       "@synara-central-icons/pin.svg?raw",
       "@synara-central-icons/play.svg?raw",
+      "@synara-central-icons/plus-large.svg?raw",
       "@synara-central-icons/plus-medium.svg?raw",
       "@synara-central-icons/pull-request.svg?raw",
       "@synara-central-icons/puzzle.svg?raw",
@@ -227,7 +231,6 @@
       "@synara/shared/threadDetailEvents",
       "@synara/shared/threadEnvironment",
       "@synara/shared/threadHeaderActions",
-      "@synara/shared/threadHeaderIdentity",
       "@synara/shared/threadHierarchy",
       "@synara/shared/threadMentions",
       "@synara/shared/threadSummary",
@@ -287,13 +290,13 @@
       "synaraClientImporters": 0,
       "useQueryCallSites": 29,
       "refetchIntervalSites": 1,
-      "routerTsxLines": 3612
+      "routerTsxLines": 3589
     },
     "current": {
       "synaraClientImporters": 0,
       "useQueryCallSites": 29,
       "refetchIntervalSites": 1,
-      "routerTsxLines": 3612
+      "routerTsxLines": 3589
     }
   },
   "screens": [
@@ -477,11 +480,11 @@
         "loc": 135424
       },
       "currentReuse": {
-        "modules": 314,
-        "loc": 79690,
-        "modulePercent": 52.33,
-        "locPercent": 58.84,
-        "gatePercent": 52.33
+        "modules": 320,
+        "loc": 80221,
+        "modulePercent": 53.33,
+        "locPercent": 59.24,
+        "gatePercent": 53.33
       },
       "modules": [
         {
@@ -710,7 +713,7 @@
           "loc": 97,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/lib/providerInstancePresentation.ts",
@@ -992,7 +995,7 @@
           "loc": 39,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/providerUsageDisplay.ts"]
         },
         {
@@ -4280,7 +4283,7 @@
           "loc": 40,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/env.ts", "apps/web/src/lib/utils.ts"]
         },
         {
@@ -4296,7 +4299,7 @@
           "loc": 154,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/ui/sidebar.tsx",
             "apps/web/src/env.ts",
@@ -4467,7 +4470,7 @@
           "loc": 151,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/openUsageRateLimits.ts",
             "apps/web/src/lib/openUsageReactQuery.ts",
@@ -5105,7 +5108,7 @@
           "loc": 15,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -5398,7 +5401,7 @@
           "loc": 113,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/rateLimits.ts"]
         },
         {
@@ -5406,7 +5409,7 @@
           "loc": 46,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/openUsageRateLimits.ts"]
         },
         {
@@ -5590,7 +5593,7 @@
           "loc": 134,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/rateLimits.ts", "apps/web/src/lib/usagePace.ts"]
         },
         {
@@ -5598,7 +5601,7 @@
           "loc": 39,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/openUsageRateLimits.ts",
             "apps/web/src/lib/rateLimits.ts"
@@ -6197,7 +6200,7 @@
           "loc": 5,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -6867,7 +6870,7 @@
           "loc": 116,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/appRail.logic.ts"]
         },
         {
@@ -7925,11 +7928,11 @@
         "loc": 116837
       },
       "currentReuse": {
-        "modules": 284,
-        "loc": 72621,
-        "modulePercent": 58.8,
-        "locPercent": 62.16,
-        "gatePercent": 58.8
+        "modules": 290,
+        "loc": 73152,
+        "modulePercent": 60.04,
+        "locPercent": 62.61,
+        "gatePercent": 60.04
       },
       "modules": [
         {
@@ -8096,7 +8099,7 @@
           "loc": 97,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/lib/providerInstancePresentation.ts",
@@ -8249,7 +8252,7 @@
           "loc": 39,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/providerUsageDisplay.ts"]
         },
         {
@@ -11096,7 +11099,7 @@
           "loc": 40,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/env.ts", "apps/web/src/lib/utils.ts"]
         },
         {
@@ -11104,7 +11107,7 @@
           "loc": 154,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/ui/sidebar.tsx",
             "apps/web/src/env.ts",
@@ -11243,7 +11246,7 @@
           "loc": 151,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/openUsageRateLimits.ts",
             "apps/web/src/lib/openUsageReactQuery.ts",
@@ -11760,7 +11763,7 @@
           "loc": 15,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -12015,7 +12018,7 @@
           "loc": 113,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/rateLimits.ts"]
         },
         {
@@ -12023,7 +12026,7 @@
           "loc": 46,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/openUsageRateLimits.ts"]
         },
         {
@@ -12191,7 +12194,7 @@
           "loc": 134,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/rateLimits.ts", "apps/web/src/lib/usagePace.ts"]
         },
         {
@@ -12199,7 +12202,7 @@
           "loc": 39,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/openUsageRateLimits.ts",
             "apps/web/src/lib/rateLimits.ts"
@@ -12730,7 +12733,7 @@
           "loc": 5,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -13015,7 +13018,7 @@
           "loc": 116,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/appRail.logic.ts"]
         },
         {
@@ -13797,11 +13800,11 @@
         "loc": 226411
       },
       "currentReuse": {
-        "modules": 362,
-        "loc": 86308,
-        "modulePercent": 35.01,
-        "locPercent": 38.12,
-        "gatePercent": 35.01
+        "modules": 370,
+        "loc": 87147,
+        "modulePercent": 35.78,
+        "locPercent": 38.49,
+        "gatePercent": 35.78
       },
       "modules": [
         {
@@ -14046,7 +14049,7 @@
           "loc": 97,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/lib/providerInstancePresentation.ts",
@@ -16007,7 +16010,7 @@
           "loc": 39,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/providerUsageDisplay.ts"]
         },
         {
@@ -23289,7 +23292,7 @@
           "loc": 40,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/env.ts", "apps/web/src/lib/utils.ts"]
         },
         {
@@ -23305,7 +23308,7 @@
           "loc": 154,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/ui/sidebar.tsx",
             "apps/web/src/env.ts",
@@ -23578,7 +23581,7 @@
           "loc": 151,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/openUsageRateLimits.ts",
             "apps/web/src/lib/openUsageReactQuery.ts",
@@ -24476,7 +24479,7 @@
           "loc": 15,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -24901,7 +24904,7 @@
           "loc": 113,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/rateLimits.ts"]
         },
         {
@@ -24909,7 +24912,7 @@
           "loc": 46,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/openUsageRateLimits.ts"]
         },
         {
@@ -25181,7 +25184,7 @@
           "loc": 134,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/rateLimits.ts", "apps/web/src/lib/usagePace.ts"]
         },
         {
@@ -25189,7 +25192,7 @@
           "loc": 39,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/openUsageRateLimits.ts",
             "apps/web/src/lib/rateLimits.ts"
@@ -25884,7 +25887,7 @@
           "loc": 5,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -26253,7 +26256,7 @@
           "loc": 235,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/Sidebar.logic.ts",
             "apps/web/src/lib/subagentPresentation.ts",
@@ -26266,7 +26269,7 @@
           "loc": 73,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/storage.ts", "apps/web/src/openThreadTabs.logic.ts"]
         },
         {
@@ -26619,7 +26622,7 @@
           "loc": 116,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/appRail.logic.ts"]
         },
         {
@@ -27727,11 +27730,11 @@
         "loc": 149320
       },
       "currentReuse": {
-        "modules": 315,
-        "loc": 79828,
-        "modulePercent": 48.61,
-        "locPercent": 53.46,
-        "gatePercent": 48.61
+        "modules": 321,
+        "loc": 80359,
+        "modulePercent": 49.54,
+        "locPercent": 53.82,
+        "gatePercent": 49.54
       },
       "modules": [
         {
@@ -27973,7 +27976,7 @@
           "loc": 97,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/lib/providerInstancePresentation.ts",
@@ -28255,7 +28258,7 @@
           "loc": 39,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/providerUsageDisplay.ts"]
         },
         {
@@ -32161,7 +32164,7 @@
           "loc": 40,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/env.ts", "apps/web/src/lib/utils.ts"]
         },
         {
@@ -32177,7 +32180,7 @@
           "loc": 154,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/ui/sidebar.tsx",
             "apps/web/src/env.ts",
@@ -32356,7 +32359,7 @@
           "loc": 151,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/openUsageRateLimits.ts",
             "apps/web/src/lib/openUsageReactQuery.ts",
@@ -33047,7 +33050,7 @@
           "loc": 15,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -33356,7 +33359,7 @@
           "loc": 113,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/rateLimits.ts"]
         },
         {
@@ -33364,7 +33367,7 @@
           "loc": 46,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/openUsageRateLimits.ts"]
         },
         {
@@ -33556,7 +33559,7 @@
           "loc": 134,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/rateLimits.ts", "apps/web/src/lib/usagePace.ts"]
         },
         {
@@ -33564,7 +33567,7 @@
           "loc": 39,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/openUsageRateLimits.ts",
             "apps/web/src/lib/rateLimits.ts"
@@ -34163,7 +34166,7 @@
           "loc": 5,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -34833,7 +34836,7 @@
           "loc": 116,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/appRail.logic.ts"]
         },
         {
@@ -35938,11 +35941,11 @@
         "loc": 148974
       },
       "currentReuse": {
-        "modules": 329,
-        "loc": 81899,
-        "modulePercent": 49.18,
-        "locPercent": 54.98,
-        "gatePercent": 49.18
+        "modules": 335,
+        "loc": 82430,
+        "modulePercent": 50.07,
+        "locPercent": 55.33,
+        "gatePercent": 50.07
       },
       "modules": [
         {
@@ -36160,7 +36163,7 @@
           "loc": 97,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/lib/providerInstancePresentation.ts",
@@ -36715,7 +36718,7 @@
           "loc": 39,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/providerUsageDisplay.ts"]
         },
         {
@@ -40679,7 +40682,7 @@
           "loc": 40,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/env.ts", "apps/web/src/lib/utils.ts"]
         },
         {
@@ -40695,7 +40698,7 @@
           "loc": 154,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/ui/sidebar.tsx",
             "apps/web/src/env.ts",
@@ -40866,7 +40869,7 @@
           "loc": 151,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/openUsageRateLimits.ts",
             "apps/web/src/lib/openUsageReactQuery.ts",
@@ -41550,7 +41553,7 @@
           "loc": 15,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -41898,7 +41901,7 @@
           "loc": 113,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/rateLimits.ts"]
         },
         {
@@ -41906,7 +41909,7 @@
           "loc": 46,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/openUsageRateLimits.ts"]
         },
         {
@@ -42090,7 +42093,7 @@
           "loc": 134,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/rateLimits.ts", "apps/web/src/lib/usagePace.ts"]
         },
         {
@@ -42098,7 +42101,7 @@
           "loc": 39,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/openUsageRateLimits.ts",
             "apps/web/src/lib/rateLimits.ts"
@@ -42697,7 +42700,7 @@
           "loc": 5,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -43391,7 +43394,7 @@
           "loc": 116,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/appRail.logic.ts"]
         },
         {
@@ -44454,11 +44457,11 @@
         "loc": 148975
       },
       "currentReuse": {
-        "modules": 329,
-        "loc": 81899,
-        "modulePercent": 49.18,
-        "locPercent": 54.97,
-        "gatePercent": 49.18
+        "modules": 335,
+        "loc": 82430,
+        "modulePercent": 50.07,
+        "locPercent": 55.33,
+        "gatePercent": 50.07
       },
       "modules": [
         {
@@ -44676,7 +44679,7 @@
           "loc": 97,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/lib/providerInstancePresentation.ts",
@@ -45231,7 +45234,7 @@
           "loc": 39,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/providerUsageDisplay.ts"]
         },
         {
@@ -49195,7 +49198,7 @@
           "loc": 40,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/env.ts", "apps/web/src/lib/utils.ts"]
         },
         {
@@ -49211,7 +49214,7 @@
           "loc": 154,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/ui/sidebar.tsx",
             "apps/web/src/env.ts",
@@ -49382,7 +49385,7 @@
           "loc": 151,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/openUsageRateLimits.ts",
             "apps/web/src/lib/openUsageReactQuery.ts",
@@ -50066,7 +50069,7 @@
           "loc": 15,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -50414,7 +50417,7 @@
           "loc": 113,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/rateLimits.ts"]
         },
         {
@@ -50422,7 +50425,7 @@
           "loc": 46,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/openUsageRateLimits.ts"]
         },
         {
@@ -50606,7 +50609,7 @@
           "loc": 134,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/rateLimits.ts", "apps/web/src/lib/usagePace.ts"]
         },
         {
@@ -50614,7 +50617,7 @@
           "loc": 39,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/openUsageRateLimits.ts",
             "apps/web/src/lib/rateLimits.ts"
@@ -51213,7 +51216,7 @@
           "loc": 5,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -51907,7 +51910,7 @@
           "loc": 116,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/appRail.logic.ts"]
         },
         {
@@ -52992,11 +52995,11 @@
         "loc": 221136
       },
       "currentReuse": {
-        "modules": 362,
-        "loc": 86308,
-        "modulePercent": 36.06,
-        "locPercent": 39.03,
-        "gatePercent": 36.06
+        "modules": 370,
+        "loc": 87147,
+        "modulePercent": 36.85,
+        "locPercent": 39.41,
+        "gatePercent": 36.85
       },
       "modules": [
         {
@@ -53230,7 +53233,7 @@
           "loc": 97,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/lib/providerInstancePresentation.ts",
@@ -55102,7 +55105,7 @@
           "loc": 39,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/providerUsageDisplay.ts"]
         },
         {
@@ -62148,7 +62151,7 @@
           "loc": 40,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/env.ts", "apps/web/src/lib/utils.ts"]
         },
         {
@@ -62164,7 +62167,7 @@
           "loc": 154,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/ui/sidebar.tsx",
             "apps/web/src/env.ts",
@@ -62418,7 +62421,7 @@
           "loc": 151,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/openUsageRateLimits.ts",
             "apps/web/src/lib/openUsageReactQuery.ts",
@@ -63297,7 +63300,7 @@
           "loc": 15,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
+          "currentReuse": "UNMAPPED",
           "dependencies": []
         },
         {
@@ -63706,7 +63709,7 @@
           "loc": 113,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/rateLimits.ts"]
         },
         {
@@ -63714,7 +63717,7 @@
           "loc": 46,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/openUsageRateLimits.ts"]
         },
         {
@@ -63986,7 +63989,7 @@
           "loc": 134,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/rateLimits.ts", "apps/web/src/lib/usagePace.ts"]
         },
         {
@@ -63994,7 +63997,7 @@
           "loc": 39,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/openUsageRateLimits.ts",
             "apps/web/src/lib/rateLimits.ts"
@@ -64689,7 +64692,7 @@
           "loc": 5,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -65058,7 +65061,7 @@
           "loc": 235,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/Sidebar.logic.ts",
             "apps/web/src/lib/subagentPresentation.ts",
@@ -65071,7 +65074,7 @@
           "loc": 73,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/lib/storage.ts", "apps/web/src/openThreadTabs.logic.ts"]
         },
         {
@@ -65424,7 +65427,7 @@
           "loc": 116,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/appRail.logic.ts"]
         },
         {

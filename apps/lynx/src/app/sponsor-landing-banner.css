@@ -1,0 +1,81 @@
+/* Upstream: `absolute inset-x-0 top-4 flex justify-center px-6` holding a
+   `w-full max-w-[520px]` banner; hidden on windows up to 620px tall. */
+.SponsorLandingBanner {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  width: 520px;
+  /* The hero's 20px chat gutters plus the banner row's `px-6`. */
+  max-width: calc(100% - 88px);
+  transform: translateX(-50%);
+  -x-app-region: no-drag;
+}
+
+.SliceRoot--viewport-short-height .SponsorLandingBanner {
+  display: none;
+}
+
+/* `flex items-center gap-4 rounded-2xl px-4 py-3`. */
+.SponsorLandingBannerButton {
+  display: flex;
+  width: 100%;
+  padding: 12px 16px;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+  border-radius: 16px;
+}
+
+.SponsorLandingBannerButton.ui-hover,
+.SponsorLandingBannerButton.ui-focus,
+.SponsorLandingBannerButton.ui-pressed {
+  background-color: var(--color-background-button-secondary-hover);
+}
+
+.SponsorLandingBannerIcon {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.SponsorLandingBannerCopy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.SponsorLandingBannerTitle,
+.SponsorLandingBannerDescription {
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 19.5px;
+}
+
+.SponsorLandingBannerTitle {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.SponsorLandingBannerDescription {
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+
+/* `absolute -right-1.5 -top-1.5 size-[22px] rounded-full border bg-background`. */
+.SponsorLandingBannerDismiss {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  display: flex;
+  width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background-color: var(--background);
+}

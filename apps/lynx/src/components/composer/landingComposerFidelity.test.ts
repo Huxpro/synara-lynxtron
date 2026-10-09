@@ -37,8 +37,8 @@ describe("landing composer fidelity contract", () => {
 
     expect(routerSource).toContain("<CenteredEmptyLandingStack>");
     expect(routerSource).toContain("projectName={routePresentation.projectName}");
-    // Upstream's landing header uses minimalChrome: no title, hand-off or project actions.
-    expect(routerSource).toContain('<view className="ThreadsLandingHeaderIdentity" />');
+    // Upstream's landing header: the open-thread tabs, no hand-off or project actions.
+    expect(routerSource).toContain("<OpenThreadTabStrip activeThreadId={null} />");
     expect(routerSource).toContain("<ComposerColumnFrameSurface>");
     expect(routerSource).toContain("<LandingComposer");
     // The context tray sits above the composer, as upstream's empty-landing controls do.
@@ -150,9 +150,8 @@ describe("landing composer fidelity contract", () => {
       /\.AppSidebarFooter \.SharedSidebarPrimaryActionLeading\s*\{[^}]*opacity:\s*0\.95;/s,
     );
     expect(sidebarSource).not.toContain('<text className="AppSidebarNavGlyph">⚙</text>');
-    expect(sidebarSource).toContain(
-      '<SettingsIcon className="AppSidebarSettingsIcon" size={15} />',
-    );
+    // Settings is a rail button in upstream's layout, not a sidebar footer row.
+    expect(sidebarSource).not.toContain("<SidebarFooterSection");
     expect(landingStyles).not.toMatch(/\.LandingComposerTray\s*\{[^}]*z-index:/s);
     expect(routerSource).toContain("onThreadCreated={props.onThreadCreated}");
     expect(landingSource).toContain("setInteractionMode(draftId, nextInteractionMode)");

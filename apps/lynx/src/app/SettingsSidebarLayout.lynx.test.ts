@@ -31,7 +31,7 @@ describe("Lynx Settings sidebar layout", () => {
       /\.SettingsSidebarBody\s*\{[^}]*flex:\s*1;[^}]*min-height:\s*0;[^}]*width:\s*100%;/s,
     );
     expect(styles).toMatch(
-      /\.SettingsSidebarFixedChrome\s*\{[^}]*flex-shrink:\s*0;[^}]*padding:\s*8px 6px 0;/s,
+      /\.SettingsSidebarFixedChrome\s*\{[^}]*flex-shrink:\s*0;[^}]*padding:\s*0 6px;/s,
     );
     expect(styles).toMatch(
       /\.SettingsSidebarBodyInner\s*\{[^}]*min-height:\s*100%;[^}]*padding:\s*0 6px 6px;/s,

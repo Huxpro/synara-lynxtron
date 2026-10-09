@@ -3,7 +3,6 @@
   width: 100%;
   flex-direction: column;
   align-self: center;
-  transform: translateY(-1px);
 }
 
 /* Upstream's empty-landing controls: an unfilled row directly above the composer, full
@@ -25,7 +24,8 @@
   flex-direction: row;
   align-items: center;
   gap: 6px;
-  padding: 4px 6px;
+  /* Upstream trigger: `px-[calc(--spacing(2.5)-1px)]` inside a 1px border. */
+  padding: 4px 10px;
   border: 1px solid transparent;
   border-radius: 10px;
 }

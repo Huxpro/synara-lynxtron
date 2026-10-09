@@ -1,0 +1,31 @@
+/* Upstream chat header: `<nav aria-label="Open threads" class="flex min-w-0 flex-1">`
+   holding SurfaceTabStrip (`gap-1`, horizontal scroll). */
+.OpenThreadTabStrip {
+  display: flex;
+  min-width: 0;
+  height: 32px;
+  flex: 1;
+  flex-direction: row;
+  /* The header row's `gap-2` before the action cluster. */
+  margin-right: 8px;
+  -x-app-region: no-drag;
+}
+
+.OpenThreadTabStripScroller {
+  min-width: 0;
+  height: 32px;
+  flex: 1;
+}
+
+.OpenThreadTabStripList {
+  display: flex;
+  height: 32px;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.OpenThreadTabTerminalIcon {
+  width: 14px;
+  height: 14px;
+}

@@ -65,8 +65,7 @@ export function ProjectActionAddButton(props: {
       aria-label="Add action"
       onClick={props.onActivate}
     >
-      <PlusIcon className="ThreadHeaderTextActionIcon" size={14} />
-      {!props.compact ? <text className="ThreadHeaderTextActionLabel">Add action</text> : null}
+      <PlusIcon className="ThreadHeaderTextActionIcon" size={16} />
     </Button>
   );
 }
@@ -93,6 +92,7 @@ export function ThreadHeaderActions(props: {
   readonly onOpenTerminal: () => void;
   readonly project: HeaderProject | null;
   readonly thread: ThreadHeaderSummary | undefined;
+  /** Kept for callers; Electron's header actions are icon-only at every width. */
   readonly compact: boolean;
 }) {
   const { semanticIconColor } = useTheme();
@@ -269,7 +269,6 @@ export function ThreadHeaderActions(props: {
               className="ThreadHeaderTextActionIcon"
               content={colorizeLynxSvg(handoffSvg, semanticIconColor("primary"))}
             />
-            {!props.compact ? <text className="ThreadHeaderTextActionLabel">Hand off</text> : null}
           </MenuTrigger>
           <MenuPopup align="end" className="ThreadHeaderActionMenu" side="bottom" sideOffset={6}>
             {handoffTargets.map((provider) => (
@@ -295,10 +294,7 @@ export function ThreadHeaderActions(props: {
               />
             }
           >
-            <PlusIcon className="ThreadHeaderTextActionIcon" size={14} />
-            {!props.compact ? (
-              <text className="ThreadHeaderTextActionLabel">Add action</text>
-            ) : null}
+            <PlusIcon className="ThreadHeaderTextActionIcon" size={16} />
           </MenuTrigger>
           <MenuPopup align="end" className="ThreadHeaderActionMenu" side="bottom" sideOffset={6}>
             {project?.scripts.map((script) => (
@@ -335,6 +331,9 @@ export function ThreadHeaderActions(props: {
           disabled={!project || busy}
           onActivate={openActionEditor}
         />
+      ) : null}
+      {props.actionState.showHandoff || props.actionState.showProjectActions ? (
+        <view className="ThreadHeaderActionDivider" />
       ) : null}
       <ProjectActionEditor
         key={`${editingScript?.id ?? "new"}-${actionDialogOpen ? "open" : "closed"}-${editingKeybinding ?? ""}`}

@@ -39,8 +39,8 @@
       }
     },
     "runtime": {
-      "classes": 1346,
-      "weighted": 18730
+      "classes": 1344,
+      "weighted": 18737
     }
   },
   "classes": [
@@ -16250,7 +16250,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": false,
+      "runtime": true,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -16273,7 +16273,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": false,
+      "runtime": true,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -24255,7 +24255,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "CUSTOM",
       "reason": "project component class; covered by authored CSS, not the utility denominator"
     },
@@ -38860,7 +38860,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "CUSTOM",
       "reason": "project component class; covered by authored CSS, not the utility denominator"
     },
@@ -46948,7 +46948,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNMAPPED",
       "reason": "no generated selector or approved deterministic patch"
     },
@@ -49440,7 +49440,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },

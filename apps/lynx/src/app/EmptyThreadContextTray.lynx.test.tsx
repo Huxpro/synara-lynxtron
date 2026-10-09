@@ -16,10 +16,11 @@ describe("empty Thread context tray", () => {
   it("does not invent a branch when the server snapshot has none", () => {
     render(<EmptyThreadContextTray {...defaultProps} />);
 
+    // A local thread shows no environment chip (upstream marks only Worktree).
     const statuses = elementTree.root?.querySelectorAll(".EmptyThreadContextStatus");
-    expect(statuses).toHaveLength(1);
+    expect(statuses).toHaveLength(0);
     expect(elementTree.root?.textContent).toContain("Environment Current");
-    expect(elementTree.root?.textContent).toContain("Local");
+    expect(elementTree.root?.textContent).not.toContain("Worktree");
     expect(elementTree.root?.textContent).not.toContain("main");
   });
 
@@ -27,7 +28,7 @@ describe("empty Thread context tray", () => {
     render(<EmptyThreadContextTray {...defaultProps} branch="feature/fidelity" />);
 
     const statuses = elementTree.root?.querySelectorAll(".EmptyThreadContextStatus");
-    expect(statuses).toHaveLength(2);
+    expect(statuses).toHaveLength(1);
     expect(elementTree.root?.textContent).toContain("feature/fidelity");
   });
 
@@ -44,11 +45,12 @@ describe("empty Thread context tray", () => {
     );
 
     expect(elementTree.root?.querySelector(".ProjectControl")?.textContent).toBe("github");
-    expect(elementTree.root?.textContent).toContain("Local");
     expect(elementTree.root?.textContent).toContain("Temporary");
-    expect(
-      elementTree.root?.querySelector(".EmptyThreadContextStatus--interactive"),
-    ).not.toBeNull();
+    // Upstream's composer row: a Worktree checkbox after Temporary, unchecked for Local.
+    const worktree = elementTree.root?.querySelector(".EmptyThreadWorktreeToggle");
+    expect(worktree?.textContent).toBe("Worktree");
+    expect(worktree?.getAttribute("accessibility-label")).toBe("Worktree");
+    expect(worktree?.getAttribute("class")).not.toContain("EmptyThreadWorktreeToggle--checked");
   });
 
   it("resolves toolbar icon paint explicitly instead of relying on SVG inheritance", () => {
@@ -58,7 +60,7 @@ describe("empty Thread context tray", () => {
     );
 
     expect(source).toContain('const secondaryIconColor = semanticIconColor("secondary")');
-    expect(source.match(/color=\{secondaryIconColor\}/g)).toHaveLength(6);
+    expect(source.match(/color=\{secondaryIconColor\}/g)).toHaveLength(3);
     expect(source).toContain('? semanticIconColor("accent")');
     expect(source).not.toContain("svgColors.accentForeground");
   });

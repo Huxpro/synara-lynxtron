@@ -64,6 +64,7 @@ import {
   isReasoningUpdateWorkEntry,
 } from "@synara-web/components/chat/agentActivity.logic";
 
+import { useTranscriptScrollerOverhangPx } from "./ThreadComposerDock.lynx";
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { useComposerDraftStore } from "../adapters/composerDraftStore.lynx";
@@ -164,6 +165,7 @@ function TranscriptMessageTrail(props: {
   readonly viewportWidth: number;
 }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const scrollerOverhangPx = useTranscriptScrollerOverhangPx();
   const items = deriveMessageTrailItems(
     props.rows.filter(
       (row): row is Extract<ThreadTranscriptRow, { readonly kind: "message" }> =>
@@ -187,6 +189,7 @@ function TranscriptMessageTrail(props: {
   return (
     <view
       className="TranscriptMessageTrail"
+      style={{ bottom: `${-scrollerOverhangPx}px` }}
       accessibility-element
       accessibility-label="Message navigation"
       accessibility-trait="summary"

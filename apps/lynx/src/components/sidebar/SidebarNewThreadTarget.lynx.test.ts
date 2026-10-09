@@ -9,7 +9,7 @@ import {
 describe("Native sidebar New thread target", () => {
   it("opens the focused project, else the latest, like the web sidebar", () => {
     const source = readFileSync(new URL("./Sidebar.lynx.tsx", import.meta.url), "utf8");
-    expect(source).toContain("onCreateThread={openPrimaryNewThread}");
+    expect(source).toContain("onActivate: openPrimaryNewThread,");
     expect(source).toContain("resolveNewThreadTarget({");
     expect(source).toContain("setLatestProjectId(ProjectId.makeUnsafe(activeProject.id))");
     expect(source).toContain("`/new-thread/${encodeURIComponent(target.projectId)}`");
