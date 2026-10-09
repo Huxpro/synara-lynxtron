@@ -119,6 +119,11 @@ export function flushStorageBeforePageHide(
   // Intentionally empty: no page-hide lifecycle on this platform.
 }
 
+/** Lynxtron has no `StorageEvent`, so no event area is ever this store. */
+export function isWebStorageArea(_area: unknown): boolean {
+  return false;
+}
+
 export const webStorage: KeyValueStorage = {
   getItem: (key) => mirror.get(key) ?? null,
   setItem: (key, value) => {

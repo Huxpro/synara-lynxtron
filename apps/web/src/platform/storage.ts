@@ -61,6 +61,15 @@ function resolveWebStorage(): KeyValueStorage {
  * global localStorage is available the store degrades to process-local memory
  * instead of throwing, matching the previous isomorphic fallback behavior.
  */
+/**
+ * True when a `StorageEvent.storageArea` is the store `webStorage` writes to.
+ * `webStorage` is a wrapper, so comparing an event's area with it by identity
+ * never matches; this compares with the real `localStorage` behind it.
+ */
+export function isWebStorageArea(area: unknown): boolean {
+  return area === resolveWebStorage();
+}
+
 export const webStorage: KeyValueStorage = {
   getItem: (key) => resolveWebStorage().getItem(key),
   setItem: (key, value) => resolveWebStorage().setItem(key, value),

@@ -1,7 +1,7 @@
 import * as Schema from "effect/Schema";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { webStorage } from "~/platform/storage";
+import { isWebStorageArea, webStorage } from "~/platform/storage";
 
 import { isBrowser } from "~/platform/env";
 import {
@@ -180,7 +180,7 @@ export function useLocalStorage<T, E>(
 
     const handleStorageChange = (event: StorageEvent) => {
       const affectsLocalStorage =
-        event.storageArea === null || event.storageArea === isomorphicLocalStorage;
+        event.storageArea === null || isWebStorageArea(event.storageArea);
       // Browsers report localStorage.clear() with key === null; every subscribed key must reset.
       if (affectsLocalStorage && (event.key === null || event.key === key)) {
         syncFromStorage();
