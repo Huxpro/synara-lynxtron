@@ -379,14 +379,18 @@ describe("generated EventRouter on the Lynx shims", () => {
     });
     const beforePoll = useStore.getState();
 
-    // … and only then does the poll resolve. `fetchSidebarSnapshot` cannot be
-    // loaded here (its module graph breaks rstest's chunk loading), so this is
-    // its one store interaction, pinned to the source right below.
+    // … and only then does the poll resolve. The sidebar no longer polls (it
+    // reads this store); the landing bootstrap is the remaining reader of the
+    // bounded snapshot. Its module graph breaks rstest's chunk loading, so its
+    // one store interaction is pinned to the source right below.
     const queriesSource = readFileSync(new URL("../app/queries.ts", import.meta.url), "utf8");
-    expect(queriesSource).toContain(
-      "normalized = projectShellSnapshot(useStore.getState(), snapshot);",
+    const landingSource = readFileSync(
+      new URL("../components/composer/LandingComposer.lynx.tsx", import.meta.url),
+      "utf8",
     );
+    expect(landingSource).toContain("projectShellSnapshot(useStore.getState(), shell)");
     expect(queriesSource).not.toMatch(/\.(syncServer\w+|applyShellEvent|setState)\(/);
+    expect(landingSource).not.toMatch(/\.(syncServer\w+|applyShellEvent|setState)\(/);
     const polled = projectShellSnapshot(useStore.getState(), boundedPoll);
     expect(getThreadsFromState(polled)).toHaveLength(80);
     expect(getThreadFromState(polled, OLD_THREAD)).toBeUndefined();

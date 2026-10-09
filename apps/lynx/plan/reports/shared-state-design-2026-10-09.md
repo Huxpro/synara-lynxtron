@@ -346,3 +346,53 @@ extraction that uses, or any excluded code that assigns to, an extracted binding
 `tsconfig.app.json` sets `verbatimModuleSyntax: false`: upstream is not written against that flag
 (`editorPreferences.ts` imports the type `NativeApi` without `type`), and this program now
 type-checks upstream state-layer source. The bundler does not read this tsconfig.
+
+## 8. Step 3 as built (branch `huxcc/m3-sidebar-store`)
+
+The sidebar surfaces (Sidebar, search palette host, Composer mentions, Kanban ×2, PR page, Automations,
+Settings Advanced/Archived/Integrations/Worktrees) and the route shell read the shared store.
+
+| Piece                                                                  | File                                 |
+| ---------------------------------------------------------------------- | ------------------------------------ |
+| Pure projection + memoized selectors over the upstream selectors       | `app/sidebarSnapshot.logic.ts`       |
+| Hooks `useSidebarSnapshot`, `useRouteThreadSummaries`; on-demand reads | `app/sidebarSnapshot.lynx.ts`        |
+| "Never hydrated" → error with Retry                                    | `app/sessionShellBootstrap.logic.ts` |
+
+Deleted: `fetchSidebarSnapshot`, `fetchThreads`, `projectActiveThreadSummaries`, the snapshot and search
+caches, `invalidateSidebarSnapshotProjectionCache`, seven `refetchInterval` polls, two
+`subscribeOrchestrationShellEvents` → invalidate effects, the `["sidebar-snapshot"]`/`["threads"]`
+invalidations. Ratchet baseline: `useQueryCallSites` 66, `refetchIntervalSites` 8, `routerTsxLines` 3705,
+`synaraClientImporters` 39.
+
+Rules this step settled:
+
+- **Selector key.** `threadShellById` and `messageIdsByThreadId` are replaced by every streamed message
+  batch (`storeProjection.ts` `writeThreadState`; the shell carries `updatedAt`). The selector reduces
+  them to what the sidebar exposes (worktree rows, archived rows, message counts) and keys the
+  projection on those reductions, kept by value. A text-only delta costs one comparison pass and
+  re-renders no consumer.
+- **Working guard.** `ThreadSummary.live` in the sidebar snapshot is upstream's
+  `isThreadActivelyWorking` (`SidebarThreadSort.logic.ts`: live tail work, or a running session with a
+  live turn), not `hasLiveTailWork` alone: streaming does not rewrite the sidebar summary and the
+  server publishes no shell update for streamed text, so `hasLiveTailWork` can stay false for a whole
+  turn. Archive/Delete are gated on `live`.
+- **Destructive actions read the server.** Worktree removal is forced and the server does not re-check
+  conversation links, so `readFreshSidebarSnapshot()` issues `orchestration.getShellSnapshot` through the
+  facade and projects it on the store state without committing. A hydrated store can lag the stream.
+- **First paint and failure.** `data` is `undefined` until `threadsHydrated` and the local inputs are
+  read. Upstream's engine swallows bootstrap failures and exposes no status, so the Lynx-side watch
+  reports an error when the transport closes, or after 10 s without hydration; it never speaks after
+  the first hydration. `refetch` (the consumers' existing Retry) performs one
+  `orchestration.getShellSnapshot` and commits it with the store's `syncServerShellSnapshot` only if the
+  store is still not hydrated. That is one more deliberate writer next to those in §7: user-initiated,
+  and unreachable once session sync has delivered anything.
+- **Not in the store.** Dismissed status keys (storage; a failed read degrades to "none dismissed"
+  instead of holding the surfaces in loading) and the sidebar search snapshot
+  (`orchestration.getSidebarSearchSnapshot`, fetched after hydration and on each palette open).
+
+Behaviour that follows the store instead of the old poll: no 80-thread cap; spaces in `sortOrder`
+order; route threads resolve an unknown session provider to `codex` and show the local project alias;
+actions no longer wait for a refetch after a command.
+
+Still request-backed, for Step 4: `fetchThreadHeaderSummary` (thread page) calls
+`orchestration.getSidebarShellSnapshot`; `LandingComposer` reads the bounded snapshot for its bootstrap.

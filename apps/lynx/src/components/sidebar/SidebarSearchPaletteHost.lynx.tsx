@@ -2,13 +2,8 @@ import { useEffect, useState } from "@lynx-js/react";
 import type { ProjectId, SpaceIconName, SpaceId } from "@synara/contracts";
 import { newSpaceId } from "@synara-web/lib/utils";
 import { useSpacesUiStore } from "@synara-web/spacesUiStore";
-import { useQuery } from "@tanstack/react-query";
 
-import {
-  fetchSidebarSnapshot,
-  invalidateSidebarSnapshotProjectionCache,
-  queryClient,
-} from "../../app/queries";
+import { useSidebarSnapshot } from "../../app/sidebarSnapshot.lynx";
 import { SidebarSearchPaletteLynx } from "./SidebarSearchPalette.lynx";
 import { SpaceEditorDialogLynx } from "./SpaceEditorDialog.lynx";
 import { SpaceProjectPickerDialogLynx } from "./SpaceProjectPickerDialog.lynx";
@@ -36,36 +31,15 @@ export function SidebarSearchPaletteHost(props: {
   const [spaceActionError, setSpaceActionError] = useState<string | null>(null);
   const activeSpaceId = useSpacesUiStore((state) => state.activeSpaceId);
   const setActiveSpaceId = useSpacesUiStore((state) => state.setActiveSpaceId);
-  const { data, error, isPending, refetch } = useQuery({
-    queryKey: ["sidebar-snapshot"],
-    queryFn: fetchSidebarSnapshot,
-    refetchInterval: 5_000,
-  });
+  const { data, error, isPending, refetch } = useSidebarSnapshot();
 
+  // Projects, threads and titles are live from the shared store. Message
+  // windows are a separate server read: take a fresh one each time the palette
+  // opens instead of polling for it.
   useEffect(() => {
-    let active = true;
-    let unsubscribe: (() => void) | null = null;
-    let invalidateTimer: ReturnType<typeof setTimeout> | null = null;
-    void import(/* webpackMode: "eager" */ "../../data/synaraClient.lynx")
-      .then(({ subscribeOrchestrationShellEvents }) => {
-        if (!active) return;
-        unsubscribe = subscribeOrchestrationShellEvents(() => {
-          if (invalidateTimer !== null) return;
-          invalidateTimer = setTimeout(() => {
-            invalidateTimer = null;
-            if (!active) return;
-            invalidateSidebarSnapshotProjectionCache();
-            void queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] });
-          }, 100);
-        });
-      })
-      .catch(() => undefined);
-    return () => {
-      active = false;
-      unsubscribe?.();
-      if (invalidateTimer !== null) clearTimeout(invalidateTimer);
-    };
-  }, []);
+    "background only";
+    if (props.open) void refetch();
+  }, [props.open, refetch]);
 
   const saveSpace = async (value: { readonly icon: SpaceIconName; readonly name: string }) => {
     "background only";
@@ -82,10 +56,6 @@ export function SidebarSearchPaletteHost(props: {
           spaceId,
         }),
       );
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-        queryClient.invalidateQueries({ queryKey: ["threads"] }),
-      ]);
       setActiveSpaceId(spaceId);
       props.navigate("/");
       setCreatedSpaceTarget({
@@ -111,10 +81,6 @@ export function SidebarSearchPaletteHost(props: {
       projectIds,
       spaceId: createdSpaceTarget.id,
     });
-    await Promise.all([
-      queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] }),
-      queryClient.invalidateQueries({ queryKey: ["threads"] }),
-    ]);
     return failedIds;
   };
 

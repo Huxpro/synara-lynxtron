@@ -1,14 +1,16 @@
-// Shell read model (spaces, projects, thread shells) on Lynx while the polling
-// read path still exists next to upstream's session sync.
+// Shell read model (spaces, projects, thread shells) on Lynx.
 //
 // Upstream's `EventRouter` is the only writer of server state in the shared
-// store. A polled shell snapshot must not be committed next to it: the sidebar
-// poll is bounded (the 80 most recently updated threads), so committing it as
-// if complete removes older threads and their detail behind the engine's
-// sequence bookkeeping, and a poll that resolves late rolls back a newer
-// streamed change. The polling path therefore normalizes its snapshot with the
-// same pure store projection, on top of the current state, without committing.
-// Code that reads the store directly waits for the engine's hydration.
+// store, and the sidebar surfaces read that store (`sidebarSnapshot.lynx.ts`).
+// A shell snapshot fetched on the side must not be committed next to the
+// engine: the bounded sidebar snapshot (the 80 most recently updated threads)
+// committed as if complete removes older threads and their detail behind the
+// engine's sequence bookkeeping, and a request that resolves late rolls back a
+// newer streamed change. The remaining request-backed readers (the landing
+// bootstrap, the fresh read a destructive action decides on) therefore
+// normalize their snapshot with the same pure store projection, on top of the
+// current state, without committing. Code that reads the store directly waits
+// for the engine's hydration.
 
 import type { OrchestrationShellSnapshot } from "@synara/contracts";
 import { useStore } from "@synara-web/store";

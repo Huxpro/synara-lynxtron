@@ -26,8 +26,8 @@ describe("Settings Archived fidelity", () => {
     expect(settingsSource).toContain("<SettingsArchivedPanel />");
     expect(queriesSource).toContain("readonly archivedAt?: string | null;");
     expect(queriesSource).toContain("readonly archivedThreads:");
-    expect(queriesSource).toContain("createThreadShellsSelector()(normalized)");
-    expect(panelSource).toContain('queryKey: ["sidebar-snapshot"]');
+    expect(panelSource).toContain("const snapshotQuery = useSidebarSnapshot();");
+    expect(panelSource).not.toContain('queryKey: ["sidebar-snapshot"]');
     expect(panelSource).toContain("snapshotQuery.data?.archivedThreads");
     expect(panelSource).toContain("No archived threads");
     expect(panelSource).toContain(
@@ -57,9 +57,6 @@ describe("Settings Archived fidelity", () => {
     expect(panelSource).toContain("await dialogs.confirm(");
     expect(panelSource).toContain(
       "This will remove the thread and its conversation history forever.",
-    );
-    expect(panelSource).toContain(
-      'queryClient.invalidateQueries({ queryKey: ["sidebar-snapshot"] })',
     );
     expect(panelSource).toContain("Restore ${thread.title}");
     expect(panelSource).toContain("Delete ${thread.title}");

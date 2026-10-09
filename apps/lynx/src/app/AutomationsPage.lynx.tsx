@@ -12,11 +12,11 @@ import {
   createAutomation,
   deleteAutomation,
   fetchAutomations,
-  fetchSidebarSnapshot,
   queryClient,
   runAutomationNow,
   updateAutomation,
 } from "./queries";
+import { useSidebarSnapshot } from "./sidebarSnapshot.lynx";
 import { AutomationDialog } from "./AutomationDialog.lynx";
 import { AutomationDetailPage } from "./AutomationDetailPage.lynx";
 import "./automations-page.css";
@@ -220,10 +220,7 @@ export function AutomationsPage({
     queryKey: ["automations"],
     queryFn: fetchAutomations,
   });
-  const sidebar = useQuery({
-    queryKey: ["sidebar-snapshot"],
-    queryFn: fetchSidebarSnapshot,
-  });
+  const sidebar = useSidebarSnapshot();
   const updateMutation = useMutation({
     mutationFn: updateAutomation,
     onSuccess: async () => {
