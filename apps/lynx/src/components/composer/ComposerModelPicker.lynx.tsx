@@ -96,9 +96,10 @@ export interface ComposerModelPickerProps {
   readonly disabled?: boolean;
   readonly modelSelection: ModelSelection;
   /**
-   * A started thread's provider. Electron lists the other providers too: picking one hands
-   * the thread off in place on the next send. That handoff is not ported, so here their
-   * tabs open on a notice and only this provider's models can be picked.
+   * Upstream's `lockedProvider`: the one provider this picker may offer. `null` wherever a
+   * thread can be handed off in place, which is every composer Lynx shows: the other
+   * providers' models are listed as usual and picking one hands the thread off on the next
+   * send. A locked picker shows only its provider's tab, as upstream's does.
    */
   readonly lockedProvider: ProviderKind | null;
   /** Provider whose runtime catalog `runtimeModels` holds. */
@@ -257,9 +258,7 @@ function ComposerModelPickerPanel(
   const setTab = (next: ComposerModelPickerTab) => {
     "background only";
     setTabState(next);
-    if (next !== STARRED_TAB && (lockedProvider === null || next === lockedProvider)) {
-      props.onCatalogProviderChange(next as ProviderKind);
-    }
+    if (next !== STARRED_TAB) props.onCatalogProviderChange(next as ProviderKind);
   };
 
   const pickerSettings = readSettingsProviderPickerProjection(
@@ -276,6 +275,7 @@ function ComposerModelPickerPanel(
     .filter((item) =>
       props.providers.some((status) => status.provider === item.provider && status.available),
     )
+    .filter((item) => lockedProvider === null || item.provider === lockedProvider)
     .map((item) => ({
       provider: item.provider,
       label: item.label,
@@ -314,34 +314,27 @@ function ComposerModelPickerPanel(
       modelOptionsByProvider[entry.provider] ??= optionsFor(entry.provider);
     }
   }
-  // Another provider's tab in a started thread: Electron's in-thread handoff target.
-  const handoffTab =
-    tab !== STARRED_TAB && lockedProvider !== null && tab !== lockedProvider
-      ? (providerTabs.find((entry) => entry.provider === tab) ?? null)
-      : null;
   const rows: ReadonlyArray<PickerRow> =
-    handoffTab !== null
-      ? []
-      : tab === STARRED_TAB
-        ? buildStarredTabRows({
-            starredModels: usableStarredModels,
-            modelOptionsFor: (provider) => modelOptionsByProvider[provider] ?? [],
-            query: normalizedQuery,
-            current: {
-              provider: activeProvider,
-              // Lynx offers each provider's default account only; its id is the provider id.
-              instanceId: activeProvider,
-              model: props.modelSelection.model,
-              ...resolveStarredTraits(props.currentSelection),
-            },
-            effortLevelsFor: (provider, model) => traitSelectionFor(provider, model).effortLevels,
-          })
-        : buildProviderTabRows({
-            provider: tab as ProviderKind,
-            options: optionsFor(tab as ProviderKind),
-            query: normalizedQuery,
-            selectedModel: tab === activeProvider ? props.modelSelection.model : null,
-          });
+    tab === STARRED_TAB
+      ? buildStarredTabRows({
+          starredModels: usableStarredModels,
+          modelOptionsFor: (provider) => modelOptionsByProvider[provider] ?? [],
+          query: normalizedQuery,
+          current: {
+            provider: activeProvider,
+            // Lynx offers each provider's default account only; its id is the provider id.
+            instanceId: activeProvider,
+            model: props.modelSelection.model,
+            ...resolveStarredTraits(props.currentSelection),
+          },
+          effortLevelsFor: (provider, model) => traitSelectionFor(provider, model).effortLevels,
+        })
+      : buildProviderTabRows({
+          provider: tab as ProviderKind,
+          options: optionsFor(tab as ProviderKind),
+          query: normalizedQuery,
+          selectedModel: tab === activeProvider ? props.modelSelection.model : null,
+        });
   const starredModelSlots = new Set(starredModels.map(starredModelSlotKey));
 
   const commitRow = (
@@ -482,7 +475,8 @@ function ComposerModelPickerPanel(
         providerTabs={providerTabs}
         onTabChange={setTab}
         onAddProviders={
-          props.onOpenProviderSettings
+          // Upstream offers "Add providers" only while the picker is not locked.
+          props.onOpenProviderSettings && lockedProvider === null
             ? () => {
                 "background only";
                 props.onClose();
@@ -512,17 +506,7 @@ function ComposerModelPickerPanel(
         scroll-orientation="vertical"
         role="tabpanel"
       >
-        {handoffTab !== null ? (
-          <view className="ComposerModelPickerNoticeLynx">
-            <text className="ComposerModelPickerNoticeTitleLynx">
-              {`${handoffTab.label} cannot take over this thread yet`}
-            </text>
-            <text className="ComposerModelPickerNoticeBodyLynx">
-              Switching a started thread to another provider is not available in the Native app yet.
-              Use Hand off thread in the header to continue in a new thread.
-            </text>
-          </view>
-        ) : isTabLoading ? (
+        {isTabLoading ? (
           <view className="ComposerModelPickerLoadingLynx" aria-label="Loading models">
             {Array.from({ length: 5 }, (_, index) => (
               <view

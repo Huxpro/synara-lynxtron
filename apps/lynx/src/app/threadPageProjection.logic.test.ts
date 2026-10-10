@@ -272,7 +272,7 @@ describe("projectThreadHeaderSummary", () => {
       workspaceRoot: "/work/repo",
       provider: "claudeAgent",
       // A thread with a session keeps its provider.
-      lockedProvider: "claudeAgent",
+      boundProvider: "claudeAgent",
       // The server's status, not the legacy session phase.
       sessionStatus: "running",
       error: "Rate limited",
@@ -294,7 +294,7 @@ describe("projectThreadHeaderSummary", () => {
     expect(summary.project).toBe("Synara");
     expect(summary.workspaceRoot).toBeNull();
     expect(summary.provider).toBe(summary.modelSelection.provider);
-    expect(summary.lockedProvider).toBeNull();
+    expect(summary.boundProvider).toBeNull();
     expect(summary.sessionStatus).toBeNull();
     expect(summary.envMode).toBe("local");
   });

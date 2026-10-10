@@ -103,30 +103,6 @@
   gap: 2px;
 }
 
-/* A handoff target's tab in a started thread: the setup block's `px-3 py-4 gap-2`, centered. */
-.ComposerModelPickerNoticeLynx {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 16px 12px;
-}
-
-.ComposerModelPickerNoticeTitleLynx {
-  color: var(--foreground);
-  font-size: var(--app-font-size-ui, 13px);
-  font-weight: 500;
-  line-height: 20px;
-  text-align: center;
-}
-
-.ComposerModelPickerNoticeBodyLynx {
-  color: var(--muted-foreground);
-  font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 16px;
-  text-align: center;
-}
-
 .ComposerModelPickerTabLynx {
   position: relative;
   width: 28px;
