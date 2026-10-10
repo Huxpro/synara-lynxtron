@@ -46,7 +46,7 @@ import {
 import {
   createOptimisticSettledMutation,
   recordOptimisticSettledMutationSequence,
-  reconcileOptimisticSettledMutations,
+  reconcileOptimisticSettledMutation,
   setThreadSettledFromClient,
   type OptimisticSettledMutation,
 } from "../lib/threadSettle";
@@ -562,20 +562,31 @@ export function useSidebarThreadActions(input: {
         settle = undefined;
         const projectionSequence = useStore.getState().shellSnapshotSequence ?? 0;
         setOptimisticSettledMutationByThreadId((current) => {
-          const { next, releasedThreadIds } = reconcileOptimisticSettledMutations(
-            current,
-            (threadId) => {
-              const serverThread = sidebarThreadSummaryByIdRef.current[threadId];
-              return serverThread ? (serverThread.settledAt ?? null) !== null : undefined;
-            },
-            projectionSequence,
-          );
-          for (const threadId of releasedThreadIds) {
-            const expiry = settleOverrideExpiryTimeoutsRef.current.get(threadId);
-            if (expiry !== undefined) window.clearTimeout(expiry);
-            settleOverrideExpiryTimeoutsRef.current.delete(threadId);
+          let next: Map<ThreadId, OptimisticSettledMutation> | null = null;
+          for (const [threadId, mutation] of current) {
+            const serverThread = sidebarThreadSummaryByIdRef.current[threadId];
+            if (!serverThread) {
+              if (next === null) next = new Map(current);
+              next.delete(threadId);
+              continue;
+            }
+            const reconciliation = reconcileOptimisticSettledMutation(
+              mutation,
+              (serverThread.settledAt ?? null) !== null,
+              projectionSequence,
+            );
+            if (reconciliation.acknowledged) {
+              if (next === null) next = new Map(current);
+              next.delete(threadId);
+              const expiry = settleOverrideExpiryTimeoutsRef.current.get(threadId);
+              if (expiry !== undefined) window.clearTimeout(expiry);
+              settleOverrideExpiryTimeoutsRef.current.delete(threadId);
+            } else if (reconciliation.mutation !== mutation) {
+              if (next === null) next = new Map(current);
+              next.set(threadId, reconciliation.mutation);
+            }
           }
-          return next;
+          return next ?? current;
         });
       }, 0);
     };

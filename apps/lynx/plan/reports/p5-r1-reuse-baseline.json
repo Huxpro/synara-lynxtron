@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-10T12:09:29.984Z",
+  "generatedAt": "2026-10-10T12:19:30.624Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -212,7 +212,6 @@
       "@synara/shared/pathTree",
       "@synara/shared/pdfZoom",
       "@synara/shared/pendingInteractions",
-      "@synara/shared/persistedRecord",
       "@synara/shared/pinnedMessages",
       "@synara/shared/projectActionScripts",
       "@synara/shared/projectContainers",
@@ -321,8 +320,8 @@
       ],
       "lynxConceptualEntries": ["src/app/router.tsx", "src/components/sidebar/Sidebar.lynx.tsx"],
       "graph": {
-        "modules": 607,
-        "loc": 137861,
+        "modules": 596,
+        "loc": 137825,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -363,7 +362,6 @@
           "@synara/shared/browserAutomationPresentation",
           "@synara/shared/browserShortcuts",
           "@synara/shared/chatThreads",
-          "@synara/shared/composerPlaceholder",
           "@synara/shared/composerSlashCommands",
           "@synara/shared/composerVoice",
           "@synara/shared/computerGrants",
@@ -386,7 +384,6 @@
           "@synara/shared/modelImageBudget",
           "@synara/shared/path",
           "@synara/shared/pendingInteractions",
-          "@synara/shared/persistedRecord",
           "@synara/shared/pinnedMessages",
           "@synara/shared/projectAgent",
           "@synara/shared/projectContainers",
@@ -396,11 +393,9 @@
           "@synara/shared/providerInstances",
           "@synara/shared/providerMetadata",
           "@synara/shared/providerUsage",
-          "@synara/shared/providerUsageDisplay",
           "@synara/shared/runtimeMode",
           "@synara/shared/sidebarSearch",
           "@synara/shared/sidechatThread",
-          "@synara/shared/spacePresentation",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
           "@synara/shared/text",
@@ -410,7 +405,6 @@
           "@synara/shared/threadMentions",
           "@synara/shared/threadSummary",
           "@synara/shared/threadWorkspace",
-          "@synara/shared/timePicker",
           "@synara/shared/todo",
           "@synara/shared/toolOutputSummary",
           "@synara/shared/workspaceFileWrite",
@@ -466,16 +460,16 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 542,
-          "loc": 127411
+          "modules": 533,
+          "loc": 127423
         },
         "PATCHED": {
           "modules": 1,
           "loc": 301
         },
         "SPLIT": {
-          "modules": 48,
-          "loc": 7427
+          "modules": 46,
+          "loc": 7379
         },
         "EXCLUSIVE": {
           "modules": 16,
@@ -483,15 +477,15 @@
         }
       },
       "eligible": {
-        "modules": 591,
-        "loc": 135139
+        "modules": 580,
+        "loc": 135103
       },
       "currentReuse": {
-        "modules": 310,
-        "loc": 79742,
-        "modulePercent": 52.45,
-        "locPercent": 59.01,
-        "gatePercent": 52.45
+        "modules": 301,
+        "loc": 79657,
+        "modulePercent": 51.9,
+        "locPercent": 58.96,
+        "gatePercent": 51.9
       },
       "modules": [
         {
@@ -1333,7 +1327,7 @@
         },
         {
           "path": "apps/web/src/components/chat/PickerTriggerButton.tsx",
-          "loc": 58,
+          "loc": 56,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -1592,22 +1586,13 @@
           ]
         },
         {
-          "path": "apps/web/src/components/composerInlineChip.logic.ts",
-          "loc": 33,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/components/composerInlineChip.ts",
-          "loc": 88,
+          "loc": 114,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
-            "apps/web/src/components/composerInlineChip.logic.ts",
             "apps/web/src/lib/utils.ts"
           ]
         },
@@ -2208,7 +2193,7 @@
         },
         {
           "path": "apps/web/src/components/RestoreOrCreateChatRoute.tsx",
-          "loc": 67,
+          "loc": 149,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -2217,7 +2202,6 @@
             "apps/web/src/chatRouteRestore.ts",
             "apps/web/src/components/Sidebar.uiState.ts",
             "apps/web/src/components/SplashScreen.tsx",
-            "apps/web/src/components/useRestoreOrCreateChatRoute.logic.ts",
             "apps/web/src/lib/startContainerChat.ts",
             "apps/web/src/nativeApi.ts",
             "apps/web/src/splitViewStore.ts",
@@ -2356,16 +2340,15 @@
         },
         {
           "path": "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-          "loc": 127,
+          "loc": 208,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerSize.ts",
-            "apps/web/src/components/settings/SettingsRow.tsx",
-            "apps/web/src/components/settings/SettingsSection.tsx",
             "apps/web/src/components/ui/select.tsx",
             "apps/web/src/lib/utils.ts",
+            "apps/web/src/settingsNavigation.ts",
             "apps/web/src/settingsPanelStyles.ts"
           ]
         },
@@ -2376,45 +2359,6 @@
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/providerOrdering.ts"]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsRow.tsx",
-          "loc": 72,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/settings/SettingsRowElements.tsx",
-            "apps/web/src/settingsNavigation.ts",
-            "apps/web/src/settingsPanelStyles.ts"
-          ]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsRowElements.tsx",
-          "loc": 39,
-          "classification": "SPLIT",
-          "reason": "platform element adapter beneath shared SettingsRow composition",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsSection.tsx",
-          "loc": 40,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/settings/SettingsSectionElements.tsx",
-            "apps/web/src/settingsPanelStyles.ts"
-          ]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsSectionElements.tsx",
-          "loc": 17,
-          "classification": "SPLIT",
-          "reason": "platform element adapter beneath shared SettingsSection composition",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/components/settings/ThemeModePicker.tsx",
@@ -2975,14 +2919,6 @@
           "dependencies": []
         },
         {
-          "path": "apps/web/src/components/SidebarThreadSubagentModel.logic.ts",
-          "loc": 119,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/components/SiteFavicon.tsx",
           "loc": 59,
           "classification": "SHARED",
@@ -3044,7 +2980,7 @@
         },
         {
           "path": "apps/web/src/components/SpaceIcon.tsx",
-          "loc": 23,
+          "loc": 48,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -3699,7 +3635,7 @@
         },
         {
           "path": "apps/web/src/components/ui/time-picker.tsx",
-          "loc": 91,
+          "loc": 99,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
           "currentReuse": "UNMAPPED",
@@ -3782,14 +3718,6 @@
           "dependencies": ["apps/web/src/components/ui/toast.tsx"]
         },
         {
-          "path": "apps/web/src/components/useRestoreOrCreateChatRoute.logic.ts",
-          "loc": 130,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/chatRouteRestore.ts"]
-        },
-        {
           "path": "apps/web/src/components/useRouteSpaceSync.ts",
           "loc": 33,
           "classification": "SHARED",
@@ -3851,7 +3779,7 @@
         },
         {
           "path": "apps/web/src/composerDraftActions.ts",
-          "loc": 2150,
+          "loc": 2154,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -3859,7 +3787,6 @@
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
             "apps/web/src/composerDraftModels.ts",
-            "apps/web/src/composerDraftPrompt.logic.ts",
             "apps/web/src/lib/browserAnnotations.ts",
             "apps/web/src/lib/composerAttachmentCapacity.ts",
             "apps/web/src/lib/composerImageSource.ts",
@@ -3934,14 +3861,6 @@
             "apps/web/src/pendingUserInputRecovery.ts",
             "apps/web/src/types.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/composerDraftPrompt.logic.ts",
-          "loc": 26,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/composerDraftStore.ts",
@@ -4498,7 +4417,7 @@
         },
         {
           "path": "apps/web/src/hooks/useSidebarThreadActions.ts",
-          "loc": 1081,
+          "loc": 1092,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -4877,19 +4796,11 @@
         },
         {
           "path": "apps/web/src/lib/codeFence.ts",
-          "loc": 22,
+          "loc": 68,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/lib/codeFenceCore.ts"]
-        },
-        {
-          "path": "apps/web/src/lib/codeFenceCore.ts",
-          "loc": 64,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
+          "dependencies": ["apps/web/src/file-icons.ts"]
         },
         {
           "path": "apps/web/src/lib/codexReasoningEffort.ts",
@@ -5359,20 +5270,12 @@
           "dependencies": []
         },
         {
-          "path": "apps/web/src/lib/pin.logic.ts",
-          "loc": 3,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/lib/pin.tsx",
-          "loc": 7,
+          "loc": 13,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/lib/icons.tsx", "apps/web/src/lib/pin.logic.ts"]
+          "dependencies": ["apps/web/src/lib/icons.tsx"]
         },
         {
           "path": "apps/web/src/lib/projectAppearance.ts",
@@ -5880,11 +5783,11 @@
         },
         {
           "path": "apps/web/src/lib/subagentPresentation.ts",
-          "loc": 271,
+          "loc": 380,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/components/SidebarThreadSubagentModel.logic.ts"]
+          "dependencies": []
         },
         {
           "path": "apps/web/src/lib/suppressQueryResponses.ts",
@@ -6134,7 +6037,7 @@
         },
         {
           "path": "apps/web/src/lib/usagePace.ts",
-          "loc": 5,
+          "loc": 101,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -6530,7 +6433,7 @@
         },
         {
           "path": "apps/web/src/persistedRecord.ts",
-          "loc": 1,
+          "loc": 23,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -7132,25 +7035,16 @@
         },
         {
           "path": "apps/web/src/session-logic.ts",
-          "loc": 572,
+          "loc": 597,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/betaFeatures.ts",
             "apps/web/src/pendingInteractionDerivation.ts",
-            "apps/web/src/sessionActivity.logic.ts",
             "apps/web/src/types.ts",
             "apps/web/src/workLog.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/sessionActivity.logic.ts",
-          "loc": 32,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/settingsNavigation.ts",
@@ -7677,8 +7571,8 @@
       "webEntries": ["apps/web/src/components/Sidebar.tsx"],
       "lynxConceptualEntries": ["src/components/sidebar/Sidebar.lynx.tsx"],
       "graph": {
-        "modules": 483,
-        "loc": 118432,
+        "modules": 473,
+        "loc": 118444,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -7719,7 +7613,6 @@
           "@synara/shared/browserAutomationPresentation",
           "@synara/shared/browserShortcuts",
           "@synara/shared/chatThreads",
-          "@synara/shared/composerPlaceholder",
           "@synara/shared/composerSlashCommands",
           "@synara/shared/composerVoice",
           "@synara/shared/coordinatorCheckin",
@@ -7739,7 +7632,6 @@
           "@synara/shared/model",
           "@synara/shared/path",
           "@synara/shared/pendingInteractions",
-          "@synara/shared/persistedRecord",
           "@synara/shared/pinnedMessages",
           "@synara/shared/projectAgent",
           "@synara/shared/projectContainers",
@@ -7749,11 +7641,9 @@
           "@synara/shared/providerInstances",
           "@synara/shared/providerMetadata",
           "@synara/shared/providerUsage",
-          "@synara/shared/providerUsageDisplay",
           "@synara/shared/runtimeMode",
           "@synara/shared/sidebarSearch",
           "@synara/shared/sidechatThread",
-          "@synara/shared/spacePresentation",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
           "@synara/shared/text",
@@ -7762,7 +7652,6 @@
           "@synara/shared/threadMentions",
           "@synara/shared/threadSummary",
           "@synara/shared/threadWorkspace",
-          "@synara/shared/timePicker",
           "@synara/shared/todo",
           "@synara/shared/toolOutputSummary",
           "@synara/shared/workspaceFileWrite",
@@ -7818,16 +7707,16 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 427,
-          "loc": 108863
+          "modules": 419,
+          "loc": 108923
         },
         "PATCHED": {
           "modules": 1,
           "loc": 301
         },
         "SPLIT": {
-          "modules": 46,
-          "loc": 7403
+          "modules": 44,
+          "loc": 7355
         },
         "EXCLUSIVE": {
           "modules": 9,
@@ -7835,15 +7724,15 @@
         }
       },
       "eligible": {
-        "modules": 474,
-        "loc": 116567
+        "modules": 464,
+        "loc": 116579
       },
       "currentReuse": {
-        "modules": 280,
-        "loc": 72613,
-        "modulePercent": 59.07,
-        "locPercent": 62.29,
-        "gatePercent": 59.07
+        "modules": 272,
+        "loc": 72658,
+        "modulePercent": 58.62,
+        "locPercent": 62.33,
+        "gatePercent": 58.62
       },
       "modules": [
         {
@@ -8504,7 +8393,7 @@
         },
         {
           "path": "apps/web/src/components/chat/PickerTriggerButton.tsx",
-          "loc": 58,
+          "loc": 56,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -8763,22 +8652,13 @@
           ]
         },
         {
-          "path": "apps/web/src/components/composerInlineChip.logic.ts",
-          "loc": 33,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/components/composerInlineChip.ts",
-          "loc": 88,
+          "loc": 114,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
-            "apps/web/src/components/composerInlineChip.logic.ts",
             "apps/web/src/lib/utils.ts"
           ]
         },
@@ -9342,16 +9222,15 @@
         },
         {
           "path": "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-          "loc": 127,
+          "loc": 208,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerSize.ts",
-            "apps/web/src/components/settings/SettingsRow.tsx",
-            "apps/web/src/components/settings/SettingsSection.tsx",
             "apps/web/src/components/ui/select.tsx",
             "apps/web/src/lib/utils.ts",
+            "apps/web/src/settingsNavigation.ts",
             "apps/web/src/settingsPanelStyles.ts"
           ]
         },
@@ -9362,45 +9241,6 @@
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/providerOrdering.ts"]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsRow.tsx",
-          "loc": 72,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/settings/SettingsRowElements.tsx",
-            "apps/web/src/settingsNavigation.ts",
-            "apps/web/src/settingsPanelStyles.ts"
-          ]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsRowElements.tsx",
-          "loc": 39,
-          "classification": "SPLIT",
-          "reason": "platform element adapter beneath shared SettingsRow composition",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsSection.tsx",
-          "loc": 40,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/settings/SettingsSectionElements.tsx",
-            "apps/web/src/settingsPanelStyles.ts"
-          ]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsSectionElements.tsx",
-          "loc": 17,
-          "classification": "SPLIT",
-          "reason": "platform element adapter beneath shared SettingsSection composition",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/components/SettingsSidebarNav.tsx",
@@ -9934,14 +9774,6 @@
           "dependencies": []
         },
         {
-          "path": "apps/web/src/components/SidebarThreadSubagentModel.logic.ts",
-          "loc": 119,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/components/SiteFavicon.tsx",
           "loc": 59,
           "classification": "SHARED",
@@ -10003,7 +9835,7 @@
         },
         {
           "path": "apps/web/src/components/SpaceIcon.tsx",
-          "loc": 23,
+          "loc": 48,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -10554,7 +10386,7 @@
         },
         {
           "path": "apps/web/src/components/ui/time-picker.tsx",
-          "loc": 91,
+          "loc": 99,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
           "currentReuse": "UNMAPPED",
@@ -10674,7 +10506,7 @@
         },
         {
           "path": "apps/web/src/composerDraftActions.ts",
-          "loc": 2150,
+          "loc": 2154,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -10682,7 +10514,6 @@
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
             "apps/web/src/composerDraftModels.ts",
-            "apps/web/src/composerDraftPrompt.logic.ts",
             "apps/web/src/lib/browserAnnotations.ts",
             "apps/web/src/lib/composerAttachmentCapacity.ts",
             "apps/web/src/lib/composerImageSource.ts",
@@ -10757,14 +10588,6 @@
             "apps/web/src/pendingUserInputRecovery.ts",
             "apps/web/src/types.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/composerDraftPrompt.logic.ts",
-          "loc": 26,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/composerDraftStore.ts",
@@ -11166,7 +10989,7 @@
         },
         {
           "path": "apps/web/src/hooks/useSidebarThreadActions.ts",
-          "loc": 1081,
+          "loc": 1092,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -11489,19 +11312,11 @@
         },
         {
           "path": "apps/web/src/lib/codeFence.ts",
-          "loc": 22,
+          "loc": 68,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/lib/codeFenceCore.ts"]
-        },
-        {
-          "path": "apps/web/src/lib/codeFenceCore.ts",
-          "loc": 64,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
+          "dependencies": ["apps/web/src/file-icons.ts"]
         },
         {
           "path": "apps/web/src/lib/codexReasoningEffort.ts",
@@ -11890,20 +11705,12 @@
           "dependencies": []
         },
         {
-          "path": "apps/web/src/lib/pin.logic.ts",
-          "loc": 3,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/lib/pin.tsx",
-          "loc": 7,
+          "loc": 13,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/lib/icons.tsx", "apps/web/src/lib/pin.logic.ts"]
+          "dependencies": ["apps/web/src/lib/icons.tsx"]
         },
         {
           "path": "apps/web/src/lib/projectAppearance.ts",
@@ -12343,11 +12150,11 @@
         },
         {
           "path": "apps/web/src/lib/subagentPresentation.ts",
-          "loc": 271,
+          "loc": 380,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/components/SidebarThreadSubagentModel.logic.ts"]
+          "dependencies": []
         },
         {
           "path": "apps/web/src/lib/suppressQueryResponses.ts",
@@ -12581,7 +12388,7 @@
         },
         {
           "path": "apps/web/src/lib/usagePace.ts",
-          "loc": 5,
+          "loc": 101,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -12706,7 +12513,7 @@
         },
         {
           "path": "apps/web/src/persistedRecord.ts",
-          "loc": 1,
+          "loc": 23,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -12938,25 +12745,16 @@
         },
         {
           "path": "apps/web/src/session-logic.ts",
-          "loc": 572,
+          "loc": 597,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/betaFeatures.ts",
             "apps/web/src/pendingInteractionDerivation.ts",
-            "apps/web/src/sessionActivity.logic.ts",
             "apps/web/src/types.ts",
             "apps/web/src/workLog.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/sessionActivity.logic.ts",
-          "loc": 32,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/settingsNavigation.ts",
@@ -13415,8 +13213,8 @@
       ],
       "lynxConceptualEntries": ["src/app/Transcript.tsx", "src/components/composer/Composer.tsx"],
       "graph": {
-        "modules": 1049,
-        "loc": 234015,
+        "modules": 1035,
+        "loc": 234194,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -13471,7 +13269,6 @@
           "@synara/shared/browserShortcuts",
           "@synara/shared/chatThreads",
           "@synara/shared/claudeCache",
-          "@synara/shared/composerPlaceholder",
           "@synara/shared/composerSlashCommands",
           "@synara/shared/composerVoice",
           "@synara/shared/computerFrame",
@@ -13487,7 +13284,6 @@
           "@synara/shared/diagnosticsRedaction",
           "@synara/shared/editorIcons",
           "@synara/shared/errorMessages",
-          "@synara/shared/fileAttachmentPresentation",
           "@synara/shared/filePreviewBreadcrumb",
           "@synara/shared/formatBytes",
           "@synara/shared/git",
@@ -13501,9 +13297,7 @@
           "@synara/shared/model",
           "@synara/shared/modelImageBudget",
           "@synara/shared/path",
-          "@synara/shared/pdfZoom",
           "@synara/shared/pendingInteractions",
-          "@synara/shared/persistedRecord",
           "@synara/shared/pinnedMessages",
           "@synara/shared/projectAgent",
           "@synara/shared/projectContainers",
@@ -13514,13 +13308,10 @@
           "@synara/shared/providerInstances",
           "@synara/shared/providerMetadata",
           "@synara/shared/providerUsage",
-          "@synara/shared/providerUsageDisplay",
-          "@synara/shared/rightDock",
           "@synara/shared/runtimeMode",
           "@synara/shared/searchQuery",
           "@synara/shared/sidebarSearch",
           "@synara/shared/sidechatThread",
-          "@synara/shared/spacePresentation",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
           "@synara/shared/text",
@@ -13531,7 +13322,6 @@
           "@synara/shared/threadMentions",
           "@synara/shared/threadSummary",
           "@synara/shared/threadWorkspace",
-          "@synara/shared/timePicker",
           "@synara/shared/todo",
           "@synara/shared/toolOutputSummary",
           "@synara/shared/workspaceFileWrite",
@@ -13595,16 +13385,16 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 969,
-          "loc": 217620
+          "modules": 957,
+          "loc": 217847
         },
         "PATCHED": {
           "modules": 1,
           "loc": 301
         },
         "SPLIT": {
-          "modules": 53,
-          "loc": 8122
+          "modules": 51,
+          "loc": 8074
         },
         "EXCLUSIVE": {
           "modules": 26,
@@ -13612,15 +13402,15 @@
         }
       },
       "eligible": {
-        "modules": 1023,
-        "loc": 226043
+        "modules": 1009,
+        "loc": 226222
       },
       "currentReuse": {
-        "modules": 361,
-        "loc": 87282,
-        "modulePercent": 35.29,
-        "locPercent": 38.61,
-        "gatePercent": 35.29
+        "modules": 350,
+        "loc": 87360,
+        "modulePercent": 34.69,
+        "locPercent": 38.62,
+        "gatePercent": 34.69
       },
       "modules": [
         {
@@ -14390,15 +14180,7 @@
         },
         {
           "path": "apps/web/src/components/chat/ChatEmptyStateHero.tsx",
-          "loc": 24,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
-          "dependencies": ["apps/web/src/components/chat/ChatEmptyStateHeroElements.tsx"]
-        },
-        {
-          "path": "apps/web/src/components/chat/ChatEmptyStateHeroElements.tsx",
-          "loc": 20,
+          "loc": 16,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -14641,35 +14423,14 @@
         },
         {
           "path": "apps/web/src/components/chat/ComposerColumnFrame.tsx",
-          "loc": 75,
+          "loc": 77,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
           "dependencies": [
-            "apps/web/src/components/chat/ComposerColumnFrameSurface.tsx",
             "apps/web/src/components/chat/composerPickerStyles.ts",
             "apps/web/src/lib/utils.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/components/chat/ComposerColumnFrameSurface.tsx",
-          "loc": 17,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/chat/ComposerColumnFrameSurfaceElements.tsx",
-            "apps/web/src/components/chat/composerPickerStyles.ts",
-            "apps/web/src/lib/utils.ts"
-          ]
-        },
-        {
-          "path": "apps/web/src/components/chat/ComposerColumnFrameSurfaceElements.tsx",
-          "loc": 10,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/components/chat/ComposerCommandMenu.tsx",
@@ -15889,7 +15650,7 @@
         },
         {
           "path": "apps/web/src/components/chat/FileAttachmentChip.tsx",
-          "loc": 125,
+          "loc": 184,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -15900,6 +15661,7 @@
             "apps/web/src/components/chat/FileEntryIcon.tsx",
             "apps/web/src/components/composerInlineChip.ts",
             "apps/web/src/components/ui/tooltip.tsx",
+            "apps/web/src/file-icons.ts",
             "apps/web/src/lib/icons.tsx",
             "apps/web/src/lib/utils.ts",
             "apps/web/src/types.ts"
@@ -15944,7 +15706,7 @@
         },
         {
           "path": "apps/web/src/components/chat/FileEntryIcon.tsx",
-          "loc": 39,
+          "loc": 70,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -16690,7 +16452,7 @@
         },
         {
           "path": "apps/web/src/components/chat/PickerTriggerButton.tsx",
-          "loc": 58,
+          "loc": 56,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -17182,23 +16944,14 @@
           ]
         },
         {
-          "path": "apps/web/src/components/chat/rightDockLauncher.logic.ts",
-          "loc": 30,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/components/chat/rightDockPaneMeta.tsx",
-          "loc": 95,
+          "loc": 129,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/chat/FileEntryIcon.tsx",
             "apps/web/src/components/chat/chatHeaderControls.tsx",
-            "apps/web/src/components/chat/rightDockLauncher.logic.ts",
             "apps/web/src/components/pullRequest/pullRequestDetail.logic.ts",
             "apps/web/src/file-icons.ts",
             "apps/web/src/lib/icons.tsx",
@@ -18845,22 +18598,13 @@
           "dependencies": []
         },
         {
-          "path": "apps/web/src/components/composerInlineChip.logic.ts",
-          "loc": 33,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/components/composerInlineChip.ts",
-          "loc": 88,
+          "loc": 114,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
-            "apps/web/src/components/composerInlineChip.logic.ts",
             "apps/web/src/lib/utils.ts"
           ]
         },
@@ -20814,16 +20558,15 @@
         },
         {
           "path": "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-          "loc": 127,
+          "loc": 208,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerSize.ts",
-            "apps/web/src/components/settings/SettingsRow.tsx",
-            "apps/web/src/components/settings/SettingsSection.tsx",
             "apps/web/src/components/ui/select.tsx",
             "apps/web/src/lib/utils.ts",
+            "apps/web/src/settingsNavigation.ts",
             "apps/web/src/settingsPanelStyles.ts"
           ]
         },
@@ -20834,45 +20577,6 @@
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/providerOrdering.ts"]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsRow.tsx",
-          "loc": 72,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/settings/SettingsRowElements.tsx",
-            "apps/web/src/settingsNavigation.ts",
-            "apps/web/src/settingsPanelStyles.ts"
-          ]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsRowElements.tsx",
-          "loc": 39,
-          "classification": "SPLIT",
-          "reason": "platform element adapter beneath shared SettingsRow composition",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsSection.tsx",
-          "loc": 40,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/settings/SettingsSectionElements.tsx",
-            "apps/web/src/settingsPanelStyles.ts"
-          ]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsSectionElements.tsx",
-          "loc": 17,
-          "classification": "SPLIT",
-          "reason": "platform element adapter beneath shared SettingsSection composition",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/components/settings/ThemeModePicker.tsx",
@@ -21433,14 +21137,6 @@
           "dependencies": []
         },
         {
-          "path": "apps/web/src/components/SidebarThreadSubagentModel.logic.ts",
-          "loc": 119,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/components/SiteFavicon.tsx",
           "loc": 59,
           "classification": "SHARED",
@@ -21502,7 +21198,7 @@
         },
         {
           "path": "apps/web/src/components/SpaceIcon.tsx",
-          "loc": 23,
+          "loc": 48,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -22248,7 +21944,7 @@
         },
         {
           "path": "apps/web/src/components/ui/time-picker.tsx",
-          "loc": 91,
+          "loc": 99,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
           "currentReuse": "UNMAPPED",
@@ -22469,7 +22165,7 @@
         },
         {
           "path": "apps/web/src/composerDraftActions.ts",
-          "loc": 2150,
+          "loc": 2154,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -22477,7 +22173,6 @@
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
             "apps/web/src/composerDraftModels.ts",
-            "apps/web/src/composerDraftPrompt.logic.ts",
             "apps/web/src/lib/browserAnnotations.ts",
             "apps/web/src/lib/composerAttachmentCapacity.ts",
             "apps/web/src/lib/composerImageSource.ts",
@@ -22552,14 +22247,6 @@
             "apps/web/src/pendingUserInputRecovery.ts",
             "apps/web/src/types.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/composerDraftPrompt.logic.ts",
-          "loc": 26,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/composerDraftStore.ts",
@@ -23424,7 +23111,7 @@
         },
         {
           "path": "apps/web/src/hooks/useSidebarThreadActions.ts",
-          "loc": 1081,
+          "loc": 1092,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -24012,19 +23699,11 @@
         },
         {
           "path": "apps/web/src/lib/codeFence.ts",
-          "loc": 22,
+          "loc": 68,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/lib/codeFenceCore.ts"]
-        },
-        {
-          "path": "apps/web/src/lib/codeFenceCore.ts",
-          "loc": 64,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
+          "dependencies": ["apps/web/src/file-icons.ts"]
         },
         {
           "path": "apps/web/src/lib/codexReasoningEffort.ts",
@@ -24683,7 +24362,7 @@
         },
         {
           "path": "apps/web/src/lib/pdf/pdfZoom.ts",
-          "loc": 1,
+          "loc": 69,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -24734,20 +24413,12 @@
           "dependencies": ["apps/web/src/lib/pdf/pdfZoom.ts"]
         },
         {
-          "path": "apps/web/src/lib/pin.logic.ts",
-          "loc": 3,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/lib/pin.tsx",
-          "loc": 7,
+          "loc": 13,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/lib/icons.tsx", "apps/web/src/lib/pin.logic.ts"]
+          "dependencies": ["apps/web/src/lib/icons.tsx"]
         },
         {
           "path": "apps/web/src/lib/projectAppearance.ts",
@@ -25311,11 +24982,11 @@
         },
         {
           "path": "apps/web/src/lib/subagentPresentation.ts",
-          "loc": 271,
+          "loc": 380,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/components/SidebarThreadSubagentModel.logic.ts"]
+          "dependencies": []
         },
         {
           "path": "apps/web/src/lib/suppressQueryResponses.ts",
@@ -25613,7 +25284,7 @@
         },
         {
           "path": "apps/web/src/lib/usagePace.ts",
-          "loc": 5,
+          "loc": 101,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -26046,7 +25717,7 @@
         },
         {
           "path": "apps/web/src/persistedRecord.ts",
-          "loc": 1,
+          "loc": 23,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -26054,7 +25725,7 @@
         },
         {
           "path": "apps/web/src/pinnedMessages.ts",
-          "loc": 136,
+          "loc": 194,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -26674,25 +26345,16 @@
         },
         {
           "path": "apps/web/src/session-logic.ts",
-          "loc": 572,
+          "loc": 597,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/betaFeatures.ts",
             "apps/web/src/pendingInteractionDerivation.ts",
-            "apps/web/src/sessionActivity.logic.ts",
             "apps/web/src/types.ts",
             "apps/web/src/workLog.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/sessionActivity.logic.ts",
-          "loc": 32,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/settingsNavigation.ts",
@@ -27263,8 +26925,8 @@
       ],
       "lynxConceptualEntries": ["src/app/SettingsPage.tsx"],
       "graph": {
-        "modules": 655,
-        "loc": 151757,
+        "modules": 645,
+        "loc": 151769,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -27305,7 +26967,6 @@
           "@synara/shared/browserAutomationPresentation",
           "@synara/shared/browserShortcuts",
           "@synara/shared/chatThreads",
-          "@synara/shared/composerPlaceholder",
           "@synara/shared/composerSlashCommands",
           "@synara/shared/composerVoice",
           "@synara/shared/computerGrants",
@@ -27328,7 +26989,6 @@
           "@synara/shared/modelImageBudget",
           "@synara/shared/path",
           "@synara/shared/pendingInteractions",
-          "@synara/shared/persistedRecord",
           "@synara/shared/pinnedMessages",
           "@synara/shared/projectAgent",
           "@synara/shared/projectContainers",
@@ -27339,11 +26999,9 @@
           "@synara/shared/providerInstances",
           "@synara/shared/providerMetadata",
           "@synara/shared/providerUsage",
-          "@synara/shared/providerUsageDisplay",
           "@synara/shared/runtimeMode",
           "@synara/shared/sidebarSearch",
           "@synara/shared/sidechatThread",
-          "@synara/shared/spacePresentation",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
           "@synara/shared/text",
@@ -27353,7 +27011,6 @@
           "@synara/shared/threadMentions",
           "@synara/shared/threadSummary",
           "@synara/shared/threadWorkspace",
-          "@synara/shared/timePicker",
           "@synara/shared/todo",
           "@synara/shared/toolOutputSummary",
           "@synara/shared/workspaceFileWrite",
@@ -27412,16 +27069,16 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 589,
-          "loc": 141276
+          "modules": 581,
+          "loc": 141336
         },
         "PATCHED": {
           "modules": 1,
           "loc": 301
         },
         "SPLIT": {
-          "modules": 49,
-          "loc": 7458
+          "modules": 47,
+          "loc": 7410
         },
         "EXCLUSIVE": {
           "modules": 16,
@@ -27429,15 +27086,15 @@
         }
       },
       "eligible": {
-        "modules": 639,
-        "loc": 149035
+        "modules": 629,
+        "loc": 149047
       },
       "currentReuse": {
-        "modules": 311,
-        "loc": 79880,
-        "modulePercent": 48.67,
-        "locPercent": 53.6,
-        "gatePercent": 48.67
+        "modules": 303,
+        "loc": 79925,
+        "modulePercent": 48.17,
+        "locPercent": 53.62,
+        "gatePercent": 48.17
       },
       "modules": [
         {
@@ -28292,7 +27949,7 @@
         },
         {
           "path": "apps/web/src/components/chat/PickerTriggerButton.tsx",
-          "loc": 58,
+          "loc": 56,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -28551,22 +28208,13 @@
           ]
         },
         {
-          "path": "apps/web/src/components/composerInlineChip.logic.ts",
-          "loc": 33,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/components/composerInlineChip.ts",
-          "loc": 88,
+          "loc": 114,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
-            "apps/web/src/components/composerInlineChip.logic.ts",
             "apps/web/src/lib/utils.ts"
           ]
         },
@@ -29875,16 +29523,15 @@
         },
         {
           "path": "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-          "loc": 127,
+          "loc": 208,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerSize.ts",
-            "apps/web/src/components/settings/SettingsRow.tsx",
-            "apps/web/src/components/settings/SettingsSection.tsx",
             "apps/web/src/components/ui/select.tsx",
             "apps/web/src/lib/utils.ts",
+            "apps/web/src/settingsNavigation.ts",
             "apps/web/src/settingsPanelStyles.ts"
           ]
         },
@@ -29895,45 +29542,6 @@
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/providerOrdering.ts"]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsRow.tsx",
-          "loc": 72,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/settings/SettingsRowElements.tsx",
-            "apps/web/src/settingsNavigation.ts",
-            "apps/web/src/settingsPanelStyles.ts"
-          ]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsRowElements.tsx",
-          "loc": 39,
-          "classification": "SPLIT",
-          "reason": "platform element adapter beneath shared SettingsRow composition",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsSection.tsx",
-          "loc": 40,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/settings/SettingsSectionElements.tsx",
-            "apps/web/src/settingsPanelStyles.ts"
-          ]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsSectionElements.tsx",
-          "loc": 17,
-          "classification": "SPLIT",
-          "reason": "platform element adapter beneath shared SettingsSection composition",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/components/settings/ShortcutRecorderDialog.tsx",
@@ -30537,14 +30145,6 @@
           "dependencies": []
         },
         {
-          "path": "apps/web/src/components/SidebarThreadSubagentModel.logic.ts",
-          "loc": 119,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/components/SiteFavicon.tsx",
           "loc": 59,
           "classification": "SHARED",
@@ -30606,7 +30206,7 @@
         },
         {
           "path": "apps/web/src/components/SpaceIcon.tsx",
-          "loc": 23,
+          "loc": 48,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -31284,7 +30884,7 @@
         },
         {
           "path": "apps/web/src/components/ui/time-picker.tsx",
-          "loc": 91,
+          "loc": 99,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
           "currentReuse": "UNMAPPED",
@@ -31428,7 +31028,7 @@
         },
         {
           "path": "apps/web/src/composerDraftActions.ts",
-          "loc": 2150,
+          "loc": 2154,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -31436,7 +31036,6 @@
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
             "apps/web/src/composerDraftModels.ts",
-            "apps/web/src/composerDraftPrompt.logic.ts",
             "apps/web/src/lib/browserAnnotations.ts",
             "apps/web/src/lib/composerAttachmentCapacity.ts",
             "apps/web/src/lib/composerImageSource.ts",
@@ -31511,14 +31110,6 @@
             "apps/web/src/pendingUserInputRecovery.ts",
             "apps/web/src/types.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/composerDraftPrompt.logic.ts",
-          "loc": 26,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/composerDraftStore.ts",
@@ -32095,7 +31686,7 @@
         },
         {
           "path": "apps/web/src/hooks/useSidebarThreadActions.ts",
-          "loc": 1081,
+          "loc": 1092,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -32507,19 +32098,11 @@
         },
         {
           "path": "apps/web/src/lib/codeFence.ts",
-          "loc": 22,
+          "loc": 68,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/lib/codeFenceCore.ts"]
-        },
-        {
-          "path": "apps/web/src/lib/codeFenceCore.ts",
-          "loc": 64,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
+          "dependencies": ["apps/web/src/file-icons.ts"]
         },
         {
           "path": "apps/web/src/lib/codexReasoningEffort.ts",
@@ -33013,20 +32596,12 @@
           "dependencies": []
         },
         {
-          "path": "apps/web/src/lib/pin.logic.ts",
-          "loc": 3,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/lib/pin.tsx",
-          "loc": 7,
+          "loc": 13,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/lib/icons.tsx", "apps/web/src/lib/pin.logic.ts"]
+          "dependencies": ["apps/web/src/lib/icons.tsx"]
         },
         {
           "path": "apps/web/src/lib/projectAppearance.ts",
@@ -33542,11 +33117,11 @@
         },
         {
           "path": "apps/web/src/lib/subagentPresentation.ts",
-          "loc": 271,
+          "loc": 380,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/components/SidebarThreadSubagentModel.logic.ts"]
+          "dependencies": []
         },
         {
           "path": "apps/web/src/lib/suppressQueryResponses.ts",
@@ -33796,7 +33371,7 @@
         },
         {
           "path": "apps/web/src/lib/usagePace.ts",
-          "loc": 5,
+          "loc": 101,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -34192,7 +33767,7 @@
         },
         {
           "path": "apps/web/src/persistedRecord.ts",
-          "loc": 1,
+          "loc": 23,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -34820,25 +34395,16 @@
         },
         {
           "path": "apps/web/src/session-logic.ts",
-          "loc": 572,
+          "loc": 597,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/betaFeatures.ts",
             "apps/web/src/pendingInteractionDerivation.ts",
-            "apps/web/src/sessionActivity.logic.ts",
             "apps/web/src/types.ts",
             "apps/web/src/workLog.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/sessionActivity.logic.ts",
-          "loc": 32,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/settingsNavigation.ts",
@@ -35369,8 +34935,8 @@
       ],
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
-        "modules": 678,
-        "loc": 153420,
+        "modules": 668,
+        "loc": 153522,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -35419,7 +34985,6 @@
           "@synara/shared/browserAutomationPresentation",
           "@synara/shared/browserShortcuts",
           "@synara/shared/chatThreads",
-          "@synara/shared/composerPlaceholder",
           "@synara/shared/composerSlashCommands",
           "@synara/shared/composerVoice",
           "@synara/shared/computerGrants",
@@ -35431,7 +34996,6 @@
           "@synara/shared/diagnosticIssue",
           "@synara/shared/diagnosticsRedaction",
           "@synara/shared/errorMessages",
-          "@synara/shared/fileAttachmentPresentation",
           "@synara/shared/formatBytes",
           "@synara/shared/git",
           "@synara/shared/githubRepository",
@@ -35445,7 +35009,6 @@
           "@synara/shared/modelImageBudget",
           "@synara/shared/path",
           "@synara/shared/pendingInteractions",
-          "@synara/shared/persistedRecord",
           "@synara/shared/pinnedMessages",
           "@synara/shared/projectAgent",
           "@synara/shared/projectContainers",
@@ -35455,11 +35018,9 @@
           "@synara/shared/providerInstances",
           "@synara/shared/providerMetadata",
           "@synara/shared/providerUsage",
-          "@synara/shared/providerUsageDisplay",
           "@synara/shared/runtimeMode",
           "@synara/shared/sidebarSearch",
           "@synara/shared/sidechatThread",
-          "@synara/shared/spacePresentation",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
           "@synara/shared/text",
@@ -35469,7 +35030,6 @@
           "@synara/shared/threadMentions",
           "@synara/shared/threadSummary",
           "@synara/shared/threadWorkspace",
-          "@synara/shared/timePicker",
           "@synara/shared/todo",
           "@synara/shared/toolOutputSummary",
           "@synara/shared/workspaceFileWrite",
@@ -35527,16 +35087,16 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 609,
-          "loc": 140550
+          "modules": 601,
+          "loc": 140700
         },
         "PATCHED": {
           "modules": 1,
           "loc": 301
         },
         "SPLIT": {
-          "modules": 50,
-          "loc": 7838
+          "modules": 48,
+          "loc": 7790
         },
         "EXCLUSIVE": {
           "modules": 18,
@@ -35544,15 +35104,15 @@
         }
       },
       "eligible": {
-        "modules": 660,
-        "loc": 148689
+        "modules": 650,
+        "loc": 148791
       },
       "currentReuse": {
-        "modules": 325,
-        "loc": 81951,
-        "modulePercent": 49.24,
-        "locPercent": 55.12,
-        "gatePercent": 49.24
+        "modules": 317,
+        "loc": 82086,
+        "modulePercent": 48.77,
+        "locPercent": 55.17,
+        "gatePercent": 48.77
       },
       "modules": [
         {
@@ -36341,7 +35901,7 @@
         },
         {
           "path": "apps/web/src/components/chat/FileAttachmentChip.tsx",
-          "loc": 125,
+          "loc": 184,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -36352,6 +35912,7 @@
             "apps/web/src/components/chat/FileEntryIcon.tsx",
             "apps/web/src/components/composerInlineChip.ts",
             "apps/web/src/components/ui/tooltip.tsx",
+            "apps/web/src/file-icons.ts",
             "apps/web/src/lib/icons.tsx",
             "apps/web/src/lib/utils.ts",
             "apps/web/src/types.ts"
@@ -36371,7 +35932,7 @@
         },
         {
           "path": "apps/web/src/components/chat/FileEntryIcon.tsx",
-          "loc": 39,
+          "loc": 70,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -36724,7 +36285,7 @@
         },
         {
           "path": "apps/web/src/components/chat/PickerTriggerButton.tsx",
-          "loc": 58,
+          "loc": 56,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -37087,22 +36648,13 @@
           ]
         },
         {
-          "path": "apps/web/src/components/composerInlineChip.logic.ts",
-          "loc": 33,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/components/composerInlineChip.ts",
-          "loc": 88,
+          "loc": 114,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
-            "apps/web/src/components/composerInlineChip.logic.ts",
             "apps/web/src/lib/utils.ts"
           ]
         },
@@ -38255,16 +37807,15 @@
         },
         {
           "path": "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-          "loc": 127,
+          "loc": 208,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerSize.ts",
-            "apps/web/src/components/settings/SettingsRow.tsx",
-            "apps/web/src/components/settings/SettingsSection.tsx",
             "apps/web/src/components/ui/select.tsx",
             "apps/web/src/lib/utils.ts",
+            "apps/web/src/settingsNavigation.ts",
             "apps/web/src/settingsPanelStyles.ts"
           ]
         },
@@ -38275,45 +37826,6 @@
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/providerOrdering.ts"]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsRow.tsx",
-          "loc": 72,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/settings/SettingsRowElements.tsx",
-            "apps/web/src/settingsNavigation.ts",
-            "apps/web/src/settingsPanelStyles.ts"
-          ]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsRowElements.tsx",
-          "loc": 39,
-          "classification": "SPLIT",
-          "reason": "platform element adapter beneath shared SettingsRow composition",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsSection.tsx",
-          "loc": 40,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/settings/SettingsSectionElements.tsx",
-            "apps/web/src/settingsPanelStyles.ts"
-          ]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsSectionElements.tsx",
-          "loc": 17,
-          "classification": "SPLIT",
-          "reason": "platform element adapter beneath shared SettingsSection composition",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/components/settings/ThemeModePicker.tsx",
@@ -38874,14 +38386,6 @@
           "dependencies": []
         },
         {
-          "path": "apps/web/src/components/SidebarThreadSubagentModel.logic.ts",
-          "loc": 119,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/components/SiteFavicon.tsx",
           "loc": 59,
           "classification": "SHARED",
@@ -38943,7 +38447,7 @@
         },
         {
           "path": "apps/web/src/components/SpaceIcon.tsx",
-          "loc": 23,
+          "loc": 48,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -39647,7 +39151,7 @@
         },
         {
           "path": "apps/web/src/components/ui/time-picker.tsx",
-          "loc": 91,
+          "loc": 99,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
           "currentReuse": "UNMAPPED",
@@ -39804,7 +39308,7 @@
         },
         {
           "path": "apps/web/src/composerDraftActions.ts",
-          "loc": 2150,
+          "loc": 2154,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -39812,7 +39316,6 @@
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
             "apps/web/src/composerDraftModels.ts",
-            "apps/web/src/composerDraftPrompt.logic.ts",
             "apps/web/src/lib/browserAnnotations.ts",
             "apps/web/src/lib/composerAttachmentCapacity.ts",
             "apps/web/src/lib/composerImageSource.ts",
@@ -39887,14 +39390,6 @@
             "apps/web/src/pendingUserInputRecovery.ts",
             "apps/web/src/types.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/composerDraftPrompt.logic.ts",
-          "loc": 26,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/composerDraftStore.ts",
@@ -40527,7 +40022,7 @@
         },
         {
           "path": "apps/web/src/hooks/useSidebarThreadActions.ts",
-          "loc": 1081,
+          "loc": 1092,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -40922,19 +40417,11 @@
         },
         {
           "path": "apps/web/src/lib/codeFence.ts",
-          "loc": 22,
+          "loc": 68,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/lib/codeFenceCore.ts"]
-        },
-        {
-          "path": "apps/web/src/lib/codeFenceCore.ts",
-          "loc": 64,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
+          "dependencies": ["apps/web/src/file-icons.ts"]
         },
         {
           "path": "apps/web/src/lib/codexReasoningEffort.ts",
@@ -41459,20 +40946,12 @@
           "dependencies": []
         },
         {
-          "path": "apps/web/src/lib/pin.logic.ts",
-          "loc": 3,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/lib/pin.tsx",
-          "loc": 7,
+          "loc": 13,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/lib/icons.tsx", "apps/web/src/lib/pin.logic.ts"]
+          "dependencies": ["apps/web/src/lib/icons.tsx"]
         },
         {
           "path": "apps/web/src/lib/projectAppearance.ts",
@@ -41980,11 +41459,11 @@
         },
         {
           "path": "apps/web/src/lib/subagentPresentation.ts",
-          "loc": 271,
+          "loc": 380,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/components/SidebarThreadSubagentModel.logic.ts"]
+          "dependencies": []
         },
         {
           "path": "apps/web/src/lib/suppressQueryResponses.ts",
@@ -42234,7 +41713,7 @@
         },
         {
           "path": "apps/web/src/lib/usagePace.ts",
-          "loc": 5,
+          "loc": 101,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -42646,7 +42125,7 @@
         },
         {
           "path": "apps/web/src/persistedRecord.ts",
-          "loc": 1,
+          "loc": 23,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -43232,25 +42711,16 @@
         },
         {
           "path": "apps/web/src/session-logic.ts",
-          "loc": 572,
+          "loc": 597,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/betaFeatures.ts",
             "apps/web/src/pendingInteractionDerivation.ts",
-            "apps/web/src/sessionActivity.logic.ts",
             "apps/web/src/types.ts",
             "apps/web/src/workLog.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/sessionActivity.logic.ts",
-          "loc": 32,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/settingsNavigation.ts",
@@ -43789,8 +43259,8 @@
       ],
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
-        "modules": 678,
-        "loc": 153421,
+        "modules": 668,
+        "loc": 153523,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -43839,7 +43309,6 @@
           "@synara/shared/browserAutomationPresentation",
           "@synara/shared/browserShortcuts",
           "@synara/shared/chatThreads",
-          "@synara/shared/composerPlaceholder",
           "@synara/shared/composerSlashCommands",
           "@synara/shared/composerVoice",
           "@synara/shared/computerGrants",
@@ -43851,7 +43320,6 @@
           "@synara/shared/diagnosticIssue",
           "@synara/shared/diagnosticsRedaction",
           "@synara/shared/errorMessages",
-          "@synara/shared/fileAttachmentPresentation",
           "@synara/shared/formatBytes",
           "@synara/shared/git",
           "@synara/shared/githubRepository",
@@ -43865,7 +43333,6 @@
           "@synara/shared/modelImageBudget",
           "@synara/shared/path",
           "@synara/shared/pendingInteractions",
-          "@synara/shared/persistedRecord",
           "@synara/shared/pinnedMessages",
           "@synara/shared/projectAgent",
           "@synara/shared/projectContainers",
@@ -43875,11 +43342,9 @@
           "@synara/shared/providerInstances",
           "@synara/shared/providerMetadata",
           "@synara/shared/providerUsage",
-          "@synara/shared/providerUsageDisplay",
           "@synara/shared/runtimeMode",
           "@synara/shared/sidebarSearch",
           "@synara/shared/sidechatThread",
-          "@synara/shared/spacePresentation",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
           "@synara/shared/text",
@@ -43889,7 +43354,6 @@
           "@synara/shared/threadMentions",
           "@synara/shared/threadSummary",
           "@synara/shared/threadWorkspace",
-          "@synara/shared/timePicker",
           "@synara/shared/todo",
           "@synara/shared/toolOutputSummary",
           "@synara/shared/workspaceFileWrite",
@@ -43947,16 +43411,16 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 609,
-          "loc": 140551
+          "modules": 601,
+          "loc": 140701
         },
         "PATCHED": {
           "modules": 1,
           "loc": 301
         },
         "SPLIT": {
-          "modules": 50,
-          "loc": 7838
+          "modules": 48,
+          "loc": 7790
         },
         "EXCLUSIVE": {
           "modules": 18,
@@ -43964,15 +43428,15 @@
         }
       },
       "eligible": {
-        "modules": 660,
-        "loc": 148690
+        "modules": 650,
+        "loc": 148792
       },
       "currentReuse": {
-        "modules": 325,
-        "loc": 81951,
-        "modulePercent": 49.24,
-        "locPercent": 55.12,
-        "gatePercent": 49.24
+        "modules": 317,
+        "loc": 82086,
+        "modulePercent": 48.77,
+        "locPercent": 55.17,
+        "gatePercent": 48.77
       },
       "modules": [
         {
@@ -44761,7 +44225,7 @@
         },
         {
           "path": "apps/web/src/components/chat/FileAttachmentChip.tsx",
-          "loc": 125,
+          "loc": 184,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -44772,6 +44236,7 @@
             "apps/web/src/components/chat/FileEntryIcon.tsx",
             "apps/web/src/components/composerInlineChip.ts",
             "apps/web/src/components/ui/tooltip.tsx",
+            "apps/web/src/file-icons.ts",
             "apps/web/src/lib/icons.tsx",
             "apps/web/src/lib/utils.ts",
             "apps/web/src/types.ts"
@@ -44791,7 +44256,7 @@
         },
         {
           "path": "apps/web/src/components/chat/FileEntryIcon.tsx",
-          "loc": 39,
+          "loc": 70,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -45144,7 +44609,7 @@
         },
         {
           "path": "apps/web/src/components/chat/PickerTriggerButton.tsx",
-          "loc": 58,
+          "loc": 56,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -45507,22 +44972,13 @@
           ]
         },
         {
-          "path": "apps/web/src/components/composerInlineChip.logic.ts",
-          "loc": 33,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/components/composerInlineChip.ts",
-          "loc": 88,
+          "loc": 114,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
-            "apps/web/src/components/composerInlineChip.logic.ts",
             "apps/web/src/lib/utils.ts"
           ]
         },
@@ -46675,16 +46131,15 @@
         },
         {
           "path": "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-          "loc": 127,
+          "loc": 208,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerSize.ts",
-            "apps/web/src/components/settings/SettingsRow.tsx",
-            "apps/web/src/components/settings/SettingsSection.tsx",
             "apps/web/src/components/ui/select.tsx",
             "apps/web/src/lib/utils.ts",
+            "apps/web/src/settingsNavigation.ts",
             "apps/web/src/settingsPanelStyles.ts"
           ]
         },
@@ -46695,45 +46150,6 @@
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/providerOrdering.ts"]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsRow.tsx",
-          "loc": 72,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/settings/SettingsRowElements.tsx",
-            "apps/web/src/settingsNavigation.ts",
-            "apps/web/src/settingsPanelStyles.ts"
-          ]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsRowElements.tsx",
-          "loc": 39,
-          "classification": "SPLIT",
-          "reason": "platform element adapter beneath shared SettingsRow composition",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsSection.tsx",
-          "loc": 40,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/settings/SettingsSectionElements.tsx",
-            "apps/web/src/settingsPanelStyles.ts"
-          ]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsSectionElements.tsx",
-          "loc": 17,
-          "classification": "SPLIT",
-          "reason": "platform element adapter beneath shared SettingsSection composition",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/components/settings/ThemeModePicker.tsx",
@@ -47294,14 +46710,6 @@
           "dependencies": []
         },
         {
-          "path": "apps/web/src/components/SidebarThreadSubagentModel.logic.ts",
-          "loc": 119,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/components/SiteFavicon.tsx",
           "loc": 59,
           "classification": "SHARED",
@@ -47363,7 +46771,7 @@
         },
         {
           "path": "apps/web/src/components/SpaceIcon.tsx",
-          "loc": 23,
+          "loc": 48,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -48067,7 +47475,7 @@
         },
         {
           "path": "apps/web/src/components/ui/time-picker.tsx",
-          "loc": 91,
+          "loc": 99,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
           "currentReuse": "UNMAPPED",
@@ -48224,7 +47632,7 @@
         },
         {
           "path": "apps/web/src/composerDraftActions.ts",
-          "loc": 2150,
+          "loc": 2154,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -48232,7 +47640,6 @@
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
             "apps/web/src/composerDraftModels.ts",
-            "apps/web/src/composerDraftPrompt.logic.ts",
             "apps/web/src/lib/browserAnnotations.ts",
             "apps/web/src/lib/composerAttachmentCapacity.ts",
             "apps/web/src/lib/composerImageSource.ts",
@@ -48307,14 +47714,6 @@
             "apps/web/src/pendingUserInputRecovery.ts",
             "apps/web/src/types.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/composerDraftPrompt.logic.ts",
-          "loc": 26,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/composerDraftStore.ts",
@@ -48947,7 +48346,7 @@
         },
         {
           "path": "apps/web/src/hooks/useSidebarThreadActions.ts",
-          "loc": 1081,
+          "loc": 1092,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -49342,19 +48741,11 @@
         },
         {
           "path": "apps/web/src/lib/codeFence.ts",
-          "loc": 22,
+          "loc": 68,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/lib/codeFenceCore.ts"]
-        },
-        {
-          "path": "apps/web/src/lib/codeFenceCore.ts",
-          "loc": 64,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
+          "dependencies": ["apps/web/src/file-icons.ts"]
         },
         {
           "path": "apps/web/src/lib/codexReasoningEffort.ts",
@@ -49879,20 +49270,12 @@
           "dependencies": []
         },
         {
-          "path": "apps/web/src/lib/pin.logic.ts",
-          "loc": 3,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/lib/pin.tsx",
-          "loc": 7,
+          "loc": 13,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/lib/icons.tsx", "apps/web/src/lib/pin.logic.ts"]
+          "dependencies": ["apps/web/src/lib/icons.tsx"]
         },
         {
           "path": "apps/web/src/lib/projectAppearance.ts",
@@ -50400,11 +49783,11 @@
         },
         {
           "path": "apps/web/src/lib/subagentPresentation.ts",
-          "loc": 271,
+          "loc": 380,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/components/SidebarThreadSubagentModel.logic.ts"]
+          "dependencies": []
         },
         {
           "path": "apps/web/src/lib/suppressQueryResponses.ts",
@@ -50654,7 +50037,7 @@
         },
         {
           "path": "apps/web/src/lib/usagePace.ts",
-          "loc": 5,
+          "loc": 101,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -51066,7 +50449,7 @@
         },
         {
           "path": "apps/web/src/persistedRecord.ts",
-          "loc": 1,
+          "loc": 23,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -51652,25 +51035,16 @@
         },
         {
           "path": "apps/web/src/session-logic.ts",
-          "loc": 572,
+          "loc": 597,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/betaFeatures.ts",
             "apps/web/src/pendingInteractionDerivation.ts",
-            "apps/web/src/sessionActivity.logic.ts",
             "apps/web/src/types.ts",
             "apps/web/src/workLog.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/sessionActivity.logic.ts",
-          "loc": 32,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/settingsNavigation.ts",
@@ -52209,8 +51583,8 @@
       ],
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
-        "modules": 1019,
-        "loc": 228742,
+        "modules": 1005,
+        "loc": 228921,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -52265,7 +51639,6 @@
           "@synara/shared/browserShortcuts",
           "@synara/shared/chatThreads",
           "@synara/shared/claudeCache",
-          "@synara/shared/composerPlaceholder",
           "@synara/shared/composerSlashCommands",
           "@synara/shared/composerVoice",
           "@synara/shared/computerFrame",
@@ -52281,7 +51654,6 @@
           "@synara/shared/diagnosticsRedaction",
           "@synara/shared/editorIcons",
           "@synara/shared/errorMessages",
-          "@synara/shared/fileAttachmentPresentation",
           "@synara/shared/filePreviewBreadcrumb",
           "@synara/shared/formatBytes",
           "@synara/shared/git",
@@ -52295,9 +51667,7 @@
           "@synara/shared/model",
           "@synara/shared/modelImageBudget",
           "@synara/shared/path",
-          "@synara/shared/pdfZoom",
           "@synara/shared/pendingInteractions",
-          "@synara/shared/persistedRecord",
           "@synara/shared/pinnedMessages",
           "@synara/shared/projectAgent",
           "@synara/shared/projectContainers",
@@ -52308,12 +51678,9 @@
           "@synara/shared/providerInstances",
           "@synara/shared/providerMetadata",
           "@synara/shared/providerUsage",
-          "@synara/shared/providerUsageDisplay",
-          "@synara/shared/rightDock",
           "@synara/shared/runtimeMode",
           "@synara/shared/sidebarSearch",
           "@synara/shared/sidechatThread",
-          "@synara/shared/spacePresentation",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
           "@synara/shared/text",
@@ -52324,7 +51691,6 @@
           "@synara/shared/threadMentions",
           "@synara/shared/threadSummary",
           "@synara/shared/threadWorkspace",
-          "@synara/shared/timePicker",
           "@synara/shared/todo",
           "@synara/shared/toolOutputSummary",
           "@synara/shared/workspaceFileWrite",
@@ -52388,16 +51754,16 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 939,
-          "loc": 212347
+          "modules": 927,
+          "loc": 212574
         },
         "PATCHED": {
           "modules": 1,
           "loc": 301
         },
         "SPLIT": {
-          "modules": 53,
-          "loc": 8122
+          "modules": 51,
+          "loc": 8074
         },
         "EXCLUSIVE": {
           "modules": 26,
@@ -52405,15 +51771,15 @@
         }
       },
       "eligible": {
-        "modules": 993,
-        "loc": 220770
+        "modules": 979,
+        "loc": 220949
       },
       "currentReuse": {
-        "modules": 362,
-        "loc": 87728,
-        "modulePercent": 36.46,
+        "modules": 351,
+        "loc": 87806,
+        "modulePercent": 35.85,
         "locPercent": 39.74,
-        "gatePercent": 36.46
+        "gatePercent": 35.85
       },
       "modules": [
         {
@@ -53152,15 +52518,7 @@
         },
         {
           "path": "apps/web/src/components/chat/ChatEmptyStateHero.tsx",
-          "loc": 24,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
-          "dependencies": ["apps/web/src/components/chat/ChatEmptyStateHeroElements.tsx"]
-        },
-        {
-          "path": "apps/web/src/components/chat/ChatEmptyStateHeroElements.tsx",
-          "loc": 20,
+          "loc": 16,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -53391,35 +52749,14 @@
         },
         {
           "path": "apps/web/src/components/chat/ComposerColumnFrame.tsx",
-          "loc": 75,
+          "loc": 77,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
           "dependencies": [
-            "apps/web/src/components/chat/ComposerColumnFrameSurface.tsx",
             "apps/web/src/components/chat/composerPickerStyles.ts",
             "apps/web/src/lib/utils.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/components/chat/ComposerColumnFrameSurface.tsx",
-          "loc": 17,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/chat/ComposerColumnFrameSurfaceElements.tsx",
-            "apps/web/src/components/chat/composerPickerStyles.ts",
-            "apps/web/src/lib/utils.ts"
-          ]
-        },
-        {
-          "path": "apps/web/src/components/chat/ComposerColumnFrameSurfaceElements.tsx",
-          "loc": 10,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/components/chat/ComposerCommandMenu.tsx",
@@ -54574,7 +53911,7 @@
         },
         {
           "path": "apps/web/src/components/chat/FileAttachmentChip.tsx",
-          "loc": 125,
+          "loc": 184,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -54585,6 +53922,7 @@
             "apps/web/src/components/chat/FileEntryIcon.tsx",
             "apps/web/src/components/composerInlineChip.ts",
             "apps/web/src/components/ui/tooltip.tsx",
+            "apps/web/src/file-icons.ts",
             "apps/web/src/lib/icons.tsx",
             "apps/web/src/lib/utils.ts",
             "apps/web/src/types.ts"
@@ -54629,7 +53967,7 @@
         },
         {
           "path": "apps/web/src/components/chat/FileEntryIcon.tsx",
-          "loc": 39,
+          "loc": 70,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -55315,7 +54653,7 @@
         },
         {
           "path": "apps/web/src/components/chat/PickerTriggerButton.tsx",
-          "loc": 58,
+          "loc": 56,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -55807,23 +55145,14 @@
           ]
         },
         {
-          "path": "apps/web/src/components/chat/rightDockLauncher.logic.ts",
-          "loc": 30,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/components/chat/rightDockPaneMeta.tsx",
-          "loc": 95,
+          "loc": 129,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
           "dependencies": [
             "apps/web/src/components/chat/FileEntryIcon.tsx",
             "apps/web/src/components/chat/chatHeaderControls.tsx",
-            "apps/web/src/components/chat/rightDockLauncher.logic.ts",
             "apps/web/src/components/pullRequest/pullRequestDetail.logic.ts",
             "apps/web/src/file-icons.ts",
             "apps/web/src/lib/icons.tsx",
@@ -57232,22 +56561,13 @@
           "dependencies": []
         },
         {
-          "path": "apps/web/src/components/composerInlineChip.logic.ts",
-          "loc": 33,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/components/composerInlineChip.ts",
-          "loc": 88,
+          "loc": 114,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerStyles.ts",
-            "apps/web/src/components/composerInlineChip.logic.ts",
             "apps/web/src/lib/utils.ts"
           ]
         },
@@ -59329,16 +58649,15 @@
         },
         {
           "path": "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-          "loc": 127,
+          "loc": 208,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerPickerSize.ts",
-            "apps/web/src/components/settings/SettingsRow.tsx",
-            "apps/web/src/components/settings/SettingsSection.tsx",
             "apps/web/src/components/ui/select.tsx",
             "apps/web/src/lib/utils.ts",
+            "apps/web/src/settingsNavigation.ts",
             "apps/web/src/settingsPanelStyles.ts"
           ]
         },
@@ -59349,45 +58668,6 @@
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/providerOrdering.ts"]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsRow.tsx",
-          "loc": 72,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/settings/SettingsRowElements.tsx",
-            "apps/web/src/settingsNavigation.ts",
-            "apps/web/src/settingsPanelStyles.ts"
-          ]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsRowElements.tsx",
-          "loc": 39,
-          "classification": "SPLIT",
-          "reason": "platform element adapter beneath shared SettingsRow composition",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsSection.tsx",
-          "loc": 40,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/settings/SettingsSectionElements.tsx",
-            "apps/web/src/settingsPanelStyles.ts"
-          ]
-        },
-        {
-          "path": "apps/web/src/components/settings/SettingsSectionElements.tsx",
-          "loc": 17,
-          "classification": "SPLIT",
-          "reason": "platform element adapter beneath shared SettingsSection composition",
-          "currentReuse": "UNMAPPED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/components/settings/ThemeModePicker.tsx",
@@ -59948,14 +59228,6 @@
           "dependencies": []
         },
         {
-          "path": "apps/web/src/components/SidebarThreadSubagentModel.logic.ts",
-          "loc": 119,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/components/SiteFavicon.tsx",
           "loc": 59,
           "classification": "SHARED",
@@ -60017,7 +59289,7 @@
         },
         {
           "path": "apps/web/src/components/SpaceIcon.tsx",
-          "loc": 23,
+          "loc": 48,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -60763,7 +60035,7 @@
         },
         {
           "path": "apps/web/src/components/ui/time-picker.tsx",
-          "loc": 91,
+          "loc": 99,
           "classification": "SPLIT",
           "reason": "L2 primitive keeps the call-site contract and uses a platform renderer",
           "currentReuse": "UNMAPPED",
@@ -60958,7 +60230,7 @@
         },
         {
           "path": "apps/web/src/composerDraftActions.ts",
-          "loc": 2150,
+          "loc": 2154,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -60966,7 +60238,6 @@
             "apps/web/src/composerDraftAttachments.ts",
             "apps/web/src/composerDraftDomain.ts",
             "apps/web/src/composerDraftModels.ts",
-            "apps/web/src/composerDraftPrompt.logic.ts",
             "apps/web/src/lib/browserAnnotations.ts",
             "apps/web/src/lib/composerAttachmentCapacity.ts",
             "apps/web/src/lib/composerImageSource.ts",
@@ -61041,14 +60312,6 @@
             "apps/web/src/pendingUserInputRecovery.ts",
             "apps/web/src/types.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/composerDraftPrompt.logic.ts",
-          "loc": 26,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/composerDraftStore.ts",
@@ -61862,7 +61125,7 @@
         },
         {
           "path": "apps/web/src/hooks/useSidebarThreadActions.ts",
-          "loc": 1081,
+          "loc": 1092,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -62431,19 +61694,11 @@
         },
         {
           "path": "apps/web/src/lib/codeFence.ts",
-          "loc": 22,
+          "loc": 68,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/lib/codeFenceCore.ts"]
-        },
-        {
-          "path": "apps/web/src/lib/codeFenceCore.ts",
-          "loc": 64,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
+          "dependencies": ["apps/web/src/file-icons.ts"]
         },
         {
           "path": "apps/web/src/lib/codexReasoningEffort.ts",
@@ -63086,7 +62341,7 @@
         },
         {
           "path": "apps/web/src/lib/pdf/pdfZoom.ts",
-          "loc": 1,
+          "loc": 69,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -63137,20 +62392,12 @@
           "dependencies": ["apps/web/src/lib/pdf/pdfZoom.ts"]
         },
         {
-          "path": "apps/web/src/lib/pin.logic.ts",
-          "loc": 3,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
           "path": "apps/web/src/lib/pin.tsx",
-          "loc": 7,
+          "loc": 13,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/lib/icons.tsx", "apps/web/src/lib/pin.logic.ts"]
+          "dependencies": ["apps/web/src/lib/icons.tsx"]
         },
         {
           "path": "apps/web/src/lib/projectAppearance.ts",
@@ -63714,11 +62961,11 @@
         },
         {
           "path": "apps/web/src/lib/subagentPresentation.ts",
-          "loc": 271,
+          "loc": 380,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/components/SidebarThreadSubagentModel.logic.ts"]
+          "dependencies": []
         },
         {
           "path": "apps/web/src/lib/suppressQueryResponses.ts",
@@ -64016,7 +63263,7 @@
         },
         {
           "path": "apps/web/src/lib/usagePace.ts",
-          "loc": 5,
+          "loc": 101,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -64449,7 +63696,7 @@
         },
         {
           "path": "apps/web/src/persistedRecord.ts",
-          "loc": 1,
+          "loc": 23,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -64457,7 +63704,7 @@
         },
         {
           "path": "apps/web/src/pinnedMessages.ts",
-          "loc": 136,
+          "loc": 194,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -65072,25 +64319,16 @@
         },
         {
           "path": "apps/web/src/session-logic.ts",
-          "loc": 572,
+          "loc": 597,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/betaFeatures.ts",
             "apps/web/src/pendingInteractionDerivation.ts",
-            "apps/web/src/sessionActivity.logic.ts",
             "apps/web/src/types.ts",
             "apps/web/src/workLog.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/sessionActivity.logic.ts",
-          "loc": 32,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/settingsNavigation.ts",

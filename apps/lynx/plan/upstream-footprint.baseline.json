@@ -2,8 +2,8 @@
   "upstreamRef": "upstream/main",
   "upstreamRevision": "6f54f53c66348a9a19c65779daaabd96113773eb",
   "counts": {
-    "modifiedUpstreamFiles": 124,
-    "changedLinesInUpstreamFiles": 5058,
+    "modifiedUpstreamFiles": 103,
+    "changedLinesInUpstreamFiles": 3724,
     "forkFilesInUpstreamPaths": 364
   }
 }

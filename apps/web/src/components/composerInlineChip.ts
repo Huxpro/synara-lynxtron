@@ -12,13 +12,6 @@ import {
   COMPOSER_EDITOR_LINE_HEIGHT_CLASS_NAME,
   COMPOSER_EDITOR_TEXT_CLASS_NAME,
 } from "./chat/composerPickerStyles";
-export {
-  DEFAULT_AGENT_CHIP_COLOR,
-  formatComposerSkillChipLabel,
-  formatComposerSlashCommandChipLabel,
-  resolveAgentChipColor,
-} from "./composerInlineChip.logic";
-export type { AgentChipColor } from "./composerInlineChip.logic";
 
 // ── Shared spacing ────────────────────────────────────────────────────
 // One gap token for block sides (vs plain text) and icon→label inside the block.
@@ -116,6 +109,29 @@ export const COMPOSER_INLINE_AGENT_CHIP_CLASS_NAME = cn(
 );
 export const COMPOSER_INLINE_AGENT_CHIP_ICON_CLASS_NAME = "size-3 shrink-0";
 
+// Single source of truth for agent-token colors (shared by the Lexical composer
+// chip and the timeline echo). Values are inline rgb tokens applied as
+// background/text at render time, keyed by the agent's assigned color name.
+export interface AgentChipColor {
+  readonly bg: string;
+  readonly text: string;
+}
+export const DEFAULT_AGENT_CHIP_COLOR: AgentChipColor = {
+  bg: "rgb(245 158 11 / 0.15)",
+  text: "rgb(245 158 11)",
+};
+const AGENT_CHIP_COLOR_BY_NAME: Record<string, AgentChipColor> = {
+  violet: { bg: "rgb(139 92 246 / 0.15)", text: "rgb(139 92 246)" },
+  fuchsia: { bg: "rgb(217 70 239 / 0.15)", text: "rgb(217 70 239)" },
+  teal: { bg: "rgb(20 184 166 / 0.15)", text: "rgb(20 184 166)" },
+  cyan: { bg: "rgb(6 182 212 / 0.15)", text: "rgb(6 182 212)" },
+  amber: DEFAULT_AGENT_CHIP_COLOR,
+  orange: { bg: "rgb(249 115 22 / 0.15)", text: "rgb(249 115 22)" },
+};
+export function resolveAgentChipColor(color: string | undefined): AgentChipColor {
+  return (color ? AGENT_CHIP_COLOR_BY_NAME[color] : undefined) ?? DEFAULT_AGENT_CHIP_COLOR;
+}
+
 // ── Sent-message echoes (timeline) ────────────────────────────────────
 // Mirror the in-composer chip exactly (plain, accent color, no fill) so a sent
 // skill/file/folder token reads identically to how it looked while typing.
@@ -146,3 +162,21 @@ export const COMPOSER_ATTACHMENT_CHIP_CLASS_NAME =
 // ── Skill helpers ─────────────────────────────────────────────────────
 /** Central icon basename shared by every skill token (editor + timeline). */
 export const COMPOSER_INLINE_SKILL_CHIP_ICON_NAME = "building-blocks";
+
+function formatComposerInlineTokenLabel(name: string): string {
+  return name
+    .split(/[-_]/)
+    .map((segment) =>
+      segment.length > 0 ? segment.charAt(0).toUpperCase() + segment.slice(1) : segment,
+    )
+    .join(" ");
+}
+
+// Formats raw skill ids like `check-code` into the label used by inline skill chips.
+export function formatComposerSkillChipLabel(name: string): string {
+  return formatComposerInlineTokenLabel(name);
+}
+
+export function formatComposerSlashCommandChipLabel(command: string): string {
+  return formatComposerInlineTokenLabel(command);
+}

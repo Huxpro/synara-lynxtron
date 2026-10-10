@@ -6,21 +6,47 @@
 
 import { type ComponentProps, type ReactNode } from "react";
 import { cn } from "~/lib/utils";
+import { settingRowAnchorId } from "~/settingsNavigation";
 import {
+  SETTINGS_CARD_CLASS_NAME,
   SETTINGS_CARD_ROW_CLASS_NAME,
   SETTINGS_CARD_ROW_DESCRIPTION_CLASS_NAME,
   SETTINGS_CARD_ROW_TITLE_CLASS_NAME,
   SETTINGS_EMPTY_STATE_CLASS_NAME,
   SETTINGS_PANEL_SECTION_CLASS_NAME,
   SETTINGS_SECTION_LABEL_CLASS_NAME,
+  SETTINGS_STACKED_ROWS_DIVIDER_CLASS_NAME,
 } from "~/settingsPanelStyles";
 import { SelectPopup } from "~/components/ui/select";
 import { composerPickerMenuShellClassName } from "~/components/chat/composerPickerSize";
 
-// Card, section and row are compositions over platform elements so the Lynx renderer
-// shares them; see SettingsSection.tsx and SettingsRow.tsx.
-export { SettingsCard, SettingsSection } from "./SettingsSection";
-export { SettingsRow } from "./SettingsRow";
+/**
+ * Grouped settings card. Children stack as rows separated by hairlines; pass
+ * `divided={false}` for a card that draws its own internal structure (the theme editor's
+ * header/body split) and `className` for one that adds layout to the card itself.
+ */
+export function SettingsCard({
+  divided: dividedProp,
+  className,
+  children,
+}: {
+  divided?: boolean;
+  className?: string;
+  children: ReactNode;
+}) {
+  const divided = dividedProp ?? true;
+  return (
+    <div
+      className={cn(
+        SETTINGS_CARD_CLASS_NAME,
+        divided && SETTINGS_STACKED_ROWS_DIVIDER_CLASS_NAME,
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
 
 /**
  * Labelled settings group without the card — the `<section>`, its heading, and an
@@ -54,6 +80,14 @@ export function SettingsSectionShell({
       )}
       {children}
     </section>
+  );
+}
+
+export function SettingsSection({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <SettingsSectionShell title={title}>
+      <SettingsCard>{children}</SettingsCard>
+    </SettingsSectionShell>
   );
 }
 
@@ -161,6 +195,60 @@ export function SettingsListRow({
           </div>
         ) : null}
       </div>
+    </div>
+  );
+}
+
+export function SettingsRow({
+  title,
+  description,
+  status,
+  resetAction,
+  control,
+  children,
+  onClick,
+}: {
+  title: ReactNode;
+  description: string;
+  status?: ReactNode;
+  resetAction?: ReactNode;
+  control?: ReactNode;
+  children?: ReactNode;
+  onClick?: () => void;
+}) {
+  // String-titled rows expose a stable anchor so the sidebar search can deep-link to them
+  // via `?target=…`; scroll-margin keeps the row clear of the sticky settings header.
+  const anchorId = typeof title === "string" ? settingRowAnchorId(title) : undefined;
+  return (
+    <div
+      id={anchorId}
+      className={cn(SETTINGS_CARD_ROW_CLASS_NAME, anchorId && "scroll-mt-24")}
+      data-slot="settings-row"
+    >
+      <div
+        className={cn(
+          "flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between",
+          onClick && "cursor-pointer",
+        )}
+        onClick={onClick}
+      >
+        <div className="min-w-0 flex-1 space-y-0.5">
+          <div className="flex min-h-5 items-center gap-1.5">
+            <h3 className={SETTINGS_CARD_ROW_TITLE_CLASS_NAME}>{title}</h3>
+            <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center">
+              {resetAction}
+            </span>
+          </div>
+          <p className={SETTINGS_CARD_ROW_DESCRIPTION_CLASS_NAME}>{description}</p>
+          {status ? <div className="pt-1 text-ui-sm text-muted-foreground">{status}</div> : null}
+        </div>
+        {control ? (
+          <div className="flex w-full shrink-0 items-center gap-2 sm:w-auto sm:justify-end">
+            {control}
+          </div>
+        ) : null}
+      </div>
+      {children}
     </div>
   );
 }

@@ -4,19 +4,19 @@ Generated from the eligible module union of all six P5-R1 screen graphs.
 
 - Unique utility tokens: **2764**
 - Authored component classes excluded from the utility denominator: **109**
-- Extracted utility occurrences: **21329**
-- Eligible occurrences (registered platform-unsupported utilities excluded): **20042**
-- Covered by generated or deterministic patched CSS: **19652 (98.05%)**
+- Extracted utility occurrences: **21366**
+- Eligible occurrences (registered platform-unsupported utilities excluded): **20079**
+- Covered by generated or deterministic patched CSS: **19689 (98.06%)**
 - Required threshold: **95%**
-- Runtime CSS emission (currently physically shared modules only): **1289 classes / 18564 source occurrences**
+- Runtime CSS emission (currently physically shared modules only): **1289 classes / 18612 source occurrences**
 
 | Status      | Classes | Weighted occurrences |
 | ----------- | ------: | -------------------: |
-| GENERATED   |    1351 |                16939 |
-| PATCHED     |     648 |                 2713 |
+| GENERATED   |    1351 |                16972 |
+| PATCHED     |     648 |                 2717 |
 | UNSUPPORTED |     500 |                 1287 |
 | UNMAPPED    |     265 |                  390 |
-| CUSTOM      |     109 |                  191 |
+| CUSTOM      |     109 |                  202 |
 
 ## Highest-weight uncovered classes
 

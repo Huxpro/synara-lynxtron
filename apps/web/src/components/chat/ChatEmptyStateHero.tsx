@@ -3,13 +3,7 @@
 // Layer: Chat presentation
 // Depends on: the caller-supplied project display name.
 
-import {
-  ChatEmptyStateHeroFrameElement,
-  ChatEmptyStateHeroHeadingElement,
-  ChatEmptyStateHeroLogoElement,
-  ChatEmptyStateHeroProjectElement,
-  ChatEmptyStateHeroTextFrameElement,
-} from "~/components/chat/ChatEmptyStateHeroElements";
+import { SynaraLogo } from "~/components/SynaraLogo";
 
 export const ChatEmptyStateHero = function ChatEmptyStateHero({
   projectName,
@@ -17,14 +11,13 @@ export const ChatEmptyStateHero = function ChatEmptyStateHero({
   projectName: string | undefined;
 }) {
   return (
-    <ChatEmptyStateHeroFrameElement>
-      <ChatEmptyStateHeroLogoElement />
-      <ChatEmptyStateHeroTextFrameElement>
-        <ChatEmptyStateHeroHeadingElement>Let's build</ChatEmptyStateHeroHeadingElement>
-        {projectName ? (
-          <ChatEmptyStateHeroProjectElement>{projectName}</ChatEmptyStateHeroProjectElement>
-        ) : null}
-      </ChatEmptyStateHeroTextFrameElement>
-    </ChatEmptyStateHeroFrameElement>
+    <div className="flex flex-col items-center gap-5 select-none">
+      <SynaraLogo aria-label="Synara logo" className="size-10" />
+
+      <div className="flex flex-col items-center gap-0.5">
+        <h1 className="text-2xl font-semibold text-foreground/90">Let's build</h1>
+        {projectName && <span className="text-lg text-muted-foreground/40">{projectName}</span>}
+      </div>
+    </div>
   );
 };

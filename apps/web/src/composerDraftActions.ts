@@ -63,7 +63,6 @@ import {
   shouldRemoveDraft,
   terminalContextDedupKey,
 } from "./composerDraftDomain";
-import { updateComposerDraftPrompt } from "./composerDraftPrompt.logic";
 import {
   COMPOSER_PROVIDER_KINDS,
   makeModelSelection,
@@ -591,15 +590,20 @@ export const createComposerDraftStoreState =
       if (threadId.length === 0) {
         return;
       }
-      set((state) => ({
-        draftsByThreadId: updateComposerDraftPrompt({
-          draftsByThreadId: state.draftsByThreadId,
-          threadId,
+      set((state) => {
+        const existing = state.draftsByThreadId[threadId] ?? createEmptyThreadDraft();
+        const nextDraft: ComposerThreadDraftState = {
+          ...existing,
           prompt,
-          createEmptyDraft: createEmptyThreadDraft,
-          shouldRemoveDraft,
-        }),
-      }));
+        };
+        const nextDraftsByThreadId = { ...state.draftsByThreadId };
+        if (shouldRemoveDraft(nextDraft)) {
+          delete nextDraftsByThreadId[threadId];
+        } else {
+          nextDraftsByThreadId[threadId] = nextDraft;
+        }
+        return { draftsByThreadId: nextDraftsByThreadId };
+      });
     },
     setPromptHistorySavedDraft: (threadId, savedDraft) => {
       if (threadId.length === 0) {
