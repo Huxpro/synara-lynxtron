@@ -109,6 +109,8 @@ import { sleepOnHost } from "../platform/timer";
 import { SettingsSearchResults } from "./SettingsSearchResults.lynx";
 import { AppRailShell } from "../components/sidebar/AppRail.lynx";
 import { SettingsGeneralPanel } from "./SettingsGeneralPanel.lynx";
+import { DEFAULT_CHAT_WIDTH } from "@synara-web/lib/chatWidth";
+import { setChatWidthSetting } from "./chatWidthSetting.lynx";
 import {
   DEFAULT_ARCHIVE_DELETES_ORPHANED_WORKTREE,
   writeArchiveDeletesOrphanedWorktree,
@@ -574,6 +576,8 @@ export function SettingsPage({
       return;
     }
     if (section === "appearance") {
+      // The Appearance panel stores Chat width itself; reset it with the rest.
+      void setChatWidthSetting(DEFAULT_CHAT_WIDTH).catch(() => undefined);
       setAppearance(DEFAULT_SETTINGS_APPEARANCE_VALUES);
       setThemeState(DEFAULT_THEME_STATE);
       onAppearanceChange(DEFAULT_SETTINGS_APPEARANCE_VALUES);

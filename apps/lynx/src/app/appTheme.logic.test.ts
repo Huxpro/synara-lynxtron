@@ -180,8 +180,8 @@ describe("slice root theme projection", () => {
     expect(appSource).toContain(
       "const themeVariables = useMemo(\n    () => resolveSliceThemeVariables(themeState, systemDark),",
     );
-    expect(appSource).toContain(
-      "const rootVariables = useMemo(\n    () => ({ ...themeVariables, ...typographyVariables }),",
+    expect(appSource).toMatch(
+      /const rootVariables = useMemo\(\s*\(\) => \(\{\s*\.\.\.themeVariables,\s*\.\.\.typographyVariables,[\s\S]*?\[chatWidth, themeVariables, typographyVariables\],/,
     );
     expect(appSource).toContain("style={rootVariables}");
     expect(appSource).not.toContain("style={resolveSliceThemeVariables(themeState, systemDark)}");
