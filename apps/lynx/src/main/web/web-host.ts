@@ -61,6 +61,11 @@ const nodejsAdapterUrl = "./nodejs-adapter-web.js";
 const LYNX_WEB_STYLE_RULES = [
   ".SharedThemePackImportTextarea::part(textarea) { box-sizing: border-box; width: 100%; height: 100%; padding: 0; }",
   ".EnvironmentScroller { flex: 0 1 auto; height: auto; min-height: 0; max-height: 100%; }",
+  // web-elements' `raw-text` collapses runs of spaces (`white-space-collapse:
+  // preserve-breaks`), which drops code indentation; native Lynx text keeps it.
+  ".MdCodeBlockText raw-text { white-space-collapse: preserve; }",
+  // A hard break is a `<text>` holding one newline; a DOM inline box collapses it.
+  ".MdBreak { white-space-collapse: preserve-breaks; }",
 ];
 const webDocument = globalThis.document;
 webDocument.documentElement.style.width = "100%";

@@ -2529,8 +2529,8 @@ function ThreadPage(props: ThreadPageProps) {
             localThreadError ??
             visibleThreadError({
               dismissedKey: dismissedThreadErrorKey,
-              error: currentThread?.error,
-              revision: currentThread?.errorRevision,
+              thread: currentThread,
+              transcriptRows: bodyState.kind === "transcript" ? bodyState.rows : null,
             })
           }
           onDismiss={() => {

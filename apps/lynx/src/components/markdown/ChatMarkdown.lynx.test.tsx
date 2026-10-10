@@ -68,10 +68,7 @@ describe("Lynx markdown file reference token", () => {
       /\.MdMathBlockShell\s*\{[^}]*border-left-width:\s*3px;[^}]*border-left-style:\s*solid;[^}]*border-left-color:\s*var\(--primary\);/s,
     );
     expect(styles).toMatch(
-      /\.MdTaskCheckbox\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--color-border\);[^}]*border-right-color:\s*var\(--color-border\);[^}]*border-bottom-color:\s*var\(--color-border\);[^}]*border-left-color:\s*var\(--color-border\);/s,
-    );
-    expect(styles).toMatch(
-      /\.MdTaskCheckbox--checked\s*\{[^}]*border-top-color:\s*var\(--primary\);[^}]*border-right-color:\s*var\(--primary\);[^}]*border-bottom-color:\s*var\(--primary\);[^}]*border-left-color:\s*var\(--primary\);/s,
+      /\.MdTaskCheckbox\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--muted-foreground\);[^}]*border-right-color:\s*var\(--muted-foreground\);[^}]*border-bottom-color:\s*var\(--muted-foreground\);[^}]*border-left-color:\s*var\(--muted-foreground\);/s,
     );
     expect(styles).toMatch(
       /\.MdTableHeaderText,\s*\.MdTableCellText\s*\{[^}]*font-size:\s*inherit;[^}]*line-height:\s*inherit;/s,
@@ -87,13 +84,15 @@ describe("Lynx markdown file reference token", () => {
     );
     expect(styles).toMatch(/\.MdTableRow\s*\{[^}]*display:\s*flex;/s);
     expect(styles).toMatch(
-      /\.MdTableHeaderCell,\s*\.MdTableCell\s*\{[^}]*width:\s*0;[^}]*min-width:\s*0;[^}]*flex:\s*1;[^}]*border-right-width:\s*1px;[^}]*border-right-style:\s*solid;[^}]*border-right-color:\s*var\(--border\);/s,
+      /\.MdTableHeaderCell,\s*\.MdTableCell\s*\{[^}]*width:\s*0;[^}]*min-width:\s*0;[^}]*flex-basis:\s*0;[^}]*border-right-width:\s*1px;[^}]*border-right-style:\s*solid;[^}]*border-right-color:\s*var\(--border\);/s,
     );
     expect(styles).toMatch(
       /\.MdTableHeaderText,\s*\.MdTableCellText\s*\{[^}]*display:\s*block;[^}]*width:\s*100%;[^}]*min-width:\s*0;[^}]*white-space:\s*normal;[^}]*overflow-wrap:\s*anywhere;/s,
     );
     const source = readFileSync(new URL("./ChatMarkdown.lynx.tsx", import.meta.url), "utf8");
-    expect(source).toMatch(/<MarkdownTable\s+context=\{context\}[\s\S]*?nodeKey=\{key\}\s*\/>/);
+    expect(source).toMatch(
+      /<MarkdownTable\s+context=\{context\}[\s\S]*?nodeKey=\{key\}\s+style=\{style\}\s*\/>/,
+    );
     expect(source).not.toContain('<scroll-view className="MdTableScroller"');
     expect(styles).toMatch(
       /\.MdTableHeaderText,\s*\.MdTableCellText\s*\{[^}]*word-break:\s*break-word;/s,
@@ -127,7 +126,7 @@ describe("Lynx markdown file reference token", () => {
 
     const reference = elementTree.root?.querySelector(".MdInlineToken--file");
     expect(reference?.getAttribute("accessibility-label")).toBe("Open src/app/router.tsx");
-    expect(reference?.querySelector(".MdInlineTokenFileIcon")).not.toBeNull();
+    expect(reference?.querySelector(".MdInlineTokenIcon")).not.toBeNull();
     expect(reference?.querySelector(".MdInlineTokenGlyph")).toBeNull();
     fireEvent.tap(reference!);
     expect(openedPaths).toEqual(["src/app/router.tsx"]);
@@ -148,14 +147,41 @@ describe("Lynx markdown file reference token", () => {
     expect(reference?.getAttribute("focusable")).not.toBe("true");
   });
 
-  it("uses a stable inline-file glyph without mounting the full file icon component", () => {
+  it("draws a file reference as upstream's mention chip: file-type icon, link colour, chat size", () => {
     const source = readFileSync(
       new URL("./MarkdownFileReferenceToken.lynx.tsx", import.meta.url),
       "utf8",
     );
-    expect(source).toContain('import fileTextSvg from "@synara-central-icons/file-text.svg?raw"');
-    expect(source).toContain("content={colorizeLynxSvg(fileTextSvg, svgColors.iconSecondary)}");
-    expect(source).not.toContain("FileEntryIcon");
+    const markdown = readFileSync(new URL("./ChatMarkdown.lynx.tsx", import.meta.url), "utf8");
+    const styles = readFileSync(new URL("./markdown.css", import.meta.url), "utf8");
+    expect(source).toContain(
+      '<FileEntryIcon className="MdInlineTokenIcon" pathValue={props.relativePath} />',
+    );
+    expect(markdown).not.toContain("MdInlineToken--file");
+    expect(styles).toMatch(
+      /\.MdInlineToken--mention,[^{]*\{[^}]*border-width:\s*0;[^}]*color:\s*var\(--info-foreground\);[^}]*font-size:\s*inherit;/s,
+    );
+  });
+
+  it("applies resolved block spacing instead of stylesheet margins", () => {
+    const styles = readFileSync(new URL("./markdown.css", import.meta.url), "utf8");
+    const markdown = readFileSync(new URL("./ChatMarkdown.lynx.tsx", import.meta.url), "utf8");
+    for (const block of ["MdParagraph", "MdList", "MdBlockquote", "MdCodeBlockShell", "MdRule"]) {
+      expect(styles).not.toMatch(new RegExp(`\\.${block}\\s*\\{[^}]*margin-(top|bottom)`, "s"));
+    }
+    expect(markdown).toContain("resolveMarkdownChildSpacing({");
+    // Heading sizes follow the chat font, as `.chat-markdown h1 { font-size: 1.75em }`.
+    expect(styles).toMatch(/\.MdH1\s*\{[^}]*font-size:\s*1\.75em;/s);
+    expect(styles).toMatch(/\.MdStrong\s*\{[^}]*font-weight:\s*500;/s);
+    expect(styles).toMatch(
+      /\.MdCodeBlockText\s*\{[^}]*line-height:\s*calc\(var\(--app-font-size-chat, 13px\) \* 1\.625\);/s,
+    );
+  });
+
+  it("keeps code indentation and hard breaks on Lynx for Web", () => {
+    const host = readFileSync(new URL("../../main/web/web-host.ts", import.meta.url), "utf8");
+    expect(host).toContain(".MdCodeBlockText raw-text { white-space-collapse: preserve; }");
+    expect(host).toContain(".MdBreak { white-space-collapse: preserve-breaks; }");
   });
 
   it("skips composer token parsing for ordinary user text", () => {
@@ -178,7 +204,7 @@ describe("Lynx markdown file reference token", () => {
     expect(source).toContain(
       "const [highlighted, setHighlighted] = useState<NativeSyntaxHighlightResult | null>(null)",
     );
-    expect(source).toContain("highlightExplorerCode({ code: presentation.code, path })");
+    expect(source).toContain("highlightExplorerCode({ code: presentation.displayCode, path })");
     expect(source).toContain("color: token.color");
   });
 });

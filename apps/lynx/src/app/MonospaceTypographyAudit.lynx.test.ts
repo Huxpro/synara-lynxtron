@@ -31,7 +31,8 @@ describe("Native monospace typography inventory", () => {
       ["./thread-terminal.css", ".ThreadTerminalOutput", "--font-mono-family"],
       ["./thread-terminal.css", ".ThreadTerminalOutputLine", "--font-mono-family"],
       ["../components/markdown/markdown.css", ".MdCode", "--font-chat-code-family"],
-      ["../components/markdown/markdown.css", ".MdInlineCode", "--font-mono-family"],
+      // `.chat-markdown :not(pre) > code { font-family: var(--font-chat-code-family) }`.
+      ["../components/markdown/markdown.css", ".MdInlineCode", "--font-chat-code-family"],
       [
         "../adapters/pull-request-code-composition-elements.css",
         ".SharedPrCodeLineText",
