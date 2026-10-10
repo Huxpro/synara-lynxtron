@@ -1811,6 +1811,28 @@ async function handoffDividerCentres(driver) {
   return centres.toSorted((left, right) => left - right);
 }
 
+/**
+ * The canonical slug of the model the picker shows as `provider.modelText`, from the
+ * server's catalog for that provider (the picker's own source). A send that carried the
+ * provider's default model instead of the picked one has a different slug.
+ */
+async function resolvePickedModelSlug(backend, provider) {
+  const result = await backend.request("provider.listModels", { provider: provider.provider });
+  const matches = (result.models ?? []).filter((model) => model.name === provider.modelText);
+  if (matches.length !== 1)
+    throw new Error(
+      `${provider.label}'s catalog has ${matches.length} models named "${provider.modelText}" (${(result.models ?? []).map((model) => model.name).join(", ")}).`,
+    );
+  return matches[0].slug;
+}
+
+/** Throws unless every `[where, model]` pair names the expected slug. */
+function expectModelSlug(expected, pairs) {
+  for (const [where, model] of pairs) {
+    if (model !== expected) throw new Error(`${where} is ${model}, expected ${expected}.`);
+  }
+}
+
 function handoffActivities(thread) {
   return (thread.activities ?? []).filter((activity) => activity.kind === "provider.handoff");
 }
@@ -1903,6 +1925,8 @@ export async function workflowJ7(context) {
   const codeWord = `PLUM${Date.now().toString(36).toUpperCase()}`;
   let thread = null;
   let handoffThreadId = null;
+  let sourceSlug = null;
+  let targetSlug = null;
   try {
     await step("both providers are installed and signed in", async () => {
       const config = await backend.request("server.getConfig", {});
@@ -1913,7 +1937,11 @@ export async function workflowJ7(context) {
         if (!usable.includes(provider))
           throw new Error(`${provider} is not usable in this home (usable: ${usable.join(", ")}).`);
       }
-      return { usable };
+      // The slugs of the two models this workflow picks by name.
+      sourceSlug = await resolvePickedModelSlug(backend, HANDOFF_SOURCE);
+      targetSlug = await resolvePickedModelSlug(backend, HANDOFF_TARGET);
+      if (sourceSlug === targetSlug) throw new Error("The two picks resolve to one slug.");
+      return { usable, sourceSlug, targetSlug };
     });
 
     thread = await step(`complete a real turn on ${HANDOFF_SOURCE.label}`, async () => {
@@ -1928,6 +1956,8 @@ export async function workflowJ7(context) {
       );
       if (settled.modelSelection.provider !== HANDOFF_SOURCE.provider)
         throw new Error(`The new thread ran on ${settled.modelSelection.provider}.`);
+      // The picked model, not the provider's default.
+      expectModelSlug(sourceSlug, [["The source thread's model", settled.modelSelection.model]]);
       return {
         threadId: settled.id,
         turnId: settled.latestTurn.turnId,
@@ -1939,10 +1969,13 @@ export async function workflowJ7(context) {
     await step(`pick a ${HANDOFF_TARGET.label} model in the started thread's picker`, async () => {
       // The other provider's models are listed (no notice, no lock) and can be picked.
       const row = await pickComposerModel(driver, HANDOFF_TARGET);
-      // Nothing reaches the server until the send: the thread still names its own provider.
+      // Nothing reaches the server until the send: the thread still names its own selection.
       const current = await backend.thread(thread.threadId);
       if (current.modelSelection.provider !== HANDOFF_SOURCE.provider)
         throw new Error("Picking a model switched the thread before any message was sent.");
+      expectModelSlug(sourceSlug, [
+        ["The thread's model before the send", current.modelSelection.model],
+      ]);
       if (handoffActivities(current).length !== 0)
         throw new Error("Picking a model already handed the thread off.");
       return { row: { width: row.width, height: row.height } };
@@ -1991,6 +2024,17 @@ export async function workflowJ7(context) {
           payload.targetProvider !== HANDOFF_TARGET.provider
         )
           throw new Error(`Handoff row: ${payload.sourceProvider} → ${payload.targetProvider}.`);
+        // The handoff and the turn carry the model that was picked, on both sides. (The
+        // session exposes its provider only; it has no model field.)
+        expectModelSlug(targetSlug, [
+          ["The thread's model after the handoff", settled.modelSelection.model],
+          ["The handoff row's target model", payload.targetModel],
+          ["The handoff row's target selection", payload.targetModelSelection?.model],
+        ]);
+        expectModelSlug(sourceSlug, [
+          ["The handoff row's source model", payload.sourceModel],
+          ["The handoff row's source selection", payload.sourceModelSelection?.model],
+        ]);
         // The conversation travels as the prior-transcript context of the target's first turn.
         if (!String(payload.contextText ?? "").includes(codeWord))
           throw new Error("The handoff context does not carry the earlier conversation.");
@@ -2096,6 +2140,14 @@ export async function workflowJ7(context) {
         throw new Error(`Handoff row: ${payload.sourceProvider} → ${payload.targetProvider}.`);
       if (back.modelSelection.provider !== HANDOFF_SOURCE.provider)
         throw new Error(`The thread's selection is ${back.modelSelection.provider}.`);
+      // The header names a provider only; upstream then uses that provider's sticky
+      // selection, which is the model picked for it at the start of this workflow.
+      expectModelSlug(sourceSlug, [
+        ["The thread's model after handing back", back.modelSelection.model],
+        ["The second handoff row's target model", payload.targetModel],
+        ["The second handoff row's target selection", payload.targetModelSelection?.model],
+      ]);
+      expectModelSlug(targetSlug, [["The second handoff row's source model", payload.sourceModel]]);
       if (back.messages.length !== 4)
         throw new Error(`The thread has ${back.messages.length} messages, expected its own 4.`);
       await waitFor(async () => (await handoffDividerCentres(driver)).length === 2, {
@@ -2127,6 +2179,8 @@ export async function workflowJ7(context) {
       handoffThreadId = created.id;
       if (created.modelSelection.provider !== HANDOFF_TARGET.provider)
         throw new Error(`The handoff thread is bound to ${created.modelSelection.provider}.`);
+      // Again the target provider's sticky selection: the model picked for it earlier.
+      expectModelSlug(targetSlug, [["The handoff thread's model", created.modelSelection.model]]);
       if (created.handoff.sourceProvider !== HANDOFF_SOURCE.provider)
         throw new Error(`Handoff metadata: ${JSON.stringify(created.handoff)}`);
       // The new thread starts from the source's transcript, imported.

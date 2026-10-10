@@ -130,6 +130,12 @@ describe("J7 handoff targets", () => {
   it("checks the handoff against the backend the way upstream defines it", () => {
     // Same thread, the server's outcome row, the carried context, and the new-thread import.
     for (const fact of [
+      // The picked models by canonical slug, not only their providers.
+      'backend.request("provider.listModels", { provider: provider.provider })',
+      '["The thread\'s model after the handoff", settled.modelSelection.model]',
+      '["The handoff row\'s target selection", payload.targetModelSelection?.model]',
+      '["The handoff row\'s source selection", payload.sourceModelSelection?.model]',
+      '["The source thread\'s model", settled.modelSelection.model]',
       'activity.kind === "provider.handoff"',
       "payload.contextText",
       "settled.handoff?.sourceThreadId !== thread.threadId",
