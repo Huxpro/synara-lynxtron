@@ -222,17 +222,25 @@ async function waitForStreamingText(
         : null;
     },
     { label: `${minChars} chars of streamed text`, timeoutMs, intervalMs: 150 },
-  );
+  ).catch(async (error) => {
+    // A turn the provider never started (a rejected command, a lock held by another
+    // instance on the machine) looks the same from here as a slow one; say which it was.
+    const current = await backend.thread(threadId);
+    throw new Error(
+      `${error.message} Latest turn: ${JSON.stringify(current?.latestTurn)}; session: ${JSON.stringify(current?.session)}; last message: ${JSON.stringify(current?.messages?.at(-1)?.text?.slice(0, 120))}`,
+    );
+  });
 }
 
-/** A rendered message row inside the transcript viewport, to watch for movement. */
+/** The message row showing the most of itself in the transcript viewport, to watch for movement. */
 async function pickAnchorRow(driver, viewport) {
-  // Any row crossing the viewport middle works; a long reply can span the
-  // whole viewport with its top edge above it.
-  const middle = (viewport.top + viewport.bottom) / 2;
-  const rows = (await messageRowRects(driver)).filter(
-    (row) => row.top <= middle && row.bottom >= middle,
-  );
+  // Not "the row at the middle": rows other than messages (the 37px "Working for" header
+  // between a prompt and its reply) can sit there, and where they land depends on how much
+  // of the reply had streamed when the reader scrolled away.
+  const shown = (row) => Math.min(row.bottom, viewport.bottom) - Math.max(row.top, viewport.top);
+  const rows = (await messageRowRects(driver))
+    .filter((row) => shown(row) > 0)
+    .toSorted((left, right) => shown(right) - shown(left));
   if (rows.length === 0)
     throw new Error("No message row inside the transcript viewport to anchor on.");
   return rows[0];
@@ -557,9 +565,20 @@ export async function workflowJ1(context) {
   return { threadId: thread?.threadId, token };
 }
 
-function longPrompt(topic, marker) {
-  return `Without using tools, write a numbered list of 70 one-line facts about ${topic}, one per line. First line: ${marker}`;
+function longPrompt(topic, marker, lines = 70) {
+  return `Without using tools, write a numbered list of ${lines} one-line facts about ${topic}, one per line. First line: ${marker}`;
 }
+
+// The turn J2 follows and then scrolls away from has to outlast both checks
+// (about 7s after its first text). A 70-line reply has streamed in 5.5s, so
+// that turn asks for three times as much.
+const FOLLOWED_TURN_LINES = 210;
+// First text from a live provider has taken 43s; a minute is not a failure.
+const FIRST_TEXT_TIMEOUT_MS = 180_000;
+// Fewest samples, taken while the turn is still running, that decide the detach check, and
+// how many of them must follow new text (the second lets the renderer have drawn the first).
+const MIN_STREAMING_DRIFT_SAMPLES = 4;
+const MIN_SAMPLES_WITH_NEW_OUTPUT = 2;
 
 /**
  * J2 — long transcript → follow live output → scroll away → new output keeps
@@ -591,8 +610,8 @@ export async function workflowJ2(context) {
     let streamTurnBefore;
     await step("follow live output to the end of the transcript", async () => {
       streamTurnBefore = (await backend.thread(threadId)).latestTurn.turnId;
-      await composeAndSend(driver, longPrompt("mountains", `${token}-follow`));
-      await waitForStreamingText(backend, threadId, streamTurnBefore, 1);
+      await composeAndSend(driver, longPrompt("mountains", `${token}-follow`, FOLLOWED_TURN_LINES));
+      await waitForStreamingText(backend, threadId, streamTurnBefore, 1, FIRST_TEXT_TIMEOUT_MS);
       const samples = [];
       const deadline = Date.now() + 2_500;
       while (Date.now() < deadline) {
@@ -615,23 +634,53 @@ export async function workflowJ2(context) {
       const startChars = before.messages.at(-1).text.length;
       if (before.latestTurn.state !== "running")
         throw new Error("The turn finished before the detach check.");
+      // This step is about new output, so a sample counts only if the turn was
+      // still running after it was read. A turn that settles re-lays the row out
+      // for another reason: upstream removes the 37px "Working for" header above
+      // the reply, which is not output arriving.
+      const startedAt = Date.now();
       const drift = [];
-      const deadline = Date.now() + 2_500;
-      while (Date.now() < deadline) {
+      let streamedChars = startChars;
+      let samplesWithNewOutput = 0;
+      let settledAfterMs = null;
+      // Runs for 2.5s and until it has the samples that decide it, whichever is later: a busy
+      // machine reads a Native row slowly, and a provider can hold its text for seconds and
+      // then send it at once. The turn outlasts all of that.
+      const decided = () =>
+        Date.now() - startedAt >= 2_500 &&
+        drift.length >= MIN_STREAMING_DRIFT_SAMPLES &&
+        samplesWithNewOutput >= MIN_SAMPLES_WITH_NEW_OUTPUT;
+      while (!decided()) {
         await sleep(300);
         const top = await rowTop(driver, anchor.id);
+        const offered = await scrollToBottomOffered(driver);
+        const current = await backend.thread(threadId);
+        if (current.latestTurn.state !== "running") {
+          settledAfterMs = Date.now() - startedAt;
+          break;
+        }
         if (top === null) throw new Error(`Anchor row ${anchor.id} left the viewport.`);
+        if (!offered) throw new Error("Scroll to bottom disappeared while detached.");
         drift.push(Math.round((top - anchor.top) * 10) / 10);
-        if (!(await scrollToBottomOffered(driver)))
-          throw new Error("Scroll to bottom disappeared while detached.");
+        streamedChars = current.messages.at(-1).text.length;
+        if (streamedChars > startChars) samplesWithNewOutput += 1;
       }
-      const after = await backend.thread(threadId);
-      const grewChars = after.messages.at(-1).text.length - startChars;
-      if (grewChars <= 0) throw new Error("No new output arrived during the detach check.");
+      if (!decided()) {
+        throw new Error(
+          `The turn settled ${settledAfterMs}ms into the detach check with ${drift.length} samples, ${samplesWithNewOutput} of them after new output; it needs ${MIN_STREAMING_DRIFT_SAMPLES} and ${MIN_SAMPLES_WITH_NEW_OUTPUT}.`,
+        );
+      }
+      const grewChars = streamedChars - startChars;
       const maxDrift = Math.max(...drift.map(Math.abs));
       if (maxDrift > 2)
         throw new Error(`The detached transcript moved ${maxDrift}px under new output.`);
-      return { anchor: anchor.id, detachAttempts, maxDriftPx: maxDrift, grewChars };
+      return {
+        anchor: anchor.id,
+        detachAttempts,
+        samples: drift.length,
+        maxDriftPx: maxDrift,
+        grewChars,
+      };
     });
 
     await step("jump back to the latest output", async () => {

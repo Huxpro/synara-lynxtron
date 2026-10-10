@@ -222,6 +222,24 @@ export async function openElectronDriver(cdpPort) {
   };
 }
 
+/**
+ * The DevTool connector closes a request's stream without a reply when the machine is busy
+ * ("No response found for clientId"). Reading the tree or a box again is harmless, so those
+ * are asked again; input and evaluation may already have happened and are never resent.
+ */
+export async function sendWithReadRetry(sendOnce, method, { attempts = 3, delayMs = 400 } = {}) {
+  const repeatable = method === "DOM.getDocument" || method === "DOM.getBoxModel";
+  for (let attempt = 1; ; attempt += 1) {
+    try {
+      return await sendOnce();
+    } catch (error) {
+      const lostReply = /No response found for clientId/.test(String(error?.message ?? error));
+      if (!repeatable || !lostReply || attempt >= attempts) throw error;
+      await sleep(delayMs);
+    }
+  }
+}
+
 export async function openNativeDriver(devtoolPort) {
   const connectorPath = process.env.LYNX_DEVTOOL_CONNECTOR?.trim() || defaultLynxDevtoolConnector;
   const { createDefaultConnector } = await import(connectorPath);
@@ -233,10 +251,11 @@ export async function openNativeDriver(devtoolPort) {
       timeoutMs: 30_000,
     });
   let current = await session();
-  const send = async (method, params = {}) => {
-    const reply = await connector.sendCDPMessage(clientId, current.session_id, method, params);
-    return reply?.result ?? reply;
-  };
+  const send = (method, params = {}) =>
+    sendWithReadRetry(async () => {
+      const reply = await connector.sendCDPMessage(clientId, current.session_id, method, params);
+      return reply?.result ?? reply;
+    }, method);
   const documentRoot = async () => {
     const document = await send("DOM.getDocument", { depth: -1 });
     return document?.root ?? document;

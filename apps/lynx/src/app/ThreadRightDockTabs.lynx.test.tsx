@@ -105,6 +105,11 @@ describe("Lynx thread right dock tabs", () => {
 
     const tabs = elementTree.root?.querySelectorAll(".EditorSurfaceTab") ?? [];
     expect(tabs).toHaveLength(2);
+    // The row is sized for its two tabs: a tab's close button must not slide under the
+    // header buttons, where a tap would reach "Maximize panel" instead.
+    const row = elementTree.root?.querySelector(".ThreadRightDockTabList");
+    expect(row?.getAttribute("style")).toContain("width: 100%");
+    expect(row?.getAttribute("style")).toContain("min-width: 220px");
     expect(tabs[0]?.textContent).toContain("Diff");
     expect(tabs[1]?.textContent).toContain("example.js");
 

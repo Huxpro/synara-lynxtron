@@ -25,7 +25,7 @@ import { useShallow } from "zustand/react/shallow";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
-import { EditorSurfaceTab } from "./EditorSurfaceTab.lynx";
+import { contentTabListStyle, EditorSurfaceTab } from "./EditorSurfaceTab.lynx";
 import "./open-thread-tab-strip.css";
 
 /**
@@ -118,7 +118,7 @@ export function OpenThreadTabStrip(props: {
       accessibility-trait="none"
     >
       <scroll-view className="OpenThreadTabStripScroller" scroll-orientation="horizontal">
-        <view className="OpenThreadTabStripList">
+        <view className="OpenThreadTabStripList" style={contentTabListStyle(tabs.length)}>
           {tabs.map((tab) => {
             const active = tab.threadId === activeThreadId;
             return (
