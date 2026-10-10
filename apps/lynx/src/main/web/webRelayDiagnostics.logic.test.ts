@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@rstest/core";
 
-import { summarizeRelayPendingRequests } from "./webRelayDiagnostics.logic";
+import { isRelayPendingStream, summarizeRelayPendingRequests } from "./webRelayDiagnostics.logic";
 
 describe("web relay diagnostics", () => {
   it("separates settled unary traffic from a healthy long-lived stream", () => {
@@ -38,5 +38,11 @@ describe("web relay diagnostics", () => {
       activeStreamRequests: 1,
       activeStreamTags: ["terminal.subscribeEvents"],
     });
+  });
+
+  it("counts a scoped stream (items relayed by stream id) as a stream, not a unary request", () => {
+    expect(isRelayPendingStream({ onItem: () => {} })).toBe(true);
+    expect(isRelayPendingStream({ chunks: [] })).toBe(true);
+    expect(isRelayPendingStream({})).toBe(false);
   });
 });
