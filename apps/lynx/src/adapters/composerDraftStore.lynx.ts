@@ -11,6 +11,7 @@ import {
   PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
   type ChatAssistantSelectionAttachment,
   type ModelSelection,
+  type ProviderInstanceId,
   type ProviderMentionReference,
   type ProviderSkillReference,
   type RuntimeMode,
@@ -70,6 +71,13 @@ interface LynxComposerDraftStoreState {
    * threads' terminal state alive.
    */
   readonly draftThreadsByThreadId: Readonly<Record<string, never>>;
+  /**
+   * Upstream's last picked selection per provider account, which a handoff
+   * target defaults to (`resolveThreadHandoffModelSelection`). Lynx offers each
+   * provider's default account, whose id is the provider's; the map lives for
+   * the session and is fed by `setModelSelectionAndSticky`.
+   */
+  readonly stickyModelSelectionByProvider: Partial<Record<ProviderInstanceId, ModelSelection>>;
   readonly addAssistantSelection: (
     threadId: string,
     selection: ChatAssistantSelectionAttachment,
@@ -91,6 +99,16 @@ interface LynxComposerDraftStoreState {
   readonly removeFileComments: (threadId: string) => void;
   readonly removeAssistantSelections: (threadId: string) => void;
   readonly setModelSelection: (threadId: string, modelSelection: ModelSelection) => void;
+  /** Upstream's action of the same name: the draft's selection, remembered as the provider's. */
+  readonly setModelSelectionAndSticky: (threadId: string, modelSelection: ModelSelection) => void;
+  /**
+   * Upstream's action of the same name, for a new-thread handoff: the unsent
+   * draft follows the conversation. Lynx carries the text side (prompt,
+   * mentions, skills, pasted texts, file comments, assistant selections and
+   * terminal contexts). Picked images and files stay behind: each is a host
+   * token one draft owns and releases when it sends.
+   */
+  readonly copyTransferableComposerState: (sourceThreadId: string, targetThreadId: string) => void;
   readonly setRuntimeMode: (threadId: string, runtimeMode: RuntimeMode) => void;
   readonly setInteractionMode: (threadId: string, interactionMode: "default" | "plan") => void;
   readonly setMentions: (
@@ -381,9 +399,44 @@ function modelSelectionsEqual(left: ModelSelection | undefined, right: ModelSele
   return true;
 }
 
-export const useComposerDraftStore = create<LynxComposerDraftStoreState>()((set) => ({
+export const useComposerDraftStore = create<LynxComposerDraftStoreState>()((set, get) => ({
   draftsByThreadId: {},
   draftThreadsByThreadId: {},
+  stickyModelSelectionByProvider: {},
+  setModelSelectionAndSticky: (threadId, modelSelection) => {
+    get().setModelSelection(threadId, modelSelection);
+    const stickyKey = (modelSelection.instanceId ?? modelSelection.provider) as ProviderInstanceId;
+    set((state) => ({
+      stickyModelSelectionByProvider: {
+        ...state.stickyModelSelectionByProvider,
+        [stickyKey]: modelSelection,
+      },
+    }));
+  },
+  copyTransferableComposerState: (sourceThreadId, targetThreadId) => {
+    if (sourceThreadId.length === 0 || targetThreadId.length === 0) return;
+    set((state) => {
+      const sourceDraft = state.draftsByThreadId[sourceThreadId];
+      if (!sourceDraft) return state;
+      const nextDraft: LynxComposerDraft = {
+        ...(state.draftsByThreadId[targetThreadId] ?? emptyDraft()),
+        prompt: sourceDraft.prompt,
+        assistantSelections: [...sourceDraft.assistantSelections],
+        fileComments: [...sourceDraft.fileComments],
+        mentions: [...sourceDraft.mentions],
+        pastedTexts: [...sourceDraft.pastedTexts],
+        skills: [...sourceDraft.skills],
+        terminalContexts: sourceDraft.terminalContexts.map((context) => ({
+          ...context,
+          threadId: targetThreadId as ThreadId,
+        })),
+      };
+      const draftsByThreadId = { ...state.draftsByThreadId };
+      if (shouldRemoveDraft(nextDraft)) delete draftsByThreadId[targetThreadId];
+      else draftsByThreadId[targetThreadId] = nextDraft;
+      return { draftsByThreadId };
+    });
+  },
   addAssistantSelection: (threadId, selection) =>
     set((state) => {
       const current = state.draftsByThreadId[threadId] ?? emptyDraft();

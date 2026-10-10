@@ -298,6 +298,10 @@
       "~/composerDraftStore": ["./src/adapters/composerDraftStore.lynx.ts"],
       "~/confirmDialogFallback": ["./src/adapters/confirmDialogFallback.lynx.ts"],
       "~/contextMenuFallback": ["./src/adapters/contextMenuFallback.lynx.ts"],
+      "~/hooks/useProviderStatusesForLocalConfig": [
+        "./src/adapters/useProviderStatusesForLocalConfig.lynx.ts"
+      ],
+      "~/hooks/useProviderStatusRefresh": ["./src/adapters/useProviderStatusRefresh.lynx.ts"],
       "~/hooks/useTheme": ["./src/adapters/useTheme.lynx.ts"],
       "~/hooks/useViewportLayout": ["./src/hooks/useViewportLayout.lynx.ts"],
       "~/lib/icons": ["./src/adapters/webIcons.lynx.ts"],

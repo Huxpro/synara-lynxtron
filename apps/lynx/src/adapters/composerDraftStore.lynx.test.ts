@@ -584,4 +584,45 @@ describe("Lynx composer draft store as upstream session sync uses it", () => {
       "unsent prompt",
     );
   });
+
+  // The three members upstream's `useThreadHandoff` reads from the draft store.
+  it("remembers a handoff's selection as the draft's and as the provider's sticky one", () => {
+    const claude = { provider: "claudeAgent", model: "claude-sonnet-5-5" } as const;
+    useComposerDraftStore.setState({ stickyModelSelectionByProvider: {} });
+    useComposerDraftStore.getState().setModelSelectionAndSticky("thread-1", claude as never);
+    const state = useComposerDraftStore.getState();
+    // The composer shows the provider the next message goes to.
+    expect(state.draftsByThreadId["thread-1"]?.modelSelection).toEqual(claude);
+    expect(state.draftsByThreadId["thread-1"]?.modelSelectionByProvider).toEqual({
+      claudeAgent: claude,
+    });
+    // Keyed by the provider's default account, whose id is the provider's.
+    expect(state.stickyModelSelectionByProvider).toEqual({ claudeAgent: claude });
+  });
+
+  it("carries the unsent text draft into a handoff thread and leaves host-owned files behind", () => {
+    const store = useComposerDraftStore.getState();
+    store.setPrompt("thread-1", "unsent prompt");
+    store.addPastedText(
+      "thread-1",
+      createPastedTextDraft({ id: "paste-1", createdAt: "2026-10-10T00:00:00.000Z", text: "p" }),
+    );
+    store.addFiles("thread-1", [
+      { id: "file-1", name: "a.txt", token: "token-1", sizeBytes: 1, mimeType: "text/plain" },
+    ] as never);
+    store.setModelSelection("thread-2", { provider: "claudeAgent", model: "m" } as never);
+
+    store.copyTransferableComposerState("thread-1", "thread-2");
+    const target = useComposerDraftStore.getState().draftsByThreadId["thread-2"];
+    expect(target?.prompt).toBe("unsent prompt");
+    expect(target?.pastedTexts.map((entry) => entry.id)).toEqual(["paste-1"]);
+    // A picked file is a host token one draft owns and releases when it sends.
+    expect(target?.files).toEqual([]);
+    // The target thread keeps its own model selection.
+    expect(target?.modelSelection).toEqual({ provider: "claudeAgent", model: "m" });
+    // The source draft is untouched; a missing source changes nothing.
+    expect(useComposerDraftStore.getState().draftsByThreadId["thread-1"]?.files).toHaveLength(1);
+    store.copyTransferableComposerState("missing", "thread-3");
+    expect(useComposerDraftStore.getState().draftsByThreadId["thread-3"]).toBeUndefined();
+  });
 });
