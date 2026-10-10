@@ -34,7 +34,7 @@
   height: 28px;
   padding: 6px 8px 4px;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   font-weight: 500;
 }
 
@@ -110,13 +110,13 @@
 
 .AppSidebarSpaceEditorLabel {
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   font-weight: 500;
 }
 
 .AppSidebarSpaceEditorError {
   color: var(--destructive);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16px;
 }
 
@@ -157,7 +157,7 @@
   border-radius: 8px;
   color: var(--destructive);
   background-color: rgba(239, 68, 68, 0.08);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16px;
 }
 
@@ -200,13 +200,13 @@
 
 .AppSidebarProjectRunLabel {
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   font-weight: 500;
 }
 
 .AppSidebarProjectRunError {
   color: var(--destructive);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16px;
 }
 
@@ -249,7 +249,7 @@
 
 .AppSidebarSpaceProjectGroupLabelText {
   flex: 1;
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   font-weight: 500;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -285,7 +285,7 @@
   flex: 1;
   color: var(--foreground);
   opacity: 0.88;
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -314,13 +314,13 @@
   padding: 32px 8px;
   color: var(--muted-foreground);
   opacity: 0.6;
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   text-align: center;
 }
 
 .AppSidebarSpaceProjectError {
   color: var(--destructive);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 16px;
 }
 
@@ -334,7 +334,7 @@
 .AppSidebarSpaceEmptyTitle {
   color: var(--foreground);
   opacity: 0.75;
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
@@ -344,7 +344,7 @@
   margin-bottom: 12px;
   color: var(--muted-foreground);
   opacity: 0.55;
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 16px;
   text-align: center;
 }
@@ -386,7 +386,7 @@
   border-radius: 4px;
   color: var(--muted-foreground);
   background-color: var(--muted);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
   font-weight: 500;
   text-align: center;
@@ -399,7 +399,7 @@
   border-radius: 6px;
   color: var(--muted-foreground);
   background-color: var(--muted);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   text-align: center;
 }
 
@@ -430,7 +430,7 @@
 .AppSidebarNavText {
   margin-left: 9px;
   color: var(--sidebar-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
 }
 
@@ -475,7 +475,7 @@
 .AppSidebarState {
   margin: 8px 10px;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
 }
 
 .AppSidebarWorkspace {
@@ -487,7 +487,7 @@
 .AppSidebarWorkspaceLabel {
   padding: 0 8px 6px;
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   font-weight: 600;
 }
 
@@ -495,7 +495,7 @@
   flex: 1;
   min-width: 0;
   color: var(--sidebar-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -553,7 +553,7 @@
   width: 100%;
   padding: 16px 8px 0;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
   text-align: center;
 }
@@ -743,7 +743,7 @@
   flex: 1;
   min-width: 0;
   color: var(--foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   font-weight: 500;
   line-height: 14px;
 }
@@ -751,13 +751,13 @@
 .AppSidebarHoverCardTime {
   flex-shrink: 0;
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   opacity: 0.55;
 }
 
 .AppSidebarHoverCardMeta {
   color: var(--foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 14px;
   opacity: 0.8;
 }
@@ -836,7 +836,7 @@
 .SidebarSearchGroupLabel {
   padding: 7px 8px 5px;
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   font-weight: 600;
 }
 
@@ -853,20 +853,20 @@
 
 .SidebarSearchResultTitle {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
 }
 
 .SidebarSearchResultMeta {
   margin-top: 2px;
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
 }
 
 .SidebarSearchEmpty {
   padding: 28px 8px;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   text-align: center;
 }
 
@@ -902,7 +902,7 @@
 /* Upstream's Chats header label is `text-muted-foreground/80` (measured on Electron). */
 .SharedSidebarChatsLabel {
   color: color-mix(in srgb, var(--muted-foreground) 80%, transparent);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
 }
 
@@ -932,7 +932,7 @@
   align-items: center;
   margin-right: 12px;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
 }
 
 .SharedSidebarChatsPaginationAction.ui-hover,

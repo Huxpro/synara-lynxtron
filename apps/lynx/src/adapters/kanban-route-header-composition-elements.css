@@ -44,7 +44,7 @@
 .SharedKanbanRouteTitle {
   max-width: 640px;
   color: var(--foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 20px;
   font-weight: 500;
 }
@@ -52,7 +52,7 @@
 .SharedKanbanRouteCount {
   flex-shrink: 0;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
   opacity: 0.7;
 }
@@ -85,7 +85,7 @@
 
 .SharedKanbanRouteNewTaskText {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 

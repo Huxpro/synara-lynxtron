@@ -41,10 +41,10 @@ describe("Lynx Input accessibility contract", () => {
       /\.LxInputControl--lg\s*\{[^}]*padding-left:\s*14px;[^}]*padding-right:\s*14px;/s,
     );
     expect(styles).toMatch(
-      /\.LxInput\s*\{[^}]*box-sizing:\s*border-box;[^}]*padding-top:\s*6px;[^}]*padding-bottom:\s*6px;[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s,
+      /\.LxInput\s*\{[^}]*box-sizing:\s*border-box;[^}]*padding-top:\s*6px;[^}]*padding-bottom:\s*6px;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
     );
     expect(styles).toMatch(
-      /\.LxInputControl--sm > \.LxInput\s*\{[^}]*padding-top:\s*4px;[^}]*padding-bottom:\s*4px;[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s,
+      /\.LxInputControl--sm > \.LxInput\s*\{[^}]*padding-top:\s*4px;[^}]*padding-bottom:\s*4px;[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*16\.5px;/s,
     );
     expect(styles).toMatch(
       /\.LxInputControl--lg > \.LxInput\s*\{[^}]*padding-top:\s*8px;[^}]*padding-bottom:\s*8px;/s,

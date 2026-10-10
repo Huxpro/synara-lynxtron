@@ -115,7 +115,7 @@
 
 .SharedSidebarProjectSortPopup .LxMenuGroupLabel {
   padding: 4px 8px;
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
   font-weight: 500;
 }

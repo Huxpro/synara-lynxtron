@@ -358,7 +358,7 @@ describe("Lynx Explorer dock", () => {
       /\.ExplorerDockSearchTruncated\s*\{[^}]*height:\s*22px;[^}]*padding:\s*4px 8px;[^}]*border-top-width:\s*1px;[^}]*border-top-style:\s*solid;[^}]*border-top-color:\s*color-mix\(in oklab, var\(--color-border\) 45%, transparent\);/s,
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockSearchTruncated\s*\{[^}]*height:\s*14px;[^}]*padding:\s*0 4px;[^}]*font-size:\s*9px;/s,
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockSearchTruncated\s*\{[^}]*height:\s*14px;[^}]*padding:\s*0 4px;[^}]*font-size:\s*var\(--app-font-size-ui-timestamp, 9px\);/s,
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockEntries--truncated\s*\{[^}]*padding:\s*0;/s,
@@ -376,7 +376,7 @@ describe("Lynx Explorer dock", () => {
       /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockEntryPath\s*\{[^}]*display:\s*none;/s,
     );
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockDirectoryState\s*\{[^}]*height:\s*12px;[^}]*min-height:\s*12px;[^}]*font-size:\s*9px;[^}]*line-height:\s*12px;/s,
+      /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockDirectoryState\s*\{[^}]*height:\s*12px;[^}]*min-height:\s*12px;[^}]*font-size:\s*var\(--app-font-size-ui-timestamp, 9px\);[^}]*line-height:\s*12px;/s,
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-short-height\s+\.ExplorerDock\s+\.ExplorerDockPreview--pdf\s+\.ExplorerDockPreviewHeader\s*\{[^}]*position:\s*absolute;[^}]*right:\s*4px;[^}]*top:\s*32px;[^}]*width:\s*28px;[^}]*height:\s*28px;/s,
@@ -430,7 +430,7 @@ describe("Lynx Explorer dock", () => {
       /\.ExplorerDockFileIcon\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*opacity:\s*0\.75;/s,
     );
     expect(styles).toMatch(
-      /\.ExplorerDockEntryName\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;[^}]*opacity:\s*0\.78;/s,
+      /\.ExplorerDockEntryName\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;[^}]*opacity:\s*0\.78;/s,
     );
     expect(styles).toMatch(
       /\.ExplorerDockEntryCopy\s*\{[^}]*min-width:\s*0;[^}]*flex:\s*1;[^}]*overflow:\s*hidden;/s,
@@ -477,7 +477,7 @@ describe("Lynx Explorer dock", () => {
       /\.ExplorerDockBreadcrumbPrefix\s*\{[^}]*flex-grow:\s*0;[^}]*flex-shrink:\s*9999;[^}]*flex-basis:\s*auto;[^}]*overflow:\s*hidden;/s,
     );
     expect(styles).toMatch(
-      /\.ExplorerDockPreviewTruncated\s*\{[^}]*flex-shrink:\s*0;[^}]*font-size:\s*10px;[^}]*line-height:\s*14px;/s,
+      /\.ExplorerDockPreviewTruncated\s*\{[^}]*flex-shrink:\s*0;[^}]*font-size:\s*var\(--app-font-size-ui-2xs, 10px\);[^}]*line-height:\s*14px;/s,
     );
     expect(styles).toMatch(
       /\.ExplorerDockMarkdownModes\s*\{[^}]*height:\s*28px;[^}]*flex-shrink:\s*0;[^}]*border-radius:\s*8px;/s,

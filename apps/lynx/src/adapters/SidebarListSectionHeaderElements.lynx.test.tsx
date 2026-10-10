@@ -75,7 +75,7 @@ describe("sidebar list section header actions", () => {
       /\.SharedSidebarProjectSortPopup \.LxMenuItem\s*\{[^}]*min-height:\s*26px;[^}]*padding:\s*1px 10px;/s,
     );
     expect(styles).toMatch(
-      /\.SharedSidebarProjectSortPopup \.LxMenuGroupLabel\s*\{[^}]*padding:\s*4px 8px;[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;[^}]*font-weight:\s*500;/s,
+      /\.SharedSidebarProjectSortPopup \.LxMenuGroupLabel\s*\{[^}]*padding:\s*4px 8px;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;[^}]*font-weight:\s*500;/s,
     );
     expect(styles).toMatch(
       /\.SharedSidebarProjectSortPopup\s+\.SharedSidebarProjectSortGroupLabel--secondary\s*\{[^}]*padding-top:\s*8px;/s,

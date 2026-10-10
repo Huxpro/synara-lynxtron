@@ -21,7 +21,7 @@
 }
 .ProjectActionEditorLabel {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
   font-weight: 500;
 }
@@ -97,7 +97,7 @@
 }
 .ProjectActionEditorIconLabel {
   color: var(--foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 15px;
 }
 .ProjectActionEditorSwitch {
@@ -119,7 +119,7 @@
 }
 .ProjectActionEditorSwitchLabel {
   color: var(--foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 20px;
 }
 .ProjectActionEditorSwitchTrack {
@@ -155,11 +155,11 @@
 }
 .ProjectActionEditorHint {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
 }
 .ProjectActionEditorError {
   color: var(--destructive);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 20px;
 }

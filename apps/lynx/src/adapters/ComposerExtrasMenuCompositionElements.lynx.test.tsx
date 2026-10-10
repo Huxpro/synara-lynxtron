@@ -91,10 +91,10 @@ describe("native composer attachment menu item", () => {
       /\.ComposerExtrasTriggerLynx\s*\{[^}]*padding:\s*5px;[^}]*border-radius:\s*8px;/s,
     );
     expect(composerStyles).toMatch(
-      /\.ComposerExtrasItemLabelLynx > text\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s,
+      /\.ComposerExtrasItemLabelLynx > text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
     );
     expect(composerStyles).toMatch(
-      /\.ComposerRuntimeTriggerLabelLynx\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;[^}]*font-weight:\s*400;/s,
+      /\.ComposerRuntimeTriggerLabelLynx\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*16\.5px;[^}]*font-weight:\s*400;/s,
     );
     expect(composerStyles).toMatch(
       /\.ComposerRuntimeTriggerLynx\s*\{[^}]*min-height:\s*28px;[^}]*padding:\s*4px 10px;[^}]*border:\s*1px solid transparent;[^}]*border-radius:\s*10px;/s,
@@ -145,7 +145,7 @@ describe("native composer attachment menu item", () => {
       /\.ComposerRuntimeOptionIconLynx\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*flex-shrink:\s*0;/s,
     );
     expect(composerStyles).toMatch(
-      /\.ComposerRuntimeOptionTextLynx\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;[^}]*font-weight:\s*400;/s,
+      /\.ComposerRuntimeOptionTextLynx\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;[^}]*font-weight:\s*400;/s,
     );
     expect(composerStyles).toMatch(
       /\.ComposerRuntimePopupLynx \.LxMenuIndicatorIcon\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;[^}]*margin-left:\s*8px;/s,
@@ -223,13 +223,13 @@ describe("native composer attachment menu item", () => {
       /\.ComposerProviderOptionLynx \.ComposerModelTriggerContentLynx\s*\{[^}]*width:\s*100%;/s,
     );
     expect(composerStyles).toMatch(
-      /\.ComposerProviderOptionLynx \.ComposerModelTriggerLabelLynx\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s,
+      /\.ComposerProviderOptionLynx \.ComposerModelTriggerLabelLynx\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
     );
     expect(composerStyles).toMatch(
-      /\.ComposerModelTriggerLabelLynx\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s,
+      /\.ComposerModelTriggerLabelLynx\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*16\.5px;/s,
     );
     expect(composerStyles).toMatch(
-      /\.ComposerModelTriggerMetaLynx\s*\{[^}]*font-size:\s*10px;[^}]*line-height:\s*15px;/s,
+      /\.ComposerModelTriggerMetaLynx\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-2xs, 10px\);[^}]*line-height:\s*15px;/s,
     );
     expect(composerStyles).toMatch(
       /\.ComposerModelTriggerLynx\s*\{[^}]*padding:\s*4px 8px;[^}]*border:\s*1px solid transparent;[^}]*border-radius:\s*10px;/s,
@@ -249,7 +249,7 @@ describe("native composer attachment menu item", () => {
       /\.ComposerTraitsTriggerLynx\.ui-hover,[^{]*\{[^}]*background-color:\s*var\(--color-background-elevated-secondary\);/s,
     );
     expect(composerStyles).toMatch(
-      /\.ComposerProviderOptionLynx \.ComposerModelTriggerMetaLynx\s*\{[^}]*margin-left:\s*auto;[^}]*font-size:\s*11px;[^}]*line-height:\s*18px;[^}]*opacity:\s*0\.8;/s,
+      /\.ComposerProviderOptionLynx \.ComposerModelTriggerMetaLynx\s*\{[^}]*margin-left:\s*auto;[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*18px;[^}]*opacity:\s*0\.8;/s,
     );
     expect(composerStyles).toMatch(
       /\.ComposerProviderOptionLynx \.ComposerModelTriggerChevronLynx\s*\{[^}]*margin-left:\s*auto;/s,
@@ -275,7 +275,7 @@ describe("native composer attachment menu item", () => {
     );
     expect(composerStyles).toMatch(/\.ComposerModelOptionLynx\s*\{[^}]*border-radius:\s*8px;/s);
     expect(composerStyles).toMatch(
-      /\.ComposerModelOptionNameLynx\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s,
+      /\.ComposerModelOptionNameLynx\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
     );
     expect(composerStyles).toMatch(
       /\.ComposerModelOptionFavoriteLynx\s*\{[^}]*border-radius:\s*10\.4px;/s,

@@ -24,20 +24,20 @@
   min-width: 0;
   flex: 1;
   color: var(--foreground);
-  font-size: 13px;
+  font-size: var(--app-font-size-ui, 13px);
   line-height: 18px;
   word-break: break-word;
 }
 
 .PendingApprovalTitleLynx {
   color: var(--foreground);
-  font-size: 13px;
+  font-size: var(--app-font-size-ui, 13px);
   font-weight: 500;
 }
 
 .PendingApprovalToolLynx {
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 18px;
   font-weight: 400;
 }
@@ -48,7 +48,7 @@
   border-radius: 4px;
   background-color: var(--muted);
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
 }
 
 .PendingApprovalDetailLynx {
@@ -89,5 +89,5 @@
 .PendingApprovalHintLynx {
   margin-top: 8px;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
 }

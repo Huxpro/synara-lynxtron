@@ -117,7 +117,7 @@
 
 .EnvironmentTitle {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 400;
   line-height: 18px;
 }
@@ -194,7 +194,7 @@
 
 .EnvironmentChangesAddition,
 .EnvironmentChangesDeletion {
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
 }
 
@@ -261,7 +261,7 @@
 .EnvironmentBranchError {
   padding: 10px;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
 }
 
@@ -296,7 +296,7 @@
   min-height: 24px;
   padding: 4px 8px;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   font-weight: 500;
   line-height: 16.5px;
 }
@@ -308,28 +308,28 @@
 
 .EnvironmentGitActionMenuUnavailable {
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 15px;
 }
 
 .EnvironmentGitActionMenuState {
   padding: 8px;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
 }
 
 .EnvironmentGitActionMenuHint {
   padding: 6px 8px;
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 15px;
 }
 
 .EnvironmentGitActionStatus {
   padding: 0 8px 4px 32px;
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 15px;
 }
 
@@ -370,7 +370,7 @@
 
 .EnvironmentGitActionSummaryLabel {
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
 }
 
@@ -378,7 +378,7 @@
   min-width: 0;
   flex: 1;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
   line-height: 18px;
 }
@@ -400,7 +400,7 @@
 
 .EnvironmentGitActionSelectAllLabel {
   color: var(--foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
 }
 
@@ -443,7 +443,7 @@
   overflow: hidden;
   color: var(--foreground);
   font-family: var(--font-mono-family);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -453,7 +453,7 @@
   flex-shrink: 0;
   color: var(--muted-foreground);
   font-family: var(--font-mono-family);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 15px;
 }
 
@@ -465,12 +465,12 @@
   border-radius: 10px;
   background-color: transparent;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
 .EnvironmentGitActionDialogError {
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
 }
 
@@ -510,7 +510,7 @@
   flex: 1;
   overflow: hidden;
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   font-weight: 400;
   line-height: 15px;
   opacity: 0.5;
@@ -530,14 +530,14 @@
 .EnvironmentLocalServersFeedback {
   padding: 4px 8px;
   color: var(--destructive);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 15px;
 }
 
 .EnvironmentLocalServersEmpty {
   padding: 12px;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
   text-align: center;
 }
@@ -598,13 +598,13 @@
 
 .EnvironmentLocalServerTitle {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
 .EnvironmentLocalServerAddress {
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 15px;
 }
 
@@ -627,7 +627,7 @@
   flex: 1;
   overflow: hidden;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 400;
   line-height: 18px;
   text-overflow: ellipsis;
@@ -638,7 +638,7 @@
   max-width: 150px;
   overflow: hidden;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -693,14 +693,14 @@
 }
 
 .EnvironmentEditorOption .LxMenuItem__text {
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
 .EnvironmentEditorError {
   margin: 0 8px 2px 32px;
   color: var(--destructive);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 15px;
 }
 
@@ -718,7 +718,7 @@
 .EnvironmentRepositoryError {
   margin: 0 8px 2px 32px;
   color: var(--destructive);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 15px;
 }
 
@@ -778,7 +778,7 @@
   flex: 1;
   overflow: hidden;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -787,14 +787,14 @@
 .EnvironmentPullRequestCheckStatus {
   flex-shrink: 0;
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 15px;
 }
 
 .EnvironmentPullRequestEmpty {
   padding: 12px;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
   text-align: center;
 }
@@ -843,7 +843,7 @@
 .EnvironmentRecapStatus {
   margin-top: 4px;
   color: var(--destructive);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 15px;
 }
 
@@ -883,7 +883,7 @@
   border-radius: 10px;
   background-color: transparent;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
@@ -905,13 +905,13 @@
 
 .EnvironmentInstructionsCopyLabel {
   color: var(--foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 15px;
 }
 
 .EnvironmentInstructionsStatus {
   color: var(--destructive);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 15px;
 }
 
@@ -975,7 +975,7 @@
 .EnvironmentPinnedLabelText {
   overflow: hidden;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1000,7 +1000,7 @@
   border-radius: 6px;
   background-color: var(--background);
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
@@ -1030,14 +1030,14 @@
 
 .EnvironmentPinnedError {
   color: var(--destructive);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 15px;
 }
 
 .EnvironmentSectionLabel,
 .EnvironmentDisclosureLabel {
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   font-weight: 400;
   line-height: 16.5px;
 }
@@ -1084,14 +1084,14 @@
   border-radius: 10px;
   background-color: transparent;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
 .EnvironmentNotepadStatus {
   min-height: 0;
   color: var(--destructive);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 15px;
 }
 

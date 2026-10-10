@@ -44,7 +44,7 @@
 .SharedKanbanColumnDispatchTarget {
   margin-right: 6px;
   color: #0284c7;
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
 }
 
 .SharedKanbanColumnNewCard {
@@ -113,7 +113,7 @@
 .SharedKanbanColumnShowMoreLabel {
   width: 100%;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   text-align: center;
 }
 

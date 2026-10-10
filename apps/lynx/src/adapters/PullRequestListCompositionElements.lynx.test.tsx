@@ -34,7 +34,7 @@ describe("Pull Request list state fidelity", () => {
       /\.SharedPrEmptyTitle\s*\{[^}]*font-size:\s*20px;[^}]*line-height:\s*28px;[^}]*font-weight:\s*600;/s,
     );
     expect(styles).toMatch(
-      /\.SharedPrEmptyDescription\s*\{[^}]*max-width:\s*384px;[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;[^}]*margin-top:\s*4px;/s,
+      /\.SharedPrEmptyDescription\s*\{[^}]*max-width:\s*384px;[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*line-height:\s*20px;[^}]*margin-top:\s*4px;/s,
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-compact\.SliceRoot--viewport-constrained-height\s+\.SharedPrEmpty\s*\{[^}]*min-height:\s*0;[^}]*margin-top:\s*-8px;[^}]*padding:\s*0;/s,

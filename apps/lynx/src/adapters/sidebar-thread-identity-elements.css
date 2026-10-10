@@ -34,6 +34,6 @@
 
 .SharedSidebarThreadIdentityPending {
   color: var(--warning-foreground, #a16207);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   font-weight: 500;
 }

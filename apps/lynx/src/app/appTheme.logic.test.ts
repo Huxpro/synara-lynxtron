@@ -165,7 +165,10 @@ describe("slice root theme projection", () => {
     expect(appSource).toContain(
       "const themeVariables = useMemo(\n    () => resolveSliceThemeVariables(themeState, systemDark),",
     );
-    expect(appSource).toContain("style={themeVariables}");
+    expect(appSource).toContain(
+      "const rootVariables = useMemo(\n    () => ({ ...themeVariables, ...typographyVariables }),",
+    );
+    expect(appSource).toContain("style={rootVariables}");
     expect(appSource).not.toContain("style={resolveSliceThemeVariables(themeState, systemDark)}");
   });
 

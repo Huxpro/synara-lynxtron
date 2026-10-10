@@ -14,7 +14,7 @@ describe("Pull Request timeline typography", () => {
       /\.SharedPrTimelineMeta,\s*\.SharedPrTimelineBody\s*\{[^}]*font-size:\s*var\(--app-font-size-ui\);[^}]*line-height:\s*18px;/s,
     );
     expect(styles).not.toMatch(
-      /\.SharedPrTimeline(?:Title|Meta|Body)\s*\{[^}]*font-size:\s*10px;/s,
+      /\.SharedPrTimeline(?:Title|Meta|Body)\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-2xs, 10px\);/s,
     );
   });
 

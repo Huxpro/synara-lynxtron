@@ -114,14 +114,14 @@
 
 .SidebarSurfacePickerItemTitle {
   color: var(--foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 14px;
   font-weight: 500;
 }
 
 .SidebarSurfacePickerItemDescription {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16.5px;
 }
 

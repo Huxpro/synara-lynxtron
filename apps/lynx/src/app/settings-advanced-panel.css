@@ -75,7 +75,7 @@
 .SettingsAdvancedPath {
   color: var(--foreground);
   font-family: var(--font-mono-family);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
 }
 
@@ -89,7 +89,7 @@
 
 .SettingsAdvancedMetadataText {
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
 }
 
@@ -99,7 +99,7 @@
 }
 
 .SettingsAdvancedAction .LxButton__text {
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 15px;
 }
 
@@ -151,13 +151,13 @@
 
 .SettingsAdvancedRecoveryDetailsText {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
 }
 
 .SettingsAdvancedVersion {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
   line-height: 16px;
 }

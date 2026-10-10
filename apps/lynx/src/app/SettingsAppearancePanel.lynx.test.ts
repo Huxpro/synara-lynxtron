@@ -132,7 +132,7 @@ describe("Theme pack edits reach the app", () => {
 
   it("turns inline custom properties on, which the root theme variables need", () => {
     expect(read("../../lynx.config.ts")).toContain("enableCSSInlineVariables: true,");
-    expect(read("./App.tsx")).toContain("style={themeVariables}");
+    expect(read("./App.tsx")).toContain("style={rootVariables}");
   });
 
   it("round-trips translucency through the stored theme state", () => {

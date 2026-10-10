@@ -65,7 +65,7 @@ describe("Shared Settings panel elements", () => {
     );
     expect(sectionStyles).toMatch(/\.SharedSettingsSection\s*\{[^}]*gap:\s*6px;/s);
     expect(sectionStyles).toMatch(
-      /\.SharedSettingsSectionTitle\s*\{[^}]*font-size:\s*12px;[^}]*font-weight:\s*400;[^}]*line-height:\s*18px;[^}]*opacity:\s*0\.58;/s,
+      /\.SharedSettingsSectionTitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*400;[^}]*line-height:\s*18px;[^}]*opacity:\s*0\.58;/s,
     );
     expect(sectionStyles).toMatch(
       /\.SharedSettingsCard\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*10px;[^}]*background-color:\s*transparent;/s,

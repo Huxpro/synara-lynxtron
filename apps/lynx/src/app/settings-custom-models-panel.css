@@ -12,7 +12,7 @@
 
 .SettingsCustomModelsSectionTitleText {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 400;
   line-height: 18px;
   opacity: 0.58;
@@ -62,7 +62,7 @@
 
 .SettingsCustomModelsTitle {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
   line-height: 18px;
 }
@@ -70,7 +70,7 @@
 .SettingsCustomModelsDescription,
 .SettingsCustomModelsState {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
@@ -104,7 +104,7 @@
   flex: 1;
   overflow: hidden;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -156,7 +156,7 @@
 
 .SettingsCustomModelsError {
   color: var(--destructive);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
@@ -181,7 +181,7 @@
   width: 96px;
   overflow: hidden;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -193,7 +193,7 @@
   overflow: hidden;
   color: var(--foreground);
   font-family: var(--font-mono-family);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 20px;
   text-overflow: ellipsis;
   white-space: nowrap;

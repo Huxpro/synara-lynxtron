@@ -96,7 +96,7 @@
 .SettingsProfileHandle,
 .SettingsProfileDot {
   color: var(--muted-foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 20px;
 }
 
@@ -105,7 +105,7 @@
   border: 1px solid var(--border);
   border-radius: 999px;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
 }
 
@@ -157,7 +157,7 @@
 .SettingsProfileStatValue,
 .SettingsProfileStatLabel {
   width: 100%;
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 20px;
   text-align: center;
 }
@@ -180,7 +180,7 @@
 
 .SettingsProfileSectionTitle {
   color: var(--foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   font-weight: 500;
   line-height: 20px;
 }
@@ -256,7 +256,7 @@
   flex: 1;
   overflow: visible;
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   font-weight: 500;
   line-height: 10px;
   white-space: nowrap;
@@ -304,7 +304,7 @@
 .SettingsProfileModelName,
 .SettingsProfileModelPercent,
 .SettingsProfileEmpty {
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 20px;
 }
 
@@ -361,7 +361,7 @@
 
 .SettingsProfileProviderFallbackText {
   color: var(--muted-foreground);
-  font-size: 9px;
+  font-size: var(--app-font-size-ui-timestamp, 9px);
   font-weight: 600;
   line-height: 9px;
 }
@@ -473,7 +473,7 @@
 
 .SettingsProfileStateText {
   color: var(--muted-foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 20px;
   text-align: center;
 }
@@ -537,7 +537,7 @@
 .SettingsProfileShareStatus {
   min-height: 16px;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
   text-align: center;
 }
@@ -654,7 +654,7 @@
 
 .SettingsProfilePhotoHint,
 .SettingsProfileEditError {
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
   text-align: center;
 }
@@ -698,7 +698,7 @@
 .SettingsProfileEditLabel {
   flex-shrink: 0;
   color: var(--muted-foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 20px;
 }
 
@@ -725,7 +725,7 @@
 .SettingsProfileHandlePrefix {
   padding-left: 10px;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
@@ -736,7 +736,7 @@
   padding-left: 2px;
   padding-right: 10px;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
 }
 
 .LxDialogFooter.SettingsProfileEditFooter {

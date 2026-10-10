@@ -60,7 +60,7 @@
 .ThreadEditorRailTerminalGlyph {
   color: var(--color-text-accent);
   font-family: var(--font-mono-family);
-  font-size: 9px;
+  font-size: var(--app-font-size-ui-timestamp, 9px);
   line-height: 12px;
 }
 

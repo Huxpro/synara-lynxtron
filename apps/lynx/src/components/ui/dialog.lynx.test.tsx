@@ -128,7 +128,7 @@ describe("Lynx Dialog dismiss contract", () => {
     );
     expect(styles).toMatch(/\.LxDialogHeader\s*\{[^}]*flex-direction:\s*column;[^}]*gap:\s*6px;/s);
     expect(styles).toMatch(
-      /\.LxDialogDescription\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s,
+      /\.LxDialogDescription\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*line-height:\s*20px;/s,
     );
     expect(styles).not.toMatch(/\.LxDialogDescription\s*\{[^}]*margin-top:/s);
   });

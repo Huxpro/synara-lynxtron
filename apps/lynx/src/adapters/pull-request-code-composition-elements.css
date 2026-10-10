@@ -8,7 +8,7 @@
 
 .SharedPrCodeNotice {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .SliceRoot--viewport-short-height .ThreadPage > .DiffDock .SharedPrCodeNotice {
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 12px;
 }
 
@@ -31,7 +31,7 @@
 .SharedPrCodeStatsText,
 .SharedPrCodeStatsAddition,
 .SharedPrCodeStatsDeletion {
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
 }
 
@@ -109,7 +109,7 @@
   flex-shrink: 0;
   color: var(--foreground);
   font-family: var(--font-mono-family);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -120,7 +120,7 @@
   min-width: 0;
   overflow: hidden;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -173,7 +173,7 @@
 .SharedPrCodeFilePrevious {
   max-width: 120px;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -445,7 +445,7 @@
 
 .SharedPrCodeMoreText {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
 }
 

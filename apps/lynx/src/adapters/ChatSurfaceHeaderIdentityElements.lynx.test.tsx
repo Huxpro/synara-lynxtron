@@ -24,7 +24,7 @@ describe("chat surface header identity fidelity", () => {
     const routerSource = readFileSync(new URL("../app/router.tsx", import.meta.url), "utf8");
 
     expect(styles).toMatch(
-      /\.SharedChatHeaderIdentityTitle\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;[^}]*font-weight:\s*400;/s,
+      /\.SharedChatHeaderIdentityTitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;[^}]*font-weight:\s*400;/s,
     );
     // Upstream's chat header shows the open threads as tabs in place of the title; the
     // landing (an unsent draft) shows the strip without a tab of its own.

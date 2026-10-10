@@ -62,7 +62,7 @@
   background-color: var(--secondary);
   color: var(--foreground);
   font-family: var(--font-ui-family);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 .BrowserDockAddressSuggestions {
@@ -120,7 +120,7 @@
 }
 .BrowserDockAddressSuggestionTitle {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -128,7 +128,7 @@
 }
 .BrowserDockAddressSuggestionDetail {
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 15px;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -206,7 +206,7 @@
 .BrowserDockTabLabel {
   flex: 1;
   min-width: 0;
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -214,7 +214,7 @@
 .BrowserDockError {
   padding: 6px 10px;
   color: var(--destructive);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
 }
 .BrowserDockStatus {
   position: absolute;
@@ -226,12 +226,12 @@
   padding: 4px 10px;
   background-color: var(--background);
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
 }
 .BrowserDockState {
   padding: 16px;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   text-align: center;
 }
 .BrowserDockContentSlot {
@@ -286,7 +286,7 @@
 .BrowserDockHomeEmptyDetail {
   margin-top: 8px;
   color: var(--browser-home-foreground-secondary);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
 }
 .BrowserDockServerList {
   flex: 1;
@@ -377,7 +377,7 @@
 }
 .BrowserDockServerTitle {
   color: var(--browser-home-foreground);
-  font-size: 13px;
+  font-size: var(--app-font-size-ui, 13px);
   font-weight: 600;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -385,7 +385,7 @@
 }
 .BrowserDockServerDetail {
   color: var(--browser-home-foreground-secondary);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
