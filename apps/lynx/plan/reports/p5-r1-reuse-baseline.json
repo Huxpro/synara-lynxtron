@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-10T13:01:41.760Z",
+  "generatedAt": "2026-10-10T13:38:54.723Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -12,7 +12,7 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxGraph": {
     "entries": ["src/app/index.tsx"],
-    "modules": 935,
+    "modules": 936,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/checkbox",
@@ -216,7 +216,6 @@
       "@synara/shared/providerUsage",
       "@synara/shared/rightDock",
       "@synara/shared/semanticIconTone",
-      "@synara/shared/sidebarSearch",
       "@synara/shared/sidechatThread",
       "@synara/shared/subagents",
       "@synara/shared/terminalThreads",
@@ -280,13 +279,13 @@
   "lynxParallelImplementation": {
     "baseline": {
       "synaraClientImporters": 0,
-      "useQueryCallSites": 20,
+      "useQueryCallSites": 13,
       "refetchIntervalSites": 1,
-      "routerTsxLines": 3581
+      "routerTsxLines": 3578
     },
     "current": {
       "synaraClientImporters": 0,
-      "useQueryCallSites": 20,
+      "useQueryCallSites": 13,
       "refetchIntervalSites": 1,
       "routerTsxLines": 3578
     }
@@ -305,7 +304,7 @@
       "lynxConceptualEntries": ["src/app/router.tsx", "src/components/sidebar/Sidebar.lynx.tsx"],
       "graph": {
         "modules": 596,
-        "loc": 137825,
+        "loc": 137824,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -378,7 +377,6 @@
           "@synara/shared/providerMetadata",
           "@synara/shared/providerUsage",
           "@synara/shared/runtimeMode",
-          "@synara/shared/sidebarSearch",
           "@synara/shared/sidechatThread",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
@@ -445,7 +443,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 533,
-          "loc": 127423
+          "loc": 127422
         },
         "PATCHED": {
           "modules": 1,
@@ -462,11 +460,11 @@
       },
       "eligible": {
         "modules": 580,
-        "loc": 135103
+        "loc": 135102
       },
       "currentReuse": {
         "modules": 303,
-        "loc": 79725,
+        "loc": 79724,
         "modulePercent": 52.24,
         "locPercent": 59.01,
         "gatePercent": 52.24
@@ -2819,11 +2817,15 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.logic.ts",
-          "loc": 498,
+          "loc": 497,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/file-icons.ts", "apps/web/src/lib/projectAppearance.ts"]
+          "dependencies": [
+            "apps/web/src/file-icons.ts",
+            "apps/web/src/lib/projectAppearance.ts",
+            "apps/web/src/theme/theme.logic.ts"
+          ]
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
@@ -7556,7 +7558,7 @@
       "lynxConceptualEntries": ["src/components/sidebar/Sidebar.lynx.tsx"],
       "graph": {
         "modules": 473,
-        "loc": 118444,
+        "loc": 118443,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -7626,7 +7628,6 @@
           "@synara/shared/providerMetadata",
           "@synara/shared/providerUsage",
           "@synara/shared/runtimeMode",
-          "@synara/shared/sidebarSearch",
           "@synara/shared/sidechatThread",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
@@ -7692,7 +7693,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 419,
-          "loc": 108923
+          "loc": 108922
         },
         "PATCHED": {
           "modules": 1,
@@ -7709,11 +7710,11 @@
       },
       "eligible": {
         "modules": 464,
-        "loc": 116579
+        "loc": 116578
       },
       "currentReuse": {
         "modules": 274,
-        "loc": 72726,
+        "loc": 72725,
         "modulePercent": 59.05,
         "locPercent": 62.38,
         "gatePercent": 59.05
@@ -9674,11 +9675,15 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.logic.ts",
-          "loc": 498,
+          "loc": 497,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/file-icons.ts", "apps/web/src/lib/projectAppearance.ts"]
+          "dependencies": [
+            "apps/web/src/file-icons.ts",
+            "apps/web/src/lib/projectAppearance.ts",
+            "apps/web/src/theme/theme.logic.ts"
+          ]
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
@@ -13198,7 +13203,7 @@
       "lynxConceptualEntries": ["src/app/Transcript.tsx", "src/components/composer/Composer.tsx"],
       "graph": {
         "modules": 1037,
-        "loc": 234261,
+        "loc": 234260,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -13295,7 +13300,6 @@
           "@synara/shared/providerUsage",
           "@synara/shared/runtimeMode",
           "@synara/shared/searchQuery",
-          "@synara/shared/sidebarSearch",
           "@synara/shared/sidechatThread",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
@@ -13371,7 +13375,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 959,
-          "loc": 217914
+          "loc": 217913
         },
         "PATCHED": {
           "modules": 1,
@@ -13388,11 +13392,11 @@
       },
       "eligible": {
         "modules": 1011,
-        "loc": 226289
+        "loc": 226288
       },
       "currentReuse": {
         "modules": 354,
-        "loc": 87489,
+        "loc": 87488,
         "modulePercent": 35.01,
         "locPercent": 38.66,
         "gatePercent": 35.01
@@ -21038,11 +21042,15 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.logic.ts",
-          "loc": 498,
+          "loc": 497,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/file-icons.ts", "apps/web/src/lib/projectAppearance.ts"]
+          "dependencies": [
+            "apps/web/src/file-icons.ts",
+            "apps/web/src/lib/projectAppearance.ts",
+            "apps/web/src/theme/theme.logic.ts"
+          ]
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
@@ -26928,7 +26936,7 @@
       "lynxConceptualEntries": ["src/app/SettingsPage.tsx"],
       "graph": {
         "modules": 645,
-        "loc": 151769,
+        "loc": 151768,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -27002,7 +27010,6 @@
           "@synara/shared/providerMetadata",
           "@synara/shared/providerUsage",
           "@synara/shared/runtimeMode",
-          "@synara/shared/sidebarSearch",
           "@synara/shared/sidechatThread",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
@@ -27072,7 +27079,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 581,
-          "loc": 141336
+          "loc": 141335
         },
         "PATCHED": {
           "modules": 1,
@@ -27089,11 +27096,11 @@
       },
       "eligible": {
         "modules": 629,
-        "loc": 149047
+        "loc": 149046
       },
       "currentReuse": {
         "modules": 305,
-        "loc": 79993,
+        "loc": 79992,
         "modulePercent": 48.49,
         "locPercent": 53.67,
         "gatePercent": 48.49
@@ -30063,11 +30070,15 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.logic.ts",
-          "loc": 498,
+          "loc": 497,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/file-icons.ts", "apps/web/src/lib/projectAppearance.ts"]
+          "dependencies": [
+            "apps/web/src/file-icons.ts",
+            "apps/web/src/lib/projectAppearance.ts",
+            "apps/web/src/theme/theme.logic.ts"
+          ]
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
@@ -34938,7 +34949,7 @@
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
         "modules": 668,
-        "loc": 153522,
+        "loc": 153521,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -35021,7 +35032,6 @@
           "@synara/shared/providerMetadata",
           "@synara/shared/providerUsage",
           "@synara/shared/runtimeMode",
-          "@synara/shared/sidebarSearch",
           "@synara/shared/sidechatThread",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
@@ -35090,7 +35100,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 601,
-          "loc": 140700
+          "loc": 140699
         },
         "PATCHED": {
           "modules": 1,
@@ -35107,11 +35117,11 @@
       },
       "eligible": {
         "modules": 650,
-        "loc": 148791
+        "loc": 148790
       },
       "currentReuse": {
         "modules": 319,
-        "loc": 82154,
+        "loc": 82153,
         "modulePercent": 49.08,
         "locPercent": 55.21,
         "gatePercent": 49.08
@@ -38304,11 +38314,15 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.logic.ts",
-          "loc": 498,
+          "loc": 497,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/file-icons.ts", "apps/web/src/lib/projectAppearance.ts"]
+          "dependencies": [
+            "apps/web/src/file-icons.ts",
+            "apps/web/src/lib/projectAppearance.ts",
+            "apps/web/src/theme/theme.logic.ts"
+          ]
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
@@ -43262,7 +43276,7 @@
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
         "modules": 668,
-        "loc": 153523,
+        "loc": 153522,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -43345,7 +43359,6 @@
           "@synara/shared/providerMetadata",
           "@synara/shared/providerUsage",
           "@synara/shared/runtimeMode",
-          "@synara/shared/sidebarSearch",
           "@synara/shared/sidechatThread",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
@@ -43414,7 +43427,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 601,
-          "loc": 140701
+          "loc": 140700
         },
         "PATCHED": {
           "modules": 1,
@@ -43431,11 +43444,11 @@
       },
       "eligible": {
         "modules": 650,
-        "loc": 148792
+        "loc": 148791
       },
       "currentReuse": {
         "modules": 319,
-        "loc": 82154,
+        "loc": 82153,
         "modulePercent": 49.08,
         "locPercent": 55.21,
         "gatePercent": 49.08
@@ -46628,11 +46641,15 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.logic.ts",
-          "loc": 498,
+          "loc": 497,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/file-icons.ts", "apps/web/src/lib/projectAppearance.ts"]
+          "dependencies": [
+            "apps/web/src/file-icons.ts",
+            "apps/web/src/lib/projectAppearance.ts",
+            "apps/web/src/theme/theme.logic.ts"
+          ]
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
@@ -51586,7 +51603,7 @@
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
         "modules": 1007,
-        "loc": 228986,
+        "loc": 228985,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -51682,7 +51699,6 @@
           "@synara/shared/providerMetadata",
           "@synara/shared/providerUsage",
           "@synara/shared/runtimeMode",
-          "@synara/shared/sidebarSearch",
           "@synara/shared/sidechatThread",
           "@synara/shared/subagents",
           "@synara/shared/terminalThreads",
@@ -51758,7 +51774,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 929,
-          "loc": 212639
+          "loc": 212638
         },
         "PATCHED": {
           "modules": 1,
@@ -51775,11 +51791,11 @@
       },
       "eligible": {
         "modules": 981,
-        "loc": 221014
+        "loc": 221013
       },
       "currentReuse": {
         "modules": 355,
-        "loc": 87935,
+        "loc": 87934,
         "modulePercent": 36.19,
         "locPercent": 39.79,
         "gatePercent": 36.19
@@ -59147,11 +59163,15 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.logic.ts",
-          "loc": 498,
+          "loc": 497,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/file-icons.ts", "apps/web/src/lib/projectAppearance.ts"]
+          "dependencies": [
+            "apps/web/src/file-icons.ts",
+            "apps/web/src/lib/projectAppearance.ts",
+            "apps/web/src/theme/theme.logic.ts"
+          ]
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
