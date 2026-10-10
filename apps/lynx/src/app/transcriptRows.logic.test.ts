@@ -45,27 +45,31 @@ describe("transcript work-entry presentation", () => {
     expect(source).toContain('<TranscriptStatusIcon kind="search" tone={props.entry.tone} />');
     expect(source).toContain('<TranscriptStatusIcon kind="edit" tone={props.entry.tone} />');
     const styles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
+    // A reasoning line is a tool-row line: chat size, `leading-5`, muted.
     expect(styles).toMatch(
-      /\.TranscriptReasoningEntry\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*19px;/s,
+      /\.TranscriptReasoningEntry\s*\{[^}]*color:\s*var\(--muted-foreground\);[^}]*font-size:\s*var\(--app-font-size-chat, 13px\);[^}]*line-height:\s*20px;/s,
     );
     expect(styles).toMatch(
       /\.TranscriptReasoningEntry \.MdHeading,[\s\S]*?font-size:\s*inherit;[\s\S]*?line-height:\s*inherit;/,
     );
+    // Narration in the expanded work log is ordinary chat markdown.
     expect(styles).toMatch(
-      /\.TranscriptCollapsedNarration \.MdHeading,[\s\S]*?font-size:\s*12px;[\s\S]*?line-height:\s*19px;/,
+      /\.TranscriptCollapsedNarration\s*\{[^}]*color:\s*var\(--foreground\);[^}]*font-size:\s*var\(--app-font-size-chat, 13px\);/s,
     );
+    expect(styles).not.toContain(".TranscriptCollapsedNarration .MdHeading");
   });
 
   it("opens the end-of-turn changes card with the real provider turn id", () => {
     const source = readFileSync(new URL("./Transcript.tsx", import.meta.url), "utf8");
+    expect(source).toContain("changes={resolveTurnChangedFiles(turnSummary.files)}");
     expect(source).toContain(
-      "accessibleLabel: turnSummary\n      ? `Review changes for turn ${turnSummary.turnId}`",
+      "onReview={onOpenTurnDiff ? () => onOpenTurnDiff(turnSummary.turnId) : undefined}",
     );
-    expect(source).toContain("if (turnSummary) onOpenTurnDiff?.(turnSummary.turnId);");
     expect(source).toContain("onOpenTurnDiff={onOpenTurnDiff}");
   });
 
-  it("keeps ordinary work rows in label-detail form", () => {
+  it("words ordinary work rows as upstream's tool row does", () => {
+    // A path in the detail shows as its basename.
     expect(
       resolveTranscriptWorkEntryDisplayText({
         id: "tool-1",
@@ -73,7 +77,39 @@ describe("transcript work-entry presentation", () => {
         detail: "src/index.ts",
         tone: "tool",
       } as never),
-    ).toBe("Read src/index.ts");
+    ).toBe("Read index.ts");
+    // A command row names what ran, not the shell wrapper.
+    expect(
+      resolveTranscriptWorkEntryDisplayText({
+        id: "tool-2",
+        label: "Ran",
+        itemType: "command_execution",
+        command: '/bin/zsh -lc "./scripts/release.sh"',
+        detail: '/bin/zsh -lc "./scripts/release.sh"',
+        tone: "tool",
+      } as never),
+    ).toBe("Ran ./scripts/release.sh");
+  });
+
+  it("appends the state of a row that is not simply completed", () => {
+    expect(
+      resolveTranscriptWorkEntryDisplayText(
+        {
+          id: "tool-3",
+          label: "Ran",
+          itemType: "command_execution",
+          command: "node --test",
+          tone: "tool",
+          liveActivity: {
+            state: "failed",
+            label: "Failed",
+            startedAt: "2026-10-09T12:00:00.000Z",
+            lastActivityAt: "2026-10-09T12:00:02.000Z",
+          },
+        } as never,
+        Date.parse("2026-10-09T12:00:05.000Z"),
+      ),
+    ).toMatch(/^Ran node --test · Failed( · .+ elapsed)?$/);
   });
 
   it("uses Electron file-change wording and basenames for edit rows", () => {

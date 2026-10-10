@@ -38,6 +38,7 @@ import { parseMarkdown, type MarkdownNode } from "../components/markdown/markdow
 import { RpcTransportError } from "../data/rpcTransport.logic";
 import type { ThreadHeaderSummary, ThreadTranscriptRow } from "./queries";
 import type { TransportNoticeState } from "./transportRecovery.logic";
+import { resolveProposedPlanCardPresentation } from "./transcriptRowCards.logic";
 
 /**
  * Parsed markdown of the previous projection of one thread, by row source.
@@ -228,6 +229,24 @@ export function projectThreadTranscriptRows(
         .filter(isReasoningUpdateWorkEntry)
         .map((entry) => [entry.id, parsedTreeByWorkEntryId.get(entry.id) ?? null]),
     );
+    if (row.kind === "proposed-plan") {
+      const plan = resolveProposedPlanCardPresentation(row.proposedPlan.planMarkdown);
+      return {
+        ...row,
+        markdownTree: parse(`plan:${row.id}`, plan.displayedMarkdown, "assistant"),
+        planPreviewMarkdownTree:
+          plan.collapsedPreviewMarkdown === null
+            ? null
+            : parse(`plan-preview:${row.id}`, plan.collapsedPreviewMarkdown, "assistant"),
+      };
+    }
+    if (row.kind === "message-segment") {
+      const text = row.message.textSegments?.[row.segmentIndex]?.text ?? row.message.text;
+      return {
+        ...row,
+        markdownTree: parse(`segment:${row.id}`, text, "assistant"),
+      };
+    }
     if (row.kind !== "message") {
       return Object.keys(markdownTreesByWorkEntryId).length > 0
         ? { ...row, markdownTreesByWorkEntryId }

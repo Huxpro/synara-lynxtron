@@ -98,10 +98,14 @@ function allNodes(root) {
   return nodes;
 }
 
-export async function openElectronDriver(cdpPort) {
+/**
+ * `pageUrlPrefix` picks the page to attach to. Electron loads the app from 127.0.0.1; the
+ * browser pair (comparison-web.mjs) passes the dev web server's own origin.
+ */
+export async function openElectronDriver(cdpPort, pageUrlPrefix = "http://127.0.0.1:") {
   const targets = await fetch(`http://127.0.0.1:${cdpPort}/json/list`).then((r) => r.json());
   const target = targets.find(
-    (candidate) => candidate.type === "page" && candidate.url.startsWith("http://127.0.0.1:"),
+    (candidate) => candidate.type === "page" && candidate.url.startsWith(pageUrlPrefix),
   );
   if (!target) throw new Error(`No Electron page on CDP port ${cdpPort}.`);
   const socket = new WebSocket(target.webSocketDebuggerUrl);

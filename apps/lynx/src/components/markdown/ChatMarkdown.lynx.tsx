@@ -11,18 +11,31 @@ import {
 } from "@synara-web/composer-editor-mentions";
 
 import { useLynxInteractiveState } from "../ui/interactive-state.lynx";
-import { CheckIcon, CopyIcon, TextWrapIcon } from "../../lib/icons.lynx";
+import {
+  CheckIcon,
+  CircleAlertIcon,
+  CopyIcon,
+  LightBulbIcon,
+  TextWrapIcon,
+  TriangleAlertIcon,
+} from "../../lib/icons.lynx";
 import { clipboard } from "../../platform/clipboard";
 import { sleepOnHost } from "../../platform/timer";
 import { openExternalBestEffort } from "../../platform/window";
 import { parseMarkdown, type MarkdownNode, type MarkdownVariant } from "./markdownAst";
 import { resolveAgentChipColor } from "@synara-web/components/composerInlineChip.logic";
 import {
+  collapseMarkdownSoftBreaks,
   isMarkdownListLoose,
+  markdownNodePlainText,
+  markdownSpacingStyle,
+  resolveMarkdownChildSpacing,
   resolveMarkdownCodeBlockPresentation,
   resolveMarkdownInlineTokenPresentation,
   resolveMarkdownListMarker,
+  resolveMarkdownTableColumnWeights,
   toggleMarkdownCodeWrap,
+  type MarkdownChildSpacing,
   type MarkdownInlineTokenSegment,
 } from "./markdownPresentation.logic";
 import { MarkdownInlineTokenIcon } from "./MarkdownInlineTokenIcon.lynx";
@@ -71,10 +84,7 @@ interface MarkdownRenderContext {
   readonly tightListItem?: boolean;
 }
 
-interface MarkdownRootEdge {
-  readonly first: boolean;
-  readonly last: boolean;
-}
+type BlockSpacingStyle = ReturnType<typeof markdownSpacingStyle>;
 
 interface MarkdownListContext {
   readonly ordered: boolean;
@@ -87,6 +97,7 @@ function SelectableMarkdownText(props: {
   readonly children?: ReactNode;
   readonly className: string;
   readonly context: MarkdownRenderContext;
+  readonly style?: BlockSpacingStyle;
 }) {
   const textRef = useRef<NodesRef>(null);
   const selectionEnabled = props.context.selectable && props.context.onTextSelection !== undefined;
@@ -150,6 +161,7 @@ function SelectableMarkdownText(props: {
     <text
       ref={textRef}
       className={props.className}
+      style={props.style}
       text-selection={props.context.selectable}
       custom-context-menu={selectionEnabled}
       flatten={false}
@@ -252,27 +264,42 @@ function MarkdownTable(props: {
   readonly node: MarkdownNode;
   readonly nodeKey: string;
   readonly context: MarkdownRenderContext;
-  readonly edgeClassName?: string;
+  readonly style: BlockSpacingStyle;
 }) {
+  const rows = props.node.children ?? [];
+  const weights = resolveMarkdownTableColumnWeights(
+    rows.map((row) => (row.children ?? []).map((cell) => markdownNodePlainText(cell))),
+  );
   return (
-    <view className={`MdTableScroller${props.edgeClassName ?? ""}`}>
+    <view className="MdTableScroller" style={props.style}>
       <view className="MdTable">
-        {(props.node.children ?? []).map((row, rowIndex) => (
-          <view className="MdTableRow" key={`${props.nodeKey}.row.${rowIndex}`}>
-            {(row.children ?? []).map((cell, cellIndex) => (
-              <view
-                className={rowIndex === 0 ? "MdTableCell MdTableHeaderCell" : "MdTableCell"}
-                key={`${props.nodeKey}.cell.${rowIndex}.${cellIndex}`}
-              >
-                <text className={rowIndex === 0 ? "MdTableHeaderText" : "MdTableCellText"}>
-                  {renderInlineChildren(
-                    cell,
-                    `${props.nodeKey}.inline.${rowIndex}.${cellIndex}`,
-                    props.context,
-                  )}
-                </text>
-              </view>
-            ))}
+        {rows.map((row, rowIndex) => (
+          <view
+            className={rowIndex === rows.length - 1 ? "MdTableRow MdTableRow--last" : "MdTableRow"}
+            key={`${props.nodeKey}.row.${rowIndex}`}
+          >
+            {(row.children ?? []).map((cell, cellIndex) => {
+              const align = props.node.align?.[cellIndex] ?? "left";
+              return (
+                <view
+                  className={`${rowIndex === 0 ? "MdTableCell MdTableHeaderCell" : "MdTableCell"}${
+                    cellIndex === (row.children ?? []).length - 1 ? " MdTableCell--last" : ""
+                  }`}
+                  key={`${props.nodeKey}.cell.${rowIndex}.${cellIndex}`}
+                  style={{ flexGrow: weights[cellIndex] ?? 1 }}
+                >
+                  <text
+                    className={`${rowIndex === 0 ? "MdTableHeaderText" : "MdTableCellText"} MdTableText--${align}`}
+                  >
+                    {renderInlineChildren(
+                      cell,
+                      `${props.nodeKey}.inline.${rowIndex}.${cellIndex}`,
+                      props.context,
+                    )}
+                  </text>
+                </view>
+              );
+            })}
           </view>
         ))}
       </view>
@@ -280,30 +307,52 @@ function MarkdownTable(props: {
   );
 }
 
-function renderTable(
-  node: MarkdownNode,
-  key: string,
-  context: MarkdownRenderContext,
-  edgeClassName: string,
-) {
+// Upstream's `GITHUB_ALERTS` (`ChatMarkdown.tsx`): title and glyph per kind.
+const GITHUB_ALERTS = {
+  note: { title: "Note", Icon: CircleAlertIcon },
+  tip: { title: "Tip", Icon: LightBulbIcon },
+  important: { title: "Important", Icon: CircleAlertIcon },
+  warning: { title: "Warning", Icon: TriangleAlertIcon },
+  caution: { title: "Caution", Icon: CircleAlertIcon },
+} as const;
+
+function MarkdownAlertTitle(props: { readonly kind: keyof typeof GITHUB_ALERTS }) {
+  const { activeTheme, svgColors } = useTheme();
+  const alert = GITHUB_ALERTS[props.kind];
+  // An SVG takes a resolved colour, not a CSS variable: the theme's values
+  // behind `--info`, `--success`, `--warning` and `--destructive`. `important`
+  // (`--status-merged`) has no theme value in script and uses the accent.
+  const color =
+    props.kind === "tip"
+      ? activeTheme.theme.semanticColors.diffAdded
+      : props.kind === "warning"
+        ? svgColors.warning
+        : props.kind === "caution"
+          ? activeTheme.theme.semanticColors.diffRemoved
+          : activeTheme.theme.accent;
   return (
-    <MarkdownTable
-      context={context}
-      edgeClassName={edgeClassName}
-      key={key}
-      node={node}
-      nodeKey={key}
-    />
+    <view className="MdAlertTitle">
+      <alert.Icon className="MdAlertIcon" color={color} size={14} />
+      <text className="MdAlertTitleText">{alert.title}</text>
+    </view>
   );
 }
 
-/**
- * Electron's `.chat-markdown > :first-child { margin-top: 0 }` and `> :last-child
- * { margin-bottom: 0 }`: the message's first and last blocks sit flush with its box.
- */
-function markdownEdgeClassName(edge: MarkdownRootEdge | undefined): string {
-  if (!edge) return "";
-  return `${edge.first ? " MdEdge--first" : ""}${edge.last ? " MdEdge--last" : ""}`;
+/** Block children of a container, each with the margin that separates it from the previous one. */
+function renderBlockChildren(
+  node: MarkdownNode,
+  key: string,
+  context: MarkdownRenderContext,
+  listContext?: (index: number) => MarkdownListContext,
+): React.ReactNode {
+  const spacing = resolveMarkdownChildSpacing({
+    parent: node,
+    variant: context.variant,
+    tight: context.tightListItem === true,
+  });
+  return (node.children ?? []).map((child, index) =>
+    renderNode(child, `${key}.${index}`, context, listContext?.(index), spacing[index]),
+  );
 }
 
 function MarkdownLink({
@@ -340,7 +389,7 @@ function MarkdownLink({
   if (fileReference) {
     return (
       <MarkdownFileReferenceToken
-        className="MdInlineToken MdInlineToken--file"
+        className="MdInlineToken MdInlineToken--mention"
         key={nodeKey}
         onOpenFileReference={context.onOpenFileReference}
         relativePath={fileReference}
@@ -404,7 +453,7 @@ function MarkdownInlineCode({
   if (fileReference) {
     return (
       <MarkdownFileReferenceToken
-        className="MdInlineToken MdInlineToken--file"
+        className="MdInlineToken MdInlineToken--mention"
         key={nodeKey}
         onOpenFileReference={context.onOpenFileReference}
         relativePath={fileReference}
@@ -430,7 +479,14 @@ function MarkdownTaskCheckbox(props: { readonly checked: boolean }) {
       accessibility-state={{ checked: props.checked, disabled: true }}
       accessibility-value={props.checked ? "Checked" : "Not checked"}
     >
-      {props.checked ? <CheckIcon className="MdTaskCheckboxIcon" size={10} /> : null}
+      {props.checked ? (
+        <CheckIcon
+          className="MdTaskCheckboxIcon"
+          color="var(--color-text-button-primary)"
+          size={10}
+          strokeWidth={3}
+        />
+      ) : null}
     </view>
   );
 }
@@ -438,11 +494,11 @@ function MarkdownTaskCheckbox(props: { readonly checked: boolean }) {
 function MarkdownCodeBlock({
   node,
   nodeKey,
-  edgeClassName = "",
+  style,
 }: {
   readonly node: MarkdownNode;
   readonly nodeKey: string;
-  readonly edgeClassName?: string;
+  readonly style: BlockSpacingStyle;
 }) {
   const [copied, setCopied] = useState(false);
   const [wrap, setWrap] = useState(false);
@@ -458,12 +514,12 @@ function MarkdownCodeBlock({
     "background only";
     let active = true;
     setHighlighted(null);
-    if (!presentation.code || !node.lang)
+    const path = presentation.highlightPath;
+    if (!presentation.displayCode || !path)
       return () => {
         active = false;
       };
-    const path = `snippet.${node.lang === "javascript" ? "js" : node.lang === "typescript" ? "ts" : node.lang}`;
-    void highlightExplorerCode({ code: presentation.code, path })
+    void highlightExplorerCode({ code: presentation.displayCode, path })
       .then((themes) => {
         if (active) setHighlighted(themes?.[resolvedTheme] ?? null);
       })
@@ -473,7 +529,7 @@ function MarkdownCodeBlock({
     return () => {
       active = false;
     };
-  }, [node.lang, presentation.code, resolvedTheme]);
+  }, [presentation.highlightPath, presentation.displayCode, resolvedTheme]);
 
   async function copyCode() {
     "background only";
@@ -496,15 +552,22 @@ function MarkdownCodeBlock({
 
   return (
     <view
-      className={`MdCodeBlockShell${wrap ? " MdCodeBlockShell--wrap" : ""}${edgeClassName}`}
+      className={`MdCodeBlockShell${wrap ? " MdCodeBlockShell--wrap" : ""}`}
       key={nodeKey}
+      style={style}
     >
       <view className="MdCodeHeader">
         <view className="MdCodeTitle">
           {presentation.isFileReference && presentation.filePath ? (
             <FileEntryIcon className="MdCodeFileIcon" pathValue={presentation.filePath} />
           ) : null}
-          <text className="MdCodeLanguage">{presentation.title}</text>
+          <text
+            className={
+              presentation.isFileReference ? "MdCodeLanguage MdCodeFileName" : "MdCodeLanguage"
+            }
+          >
+            {presentation.title}
+          </text>
           {presentation.directory ? (
             <text className="MdCodeDirectory">{presentation.directory}</text>
           ) : null}
@@ -518,7 +581,7 @@ function MarkdownCodeBlock({
             label={wrap ? "Disable soft wrap" : "Enable soft wrap"}
             onActivate={toggleWrap}
           >
-            <TextWrapIcon size={12} />
+            <TextWrapIcon color="var(--muted-foreground)" size={12} />
           </MarkdownCodeAction>
           <MarkdownCodeAction
             active={copied}
@@ -528,7 +591,11 @@ function MarkdownCodeBlock({
               void copyCode();
             }}
           >
-            {copied ? <CheckIcon size={12} /> : <CopyIcon size={12} />}
+            {copied ? (
+              <CheckIcon color="var(--muted-foreground)" size={12} />
+            ) : (
+              <CopyIcon color="var(--muted-foreground)" size={12} />
+            )}
           </MarkdownCodeAction>
         </view>
       </view>
@@ -538,7 +605,8 @@ function MarkdownCodeBlock({
             className="MdCode MdCodeBlockText"
             style={{
               fontFamily: codeFontFamily,
-              minHeight: `${presentation.minimumTextHeightPx}px`,
+              // One line is `leading-relaxed` of the chat font, as in `.chat-markdown pre`.
+              minHeight: `calc(var(--app-font-size-chat, 13px) * ${1.625 * presentation.lineCount})`,
             }}
           >
             {highlighted
@@ -560,7 +628,7 @@ function MarkdownCodeBlock({
                     {lineIndex < highlighted.lines.length - 1 ? "\n" : ""}
                   </text>
                 ))
-              : presentation.code}
+              : presentation.displayCode}
           </text>
         </view>
       </scroll-view>
@@ -573,46 +641,36 @@ function renderNode(
   key: string,
   context: MarkdownRenderContext,
   listContext?: MarkdownListContext,
-  rootEdge?: MarkdownRootEdge,
+  spacing?: MarkdownChildSpacing,
 ): React.ReactNode {
   const children = () => renderInlineChildren(node, key, context);
-  const edge = markdownEdgeClassName(rootEdge);
+  const style = markdownSpacingStyle(spacing);
   switch (node.type) {
-    case "root": {
-      const blocks = node.children ?? [];
-      return (
-        <view key={key}>
-          {blocks.map((child, index) =>
-            renderNode(child, `${key}.${index}`, context, undefined, {
-              first: index === 0,
-              last: index === blocks.length - 1,
-            }),
-          )}
-        </view>
-      );
-    }
+    case "root":
+      return <view key={key}>{renderBlockChildren(node, key, context)}</view>;
     case "text":
       return context.variant === "user" && context.allowComposerChips ? (
         renderUserText(node.value ?? "", key, context)
       ) : (
-        <text key={key}>{node.value ?? ""}</text>
+        <text key={key}>
+          {context.variant === "user"
+            ? (node.value ?? "")
+            : collapseMarkdownSoftBreaks(node.value ?? "")}
+        </text>
       );
     case "paragraph":
       return (
-        <SelectableMarkdownText
-          className={`${context.tightListItem ? "MdParagraph MdParagraph--tight" : "MdParagraph"}${edge}`}
-          context={context}
-          key={key}
-        >
+        <SelectableMarkdownText className="MdParagraph" context={context} key={key} style={style}>
           {children()}
         </SelectableMarkdownText>
       );
     case "heading":
       return (
         <SelectableMarkdownText
-          className={`MdHeading MdH${node.depth ?? 3}${edge}`}
+          className={`MdHeading MdH${node.depth ?? 3}`}
           context={context}
           key={key}
+          style={style}
         >
           {children()}
         </SelectableMarkdownText>
@@ -643,24 +701,33 @@ function renderNode(
           [image: {node.alt ?? "preview"}]
         </text>
       );
-    case "blockquote":
+    case "blockquote": {
+      if (!node.alert) {
+        return (
+          <view className="MdBlockquote" key={key} style={style}>
+            {renderBlockChildren(node, key, context)}
+          </view>
+        );
+      }
       return (
-        <view className={`MdBlockquote${edge}`} key={key}>
-          {children()}
+        <view className={`MdBlockquote MdAlert MdAlert--${node.alert}`} key={key} style={style}>
+          <MarkdownAlertTitle kind={node.alert} />
+          {/* The title is a paragraph of its own in the Web blockquote: its
+              margin and the first child's collapse to one block margin. */}
+          <view className="MdAlertBody">{renderBlockChildren(node, key, context)}</view>
         </view>
       );
+    }
     case "list": {
       const loose = isMarkdownListLoose(node);
       return (
-        <view className={`MdList${edge}`} key={key}>
-          {(node.children ?? []).map((child, index) =>
-            renderNode(child, `${key}.${index}`, context, {
-              ordered: node.ordered === true,
-              index,
-              start: node.start ?? null,
-              loose,
-            }),
-          )}
+        <view className="MdList" key={key} style={style}>
+          {renderBlockChildren(node, key, context, (index) => ({
+            ordered: node.ordered === true,
+            index,
+            start: node.start ?? null,
+            loose,
+          }))}
         </view>
       );
     }
@@ -682,12 +749,7 @@ function renderNode(
           : { ...depth, unordered: depth.unordered + 1 },
       };
       return (
-        <view
-          className={
-            (listContext?.index ?? 0) > 0 ? "MdListItem MdListItem--following" : "MdListItem"
-          }
-          key={key}
-        >
+        <view className="MdListItem" key={key} style={style}>
           {task ? (
             <view className="MdListMarker MdTaskCheckboxSlot">
               <MarkdownTaskCheckbox checked={node.checked === true} />
@@ -697,17 +759,17 @@ function renderNode(
               <text className="MdListMarkerText">{marker}</text>
             </view>
           )}
-          <view className="MdListBody">{renderInlineChildren(node, key, itemContext)}</view>
+          <view className="MdListBody">{renderBlockChildren(node, key, itemContext)}</view>
         </view>
       );
     }
     case "code":
-      return <MarkdownCodeBlock edgeClassName={edge} node={node} nodeKey={key} />;
+      return <MarkdownCodeBlock node={node} nodeKey={key} style={style} />;
     case "inlineCode":
       return <MarkdownInlineCode context={context} node={node} nodeKey={key} />;
     case "math":
       return (
-        <view className={`MdMathBlockShell${edge}`} key={key}>
+        <view className="MdMathBlockShell" key={key} style={style}>
           <text className="MdCode MdMath MdMathBlock">
             ƒ {"  "}
             {node.value ?? ""}
@@ -721,14 +783,18 @@ function renderNode(
         </text>
       );
     case "table":
-      return renderTable(node, key, context, edge);
+      return <MarkdownTable context={context} key={key} node={node} nodeKey={key} style={style} />;
     case "thematicBreak":
-      return <view className={`MdRule${edge}`} key={key} />;
+      return <view className="MdRule" key={key} style={style} />;
     case "break":
-      return <text key={key}>{"\n"}</text>;
+      return (
+        <text className="MdBreak" key={key}>
+          {"\n"}
+        </text>
+      );
     case "html":
       return (
-        <text className="MdHtmlFallback" key={key}>
+        <text className="MdHtmlFallback" key={key} style={spacing ? style : undefined}>
           {node.value ?? ""}
         </text>
       );

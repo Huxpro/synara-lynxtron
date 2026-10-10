@@ -110,8 +110,10 @@ describe("Native Composer menu navigation", () => {
 
   it("wires every menu kind to one highlight owner without catching unrelated keys", () => {
     const source = readFileSync(new URL("./Composer.lynx.tsx", import.meta.url), "utf8");
-    expect(source).toContain("catchkeydown={handleComposerMenuKey}");
-    expect(source).not.toContain("bindkeydown={handleComposerMenuKey}");
+    // Through hostKeyHandler: the handler itself on Native, and on Lynx for Web the same
+    // handler given an event whose methods are callable (components/ui/keyEvent.lynx.ts).
+    expect(source).toContain("catchkeydown={hostKeyHandler(handleComposerMenuKey)}");
+    expect(source).not.toContain("bindkeydown={");
     expect(source).toContain('confirm-type="send"');
     expect(source).toContain("bindconfirm={() => {");
     expect(source).toContain('event.key === "Enter"');

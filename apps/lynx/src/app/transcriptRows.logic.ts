@@ -6,11 +6,15 @@ import {
 } from "@synara-web/components/chat/agentActivity.logic";
 import { isFileChangeWorkLogEntry } from "@synara-web/session-logic";
 import { basenameOfPath } from "@synara-web/file-icons";
+import { workEntryDisplayText, workEntryLiveActivityMeta } from "./transcriptWorkEntryText.logic";
 
 export type MessageTranscriptRow = Extract<ThreadTranscriptRow, { kind: "message" }>;
 export type WorkLogEntry = Extract<ThreadTranscriptRow, { kind: "work" }>["groupedEntries"][number];
 
-export function resolveTranscriptWorkEntryDisplayText(entry: WorkLogEntry): string {
+export function resolveTranscriptWorkEntryDisplayText(
+  entry: WorkLogEntry,
+  nowMs: number = Date.now(),
+): string {
   if (isReasoningUpdateWorkEntry(entry)) {
     return formatAgentActivityEntryPreview(entry) ?? entry.label;
   }
@@ -20,7 +24,11 @@ export function resolveTranscriptWorkEntryDisplayText(entry: WorkLogEntry): stri
       ? `Edited ${basenameOfPath(changedFiles[0] ?? "")}`
       : `Edited ${changedFiles.length} files`;
   }
-  return entry.detail ? `${entry.label} ${entry.detail}` : entry.label;
+  // Upstream's sentence for the row, then its state when it is not simply done
+  // ("Ran ./release.sh · Failed · 2s elapsed").
+  const text = workEntryDisplayText(entry);
+  const meta = workEntryLiveActivityMeta(entry, nowMs);
+  return meta ? `${text} · ${meta}` : text;
 }
 
 const TRANSCRIPT_ESTIMATED_CHARS_PER_LINE = 72;
@@ -152,6 +160,13 @@ export function transcriptRowVersion(row: ThreadTranscriptRow | undefined): stri
     return row.groupedEntries
       .map((entry) => `${entry.id}:${entry.label}:${entry.detail ?? ""}:${entry.toolStatus ?? ""}`)
       .join("|");
+  }
+  // The plan card and a message segment draw their text, so an update to it is a new version.
+  if (row.kind === "proposed-plan") {
+    return `${row.id}:${row.proposedPlan.updatedAt}:${row.proposedPlan.planMarkdown.length}`;
+  }
+  if (row.kind === "message-segment") {
+    return `${row.id}:${row.message.textSegments?.[row.segmentIndex]?.text ?? row.message.text}`;
   }
   return row.id;
 }

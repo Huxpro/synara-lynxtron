@@ -20,7 +20,13 @@ describe("Collapsed work disclosure fidelity", () => {
     expect(styles).toMatch(
       /\.SharedCollapsedWorkChevron\s*\{[^}]*width:\s*12px;[^}]*height:\s*12px;[^}]*flex-shrink:\s*0;[^}]*opacity:\s*0\.55;/s,
     );
-    expect(styles).toMatch(/\.SharedCollapsedWorkTrigger\s*\{[^}]*margin-left:\s*0;/s);
+    // Upstream's trigger is `-ml-0.5 pb-2`, 4px down its 24px line box.
+    expect(styles).toMatch(
+      /\.SharedCollapsedWorkTrigger\s*\{[^}]*margin-left:\s*-2px;[^}]*padding-top:\s*4px;[^}]*padding-bottom:\s*8px;/s,
+    );
+    expect(styles).toMatch(
+      /\.SharedCollapsedWorkLabel\s*\{[^}]*font-size:\s*var\(--app-font-size-chat, 13px\);/s,
+    );
     expect(styles).toMatch(
       /\.SharedCollapsedWorkTrigger\.ui-hover \.SharedCollapsedWorkLabel,[^{]*\{[^}]*opacity:\s*0\.9;/s,
     );

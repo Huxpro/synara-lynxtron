@@ -1,7 +1,7 @@
 .SharedCollapsedWork {
   display: flex;
   flex-direction: column;
-  margin-bottom: 7px;
+  margin-bottom: 12px;
 }
 
 .SharedCollapsedWorkTrigger {
@@ -10,9 +10,11 @@
   align-items: center;
   gap: 4px;
   align-self: flex-start;
-  margin-left: 0;
-  padding-top: 2px;
-  padding-bottom: 13px;
+  /* `-ml-0.5 pb-2`. The Web trigger is an inline-flex box on a 24px line,
+     which leaves 4px above it. */
+  margin-left: -2px;
+  padding-top: 4px;
+  padding-bottom: 8px;
 }
 
 .SharedCollapsedWorkTrigger.ui-focus {
@@ -28,8 +30,8 @@
 
 .SharedCollapsedWorkLabel {
   color: var(--muted-foreground);
-  font-size: 12px;
-  line-height: 18px;
+  font-size: var(--app-font-size-chat, 13px);
+  line-height: calc(var(--app-font-size-chat, 13px) * 1.5);
 }
 
 .SharedCollapsedWorkChevron {
@@ -43,8 +45,9 @@
 .SharedCollapsedWorkPanel {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding-bottom: 8px;
+  /* `mb-2.5 space-y-1.5`. */
+  gap: 6px;
+  padding-bottom: 10px;
 }
 
 .SharedCollapsedWorkDivider {
