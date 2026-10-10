@@ -12,6 +12,35 @@ Electron is the design and behavior authority. Lynxtron (Native) is verified aga
 5. **Explore and accept** what the scripts do not cover, using the input path your environment has (next section).
 6. **Stop the launcher** (Ctrl-C or SIGINT) and confirm it printed `Cleanup verified`.
 
+## The browser pair: Web original ↔ Lynx for Web
+
+`node scripts/comparison-web.mjs` measures step 1's pair with step 3's cells, and needs no desktop app. It is the same measurement, not a second one: the cell definitions, navigation table, control collection, pairing by label, 2 px tolerance and named exemptions are imported from `comparison-cells.mjs` and `comparison-navigation.mjs`; `openNativeDriver` drives Lynx for Web through `comparison-web-connector.mjs`, which answers the DevTool connector's methods from the `<lynx-view>` shadow tree over Chrome's DevTools protocol.
+
+```
+node scripts/comparison-web.mjs --matrix [--skip-build] [--out report.json] [--markdown table.md]
+node scripts/comparison-web.mjs --theme light --width 1440 --height 900 --surfaces thread,settings --increments ""
+```
+
+One launch is one configuration. It clones the canonical fixture into a new home under `.synara-desktop-comparison/web/<run id>/`, starts `dev:server` and `dev:web` on ports of their own (`--port-offset`, default 731; it refuses a port that is in use), opens each page in a headless Chromium it owns, seeds both with the renderer state the desktop launcher gives Electron and Lynxtron, certifies that both show the fixture thread on the fixture's data at the requested size and theme, measures, and stops what it started. It prints `Cleanup verified` per launch; a launch that cannot be certified is a harness failure and exits 1, while differences are the measurement and exit 0.
+
+- **Fixture.** `--fixture-root <checkout>` (or `SYNARA_COMPARE_FIXTURE_ROOT`) points at the checkout that holds `.synara-desktop-comparison/fixture/`; a git worktree does not have it. Building it (`node scripts/comparison-fixture.mjs`) runs real provider turns and needs a provider login.
+- **Browser.** `SYNARA_COMPARE_CHROME`, then Playwright's Chromium (`bun run --cwd apps/web test:browser:install`), then any headless shell in the Playwright cache, then the system Chrome.
+- **Reading the table.** Per cell: compared, within 2 px, named exemptions, outside, missing on Lynx (a Web control with no Lynx counterpart, which fails the cell) and Lynx-only (reported, not failing, as on the desktop path). The JSON report carries each outside control's deltas and the Lynx page's and worker's errors.
+- **What it does not prove.** It compares two Chromium pages, so it says nothing about the Native text engine, AppKit input, or anything in the physical-input list below. A browser-pair pass is not a Native pass.
+
+Differences that exist only because the page is a browser tab are closed in the web host, never in shared Lynx code: `src/main/web/webHostStyleOverrides.logic.ts` (window chrome, and the Native text-metric corrections the shared stylesheets carry), `webKeyEvents.logic.ts` (element key handlers and their browser defaults), and `webVoiceRecorder.ts` (the voice capability). Known host limits that stay open are listed in `lynxtron-runtime-compatibility.md` and in the tracking issue.
+
+## Developing without the desktop apps (Linux, cloud)
+
+The browser pair is the loop for a machine with no Mac. What it needed on a fresh checkout, as exercised on macOS in a clean git worktree with no desktop app running; **not yet run on Linux**, so treat the Linux notes as a checklist to confirm, not as results:
+
+- **Toolchain.** The pinned bun and node from `.mise.toml` / `package.json`. Install only with the pinned bun and `bun install --frozen-lockfile`; a different bun must never rewrite `bun.lock`. Where the pinned bun is not the system one, `npm i bun@<pinned>` in a scratch directory gives a usable binary. Running scripts (`bun run …`) with another bun is harmless.
+- **Native dependencies.** The install runs the `@lynx-js/lynxtron`, `node-pty` and `electron-winstaller` install scripts. The browser pair uses `node-pty` (the server) and none of Lynxtron's runtime. On Linux expect `node-pty` to need a compiler toolchain, and see PR #6 for what the Lynxtron build needs there (`bun run build` verifies macOS-only resources).
+- **Fixture.** As above: copy `.synara-desktop-comparison/fixture/` from a machine that has it, or build it with a provider login. The manifest records the workspace's absolute path, so the fixture workspace must exist at that path on the machine that uses it.
+- **Browser.** Any Chromium with `--remote-debugging-port`. On Linux, `playwright install --with-deps chromium` also installs the system libraries a headless Chromium needs.
+- **Isolation.** `dev-runner` opens a browser tab and creates a project from the working directory unless `SYNARA_NO_BROWSER=1` and `SYNARA_AUTO_BOOTSTRAP_PROJECT_FROM_CWD=0` are set; the launcher sets both and drops an inherited `SYNARA_AUTH_TOKEN`. Stopping `dev-runner` with a signal leaves its server and Vite children running, so stop the process group (the launcher does) and check both ports.
+- **Does not work there.** `bun run compare:desktop`, the Native matrix, workflows J1–J6 on Native, Computer Use, and everything in the physical-input list. Shared Lynx changes made from such a machine must be listed for a Native run before they merge.
+
 ## How much to run
 
 The full loop above is an acceptance pass. During a multi-step refactor, scale it:
