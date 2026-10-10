@@ -111,24 +111,3 @@ it.effect("rejects push envelopes when channel payload does not match the channe
     assert.strictEqual(result._tag, "Failure");
   }),
 );
-
-it.effect("accepts bounded sidebar-search and targeted thread-detail requests", () =>
-  Effect.gen(function* () {
-    const search = yield* decode(WebSocketRequest, {
-      id: "req-search",
-      body: { _tag: ORCHESTRATION_WS_METHODS.getSidebarSearchSnapshot },
-    });
-    const detail = yield* decode(WebSocketRequest, {
-      id: "req-detail",
-      body: {
-        _tag: ORCHESTRATION_WS_METHODS.getThreadDetailSnapshot,
-        threadId: " thread-1 ",
-      },
-    });
-    assert.strictEqual(search.body._tag, ORCHESTRATION_WS_METHODS.getSidebarSearchSnapshot);
-    assert.strictEqual(detail.body._tag, ORCHESTRATION_WS_METHODS.getThreadDetailSnapshot);
-    if (detail.body._tag === ORCHESTRATION_WS_METHODS.getThreadDetailSnapshot) {
-      assert.strictEqual(detail.body.threadId, "thread-1");
-    }
-  }),
-);

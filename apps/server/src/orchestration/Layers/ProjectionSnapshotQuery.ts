@@ -14,8 +14,6 @@ import {
   OrchestrationSpaceShell,
   OrchestrationProposedPlanId,
   OrchestrationReadModel,
-  OrchestrationSidebarSearchSnapshot,
-  ORCHESTRATION_SIDEBAR_SEARCH_LIMITS,
   OrchestrationShellSnapshot,
   OrchestrationThreadDetailSnapshot,
   OrchestrationThreadPullRequest,
@@ -59,7 +57,6 @@ import {
 } from "../../persistence/Errors.ts";
 import { normalizePersistedModelSelection } from "../../persistence/modelSelectionCompatibility.ts";
 import { deriveThreadSummaryMetadata } from "@synara/shared/threadSummary";
-import { projectBoundedSidebarSearchMessages } from "@synara/shared/sidebarSearch";
 import { ProjectionCheckpoint } from "../../persistence/Services/ProjectionCheckpoints.ts";
 import { ProjectionProject } from "../../persistence/Services/ProjectionProjects.ts";
 import { ProjectionSpace } from "../../persistence/Services/ProjectionSpaces.ts";
@@ -93,7 +90,6 @@ import {
 
 const decodeReadModel = Schema.decodeUnknownEffect(OrchestrationReadModel);
 const decodeShellSnapshot = Schema.decodeUnknownEffect(OrchestrationShellSnapshot);
-const decodeSidebarSearchSnapshot = Schema.decodeUnknownEffect(OrchestrationSidebarSearchSnapshot);
 const decodeThreadDetail = Schema.decodeUnknownEffect(OrchestrationThread);
 const decodeThreadDetailSnapshot = Schema.decodeUnknownEffect(OrchestrationThreadDetailSnapshot);
 const decodeModelSelection = Schema.decodeUnknownEffect(ModelSelection);
@@ -107,12 +103,6 @@ const MAX_SNAPSHOT_THREAD_ACTIVITIES = 500;
 const MAX_THREAD_DETAIL_ACTIVITIES = 2_000;
 const MAX_THREAD_FILE_CHANGE_ACTIVITIES = 2_000;
 const MAX_TURN_GENERATED_IMAGE_ACTIVITY_RECORDS = 64;
-const ProjectionSidebarSearchMessageRowSchema = Schema.Struct({
-  threadId: ThreadId,
-  threadCreatedAt: IsoDateTime,
-  threadUpdatedAt: IsoDateTime,
-  text: Schema.String,
-});
 const ProjectionProjectDbRowSchema = ProjectionProject.mapFields(
   Struct.assign({
     defaultModelSelection: Schema.NullOr(ModelSelectionJsonUnknown),
@@ -1581,69 +1571,6 @@ const makeProjectionSnapshotQuery = Effect.gen(function* () {
       `,
   });
 
-  const listSidebarSearchMessageRows = SqlSchema.findAll({
-    Request: Schema.Void,
-    Result: ProjectionSidebarSearchMessageRowSchema,
-    execute: () =>
-      sql`
-        WITH recent_threads AS (
-          SELECT
-            thread_id,
-            created_at,
-            updated_at
-          FROM projection_threads
-          WHERE deleted_at IS NULL
-          ORDER BY updated_at DESC, created_at DESC, thread_id ASC
-          LIMIT ${ORCHESTRATION_SIDEBAR_SEARCH_LIMITS.messageThreadCount}
-        ),
-        ranked_messages AS (
-          SELECT
-            messages.thread_id,
-            messages.text,
-            messages.sequence,
-            messages.created_at AS message_created_at,
-            messages.message_id,
-            threads.created_at AS thread_created_at,
-            threads.updated_at AS thread_updated_at,
-            ROW_NUMBER() OVER (
-              PARTITION BY messages.thread_id
-              ORDER BY
-                CASE WHEN messages.sequence IS NULL THEN 0 ELSE 1 END DESC,
-                messages.sequence DESC,
-                messages.created_at DESC,
-                messages.message_id DESC
-            ) AS message_rank
-          FROM projection_thread_messages AS messages
-          INNER JOIN recent_threads AS threads
-            ON threads.thread_id = messages.thread_id
-        )
-        SELECT
-          thread_id AS "threadId",
-          thread_created_at AS "threadCreatedAt",
-          thread_updated_at AS "threadUpdatedAt",
-          CASE
-            WHEN length(text) <= ${ORCHESTRATION_SIDEBAR_SEARCH_LIMITS.messageCharsPerMessage}
-              THEN text
-            ELSE
-              substr(
-                text,
-                1,
-                ${ORCHESTRATION_SIDEBAR_SEARCH_LIMITS.messageCharsPerMessage - 401}
-              ) || '…' || substr(text, -400)
-          END AS text
-        FROM ranked_messages
-        WHERE message_rank <= ${ORCHESTRATION_SIDEBAR_SEARCH_LIMITS.messagesPerThread}
-        ORDER BY
-          thread_updated_at DESC,
-          thread_created_at DESC,
-          thread_id ASC,
-          CASE WHEN sequence IS NULL THEN 0 ELSE 1 END ASC,
-          sequence ASC,
-          message_created_at ASC,
-          message_id ASC
-      `,
-  });
-
   const readEmptyProjectShellRepair = SqlSchema.findOne({
     Request: Schema.Void,
     Result: EmptyProjectShellRepairRowSchema,
@@ -2974,79 +2901,6 @@ const makeProjectionSnapshotQuery = Effect.gen(function* () {
         }),
       );
 
-  const getSidebarSearchSnapshot: ProjectionSnapshotQueryShape["getSidebarSearchSnapshot"] = () =>
-    sql
-      .withTransaction(
-        Effect.gen(function* () {
-          const [messageRows, stateRows] = yield* Effect.all([
-            listSidebarSearchMessageRows(undefined).pipe(
-              Effect.mapError(
-                toPersistenceSqlOrDecodeError(
-                  "ProjectionSnapshotQuery.getSidebarSearchSnapshot:listMessages:query",
-                  "ProjectionSnapshotQuery.getSidebarSearchSnapshot:listMessages:decodeRows",
-                ),
-              ),
-            ),
-            listProjectionStateRows(undefined).pipe(
-              Effect.mapError(
-                toPersistenceSqlOrDecodeError(
-                  "ProjectionSnapshotQuery.getSidebarSearchSnapshot:listProjectionState:query",
-                  "ProjectionSnapshotQuery.getSidebarSearchSnapshot:listProjectionState:decodeRows",
-                ),
-              ),
-            ),
-          ]);
-
-          const sourceByThreadId = new Map<
-            ThreadId,
-            {
-              readonly id: ThreadId;
-              readonly createdAt: string;
-              readonly updatedAt: string;
-              readonly messages: Array<{ readonly text: string }>;
-            }
-          >();
-          for (const row of messageRows) {
-            const existing = sourceByThreadId.get(row.threadId);
-            if (existing) {
-              existing.messages.push({ text: row.text });
-              continue;
-            }
-            sourceByThreadId.set(row.threadId, {
-              id: row.threadId,
-              createdAt: row.threadCreatedAt,
-              updatedAt: row.threadUpdatedAt,
-              messages: [{ text: row.text }],
-            });
-          }
-
-          const boundedMessages = projectBoundedSidebarSearchMessages(
-            Array.from(sourceByThreadId.values()),
-          );
-          return yield* decodeSidebarSearchSnapshot({
-            snapshotSequence: yield* computeSnapshotSequence(stateRows),
-            threads: Array.from(boundedMessages, ([threadId, messages]) => ({
-              threadId,
-              messages,
-            })),
-          }).pipe(
-            Effect.mapError(
-              toPersistenceDecodeError(
-                "ProjectionSnapshotQuery.getSidebarSearchSnapshot:decodeSnapshot",
-              ),
-            ),
-          );
-        }),
-      )
-      .pipe(
-        Effect.mapError((error) => {
-          if (isPersistenceError(error)) return error;
-          return toPersistenceSqlError("ProjectionSnapshotQuery.getSidebarSearchSnapshot:query")(
-            error,
-          );
-        }),
-      );
-
   const listStaleInFlightThreadIds: ProjectionSnapshotQueryShape["listStaleInFlightThreadIds"] = (
     input,
   ) =>
@@ -3808,7 +3662,6 @@ const makeProjectionSnapshotQuery = Effect.gen(function* () {
     getCommandReadModel,
     getSnapshot,
     getShellSnapshot,
-    getSidebarSearchSnapshot,
     getCounts,
     getSnapshotSequence,
     listStaleInFlightThreadIds,

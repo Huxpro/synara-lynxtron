@@ -4,17 +4,14 @@
 // only reshapes what the upstream selectors return into the summaries the Lynx
 // sidebar surfaces already render. Nothing here fetches or commits.
 
-import type {
-  OrchestrationShellSnapshot,
-  OrchestrationSidebarSearchSnapshot,
-  ProjectId,
-} from "@synara/contracts";
+import type { OrchestrationShellSnapshot, ProjectId } from "@synara/contracts";
+import { basenameOfPath } from "@synara-web/file-icons";
 import { isThreadActivelyWorking } from "@synara-web/components/SidebarThreadSort.logic";
 import { resolveThreadStatusPill } from "@synara-web/components/Sidebar.logic";
-import {
-  projectSidebarSearchProject,
-  projectSidebarSearchThreads,
-} from "@synara-web/components/SidebarSearchProjection.logic";
+import type {
+  SidebarSearchProject,
+  SidebarSearchThread,
+} from "@synara-web/components/SidebarSearchPalette.logic";
 import {
   createSidebarDisplayThreadsSelector,
   createSidebarTreeThreadsSelector,
@@ -30,8 +27,6 @@ import type { SidebarSnapshot, ThreadSummary, WorktreeThreadSummary } from "./qu
 export interface SidebarSnapshotLocalInputs {
   /** False until the renderer-local inputs below have been read once. */
   readonly ready: boolean;
-  /** Message windows for the search palette; a Lynx-only server read. */
-  readonly searchSnapshot: OrchestrationSidebarSearchSnapshot | undefined;
   readonly dismissedThreadStatusKeyByThreadId: Readonly<Record<string, string>>;
   /**
    * Threads with a composer send in flight (upstream `composerSendOwnership`): a worktree
@@ -42,7 +37,7 @@ export interface SidebarSnapshotLocalInputs {
 
 type SidebarSnapshotProjectionLocalInputs = Pick<
   SidebarSnapshotLocalInputs,
-  "searchSnapshot" | "dismissedThreadStatusKeyByThreadId" | "activeComposerSendThreadIds"
+  "dismissedThreadStatusKeyByThreadId" | "activeComposerSendThreadIds"
 >;
 
 /** What the sidebar shows of an archived thread shell, before project names and counts. */
@@ -164,18 +159,12 @@ function projectSidebarSnapshotFromInputs(
   const { projects, spaces, displayThreads, messageCountByThreadId } = inputs;
   const projectNames = new Map(projects.map((project) => [project.id, project.name]));
   const spaceNames = new Map(spaces.map((space) => [space.id, space.name]));
-  const searchMessagesByThreadId = new Map(
-    (local.searchSnapshot?.threads ?? []).map(
-      (thread) => [thread.threadId, thread.messages] as const,
-    ),
-  );
   const threads = displayThreads.map((thread) => ({
     id: thread.id,
     title: thread.title,
     projectId: thread.projectId,
     project: projectNames.get(thread.projectId) ?? "Unknown project",
-    messageCount:
-      messageCountByThreadId[thread.id] ?? searchMessagesByThreadId.get(thread.id)?.length ?? 0,
+    messageCount: messageCountByThreadId[thread.id] ?? 0,
     createdAt: thread.createdAt,
     updatedAt: thread.updatedAt ?? thread.createdAt,
     archivedAt: thread.archivedAt ?? null,
@@ -231,37 +220,40 @@ function projectSidebarSnapshotFromInputs(
     live: false,
     provider: thread.provider,
   }));
-  const searchProjects = projects.map((project) =>
-    projectSidebarSearchProject({
-      id: project.id,
-      name: project.name,
-      remoteName: project.remoteName,
-      folderName: project.folderName,
-      localName: project.localName,
-      cwd: project.cwd,
-      spaceName: project.spaceId
-        ? (spaceNames.get(project.spaceId) ?? "Unknown space")
-        : project.kind === "project"
-          ? "Void"
-          : "Global",
-      createdAt: project.createdAt,
-      updatedAt: project.updatedAt,
-    }),
-  );
-  const searchThreads = projectSidebarSearchThreads({
-    projects: searchProjects,
-    threads: displayThreads.map((thread) => ({
+  // The palette's rows, as upstream's `Sidebar.tsx` builds them. Message
+  // bodies are not part of this projection: the palette adds the ones the
+  // store holds while it is open, and the server's `searchThreads` finds the
+  // rest (see `useSidebarThreadSearch.lynx.ts`).
+  const searchProjects: SidebarSearchProject[] = projects.map((project) => ({
+    id: project.id,
+    name: project.name,
+    remoteName: project.remoteName ?? project.name,
+    folderName: project.folderName ?? basenameOfPath(project.cwd) ?? project.name,
+    localName: project.localName ?? null,
+    cwd: project.cwd,
+    spaceName: project.spaceId
+      ? (spaceNames.get(project.spaceId) ?? "Unknown space")
+      : project.kind === "project"
+        ? "Void"
+        : "Global",
+    createdAt: project.createdAt,
+    updatedAt: project.updatedAt,
+  }));
+  const searchProjectById = new Map(searchProjects.map((project) => [project.id, project]));
+  const searchThreads: SidebarSearchThread[] = displayThreads.map((thread) => {
+    const project = searchProjectById.get(thread.projectId);
+    return {
       id: thread.id,
       title: thread.title,
       projectId: thread.projectId,
+      projectName: project?.name ?? "Unknown project",
+      projectRemoteName: project?.remoteName ?? "Unknown project",
+      spaceName: project?.spaceName ?? "Global",
       provider: thread.session?.provider ?? thread.modelSelection.provider,
       createdAt: thread.createdAt,
       updatedAt: thread.updatedAt,
-      // The server has already capped this message window before it crosses
-      // the Native WebSocket; the shared projection reapplies the same
-      // deterministic contract before data reaches the renderer.
-      messages: searchMessagesByThreadId.get(thread.id),
-    })),
+      messages: [],
+    };
   });
   return {
     spaces,

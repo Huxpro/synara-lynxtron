@@ -32,9 +32,9 @@ import {
 import {
   type SidebarSearchAction,
   type SidebarSearchProject,
+  type SidebarSearchServerThreadMatch,
   type SidebarSearchTheme,
   type SidebarSearchThread,
-  SIDEBAR_SEARCH_LIMITS,
   matchSidebarSearchActions,
   matchSidebarSearchProjects,
   matchSidebarSearchThemes,
@@ -81,6 +81,8 @@ interface SidebarSearchPaletteProps {
   actions: readonly SidebarSearchAction[];
   projects: readonly SidebarSearchProject[];
   threads: readonly SidebarSearchThread[];
+  /** Server-side message hits for the current query (upstream's `searchThreads`). */
+  serverThreadMatches?: ReadonlyMap<string, SidebarSearchServerThreadMatch> | undefined;
   searchStatus?: "ready" | "loading" | "error" | undefined;
   searchErrorMessage?: string | null | undefined;
   onRetrySearch?: (() => void) | undefined;
@@ -159,6 +161,8 @@ const ACTION_GLYPHS: Record<string, SidebarSearchPaletteGlyphKind> = {
 };
 
 const BROWSE_STALE_TIME_MS = 10_000;
+// Typing settles before the lists are rescored.
+const SEARCH_INPUT_DEBOUNCE_MS = 80;
 
 const EMPTY_BROWSE_ENTRIES: FilesystemBrowseResult["entries"] = [];
 
@@ -444,7 +448,7 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
     }
     const timeoutId = setTimeout(() => {
       setSearchQuery(query);
-    }, SIDEBAR_SEARCH_LIMITS.debounceMs);
+    }, SEARCH_INPUT_DEBOUNCE_MS);
     return () => clearTimeout(timeoutId);
   }, [isBrowsing, query]);
   const isSearchPending = !isBrowsing && searchQuery !== query;
@@ -529,7 +533,7 @@ export function SidebarSearchPalette(props: SidebarSearchPaletteProps) {
   const matchedThreads =
     isBrowsing || isSearchPending || searchUnavailable
       ? []
-      : matchSidebarSearchThreads(props.threads, searchQuery);
+      : matchSidebarSearchThreads(props.threads, searchQuery, undefined, props.serverThreadMatches);
   const hasSearchResults =
     matchedActions.length > 0 ||
     themeCommandItems.length > 0 ||

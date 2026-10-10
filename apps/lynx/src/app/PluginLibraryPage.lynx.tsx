@@ -1,5 +1,4 @@
 import { useState } from "@lynx-js/react";
-import { ensureNativeApi } from "~/nativeApi";
 import { useQuery } from "@tanstack/react-query";
 import type {
   ProviderKind,
@@ -14,6 +13,14 @@ import {
   providerPluginDiscoveryWarnings,
   resolveProviderDiscoveryStatus,
 } from "@synara/shared/providerDiscoveryPresentation";
+import {
+  providerComposerCapabilitiesQueryOptions,
+  providerPluginsQueryOptions,
+  providerSkillsQueryOptions,
+  supportsPluginDiscovery,
+  supportsSkillDiscovery,
+} from "@synara-web/lib/providerDiscoveryReactQuery";
+import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { DEFAULT_PROVIDER_ORDER } from "@synara-web/providerOrdering";
 
 import { Button } from "../components/ui/button";
@@ -21,7 +28,6 @@ import { Input } from "../components/ui/input.lynx";
 import { CheckIcon, ListChecksIcon, PuzzleIcon, SearchIcon } from "../lib/icons.lynx";
 import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
-import {} from "./queries";
 import "./plugin-library-page.css";
 import { PluginLibraryWarning } from "./PluginLibraryWarning.lynx";
 
@@ -92,31 +98,25 @@ export function PluginLibraryPage() {
   const [tab, setTab] = useState<DiscoveryTab>("plugins");
   const [provider, setProvider] = useState<ProviderKind>("codex");
   const [search, setSearch] = useState("");
-  const capabilities = useQuery({
-    queryKey: ["plugin-library", "capabilities", provider],
-    queryFn: () => {
-      "background only";
-      return ensureNativeApi().provider.getComposerCapabilities({ provider });
-    },
-  });
+  // Upstream's discovery queries and keys (`PluginLibrary.tsx`), so this page
+  // shares their cache with the composer. The standalone page has no thread or
+  // project, which leaves the server's cwd as the discovery root.
+  const capabilities = useQuery(providerComposerCapabilitiesQueryOptions(provider));
+  const serverConfig = useQuery(serverConfigQueryOptions());
+  const discoveryCwd = serverConfig.data?.cwd ?? null;
   const plugins = useQuery({
-    queryKey: ["plugin-library", "plugins", provider],
-    queryFn: async () => {
-      "background only";
-      const config = await ensureNativeApi().server.getConfig();
-      return ensureNativeApi().provider.listPlugins({ provider, cwd: config.cwd });
-    },
-    enabled: tab === "plugins" && capabilities.data?.supportsPluginDiscovery === true,
+    ...providerPluginsQueryOptions({ provider, cwd: discoveryCwd }),
+    // Wait for the cwd: the key includes it, and asking before it is known
+    // would list the plugins twice.
+    enabled:
+      tab === "plugins" &&
+      supportsPluginDiscovery(capabilities.data) &&
+      serverConfig.data !== undefined,
     retry: false,
   });
   const skills = useQuery({
-    queryKey: ["plugin-library", "skills", provider],
-    queryFn: async () => {
-      "background only";
-      const config = await ensureNativeApi().server.getConfig();
-      return ensureNativeApi().provider.listSkills({ provider, cwd: config.cwd });
-    },
-    enabled: tab === "skills" && capabilities.data?.supportsSkillDiscovery === true,
+    ...providerSkillsQueryOptions({ provider, cwd: discoveryCwd }),
+    enabled: tab === "skills" && supportsSkillDiscovery(capabilities.data) && discoveryCwd !== null,
     retry: false,
   });
   const query = normalizeProviderDiscoveryText(search);
@@ -153,12 +153,17 @@ export function PluginLibraryPage() {
   }
   const supported =
     tab === "plugins"
-      ? capabilities.data?.supportsPluginDiscovery === true
-      : capabilities.data?.supportsSkillDiscovery === true;
+      ? supportsPluginDiscovery(capabilities.data)
+      : supportsSkillDiscovery(capabilities.data);
+  const active = tab === "plugins" ? plugins : skills;
+  const activeError = capabilities.error ?? serverConfig.error ?? active.error;
+  // Upstream's options answer with a placeholder (an empty result, or the
+  // previous provider's) until the first response; that is still "loading" here.
   const activePending =
     capabilities.isPending ||
-    (supported && (tab === "plugins" ? plugins.isPending : skills.isPending));
-  const activeError = capabilities.error ?? (tab === "plugins" ? plugins.error : skills.error);
+    (supported &&
+      activeError === null &&
+      (serverConfig.isPending || active.isPending || active.isPlaceholderData));
   const status = resolveProviderDiscoveryStatus({
     error: activeError,
     itemCount: tab === "plugins" ? installedPlugins.length : discoveredSkills.length,

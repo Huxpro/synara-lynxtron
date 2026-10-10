@@ -1,8 +1,5 @@
 import { describe, expect, it } from "@rstest/core";
-import type {
-  OrchestrationShellSnapshot,
-  OrchestrationSidebarSearchSnapshot,
-} from "@synara/contracts";
+import type { OrchestrationShellSnapshot } from "@synara/contracts";
 import { applyOrchestrationEventsHotPath } from "@synara-web/storeEventReducer";
 import {
   syncServerShellSnapshot,
@@ -165,7 +162,6 @@ const SHELL_SNAPSHOT = {
 
 const LOCAL: SidebarSnapshotLocalInputs = {
   ready: true,
-  searchSnapshot: undefined,
   dismissedThreadStatusKeyByThreadId: {},
 };
 
@@ -251,14 +247,19 @@ describe("sidebar snapshot from the shared store", () => {
     ]);
   });
 
-  it("does not wait for the optional search message index", () => {
-    // Projects and threads render from the store alone; message windows only
-    // refine search results and counts when they arrive.
-    const select = createSidebarSnapshotSelector();
-    const withoutIndex = select(hydratedState(), { ...LOCAL, searchSnapshot: undefined });
-    expect(withoutIndex?.projects).toHaveLength(2);
-    expect(withoutIndex?.threads).toHaveLength(3);
-    expect(withoutIndex?.searchThreads).toHaveLength(3);
+  it("projects the search palette rows from the store, without message bodies", () => {
+    // Message hits are upstream's server search (and the store's loaded
+    // messages, added by the palette while it is open).
+    const snapshot = createSidebarSnapshotSelector()(hydratedState(), LOCAL);
+    expect(snapshot?.projects).toHaveLength(2);
+    expect(snapshot?.threads).toHaveLength(3);
+    expect(snapshot?.searchThreads).toHaveLength(3);
+    expect(snapshot?.searchThreads.every((thread) => thread.messages.length === 0)).toBe(true);
+    expect(snapshot?.searchThreads[0]).toMatchObject({
+      projectName: expect.any(String),
+      projectRemoteName: expect.any(String),
+      spaceName: expect.any(String),
+    });
   });
 
   it("orders spaces the way the store does, not the way the snapshot listed them", () => {
@@ -334,22 +335,10 @@ describe("sidebar snapshot from the shared store", () => {
     ).toBeNull();
   });
 
-  it("takes message counts from the search snapshot until the store has the thread's messages", () => {
-    const searchSnapshot = {
-      snapshotSequence: 7,
-      threads: [
-        {
-          threadId: "approval",
-          messages: [
-            { id: "m1", role: "user", text: "hello", createdAt: "2026-08-15T00:00:00.000Z" },
-            { id: "m2", role: "assistant", text: "hi", createdAt: "2026-08-15T00:00:01.000Z" },
-          ],
-        },
-      ],
-    } as unknown as OrchestrationSidebarSearchSnapshot;
+  it("takes message counts from the messages the store holds", () => {
     const state = hydratedState();
-    const snapshot = projectSidebarSnapshot(state, { ...LOCAL, searchSnapshot });
-    expect(snapshot.threads.find((thread) => thread.id === "approval")?.messageCount).toBe(2);
+    const snapshot = projectSidebarSnapshot(state, LOCAL);
+    expect(snapshot.threads.find((thread) => thread.id === "approval")?.messageCount).toBe(0);
 
     const withStoreMessages = projectSidebarSnapshot(
       {
@@ -359,7 +348,7 @@ describe("sidebar snapshot from the shared store", () => {
           approval: ["m1", "m2", "m3"],
         } as unknown as AppState["messageIdsByThreadId"],
       },
-      { ...LOCAL, searchSnapshot },
+      LOCAL,
     );
     expect(withStoreMessages.threads.find((thread) => thread.id === "approval")?.messageCount).toBe(
       3,

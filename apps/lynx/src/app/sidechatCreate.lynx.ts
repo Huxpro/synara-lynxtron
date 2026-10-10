@@ -3,7 +3,7 @@ import type { ChatAssistantSelectionAttachment } from "@synara/contracts";
 
 import { useComposerDraftStore } from "../adapters/composerDraftStore.lynx";
 import { ensureNativeApi } from "~/nativeApi";
-import { queryClient, type ThreadHeaderSummary } from "./queries";
+import type { ThreadHeaderSummary } from "./queries";
 import { buildLynxSidechatCreateCommand } from "./sidechatCreate.logic";
 
 /**
@@ -27,6 +27,5 @@ export async function createNativeSidechat(input: {
   if (input.seedSelection) {
     useComposerDraftStore.getState().addAssistantSelection(sidechatThreadId, input.seedSelection);
   }
-  await queryClient.invalidateQueries({ queryKey: ["thread-detail", sidechatThreadId] });
   return sidechatThreadId;
 }

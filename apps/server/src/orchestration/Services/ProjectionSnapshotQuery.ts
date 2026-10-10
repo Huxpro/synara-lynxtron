@@ -12,7 +12,6 @@ import type {
   OrchestrationProjectShell,
   OrchestrationSpaceShell,
   OrchestrationReadModel,
-  OrchestrationSidebarSearchSnapshot,
   OrchestrationShellSnapshot,
   OrchestrationThreadDetailSnapshot,
   OrchestrationThread,
@@ -166,15 +165,6 @@ export interface ProjectionSnapshotQueryShape {
    */
   readonly getShellSnapshot: () => Effect.Effect<
     OrchestrationShellSnapshot,
-    ProjectionRepositoryError
-  >;
-
-  /**
-   * Read the bounded recent message-body projection used by global search.
-   * The result is capped before it crosses the WebSocket boundary.
-   */
-  readonly getSidebarSearchSnapshot: () => Effect.Effect<
-    OrchestrationSidebarSearchSnapshot,
     ProjectionRepositoryError
   >;
 

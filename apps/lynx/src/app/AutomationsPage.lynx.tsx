@@ -1,7 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "@lynx-js/react";
-import type { NativeApi } from "@synara/contracts";
-import { ensureNativeApi } from "~/nativeApi";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "@lynx-js/react";
 import type { AutomationDefinitionRow, AutomationTriageRow } from "@synara/shared/automationList";
 import { projectAutomationList } from "@synara/shared/automationList";
 
@@ -9,37 +6,12 @@ import { Button } from "../components/ui/button";
 import { ClockIcon, RefreshCwIcon } from "../lib/icons";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
-import { sleepOnHost } from "../platform/timer";
-import { queryClient } from "./queries";
 import { useSidebarSnapshot } from "./sidebarSnapshot.lynx";
 import { AutomationDialog } from "./AutomationDialog.lynx";
 import { setAutomationCreateOpen, useAutomationCreateOpen } from "./automationCreateIntent.lynx";
 import { AutomationDetailPage } from "./AutomationDetailPage.lynx";
+import { useLiveAutomations } from "./automationsLive.lynx";
 import "./automations-page.css";
-
-function useHostPolling(poll: () => Promise<unknown>, delayMs: number): void {
-  const pollRef = useRef(poll);
-  pollRef.current = poll;
-  useEffect(() => {
-    "background only";
-    let cancelled = false;
-    const schedule = () => {
-      void sleepOnHost(delayMs)
-        .then(async () => {
-          if (cancelled) return;
-          await pollRef.current().catch(() => undefined);
-          if (!cancelled) schedule();
-        })
-        .catch(() => {
-          if (!cancelled) schedule();
-        });
-    };
-    schedule();
-    return () => {
-      cancelled = true;
-    };
-  }, [delayMs]);
-}
 
 export function AutomationStatusDot({
   tone,
@@ -202,14 +174,6 @@ export function AutomationsListContent({
   );
 }
 
-/** The automation list, shared by the route and the rail's Automations panel. */
-export function useAutomationsListQuery() {
-  return useQuery({
-    queryKey: ["automations"],
-    queryFn: () => ensureNativeApi().automation.list({}),
-  });
-}
-
 /** Upstream `_chat.automations.index`: the list lives in the rail panel; the route prompts. */
 function AutomationsIndexPrompt(props: {
   readonly disabled: boolean;
@@ -247,41 +211,11 @@ export function AutomationsPage({
   const createOpen = useAutomationCreateOpen();
   const setCreateOpen = setAutomationCreateOpen;
   const [editOpen, setEditOpen] = useState(false);
-  const automations = useAutomationsListQuery();
+  // Upstream's list query and mutations (optimistic definition patch included),
+  // kept current by the server's automation stream instead of a poll.
+  const automations = useLiveAutomations();
+  const { updateMutation, deleteMutation, createMutation, runNowMutation } = automations;
   const sidebar = useSidebarSnapshot();
-  const updateMutation = useMutation({
-    mutationFn: (input: Parameters<NativeApi["automation"]["update"]>[0]) =>
-      ensureNativeApi().automation.update(input),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["automations"] });
-    },
-  });
-  const deleteMutation = useMutation({
-    mutationFn: (input: Parameters<NativeApi["automation"]["delete"]>[0]) =>
-      ensureNativeApi().automation.delete(input),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["automations"] });
-      navigate("/automations");
-    },
-  });
-  const createMutation = useMutation({
-    mutationFn: (input: Parameters<NativeApi["automation"]["create"]>[0]) =>
-      ensureNativeApi().automation.create(input),
-    // Like the web list, creating closes the dialog and keeps the list, where
-    // the new automation appears; it does not open the detail.
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["automations"] });
-      setCreateOpen(false);
-    },
-  });
-  const runNowMutation = useMutation({
-    mutationFn: (input: Parameters<NativeApi["automation"]["runNow"]>[0]) =>
-      ensureNativeApi().automation.runNow(input),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["automations"] });
-    },
-  });
-  useHostPolling(automations.refetch, 5_000);
   const projection = useMemo(
     () =>
       automations.data
@@ -304,7 +238,7 @@ export function AutomationsPage({
   const openAutomation = (id: string) => navigate(`/automations/${encodeURIComponent(id)}`);
 
   if (automationId) {
-    if (automations.isPending || sidebar.isPending) {
+    if (automations.isLoading || sidebar.isPending) {
       return (
         <view
           className="AutomationDetailNotFound"
@@ -347,7 +281,9 @@ export function AutomationsPage({
               : null
         }
         deletePending={deleteMutation.isPending}
-        onDelete={(definition) => deleteMutation.mutate({ id: definition.id })}
+        onDelete={(definition) =>
+          deleteMutation.mutate(definition, { onSuccess: () => navigate("/automations") })
+        }
         onToggleEnabled={(definition) =>
           updateMutation.mutate({
             id: definition.id,
@@ -362,7 +298,7 @@ export function AutomationsPage({
               : null
         }
         runNowPending={runNowMutation.isPending}
-        onRunNow={(definition) => runNowMutation.mutate({ automationId: definition.id })}
+        onRunNow={(definition) => runNowMutation.mutate(definition)}
         onApproveRisks={async (definition, acknowledgedRisks, maxIterations, runAfter) => {
           try {
             await updateMutation.mutateAsync({
@@ -371,7 +307,7 @@ export function AutomationsPage({
               ...(maxIterations !== undefined ? { maxIterations } : {}),
             });
             if (runAfter) {
-              await runNowMutation.mutateAsync({ automationId: definition.id });
+              await runNowMutation.mutateAsync(definition);
             }
           } catch {
             // Both mutations surface their errors through the detail action banner.
@@ -412,7 +348,11 @@ export function AutomationsPage({
               ? String(createMutation.error)
               : null
         }
-        onCreate={(input) => createMutation.mutate(input)}
+        // Like the web list, creating closes the dialog and keeps the list, where
+        // the new automation appears; it does not open the detail.
+        onCreate={(input) =>
+          createMutation.mutate(input, { onSuccess: () => setCreateOpen(false) })
+        }
         onOpenChange={setCreateOpen}
       />
     </view>

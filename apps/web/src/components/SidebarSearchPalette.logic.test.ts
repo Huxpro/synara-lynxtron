@@ -298,27 +298,6 @@ describe("SidebarSearchPalette.logic", () => {
     assert.equal(result[0]?.messageMatchCount, 2);
   });
 
-  it("applies the shared default result caps", () => {
-    const manyProjects = Array.from({ length: 10 }, (_, index) => ({
-      ...projects[0]!,
-      id: `project-${index}`,
-      name: `Match ${index}`,
-      remoteName: `Match ${index}`,
-      updatedAt: new Date(Date.UTC(2026, 0, 1, 0, index)).toISOString(),
-    }));
-    const manyThreads = Array.from({ length: 12 }, (_, index) => ({
-      ...threads[0]!,
-      id: `thread-${index}`,
-      title: `Match ${index}`,
-      updatedAt: new Date(Date.UTC(2026, 0, 1, 0, index)).toISOString(),
-      messages: [],
-    }));
-
-    assert.lengthOf(matchSidebarSearchProjects(manyProjects, "match"), 6);
-    assert.lengthOf(matchSidebarSearchThreads(manyThreads, "match"), 8);
-    assert.lengthOf(matchSidebarSearchThreads(manyThreads, ""), 3);
-  });
-
   it("uses server hits for threads whose messages are not loaded", () => {
     const unloaded = threads.map((thread) => ({ ...thread, messages: [] }));
     const serverMatches = new Map([

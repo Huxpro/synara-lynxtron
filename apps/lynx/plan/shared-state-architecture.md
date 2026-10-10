@@ -126,6 +126,7 @@
 | M3b 之后             |                    — |                      — |                     — |        — |                 0 |       29 |      1 |         3,612 |
 | 第一轮收尾           |               39,865 |                 19,131 |               104,937 |    3,148 |                 0 |       20 |      1 |         3,581 |
 | 第二轮 A 阶段后      |               39,865 |                 19,131 |               104,937 |    3,148 |                 0 |       20 |      1 |         3,581 |
+| 第二轮 D 阶段读取方  |                    — |                      — |                     — |        — |                 0 |       13 |      1 |         3,578 |
 
 里程碑检查（M0–M3a 合入后，默认分支 `d576ba279`，2026-10-09）：单元格矩阵 4 种配置（深色、浅色 × 1280×820、1440×900）共 24 个基础格 + 28 个状态增量，全部通过；工作流 J3 12/12、J4 12/12、J5 8/8、J6 10/10（两端合计）。直接把默认分支合 `upstream/main` 的冲突文件数为 256；经由上游同步分支分两段合，第二段上次试合为 60。
 
@@ -295,23 +296,25 @@ J2 的排除过程：让 Electron 加载 `upstream/main` 的原始 `apps/web`（
 
 ### 尚未完成
 
-| 项                           | 状态                                                                                                                                    |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| M3b Thread 页改读 `store`    | Thread 页完成。其余线程详情读取方（Side 面板、侧边栏和 Kanban 的线程操作、完成通知、recap）仍是请求式                                   |
-| M4 逐屏收敛                  | 请求路径已全部收敛。读取换成上游 query options 的屏：Settings、Environment/Git、Explorer、Composer 的 skills 和文件搜索；其余见下方清单 |
-| 删除 `synaraClient.lynx.ts`  | 完成。请求、终端事件和连接状态都走上游门面与兼容传输；棘轮 `synaraClientImporters` 为 0                                                 |
-| 缩小 fork 在上游文件里的差异 | 进行中：260 → 184 个文件。剩余按类别处理：其余 16 个平台端口文件、放在上游目录里的 395 个 fork 文件、`data-*` 钩子、被改写的共享逻辑    |
-| 移植上游的新界面             | 矩阵覆盖的界面已移植；占位和其余功能见合并报告的移植队列和 #52                                                                          |
+| 项                           | 状态                                                                                                                                                                                          |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| M3b Thread 页改读 `store`    | 完成。Thread 页和 dock 的 Side 面板读 `store`；其余读取方（侧边栏和 Kanban 的线程操作、完成通知、recap）共用 `readThreadDetailOnce`：`store` 有详情就读 `store`，否则经门面取一次快照、不提交 |
+| M4 逐屏收敛                  | 请求路径已全部收敛。读取换成上游 query options 的屏：Settings、Environment/Git、Explorer、Composer 的 skills 和文件搜索；其余见下方清单                                                       |
+| 删除 `synaraClient.lynx.ts`  | 完成。请求、终端事件和连接状态都走上游门面与兼容传输；棘轮 `synaraClientImporters` 为 0                                                                                                       |
+| 缩小 fork 在上游文件里的差异 | 进行中：260 → 184 个文件。剩余按类别处理：其余 16 个平台端口文件、放在上游目录里的 395 个 fork 文件、`data-*` 钩子、被改写的共享逻辑                                                          |
+| 移植上游的新界面             | 矩阵覆盖的界面已移植；占位和其余功能见合并报告的移植队列和 #52                                                                                                                                |
 
 `synaraClient.lynx.ts` 删除之后还留在 Lynx 一侧的（都经门面发请求，只是还没用上游的 query options 和 key，属于 M4 后续各屏）：
 
 - **模型目录（5 处）：已完成。** `Composer`、`KanbanNewTaskDialog`、`AutomationCreateDialog`、`AutomationEditDialog`、`AutomationDetailPage` 都用上游的 `providerModelsQueryOptions`（上游的 key 和发现队列），棘轮 `useQueryCallSites` 29 → 24。在 Native（PrimJS）上验证过的：目录能加载，模型菜单的行和 J1/J5/J6 都通过。PrimJS 的 `AbortSignal` 有 `addEventListener`/`removeEventListener`，但没有 `throwIfAborted`（上游的 `abortReason` 捕获后把那个 `TypeError` 当作取消原因），也不遵守 `{ once: true }`、重复 `abort()` 会再次派发（上游队列的 `taskSettled` 保证只结算一次）。取消和 90 秒超时两条路径没有在 Native 上实际触发过。
-- **Automations**：`AutomationsPage` 的列表和四个变更。上游的 `useAutomations` 在路由文件里，没有可派生的 query options。
+- **Automations：已完成。** 上游的 `useAutomations`（列表查询、变更、乐观更新与回滚）和 `applyAutomationEvent` 由 `scripts/generate-automations-state.mjs` 从 `routes/-automations.shared.tsx` 生成（带 `--check`）；页面和图标栏面板共用它，列表靠服务端的 automation 事件流保持最新，原来每 5 秒一次的宿主轮询删除。没有选"保留 Lynx 的 key"：key 本来就相同，差的是上游的乐观更新、回滚和事件合并逻辑，手写一份就是平行实现。
 - **PR 详情：已完成。** Code review 页面（`GitHubInboxPage.lynx.tsx`）的列表、刷新、置顶，PR 的 detail / diff / action / 评论，以及 issue 的 detail / 评论，都用上游的 query 和 mutation options（`githubInboxListQueryOptions`、`pullRequestDetailQueryOptions`、`pullRequestActionMutationOptions` 等），图标栏的评审角标读同一份 open 列表。Lynx 的 `fetchPullRequests` 已删除，棘轮 `useQueryCallSites` 24 → 20。
-- **插件库**：`PluginLibraryPage` 的三个读取。
-- **Sidebar**：dev server 列表、local servers（上游的 `sidebarLocalServersQueryOptions` 会带来新的轮询，单独评估）。
-- **线程详情的其余读取方**：`EmbeddedSidechatPane`（`fetchThreadTranscriptRows` + `fetchThreadHeaderSummary`，仍用 `thread-detail` query key；上游的 `EventRouter` 按上游的 `useRightDockStore` 给 dock 里的 Side 线程租约，Lynx 的 dock 状态不在那里）、`Sidebar.lynx.tsx` 和 `useNativeKanbanCardActions` 的线程操作（`fetchThreadHeaderSummary`，一次性读取）、`TaskCompletionToastHost`（没有租约的后台线程）、`EnvironmentPanel` 的 `prepareThreadRecap`。
-- **没有门面方法的 RPC**：`orchestration.getSidebarSearchSnapshot` 是 fork 自己加的，直接走 `nativeRpcRequest`。`orchestration.getSidebarShellSnapshot` 已从契约和服务端删除（Lynx 改用上游的 `getShellSnapshot`）。
+- **插件库：已完成。** 用上游的 `providerComposerCapabilitiesQueryOptions`、`providerPluginsQueryOptions`、`providerSkillsQueryOptions`，发现目录取上游 `serverConfigQueryOptions` 的 cwd。上游的 options 在首次响应前给占位数据，页面把占位期仍算作加载中。
+- **Sidebar：已完成。** dev server 读上游的 `useProjectRunStore`（`EventRouter` 用事件流和一次 `listDevServers` 维护），local servers 用上游的 `sidebarLocalServersQueryOptions`。它只在有 Synara 启动的 dev server 时按上游的间隔轮询，另外在窗口聚焦和重连时刷新，与 Electron 相同；Lynx 以前只在挂载和手动操作后读取。
+- **线程详情的其余读取方：已完成。** `EmbeddedSidechatPane` 用 `useThreadPageData` 读 `store`；Lynx 的 dock 状态镜像进上游的 `useRightDockStore`，上游的 `EventRouter` 据此给当前 Side 线程租约（上游的 retention 不含 Side 线程，所以面板不 retain）。侧边栏和 Kanban 的线程操作、`TaskCompletionToastHost`、`prepareThreadRecap` 共用 `threadDetailRead.lynx.ts` 的 `readThreadDetailOnce`。`fetchThreadTranscriptRows`、`fetchThreadHeaderSummary`、第二份头部摘要构造、`threadDetailProjection.logic.ts`、`threadSummaryProjection.logic.ts` 和 `thread-detail` query key 已删除。
+- **搜索面板的导入 provider、头部的 handoff 目标：已完成。** 改用上游的 capabilities、config、settings 查询，不再有组合的 Lynx key。
+- **仍用 Lynx key 的读取（13 处计数）**：落地页的组合 bootstrap（`router.tsx`、`LandingComposer`，2 处）、外部 MCP 集成列表（上游的 key 写在组件文件里）、搜索面板的 `searchThreads`（上游的 key，上游内联定义，没有可 import 的 options）、生成的 `useAutomations`（上游的定义，审计按文件位置计入）；其余是宿主数据或本地状态，不是服务器读取：diff 语法高亮、编辑器图标、浏览器视图能力、Explorer 的本地预览地址和 PDF 元数据、recap 的本地缓存、终端完成事件。
+- **没有门面方法的 RPC：已清零。** `orchestration.getSidebarSearchSnapshot` 已从契约和服务端删除，搜索面板改用上游的 `searchThreads`（门面方法、上游的 key、去抖、最小长度和 `matchSidebarSearchThreads` 的合并规则）；`@synara/shared/sidebarSearch`、`SidebarSearchProjection.logic` 一并删除，`SidebarSearchPalette.logic.ts`、`ProjectionSnapshotQuery`（服务、实现、测试）和 `ws.test.ts` 还原为上游原文。`orchestration.getSidebarShellSnapshot` 此前已删除。
 - **宿主里的旧流路径**：`NATIVE_EVENT_STREAM_CHANNELS` 的终端和 shell 通道、不带 `streamId` 的 `synaraRpcStream` 已经没有渲染器调用方，可以删。
 
 未关闭的相关问题：#16（Stop 过早被丢）、#19 和 #20（Computer Use 验收发现的输入与界面问题）、#35（Stop 延迟）、#50（上游浏览器测试不稳定）、#52（第二轮清单）。#10（Lynx Rstest 套件）已关闭。

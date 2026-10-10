@@ -456,10 +456,6 @@
       "types": "./src/providerDiscoveryPresentation.ts",
       "import": "./src/providerDiscoveryPresentation.ts"
     },
-    "./sidebarSearch": {
-      "types": "./src/sidebarSearch.ts",
-      "import": "./src/sidebarSearch.ts"
-    },
     "./automationList": {
       "types": "./src/automationList.ts",
       "import": "./src/automationList.ts"

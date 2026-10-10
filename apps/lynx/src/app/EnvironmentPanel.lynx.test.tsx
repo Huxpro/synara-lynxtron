@@ -239,7 +239,11 @@ describe("Lynx Environment panel", () => {
     expect(panelSource).toContain("summarizePullRequestComments(");
     expect(panelSource).toContain("Conflicts with ${livePullRequest.baseBranch}");
     expect(panelSource).toContain("No unresolved review comments.");
-    expect(queriesSource).toContain("lastKnownPr: thread.lastKnownPr ?? null");
+    const summarySource = readFileSync(
+      new URL("./threadPageProjection.logic.ts", import.meta.url),
+      "utf8",
+    );
+    expect(summarySource).toContain("lastKnownPr: thread.lastKnownPr ?? null");
     expect(panelSource).toContain("useProjectInstructionsStore.persist.rehydrate()");
     expect(panelSource).toContain("() => applyHydratedInstructions(storedInstructions)");
     expect(panelSource).toContain(
@@ -256,8 +260,8 @@ describe("Lynx Environment panel", () => {
     expect(panelSource).toContain('type: "thread.pinned-message.label.set"');
     expect(panelSource).toContain('type: "thread.pinned-message.remove"');
     expect(panelSource).toContain("displayLabelFor(props.pin, props.messageText)");
-    expect(queriesSource).toContain("pinnedMessages: thread.pinnedMessages ?? []");
-    expect(queriesSource).toContain("pinnedMessageTextById: Object.fromEntries(");
+    expect(summarySource).toContain("pinnedMessages: thread.pinnedMessages ?? []");
+    expect(summarySource).toContain("pinnedMessageTextById: Object.fromEntries(");
     expect(transcriptSource).toContain("function scrollToMessage(messageId: string)");
     expect(transcriptSource).toContain('row.kind === "message" && row.message.id === messageId');
     expect(panelSource).not.toContain("EnvironmentMarkerRow");

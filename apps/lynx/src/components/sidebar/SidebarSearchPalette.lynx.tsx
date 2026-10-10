@@ -1,6 +1,6 @@
 import { useMemo, useState } from "@lynx-js/react";
 import { ensureNativeApi } from "~/nativeApi";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { DEFAULT_MODEL_BY_PROVIDER } from "@synara/contracts";
 
 import {
@@ -8,13 +8,18 @@ import {
   type SidebarSearchPaletteMode,
   type ImportProviderKind,
 } from "@synara-web/components/SidebarSearchPaletteComposition";
+import { isFilesystemBrowseQuery } from "@synara-web/lib/projectPaths";
 import { newCommandId } from "@synara-web/lib/utils";
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsGeneralProjection,
 } from "@synara-web/appSettingsStorageProjection.logic";
-import { providerComposerCapabilitiesQueryOptions } from "@synara-web/lib/providerDiscoveryReactQuery";
-import { queryClient, type SidebarSnapshot } from "../../app/queries";
+import {
+  providerComposerCapabilitiesQueryOptions,
+  supportsThreadImport,
+} from "@synara-web/lib/providerDiscoveryReactQuery";
+import type { SidebarSnapshot } from "../../app/queries";
+import { getNavigatorPlatform } from "~/platform/env";
 import { webStorage } from "../../platform/storage";
 import {
   buildNativeSearchImportThreadCreateCommand,
@@ -22,6 +27,12 @@ import {
 } from "./sidebarSearchActions.logic";
 import { buildLynxSidebarSearchActions } from "./sidebarSearchSpaceActions.logic";
 import { FeedbackDialogLynx, resolveNativeFeedbackContext } from "./FeedbackDialog.lynx";
+import {
+  useSidebarSearchThreadsWithLoadedMessages,
+  useSidebarThreadSearch,
+} from "./useSidebarThreadSearch.lynx";
+
+const EMPTY_SEARCH_THREADS: SidebarSnapshot["searchThreads"] = [];
 
 const IMPORT_PROVIDERS: readonly ImportProviderKind[] = [
   "codex",
@@ -64,27 +75,33 @@ export function SidebarSearchPaletteLynx(props: {
       ),
     [props.snapshot],
   );
-  const threads = props.snapshot?.searchThreads ?? [];
+  // The palette owns its input; this mirrors what is typed, for the server search.
+  const [query, setQuery] = useState(() => props.initialQuery ?? "");
+  const trimmedQuery = query.trim();
+  const serverThreadMatches = useSidebarThreadSearch({
+    query,
+    enabled:
+      props.open &&
+      !(trimmedQuery.length > 0 && isFilesystemBrowseQuery(trimmedQuery, getNavigatorPlatform())),
+  });
+  const threads = useSidebarSearchThreadsWithLoadedMessages(
+    props.snapshot?.searchThreads ?? EMPTY_SEARCH_THREADS,
+    props.open,
+  );
   const newThreadProjectId =
     props.snapshot?.projects.find((project) => project.kind === "project")?.id ?? null;
-  const { data: importProviders = [] } = useQuery({
-    queryKey: ["sidebar-search-import-providers"],
-    queryFn: async () => {
-      "background only";
-      const capabilities = await Promise.all(
-        IMPORT_PROVIDERS.map(async (provider) => ({
-          provider,
-          capabilities: await queryClient
-            .fetchQuery(providerComposerCapabilitiesQueryOptions(provider))
-            .catch(() => null),
-        })),
-      );
-      return capabilities
-        .filter((entry) => entry.capabilities?.supportsThreadImport === true)
-        .map((entry) => entry.provider);
-    },
-    staleTime: 60_000,
+  // As upstream's palette controller: one capabilities query per candidate,
+  // on upstream's keys (the composer reads the same cache).
+  const importCapabilityQueries = useQueries({
+    queries: IMPORT_PROVIDERS.map((provider) => providerComposerCapabilitiesQueryOptions(provider)),
   });
+  const importProviderKey = IMPORT_PROVIDERS.filter((_, index) =>
+    supportsThreadImport(importCapabilityQueries[index]?.data),
+  ).join(",");
+  const importProviders = useMemo(
+    () => (importProviderKey ? (importProviderKey.split(",") as ImportProviderKind[]) : []),
+    [importProviderKey],
+  );
 
   const addProjectPath = async (workspaceRoot: string, options?: { createIfMissing?: boolean }) => {
     "background only";
@@ -153,6 +170,8 @@ export function SidebarSearchPaletteLynx(props: {
         actions={actions}
         projects={projects}
         threads={threads}
+        serverThreadMatches={serverThreadMatches}
+        onQueryChange={setQuery}
         searchStatus={props.searchStatus}
         searchErrorMessage={props.searchErrorMessage}
         onRetrySearch={props.onRetrySearch}
