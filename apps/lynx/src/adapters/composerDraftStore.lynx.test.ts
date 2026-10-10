@@ -11,6 +11,7 @@ import {
   parsePersistedLynxComposerDrafts,
   useComposerDraftStore,
 } from "./composerDraftStore.lynx";
+import { runComposerOutgoingSend } from "../components/composer/composerDispatch.logic";
 import { webStorage } from "../platform/storage";
 
 describe("Lynx composer draft attachment subset", () => {
@@ -624,5 +625,128 @@ describe("Lynx composer draft store as upstream session sync uses it", () => {
     expect(useComposerDraftStore.getState().draftsByThreadId["thread-1"]?.files).toHaveLength(1);
     store.copyTransferableComposerState("missing", "thread-3");
     expect(useComposerDraftStore.getState().draftsByThreadId["thread-3"]).toBeUndefined();
+  });
+
+  // A send takes its draft out of the store first (upstream clears the composer before it
+  // prepares the turn). The store is what any composer mounted for the thread reads, so
+  // these hold across a route change during the attempt as well.
+  describe("an outgoing send", () => {
+    const attempt = (send: () => Promise<void>) =>
+      runComposerOutgoingSend({
+        take: () => useComposerDraftStore.getState().takeDraftContent("thread-1"),
+        send,
+        restore: (outgoing) =>
+          useComposerDraftStore.getState().restoreDraftContent("thread-1", outgoing),
+      });
+    const deferred = () => {
+      let resolve!: () => void;
+      let reject!: (error: Error) => void;
+      const promise = new Promise<void>((onResolve, onReject) => {
+        resolve = onResolve;
+        reject = onReject;
+      });
+      return { promise, resolve, reject };
+    };
+    const draft = () => useComposerDraftStore.getState().draftsByThreadId["thread-1"];
+    const file = { id: "file-1", name: "a.txt", token: "token-1", sizeBytes: 1 } as never;
+
+    it("takes the content and leaves the model selection and modes", () => {
+      const store = useComposerDraftStore.getState();
+      const claude = { provider: "claudeAgent", model: "claude-sonnet-5-5" } as never;
+      store.setModelSelection("thread-1", claude);
+      store.setRuntimeMode("thread-1", "full-access");
+      store.setPrompt("thread-1", "message A");
+      store.addFiles("thread-1", [file]);
+
+      const outgoing = store.takeDraftContent("thread-1");
+      expect(outgoing).toMatchObject({ prompt: "message A", files: [{ id: "file-1" }] });
+      expect(draft()).toMatchObject({
+        prompt: "",
+        files: [],
+        modelSelection: claude,
+        runtimeMode: "full-access",
+      });
+      expect(store.takeDraftContent("no-such-thread")).toBeNull();
+    });
+
+    it("edit during the wait, then success: the newer draft is untouched", async () => {
+      const store = useComposerDraftStore.getState();
+      store.setPrompt("thread-1", "message A");
+      const wait = deferred();
+      const sending = attempt(() => wait.promise);
+      expect(draft()?.prompt ?? "").toBe("");
+      store.setPrompt("thread-1", "message B");
+      store.addFiles("thread-1", [file]);
+      wait.resolve();
+      await expect(sending).resolves.toBe("sent");
+      expect(draft()).toMatchObject({ prompt: "message B", files: [{ id: "file-1" }] });
+    });
+
+    it("edit during the wait, then failure: the newer draft wins over the failed one", async () => {
+      const store = useComposerDraftStore.getState();
+      store.setPrompt("thread-1", "message A");
+      const wait = deferred();
+      const sending = attempt(() => wait.promise);
+      store.setPrompt("thread-1", "message B");
+      wait.reject(new Error("Claude could not start"));
+      await expect(sending).rejects.toThrow("Claude could not start");
+      expect(draft()?.prompt).toBe("message B");
+    });
+
+    it("an attachment added during the wait also counts as a newer draft", async () => {
+      const store = useComposerDraftStore.getState();
+      store.setPrompt("thread-1", "message A");
+      const wait = deferred();
+      const sending = attempt(() => wait.promise);
+      store.addFiles("thread-1", [file]);
+      wait.reject(new Error("failed"));
+      await expect(sending).rejects.toThrow("failed");
+      expect(draft()).toMatchObject({ prompt: "", files: [{ id: "file-1" }] });
+    });
+
+    it("failure with an untouched composer: the whole draft comes back", async () => {
+      const store = useComposerDraftStore.getState();
+      store.setPrompt("thread-1", "message A");
+      store.addFiles("thread-1", [file]);
+      store.addPastedText(
+        "thread-1",
+        createPastedTextDraft({ id: "paste-1", createdAt: "2026-10-10T00:00:00.000Z", text: "p" }),
+      );
+      await expect(
+        attempt(async () => {
+          throw new Error("dispatch failed");
+        }),
+      ).rejects.toThrow("dispatch failed");
+      expect(draft()).toMatchObject({
+        prompt: "message A",
+        files: [{ id: "file-1" }],
+        pastedTexts: [{ id: "paste-1" }],
+      });
+    });
+
+    it("navigate away and back during the wait: the attempt settles against the store", async () => {
+      const store = useComposerDraftStore.getState();
+      store.setModelSelection("thread-1", { provider: "claudeAgent", model: "m" } as never);
+      store.setPrompt("thread-1", "message A");
+      const wait = deferred();
+      const sending = attempt(() => wait.promise);
+      // The composer that started the send is gone. A new one mounts for the same thread
+      // and reads the store: an empty draft with the thread's pending selection.
+      expect(draft()).toMatchObject({ prompt: "", modelSelection: { provider: "claudeAgent" } });
+      store.setPrompt("thread-1", "typed after coming back");
+      wait.resolve();
+      await sending;
+      expect(draft()?.prompt).toBe("typed after coming back");
+
+      // The same route change around a failing attempt with nothing typed: restored for
+      // whichever composer is mounted when it settles.
+      store.takeDraftContent("thread-1");
+      store.setPrompt("thread-1", "message C");
+      const failing = deferred();
+      const second = attempt(() => failing.promise);
+      failing.reject(new Error("failed"));
+      await expect(second).rejects.toThrow("failed");
+      expect(draft()?.prompt).toBe("message C");
+    });
   });
 });

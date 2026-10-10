@@ -1,4 +1,11 @@
-import { useEffect, useInitData, useMemo, useRef, useState } from "@lynx-js/react";
+import {
+  useEffect,
+  useInitData,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "@lynx-js/react";
 import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { projectSearchEntriesQueryOptions } from "@synara-web/lib/projectReactQuery";
 import {
@@ -28,7 +35,10 @@ import {
 } from "../../logic/composerPlaceholder";
 import { DEFAULT_CHAT_FONT_SIZE_PX, normalizeChatFontSizePx } from "@synara-web/chatFontSize";
 
-import { useComposerDraftStore } from "../../adapters/composerDraftStore.lynx";
+import {
+  useComposerDraftStore,
+  type LynxComposerDraftContent,
+} from "../../adapters/composerDraftStore.lynx";
 import { toastManager } from "../ui/toast.lynx";
 import { useComposerProviderHandoff } from "./useComposerProviderHandoff.lynx";
 import { resolveNativeComposerMaxLines } from "./composerNativeLines.logic";
@@ -114,9 +124,13 @@ import {
   buildComposerTurnStartCommand,
   isConnectingComposerSession,
   isRunningComposerSession,
-  runComposerSendTransaction,
+  runComposerOutgoingSend,
 } from "./composerDispatch.logic";
-import { runComposerSendOnce } from "@synara-web/lib/composerSendOwnership";
+import {
+  hasActiveComposerSend,
+  runComposerSendOnce,
+  subscribeComposerSends,
+} from "@synara-web/lib/composerSendOwnership";
 import { resolveComposerInputTransition } from "./composerPastedTextInput.logic";
 import {
   cutComposerNativeEditorSelection,
@@ -552,7 +566,6 @@ export function Composer({
   const addPastedText = useComposerDraftStore((state) => state.addPastedText);
   const addFiles = useComposerDraftStore((state) => state.addFiles);
   const addImages = useComposerDraftStore((state) => state.addImages);
-  const clearDraft = useComposerDraftStore((state) => state.clearDraft);
   const removePastedText = useComposerDraftStore((state) => state.removePastedText);
   const removeFile = useComposerDraftStore((state) => state.removeFile);
   const removeImage = useComposerDraftStore((state) => state.removeImage);
@@ -567,7 +580,15 @@ export function Composer({
   const setTerminalContexts = useComposerDraftStore((state) => state.setTerminalContexts);
   const [focused, setFocused] = useState(false);
   const [nativeEditorFocusEpoch, setNativeEditorFocusEpoch] = useState(0);
-  const [isSending, setIsSending] = useState(false);
+  const [sendStartedHere, setIsSending] = useState(false);
+  // A send outlives the composer that started it (upstream's send ownership, by thread):
+  // a composer mounted while one is still running shows it and cannot start another.
+  const sendActiveForThread = useSyncExternalStore(
+    subscribeComposerSends,
+    () => hasActiveComposerSend(threadId as never),
+    () => false,
+  );
+  const isSending = sendStartedHere || sendActiveForThread;
   const sendInFlightRef = useRef(false);
   const [isStopping, setIsStopping] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
@@ -1368,13 +1389,6 @@ export function Composer({
     }
   }
 
-  function clearDraftAfterSend() {
-    "background only";
-    clearDraft(brandedThreadId);
-    setNativeValue("");
-    setComposerTrigger(null);
-  }
-
   function removePastedTextFromDraft(pastedTextId: string) {
     "background only";
     recordEditorHistory();
@@ -1621,6 +1635,8 @@ export function Composer({
     if (
       (!text && files.length === 0 && images.length === 0 && fileComments.length === 0) ||
       sendInFlightRef.current ||
+      // An attempt started by an earlier mount of this composer is still running.
+      hasActiveComposerSend(threadId as never) ||
       !activeModelSelection ||
       !runtimeMode ||
       !interactionMode
@@ -1639,62 +1655,91 @@ export function Composer({
     setIsSending(true);
     setSendError(null);
     let providerHandoffError: string | null = null;
+    let draftRestored = false;
+    const draftStore = useComposerDraftStore.getState();
     try {
       // Upstream's send ownership (lib/composerSendOwnership): the sidebar reads it to show
       // "Preparing worktree" on a worktree thread whose first send is still in flight.
       await runComposerSendOnce(threadId as never, async () => {
-        await runComposerSendTransaction({
-          prepare: async () => {
+        await runComposerOutgoingSend<LynxComposerDraftContent>({
+          // The outgoing draft leaves the composer before anything asynchronous, as
+          // upstream's does: what the user types while a handoff waits is a new draft.
+          take: () => {
+            const outgoing = draftStore.takeDraftContent(brandedThreadId);
+            if (outgoing) {
+              setNativeValue("");
+              setComposerTrigger(null);
+            }
+            return outgoing;
+          },
+          send: async (outgoing) => {
+            const outgoingText =
+              buildComposerSendText({
+                prompt: outgoing.prompt,
+                pastedTexts: outgoing.pastedTexts,
+                fileComments: outgoing.fileComments,
+                terminalContexts: outgoing.terminalContexts,
+              }) || "Review the attachment.";
+            const outgoingFiles = [...outgoing.images, ...outgoing.files];
             await onBeforeSend?.({
               interactionMode,
               modelSelection: activeModelSelection,
               runtimeMode,
-              text: text || "Review the attachment.",
+              text: outgoingText,
             });
-            // A failed handoff stops the send here: the draft stays in the composer
-            // instead of reaching the wrong provider.
+            // A failed handoff stops the send here, before it reaches the wrong provider.
             await providerHandoff.handOff().catch((error: unknown) => {
               providerHandoffError =
                 error instanceof Error ? error.message : "Could not hand off this thread.";
               throw error;
             });
-          },
-          dispatch: async () => {
-            const stagedFiles = await stageNativeComposerFiles({
-              files: [...images, ...files],
-              threadId,
-            });
+            const stagedFiles = await stageNativeComposerFiles({ files: outgoingFiles, threadId });
             const assistantDeliveryMode = await resolveNativeAssistantDeliveryMode();
             await stagedFiles.runWithDispatch((attachments) =>
               ensureNativeApi().orchestration.dispatchCommand(
                 buildComposerTurnStartCommand({
                   assistantDeliveryMode,
-                  attachments: [...attachments, ...assistantSelections],
+                  attachments: [...attachments, ...outgoing.assistantSelections],
                   commandId: createComposerDispatchId("command"),
                   createdAt: providerHandoff.resolveCreatedAt(),
                   interactionMode,
                   messageId: createComposerDispatchId("message"),
                   modelSelection: activeModelSelection as never,
                   runtimeMode,
-                  text: text || "Review the attachment.",
+                  text: outgoingText,
                   threadId,
-                  mentions: projectedEditor.mentions,
-                  skills: projectedEditor.skills,
+                  mentions: outgoing.mentions,
+                  skills: outgoing.skills,
                 }),
               ),
             );
-            await Promise.all(
-              [...images, ...files].map((file) => releasePickedComposerFile(file.token)),
-            );
+            await Promise.all(outgoingFiles.map((file) => releasePickedComposerFile(file.token)));
           },
-          clearDraft: clearDraftAfterSend,
+          // By thread id in the draft store, so it also reaches a composer that was
+          // remounted while the attempt ran; the editor follows the store.
+          restore: (outgoing) => {
+            draftRestored = draftStore.restoreDraftContent(brandedThreadId, outgoing);
+            return draftRestored;
+          },
+          // The user started a newer draft: the failed one's picked files have no owner left.
+          discard: (outgoing) =>
+            Promise.all(
+              [...outgoing.images, ...outgoing.files].map((file) =>
+                releasePickedComposerFile(file.token),
+              ),
+            ).then(() => undefined),
           onSucceeded: onSendSucceeded,
         });
         return true;
       });
     } catch (error) {
       console.error("[slice] failed to send composer turn", error);
-      setSendError(providerHandoffError ?? "Unable to send. Your draft is still here.");
+      setSendError(
+        providerHandoffError ??
+          (draftRestored
+            ? "Unable to send. Your draft is still here."
+            : "Unable to send your previous message."),
+      );
     } finally {
       sendInFlightRef.current = false;
       setIsSending(false);

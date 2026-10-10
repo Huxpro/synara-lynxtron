@@ -46,13 +46,15 @@
         "await continueThreadHandoff( threadForSend, selectionForSend.provider, selectionForSend.instanceId, selectionForSend, );",
         "allowProviderHandoff: isServerThread && !isCoordinatorConversation,",
         "title: \"Could not hand off this thread\",",
-        "title: \"Could not create handoff thread\","
+        "title: \"Could not create handoff thread\",",
+        "setComposerDraftModelSelectionAndSticky(activeThread.id, nextModelSelection);"
       ],
       "copies": [
         "apps/lynx/src/app/threadPageProjection.logic.ts",
         "apps/lynx/src/app/providerHandoffSend.logic.ts",
         "apps/lynx/src/components/composer/useComposerProviderHandoff.lynx.ts",
-        "apps/lynx/src/app/ThreadHeaderActions.lynx.tsx"
+        "apps/lynx/src/app/ThreadHeaderActions.lynx.tsx",
+        "apps/lynx/src/components/composer/Composer.lynx.tsx"
       ],
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
@@ -156,11 +158,16 @@
         "const needsProviderHandoff = isServerThread && queuedChatTurn === null && threadHasProviderLockingActivity(activeThread) && dispatchSettings.modelSelection.provider !== activeThread.modelSelection.provider;",
         "if (needsProviderHandoff && prepareProviderHandoffForSend) { await prepareProviderHandoffForSend(activeThread, dispatchSettings.modelSelection);",
         ")?.activities.findLast((activity) => activity.kind === \"provider.handoff\")?.createdAt;",
-        "messageCreatedAt = new Date( Math.max(Date.now(), Date.parse(handoffCreatedAt ?? messageCreatedAt) + 1), ).toISOString();"
+        "messageCreatedAt = new Date( Math.max(Date.now(), Date.parse(handoffCreatedAt ?? messageCreatedAt) + 1), ).toISOString();",
+        "retryDraft.prompt.length === 0 && retryDraft.images.length === 0 && retryDraft.files.length === 0 && retryDraft.assistantSelections.length === 0 &&",
+        "retryDraft.fileComments.length === 0 && retryDraft.terminalContexts.length === 0 && retryDraft.pastedTexts.length === 0 &&",
+        "const stagedTurnAttachments = await turnAttachmentsPromise;"
       ],
       "copies": [
         "apps/lynx/src/app/providerHandoffSend.logic.ts",
-        "apps/lynx/src/components/composer/useComposerProviderHandoff.lynx.ts"
+        "apps/lynx/src/components/composer/useComposerProviderHandoff.lynx.ts",
+        "apps/lynx/src/adapters/composerDraftStore.lynx.ts",
+        "apps/lynx/src/components/composer/composerDispatch.logic.ts"
       ],
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
