@@ -149,6 +149,7 @@ import { clipboard } from "../../platform/clipboard";
 import { platformWindow } from "../../platform/window";
 import { platformTerminal } from "../../platform/terminal";
 import { removeRightDockThreadState } from "../../app/rightDockState.lynx";
+import { scheduleArchiveWorktreeCleanup } from "../../app/archiveWorktreeCleanup.lynx";
 import {
   buildNativeThreadContextCommand,
   isThreadContextMenuActionId,
@@ -752,7 +753,10 @@ export function Sidebar({
       threadId: thread.id,
     });
     if (!command) return;
-    await ensureNativeApi().orchestration.dispatchCommand(command);
+    const receipt = await ensureNativeApi().orchestration.dispatchCommand(command);
+    if (command.type === "thread.archive") {
+      scheduleArchiveWorktreeCleanup({ threadId: thread.id, archiveSequence: receipt.sequence });
+    }
 
     if (action === "toggle-pin") {
       const { usePinnedThreadsStore } = await import(

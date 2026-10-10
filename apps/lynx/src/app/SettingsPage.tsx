@@ -109,6 +109,10 @@ import { sleepOnHost } from "../platform/timer";
 import { SettingsSearchResults } from "./SettingsSearchResults.lynx";
 import { AppRailShell } from "../components/sidebar/AppRail.lynx";
 import { SettingsGeneralPanel } from "./SettingsGeneralPanel.lynx";
+import {
+  DEFAULT_ARCHIVE_DELETES_ORPHANED_WORKTREE,
+  writeArchiveDeletesOrphanedWorktree,
+} from "./archiveWorktreeSetting.logic";
 import { SidebarDisclosure } from "./SidebarDisclosure.lynx";
 import { rankLynxSettingsSearchEntries } from "./settingsSearch.logic";
 import { settingsSearchEntryTarget } from "@synara-web/settingsSearchIndex";
@@ -380,6 +384,7 @@ export function SettingsPage({
   readonly onThemeStateChange: (state: ThemeState) => void;
 }) {
   const [settings, setSettings] = useState(DEFAULT_SETTINGS_GENERAL_VALUES);
+  const [generalResetRevision, setGeneralResetRevision] = useState(0);
   const [appearance, setAppearance] = useState(DEFAULT_SETTINGS_APPEARANCE_VALUES);
   const [behavior, setBehavior] = useState(DEFAULT_BEHAVIOR_SETTINGS_VALUES);
   const [notifications, setNotifications] = useState(DEFAULT_NOTIFICATION_SETTINGS_VALUES);
@@ -550,7 +555,22 @@ export function SettingsPage({
     "background only";
     if (section === "general") {
       setSettings(DEFAULT_SETTINGS_GENERAL_VALUES);
-      runSave(() => persistSettings(DEFAULT_SETTINGS_GENERAL_VALUES, true));
+      runSave(async () => {
+        const outcome = await persistSettings(DEFAULT_SETTINGS_GENERAL_VALUES, true);
+        // The General panel stores "Delete worktree on archive" itself; reset it with the rest.
+        const { setPersistedStorageItem, webStorage } = await import(
+          /* webpackMode: "eager" */ "../platform/storage"
+        );
+        await setPersistedStorageItem(
+          APP_SETTINGS_STORAGE_KEY,
+          writeArchiveDeletesOrphanedWorktree(
+            webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
+            DEFAULT_ARCHIVE_DELETES_ORPHANED_WORKTREE,
+          ),
+        );
+        setGeneralResetRevision((revision) => revision + 1);
+        return outcome;
+      });
       return;
     }
     if (section === "appearance") {
@@ -822,6 +842,7 @@ export function SettingsPage({
                     values={settings}
                     defaults={DEFAULT_SETTINGS_GENERAL_VALUES}
                     onChange={update}
+                    resetRevision={generalResetRevision}
                   />
                 ) : section === "profile" ? (
                   <SettingsProfilePanel />
