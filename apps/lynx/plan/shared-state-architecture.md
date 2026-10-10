@@ -1,6 +1,6 @@
 # Web / Lynx 共享架构：把共享边界下推到状态与会话层
 
-状态：v2.1（2026-10-09）。M0–M3a、M5（合上游）、M4 的请求路径收敛和 M6 收尾已合入默认分支；M3b（Thread 页读 `store`）在分支 `huxcc/m3b-thread-reads-store`。未做完的部分列在文末"尚未完成"。长期有效的原则与不变量见 [architecture-principles.md](../docs/architecture-principles.md)，本文保留过程、里程碑和指标记录。
+状态：v3.0（2026-10-09），第一轮完成。M0–M6 全部合入默认分支，包括 M3b（Thread 页读 `store`）和为恢复单元格矩阵做的上游界面移植；最后一次里程碑检查见"第一轮收尾"。没做的事列在文末"尚未完成"和 [第二轮清单](https://github.com/Huxpro/synara-lynxtron/issues/52)。长期有效的原则与不变量见 [architecture-principles.md](../docs/architecture-principles.md)，本文保留过程、里程碑和指标记录。
 
 ## 结论
 
@@ -124,10 +124,13 @@
 | M5 合上游后          |                    — |                      — |                     — |        — |                39 |       66 |      8 |         3,701 |
 | M4/M6 收尾后         |                    — |                      — |                     — |        — |                 0 |       30 |      1 |         3,659 |
 | M3b 之后             |                    — |                      — |                     — |        — |                 0 |       29 |      1 |         3,612 |
+| 第一轮收尾           |               39,865 |                 19,131 |               104,937 |    3,148 |                 0 |       20 |      1 |         3,581 |
 
 里程碑检查（M0–M3a 合入后，默认分支 `d576ba279`，2026-10-09）：单元格矩阵 4 种配置（深色、浅色 × 1280×820、1440×900）共 24 个基础格 + 28 个状态增量，全部通过；工作流 J3 12/12、J4 12/12、J5 8/8、J6 10/10（两端合计）。直接把默认分支合 `upstream/main` 的冲突文件数为 256；经由上游同步分支分两段合，第二段上次试合为 60。
 
 读法：
+
+- "第一轮收尾"一行的四个合并成本数是对当前的 `upstream/main`（`6f54f53c6`）重新量的，区间比前几行大（上游在这期间又前进了），所以只有"状态层另有实现"一列可以直接比较：它仍是 19,131 行，全部在 `ChatView.tsx`、`Sidebar.tsx` 和 `wsTransport.ts`。默认分支与 `upstream/main` 的差距为 0，试合没有冲突。
 
 - 基线里的"状态层另有实现"由 7 个文件构成：`ChatView.tsx` 11,709、`Sidebar.tsx` 5,693、`wsTransport.ts` 1,729、`__root.tsx` 1,670、`storeSelectors.ts` 448、`wsNativeApi.ts` 389、`store.ts` 93。
 - M1–M3a 之后，`__root.tsx`、`storeSelectors.ts`、`wsNativeApi.ts`、`store.ts` 的 2,600 行改为随合并自动到达（`__root.tsx` 通过生成器）。`wsTransport.ts` 仍需人工跟进，因为 Lynx 用的是同形的兼容类。
@@ -191,6 +194,44 @@ PR #37（Settings）、#40（Environment、Git、Explorer、dock）、#41（删�
 - **最近打开的线程靠上游的 retention 保留**（`retainThreadDetailSubscription`）。不保留的话路由一离开详情就被释放，回到刚看过的线程会先出现加载态；以前由 query 缓存兜住。
 - **行为变化**：流式增量按 `EventRouter` 的节奏到达（首个增量立即，其后每 100 ms），不再等 shell 事件加一次整线程请求；断线时已加载的内容保留、不显示错误；头部的项目名用 `store` 里的名字（本地改过名的显示本地名，与侧边栏一致）。
 
+### 第一轮收尾：恢复单元格矩阵（2026-10-09）
+
+合上游之后矩阵全红（基础格 0/24，状态增量 0/28），原因是上游重做了应用外壳。为了让门禁重新成立，矩阵覆盖的界面全部按上游移植：
+
+| PR  | 内容                                                                   |
+| --- | ---------------------------------------------------------------------- |
+| #45 | Lynx 单元测试全部通过，并成为 fork CI 的阻塞步骤（原先 25 个文件失败） |
+| #46 | M3b：Thread 页读 `store`；上游排队增量重复的缺陷在生成器里修           |
+| #47 | 应用外壳：图标栏、顶栏、面板列、线程标签页、图标化的头部按钮           |
+| #48 | provider 模型选择器、dock 头部、diff 工具栏                            |
+| #49 | Code review 页面（GitHub inbox）、Appearance 的主题包编辑器            |
+| #51 | diff 的 change markers 和上游的 diff 正文布局                          |
+| #53 | Lynx 专属的 About 对话框（Help 菜单），显示 Lynx 和 Lynxtron 标记      |
+
+背后功能没有移植的控件按占位处理：放在上游的位置、用上游的标签、点击后说明"Native 应用暂不支持"。占位算完成；逐项清单（含重要性和难度）在 [#52](https://github.com/Huxpro/synara-lynxtron/issues/52)。
+
+里程碑检查（默认分支 `4752b56bb`，2026-10-09）：
+
+| 项                      | 结果                                                                                                                                                                                        |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 基础格，4 种配置        | 24/24                                                                                                                                                                                       |
+| 状态增量，4 种配置      | 28/28。深色 1440×900 跑了三次：前两次各有一个格报 "The operation was aborted"（DevTool 连接中断，不是几何差异，两次是不同的格），第二次与另一个 agent 的 harness 重叠；机器空闲时第三次 7/7 |
+| Native 控制台错误       | 四种配置都是 0                                                                                                                                                                              |
+| J3、J4                  | 两端各 6/6                                                                                                                                                                                  |
+| J5                      | 两端各 4/4                                                                                                                                                                                  |
+| J6                      | 两端各 5/5                                                                                                                                                                                  |
+| J2                      | Native 三次都是 6/6。Electron 五次都在"输出流动时滚开"一步失败（三次"移动了 37px"，其余是时序类报错）；更早的检查里它通过过。未查明原因                                                     |
+| J1                      | 三次里两次在 Stop 一步失败，两端都有（#35）；第三次两端 6/6                                                                                                                                 |
+| Lynx rstest             | 1,514 通过，0 失败（#53 合并后的树）                                                                                                                                                        |
+| GitHub CI               | #45–#53 各 25/25；其中 #49、#51 各重跑一次，原因是同一个上游浏览器测试不稳定（#50）                                                                                                         |
+| fork 在上游文件里的差异 | 184 个文件 / 5,883 行 / 395 个 fork 文件，这一批移植没有增加                                                                                                                                |
+
+里程碑门禁是全矩阵和 J3–J6，都通过。J1 和 J2 不在门禁里，上面如实记录。
+
+过程中修掉的产品缺陷：流式文本在快照之后会重复（#46）；主题包编辑不重绘 CSS 变量驱动的界面，因为 Lynx 以前忽略内联自定义属性（#49）；后台存储写入失败会产生未处理的 promise rejection（#45）；分栏 diff 里两位数行号换行使行高翻倍（#51）。
+
+没有验证的：开启内联自定义属性后没有做颜色或像素回归；Code review 页面没有在有数据的情况下跑过（夹具没有 GitHub remote）；悬停、键盘和拖动类的物理输入。
+
 ### 尚未完成
 
 | 项                           | 状态                                                                                                                                    |
@@ -199,7 +240,7 @@ PR #37（Settings）、#40（Environment、Git、Explorer、dock）、#41（删�
 | M4 逐屏收敛                  | 请求路径已全部收敛。读取换成上游 query options 的屏：Settings、Environment/Git、Explorer、Composer 的 skills 和文件搜索；其余见下方清单 |
 | 删除 `synaraClient.lynx.ts`  | 完成。请求、终端事件和连接状态都走上游门面与兼容传输；棘轮 `synaraClientImporters` 为 0                                                 |
 | 缩小 fork 在上游文件里的差异 | 进行中：260 → 184 个文件。剩余按类别处理：其余 16 个平台端口文件、放在上游目录里的 395 个 fork 文件、`data-*` 钩子、被改写的共享逻辑    |
-| 移植上游的新界面             | 队列见合并报告，第 1 项是应用外壳                                                                                                       |
+| 移植上游的新界面             | 矩阵覆盖的界面已移植；占位和其余功能见合并报告的移植队列和 #52                                                                          |
 
 `synaraClient.lynx.ts` 删除之后还留在 Lynx 一侧的（都经门面发请求，只是还没用上游的 query options 和 key，属于 M4 后续各屏）：
 
@@ -212,4 +253,4 @@ PR #37（Settings）、#40（Environment、Git、Explorer、dock）、#41（删�
 - **没有门面方法的 RPC**：`orchestration.getSidebarSearchSnapshot` 是 fork 自己加的，直接走 `nativeRpcRequest`。`orchestration.getSidebarShellSnapshot` 已从契约和服务端删除（Lynx 改用上游的 `getShellSnapshot`）。
 - **宿主里的旧流路径**：`NATIVE_EVENT_STREAM_CHANNELS` 的终端和 shell 通道、不带 `streamId` 的 `synaraRpcStream` 已经没有渲染器调用方，可以删。
 
-未关闭的相关问题：#10（Lynx Rstest 套件）、#16（Stop 过早被丢）、#19 和 #20（Computer Use 验收发现的输入与界面问题）、#35（Stop 延迟）。
+未关闭的相关问题：#16（Stop 过早被丢）、#19 和 #20（Computer Use 验收发现的输入与界面问题）、#35（Stop 延迟）、#50（上游浏览器测试不稳定）、#52（第二轮清单）。#10（Lynx Rstest 套件）已关闭。
