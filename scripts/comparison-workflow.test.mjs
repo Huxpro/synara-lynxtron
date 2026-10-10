@@ -1,6 +1,14 @@
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import { describe, expect, it } from "vitest";
 
 import { nativeTargetMatches, sendWithReadRetry } from "./comparison-workflow.mjs";
+import { WORKFLOWS } from "./comparison-workflows.mjs";
+
+const repositoryRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
+const source = (path) => readFileSync(join(repositoryRoot, path), "utf8");
 
 const node = {
   attributes: [
@@ -73,5 +81,62 @@ describe("Native DevTool requests", () => {
       sendWithReadRetry(other.sendOnce, "DOM.getDocument", { delayMs: 0 }),
     ).rejects.toThrow("Session closed");
     expect(other.calls()).toBe(1);
+  });
+});
+
+describe("workflow table", () => {
+  it("lists every workflow the harness documents", () => {
+    expect(Object.keys(WORKFLOWS)).toEqual(["J1", "J2", "J3", "J4", "J5", "J6", "J7"]);
+    for (const workflow of Object.values(WORKFLOWS)) expect(workflow).toBeTypeOf("function");
+  });
+});
+
+// J7 addresses the handoff surfaces by upstream's own attributes on Electron and by the
+// Lynx renderer's classes on Native. A rename on either side must fail here, not as a
+// timeout in a live run.
+describe("J7 handoff targets", () => {
+  const workflows = source("scripts/comparison-workflows.mjs");
+
+  it("uses attributes upstream's handoff surfaces still carry", () => {
+    const header = source("apps/web/src/components/chat/ChatHeader.tsx");
+    expect(header).toContain('data-handoff-destination="this-thread"');
+    expect(header).toContain('data-handoff-destination="new-thread"');
+    expect(workflows).toContain('[data-handoff-destination="${destination}"]');
+    expect(source("apps/web/src/components/chat/ProviderHandoffDivider.tsx")).toContain(
+      'data-provider-handoff-divider="true"',
+    );
+    const tabs = source("apps/web/src/components/chat/ComposerModelPickerTabs.tsx");
+    expect(tabs).toContain('role={props.tab === false ? undefined : "tab"}');
+    expect(tabs).toContain("aria-label={props.label}");
+    expect(source("apps/web/src/components/chat/ComposerModelPickerRow.tsx")).toContain(
+      'aria-current={row.selected ? "true" : undefined}',
+    );
+  });
+
+  it("uses classes and labels the Lynx handoff surfaces still carry", () => {
+    const header = source("apps/lynx/src/app/ThreadHeaderActions.lynx.tsx");
+    for (const destination of ["this-thread", "new-thread"]) {
+      expect(header).toContain(`ThreadHeaderHandoffGroup--${destination}`);
+    }
+    expect(header).toContain('ariaLabel="Hand off thread"');
+    const divider = source("apps/lynx/src/app/ProviderHandoffDivider.lynx.tsx");
+    expect(divider).toContain('<view className="ProviderHandoffDivider">');
+    expect(divider).toContain('"Context handoff"');
+    expect(source("apps/lynx/src/components/composer/ComposerModelPicker.lynx.tsx")).toContain(
+      "ComposerModelPickerRowLynx--selected",
+    );
+  });
+
+  it("checks the handoff against the backend the way upstream defines it", () => {
+    // Same thread, the server's outcome row, the carried context, and the new-thread import.
+    for (const fact of [
+      'activity.kind === "provider.handoff"',
+      "payload.contextText",
+      "settled.handoff?.sourceThreadId !== thread.threadId",
+      "sent.id !== thread.threadId",
+      "entry.handoff?.sourceThreadId === thread.threadId",
+    ]) {
+      expect(workflows).toContain(fact);
+    }
   });
 });
