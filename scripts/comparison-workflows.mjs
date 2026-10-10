@@ -170,9 +170,14 @@ const FIXTURE_TRANSCRIPT_THREAD_ID = "comparison-fixture-transcript-v2";
 
 async function openNewThread(driver) {
   await driver.tap({ label: `Create new thread in ${FIXTURE_PROJECT_TITLE}` });
-  await waitFor(() => driver.find(pick(driver, COMPOSER_TARGET)), {
-    label: "the new thread composer",
-  });
+  // The thread being left has a composer too. Wait for an empty transcript as well, or the
+  // first prompt is typed into the old thread before the route has changed.
+  await waitFor(
+    async () =>
+      (await driver.find(pick(driver, COMPOSER_TARGET))) &&
+      (await renderedMessageIds(driver)).length === 0,
+    { label: "the new thread composer on an empty transcript" },
+  );
 }
 
 /** Sends `text` and resolves with the thread once the new turn has settled as completed. */
