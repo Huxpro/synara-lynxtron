@@ -899,11 +899,12 @@
   padding-right: 8px;
 }
 
-/* Upstream's Chats header label is `text-muted-foreground/80` (measured on Electron). */
+/* Upstream's Chats header label: `text-ui font-normal`, `text-muted-foreground/80` as
+   measured on Electron. */
 .SharedSidebarChatsLabel {
   color: color-mix(in srgb, var(--muted-foreground) 80%, transparent);
-  font-size: var(--app-font-size-ui-sm, 12px);
-  font-weight: 500;
+  font-size: var(--app-font-size-ui, 13px);
+  font-weight: 400;
 }
 
 .SharedSidebarChatsChevron {

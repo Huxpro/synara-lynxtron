@@ -115,7 +115,7 @@ Row heights at 1280×820, dark, default chat font size (Electron / Native before
 | Assistant: inline markdown, lists, quote, alert, math |    842.5 |    829 |   831 | −11.5: display and inline math are source text (−10.9); the rest is −0.7                                  |
 | User: multi-line with markdown and pasted link        |      188 |    187 |   188 | Matches; the bubble is 46px wider (the link chip shows the whole address)                                 |
 | Assistant: table, code blocks, file chips, image      |   1362.6 |   1229 |  1233 | −129.6: image placeholder (−116), no horizontal scrollbar under the long line (−10), line rounding (−2.7) |
-| User: `@` mentions                                    |     84.1 |     84 |    84 | Matches; chip labels are 11px instead of 13px                                                             |
+| User: `@` mentions                                    |     84.1 |     84 |    84 | Matches                                                                                                   |
 | Assistant: collapsed work, text, changed-files card   |    320.1 |    323 |   322 | Matches (+1.9)                                                                                            |
 | User: file and image attachment                       |    186.1 |    186 |   186 | Matches in size; the image thumbnail shows the file icon                                                  |
 | Assistant: one paragraph                              |     59.1 |     59 |    59 | Matches                                                                                                   |
@@ -138,10 +138,9 @@ What differed on Native only, and where it is handled:
 
 Shared defects found on the way (also wrong on Lynx for Web): long sidebar thread titles wrapped onto the next row (now one line), and work entries inside a message row had 6px above and below (upstream has `mb-1.5` before the text and `mt-1.5` after it).
 
+Closed since (2026-10-10): mention and file chips take the text's size (`1em`; Native does not take `inherit` there), nested list markers are drawn as shapes, and a thread waiting on an approval shows upstream's "Pending" word and 6px state dot.
+
 Still open on Native:
 
 - Streaming message (−2.2): upstream's code block keeps its 10.4px bottom margin as the last child of `.chat-markdown` (its rule comes after `> :last-child`), and its footer without actions is 17.9px; Lynx drops the margin and keeps the footer at 24px.
-- Mention and file chips ignore `font-size: inherit` and stay at the base token's 11px.
 - The user image thumbnail falls back to the file icon.
-- The sidebar row of a thread with a pending approval has no "Pending" label.
-- Nested list markers: the hollow circle and the square are drawn as a small dot and a faint box.

@@ -159,8 +159,29 @@ describe("Lynx markdown file reference token", () => {
     );
     expect(markdown).not.toContain("MdInlineToken--file");
     expect(styles).toMatch(
-      /\.MdInlineToken--mention,[^{]*\{[^}]*border-width:\s*0;[^}]*color:\s*var\(--info-foreground\);[^}]*font-size:\s*inherit;/s,
+      /\.MdInlineToken--mention,[^{]*\{[^}]*border-width:\s*0;[^}]*color:\s*var\(--info-foreground\);[^}]*font-size:\s*1em;/s,
     );
+  });
+
+  it("draws nested unordered markers as shapes and sizes file chips from their text", () => {
+    const styles = readFileSync(new URL("./markdown.css", import.meta.url), "utf8");
+    const markdown = readFileSync(new URL("./ChatMarkdown.lynx.tsx", import.meta.url), "utf8");
+    // `list-style-type: circle` and `square`: Native's glyphs for them are a dot and a faint box.
+    expect(markdown).toContain('marker === "◦" || marker === "▪"');
+    expect(markdown).toContain(
+      '`MdListBullet MdListBullet--${marker === "◦" ? "circle" : "square"}`',
+    );
+    expect(styles).toMatch(
+      /\.MdListBullet--circle\s*\{[^}]*border:\s*1px solid var\(--foreground\);[^}]*border-radius:\s*2\.5px;/s,
+    );
+    expect(styles).toMatch(
+      /\.MdListBullet--square\s*\{[^}]*background-color:\s*var\(--foreground\);/s,
+    );
+    expect(styles).toMatch(/\.MdListBullet\s*\{[^}]*width:\s*4px;[^}]*height:\s*4px;/s);
+    // Mention and file chips take the surrounding text's size; `inherit` left them at 11px.
+    const chip = /\.MdInlineToken--mention,[^{]*\{([^}]*)\}/s.exec(styles)?.[1] ?? "";
+    expect(chip).toMatch(/font-size:\s*1em;/);
+    expect(chip).not.toMatch(/font-size:\s*inherit/);
   });
 
   it("applies resolved block spacing instead of stylesheet margins", () => {

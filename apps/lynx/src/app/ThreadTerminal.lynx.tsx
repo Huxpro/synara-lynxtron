@@ -971,6 +971,10 @@ export function ThreadTerminal({
       >
         <scroll-view
           className="ThreadTerminalOutputScroller"
+          // The screen is only as tall as its output, so the tap that focuses the input is
+          // taken here: it covers the scroller's padding and the empty area below the last
+          // line, and a tap on the screen bubbles to it.
+          bindtap={focusTerminalInput}
           scroll-orientation="vertical"
           scroll-y={true}
           scroll-event-throttle={24}
@@ -1008,7 +1012,6 @@ export function ThreadTerminal({
           <view
             className="ThreadTerminalScreen"
             bindmousedown={focusTerminalInput}
-            bindtap={focusTerminalInput}
             style={{ minHeight: cursorGeometry.screenMinHeight }}
           >
             {searchOpen && projectedLines.length > 0 ? (

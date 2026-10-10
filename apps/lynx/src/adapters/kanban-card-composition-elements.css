@@ -140,6 +140,11 @@
   opacity: 0.7;
 }
 
+/* Upstream KanbanCardColumnLabel: `text-muted-foreground/80`, a step above the meta line. */
+.SharedKanbanCardColumnLabel {
+  opacity: 0.8;
+}
+
 .SharedKanbanCardMetaText {
   max-width: 128px;
   margin-right: 8px;
