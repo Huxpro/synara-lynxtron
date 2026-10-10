@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-10T13:38:54.723Z",
+  "generatedAt": "2026-10-10T15:16:31.519Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -12,7 +12,7 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxGraph": {
     "entries": ["src/app/index.tsx"],
-    "modules": 936,
+    "modules": 937,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/checkbox",
@@ -303,8 +303,8 @@
       ],
       "lynxConceptualEntries": ["src/app/router.tsx", "src/components/sidebar/Sidebar.lynx.tsx"],
       "graph": {
-        "modules": 596,
-        "loc": 137824,
+        "modules": 597,
+        "loc": 137935,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -442,8 +442,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 533,
-          "loc": 127422
+          "modules": 534,
+          "loc": 127516
         },
         "PATCHED": {
           "modules": 1,
@@ -451,23 +451,23 @@
         },
         "SPLIT": {
           "modules": 46,
-          "loc": 7379
+          "loc": 7384
         },
         "EXCLUSIVE": {
           "modules": 16,
-          "loc": 2722
+          "loc": 2734
         }
       },
       "eligible": {
-        "modules": 580,
-        "loc": 135102
+        "modules": 581,
+        "loc": 135201
       },
       "currentReuse": {
-        "modules": 303,
-        "loc": 79724,
-        "modulePercent": 52.24,
-        "locPercent": 59.01,
-        "gatePercent": 52.24
+        "modules": 304,
+        "loc": 79768,
+        "modulePercent": 52.32,
+        "locPercent": 59,
+        "gatePercent": 52.32
       },
       "modules": [
         {
@@ -797,7 +797,7 @@
         },
         {
           "path": "apps/web/src/components/BranchToolbar.logic.ts",
-          "loc": 196,
+          "loc": 200,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -1476,7 +1476,7 @@
         },
         {
           "path": "apps/web/src/components/ChatMarkdown.tsx",
-          "loc": 1460,
+          "loc": 1465,
           "classification": "SPLIT",
           "reason": "same feature contract with Lynx list/markdown renderer island",
           "currentReuse": "SHARED",
@@ -1514,6 +1514,7 @@
             "apps/web/src/lib/remarkHtmlBreaks.ts",
             "apps/web/src/lib/remarkWikiLinks.ts",
             "apps/web/src/lib/syntaxHighlighting.ts",
+            "apps/web/src/lib/syntaxHighlightingLimits.ts",
             "apps/web/src/lib/terminalContext.ts",
             "apps/web/src/lib/workspaceFileOpener.ts",
             "apps/web/src/markdown-links.ts"
@@ -2596,7 +2597,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarActivityView.logic.ts",
-          "loc": 419,
+          "loc": 438,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -2604,7 +2605,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarActivityView.tsx",
-          "loc": 1013,
+          "loc": 1068,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -3112,7 +3113,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntime.ts",
-          "loc": 1255,
+          "loc": 1260,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -3132,7 +3133,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntimeAppearance.ts",
-          "loc": 288,
+          "loc": 295,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -5792,8 +5793,17 @@
           "dependencies": [
             "apps/web/src/file-icons.ts",
             "apps/web/src/lib/diffRendering.ts",
-            "apps/web/src/lib/lruCache.ts"
+            "apps/web/src/lib/lruCache.ts",
+            "apps/web/src/lib/syntaxHighlightingLimits.ts"
           ]
+        },
+        {
+          "path": "apps/web/src/lib/syntaxHighlightingLimits.ts",
+          "loc": 1,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
         },
         {
           "path": "apps/web/src/lib/tabStrip.ts",
@@ -7168,7 +7178,7 @@
         },
         {
           "path": "apps/web/src/storeNormalization.ts",
-          "loc": 2138,
+          "loc": 2145,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -7393,7 +7403,7 @@
         },
         {
           "path": "apps/web/src/types.ts",
-          "loc": 346,
+          "loc": 347,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -7474,7 +7484,7 @@
         },
         {
           "path": "apps/web/src/workLog.ts",
-          "loc": 3257,
+          "loc": 3264,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -7557,8 +7567,8 @@
       "webEntries": ["apps/web/src/components/Sidebar.tsx"],
       "lynxConceptualEntries": ["src/components/sidebar/Sidebar.lynx.tsx"],
       "graph": {
-        "modules": 473,
-        "loc": 118443,
+        "modules": 474,
+        "loc": 118554,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -7692,8 +7702,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 419,
-          "loc": 108922
+          "modules": 420,
+          "loc": 109016
         },
         "PATCHED": {
           "modules": 1,
@@ -7701,23 +7711,23 @@
         },
         "SPLIT": {
           "modules": 44,
-          "loc": 7355
+          "loc": 7360
         },
         "EXCLUSIVE": {
           "modules": 9,
-          "loc": 1865
+          "loc": 1877
         }
       },
       "eligible": {
-        "modules": 464,
-        "loc": 116578
+        "modules": 465,
+        "loc": 116677
       },
       "currentReuse": {
-        "modules": 274,
-        "loc": 72725,
-        "modulePercent": 59.05,
-        "locPercent": 62.38,
-        "gatePercent": 59.05
+        "modules": 275,
+        "loc": 72769,
+        "modulePercent": 59.14,
+        "locPercent": 62.37,
+        "gatePercent": 59.14
       },
       "modules": [
         {
@@ -7915,7 +7925,7 @@
         },
         {
           "path": "apps/web/src/components/BranchToolbar.logic.ts",
-          "loc": 196,
+          "loc": 200,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -8545,7 +8555,7 @@
         },
         {
           "path": "apps/web/src/components/ChatMarkdown.tsx",
-          "loc": 1460,
+          "loc": 1465,
           "classification": "SPLIT",
           "reason": "same feature contract with Lynx list/markdown renderer island",
           "currentReuse": "SHARED",
@@ -8583,6 +8593,7 @@
             "apps/web/src/lib/remarkHtmlBreaks.ts",
             "apps/web/src/lib/remarkWikiLinks.ts",
             "apps/web/src/lib/syntaxHighlighting.ts",
+            "apps/web/src/lib/syntaxHighlightingLimits.ts",
             "apps/web/src/lib/terminalContext.ts",
             "apps/web/src/lib/workspaceFileOpener.ts",
             "apps/web/src/markdown-links.ts"
@@ -9454,7 +9465,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarActivityView.logic.ts",
-          "loc": 419,
+          "loc": 438,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -9462,7 +9473,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarActivityView.tsx",
-          "loc": 1013,
+          "loc": 1068,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -9939,7 +9950,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntime.ts",
-          "loc": 1255,
+          "loc": 1260,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -9959,7 +9970,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntimeAppearance.ts",
-          "loc": 288,
+          "loc": 295,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -12162,8 +12173,17 @@
           "dependencies": [
             "apps/web/src/file-icons.ts",
             "apps/web/src/lib/diffRendering.ts",
-            "apps/web/src/lib/lruCache.ts"
+            "apps/web/src/lib/lruCache.ts",
+            "apps/web/src/lib/syntaxHighlightingLimits.ts"
           ]
+        },
+        {
+          "path": "apps/web/src/lib/syntaxHighlightingLimits.ts",
+          "loc": 1,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
         },
         {
           "path": "apps/web/src/lib/tabStrip.ts",
@@ -12868,7 +12888,7 @@
         },
         {
           "path": "apps/web/src/storeNormalization.ts",
-          "loc": 2138,
+          "loc": 2145,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -13061,7 +13081,7 @@
         },
         {
           "path": "apps/web/src/types.ts",
-          "loc": 346,
+          "loc": 347,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -13115,7 +13135,7 @@
         },
         {
           "path": "apps/web/src/workLog.ts",
-          "loc": 3257,
+          "loc": 3264,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -13202,8 +13222,8 @@
       ],
       "lynxConceptualEntries": ["src/app/Transcript.tsx", "src/components/composer/Composer.tsx"],
       "graph": {
-        "modules": 1037,
-        "loc": 234260,
+        "modules": 1038,
+        "loc": 234437,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -13374,8 +13394,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 959,
-          "loc": 217913
+          "modules": 960,
+          "loc": 218073
         },
         "PATCHED": {
           "modules": 1,
@@ -13383,23 +13403,23 @@
         },
         "SPLIT": {
           "modules": 51,
-          "loc": 8074
+          "loc": 8079
         },
         "EXCLUSIVE": {
           "modules": 26,
-          "loc": 7972
+          "loc": 7984
         }
       },
       "eligible": {
-        "modules": 1011,
-        "loc": 226288
+        "modules": 1012,
+        "loc": 226453
       },
       "currentReuse": {
-        "modules": 354,
-        "loc": 87488,
-        "modulePercent": 35.01,
-        "locPercent": 38.66,
-        "gatePercent": 35.01
+        "modules": 355,
+        "loc": 87532,
+        "modulePercent": 35.08,
+        "locPercent": 38.65,
+        "gatePercent": 35.08
       },
       "modules": [
         {
@@ -13757,7 +13777,7 @@
         },
         {
           "path": "apps/web/src/components/BranchToolbar.logic.ts",
-          "loc": 196,
+          "loc": 200,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -13765,7 +13785,7 @@
         },
         {
           "path": "apps/web/src/components/BranchToolbar.tsx",
-          "loc": 553,
+          "loc": 560,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -13799,7 +13819,7 @@
         },
         {
           "path": "apps/web/src/components/BranchToolbarBranchSelector.tsx",
-          "loc": 1087,
+          "loc": 1095,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -17639,7 +17659,7 @@
         },
         {
           "path": "apps/web/src/components/chat/useChatRuntimeModes.ts",
-          "loc": 263,
+          "loc": 270,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -17684,7 +17704,7 @@
         },
         {
           "path": "apps/web/src/components/chat/useChatTranscriptScroll.ts",
-          "loc": 555,
+          "loc": 563,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -18204,7 +18224,7 @@
         },
         {
           "path": "apps/web/src/components/ChatMarkdown.tsx",
-          "loc": 1460,
+          "loc": 1465,
           "classification": "SPLIT",
           "reason": "same feature contract with Lynx list/markdown renderer island",
           "currentReuse": "SHARED",
@@ -18242,6 +18262,7 @@
             "apps/web/src/lib/remarkHtmlBreaks.ts",
             "apps/web/src/lib/remarkWikiLinks.ts",
             "apps/web/src/lib/syntaxHighlighting.ts",
+            "apps/web/src/lib/syntaxHighlightingLimits.ts",
             "apps/web/src/lib/terminalContext.ts",
             "apps/web/src/lib/workspaceFileOpener.ts",
             "apps/web/src/markdown-links.ts"
@@ -18297,7 +18318,7 @@
         },
         {
           "path": "apps/web/src/components/ChatView.tsx",
-          "loc": 6900,
+          "loc": 6936,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -20821,7 +20842,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarActivityView.logic.ts",
-          "loc": 419,
+          "loc": 438,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -20829,7 +20850,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarActivityView.tsx",
-          "loc": 1013,
+          "loc": 1068,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -21355,7 +21376,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntime.ts",
-          "loc": 1255,
+          "loc": 1260,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -21375,7 +21396,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntimeAppearance.ts",
-          "loc": 288,
+          "loc": 295,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -25015,8 +25036,17 @@
           "dependencies": [
             "apps/web/src/file-icons.ts",
             "apps/web/src/lib/diffRendering.ts",
-            "apps/web/src/lib/lruCache.ts"
+            "apps/web/src/lib/lruCache.ts",
+            "apps/web/src/lib/syntaxHighlightingLimits.ts"
           ]
+        },
+        {
+          "path": "apps/web/src/lib/syntaxHighlightingLimits.ts",
+          "loc": 1,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
         },
         {
           "path": "apps/web/src/lib/tabStrip.ts",
@@ -26510,7 +26540,7 @@
         },
         {
           "path": "apps/web/src/storeNormalization.ts",
-          "loc": 2138,
+          "loc": 2145,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -26759,7 +26789,7 @@
         },
         {
           "path": "apps/web/src/types.ts",
-          "loc": 346,
+          "loc": 347,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -26848,7 +26878,7 @@
         },
         {
           "path": "apps/web/src/workLog.ts",
-          "loc": 3257,
+          "loc": 3264,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -26935,8 +26965,8 @@
       ],
       "lynxConceptualEntries": ["src/app/SettingsPage.tsx"],
       "graph": {
-        "modules": 645,
-        "loc": 151768,
+        "modules": 646,
+        "loc": 151883,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -27078,8 +27108,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 581,
-          "loc": 141335
+          "modules": 582,
+          "loc": 141433
         },
         "PATCHED": {
           "modules": 1,
@@ -27087,23 +27117,23 @@
         },
         "SPLIT": {
           "modules": 47,
-          "loc": 7410
+          "loc": 7415
         },
         "EXCLUSIVE": {
           "modules": 16,
-          "loc": 2722
+          "loc": 2734
         }
       },
       "eligible": {
-        "modules": 629,
-        "loc": 149046
+        "modules": 630,
+        "loc": 149149
       },
       "currentReuse": {
-        "modules": 305,
-        "loc": 79992,
-        "modulePercent": 48.49,
-        "locPercent": 53.67,
-        "gatePercent": 48.49
+        "modules": 306,
+        "loc": 80036,
+        "modulePercent": 48.57,
+        "locPercent": 53.66,
+        "gatePercent": 48.57
       },
       "modules": [
         {
@@ -27446,7 +27476,7 @@
         },
         {
           "path": "apps/web/src/components/BranchToolbar.logic.ts",
-          "loc": 196,
+          "loc": 200,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -28125,7 +28155,7 @@
         },
         {
           "path": "apps/web/src/components/ChatMarkdown.tsx",
-          "loc": 1460,
+          "loc": 1465,
           "classification": "SPLIT",
           "reason": "same feature contract with Lynx list/markdown renderer island",
           "currentReuse": "SHARED",
@@ -28163,6 +28193,7 @@
             "apps/web/src/lib/remarkHtmlBreaks.ts",
             "apps/web/src/lib/remarkWikiLinks.ts",
             "apps/web/src/lib/syntaxHighlighting.ts",
+            "apps/web/src/lib/syntaxHighlightingLimits.ts",
             "apps/web/src/lib/terminalContext.ts",
             "apps/web/src/lib/workspaceFileOpener.ts",
             "apps/web/src/markdown-links.ts"
@@ -29849,7 +29880,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarActivityView.logic.ts",
-          "loc": 419,
+          "loc": 438,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -29857,7 +29888,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarActivityView.tsx",
-          "loc": 1013,
+          "loc": 1068,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -30354,7 +30385,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntime.ts",
-          "loc": 1255,
+          "loc": 1260,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -30374,7 +30405,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntimeAppearance.ts",
-          "loc": 288,
+          "loc": 295,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -32769,7 +32800,7 @@
         },
         {
           "path": "apps/web/src/lib/providerSetupStatus.ts",
-          "loc": 67,
+          "loc": 71,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -33153,8 +33184,17 @@
           "dependencies": [
             "apps/web/src/file-icons.ts",
             "apps/web/src/lib/diffRendering.ts",
-            "apps/web/src/lib/lruCache.ts"
+            "apps/web/src/lib/lruCache.ts",
+            "apps/web/src/lib/syntaxHighlightingLimits.ts"
           ]
+        },
+        {
+          "path": "apps/web/src/lib/syntaxHighlightingLimits.ts",
+          "loc": 1,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
         },
         {
           "path": "apps/web/src/lib/tabStrip.ts",
@@ -34555,7 +34595,7 @@
         },
         {
           "path": "apps/web/src/storeNormalization.ts",
-          "loc": 2138,
+          "loc": 2145,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -34780,7 +34820,7 @@
         },
         {
           "path": "apps/web/src/types.ts",
-          "loc": 346,
+          "loc": 347,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -34861,7 +34901,7 @@
         },
         {
           "path": "apps/web/src/workLog.ts",
-          "loc": 3257,
+          "loc": 3264,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -34948,8 +34988,8 @@
       ],
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
-        "modules": 668,
-        "loc": 153521,
+        "modules": 669,
+        "loc": 153647,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -35099,8 +35139,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 601,
-          "loc": 140699
+          "modules": 602,
+          "loc": 140808
         },
         "PATCHED": {
           "modules": 1,
@@ -35108,23 +35148,23 @@
         },
         "SPLIT": {
           "modules": 48,
-          "loc": 7790
+          "loc": 7795
         },
         "EXCLUSIVE": {
           "modules": 18,
-          "loc": 4731
+          "loc": 4743
         }
       },
       "eligible": {
-        "modules": 650,
-        "loc": 148790
+        "modules": 651,
+        "loc": 148904
       },
       "currentReuse": {
-        "modules": 319,
-        "loc": 82153,
-        "modulePercent": 49.08,
-        "locPercent": 55.21,
-        "gatePercent": 49.08
+        "modules": 320,
+        "loc": 82197,
+        "modulePercent": 49.16,
+        "locPercent": 55.2,
+        "gatePercent": 49.16
       },
       "modules": [
         {
@@ -35443,7 +35483,7 @@
         },
         {
           "path": "apps/web/src/components/BranchToolbar.logic.ts",
-          "loc": 196,
+          "loc": 200,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -35451,7 +35491,7 @@
         },
         {
           "path": "apps/web/src/components/BranchToolbar.tsx",
-          "loc": 553,
+          "loc": 560,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -35485,7 +35525,7 @@
         },
         {
           "path": "apps/web/src/components/BranchToolbarBranchSelector.tsx",
-          "loc": 1087,
+          "loc": 1095,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -36547,7 +36587,7 @@
         },
         {
           "path": "apps/web/src/components/ChatMarkdown.tsx",
-          "loc": 1460,
+          "loc": 1465,
           "classification": "SPLIT",
           "reason": "same feature contract with Lynx list/markdown renderer island",
           "currentReuse": "SHARED",
@@ -36585,6 +36625,7 @@
             "apps/web/src/lib/remarkHtmlBreaks.ts",
             "apps/web/src/lib/remarkWikiLinks.ts",
             "apps/web/src/lib/syntaxHighlighting.ts",
+            "apps/web/src/lib/syntaxHighlightingLimits.ts",
             "apps/web/src/lib/terminalContext.ts",
             "apps/web/src/lib/workspaceFileOpener.ts",
             "apps/web/src/markdown-links.ts"
@@ -38093,7 +38134,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarActivityView.logic.ts",
-          "loc": 419,
+          "loc": 438,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -38101,7 +38142,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarActivityView.tsx",
-          "loc": 1013,
+          "loc": 1068,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -38624,7 +38665,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntime.ts",
-          "loc": 1255,
+          "loc": 1260,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -38644,7 +38685,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntimeAppearance.ts",
-          "loc": 288,
+          "loc": 295,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -41498,8 +41539,17 @@
           "dependencies": [
             "apps/web/src/file-icons.ts",
             "apps/web/src/lib/diffRendering.ts",
-            "apps/web/src/lib/lruCache.ts"
+            "apps/web/src/lib/lruCache.ts",
+            "apps/web/src/lib/syntaxHighlightingLimits.ts"
           ]
+        },
+        {
+          "path": "apps/web/src/lib/syntaxHighlightingLimits.ts",
+          "loc": 1,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
         },
         {
           "path": "apps/web/src/lib/tabStrip.ts",
@@ -42874,7 +42924,7 @@
         },
         {
           "path": "apps/web/src/storeNormalization.ts",
-          "loc": 2138,
+          "loc": 2145,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -43107,7 +43157,7 @@
         },
         {
           "path": "apps/web/src/types.ts",
-          "loc": 346,
+          "loc": 347,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -43188,7 +43238,7 @@
         },
         {
           "path": "apps/web/src/workLog.ts",
-          "loc": 3257,
+          "loc": 3264,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -43275,8 +43325,8 @@
       ],
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
-        "modules": 668,
-        "loc": 153522,
+        "modules": 669,
+        "loc": 153648,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -43426,8 +43476,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 601,
-          "loc": 140700
+          "modules": 602,
+          "loc": 140809
         },
         "PATCHED": {
           "modules": 1,
@@ -43435,23 +43485,23 @@
         },
         "SPLIT": {
           "modules": 48,
-          "loc": 7790
+          "loc": 7795
         },
         "EXCLUSIVE": {
           "modules": 18,
-          "loc": 4731
+          "loc": 4743
         }
       },
       "eligible": {
-        "modules": 650,
-        "loc": 148791
+        "modules": 651,
+        "loc": 148905
       },
       "currentReuse": {
-        "modules": 319,
-        "loc": 82153,
-        "modulePercent": 49.08,
-        "locPercent": 55.21,
-        "gatePercent": 49.08
+        "modules": 320,
+        "loc": 82197,
+        "modulePercent": 49.16,
+        "locPercent": 55.2,
+        "gatePercent": 49.16
       },
       "modules": [
         {
@@ -43770,7 +43820,7 @@
         },
         {
           "path": "apps/web/src/components/BranchToolbar.logic.ts",
-          "loc": 196,
+          "loc": 200,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -43778,7 +43828,7 @@
         },
         {
           "path": "apps/web/src/components/BranchToolbar.tsx",
-          "loc": 553,
+          "loc": 560,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -43812,7 +43862,7 @@
         },
         {
           "path": "apps/web/src/components/BranchToolbarBranchSelector.tsx",
-          "loc": 1087,
+          "loc": 1095,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -44874,7 +44924,7 @@
         },
         {
           "path": "apps/web/src/components/ChatMarkdown.tsx",
-          "loc": 1460,
+          "loc": 1465,
           "classification": "SPLIT",
           "reason": "same feature contract with Lynx list/markdown renderer island",
           "currentReuse": "SHARED",
@@ -44912,6 +44962,7 @@
             "apps/web/src/lib/remarkHtmlBreaks.ts",
             "apps/web/src/lib/remarkWikiLinks.ts",
             "apps/web/src/lib/syntaxHighlighting.ts",
+            "apps/web/src/lib/syntaxHighlightingLimits.ts",
             "apps/web/src/lib/terminalContext.ts",
             "apps/web/src/lib/workspaceFileOpener.ts",
             "apps/web/src/markdown-links.ts"
@@ -46420,7 +46471,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarActivityView.logic.ts",
-          "loc": 419,
+          "loc": 438,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -46428,7 +46479,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarActivityView.tsx",
-          "loc": 1013,
+          "loc": 1068,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -46951,7 +47002,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntime.ts",
-          "loc": 1255,
+          "loc": 1260,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -46971,7 +47022,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntimeAppearance.ts",
-          "loc": 288,
+          "loc": 295,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -49825,8 +49876,17 @@
           "dependencies": [
             "apps/web/src/file-icons.ts",
             "apps/web/src/lib/diffRendering.ts",
-            "apps/web/src/lib/lruCache.ts"
+            "apps/web/src/lib/lruCache.ts",
+            "apps/web/src/lib/syntaxHighlightingLimits.ts"
           ]
+        },
+        {
+          "path": "apps/web/src/lib/syntaxHighlightingLimits.ts",
+          "loc": 1,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
         },
         {
           "path": "apps/web/src/lib/tabStrip.ts",
@@ -51201,7 +51261,7 @@
         },
         {
           "path": "apps/web/src/storeNormalization.ts",
-          "loc": 2138,
+          "loc": 2145,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -51434,7 +51494,7 @@
         },
         {
           "path": "apps/web/src/types.ts",
-          "loc": 346,
+          "loc": 347,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -51515,7 +51575,7 @@
         },
         {
           "path": "apps/web/src/workLog.ts",
-          "loc": 3257,
+          "loc": 3264,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -51602,8 +51662,8 @@
       ],
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
-        "modules": 1007,
-        "loc": 228985,
+        "modules": 1008,
+        "loc": 229162,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -51773,8 +51833,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 929,
-          "loc": 212638
+          "modules": 930,
+          "loc": 212798
         },
         "PATCHED": {
           "modules": 1,
@@ -51782,23 +51842,23 @@
         },
         "SPLIT": {
           "modules": 51,
-          "loc": 8074
+          "loc": 8079
         },
         "EXCLUSIVE": {
           "modules": 26,
-          "loc": 7972
+          "loc": 7984
         }
       },
       "eligible": {
-        "modules": 981,
-        "loc": 221013
+        "modules": 982,
+        "loc": 221178
       },
       "currentReuse": {
-        "modules": 355,
-        "loc": 87934,
-        "modulePercent": 36.19,
-        "locPercent": 39.79,
-        "gatePercent": 36.19
+        "modules": 356,
+        "loc": 87978,
+        "modulePercent": 36.25,
+        "locPercent": 39.78,
+        "gatePercent": 36.25
       },
       "modules": [
         {
@@ -52145,7 +52205,7 @@
         },
         {
           "path": "apps/web/src/components/BranchToolbar.logic.ts",
-          "loc": 196,
+          "loc": 200,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -52153,7 +52213,7 @@
         },
         {
           "path": "apps/web/src/components/BranchToolbar.tsx",
-          "loc": 553,
+          "loc": 560,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -52187,7 +52247,7 @@
         },
         {
           "path": "apps/web/src/components/BranchToolbarBranchSelector.tsx",
-          "loc": 1087,
+          "loc": 1095,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -55751,7 +55811,7 @@
         },
         {
           "path": "apps/web/src/components/chat/useChatRuntimeModes.ts",
-          "loc": 263,
+          "loc": 270,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -55796,7 +55856,7 @@
         },
         {
           "path": "apps/web/src/components/chat/useChatTranscriptScroll.ts",
-          "loc": 555,
+          "loc": 563,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -56244,7 +56304,7 @@
         },
         {
           "path": "apps/web/src/components/ChatMarkdown.tsx",
-          "loc": 1460,
+          "loc": 1465,
           "classification": "SPLIT",
           "reason": "same feature contract with Lynx list/markdown renderer island",
           "currentReuse": "SHARED",
@@ -56282,6 +56342,7 @@
             "apps/web/src/lib/remarkHtmlBreaks.ts",
             "apps/web/src/lib/remarkWikiLinks.ts",
             "apps/web/src/lib/syntaxHighlighting.ts",
+            "apps/web/src/lib/syntaxHighlightingLimits.ts",
             "apps/web/src/lib/terminalContext.ts",
             "apps/web/src/lib/workspaceFileOpener.ts",
             "apps/web/src/markdown-links.ts"
@@ -56337,7 +56398,7 @@
         },
         {
           "path": "apps/web/src/components/ChatView.tsx",
-          "loc": 6900,
+          "loc": 6936,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -58942,7 +59003,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarActivityView.logic.ts",
-          "loc": 419,
+          "loc": 438,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -58950,7 +59011,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarActivityView.tsx",
-          "loc": 1013,
+          "loc": 1068,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -59476,7 +59537,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntime.ts",
-          "loc": 1255,
+          "loc": 1260,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -59496,7 +59557,7 @@
         },
         {
           "path": "apps/web/src/components/terminal/terminalRuntimeAppearance.ts",
-          "loc": 288,
+          "loc": 295,
           "classification": "EXCLUSIVE",
           "reason": "xterm/canvas terminal hard island",
           "currentReuse": "UNMAPPED",
@@ -63024,8 +63085,17 @@
           "dependencies": [
             "apps/web/src/file-icons.ts",
             "apps/web/src/lib/diffRendering.ts",
-            "apps/web/src/lib/lruCache.ts"
+            "apps/web/src/lib/lruCache.ts",
+            "apps/web/src/lib/syntaxHighlightingLimits.ts"
           ]
+        },
+        {
+          "path": "apps/web/src/lib/syntaxHighlightingLimits.ts",
+          "loc": 1,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": []
         },
         {
           "path": "apps/web/src/lib/tabStrip.ts",
@@ -64506,7 +64576,7 @@
         },
         {
           "path": "apps/web/src/storeNormalization.ts",
-          "loc": 2138,
+          "loc": 2145,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -64755,7 +64825,7 @@
         },
         {
           "path": "apps/web/src/types.ts",
-          "loc": 346,
+          "loc": 347,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -64844,7 +64914,7 @@
         },
         {
           "path": "apps/web/src/workLog.ts",
-          "loc": 3257,
+          "loc": 3264,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
