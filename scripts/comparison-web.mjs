@@ -35,6 +35,12 @@ import {
   readComparisonFixtureManifest,
   resolveComparisonFixturePaths,
 } from "./comparison-fixture.mjs";
+import {
+  comparisonThemeIsApplied,
+  comparisonThemeStorageValue,
+  DEFAULT_COMPARISON_THEME_PACK,
+  parseComparisonThemePack,
+} from "./comparison-theme.mjs";
 import { isTransientCdpContextError } from "./comparison-run.mjs";
 import {
   LYNX_WEB_PAGE_PATH,
@@ -69,6 +75,8 @@ export const LYNX_WEB_STORAGE_PREFIX = "synara.lynx.";
 
 export const DEFAULT_WEB_COMPARISON_OPTIONS = Object.freeze({
   theme: "dark",
+  // See comparison-theme.mjs: "codex" is the bare mode string, "default" the Synara pack.
+  themePack: DEFAULT_COMPARISON_THEME_PACK,
   width: 1280,
   height: 820,
   matrix: false,
@@ -112,6 +120,9 @@ export function parseWebComparisonArgs(argv, environment = process.env) {
       const theme = value(index, argument);
       if (theme !== "dark" && theme !== "light") throw new Error("--theme requires dark or light.");
       options.theme = theme;
+      index += 1;
+    } else if (argument === "--theme-pack") {
+      options.themePack = parseComparisonThemePack(value(index, argument));
       index += 1;
     } else if (argument === "--width" || argument === "--height" || argument === "--port-offset") {
       const key = argument === "--port-offset" ? "portOffset" : argument.slice(2);
@@ -609,7 +620,7 @@ export async function startWebComparison(options, configuration, log = console.l
     await evaluateThroughReload(
       web,
       comparisonRendererResetExpression(
-        configuration.theme,
+        comparisonThemeStorageValue(configuration.theme, options.themePack),
         "acknowledged",
         null,
         threadId,
@@ -627,7 +638,10 @@ export async function startWebComparison(options, configuration, log = console.l
     started.sessions.push(lynx);
     const lynxUrl = `${origin}${LYNX_WEB_PAGE_PATH}?route=${encodeURIComponent(route)}`;
     await lynx.send("Page.addScriptToEvaluateOnNewDocument", {
-      source: lynxWebStateSeedExpression(rendererState, configuration.theme),
+      source: lynxWebStateSeedExpression(
+        rendererState,
+        comparisonThemeStorageValue(configuration.theme, options.themePack),
+      ),
     });
     await lynx.send("Page.navigate", { url: lynxUrl });
     await pollPage(
@@ -681,7 +695,10 @@ export async function startWebComparison(options, configuration, log = console.l
         `localStorage.getItem(${JSON.stringify(`${LYNX_WEB_STORAGE_PREFIX}synara:theme`)})`,
       ),
     };
-    if (themes.web !== configuration.theme || themes.lynx !== configuration.theme) {
+    if (
+      !comparisonThemeIsApplied(themes.web, configuration.theme, options.themePack) ||
+      !comparisonThemeIsApplied(themes.lynx, configuration.theme, options.themePack)
+    ) {
       throw new Error(`Theme not applied: ${JSON.stringify(themes)}.`);
     }
     const settled = comparisonFixtureMismatches(manifest, await entities());

@@ -144,6 +144,8 @@ describe("Electron and Lynxtron comparison launcher", () => {
         "9003",
         "--theme",
         "system",
+        "--theme-pack",
+        "default",
         "--system-appearance-sequence",
         "light,dark,light",
         "--system-appearance-interval-ms",
@@ -174,6 +176,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
       electronCdpPort: 9002,
       lynxDevtoolPort: 9003,
       theme: "system",
+      themePack: "default",
       systemAppearanceSequence: "light,dark,light",
       systemAppearanceIntervalMs: 250,
       terminal: "open",
@@ -195,6 +198,9 @@ describe("Electron and Lynxtron comparison launcher", () => {
     );
     expect(() => parseDesktopComparisonArgs(["--theme", "sepia"])).toThrow(
       "--theme requires light, dark, or system.",
+    );
+    expect(() => parseDesktopComparisonArgs(["--theme-pack", "solarized"])).toThrow(
+      "--theme-pack requires codex or default.",
     );
     expect(() => parseDesktopComparisonArgs(["--terminal", "maybe"])).toThrow(
       "--terminal requires open or closed.",

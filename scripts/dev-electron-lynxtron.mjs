@@ -11,6 +11,11 @@ import {
 } from "node:fs";
 import { createConnection } from "node:net";
 import { dirname, join, resolve } from "node:path";
+import {
+  comparisonThemeStorageValue,
+  DEFAULT_COMPARISON_THEME_PACK,
+  parseComparisonThemePack,
+} from "./comparison-theme.mjs";
 import { fileURLToPath } from "node:url";
 
 import {
@@ -80,6 +85,9 @@ export const DEFAULT_DESKTOP_COMPARISON_OPTIONS = Object.freeze({
   electronCdpPort: 9223,
   lynxDevtoolPort: 8902,
   theme: "dark",
+  // "codex": the bare mode string the harness always stored (upstream reads it as the
+  // Codex pack). "default": upstream's DEFAULT_THEME_STATE, the Synara pack.
+  themePack: DEFAULT_COMPARISON_THEME_PACK,
   systemAppearanceSequence: null,
   systemAppearanceIntervalMs: null,
   terminal: "closed",
@@ -159,6 +167,8 @@ export function parseDesktopComparisonArgs(argv) {
         throw new Error("--theme requires light, dark, or system.");
       }
       options.theme = value;
+    } else if (argument === "--theme-pack") {
+      options.themePack = parseComparisonThemePack(value);
     } else if (argument === "--system-appearance-sequence") {
       const steps = value.split(",").map((entry) => entry.trim().toLowerCase());
       if (steps.length < 2 || steps.some((entry) => entry !== "light" && entry !== "dark")) {
@@ -1660,7 +1670,7 @@ async function configureElectronRenderer(
     // The reset reloads the page synchronously at its end; it must not await.
     await cdp.evaluate(
       comparisonRendererResetExpression(
-        options.theme,
+        comparisonThemeStorageValue(options.theme, options.themePack),
         options.appSnap,
         options.chatFontSize,
         comparisonElectronAnchorThreadId(options),
@@ -2110,7 +2120,11 @@ async function main() {
       run.activity,
     );
     run.electron = { anchor: electronResult.anchor, cdpPort: options.electronCdpPort };
-    writeComparisonRendererState(paths, electronResult.rendererState, options.theme);
+    writeComparisonRendererState(
+      paths,
+      electronResult.rendererState,
+      comparisonThemeStorageValue(options.theme, options.themePack),
+    );
     recordPhase(run, "electron-certified");
 
     commands.lynx.env.SYNARA_WS_URL = socketUrl.toString();
