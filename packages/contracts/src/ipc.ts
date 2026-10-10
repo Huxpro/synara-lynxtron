@@ -27,6 +27,7 @@ import type {
   ExternalMcpCreateIntegrationResult,
   ExternalMcpIntegration,
   ExternalMcpRefreshPairingInput,
+  ExternalMcpUpdateIntegrationInput,
   ExternalMcpRevokeIntegrationInput,
 } from "./externalMcp";
 import type {
@@ -1307,6 +1308,9 @@ export interface NativeApi {
     createExternalMcpIntegration: (
       input: ExternalMcpCreateIntegrationInput,
     ) => Promise<ExternalMcpCreateIntegrationResult>;
+    updateExternalMcpIntegration: (
+      input: ExternalMcpUpdateIntegrationInput,
+    ) => Promise<ExternalMcpIntegration>;
     revokeExternalMcpIntegration: (
       input: ExternalMcpRevokeIntegrationInput,
     ) => Promise<{ revoked: boolean }>;
