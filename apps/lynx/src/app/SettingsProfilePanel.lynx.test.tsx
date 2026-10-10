@@ -297,7 +297,7 @@ describe("Settings Profile fidelity", () => {
       /\.SliceRoot--viewport-lg-up \.SettingsProfileStat\s*\{[^}]*width:\s*20%;/s,
     );
     expect(styles).toMatch(
-      /\.SettingsProfileStatValue,\s*\.SettingsProfileStatLabel\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s,
+      /\.SettingsProfileStatValue,\s*\.SettingsProfileStatLabel\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*line-height:\s*20px;/s,
     );
     expect(styles).toMatch(
       /\.SettingsProfileHeatmap\s*\{[^}]*height:\s*136\.5px;[^}]*gap:\s*3px;/s,
@@ -308,7 +308,7 @@ describe("Settings Profile fidelity", () => {
     expect(styles).toMatch(/\.SettingsProfileHeatmapCell\s*\{[^}]*border-radius:\s*5px;/s);
     expect(styles).toMatch(/\.SettingsProfileHeatmapMonths\s*\{[^}]*height:\s*10px;/s);
     expect(styles).toMatch(
-      /\.SettingsProfileHeatmapMonth\s*\{[^}]*font-size:\s*10px;[^}]*line-height:\s*10px;/s,
+      /\.SettingsProfileHeatmapMonth\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-2xs, 10px\);[^}]*line-height:\s*10px;/s,
     );
     expect(styles).toMatch(
       /\.SettingsProfileHeatmapCell--pad\s*\{[^}]*background-color:\s*transparent;[^}]*opacity:\s*1;/s,

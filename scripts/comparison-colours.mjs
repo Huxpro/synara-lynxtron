@@ -849,9 +849,9 @@ export function translucentDistance(left, right) {
 
 /**
  * Compares what each renderer resolves the theme's colour variables to. Native:
- * the root view's inline map (upstream's variables, applied since
- * `enableCSSInlineVariables`), and for names it leaves to the stylesheet, the
- * generated colour-mix token. Electron: the same name or recipe resolved by the
+ * the root view's inline map (upstream's variables and the colour-mix recipes
+ * evaluated against the active pack), and for a name the map does not carry, the
+ * generated stylesheet's value. Electron: the same name or recipe resolved by the
  * browser on the document root.
  */
 export function compareTokens(nativeInline, colourMix, electronResolved) {
@@ -873,13 +873,21 @@ export function compareTokens(nativeInline, colourMix, electronResolved) {
     });
   };
   for (const [name, value] of Object.entries(nativeInline)) {
+    // A projected colour-mix token exists only on Native; it is compared by recipe below.
+    if (name.startsWith("--color-mix-")) continue;
     add("inline", name, value, electronResolved.names[name]);
   }
   for (const token of colourMix) {
     if (token.name.startsWith("--color-mix-")) {
-      add("colour-mix", token.name, token.value, electronResolved.expressions[token.expression], {
-        expression: token.expression,
-      });
+      // The value Native applies: the root inline map evaluates each recipe against the
+      // active pack and overrides the stylesheet's default-pack value.
+      add(
+        "colour-mix",
+        token.name,
+        nativeInline[token.name] ?? token.value,
+        electronResolved.expressions[token.expression],
+        { expression: token.expression },
+      );
     } else if (!(token.name in nativeInline)) {
       add("stylesheet", token.name, token.value, electronResolved.names[token.name], {
         expression: token.expression,

@@ -1,82 +1,41 @@
-// Build-time projection of CSS `color-mix()` for Lynx.
+// Build-time projection of CSS `color-mix()` for Lynx (Node only).
 //
-// Lynx does not implement color-mix(): with var() arguments it computes to
-// transparent, with literals the declaration is dropped. Native CSS keeps the
-// exact recipes Electron uses (so reviews compare like with like); this module
-// evaluates each distinct expression per theme — resolving var() against the
-// Native theme exactly as the browser would — and the PostCSS plugin in
-// postcss.config.mjs swaps every occurrence for its generated token.
+// Lynx does not implement color-mix(). This module finds every expression in the
+// Native stylesheets, names each one (the token name is a hash, hence
+// `node:crypto`), evaluates it per theme against the default theme pack with the
+// shared evaluator in color-mix-eval.logic.mjs, and emits:
+//   - the generated stylesheet the PostCSS plugin in postcss.config.mjs projects
+//     onto (first paint and the default pack);
+//   - the runtime manifest the app evaluates against the active theme pack, so the
+//     derived colours follow a theme-pack edit.
 import { createHash } from "node:crypto";
 
-import { formatRgba, oklabToSrgb255, parseCssColor, srgb255ToOklab } from "./css-color.logic.mjs";
+import {
+  evaluateColorMixRecipes,
+  extractColorMixExpressions,
+  normalizeColorMix,
+  referencedCustomProperties,
+  resolveColor,
+} from "./color-mix-eval.logic.mjs";
+import { formatRgba, parseCssColor } from "./css-color.logic.mjs";
+
+export {
+  evaluateColorMixRecipes,
+  extractColorMixExpressions,
+  mixColors,
+  normalizeColorMix,
+  parseColorMix,
+  resolveColor,
+} from "./color-mix-eval.logic.mjs";
 
 export const COLOR_MIX_THEMES = Object.freeze({
   light: ".SliceRoot--theme-light",
   dark: ".SliceRoot--theme-dark",
 });
 
-/** Every balanced `color-mix(…)` substring in `text`, outermost only. */
-export function extractColorMixExpressions(text) {
-  const expressions = [];
-  let index = 0;
-  for (;;) {
-    const start = text.indexOf("color-mix(", index);
-    if (start < 0) return expressions;
-    let depth = 0;
-    let end = start + "color-mix(".length;
-    for (; end < text.length; end += 1) {
-      if (text[end] === "(") depth += 1;
-      else if (text[end] === ")") {
-        if (depth === 0) break;
-        depth -= 1;
-      }
-    }
-    expressions.push(text.slice(start, end + 1));
-    index = end + 1;
-  }
-}
-
-export function normalizeColorMix(expression) {
-  return expression.replace(/\s+/g, " ").replace(/\(\s+/g, "(").replace(/\s+\)/g, ")").trim();
-}
-
 export function colorMixTokenName(expression) {
   const digest = createHash("sha1").update(normalizeColorMix(expression)).digest("hex");
   return `--color-mix-${digest.slice(0, 10)}`;
-}
-
-function splitTopLevel(text, separator = ",") {
-  const parts = [];
-  let depth = 0;
-  let current = "";
-  for (const char of text) {
-    if (char === "(") depth += 1;
-    if (char === ")") depth -= 1;
-    if (char === separator && depth === 0) {
-      parts.push(current.trim());
-      current = "";
-    } else current += char;
-  }
-  if (current.trim()) parts.push(current.trim());
-  return parts;
-}
-
-function parseStop(stop) {
-  const tokens = splitTopLevel(stop, " ");
-  const percentIndex = tokens.findIndex((token) => /^-?[\d.]+%$/.test(token));
-  if (percentIndex < 0) return { color: stop.trim(), percent: null };
-  const percent = Number.parseFloat(tokens[percentIndex]);
-  tokens.splice(percentIndex, 1);
-  return { color: tokens.join(" "), percent };
-}
-
-export function parseColorMix(expression) {
-  const normalized = normalizeColorMix(expression);
-  const inner = normalized.slice("color-mix(".length, -1);
-  const [method, first, second, ...rest] = splitTopLevel(inner);
-  const space = /^in\s+(\w+)/.exec(method ?? "")?.[1];
-  if (!space || !first || !second || rest.length > 0) return null;
-  return { space, stops: [parseStop(first), parseStop(second)] };
 }
 
 /** A block body without its nested blocks (e.g. Tailwind `@variant dark { … }`). */
@@ -180,61 +139,17 @@ export function readColorMixDefinitions(css) {
 }
 
 /**
- * CSS Color 5 color-mix(): normalize percentages, interpolate premultiplied
- * components in the named space, scale alpha when percentages sum below 100%.
- */
-export function mixColors(space, first, firstPercent, second, secondPercent) {
-  let p1 = firstPercent;
-  let p2 = secondPercent;
-  if (p1 === null && p2 === null) p1 = p2 = 50;
-  else if (p1 === null) p1 = 100 - p2;
-  else if (p2 === null) p2 = 100 - p1;
-  const sum = p1 + p2;
-  if (sum <= 0) return null;
-  const alphaMultiplier = sum < 100 ? sum / 100 : 1;
-  const w1 = p1 / sum;
-  const w2 = p2 / sum;
-  const toSpace = (color) =>
-    space === "oklab" ? srgb255ToOklab(color.r, color.g, color.b) : [color.r, color.g, color.b];
-  const c1 = toSpace(first);
-  const c2 = toSpace(second);
-  const alpha = first.a * w1 + second.a * w2;
-  if (alpha === 0) return { r: 0, g: 0, b: 0, a: 0 };
-  const mixed = c1.map(
-    (value, index) => (value * first.a * w1 + c2[index] * second.a * w2) / alpha,
-  );
-  const [r, g, b] = space === "oklab" ? oklabToSrgb255(...mixed) : mixed;
-  return { r, g, b, a: alpha * alphaMultiplier };
-}
-
-/** Resolves a color value against a custom-property map; null if unresolvable. */
-export function resolveColor(value, properties, depth = 0) {
-  if (depth > 16) return null;
-  const text = value.trim();
-  const variable = /^var\(\s*(--[\w-]+)\s*(?:,\s*(.+))?\)$/.exec(text);
-  if (variable) {
-    const declared = properties[variable[1]];
-    if (declared !== undefined) return resolveColor(declared, properties, depth + 1);
-    return variable[2] === undefined ? null : resolveColor(variable[2], properties, depth + 1);
-  }
-  if (text.startsWith("color-mix(")) {
-    const parsed = parseColorMix(text);
-    if (!parsed || !["srgb", "oklab"].includes(parsed.space)) return null;
-    const [first, second] = parsed.stops.map((stop) =>
-      resolveColor(stop.color, properties, depth + 1),
-    );
-    if (!first || !second) return null;
-    return mixColors(parsed.space, first, parsed.stops[0].percent, second, parsed.stops[1].percent);
-  }
-  return parseCssColor(text, { quantizeLegacyAlpha: true });
-}
-
-/**
  * Builds the generated token stylesheet. `baseCss` supplies `:root` custom
  * properties (shared tokens and palette); `themeCss` supplies the per-theme
  * blocks that override them.
  */
-export function buildColorMixCss({ sources, themeCss, baseCss, themePath = null }) {
+export function buildColorMixCss({
+  sources,
+  themeCss,
+  baseCss,
+  paletteCss = "",
+  themePath = null,
+}) {
   const occurrences = new Map();
   for (const source of sources) {
     for (const expression of extractColorMixExpressions(source.text)) {
@@ -245,7 +160,7 @@ export function buildColorMixCss({ sources, themeCss, baseCss, themePath = null 
       occurrences.set(normalized, entry);
     }
   }
-  const base = readCustomProperties(baseCss, ":root");
+  const base = widenPaletteToSource(readCustomProperties(baseCss, ":root"), paletteCss);
   const themes = Object.fromEntries(
     Object.entries(COLOR_MIX_THEMES).map(([theme, selector]) => [
       theme,
@@ -341,12 +256,85 @@ export function buildColorMixCss({ sources, themeCss, baseCss, themePath = null 
     }
     lines.push("}");
   }
+  // The runtime manifest: the same recipes, the properties they read that the app does
+  // not compute (the base palette and the theme-block entries the generator adds), and
+  // the default-pack values so the default pack costs no evaluation at run time.
+  const themeOwn = Object.fromEntries(
+    Object.entries(COLOR_MIX_THEMES).map(([theme, selector]) => [
+      theme,
+      readCustomProperties(themeCss, selector),
+    ]),
+  );
+  const named = Object.fromEntries(
+    Object.keys(COLOR_MIX_THEMES).map((theme) => [
+      theme,
+      Object.fromEntries(
+        namedFor(theme).map((definition) => [definition.name, definition.expression]),
+      ),
+    ]),
+  );
+  const needed = new Set();
+  const visit = (value) => {
+    for (const name of referencedCustomProperties(value)) {
+      if (needed.has(name)) continue;
+      needed.add(name);
+      for (const properties of [base, ...Object.values(themeOwn)]) {
+        if (properties[name] !== undefined) visit(properties[name]);
+      }
+    }
+  };
+  for (const token of tokens) visit(token.expression);
+  const pick = (properties) =>
+    Object.fromEntries(
+      Object.entries(properties)
+        .filter(([name]) => needed.has(name))
+        .sort(([a], [b]) => a.localeCompare(b)),
+    );
+  const tokenRecipes = Object.fromEntries(tokens.map((token) => [token.name, token.expression]));
+  const runtime = {
+    tokens: tokenRecipes,
+    named,
+    properties: {
+      base: pick(base),
+      ...Object.fromEntries(
+        Object.keys(COLOR_MIX_THEMES).map((theme) => [theme, pick(themeOwn[theme])]),
+      ),
+    },
+    defaults: Object.fromEntries(
+      Object.keys(COLOR_MIX_THEMES).map((theme) => [
+        theme,
+        evaluateColorMixRecipes(
+          [...Object.entries(named[theme]), ...Object.entries(tokenRecipes)],
+          themes[theme],
+        ),
+      ]),
+    ),
+  };
   return {
     css: `${lines.join("\n")}\n`,
     tokens,
     unresolved,
     namedDefinitions: [...namedDefinitionNames].sort(),
+    runtime,
   };
+}
+
+/**
+ * Lynx cannot parse oklch(), so the base palette is restated in sRGB hex, which clips a
+ * Tailwind v4 colour that lies outside sRGB. Chromium mixes the colour as specified and
+ * clips only when it paints. Where `paletteCss` (Tailwind's theme.css) declares the same
+ * name and that colour clips to the restated hex, mix with the source colour instead.
+ */
+export function widenPaletteToSource(base, paletteCss) {
+  const widened = { ...base };
+  for (const [, name, source] of paletteCss.matchAll(
+    /(--color-[\w-]+):\s*(okl(?:ch|ab)\([^)]*\))/g,
+  )) {
+    const restated = base[name] === undefined ? null : parseCssColor(base[name]);
+    const clipped = parseCssColor(source);
+    if (restated && clipped && formatRgba(restated) === formatRgba(clipped)) widened[name] = source;
+  }
+  return widened;
 }
 
 /** Token names present in a generated stylesheet (the plugin's allow-list). */

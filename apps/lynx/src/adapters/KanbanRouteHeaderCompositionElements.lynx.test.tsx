@@ -31,10 +31,10 @@ describe("Kanban route header fidelity", () => {
       /\.SharedKanbanRouteHeaderRow\s*\{[^}]*height:\s*44px;[^}]*gap:\s*8px;/s,
     );
     expect(styles).toMatch(
-      /\.SharedKanbanRouteTitle\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;[^}]*font-weight:\s*500;/s,
+      /\.SharedKanbanRouteTitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*line-height:\s*20px;[^}]*font-weight:\s*500;/s,
     );
     expect(styles).toMatch(
-      /\.SharedKanbanRouteCount\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s,
+      /\.SharedKanbanRouteCount\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;/s,
     );
     expect(styles).toMatch(
       /\.SharedKanbanRouteNewTask\s*\{[^}]*gap:\s*6px;[^}]*padding:\s*0 10px;/s,

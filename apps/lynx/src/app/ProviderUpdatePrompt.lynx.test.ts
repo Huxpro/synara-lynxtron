@@ -45,7 +45,7 @@ describe("Lynx provider update prompt copy", () => {
       /\.ProviderUpdatePrompt\s*\{[^}]*width:\s*100%;[^}]*min-height:\s*122px;[^}]*border-radius:\s*18px;/s,
     );
     expect(styles).toMatch(
-      /\.ProviderUpdatePromptTitle\s*\{[^}]*font-size:\s*14px;[^}]*font-weight:\s*400;[^}]*line-height:\s*20px;/s,
+      /\.ProviderUpdatePromptTitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*font-weight:\s*400;[^}]*line-height:\s*20px;/s,
     );
     expect(styles).toMatch(/\.ProviderUpdatePromptContent\s*\{[^}]*height:\s*96px;/s);
     expect(styles).toMatch(/\.ProviderUpdatePromptCopy\s*\{[^}]*height:\s*62px;[^}]*gap:\s*2px;/s);

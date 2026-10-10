@@ -65,7 +65,7 @@
 .FeedbackCategoryChipMark,
 .FeedbackCategoryChipLabel {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
 }
 
@@ -84,13 +84,13 @@
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-ui-family);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
 .FeedbackPrivacyNote,
 .FeedbackDialogError {
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 

@@ -41,7 +41,7 @@
 
 .SharedSettingsSidebarBackLabel {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 400;
   line-height: 18px;
 }
@@ -83,7 +83,7 @@
   border-radius: 10px;
   background-color: var(--settings-search-surface);
   color: var(--foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
 }
 
 .SharedSettingsSidebarSearchInput > .LxInput {
@@ -118,7 +118,7 @@
 
 .SharedSettingsSidebarSearchUnavailableText {
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 16px;
 }
 

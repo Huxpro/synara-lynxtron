@@ -37,7 +37,7 @@ import { bridgeCall, onGlobalEvent } from "../platform/bridge";
 import { setLynxReducedMotion } from "../platform/motion.lynx";
 
 import { sliceUiDensityClassName } from "./appDensity.logic";
-import { sliceTypographyClassName } from "./appTypography.logic";
+import { resolveSliceTypographyVariables, sliceTypographyClassName } from "./appTypography.logic";
 import { readPersistedAppearanceFallback } from "./appHydration.logic";
 import { resolveSliceThemeVariables, sliceThemeClassName } from "./appTheme.logic";
 import { queryClient } from "./queries";
@@ -190,6 +190,17 @@ export function App() {
     () => resolveSliceThemeVariables(themeState, systemDark),
     [systemDark, themeState],
   );
+  const typographyVariables = useMemo(
+    () => resolveSliceTypographyVariables(appearance.chatFontSizePx, appearance.terminalFontSizePx),
+    [appearance.chatFontSizePx, appearance.terminalFontSizePx],
+  );
+  // One inline map on the root view: theme colours (and the colour mixes derived from
+  // them) plus the typography scale. Every custom property the stylesheets read from the
+  // root is concrete here; the generated stylesheets hold the same names as the fallback.
+  const rootVariables = useMemo(
+    () => ({ ...themeVariables, ...typographyVariables }),
+    [themeVariables, typographyVariables],
+  );
 
   useEffect(() => {
     "background only";
@@ -280,7 +291,7 @@ export function App() {
           .join(" ")}
         data-viewport-width={viewportLayout.width}
         data-viewport-height={viewportLayout.height}
-        style={themeVariables}
+        style={rootVariables}
       >
         {storageReady ? <SessionSync /> : null}
         <MenuOverlayProvider>

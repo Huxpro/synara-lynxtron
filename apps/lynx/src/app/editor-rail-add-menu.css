@@ -30,7 +30,7 @@
   flex-grow: 0;
   flex-shrink: 0;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
   text-align: left;
 }

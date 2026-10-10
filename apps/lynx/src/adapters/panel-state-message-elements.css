@@ -25,11 +25,11 @@
 
 .SharedPanelStateMessageText {
   color: var(--color-text-status-neutral);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 20px;
 }
 
 .SharedPanelStateMessage--compact .SharedPanelStateMessageText {
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }

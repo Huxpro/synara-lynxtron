@@ -71,22 +71,22 @@ describe("Pull Request Code disclosure fidelity", () => {
       /\.SliceRoot--theme-dark \.SharedPrCodeFileHeader\s*\{[^}]*background-color:\s*rgba\(252,\s*252,\s*252,\s*0\.0021\);/s,
     );
     expect(lynxStyles).toMatch(
-      /\.SharedPrCodeStatsText,[^{]*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s,
+      /\.SharedPrCodeStatsText,[^{]*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;/s,
     );
     expect(lynxStyles).toMatch(
-      /\.SharedPrCodeNotice\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s,
+      /\.SharedPrCodeNotice\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;/s,
     );
     expect(lynxStyles).toMatch(
-      /\.SliceRoot--viewport-short-height[\s\S]*?\.ThreadPage[\s\S]*?> \.DiffDock[\s\S]*?\.SharedPrCodeNotice\s*\{[^}]*font-size:\s*10px;[^}]*line-height:\s*12px;/s,
+      /\.SliceRoot--viewport-short-height[\s\S]*?\.ThreadPage[\s\S]*?> \.DiffDock[\s\S]*?\.SharedPrCodeNotice\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-2xs, 10px\);[^}]*line-height:\s*12px;/s,
     );
     expect(lynxStyles).toMatch(
-      /\.SharedPrCodeFilePath\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s,
+      /\.SharedPrCodeFilePath\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;/s,
     );
     expect(lynxStyles).toMatch(
-      /\.SharedPrCodeFilePrevious\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s,
+      /\.SharedPrCodeFilePrevious\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;/s,
     );
     expect(lynxStyles).toMatch(
-      /\.SharedPrCodeMoreText\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s,
+      /\.SharedPrCodeMoreText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;/s,
     );
     expect(lynxStyles).toMatch(
       /\.SharedPrCodeLine--addition\s*\{[^}]*background-color:\s*rgba\(0,\s*162,\s*64,\s*0\.01\);[^}]*background-color:\s*color-mix\(in srgb, var\(--background\) 92%, var\(--success\)\);/s,

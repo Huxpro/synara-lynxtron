@@ -105,7 +105,7 @@ describe("Native expanded image overlay fidelity", () => {
       /\.ComposerExpandedImageNavigate\s*\{[^}]*width:\s*36px;[^}]*height:\s*36px;/s,
     );
     expect(styles).toMatch(
-      /\.ComposerExpandedImageName\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;[^}]*text-align:\s*center;/s,
+      /\.ComposerExpandedImageName\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;[^}]*text-align:\s*center;/s,
     );
   });
 });

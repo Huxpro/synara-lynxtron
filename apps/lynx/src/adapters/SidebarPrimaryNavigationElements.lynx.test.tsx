@@ -49,7 +49,7 @@ describe("sidebar primary navigation shortcut", () => {
     expect(sidebarStyles).not.toMatch(/\.AppSidebarPrimaryNav\s*\{[^}]*margin-bottom:/s);
     expect(sidebarStyles).toMatch(/\.SharedSidebarProjectsRoot,[^{]*\{[^}]*padding:\s*6px;/s);
     expect(sidebarStyles).toMatch(
-      /\.SharedSidebarProjectsState\s*\{[^}]*padding:\s*16px 8px 0;[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s,
+      /\.SharedSidebarProjectsState\s*\{[^}]*padding:\s*16px 8px 0;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
     );
     expect(sidebarStyles).toMatch(/\.SharedSidebarChatsRoot\s*\{[^}]*padding:\s*4px 6px 8px;/s);
     expect(sidebarStyles).toMatch(
@@ -75,7 +75,7 @@ describe("sidebar primary navigation shortcut", () => {
     expect(sidebarStyles).toMatch(/\.AppSidebar\s*\{[^}]*padding:\s*6px 0 8px;/s);
     expect(sidebarStyles).not.toMatch(/\.AppSidebar\s*\{[^}]*box-shadow:/s);
     expect(sidebarStyles).toMatch(
-      /\.AppSidebarShortcutKey\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*4px;[^}]*background-color:\s*var\(--muted\);[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;[^}]*font-weight:\s*500;/s,
+      /\.AppSidebarShortcutKey\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*4px;[^}]*background-color:\s*var\(--muted\);[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;[^}]*font-weight:\s*500;/s,
     );
     expect(primaryActionStyles).toMatch(
       /\.SharedSidebarPrimaryActionButton\.ui-focus\s*\{[^}]*outline:\s*none;[^}]*box-shadow:\s*inset 0 0 0 1px var\(--ring\);/s,

@@ -83,7 +83,7 @@ describe("Settings Advanced fidelity", () => {
       /\.SettingsAdvancedMetadata\s*\{[^}]*gap:\s*4px;[^}]*padding-top:\s*4px;/s,
     );
     expect(styles).toMatch(
-      /\.SettingsAdvancedMetadataText\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s,
+      /\.SettingsAdvancedMetadataText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*16\.5px;/s,
     );
     expect(styles).toMatch(
       /\.SettingsAdvancedAction\s*\{[^}]*min-height:\s*24px;[^}]*padding:\s*0 7px;/s,
@@ -104,7 +104,7 @@ describe("Settings Advanced fidelity", () => {
       /\.SettingsAdvancedRecoveryDetails\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*10px;/s,
     );
     expect(styles).toMatch(
-      /\.SettingsAdvancedRecoveryDetailsText\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s,
+      /\.SettingsAdvancedRecoveryDetailsText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;/s,
     );
     expect(styles).toMatch(
       /\.SettingsAdvancedRow--version\s*\{[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s,

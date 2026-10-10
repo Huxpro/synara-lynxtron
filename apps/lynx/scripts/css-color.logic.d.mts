@@ -9,8 +9,10 @@ export interface RgbaColor {
 
 export function srgb255ToOklab(r: number, g: number, b: number): [number, number, number];
 export function oklabToSrgb255(l: number, a: number, b: number): [number, number, number];
+export function extendedSrgb255ToOklab(r: number, g: number, b: number): [number, number, number];
+export function oklabToExtendedSrgb255(l: number, a: number, b: number): [number, number, number];
 export function parseCssColor(
   value: unknown,
-  options?: { readonly quantizeLegacyAlpha?: boolean },
+  options?: { readonly quantizeLegacyAlpha?: boolean; readonly clipToGamut?: boolean },
 ): RgbaColor | null;
 export function formatRgba(color: RgbaColor): string;

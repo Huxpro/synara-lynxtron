@@ -10,8 +10,9 @@ import {
   mixColors,
   readCustomProperties,
   resolveColor,
+  widenPaletteToSource,
 } from "../../scripts/color-mix.logic.mjs";
-import { parseCssColor } from "../../scripts/css-color.logic.mjs";
+import { formatRgba, parseCssColor } from "../../scripts/css-color.logic.mjs";
 import { collectColorMixInputs } from "../../scripts/generate-color-mix-tokens.mjs";
 
 const read = (relative: string) => readFileSync(new URL(relative, import.meta.url), "utf8");
@@ -40,6 +41,43 @@ describe("Native color-mix projection", () => {
     const explorer = mixColors("oklab", border, 65, transparent, null)!;
     expect(explorer.a).toBeCloseTo(0.0458824, 6);
     expect(Math.round(explorer.r)).toBe(252);
+  });
+
+  it("mixes a colour outside sRGB unclipped, as Chromium does, and clips the result", () => {
+    // Painted by Chromium (canvas, sRGB): Tailwind v4 green-500, orange-500 and
+    // yellow-400 at 72 / 72 / 80% with white.
+    const palette = {
+      "--green": "oklch(72.3% 0.219 149.579)",
+      "--orange": "oklch(70.5% 0.213 47.604)",
+      "--yellow": "oklch(85.2% 0.199 91.936)",
+    };
+    const mix = (expression: string) => formatRgba(resolveColor(expression, palette)!);
+    expect(mix("color-mix(in srgb, var(--green) 72%, #ffffff)")).toBe("rgba(36, 216, 129, 1)");
+    expect(mix("color-mix(in srgb, var(--orange) 72%, #ffffff)")).toBe("rgba(255, 147, 41, 1)");
+    expect(mix("color-mix(in srgb, var(--yellow) 80%, #ffffff)")).toBe("rgba(254, 211, 0, 1)");
+    // Clipping first (the sRGB hex Lynx is given) is 35 levels off in red.
+    expect(formatRgba(resolveColor("color-mix(in srgb, #00c950 72%, #ffffff)", {})!)).toBe(
+      "rgba(71, 216, 129, 1)",
+    );
+    // Parsing alone still clips unless asked not to.
+    expect(parseCssColor(palette["--green"])!.r).toBe(0);
+    expect(parseCssColor(palette["--green"], { clipToGamut: false })!.r).toBeLessThan(0);
+  });
+
+  it("mixes with the palette's source colour only where the restated hex is that colour", () => {
+    const paletteCss =
+      "@theme default { --color-green-500: oklch(72.3% 0.219 149.579); --color-red-500: oklch(63.7% 0.237 25.331); }";
+    expect(
+      widenPaletteToSource(
+        { "--color-green-500": "#00c950", "--color-red-500": "#ef4444", "--other": "#123456" },
+        paletteCss,
+      ),
+    ).toEqual({
+      "--color-green-500": "oklch(72.3% 0.219 149.579)",
+      // Not Tailwind v4's red-500: left as restated.
+      "--color-red-500": "#ef4444",
+      "--other": "#123456",
+    });
   });
 
   it("resolves var() chains per theme and ignores at-rule scoped overrides", () => {

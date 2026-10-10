@@ -12,7 +12,7 @@
 /* text-[13px] font-medium tracking-[-0.01em] text-foreground */
 .DockPaneHeaderTitle {
   color: var(--foreground);
-  font-size: 13px;
+  font-size: var(--app-font-size-ui, 13px);
   font-weight: 500;
   letter-spacing: -0.13px;
 }

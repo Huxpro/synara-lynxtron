@@ -299,7 +299,7 @@
   min-width: 0;
   flex: 1;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
 }
 
@@ -308,7 +308,7 @@
   border-radius: 6px;
   color: var(--muted-foreground);
   background-color: var(--muted);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
 }
 
 .LxMenuTrigger.DiffDockEditorOptionsTrigger {
@@ -335,7 +335,7 @@
 
 .DiffDockFileSidebarAddition,
 .DiffDockFileSidebarDeletion {
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-variant-numeric: tabular-nums;
   line-height: 16px;
 }
@@ -395,7 +395,7 @@
 .DiffDockFileDirectory {
   min-width: 0;
   color: color-mix(in srgb, var(--muted-foreground) 55%, transparent);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -409,7 +409,7 @@
 
 .DiffDockFileAddition,
 .DiffDockFileDeletion {
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 16px;
 }
 
@@ -425,7 +425,7 @@
   min-width: 0;
   overflow: hidden;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
   line-height: 18px;
   text-overflow: ellipsis;
@@ -870,12 +870,12 @@
 }
 
 .SliceRoot--viewport-short-height .ThreadEditorChanges .DiffDockFileSidebarTitle {
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
 }
 
 .SliceRoot--viewport-short-height .ThreadEditorChanges .DiffDockFileSidebarCount {
   padding: 0 4px;
-  font-size: 9px;
+  font-size: var(--app-font-size-ui-timestamp, 9px);
 }
 
 .SliceRoot--viewport-short-height .ThreadEditorChanges .DiffDockFileSidebarStats {
@@ -887,7 +887,7 @@
 
 .SliceRoot--viewport-short-height .ThreadEditorChanges .DiffDockFileSidebarAddition,
 .SliceRoot--viewport-short-height .ThreadEditorChanges .DiffDockFileSidebarDeletion {
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 12px;
 }
 
@@ -903,7 +903,7 @@
 
 .SliceRoot--viewport-short-height .ThreadEditorChanges .DiffDockFileName {
   min-width: 0;
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -931,7 +931,7 @@
 
 .DiffDockStateText {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
@@ -952,7 +952,7 @@
 
 .DiffDockRetryText {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
@@ -1042,7 +1042,7 @@
   overflow: hidden;
   color: var(--foreground);
   font-family: var(--font-mono-family);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1051,7 +1051,7 @@
 .DiffDockFileJumpEmpty {
   padding: 12px 8px;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16px;
 }
 

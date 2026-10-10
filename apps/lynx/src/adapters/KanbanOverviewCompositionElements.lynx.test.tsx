@@ -10,10 +10,10 @@ describe("Kanban overview fidelity", () => {
 
     expect(styles).toMatch(/\.SharedKanbanOverviewEmptyCopy\s*\{[^}]*width:\s*384px;/s);
     expect(styles).toMatch(
-      /\.SharedKanbanOverviewEmptyTitle\s*\{[^}]*font-size:\s*14px;[^}]*font-weight:\s*500;[^}]*line-height:\s*20px;/s,
+      /\.SharedKanbanOverviewEmptyTitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*20px;/s,
     );
     expect(styles).toMatch(
-      /\.SharedKanbanOverviewEmptyBody\s*\{[^}]*margin-top:\s*4px;[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s,
+      /\.SharedKanbanOverviewEmptyBody\s*\{[^}]*margin-top:\s*4px;[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*line-height:\s*20px;/s,
     );
   });
 

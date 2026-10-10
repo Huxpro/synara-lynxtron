@@ -59,7 +59,7 @@ describe("ProjectActionEditor", () => {
       /\.ProjectActionEditorSwitch\s*\{[^}]*min-height:\s*38px;[^}]*padding:\s*8px 12px;[^}]*gap:\s*12px;[^}]*border-left-color:\s*var\(--color-border-light\);[^}]*border-right-color:\s*var\(--color-border-light\);[^}]*border-top-color:\s*var\(--color-border-light\);[^}]*border-bottom-color:\s*var\(--color-border-light\);/s,
     );
     expect(styles).toMatch(
-      /\.ProjectActionEditorSwitchLabel\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s,
+      /\.ProjectActionEditorSwitchLabel\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*line-height:\s*20px;/s,
     );
     expect(styles).toMatch(
       /\.ProjectActionEditorSwitchTrack\s*\{[^}]*width:\s*32px;[^}]*height:\s*20px;/s,
@@ -68,13 +68,13 @@ describe("ProjectActionEditor", () => {
       /\.ProjectActionEditorSwitchThumb\s*\{[^}]*left:\s*2px;[^}]*top:\s*2px;[^}]*width:\s*16px;[^}]*height:\s*16px;/s,
     );
     expect(styles).toMatch(
-      /\.ProjectActionEditorLabel\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s,
+      /\.ProjectActionEditorLabel\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;/s,
     );
     expect(styles).toMatch(
-      /\.ProjectActionEditorHint\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s,
+      /\.ProjectActionEditorHint\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;/s,
     );
     expect(styles).toMatch(
-      /\.ProjectActionEditorError\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s,
+      /\.ProjectActionEditorError\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*line-height:\s*20px;/s,
     );
   });
 });

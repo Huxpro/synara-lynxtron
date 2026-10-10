@@ -34,16 +34,16 @@ describe("shared primitive geometry", () => {
 
   it("matches the Electron text line boxes across the Button size axis", () => {
     expect(css).toMatch(
-      /\.LxButton__text\s*\{[^}]*font-size:\s*12px;[^}]*font-weight:\s*500;[^}]*line-height:\s*18px;/s,
+      /\.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*18px;/s,
     );
     expect(css).toMatch(
-      /\.LxButton--xs \.LxButton__text\s*\{[^}]*font-size:\s*10px;[^}]*line-height:\s*15px;/s,
+      /\.LxButton--xs \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-2xs, 10px\);[^}]*line-height:\s*15px;/s,
     );
     expect(css).toMatch(
-      /\.LxButton--xl \.LxButton__text\s*\{[^}]*font-size:\s*13px;[^}]*line-height:\s*19\.5px;/s,
+      /\.LxButton--xl \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui, 13px\);[^}]*line-height:\s*19\.5px;/s,
     );
     expect(css).toMatch(
-      /\.LxButton--chip \.LxButton__text\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s,
+      /\.LxButton--chip \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*16\.5px;/s,
     );
   });
 
@@ -70,9 +70,11 @@ describe("shared primitive geometry", () => {
     expect(tokens).toContain("--control-disabled-opacity: 0.64;");
     expect(tokens).toContain("--control-focus-ring-color:");
     expect(tokens).toContain("--control-input-focus-border:");
-    expect(app).toContain("--control-focus-ring-color: rgba(1, 105, 204, 0.6);");
+    // The focus ring is tokens.css's recipe over the active pack's --color-border-focus
+    // (generated for the default pack, evaluated at run time for any other); App.css no
+    // longer pins it to one pack's accent.
+    expect(app).not.toContain("--control-focus-ring-color:");
     expect(app).toContain("--control-input-focus-border: rgba(13, 13, 13, 0.3);");
-    expect(app).toContain("--control-focus-ring-color: rgba(51, 134, 214, 0.378);");
     expect(app).toContain("--control-input-focus-border: rgba(252, 252, 252, 0.3);");
     expect(css.match(/opacity:\s*var\(--control-disabled-opacity\);/g)).toHaveLength(6);
     expect(css).toMatch(
@@ -93,7 +95,9 @@ describe("shared primitive geometry", () => {
     expect(css).toMatch(
       /\.LxTooltipPopup--picker\s*\{[^}]*border-radius:\s*10\.4px;[^}]*box-shadow:/s,
     );
-    expect(css).toMatch(/\.LxTooltipText\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s);
+    expect(css).toMatch(
+      /\.LxTooltipText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*16\.5px;/s,
+    );
     expect(tooltip).toContain('props.variant === "picker" && "LxTooltipPopup--picker"');
   });
 

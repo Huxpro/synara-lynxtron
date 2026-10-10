@@ -21,7 +21,7 @@
   border: 1px solid var(--border);
   border-radius: 9px;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16px;
   text-align: center;
 }
@@ -46,21 +46,21 @@
   min-width: 0;
   flex: 1;
   color: var(--foreground);
-  font-size: 13px;
+  font-size: var(--app-font-size-ui, 13px);
   line-height: 18px;
   word-break: break-word;
 }
 
 .ComposerChoiceLabelLynx {
   color: inherit;
-  font-size: 13px;
+  font-size: var(--app-font-size-ui, 13px);
   line-height: 18px;
   font-weight: 500;
 }
 
 .ComposerChoiceDescriptionLynx {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
   font-weight: 400;
 }

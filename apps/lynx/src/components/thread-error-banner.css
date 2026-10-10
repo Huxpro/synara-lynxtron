@@ -47,7 +47,7 @@
   flex: 1;
   overflow: hidden;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
   text-overflow: ellipsis;
   white-space: normal;

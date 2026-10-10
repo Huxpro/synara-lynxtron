@@ -29,7 +29,7 @@
 
 .SettingsAdvancedReleaseHeader .LxDialogDescription {
   margin-top: 0;
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
 }
 
@@ -85,7 +85,7 @@
 
 .SettingsAdvancedReleaseVersion {
   color: var(--foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   font-weight: 600;
   line-height: 20px;
 }
@@ -99,7 +99,7 @@
 
 .SettingsAdvancedReleaseDate,
 .SettingsAdvancedReleaseCount {
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
 }
 
@@ -134,12 +134,12 @@
 }
 
 .SettingsAdvancedReleaseFeatureDescription {
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 22.75px;
 }
 
 .SettingsAdvancedReleaseFeatureDetails {
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 19.5px;
 }
 
@@ -155,7 +155,7 @@
 
 .SettingsAdvancedReleaseDialog .LxDialogFooter .LxButton__text {
   color: #111111;
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
   line-height: 18px;
 }

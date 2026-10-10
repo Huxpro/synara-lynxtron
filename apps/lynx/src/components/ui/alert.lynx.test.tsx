@@ -12,12 +12,14 @@ describe("Alert", () => {
     expect(styles).toMatch(
       /\.LxAlert\s*\{[^}]*border-width:\s*1px;[^}]*border-style:\s*solid;[^}]*border-top-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-left-color:\s*var\(--border\);/s,
     );
-    expect(styles).toMatch(/\.LxAlertTitle\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s);
     expect(styles).toMatch(
-      /\.LxAlertDescription\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s,
+      /\.LxAlertTitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*line-height:\s*20px;/s,
     );
     expect(styles).toMatch(
-      /\.LxAlert--sm \.LxAlertTitle,\s*\.LxAlert--sm \.LxAlertDescription\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s,
+      /\.LxAlertDescription\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*line-height:\s*20px;/s,
+    );
+    expect(styles).toMatch(
+      /\.LxAlert--sm \.LxAlertTitle,\s*\.LxAlert--sm \.LxAlertDescription\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;/s,
     );
     expect(styles).toMatch(/\.LxAlertTitle \+ \.LxAlertDescription\s*\{[^}]*margin-top:\s*2px;/s);
   });

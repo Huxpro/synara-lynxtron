@@ -468,7 +468,7 @@ describe("Lynx Environment panel", () => {
       /\.EnvironmentRepositoryRow\s*\{[^}]*width:\s*100%;[^}]*border-radius:\s*10px;/s,
     );
     expect(styles).toMatch(
-      /\.EnvironmentInstructionsInput\s*\{[^}]*min-height:\s*68px;[^}]*padding:\s*8px 12px;[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s,
+      /\.EnvironmentInstructionsInput\s*\{[^}]*min-height:\s*68px;[^}]*padding:\s*8px 12px;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
     );
     expect(styles).toMatch(
       /\.EnvironmentNotepad\s*\{[^}]*min-height:\s*78px;[^}]*padding:\s*2px 8px 4px;/s,

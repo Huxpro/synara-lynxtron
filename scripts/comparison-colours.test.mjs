@@ -373,6 +373,28 @@ describe("theme tokens", () => {
     expect(records[3].channel).toBe(24);
   });
 
+  it("compares a colour-mix token by the value the root inline map applies", () => {
+    const expression = "color-mix(in srgb, var(--background) 88%, var(--success))";
+    const records = compareTokens(
+      // The active pack's evaluation overrides the stylesheet's default-pack value.
+      { "--color-mix-90cb3b30d2": "rgba(200, 244, 232, 1)" },
+      generatedColourMixTokens(sheet, "light"),
+      { names: {}, expressions: { [expression]: "rgb(200, 244, 232)" } },
+    );
+    // Once, by recipe: a projected token has no counterpart name on Electron.
+    expect(records.filter((record) => record.name === "--color-mix-90cb3b30d2")).toEqual([
+      {
+        kind: "colour-mix",
+        name: "--color-mix-90cb3b30d2",
+        native: "rgba(200, 244, 232, 1)",
+        electron: "rgb(200, 244, 232)",
+        channel: 0,
+        within: true,
+        expression,
+      },
+    ]);
+  });
+
   it("checks the generated tokens against the browser for the default pack", () => {
     const [record] = compareDefaultPackColourMix(generatedColourMixTokens(sheet, "dark"), {
       "color-mix(in srgb, var(--background) 88%, var(--success))": "rgb(14, 34, 22)",

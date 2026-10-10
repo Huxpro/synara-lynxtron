@@ -92,7 +92,7 @@
   color: var(--foreground);
   background-color: transparent;
   font-family: var(--font-ui-family);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 22px;
 }
 
@@ -209,7 +209,7 @@
 
 .KanbanNewTaskMenuText {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-10T07:43:30.994Z",
+  "generatedAt": "2026-10-10T08:40:43.901Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -12,7 +12,7 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxGraph": {
     "entries": ["src/app/index.tsx"],
-    "modules": 907,
+    "modules": 908,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/checkbox",
@@ -290,7 +290,10 @@
       "zustand/react/shallow",
       "zustand/vanilla/shallow"
     ],
-    "unresolvedImports": []
+    "unresolvedImports": [
+      "src/app/appTheme.logic.ts -> ../../scripts/color-mix-eval.logic.mjs",
+      "src/app/appTheme.logic.ts -> ../generated/nativeColorMix.generated.json"
+    ]
   },
   "lynxParallelImplementation": {
     "baseline": {
@@ -487,11 +490,11 @@
         "loc": 135424
       },
       "currentReuse": {
-        "modules": 319,
-        "loc": 79934,
-        "modulePercent": 53.17,
-        "locPercent": 59.02,
-        "gatePercent": 53.17
+        "modules": 320,
+        "loc": 80014,
+        "modulePercent": 53.33,
+        "locPercent": 59.08,
+        "gatePercent": 53.33
       },
       "modules": [
         {
@@ -4798,7 +4801,7 @@
           "loc": 80,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/chatFontSize.ts"]
         },
         {
@@ -13807,11 +13810,11 @@
         "loc": 226411
       },
       "currentReuse": {
-        "modules": 372,
-        "loc": 87537,
-        "modulePercent": 35.98,
-        "locPercent": 38.66,
-        "gatePercent": 35.98
+        "modules": 373,
+        "loc": 87617,
+        "modulePercent": 36.07,
+        "locPercent": 38.7,
+        "gatePercent": 36.07
       },
       "modules": [
         {
@@ -24069,7 +24072,7 @@
           "loc": 80,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/chatFontSize.ts"]
         },
         {
@@ -27737,11 +27740,11 @@
         "loc": 149320
       },
       "currentReuse": {
-        "modules": 320,
-        "loc": 80072,
-        "modulePercent": 49.38,
-        "locPercent": 53.62,
-        "gatePercent": 49.38
+        "modules": 321,
+        "loc": 80152,
+        "modulePercent": 49.54,
+        "locPercent": 53.68,
+        "gatePercent": 49.54
       },
       "modules": [
         {
@@ -32713,7 +32716,7 @@
           "loc": 80,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/chatFontSize.ts"]
         },
         {
@@ -35948,11 +35951,11 @@
         "loc": 148974
       },
       "currentReuse": {
-        "modules": 334,
-        "loc": 82143,
-        "modulePercent": 49.93,
-        "locPercent": 55.14,
-        "gatePercent": 49.93
+        "modules": 335,
+        "loc": 82223,
+        "modulePercent": 50.07,
+        "locPercent": 55.19,
+        "gatePercent": 50.07
       },
       "modules": [
         {
@@ -41235,7 +41238,7 @@
           "loc": 80,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/chatFontSize.ts"]
         },
         {
@@ -44464,11 +44467,11 @@
         "loc": 148975
       },
       "currentReuse": {
-        "modules": 334,
-        "loc": 82143,
-        "modulePercent": 49.93,
-        "locPercent": 55.14,
-        "gatePercent": 49.93
+        "modules": 335,
+        "loc": 82223,
+        "modulePercent": 50.07,
+        "locPercent": 55.19,
+        "gatePercent": 50.07
       },
       "modules": [
         {
@@ -49751,7 +49754,7 @@
           "loc": 80,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/chatFontSize.ts"]
         },
         {
@@ -53002,11 +53005,11 @@
         "loc": 221136
       },
       "currentReuse": {
-        "modules": 373,
-        "loc": 87983,
-        "modulePercent": 37.15,
-        "locPercent": 39.79,
-        "gatePercent": 37.15
+        "modules": 374,
+        "loc": 88063,
+        "modulePercent": 37.25,
+        "locPercent": 39.82,
+        "gatePercent": 37.25
       },
       "modules": [
         {
@@ -62890,7 +62893,7 @@
           "loc": 80,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/chatFontSize.ts"]
         },
         {

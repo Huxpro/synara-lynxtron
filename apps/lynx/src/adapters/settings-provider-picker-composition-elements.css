@@ -14,7 +14,7 @@
 .SharedSettingsProviderPickerSectionTitle {
   padding: 4px 8px;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 400;
   line-height: 18px;
   opacity: 0.58;
@@ -71,7 +71,7 @@
 }
 
 .SharedSettingsProviderPickerDescription {
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
@@ -81,7 +81,7 @@
 
 .SharedSettingsProviderPickerStatus {
   margin-top: 6px;
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 17px;
 }
 
@@ -106,7 +106,7 @@
 .SharedSettingsProviderPickerItemTitle {
   flex: 1;
   color: var(--foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 20px;
 }
 

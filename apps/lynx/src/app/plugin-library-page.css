@@ -79,7 +79,7 @@
   padding: 0 10px;
   border-width: 0;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
 }
 
@@ -150,7 +150,7 @@
 .PluginLibrarySearch .LxInput {
   padding-top: 6px;
   padding-bottom: 6px;
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
@@ -186,7 +186,7 @@
 .PluginLibraryWarningText {
   flex: 1;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 17px;
 }
 
@@ -244,7 +244,7 @@
 }
 
 .PluginLibraryRows--skills .PluginLibraryRowTitle {
-  font-size: 13px;
+  font-size: var(--app-font-size-ui, 13px);
 }
 
 .PluginLibraryRowCopy {
@@ -257,7 +257,7 @@
 
 .PluginLibraryRowTitle {
   color: var(--foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -280,7 +280,7 @@
 
 .PluginLibraryRowDescription {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 17px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -293,7 +293,7 @@
   justify-content: center;
   min-height: 180px;
   color: var(--muted-foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   text-align: center;
 }
 

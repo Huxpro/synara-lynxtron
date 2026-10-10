@@ -187,7 +187,7 @@
 
 .SharedSettingsGeneralProviderFallbackText {
   color: var(--muted-foreground);
-  font-size: 9px;
+  font-size: var(--app-font-size-ui-timestamp, 9px);
   font-weight: 600;
   line-height: 9px;
 }

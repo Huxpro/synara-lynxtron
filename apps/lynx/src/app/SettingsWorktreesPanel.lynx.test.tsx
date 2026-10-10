@@ -64,7 +64,7 @@ describe("Settings Worktrees fidelity", () => {
     );
     expect(styles).not.toMatch(/\.SettingsWorktreesState\s*\{[^}]*min-height:/s);
     expect(styles).toMatch(
-      /\.SettingsWorktreesStateText\s*\{[^}]*font-size:\s*14px;[^}]*line-height:\s*20px;/s,
+      /\.SettingsWorktreesStateText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*line-height:\s*20px;/s,
     );
     expect(styles).toMatch(
       /\.SettingsWorktreesRow\s*\{[^}]*align-items:\s*flex-start;[^}]*justify-content:\s*space-between;[^}]*gap:\s*10px;/s,
@@ -75,7 +75,7 @@ describe("Settings Worktrees fidelity", () => {
     );
     expect(styles).toMatch(/\.SettingsWorktreesActionHint\s*\{[^}]*width:\s*160px;/s);
     expect(styles).toMatch(
-      /\.SettingsWorktreesConversationLabel\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*18px;/s,
+      /\.SettingsWorktreesConversationLabel\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*18px;/s,
     );
     expect(styles).toMatch(
       /\.SettingsWorktreesPath\s*\{[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s,

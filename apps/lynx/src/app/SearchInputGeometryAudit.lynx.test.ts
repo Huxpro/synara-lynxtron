@@ -64,10 +64,10 @@ describe("Native search input geometry", () => {
     );
     const browser = readFileSync(new URL("./browser-dock-pane.css", import.meta.url), "utf8");
     expect(composer).toMatch(
-      /\.ComposerModelSearchInputLynx \.LxInput\s*\{[^}]*height:\s*28px;[^}]*padding:\s*5px 8px 5px 28px;[^}]*font-size:\s*11px;[^}]*line-height:\s*16px;/s,
+      /\.ComposerModelSearchInputLynx \.LxInput\s*\{[^}]*height:\s*28px;[^}]*padding:\s*5px 8px 5px 28px;[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*16px;/s,
     );
     expect(browser).toMatch(
-      /\.BrowserDockAddress\s*\{[^}]*height:\s*30px;[^}]*padding:\s*5px 9px;[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s,
+      /\.BrowserDockAddress\s*\{[^}]*height:\s*30px;[^}]*padding:\s*5px 9px;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
     );
   });
 
@@ -82,13 +82,13 @@ describe("Native search input geometry", () => {
       /\.PluginLibrarySearch \.LxInputControl,[\s\S]*?\.PluginLibrarySearch \.LxInput\s*\{[^}]*height:\s*30px;/,
     );
     expect(plugin).toMatch(
-      /\.PluginLibrarySearch \.LxInput\s*\{[^}]*padding-top:\s*6px;[^}]*padding-bottom:\s*6px;[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s,
+      /\.PluginLibrarySearch \.LxInput\s*\{[^}]*padding-top:\s*6px;[^}]*padding-bottom:\s*6px;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
     );
     expect(editor).toMatch(
       /\.ThreadEditorProjectSwitchSearchInput\s*\{[^}]*height:\s*28px;[^}]*padding:\s*0 8px;/s,
     );
     expect(primitives).toMatch(
-      /\.LxInputControl--sm > \.LxInput\s*\{[^}]*padding-top:\s*4px;[^}]*padding-bottom:\s*4px;[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s,
+      /\.LxInputControl--sm > \.LxInput\s*\{[^}]*padding-top:\s*4px;[^}]*padding-bottom:\s*4px;[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*16\.5px;/s,
     );
   });
 });

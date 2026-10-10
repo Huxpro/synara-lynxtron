@@ -37,7 +37,7 @@
 
 .SharedKeyboardShortcutsHeaderText {
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   font-weight: 500;
   line-height: 16.5px;
 }
@@ -75,14 +75,14 @@
 
 .SharedKeyboardShortcutsTitle {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
   line-height: 18px;
 }
 
 .SharedKeyboardShortcutsDescription {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
@@ -101,6 +101,6 @@
 
 .SharedKeyboardShortcutsEmptyText {
   color: var(--muted-foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   text-align: center;
 }

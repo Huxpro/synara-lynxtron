@@ -77,7 +77,7 @@
 
 .LxButton__text {
   color: var(--primary-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
   line-height: 18px;
 }
@@ -230,7 +230,7 @@
 }
 
 .LxButton--xs .LxButton__text {
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 15px;
 }
 
@@ -265,7 +265,7 @@
 }
 
 .LxButton--xl .LxButton__text {
-  font-size: 13px;
+  font-size: var(--app-font-size-ui, 13px);
   line-height: 19.5px;
 }
 
@@ -276,7 +276,7 @@
 }
 
 .LxButton--chip .LxButton__text {
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
 }
 
@@ -394,7 +394,7 @@
   padding-top: 6px;
   padding-bottom: 6px;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
   background-color: transparent;
 }
@@ -402,7 +402,7 @@
 .LxInputControl--sm > .LxInput {
   padding-top: 4px;
   padding-bottom: 4px;
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
 }
 
@@ -605,7 +605,7 @@
 }
 .LxBadge__text {
   color: var(--primary-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   font-weight: 500;
   line-height: 15px;
 }
@@ -615,7 +615,7 @@
   border-radius: 4px;
 }
 .LxBadge--sm .LxBadge__text {
-  font-size: 9px;
+  font-size: var(--app-font-size-ui-timestamp, 9px);
   line-height: 13.5px;
 }
 .LxBadge--lg {
@@ -624,7 +624,7 @@
   padding: 0 5px;
 }
 .LxBadge--lg .LxBadge__text {
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
 }
 .LxBadge--secondary {
@@ -714,7 +714,7 @@
 }
 .LxAlertTitle {
   color: var(--foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   font-weight: 500;
   line-height: 20px;
 }
@@ -722,7 +722,7 @@
   min-width: 0;
   flex: 1;
   color: var(--muted-foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 20px;
 }
 .LxAlertTitle + .LxAlertDescription {
@@ -730,7 +730,7 @@
 }
 .LxAlert--sm .LxAlertTitle,
 .LxAlert--sm .LxAlertDescription {
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
 }
 .LxAlertAction {
@@ -779,7 +779,7 @@
 
 .LxKbd__text {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
   line-height: 16px;
 }
@@ -888,7 +888,7 @@
   border-radius: 0;
   background-color: transparent;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
@@ -911,7 +911,7 @@
 
 .LxCommandGroupLabel__text {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
   line-height: 16px;
 }
@@ -962,7 +962,7 @@
 
 .LxCommandFooter > text {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
 }
 
@@ -1077,7 +1077,7 @@
 
 .LxDialogDescription {
   color: var(--muted-foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 20px;
 }
 
@@ -1375,7 +1375,7 @@
 
 .LxMenuItem__text {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
@@ -1412,7 +1412,7 @@
 .LxMenuGroupLabel {
   padding: 6px 8px;
   color: var(--color-text-secondary);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 400;
   line-height: 16px;
   opacity: 0.45;
@@ -1421,7 +1421,7 @@
 .LxMenuShortcut {
   margin-left: auto;
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   font-weight: 500;
   line-height: 18px;
   letter-spacing: 1px;
@@ -1431,7 +1431,7 @@
 .LxCommandShortcut {
   margin-left: auto;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
   line-height: 18px;
   letter-spacing: 1.2px;
@@ -1470,6 +1470,6 @@
 
 .LxTooltipText {
   color: var(--popover-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
 }

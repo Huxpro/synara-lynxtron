@@ -13,7 +13,7 @@
 
 .SettingsProviderToolsNoticeText {
   color: var(--destructive);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
@@ -70,21 +70,21 @@
 
 .SettingsProviderToolsTitle {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
   line-height: 18px;
 }
 
 .SettingsProviderToolsDescription {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
 .SettingsProviderToolsSummaryStatus {
   flex-shrink: 0;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
 }
 
@@ -118,7 +118,7 @@
 .SettingsProviderToolsManual {
   flex-shrink: 0;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
 }
 
@@ -151,7 +151,7 @@
 
 .SettingsProviderToolsFallback {
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   font-weight: 600;
   line-height: 10px;
 }
@@ -159,7 +159,7 @@
 .SettingsProviderToolsName {
   overflow: hidden;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
   line-height: 18px;
   text-overflow: ellipsis;
@@ -171,7 +171,7 @@
   flex: 1;
   overflow: hidden;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
   text-align: left;
   text-overflow: ellipsis;
@@ -185,7 +185,7 @@
 }
 
 .SettingsProviderToolsUpdate .LxButton__text {
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 15px;
 }
 
@@ -246,7 +246,7 @@
 .SettingsProviderToolsCustom {
   flex-shrink: 0;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
 }
 
@@ -284,7 +284,7 @@
 
 .SettingsProviderToolsDocLinkText {
   color: var(--foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   font-weight: 500;
   line-height: 16.5px;
 }
@@ -296,7 +296,7 @@
 
 .SettingsProviderToolsFieldLabel {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
   line-height: 18px;
 }
@@ -309,7 +309,7 @@
 .SettingsProviderToolsFieldDescription {
   margin-top: 4px;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 

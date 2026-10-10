@@ -7,7 +7,7 @@
 
 .SharedSettingsSectionTitle {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 400;
   line-height: 18px;
   padding: 4px 8px;

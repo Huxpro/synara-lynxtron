@@ -114,14 +114,14 @@
 
 .SidebarSurfacePickerItemTitle {
   color: var(--foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 14px;
   font-weight: 500;
 }
 
 .SidebarSurfacePickerItemDescription {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16.5px;
 }
 
@@ -142,13 +142,8 @@
 .SidebarActivityBell--active,
 .SidebarActivityBell--active.ui-hover,
 .SidebarActivityBell--active.ui-pressed {
-  background-color: rgba(1, 105, 204, 0.15);
-}
-
-.SliceRoot--theme-dark .SidebarActivityBell--active,
-.SliceRoot--theme-dark .SidebarActivityBell--active.ui-hover,
-.SliceRoot--theme-dark .SidebarActivityBell--active.ui-pressed {
-  background-color: rgba(51, 134, 214, 0.15);
+  /* Upstream SidebarActivityBellButton: the text accent at 15%. */
+  background-color: color-mix(in srgb, var(--color-text-accent) 15%, transparent);
 }
 
 /* `absolute top-0.5 right-0.5 size-1.5` accent dot with a 2px sidebar-colored ring. */

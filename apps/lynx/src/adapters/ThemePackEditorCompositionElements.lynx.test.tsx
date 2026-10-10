@@ -87,13 +87,13 @@ describe("ThemePack boolean interaction contract", () => {
       /\.SharedThemePackCodeSelect\s*\{[^}]*width:\s*100%;[^}]*min-height:\s*28px;/s,
     );
     expect(styles).toMatch(
-      /\.SharedThemePackTitle\s*\{[^}]*font-size:\s*14px;[^}]*font-weight:\s*500;[^}]*line-height:\s*20px;/s,
+      /\.SharedThemePackTitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*20px;/s,
     );
     expect(styles).toMatch(
       /\.SharedThemePackContext\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
     );
     expect(styles).toMatch(
-      /\.SharedThemePackRowLabel\s*\{[^}]*color:\s*var\(--settings-row-label-strong\);[^}]*font-size:\s*14px;[^}]*font-weight:\s*400;[^}]*line-height:\s*20px;/s,
+      /\.SharedThemePackRowLabel\s*\{[^}]*color:\s*var\(--settings-row-label-strong\);[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*font-weight:\s*400;[^}]*line-height:\s*20px;/s,
     );
     expect(source).toContain('className="SharedThemePackResetAction"');
     expect(source).toContain(
@@ -103,13 +103,13 @@ describe("ThemePack boolean interaction contract", () => {
       /\.SharedThemePackResetAction\s*\{[^}]*min-height:\s*20px;[^}]*padding:\s*2px 6px;/s,
     );
     expect(styles).toMatch(
-      /\.SharedThemePackResetAction \.LxButton__text\s*\{[^}]*font-size:\s*11px;/s,
+      /\.SharedThemePackResetAction \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);/s,
     );
     expect(styles).toMatch(
       /\.SharedThemePackHeaderAction\s*\{[^}]*min-height:\s*24px;[^}]*padding:\s*4px 8px;/s,
     );
     expect(styles).toMatch(
-      /\.SharedThemePackHeaderAction \.LxButton__text\s*\{[^}]*font-size:\s*12px;/s,
+      /\.SharedThemePackHeaderAction \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);/s,
     );
     expect(source).toContain('className="SharedThemePackImportDialog"');
     expect(source).toContain("showCloseButton={false}");
@@ -147,7 +147,7 @@ describe("ThemePack boolean interaction contract", () => {
       /\.SharedThemePackImportTitle\s*\{[^}]*display:\s*block;[^}]*height:\s*22\.5px;[^}]*color:\s*var\(--foreground\);[^}]*font-size:\s*18px;[^}]*font-weight:\s*600;[^}]*line-height:\s*22\.5px;/s,
     );
     expect(styles).toMatch(
-      /\.SharedThemePackImportDescription\s*\{[^}]*display:\s*block;[^}]*min-height:\s*32px;[^}]*color:\s*var\(--muted-foreground\);[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s,
+      /\.SharedThemePackImportDescription\s*\{[^}]*display:\s*block;[^}]*min-height:\s*32px;[^}]*color:\s*var\(--muted-foreground\);[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;/s,
     );
     expect(source).toContain('<text className="SharedThemePackImportCode">');
     expect(styles).toMatch(
@@ -157,7 +157,7 @@ describe("ThemePack boolean interaction contract", () => {
       /\.SharedThemePackImportTextareaControl\s*\{[^}]*width:\s*100%;[^}]*height:\s*96px;[^}]*border:\s*1px solid var\(--border\);[^}]*border-radius:\s*10px;[^}]*background-color:\s*transparent;[^}]*overflow:\s*hidden;/s,
     );
     expect(styles).toMatch(
-      /\.SharedThemePackImportTextarea\s*\{[^}]*display:\s*block;[^}]*width:\s*100%;[^}]*height:\s*94px;[^}]*margin:\s*0;[^}]*padding:\s*8px 10px;[^}]*border-width:\s*0;[^}]*border-radius:\s*10px;[^}]*font-family:\s*var\(--font-ui-family\);[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s,
+      /\.SharedThemePackImportTextarea\s*\{[^}]*display:\s*block;[^}]*width:\s*100%;[^}]*height:\s*94px;[^}]*margin:\s*0;[^}]*padding:\s*8px 10px;[^}]*border-width:\s*0;[^}]*border-radius:\s*10px;[^}]*font-family:\s*var\(--font-ui-family\);[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
     );
     expect(source).toContain('placeholder-color="var(--theme-pack-import-placeholder)"');
     expect(styles).toMatch(
@@ -188,7 +188,7 @@ describe("ThemePack boolean interaction contract", () => {
       /\.SharedThemePackImportSubmit\.ui-disabled\s*\{[^}]*opacity:\s*0\.64;/s,
     );
     expect(styles).toMatch(
-      /\.SharedThemePackImportError\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;/s,
+      /\.SharedThemePackImportError\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;/s,
     );
     expect(styles).toMatch(
       /\.SliceRoot--viewport-compact \.SharedThemePackImportViewport\s*\{[^}]*align-items:\s*flex-end;[^}]*padding-top:\s*48px;/s,
@@ -224,7 +224,7 @@ describe("ThemePack boolean interaction contract", () => {
       /\.SharedThemePackCodeSwatch\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border-radius:\s*6px;/s,
     );
     expect(styles).toMatch(
-      /\.SharedThemePackCodeLabel\s*\{[^}]*font-size:\s*13px;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s,
+      /\.SharedThemePackCodeLabel\s*\{[^}]*font-size:\s*var\(--app-font-size-ui, 13px\);[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s,
     );
     expect(styles).toMatch(
       /\.SharedThemePackRowControl\s*\{[^}]*flex-shrink:\s*0;[^}]*justify-content:\s*flex-end;/s,
@@ -255,7 +255,7 @@ describe("ThemePack boolean interaction contract", () => {
       /\.SharedThemePackColorIndicator\s*\{[^}]*left:\s*8px;[^}]*top:\s*5px;[^}]*width:\s*20px;[^}]*height:\s*20px;/s,
     );
     expect(styles).toMatch(
-      /\.SharedThemePackColorInput \.LxInput\s*\{[^}]*font-family:\s*var\(--font-mono-family\);[^}]*font-size:\s*12px;/s,
+      /\.SharedThemePackColorInput \.LxInput\s*\{[^}]*font-family:\s*var\(--font-mono-family\);[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);/s,
     );
     expect(source).toContain("value={props.color.toUpperCase()}");
     expect(readableThemeColor("#ffffff")).toBe("#1a1c1f");

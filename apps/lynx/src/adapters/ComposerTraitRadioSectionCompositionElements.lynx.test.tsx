@@ -30,10 +30,10 @@ describe("native composer trait picker contract", () => {
       /\.ComposerTraitSectionLynx\s*\{\s*display:\s*flex;\s*flex-direction:\s*column;\s*\}/s,
     );
     expect(composerStyles).toMatch(
-      /\.ComposerTraitSectionLabelLynx\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*16px;[^}]*font-weight:\s*400;[^}]*opacity:\s*0\.45;/s,
+      /\.ComposerTraitSectionLabelLynx\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;[^}]*font-weight:\s*400;[^}]*opacity:\s*0\.45;/s,
     );
     expect(composerStyles).toMatch(
-      /\.ComposerTraitOptionLabelLynx\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s,
+      /\.ComposerTraitOptionLabelLynx\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
     );
     const source = readFileSync(
       new URL("./ComposerTraitRadioSectionCompositionElements.lynx.tsx", import.meta.url),

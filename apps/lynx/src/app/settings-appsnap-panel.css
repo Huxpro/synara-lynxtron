@@ -126,7 +126,7 @@
 
 .SettingsAppSnapStatus {
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
 }
 
@@ -137,7 +137,7 @@
 .SettingsAppSnapValue {
   flex-shrink: 0;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
   line-height: 18px;
 }

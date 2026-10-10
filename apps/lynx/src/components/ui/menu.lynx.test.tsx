@@ -141,16 +141,16 @@ describe("Lynx Menu overlay contract", () => {
     const primitiveStyles = readFileSync(new URL("./primitives.css", import.meta.url), "utf8");
 
     expect(primitiveStyles).toMatch(
-      /\.LxMenuItem__text\s*\{[^}]*font-size:\s*12px;[^}]*line-height:\s*18px;/s,
+      /\.LxMenuItem__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
     );
     expect(primitiveStyles).toMatch(
       /\.LxMenuItem--destructive \.LxMenuItem__text\s*\{[^}]*color:\s*var\(--destructive\);/s,
     );
     expect(primitiveStyles).toMatch(
-      /\.LxMenuGroupLabel\s*\{[^}]*padding:\s*6px 8px;[^}]*font-size:\s*12px;[^}]*font-weight:\s*400;[^}]*line-height:\s*16px;[^}]*opacity:\s*0\.45;/s,
+      /\.LxMenuGroupLabel\s*\{[^}]*padding:\s*6px 8px;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*400;[^}]*line-height:\s*16px;[^}]*opacity:\s*0\.45;/s,
     );
     expect(primitiveStyles).toMatch(
-      /\.LxMenuShortcut\s*\{[^}]*margin-left:\s*auto;[^}]*font-size:\s*10px;[^}]*font-weight:\s*500;[^}]*line-height:\s*18px;[^}]*letter-spacing:\s*1px;[^}]*opacity:\s*0\.72;/s,
+      /\.LxMenuShortcut\s*\{[^}]*margin-left:\s*auto;[^}]*font-size:\s*var\(--app-font-size-ui-2xs, 10px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*18px;[^}]*letter-spacing:\s*1px;[^}]*opacity:\s*0\.72;/s,
     );
     expect(primitiveStyles).toMatch(
       /\.LxMenuItem\s*\{[^}]*min-height:\s*32px;[^}]*padding:\s*6px 10px;/s,

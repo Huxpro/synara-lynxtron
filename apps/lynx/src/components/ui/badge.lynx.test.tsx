@@ -56,13 +56,13 @@ describe("Badge", () => {
   it("matches the Electron 1.5 line-height across the desktop size axis", () => {
     const styles = readFileSync(new URL("./primitives.css", import.meta.url), "utf8");
     expect(styles).toMatch(
-      /\.LxBadge__text\s*\{[^}]*font-size:\s*10px;[^}]*font-weight:\s*500;[^}]*line-height:\s*15px;/s,
+      /\.LxBadge__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-2xs, 10px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*15px;/s,
     );
     expect(styles).toMatch(
-      /\.LxBadge--sm \.LxBadge__text\s*\{[^}]*font-size:\s*9px;[^}]*line-height:\s*13\.5px;/s,
+      /\.LxBadge--sm \.LxBadge__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-timestamp, 9px\);[^}]*line-height:\s*13\.5px;/s,
     );
     expect(styles).toMatch(
-      /\.LxBadge--lg \.LxBadge__text\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s,
+      /\.LxBadge--lg \.LxBadge__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*16\.5px;/s,
     );
   });
 });

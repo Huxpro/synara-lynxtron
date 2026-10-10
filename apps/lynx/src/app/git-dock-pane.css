@@ -34,7 +34,7 @@
 /* text-[11px] font-semibold text-muted-foreground */
 .GitDockSectionTitle {
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   font-weight: 600;
   line-height: 16.5px;
 }
@@ -44,7 +44,7 @@
   border-radius: 999px;
   background-color: var(--muted);
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   font-weight: 500;
   line-height: 15px;
   text-align: center;
@@ -61,13 +61,13 @@
 .GitDockState {
   padding: 6px;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
 }
 /* empty: px-1.5 py-1 text-[11px] text-muted-foreground/70 */
 .GitDockSectionEmpty {
   padding: 4px 6px;
   color: color-mix(in oklab, var(--muted-foreground) 70%, transparent);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16.5px;
 }
 .GitDockState {
@@ -76,7 +76,7 @@
 .GitDockError {
   padding: 6px;
   color: var(--destructive);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
 }
 /* row: group flex items-center gap-1.5 rounded-md px-1.5 py-1 */
 .GitDockFileRow {
@@ -101,17 +101,17 @@
   min-width: 0;
   overflow: hidden;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .GitDockFileAdditions {
   color: var(--success);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
 }
 .GitDockFileDeletions {
   color: var(--destructive);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
 }
 .GitDockFileAction {
   flex-shrink: 0;

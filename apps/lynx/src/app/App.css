@@ -23,10 +23,10 @@
   --type-ui-supporting-size: 11px;
   --type-ui-meta-size: 10px;
   --type-composer-editor-size: 12px;
-  /* Upstream's settings rows are `text-ui` (13px at the default size) on a 1.5 line box,
-     and the panel description is `text-ui leading-relaxed`; tokens.css still carries the
-     earlier 12px / 18px roles. Literal sizes: Lynx does not resolve a custom property
-     whose value is another `var()`. */
+  /* Default-size fallback for the `--type-*` roles. tokens.css defines them as aliases of
+     `--app-font-size-*`, and Lynx does not resolve a custom property whose value is
+     another `var()`, so the root inline map supplies each role for the chosen UI font
+     size (appTypography.logic.ts); these literals are that map at 13px. */
   --type-settings-section-label-size: 13px;
   --type-settings-section-label-line-height: 19.5px;
   --type-settings-row-title-size: 13px;
@@ -76,7 +76,6 @@
 }
 
 .SliceRoot--theme-light {
-  --control-focus-ring-color: rgba(1, 105, 204, 0.6);
   --control-input-focus-border: rgba(13, 13, 13, 0.3);
   --destructive-hover-fill: #e33531;
   --destructive-outline-state-border: rgba(224, 46, 42, 0.32);
@@ -118,7 +117,6 @@
 }
 
 .SliceRoot--theme-dark {
-  --control-focus-ring-color: rgba(51, 134, 214, 0.378);
   --control-input-focus-border: rgba(252, 252, 252, 0.3);
   --destructive-hover-fill: #cc2b28;
   --destructive-outline-state-border: rgba(224, 46, 42, 0.32);
@@ -301,7 +299,7 @@
 
 .TransportStatusNoticeText {
   color: var(--color-text-status-neutral);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
@@ -313,7 +311,7 @@
   min-height: 20px;
   padding: 1px 6px;
   color: var(--foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   opacity: 0.82;
 }
 
@@ -394,14 +392,14 @@
 
 .VoiceNotificationToastTitle {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
   line-height: 18px;
 }
 
 .VoiceNotificationToastDescription {
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16px;
 }
 
@@ -428,9 +426,10 @@
   align-items: flex-start;
   border-width: 1px;
   border-style: solid;
-  border-color: rgba(51, 134, 214, 0.1);
+  border-color: color-mix(in srgb, var(--color-text-accent) 10%, transparent);
   border-radius: 18px;
-  background-color: #17212b;
+  /* The accent tint over the window, opaque: the prompt floats over content. */
+  background-color: color-mix(in srgb, var(--color-text-accent) 13%, var(--background));
   box-shadow: 0 4px 18px -6px rgba(0, 0, 0, 0.3);
 }
 
@@ -475,7 +474,7 @@
 }
 
 .AppSnapWelcomeDescription {
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 19.5px;
 }
 
@@ -489,8 +488,8 @@
 }
 
 .SliceRoot--theme-light .ProviderUpdatePrompt {
-  border-color: rgba(1, 105, 204, 0.14);
-  background-color: #eaf3fc;
+  border-color: color-mix(in srgb, var(--color-text-accent) 14%, transparent);
+  background-color: color-mix(in srgb, var(--color-text-accent) 8%, var(--background));
   box-shadow: 0 4px 18px -6px rgba(0, 0, 0, 0.1);
 }
 
@@ -545,7 +544,7 @@
 .ProviderUpdatePromptTitle {
   height: 20px;
   color: var(--foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   font-weight: 400;
   line-height: 20px;
 }
@@ -553,7 +552,7 @@
 .ProviderUpdatePromptDescription {
   height: 40px;
   color: var(--foreground);
-  font-size: 14px;
+  font-size: var(--app-font-size-ui-lg, 14px);
   line-height: 20px;
   opacity: 0.72;
 }
@@ -611,14 +610,14 @@
 
 .TaskCompletionToastTitle {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 600;
   line-height: 18px;
 }
 
 .TaskCompletionToastBody {
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16px;
 }
 
@@ -756,7 +755,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
   font-weight: 400;
 }
@@ -874,7 +873,7 @@
   border-radius: 6px;
   background-color: transparent;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
 }
 
 .ThreadEditorProjectSwitchList {
@@ -889,7 +888,7 @@
   align-items: center;
   justify-content: center;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16px;
 }
 
@@ -947,7 +946,7 @@
 .ThreadEditorNewHeading {
   padding: 2px 8px 6px;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   font-weight: 500;
 }
 
@@ -965,7 +964,7 @@
   width: 15px;
   color: var(--muted-foreground);
   font-family: var(--font-mono-family);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
 }
 
 .ThreadEditorNewChat {
@@ -1040,7 +1039,7 @@
 .ThreadEditorHistoryDescription {
   margin-top: 4px;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
 }
 
 .ThreadEditorHistoryPanel {
@@ -1069,7 +1068,7 @@
   min-width: 0;
   flex: 1;
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
   text-align: left;
   text-overflow: ellipsis;
@@ -1078,14 +1077,14 @@
 
 .ThreadEditorHistoryMeta {
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   line-height: 16px;
 }
 
 .ThreadEditorHistoryEmpty {
   padding: 10px 8px;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
 }
 
 .ThreadHeaderRename {
@@ -1107,12 +1106,12 @@
   border-radius: 7px;
   background-color: var(--background);
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
 }
 
 .ThreadHeaderRenameError {
   color: var(--destructive);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
 }
 
 .SharedChatHeaderIdentityTitle.ui-hover,
@@ -1228,7 +1227,7 @@
 
 .ThreadEditorProject {
   color: var(--foreground);
-  font-size: 13px;
+  font-size: var(--app-font-size-ui, 13px);
   font-weight: 500;
   white-space: nowrap;
 }
@@ -1236,14 +1235,14 @@
 .ThreadEditorPath {
   min-width: 0;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .ThreadEditorModeLabel {
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   font-weight: 500;
 }
 
@@ -1267,7 +1266,7 @@
 }
 
 .LxButton.ThreadEditorExitButton .LxButton__text {
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   font-weight: 400;
 }
 
@@ -1495,7 +1494,7 @@
 }
 
 .SharedPrHeaderPrimaryAction .LxButton__text {
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
   font-weight: 400;
 }
@@ -1531,7 +1530,7 @@
 
 .FeatureEyebrow {
   color: var(--primary);
-  font-size: 9px;
+  font-size: var(--app-font-size-ui-timestamp, 9px);
   font-weight: 750;
   letter-spacing: 1.4px;
   margin-bottom: 7px;
@@ -1539,7 +1538,7 @@
 
 .FeatureState {
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   margin-top: 12px;
 }
 
@@ -1632,13 +1631,13 @@
 
 .KanbanDragGhostTitle {
   color: var(--foreground);
-  font-size: 13px;
+  font-size: var(--app-font-size-ui, 13px);
   font-weight: 650;
 }
 
 .KanbanDragGhostStatus {
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 15px;
 }
 
@@ -1782,7 +1781,7 @@
 .UpdateDescription {
   max-width: 440px;
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   text-align: center;
 }
 
@@ -1805,20 +1804,20 @@
 
 .UpdateVersionLabel {
   color: var(--muted-foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
 }
 
 .UpdateVersionValue {
   color: var(--foreground);
   font-family: var(--font-mono-family);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   font-weight: 600;
 }
 
 .UpdateStatus {
   margin-top: 18px;
   color: var(--foreground);
-  font-size: 10px;
+  font-size: var(--app-font-size-ui-2xs, 10px);
   text-align: center;
 }
 
@@ -1998,7 +1997,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 16px;
 }
 
@@ -2203,7 +2202,7 @@
 
 .TranscriptUserEditError {
   color: var(--destructive);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16px;
 }
 
@@ -2511,7 +2510,7 @@
 .SettingsSavedState .SharedPanelStateMessageText {
   color: var(--color-text-status-neutral);
   font-family: var(--font-mono-family);
-  font-size: 11px;
+  font-size: var(--app-font-size-ui-xs, 11px);
   line-height: 16px;
   opacity: 1;
 }
@@ -2583,20 +2582,20 @@
 
 .SettingsSearchResultSection {
   color: var(--foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
 }
 
 .SettingsSearchResultTitle {
   color: var(--foreground);
-  font-size: 13px;
+  font-size: var(--app-font-size-ui, 13px);
   line-height: 20px;
 }
 
 .SettingsSearchEmpty {
   padding: 4px 8px;
   color: var(--muted-foreground);
-  font-size: 12px;
+  font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 400;
   line-height: 18px;
   opacity: 0.58;

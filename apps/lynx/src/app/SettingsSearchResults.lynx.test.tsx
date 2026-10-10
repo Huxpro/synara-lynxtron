@@ -28,10 +28,10 @@ describe("Lynx Settings search result anatomy", () => {
     expect(styles).toMatch(/\.SettingsSearchResultSectionRow\s*\{[^}]*opacity:\s*0\.95;/s);
     expect(styles).toMatch(/\.SettingsSearchResultTitleRow\s*\{[^}]*opacity:\s*0\.89;/s);
     expect(styles).toMatch(
-      /\.SettingsSearchResultTitle\s*\{[^}]*font-size:\s*13px;[^}]*line-height:\s*20px;/s,
+      /\.SettingsSearchResultTitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui, 13px\);[^}]*line-height:\s*20px;/s,
     );
     expect(styles).toMatch(
-      /\.SettingsSearchEmpty\s*\{[^}]*padding:\s*4px 8px;[^}]*font-size:\s*12px;[^}]*font-weight:\s*400;[^}]*line-height:\s*18px;[^}]*opacity:\s*0\.58;/s,
+      /\.SettingsSearchEmpty\s*\{[^}]*padding:\s*4px 8px;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*400;[^}]*line-height:\s*18px;[^}]*opacity:\s*0\.58;/s,
     );
   });
 });
