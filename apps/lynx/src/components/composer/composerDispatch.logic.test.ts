@@ -13,6 +13,17 @@ import {
 } from "./composerDispatch.logic";
 import { createPastedTextDraft } from "@synara-web/lib/composerPastedText";
 
+/** A promise the test settles by hand: the wait a send is in. */
+const deferred = () => {
+  let resolve!: () => void;
+  let reject!: (error: Error) => void;
+  const promise = new Promise<void>((onResolve, onReject) => {
+    resolve = onResolve;
+    reject = onReject;
+  });
+  return { promise, resolve, reject };
+};
+
 describe("composer dispatch logic", () => {
   it("materializes terminal context placeholders into the canonical send block", () => {
     expect(
@@ -301,15 +312,6 @@ describe("composer dispatch logic", () => {
           },
         }),
     };
-  };
-  const deferred = () => {
-    let resolve!: () => void;
-    let reject!: (error: Error) => void;
-    const promise = new Promise<void>((onResolve, onReject) => {
-      resolve = onResolve;
-      reject = onReject;
-    });
-    return { promise, resolve, reject };
   };
 
   it("takes the draft out before the send and runs the success hook after it", async () => {

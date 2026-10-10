@@ -14,6 +14,17 @@ import {
 import { runComposerOutgoingSend } from "../components/composer/composerDispatch.logic";
 import { webStorage } from "../platform/storage";
 
+/** A promise the test settles by hand: the wait a send is in. */
+const deferred = () => {
+  let resolve!: () => void;
+  let reject!: (error: Error) => void;
+  const promise = new Promise<void>((onResolve, onReject) => {
+    resolve = onResolve;
+    reject = onReject;
+  });
+  return { promise, resolve, reject };
+};
+
 describe("Lynx composer draft attachment subset", () => {
   beforeEach(() => {
     webStorage.clear();
@@ -638,15 +649,6 @@ describe("Lynx composer draft store as upstream session sync uses it", () => {
         restore: (outgoing) =>
           useComposerDraftStore.getState().restoreDraftContent("thread-1", outgoing),
       });
-    const deferred = () => {
-      let resolve!: () => void;
-      let reject!: (error: Error) => void;
-      const promise = new Promise<void>((onResolve, onReject) => {
-        resolve = onResolve;
-        reject = onReject;
-      });
-      return { promise, resolve, reject };
-    };
     const draft = () => useComposerDraftStore.getState().draftsByThreadId["thread-1"];
     const file = { id: "file-1", name: "a.txt", token: "token-1", sizeBytes: 1 } as never;
 
