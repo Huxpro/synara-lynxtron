@@ -3,20 +3,20 @@
 Generated from the eligible module union of all six P5-R1 screen graphs.
 
 - Unique utility tokens: **2764**
-- Authored component classes excluded from the utility denominator: **109**
-- Extracted utility occurrences: **21386**
-- Eligible occurrences (registered platform-unsupported utilities excluded): **20099**
-- Covered by generated or deterministic patched CSS: **19709 (98.06%)**
+- Authored component classes excluded from the utility denominator: **111**
+- Extracted utility occurrences: **21419**
+- Eligible occurrences (registered platform-unsupported utilities excluded): **20132**
+- Covered by generated or deterministic patched CSS: **19743 (98.07%)**
 - Required threshold: **95%**
-- Runtime CSS emission (currently physically shared modules only): **1291 classes / 18651 source occurrences**
+- Runtime CSS emission (currently physically shared modules only): **1291 classes / 18680 source occurrences**
 
 | Status      | Classes | Weighted occurrences |
 | ----------- | ------: | -------------------: |
-| GENERATED   |    1351 |                16990 |
-| PATCHED     |     648 |                 2719 |
+| GENERATED   |    1351 |                17016 |
+| PATCHED     |     649 |                 2727 |
 | UNSUPPORTED |     500 |                 1287 |
-| UNMAPPED    |     265 |                  390 |
-| CUSTOM      |     109 |                  202 |
+| UNMAPPED    |     264 |                  389 |
+| CUSTOM      |     111 |                  204 |
 
 ## Highest-weight uncovered classes
 
@@ -25,8 +25,8 @@ Generated from the eligible module union of all six P5-R1 screen graphs.
 | `tabular-nums`                                                            |          83 | UNSUPPORTED |
 | `outline-none`                                                            |          71 | UNSUPPORTED |
 | `focus-visible:outline-none`                                              |          54 | UNSUPPORTED |
-| `motion-reduce:transition-none`                                           |          53 | UNSUPPORTED |
-| `overflow-y-auto`                                                         |          46 | UNSUPPORTED |
+| `motion-reduce:transition-none`                                           |          52 | UNSUPPORTED |
+| `overflow-y-auto`                                                         |          47 | UNSUPPORTED |
 | `select-none`                                                             |          34 | UNSUPPORTED |
 | `sr-only`                                                                 |          31 | UNSUPPORTED |
 | `overflow-auto`                                                           |          25 | UNSUPPORTED |

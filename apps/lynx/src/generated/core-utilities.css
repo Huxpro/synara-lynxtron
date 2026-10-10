@@ -2173,6 +2173,9 @@
 .text-muted-foreground\/65 {
   color: rgba(104, 104, 104, 0.65);
 }
+.hover\:underline.ui-hover {
+  text-decoration: underline;
+}
 .origin-\(--transform-origin\) {
   transform-origin: var(--transform-origin);
 }
@@ -2187,9 +2190,6 @@
 }
 .data-highlighted\:text-\[var\(--color-text-foreground\)\].ui-highlighted {
   color: var(--color-text-foreground);
-}
-.hover\:underline.ui-hover {
-  text-decoration: underline;
 }
 .ring-2 {
   box-shadow: 0 0 0 2px var(--ring);
