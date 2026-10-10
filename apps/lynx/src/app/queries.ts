@@ -1,7 +1,7 @@
 // P2-V6: react-query selectors over the real Synara Effect-RPC WebSocket
 // snapshot. The transport is a singleton; both queries share its latest read.
 
-import { ORCHESTRATION_WS_METHODS, type ThreadId } from "@synara/contracts";
+import { ORCHESTRATION_WS_METHODS } from "@synara/contracts";
 import { ensureNativeApi } from "~/nativeApi";
 import { queryClient } from "./queryClient";
 import {
@@ -18,7 +18,6 @@ import type {
   AutomationUpdateInput,
   AutomationRunNowInput,
   AutomationRunNowResult,
-  MessageId,
   ModelSelection,
   OrchestrationThreadPullRequest,
   PinnedMessage,
@@ -52,13 +51,7 @@ import type {
 } from "@synara/contracts";
 import type { ThreadStatusPill } from "@synara-web/components/Sidebar.logic";
 import type { MessagesTimelineRow } from "@synara-web/components/chat/MessagesTimeline.logic";
-import { threadHasProviderLockingActivity } from "@synara-web/components/ChatView.logic";
-import {
-  derivePendingApprovals,
-  derivePendingUserInputs,
-  type PendingApproval,
-  type PendingUserInput,
-} from "@synara-web/session-logic";
+import type { PendingApproval, PendingUserInput } from "@synara-web/session-logic";
 import type { ChatMessage, Project, SidebarThreadSummary, Space } from "@synara-web/types";
 import type {
   SidebarSearchProject,
@@ -72,7 +65,6 @@ import {
   upsertPersistedThreadRecap,
 } from "@synara-web/lib/threadRecap";
 import type { NativeSyntaxHighlightThemes } from "../main/syntaxHighlightingContract.logic";
-import { resolveSnapshotThreadProvider } from "./threadSummaryProjection.logic";
 import type { MarkdownNode } from "../components/markdown/markdownAst.lynx";
 
 export { queryClient };
@@ -235,14 +227,6 @@ export async function resolveNativeAssistantDeliveryMode(): Promise<AssistantDel
   );
 }
 
-const transcriptRowsByThreadId = new Map<
-  string,
-  {
-    readonly snapshotSequence: number;
-    readonly rows: ThreadTranscriptRow[];
-  }
->();
-
 /** Message windows for the sidebar search palette; a server read upstream does not have. */
 export async function fetchSidebarSearchSnapshot(): Promise<OrchestrationSidebarSearchSnapshot> {
   "background only";
@@ -309,123 +293,18 @@ export async function fetchExplorerPdfMetadata(input: {
   });
 }
 
-/** One authoritative thread detail read through the shared facade. */
-function fetchThreadDetailSnapshot(threadId: string) {
-  "background only";
-  return ensureNativeApi().orchestration.getThreadDetailSnapshot({
-    threadId: threadId as ThreadId,
-  });
-}
-
 export async function fetchThreadCompletionAssistantSummary(
   threadId: string,
 ): Promise<string | null> {
   "background only";
-  const { summarizeTaskCompletionAssistantMessage } = await import(
-    /* webpackMode: "eager" */ "@synara-web/notifications/taskCompletion.logic"
+  const [{ summarizeTaskCompletionAssistantMessage }, { readThreadDetailOnce }] = await Promise.all(
+    [
+      import(/* webpackMode: "eager" */ "@synara-web/notifications/taskCompletion.logic"),
+      import(/* webpackMode: "eager" */ "./threadDetailRead.lynx"),
+    ],
   );
-  const snapshot = await fetchThreadDetailSnapshot(threadId);
-  return snapshot?.thread ? summarizeTaskCompletionAssistantMessage(snapshot.thread) : null;
-}
-
-export async function fetchThreadHeaderSummary(
-  threadId: string,
-): Promise<ThreadHeaderSummary | undefined> {
-  "background only";
-  const [detail, shell] = await Promise.all([
-    fetchThreadDetailSnapshot(threadId),
-    ensureNativeApi().orchestration.getShellSnapshot(),
-  ]);
-  const thread = detail?.thread;
-  if (!thread) return undefined;
-  const project = shell.projects.find((candidate) => candidate.id === thread.projectId);
-  return {
-    id: thread.id,
-    title: thread.title,
-    projectId: thread.projectId,
-    project: project?.title ?? "Synara",
-    // The snapshot omits null keys; commands built from this summary (Side, fork) must
-    // send them as explicit nulls or the server rejects the missing key.
-    branch: thread.branch ?? null,
-    envMode: thread.envMode ?? "local",
-    handoff: thread.handoff ?? null,
-    messages: thread.messages,
-    activities: thread.activities,
-    worktreePath: thread.worktreePath ?? null,
-    associatedWorktreePath: thread.associatedWorktreePath ?? null,
-    associatedWorktreeBranch: thread.associatedWorktreeBranch ?? null,
-    associatedWorktreeRef: thread.associatedWorktreeRef ?? null,
-    createBranchFlowCompleted: thread.createBranchFlowCompleted ?? false,
-    provider: resolveSnapshotThreadProvider(thread),
-    lockedProvider: threadHasProviderLockingActivity({
-      messages: thread.messages as never,
-      sidechatSourceThreadId: thread.sidechatSourceThreadId ?? null,
-      latestTurn: thread.latestTurn as never,
-      session: thread.session as never,
-    })
-      ? resolveSnapshotThreadProvider(thread)
-      : null,
-    modelSelection: thread.modelSelection,
-    runtimeMode: thread.runtimeMode,
-    interactionMode: thread.interactionMode,
-    sessionStatus: thread.session?.status ?? null,
-    error: thread.session?.lastError ?? null,
-    errorRevision: thread.session?.updatedAt ?? null,
-    activeTurnId: thread.session?.activeTurnId ?? null,
-    sidechatSourceThreadId: thread.sidechatSourceThreadId ?? null,
-    parentThreadId: thread.parentThreadId ?? null,
-    workingDirectory: thread.workingDirectory ?? null,
-    latestTurnState: thread.latestTurn?.state ?? null,
-    workspaceRoot: project?.workspaceRoot ?? null,
-    notes: thread.notes ?? "",
-    pinnedMessages: thread.pinnedMessages ?? [],
-    pinnedMessageTextById: Object.fromEntries(
-      thread.messages
-        .filter(
-          (message) =>
-            (message.role === "user" || message.role === "assistant") &&
-            message.text.trim().length > 0,
-        )
-        .map((message) => [message.id as MessageId, message.text]),
-    ),
-    pinnedRevision: JSON.stringify(thread.pinnedMessages ?? []),
-    lastKnownPr: thread.lastKnownPr ?? null,
-    pendingApprovals: derivePendingApprovals(thread.activities, thread.pendingInteractions),
-    pendingUserInputs: derivePendingUserInputs(thread.activities, thread.pendingInteractions),
-    checkpoints: thread.checkpoints,
-  };
-}
-
-export async function fetchThreadTranscriptRows(threadId: string): Promise<ThreadTranscriptRow[]> {
-  "background only";
-  const [{ useStore }, { projectThreadDetailSnapshot }, { projectThreadTranscriptRows }] =
-    await Promise.all([
-      import(/* webpackMode: "eager" */ "@synara-web/store"),
-      import(/* webpackMode: "eager" */ "./threadDetailProjection.logic"),
-      import(/* webpackMode: "eager" */ "./threadPageProjection.logic"),
-    ]);
-  const snapshot = await fetchThreadDetailSnapshot(threadId);
-  if (!snapshot) return [];
-  const cached = transcriptRowsByThreadId.get(threadId);
-  if (cached?.snapshotSequence === snapshot.snapshotSequence) {
-    return cached.rows;
-  }
-  // Projected, not committed: upstream session sync owns thread detail in the store.
-  const thread = projectThreadDetailSnapshot(useStore.getState(), snapshot.thread);
-  if (!thread) {
-    transcriptRowsByThreadId.set(threadId, {
-      snapshotSequence: snapshot.snapshotSequence,
-      rows: [],
-    });
-    return [];
-  }
-
-  const rows = projectThreadTranscriptRows(thread);
-  transcriptRowsByThreadId.set(threadId, {
-    snapshotSequence: snapshot.snapshotSequence,
-    rows,
-  });
-  return rows;
+  const read = await readThreadDetailOnce(threadId);
+  return read ? summarizeTaskCompletionAssistantMessage(read.thread) : null;
 }
 
 export async function fetchThreadRecapSummary(
@@ -438,14 +317,13 @@ export async function fetchThreadRecapSummary(
 
 export async function prepareThreadRecap(threadId: string): Promise<ThreadRecapPlan | null> {
   "background only";
-  const [{ useStore }, { projectThreadDetailSnapshot }] = await Promise.all([
-    import(/* webpackMode: "eager" */ "@synara-web/store"),
-    import(/* webpackMode: "eager" */ "./threadDetailProjection.logic"),
-  ]);
-  const snapshot = await fetchThreadDetailSnapshot(threadId);
-  if (!snapshot) return null;
-  // Projected, not committed: upstream session sync owns thread detail in the store.
-  const thread = projectThreadDetailSnapshot(useStore.getState(), snapshot.thread);
+  const { readThreadDetailOnce } = await import(
+    /* webpackMode: "eager" */ "./threadDetailRead.lynx"
+  );
+  // The Environment panel belongs to the routed thread, which session sync
+  // leases: this reads the store (as upstream's `useThreadRecap` does) and only
+  // asks the server while the detail has not arrived yet.
+  const thread = (await readThreadDetailOnce(threadId))?.thread;
   if (!thread) return null;
   const cache = readPersistedThreadRecapCache(webStorage);
   const existing = cache[threadId] ?? null;

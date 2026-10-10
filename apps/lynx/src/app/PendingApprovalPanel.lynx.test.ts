@@ -58,8 +58,13 @@ describe("Lynx pending approval capability", () => {
   });
 
   it("projects canonical pending interactions into the thread summary", () => {
-    expect(querySource).toContain("derivePendingApprovals(");
-    expect(querySource).toContain("thread.pendingInteractions");
+    // The header summary has one builder: the store projection.
+    const projectionSource = readFileSync(
+      new URL("./threadPageProjection.logic.ts", import.meta.url),
+      "utf8",
+    );
+    expect(projectionSource).toContain("derivePendingApprovals(");
+    expect(projectionSource).toContain("thread.pendingInteractions");
     expect(querySource).toContain("pendingApprovals: readonly PendingApproval[]");
   });
 

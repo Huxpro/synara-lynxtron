@@ -32,7 +32,13 @@ import {
  * no thread before session sync hydrates it on the background thread, so the
  * projection (markdown parsing included) never runs in the first-screen pass.
  */
-export function useThreadPageData(threadId: string | null): ThreadPageRead {
+export function useThreadPageData(
+  threadId: string | null,
+  // `retain: false` for a thread upstream leases by other means: the dock's Side
+  // thread is leased from the dock store and excluded from retention.
+  options: { readonly retain?: boolean } = {},
+): ThreadPageRead {
+  const retain = options.retain ?? true;
   const id = threadId as ThreadId | null;
   const thread = useStore(useMemo(() => createThreadSelector(id), [id]));
   const project = useStore(
@@ -52,7 +58,7 @@ export function useThreadPageData(threadId: string | null): ThreadPageRead {
   // upstream's (`threadDetailSubscriptionRetention.ts`).
   useEffect(() => {
     "background only";
-    if (!id) return;
+    if (!id || !retain) return;
     let active = true;
     let release: (() => void) | null = null;
     void import(/* webpackMode: "eager" */ "@synara-web/threadDetailSubscriptionRetention").then(
@@ -64,7 +70,7 @@ export function useThreadPageData(threadId: string | null): ThreadPageRead {
       active = false;
       release?.();
     };
-  }, [id]);
+  }, [id, retain]);
 
   const markdownRef = useRef<{ threadId: string | null; cache: ThreadMarkdownCache } | null>(null);
   const previousDataRef = useRef<ThreadPageData | undefined>(undefined);

@@ -34,7 +34,7 @@ import { platformTerminal } from "../platform/terminal";
 import { Button } from "../components/ui/button";
 import { Menu, MenuItem, MenuPopup, MenuTrigger } from "../components/ui/menu.lynx";
 import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
-import { queryClient, type ThreadHeaderSummary } from "./queries";
+import type { ThreadHeaderSummary } from "./queries";
 import {
   createNativeThreadHandoff,
   fetchNativeThreadHandoffProviderContext,
@@ -217,7 +217,6 @@ export function ThreadHeaderActions(props: {
       } else {
         await resetProjectScriptKeybinding(scriptId);
       }
-      await queryClient.invalidateQueries({ queryKey: ["thread-detail", thread?.id] });
       setActionDialogOpen(false);
       setEditingScript(null);
     } catch (cause) {

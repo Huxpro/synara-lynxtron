@@ -41,6 +41,28 @@ describe("Lynx thread page read path", () => {
     expect(projectionSource).not.toMatch(/ensureNativeApi|syncServer\w+|setState\(/);
   });
 
+  it("has one request-backed thread detail read, shared by every one-shot reader", () => {
+    const read = (path: string) => readFileSync(new URL(path, import.meta.url), "utf8");
+    const queries = read("./queries.ts");
+    expect(queries).not.toContain("getThreadDetailSnapshot");
+    expect(queries).not.toContain("fetchThreadTranscriptRows");
+    expect(queries).not.toContain("fetchThreadHeaderSummary");
+    expect(read("./threadDetailRead.lynx.ts").match(/getThreadDetailSnapshot\(/g)).toHaveLength(1);
+    // Projected on top of the store, never committed (EventRouter is the only writer).
+    expect(read("./threadDetailRead.lynx.ts")).not.toMatch(
+      /setState\(|syncServerThreadDetailHotPath/,
+    );
+    for (const consumer of [
+      "./useNativeKanbanCardActions.lynx.tsx",
+      "../components/sidebar/Sidebar.lynx.tsx",
+      "./TaskCompletionToastHost.lynx.tsx",
+      "./EnvironmentPanel.lynx.tsx",
+      "./EmbeddedSidechatPane.lynx.tsx",
+    ]) {
+      expect(read(consumer)).not.toContain("getThreadDetailSnapshot");
+    }
+  });
+
   it("passes the query state into the thread surface", () => {
     const routerSource = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
     expect(routerSource).toContain("currentThread={resolvedActiveThreadData?.summary}");

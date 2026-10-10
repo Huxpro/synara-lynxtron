@@ -41,9 +41,6 @@ describe("sidebar read path (plan Step 3)", () => {
     ]) {
       expect(queries, removed).not.toContain(removed);
     }
-    expect(source("./threadSummaryProjection.logic.ts")).not.toContain(
-      "projectActiveThreadSummaries",
-    );
   });
 
   it("the store-backed hooks poll nothing and request the shell only on demand", () => {

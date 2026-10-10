@@ -119,7 +119,8 @@ import {
   collectVisibleSidebarThreadIds,
   getNextVisibleSidebarThreadId,
 } from "@synara-web/components/SidebarThreadNavigation.logic";
-import { fetchThreadHeaderSummary, queryClient, type ThreadSummary } from "../../app/queries";
+import { queryClient, type ThreadSummary } from "../../app/queries";
+import { readThreadHeaderSummaryOnce } from "../../app/threadDetailRead.lynx";
 import { useSidebarSnapshot } from "../../app/sidebarSnapshot.lynx";
 import { ArchiveIcon, ClockIcon, ChevronDownIcon, GitBranchIcon, PlusIcon } from "../../lib/icons";
 import { colorizeLynxSvg } from "../../lib/themedSvg.lynx";
@@ -632,7 +633,7 @@ export function Sidebar({
       /* webpackMode: "eager" */ "../../platform/contextMenu"
     );
     const [detail, handoffProviders] = await Promise.all([
-      fetchThreadHeaderSummary(thread.id),
+      readThreadHeaderSummaryOnce(thread.id),
       fetchNativeThreadHandoffProviderContext().catch(() => null),
     ]);
     const handoffTargets = handoffProviders
@@ -2152,7 +2153,6 @@ export function Sidebar({
             threadId: renameThreadId as never,
             title,
           });
-          await queryClient.invalidateQueries({ queryKey: ["thread-detail", renameThreadId] });
         }}
       />
       <ProjectRunDialogLynx

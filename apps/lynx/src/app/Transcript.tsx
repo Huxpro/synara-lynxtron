@@ -78,7 +78,7 @@ import { ChatMarkdown, type MarkdownTextSelection } from "../components/markdown
 import { createAssistantSelectionAttachment } from "@synara-web/lib/assistantSelections";
 import type { TranscriptAssistantSelection } from "@synara-web/components/chat/chatSelectionActions";
 import { bridgeCall } from "../platform/bridge";
-import { queryClient, type ThreadTranscriptRow } from "./queries";
+import type { ThreadTranscriptRow } from "./queries";
 import { TranscriptUserMessageEditForm } from "./TranscriptUserMessageEditForm.lynx";
 import { TranscriptStatusIcon } from "./TranscriptStatusIcon.lynx";
 import {
@@ -718,9 +718,6 @@ function TranscriptMessage({
             scope: "thread",
             createdAt: new Date().toISOString(),
           });
-          await queryClient.invalidateQueries({
-            queryKey: ["thread-detail", threadId],
-          });
         } catch (error) {
           onThreadError?.(error instanceof Error ? error.message : "Failed to revert message.");
         }
@@ -755,18 +752,12 @@ function TranscriptMessage({
     accessibleLabel: pinActionLabel("message", pinned),
     onActivate: () => {
       "background only";
-      void ensureNativeApi()
-        .orchestration.dispatchCommand({
-          type: pinned ? "thread.pinned-message.remove" : "thread.pinned-message.add",
-          commandId: `lynx-command-${Date.now()}-${Math.random().toString(16).slice(2)}` as never,
-          threadId: threadId as never,
-          messageId: message.id,
-        })
-        .then(() =>
-          queryClient.invalidateQueries({
-            queryKey: ["thread-detail", threadId],
-          }),
-        );
+      void ensureNativeApi().orchestration.dispatchCommand({
+        type: pinned ? "thread.pinned-message.remove" : "thread.pinned-message.add",
+        commandId: `lynx-command-${Date.now()}-${Math.random().toString(16).slice(2)}` as never,
+        threadId: threadId as never,
+        messageId: message.id,
+      });
     },
   });
   const timestamp = formatDayAwareTimestamp(message.createdAt, timestampFormat);
@@ -1386,9 +1377,6 @@ export function Transcript({
       setEditingMessageId(null);
       setEditDraft("");
       onThreadError?.(null);
-      await queryClient.invalidateQueries({
-        queryKey: ["thread-detail", threadId],
-      });
     } catch (error) {
       const message = error instanceof Error ? error.message : "Failed to edit message.";
       setEditError(message);

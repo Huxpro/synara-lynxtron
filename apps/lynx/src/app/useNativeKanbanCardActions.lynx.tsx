@@ -23,7 +23,8 @@ import {
   nativeThreadContextConfirmation,
 } from "../components/sidebar/threadContextActions.logic";
 import { webStorage } from "../platform/storage";
-import { fetchThreadHeaderSummary, resolveNativeAssistantDeliveryMode } from "./queries";
+import { resolveNativeAssistantDeliveryMode } from "./queries";
+import { readThreadHeaderSummaryOnce } from "./threadDetailRead.lynx";
 import {
   buildNativeKanbanArchiveCommand,
   buildNativeKanbanRenameCommand,
@@ -92,7 +93,7 @@ export function useNativeKanbanCardActions(input: {
         if (text.length === 0) {
           throw new Error("Write a prompt before starting this task.");
         }
-        const summary = await fetchThreadHeaderSummary(card.threadId);
+        const summary = await readThreadHeaderSummaryOnce(card.threadId);
         if (!summary) throw new Error("This task is no longer available.");
         command = buildNativeKanbanStartCommand({
           assistantDeliveryMode: await resolveNativeAssistantDeliveryMode(),

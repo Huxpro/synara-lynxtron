@@ -27,7 +27,6 @@ import { installFakeNativeHost } from "../adapters/fakeNativeHost.testUtils";
 import { setNativeApiForTest } from "../adapters/nativeApi.lynx";
 import { bindLynxRouterHistory } from "../adapters/reactRouter.lynx";
 import { projectShellSnapshot } from "../app/sessionShell.lynx";
-import { projectThreadDetailSnapshot } from "../app/threadDetailProjection.logic";
 import { EventRouter } from "./eventRouter.generated";
 import {
   assistantDelta,
@@ -191,61 +190,6 @@ describe("generated EventRouter on the Lynx shims", () => {
     });
     await settle();
     expect(subscribeCalls()).toBe(leasesBeforeSettings);
-  });
-
-  it("stays the only writer of thread detail while the polling path projects its own snapshot", async () => {
-    await mount(`/thread/${THREAD_1}`);
-    const streamingMessage = (text: string) =>
-      [
-        {
-          id: MESSAGE_1,
-          role: "assistant",
-          text,
-          turnId: null,
-          streaming: true,
-          createdAt: "2026-02-27T00:02:00.000Z",
-          updatedAt: "2026-02-27T00:02:00.000Z",
-        },
-      ] as never;
-    act(() => {
-      fake.pushShell({
-        kind: "snapshot",
-        snapshot: makeShellSnapshot(shellThread(THREAD_1, "One")),
-      });
-      fake.pushThread({
-        kind: "snapshot",
-        snapshot: {
-          snapshotSequence: 5,
-          thread: makeReadModelThread({ id: THREAD_1, messages: streamingMessage("Hello") }),
-        },
-      } as OrchestrationThreadStreamItem);
-    });
-
-    // Deltas 6 and 7 arrive; the first flushes at once, the second waits in the
-    // 100 ms flush window.
-    act(() => {
-      fake.pushThread({ kind: "event", event: assistantDelta(6, " wor") });
-      fake.pushThread({ kind: "event", event: assistantDelta(7, "ld") });
-    });
-    expect(getThreadFromState(useStore.getState(), THREAD_1)?.messages[0]?.text).toBe("Hello wor");
-
-    // Inside that window the polling path receives a snapshot that already
-    // contains both deltas. It reads its own projection and leaves the store alone.
-    const before = useStore.getState();
-    const polled = projectThreadDetailSnapshot(
-      before,
-      makeReadModelThread({ id: THREAD_1, messages: streamingMessage("Hello world") }),
-    );
-    expect(polled?.messages[0]?.text).toBe("Hello world");
-    expect(useStore.getState()).toBe(before);
-
-    act(() => {
-      rs.advanceTimersByTime(100);
-    });
-    // Committing the polled snapshot instead would have produced "Hello worldld".
-    expect(getThreadFromState(useStore.getState(), THREAD_1)?.messages[0]?.text).toBe(
-      "Hello world",
-    );
   });
 
   it("keeps an old thread's detail and newer streamed shell state when a bounded sidebar poll resolves late", async () => {

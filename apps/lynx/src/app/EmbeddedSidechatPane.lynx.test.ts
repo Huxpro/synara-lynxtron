@@ -2,14 +2,18 @@ import { describe, expect, it } from "@rstest/core";
 import { readFileSync } from "node:fs";
 
 describe("Native embedded Side-chat pane", () => {
-  it("uses the canonical thread-detail cache shape without changing the primary route", () => {
+  it("reads the Side thread from the shared store without changing the primary route", () => {
     const source = readFileSync(
       new URL("./EmbeddedSidechatPane.lynx.tsx", import.meta.url),
       "utf8",
     );
     const router = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
-    expect(source).toContain('queryKey: ["thread-detail", props.threadId]');
-    expect(source).toContain("return { data: rows, summary };");
+    // Session sync leases the dock's active Side thread (the dock is mirrored into
+    // upstream's dock store); the pane has no request, query key or invalidation.
+    expect(source).toContain("useThreadPageData(props.threadId, { retain: false })");
+    expect(source).not.toMatch(/useQuery|queryKey|invalidateQueries|ensureNativeApi/);
+    const dockState = readFileSync(new URL("./rightDockState.lynx.ts", import.meta.url), "utf8");
+    expect(dockState).toContain("useRightDockStore.setState({ dockStateByThreadId: readAll() })");
     expect(source).toContain("<Transcript");
     expect(source).toContain("<Composer");
     expect(source).toContain("<ChatSurfaceHeaderFrame");
