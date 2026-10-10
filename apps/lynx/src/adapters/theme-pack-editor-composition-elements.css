@@ -363,6 +363,18 @@
   flex-direction: row;
 }
 
+/* Upstream SettingsSegmentedControl: `size="sm"` buttons set in `text-ui`. */
+.SharedThemePackWindowMaterial .LxButton__text {
+  font-size: var(--app-font-size-ui, 13px);
+}
+
+/* Lynx sets these two labels about 1px wider each than Chromium does; half a pixel less
+   padding per side keeps the control at upstream's measured 147.7px. */
+.SharedThemePackWindowMaterial .SharedSettingsAppearanceSegment--text-only {
+  padding-left: 8.5px;
+  padding-right: 8.5px;
+}
+
 .SharedThemePackUnavailableNote {
   padding: 0 12px 10px;
   color: var(--muted-foreground);
