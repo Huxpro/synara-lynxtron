@@ -147,7 +147,10 @@ describe("Composer token icon fidelity", () => {
     );
     expect(source).toContain("usage={contextWindow}");
     expect(source).toContain("deriveCumulativeCostUsd(activities)");
-    expect(elements).toContain('<path d=\"M 8 2 A');
+    // Upstream's gauge glyph: its own sector path and geometry, not a stroked arc.
+    expect(elements).toContain("contextWindowMeterSectorPath(");
+    expect(elements).toContain("CONTEXT_WINDOW_METER_GEOMETRY");
+    expect(elements).not.toContain('<path d=\"M 8 2 A');
     expect(elements).not.toContain("stroke-dashoffset");
     expect(elements).toContain("Automatically compacts its context when needed.");
     expect(elements).toContain("Model window:");

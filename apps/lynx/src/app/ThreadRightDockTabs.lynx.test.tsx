@@ -109,7 +109,7 @@ describe("Lynx thread right dock tabs", () => {
     // header buttons, where a tap would reach "Maximize panel" instead.
     const row = elementTree.root?.querySelector(".ThreadRightDockTabList");
     expect(row?.getAttribute("style")).toContain("width: 100%");
-    expect(row?.getAttribute("style")).toContain("min-width: 220px");
+    expect(row?.getAttribute("style")).toContain("min-width: 292px");
     expect(tabs[0]?.textContent).toContain("Diff");
     expect(tabs[1]?.textContent).toContain("example.js");
 

@@ -78,12 +78,12 @@ describe("Lynx editor surface tab", () => {
   it("sizes a content tab row to shrink with its strip and scroll below the tab floor", () => {
     const styles = readFileSync(new URL("./editor-surface-tab.css", import.meta.url), "utf8");
     // The row fills the strip, so its 216px tabs shrink together; the floor is the chip's own.
-    expect(styles).toMatch(/\.EditorSurfaceTab--content\s*\{[^}]*min-width:\s*108px;/s);
+    expect(styles).toMatch(/\.EditorSurfaceTab--content\s*\{[^}]*min-width:\s*144px;/s);
     expect(styles).toMatch(/\.EditorSurfaceTab--content\s*\{[^}]*flex-shrink:\s*1;/s);
-    expect(contentTabListStyle(1)).toEqual({ width: "100%", minWidth: "108px" });
+    expect(contentTabListStyle(1)).toEqual({ width: "100%", minWidth: "144px" });
     // Two tabs in the default 376px dock strip: 186px each, both close buttons in reach.
-    expect(contentTabListStyle(2)).toEqual({ width: "100%", minWidth: "220px" });
-    expect(contentTabListStyle(4)).toEqual({ width: "100%", minWidth: "444px" });
+    expect(contentTabListStyle(2)).toEqual({ width: "100%", minWidth: "292px" });
+    expect(contentTabListStyle(4)).toEqual({ width: "100%", minWidth: "588px" });
     expect(contentTabListStyle(0)).toEqual({ width: "100%", minWidth: "0px" });
   });
 });
