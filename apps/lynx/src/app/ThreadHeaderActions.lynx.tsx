@@ -1,5 +1,9 @@
 import { useState } from "@lynx-js/react";
 import { useQuery } from "@tanstack/react-query";
+import {
+  serverConfigQueryOptions,
+  serverSettingsQueryOptions,
+} from "@synara-web/lib/serverReactQuery";
 import type {
   KeybindingRule,
   ModelSelection,
@@ -35,11 +39,7 @@ import { Button } from "../components/ui/button";
 import { Menu, MenuItem, MenuPopup, MenuTrigger } from "../components/ui/menu.lynx";
 import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
 import type { ThreadHeaderSummary } from "./queries";
-import {
-  createNativeThreadHandoff,
-  fetchNativeThreadHandoffProviderContext,
-  resolveNativeThreadHandoffTargets,
-} from "./threadHandoff.lynx";
+import { createNativeThreadHandoff, resolveNativeThreadHandoffTargets } from "./threadHandoff.lynx";
 import { ProjectActionEditor, type ProjectActionEditorValue } from "./ProjectActionEditor.lynx";
 
 import "./thread-header-actions.css";
@@ -103,14 +103,14 @@ export function ThreadHeaderActions(props: {
   const [error, setError] = useState<string | null>(null);
   const thread = props.thread;
   const project = props.project;
-  const handoffProviders = useQuery({
-    queryKey: ["thread-handoff-providers"],
-    queryFn: () => fetchNativeThreadHandoffProviderContext(),
+  // Upstream's config and settings queries; session sync invalidates both, so
+  // the hand-off targets follow a provider being enabled, disabled or going down.
+  const serverConfig = useQuery(serverConfigQueryOptions());
+  const serverSettings = useQuery(serverSettingsQueryOptions());
+  const handoffTargets = resolveNativeThreadHandoffTargets(thread, {
+    providerSettings: serverSettings.data?.providers ?? null,
+    providerStatuses: serverConfig.data?.providers ?? [],
   });
-  const handoffTargets = resolveNativeThreadHandoffTargets(
-    thread,
-    handoffProviders.data ?? { providerSettings: null, providerStatuses: [] },
-  );
   const handoffAllowed = handoffTargets.length > 0;
 
   async function createHandoff(targetProvider: ProviderKind) {

@@ -11,7 +11,7 @@ import { useTheme } from "../adapters/useTheme.lynx";
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import { setAutomationCreateOpen } from "./automationCreateIntent.lynx";
-import { useAutomationsListQuery } from "./AutomationsPage.lynx";
+import { useLiveAutomations } from "./automationsLive.lynx";
 import { useSidebarSnapshot } from "./sidebarSnapshot.lynx";
 import "./automations-rail-panel.css";
 
@@ -50,9 +50,9 @@ export function AutomationsRailPanel() {
       return id ? decodeURIComponent(id) : null;
     },
   });
-  const automations = useAutomationsListQuery();
+  const automations = useLiveAutomations();
   const sidebar = useSidebarSnapshot();
-  const definitions = automations.data?.definitions ?? [];
+  const definitions = automations.data.definitions;
   const section = (label: string, enabled: boolean) => {
     const rows = definitions.filter((definition) => definition.enabled === enabled);
     if (rows.length === 0) return null;
@@ -98,7 +98,7 @@ export function AutomationsRailPanel() {
       />
       <scroll-view className="AutomationsRailScroller" scroll-orientation="vertical">
         <view className="AutomationsRailList">
-          {automations.isPending ? (
+          {automations.isLoading ? (
             <text className="AutomationsRailState">Loading automations...</text>
           ) : definitions.length === 0 ? (
             <text className="AutomationsRailState">No automations yet</text>

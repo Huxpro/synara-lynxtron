@@ -2,19 +2,26 @@ import { describe, expect, it } from "@rstest/core";
 import { readFileSync } from "node:fs";
 
 describe("Lynx Automations route", () => {
-  it("uses canonical automation data and host-backed polling", () => {
-    const pageSource = readFileSync(new URL("./AutomationsPage.lynx.tsx", import.meta.url), "utf8");
+  it("runs upstream's automations state layer, kept live by the automation stream", () => {
+    const read = (path: string) => readFileSync(new URL(path, import.meta.url), "utf8");
+    const pageSource = read("./AutomationsPage.lynx.tsx");
+    const liveSource = read("./automationsLive.lynx.ts");
+    const generated = read("../generated/automationsState.generated.ts");
 
-    expect(pageSource).toContain('queryKey: ["automations"]');
+    // The page and the rail panel share upstream's query, key and mutations.
+    expect(pageSource).toContain("useLiveAutomations()");
+    expect(read("./AutomationsRailPanel.lynx.tsx")).toContain("useLiveAutomations()");
     expect(pageSource).toContain("projectAutomationList({");
-    expect(pageSource).toContain("useHostPolling(automations.refetch, 5_000)");
-    expect(pageSource).toContain("void sleepOnHost(delayMs)\n        .then(");
-    expect(pageSource).toContain("await pollRef.current().catch(() => undefined)");
-    expect(pageSource).not.toContain("pollRef.current().finally(schedule)");
-    expect(pageSource).not.toContain("refetchInterval: 5_000");
-    // The shared facade carries the request; the wire payload stays `{}`.
-    expect(pageSource).toContain("queryFn: () => ensureNativeApi().automation.list({})");
-    expect(pageSource).not.toContain("synaraClient");
+    expect(pageSource).not.toMatch(
+      /useQuery\(|useMutation\(|queryKey|ensureNativeApi|synaraClient/,
+    );
+    expect(generated).toContain('export const automationQueryKey = ["automations"] as const;');
+    expect(generated).toContain("queryFn: () => ensureNativeApi().automation.list({})");
+    // No poll: the server's automation stream is folded into the cache, as upstream does.
+    expect(pageSource).not.toMatch(/useHostPolling|sleepOnHost|refetchInterval/);
+    expect(liveSource).toContain("ensureNativeApi().automation.onEvent(");
+    expect(liveSource).toContain("applyAutomationEvent(prev, event)");
+    expect(liveSource).not.toMatch(/refetchInterval|setInterval|sleepOnHost/);
   });
 
   it("routes the real page and sidebar entry", () => {
@@ -52,22 +59,25 @@ describe("Lynx Automations route", () => {
     expect(detailSource).toContain("Previous runs");
     expect(detailSource).toContain("No runs yet.");
     expect(detailSource).toContain('"Pause" : "Resume"');
-    expect(pageSource).toContain("ensureNativeApi().automation.update(input)");
-    expect(pageSource).toContain("ensureNativeApi().automation.delete(input)");
-    expect(pageSource).toContain("ensureNativeApi().automation.runNow(input)");
-    // Like the web list, Create closes the dialog and stays on the list.
-    const createMutation = pageSource.slice(
-      pageSource.indexOf("ensureNativeApi().automation.create(input)"),
-      pageSource.indexOf("const runNowMutation"),
+    const generated = readFileSync(
+      new URL("../generated/automationsState.generated.ts", import.meta.url),
+      "utf8",
     );
-    expect(createMutation).toContain("setCreateOpen(false)");
-    expect(createMutation).not.toContain("navigate(");
-    expect(pageSource).toContain('invalidateQueries({ queryKey: ["automations"] })');
+    expect(generated).toContain("ensureNativeApi().automation.update(input)");
+    expect(generated).toContain("ensureNativeApi().automation.delete({ id: definition.id })");
+    expect(generated).toContain(
+      "ensureNativeApi().automation.runNow({ automationId: definition.id })",
+    );
+    // Like the web list, Create closes the dialog and stays on the list.
+    expect(pageSource).toContain(
+      "createMutation.mutate(input, { onSuccess: () => setCreateOpen(false) })",
+    );
+    expect(generated).toContain("invalidateQueries({ queryKey: automationQueryKey })");
     expect(detailSource).toContain('"background only"');
     expect(detailSource).toContain("return dialogs.confirm(");
     expect(detailSource).toContain("confirmAutomationDelete(definition.name)");
     expect(detailSource).toContain("if (confirmed) onDelete(definition)");
-    expect(pageSource).toContain('navigate("/automations")');
+    expect(pageSource).toContain('{ onSuccess: () => navigate("/automations") }');
     expect(detailSource).not.toContain("automation.update");
     expect(detailSource).not.toContain("automation.delete");
     expect(detailSource).toContain('runNowPending ? "Running..." : "Run now"');
@@ -159,7 +169,9 @@ describe("Lynx Automations route", () => {
     const queriesSource = readFileSync(new URL("./queries.ts", import.meta.url), "utf8");
     const styles = readFileSync(new URL("./automations-page.css", import.meta.url), "utf8");
 
-    expect(pageSource).toContain("ensureNativeApi().automation.create(input)");
+    expect(
+      readFileSync(new URL("../generated/automationsState.generated.ts", import.meta.url), "utf8"),
+    ).toContain("ensureNativeApi().automation.create(input)");
     expect(pageSource).toContain("<AutomationDialog");
     expect(pageSource).toContain("threads={sidebar.data?.threads ?? []}");
     expect(pageSource).not.toContain(

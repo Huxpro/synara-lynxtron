@@ -69,7 +69,11 @@ describe("Lynx sidebar hover parity", () => {
     expect(source).toContain("deleteNativeProjectThreads({");
     expect(source).toContain("removeNativeProject({");
     expect(source).toContain("hasAnyThreads: projectThreads.length > 0");
-    expect(source).toContain("ensureNativeApi().projects.listDevServers()");
+    // Dev servers come from upstream's registry store (session sync feeds it),
+    // detected servers from upstream's sidebar query; no Lynx key, no request here.
+    expect(source).toContain("useProjectRunStore((state) => state.runsByProjectId)");
+    expect(source).toContain("sidebarLocalServersQueryOptions({");
+    expect(source).not.toMatch(/listDevServers|listLocalServers|project-dev-servers/);
     expect(source).toContain('action === "start-dev"');
     expect(source).toContain("selectPrimaryProjectRunCommand({");
     expect(source).toContain(".projects.discoverScripts({ cwd: projectSummary.workspaceRoot })");

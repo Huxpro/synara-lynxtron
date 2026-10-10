@@ -1,6 +1,6 @@
 import { useMemo, useState } from "@lynx-js/react";
 import { ensureNativeApi } from "~/nativeApi";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import { DEFAULT_MODEL_BY_PROVIDER } from "@synara/contracts";
 
 import {
@@ -14,8 +14,11 @@ import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsGeneralProjection,
 } from "@synara-web/appSettingsStorageProjection.logic";
-import { providerComposerCapabilitiesQueryOptions } from "@synara-web/lib/providerDiscoveryReactQuery";
-import { queryClient, type SidebarSnapshot } from "../../app/queries";
+import {
+  providerComposerCapabilitiesQueryOptions,
+  supportsThreadImport,
+} from "@synara-web/lib/providerDiscoveryReactQuery";
+import type { SidebarSnapshot } from "../../app/queries";
 import { getNavigatorPlatform } from "~/platform/env";
 import { webStorage } from "../../platform/storage";
 import {
@@ -87,24 +90,18 @@ export function SidebarSearchPaletteLynx(props: {
   );
   const newThreadProjectId =
     props.snapshot?.projects.find((project) => project.kind === "project")?.id ?? null;
-  const { data: importProviders = [] } = useQuery({
-    queryKey: ["sidebar-search-import-providers"],
-    queryFn: async () => {
-      "background only";
-      const capabilities = await Promise.all(
-        IMPORT_PROVIDERS.map(async (provider) => ({
-          provider,
-          capabilities: await queryClient
-            .fetchQuery(providerComposerCapabilitiesQueryOptions(provider))
-            .catch(() => null),
-        })),
-      );
-      return capabilities
-        .filter((entry) => entry.capabilities?.supportsThreadImport === true)
-        .map((entry) => entry.provider);
-    },
-    staleTime: 60_000,
+  // As upstream's palette controller: one capabilities query per candidate,
+  // on upstream's keys (the composer reads the same cache).
+  const importCapabilityQueries = useQueries({
+    queries: IMPORT_PROVIDERS.map((provider) => providerComposerCapabilitiesQueryOptions(provider)),
   });
+  const importProviderKey = IMPORT_PROVIDERS.filter((_, index) =>
+    supportsThreadImport(importCapabilityQueries[index]?.data),
+  ).join(",");
+  const importProviders = useMemo(
+    () => (importProviderKey ? (importProviderKey.split(",") as ImportProviderKind[]) : []),
+    [importProviderKey],
+  );
 
   const addProjectPath = async (workspaceRoot: string, options?: { createIfMissing?: boolean }) => {
     "background only";

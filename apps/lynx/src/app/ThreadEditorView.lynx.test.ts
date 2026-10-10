@@ -43,7 +43,8 @@ describe("Lynx Editor view", () => {
     expect(actionsSource).toContain('ariaLabel="Hand off thread"');
     expect(actionsSource).toContain('ariaLabel="Add action"');
     expect(actionsSource).toContain('<view className="ThreadHeaderActionDivider" />');
-    expect(actionsSource).toContain("queryFn: () => fetchNativeThreadHandoffProviderContext()");
+    expect(actionsSource).toContain("useQuery(serverSettingsQueryOptions())");
+    expect(actionsSource).not.toContain("thread-handoff-providers");
     expect(actionsSource).toContain("resolveNativeThreadHandoffTargets(");
     expect(actionsSource).toContain("await createNativeThreadHandoff({");
     expect(routerSource).toContain("subscribeOpenThreadPathInTerminal(");

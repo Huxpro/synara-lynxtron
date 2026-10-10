@@ -1,6 +1,10 @@
 import { useLatestProjectStore } from "@synara-web/latestProjectStore";
 import { ensureNativeApi } from "~/nativeApi";
-import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
+import {
+  serverConfigQueryOptions,
+  sidebarLocalServersQueryOptions,
+} from "@synara-web/lib/serverReactQuery";
+import { useProjectRunStore } from "@synara-web/projectRunStore";
 import {
   resolveCurrentProjectTargetId,
   resolveLatestProjectTargetIdWithFallback,
@@ -378,26 +382,23 @@ export function Sidebar({
   );
   const { data, error, isPending } = useSidebarSnapshot();
   const serverConfigQuery = useQuery(serverConfigQueryOptions());
-  const projectDevServersQuery = useQuery({
-    queryKey: ["project-dev-servers"],
-    queryFn: () => {
-      "background only";
-      return ensureNativeApi().projects.listDevServers();
-    },
-  });
-  const localServersQuery = useQuery({
-    queryKey: ["sidebar-local-servers-native"],
-    queryFn: () => {
-      "background only";
-      return ensureNativeApi().server.listLocalServers();
-    },
-    enabled: (data?.projects.length ?? 0) > 0,
-  });
+  // Synara-owned dev servers: upstream's registry store, which session sync
+  // seeds and keeps current from the dev-server event stream. Detected local
+  // servers: upstream's sidebar query, which only polls while a run is active
+  // and is invalidated by session sync on every dev-server event.
+  const projectRunsByProjectId = useProjectRunStore((state) => state.runsByProjectId);
+  const hasRunnableProjects = (data?.projects ?? []).some((project) => project.kind === "project");
+  const localServersQuery = useQuery(
+    sidebarLocalServersQueryOptions({
+      hasActiveProjectRun: Object.keys(projectRunsByProjectId).length > 0,
+      hasProjects: hasRunnableProjects,
+    }),
+  );
   const projectRunServerByProjectId = useMemo(() => {
     const projects = (data?.projects ?? []).filter((project) => project.kind === "project");
     const servers = localServersQuery.data?.servers ?? [];
     const result = new Map<string, (typeof servers)[number]>();
-    for (const run of projectDevServersQuery.data?.servers ?? []) {
+    for (const run of Object.values(projectRunsByProjectId)) {
       const server = servers.find((candidate) => localServerMatchesRun(candidate, run));
       if (server) result.set(run.projectId, server);
     }
@@ -411,7 +412,7 @@ export function Sidebar({
       if (project && !result.has(project.id)) result.set(project.id, server);
     }
     return result;
-  }, [data?.projects, localServersQuery.data?.servers, projectDevServersQuery.data?.servers]);
+  }, [data?.projects, localServersQuery.data?.servers, projectRunsByProjectId]);
   const primarySidebarSurface = resolveSidebarPrimarySurface({
     isOnStudio: activePath === "/studio",
   });
@@ -856,9 +857,7 @@ export function Sidebar({
       (thread) => thread.projectId === project.id,
     );
     const archivePlan = deriveProjectThreadArchivePlan(projectThreads);
-    const projectRun =
-      projectDevServersQuery.data?.servers.find((server) => server.projectId === project.id) ??
-      null;
+    const projectRun = projectRunsByProjectId[project.id as ProjectId] ?? null;
     const detectedServer = projectRunServerByProjectId.get(project.id) ?? null;
     const projectRunUrl = detectedServer ? firstLocalServerUrl(detectedServer) : null;
     try {
@@ -941,7 +940,8 @@ export function Sidebar({
         if (!result.stopped) {
           setSpaceActionError("Unable to stop the dev server.");
         }
-        await Promise.all([projectDevServersQuery.refetch(), localServersQuery.refetch()]);
+        // The registry follows the dev-server event stream; the detected list is asked again.
+        await localServersQuery.refetch();
       } else if (action === "open-dev-server") {
         if (projectRunUrl) await platformWindow.openExternal(projectRunUrl);
       } else if (action === "new-space") {
@@ -1209,21 +1209,16 @@ export function Sidebar({
         })
         .catch(() => undefined);
     }
-    try {
-      await ensureNativeApi().projects.runDevServer({
-        projectId: project.id as ProjectId,
-        command,
-        cwd: runProjectState.cwd,
-        env: projectScriptRuntimeEnv({
-          project: { cwd: project.workspaceRoot },
-          worktreePath: null,
-        }),
-      });
-    } catch (cause) {
-      await projectDevServersQuery.refetch();
-      throw cause;
-    }
-    await projectDevServersQuery.refetch();
+    // The started run reaches the registry store through the dev-server event stream.
+    await ensureNativeApi().projects.runDevServer({
+      projectId: project.id as ProjectId,
+      command,
+      cwd: runProjectState.cwd,
+      env: projectScriptRuntimeEnv({
+        project: { cwd: project.workspaceRoot },
+        worktreePath: null,
+      }),
+    });
   }
 
   function threadHoverActions(thread: ThreadSummary) {
@@ -1854,10 +1849,7 @@ export function Sidebar({
                       const visibleProjectThreadRows = projectRows?.visibleEntries ?? [];
                       const projectPinned =
                         group.isPinned === true || persistedPinnedProjectIds.includes(group.id);
-                      const projectRun =
-                        projectDevServersQuery.data?.servers.find(
-                          (server) => server.projectId === group.id,
-                        ) ?? null;
+                      const projectRun = projectRunsByProjectId[group.id as ProjectId] ?? null;
                       const projectRunServer = projectRunServerByProjectId.get(group.id) ?? null;
                       const collapsedProjectStatus = isExpanded
                         ? null

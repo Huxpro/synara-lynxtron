@@ -26,7 +26,12 @@ describe("Lynx plugin library", () => {
     expect(pageSource).toContain("if (!plugin.installed) continue;");
     expect(pageSource).toContain("supportsPluginDiscovery");
     expect(pageSource).toContain("supportsSkillDiscovery");
-    expect(pageSource).toContain("(supported && (tab ===");
+    // Upstream's query options and keys; a placeholder answer still reads as loading.
+    expect(pageSource).toContain("useQuery(providerComposerCapabilitiesQueryOptions(provider))");
+    expect(pageSource).toContain("...providerPluginsQueryOptions({ provider, cwd: discoveryCwd })");
+    expect(pageSource).toContain("...providerSkillsQueryOptions({ provider, cwd: discoveryCwd })");
+    expect(pageSource).not.toMatch(/queryKey|queryFn|ensureNativeApi/);
+    expect(pageSource).toContain("active.isPending || active.isPlaceholderData");
     expect(pageSource).toContain("are unavailable for ${PROVIDER_DISPLAY_NAMES[provider]}.");
     expect(pageSource).toContain('tab === "plugins"');
     expect(pageSource).toContain('tab === "skills"');
@@ -57,15 +62,6 @@ describe("Lynx plugin library", () => {
     expect(pageSource).not.toContain("PluginLibraryRowStatus");
     expect(pageSource).toContain('className="PluginLibrarySectionTitle">Skills</text>');
     expect(pageSource).toContain("PROVIDER_DISPLAY_NAMES[provider]");
-    expect(pageSource).toContain(
-      "return ensureNativeApi().provider.getComposerCapabilities({ provider });",
-    );
-    expect(pageSource).toContain(
-      "return ensureNativeApi().provider.listPlugins({ provider, cwd: config.cwd });",
-    );
-    expect(pageSource).toContain(
-      "return ensureNativeApi().provider.listSkills({ provider, cwd: config.cwd });",
-    );
   });
 
   it("is available through the Lynx memory router", () => {
