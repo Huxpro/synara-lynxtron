@@ -30,7 +30,7 @@ import {
   XIcon,
 } from "~/lib/icons";
 
-import { browserLocalServerUrl, localServerPrimaryLabel } from "@synara/shared/localServers";
+import { localServerPrimaryLabel } from "@synara/shared/localServers";
 import {
   BROWSER_BLANK_URL,
   isBlankBrowserTabUrl,
@@ -425,14 +425,11 @@ function BrowserRuntimePreview(props: { title: string; detail: string }) {
 function BrowserRuntimeError(props: { message: string; onReload: () => void }) {
   return (
     <div
-      className="absolute inset-0 z-20 flex items-center justify-center bg-[var(--browser-home-surface)] px-6 text-center text-[var(--browser-home-foreground)]"
+      className="absolute inset-0 z-20 flex items-center justify-center bg-[#0d0d0d] px-6 text-center text-white"
       role="alert"
     >
       <div className="flex max-w-xs flex-col items-center">
-        <CircleAlertIcon
-          className="size-7 text-[var(--browser-home-foreground-secondary)]"
-          aria-hidden="true"
-        />
+        <CircleAlertIcon className="size-7 text-white/35" aria-hidden="true" />
         <p className="mt-3 text-ui-lg font-medium text-white/80">This page could not be loaded</p>
         <p className="mt-1 text-ui leading-snug text-white/45">{props.message}</p>
         <Button
@@ -449,6 +446,19 @@ function BrowserRuntimeError(props: { message: string; onReload: () => void }) {
   );
 }
 
+function browserLocalServerUrl(server: ServerLocalServerProcess): string | null {
+  const addressWithUrl = server.addresses.find((address) => address.url);
+  if (addressWithUrl?.url) {
+    return addressWithUrl.url;
+  }
+
+  const port = server.ports[0];
+  if (!port) {
+    return null;
+  }
+  return `http://localhost:${port}/`;
+}
+
 // Paints a tiny browser-preview tile without fetching screenshots or adding network work.
 // The page name and address are rendered into the tile so it reads as a real preview.
 function BrowserLocalServerThumbnail({ server }: { server: ServerLocalServerProcess }) {
@@ -458,19 +468,17 @@ function BrowserLocalServerThumbnail({ server }: { server: ServerLocalServerProc
   return (
     <span
       aria-hidden="true"
-      className="flex h-12 w-[4.5rem] shrink-0 flex-col gap-1 overflow-hidden rounded-md border border-[var(--browser-home-thumbnail-border)] bg-[var(--browser-home-thumbnail-surface)] p-1.5 shadow-[var(--browser-home-thumbnail-shadow)]"
+      className="flex h-12 w-[4.5rem] shrink-0 flex-col gap-1 overflow-hidden rounded-md border border-white/12 bg-[#f7f7f2] p-1.5 shadow-[0_4px_12px_rgba(0,0,0,0.28)]"
     >
       <span className="flex gap-[3px]">
-        <span className="size-[3px] rounded-full bg-[var(--browser-home-traffic-red)]" />
-        <span className="size-[3px] rounded-full bg-[var(--browser-home-traffic-yellow)]" />
-        <span className="size-[3px] rounded-full bg-[var(--browser-home-traffic-green)]" />
+        <span className="size-[3px] rounded-full bg-[#ff6b65]" />
+        <span className="size-[3px] rounded-full bg-[#f4c047]" />
+        <span className="size-[3px] rounded-full bg-[#45cf77]" />
       </span>
       <span className="flex min-w-0 flex-1 flex-col justify-center gap-0.5">
-        <span className="truncate text-[7px] font-bold leading-none text-[var(--browser-home-thumbnail-title)]">
-          {label}
-        </span>
+        <span className="truncate text-[7px] font-bold leading-none text-[#2a2a2a]">{label}</span>
         {port ? (
-          <span className="truncate text-[6px] font-medium leading-none text-[var(--browser-home-thumbnail-meta)]">
+          <span className="truncate text-[6px] font-medium leading-none text-[#9a9a9a]">
             localhost:{port}
           </span>
         ) : null}
@@ -496,17 +504,15 @@ function BrowserLocalServersHome({
   const hasServers = servers.length > 0;
 
   return (
-    <div className="absolute inset-0 z-20 flex flex-col overflow-hidden bg-[var(--browser-home-surface)] text-[var(--browser-home-foreground)]">
+    <div className="absolute inset-0 z-20 flex flex-col overflow-hidden bg-[#0d0d0d] text-white">
       <div className="mx-auto flex h-full w-full max-w-[52rem] flex-col px-8 py-9">
         <div className="flex shrink-0 items-center justify-between">
-          <p className="text-[15px] font-medium text-[var(--browser-home-foreground-secondary)]">
-            Local
-          </p>
+          <p className="text-[15px] font-medium text-white/35">Local</p>
           <Button
             type="button"
             variant="ghost"
             size="icon-sm"
-            className="size-8 text-[var(--browser-home-foreground-secondary)] hover:bg-[var(--browser-home-card-border)] hover:text-[var(--browser-home-hover-foreground)]"
+            className="size-8 text-white/35 hover:bg-white/[0.06] hover:text-white/70"
             disabled={loading}
             onClick={onRefresh}
             aria-label="Refresh local servers"
@@ -520,23 +526,15 @@ function BrowserLocalServersHome({
           <div className="flex min-h-0 flex-1 flex-col items-center justify-center text-center">
             {loading ? (
               <>
-                <RefreshCwIcon className="mb-4 size-12 animate-spin text-[var(--browser-home-icon-muted)]" />
-                <p className="text-base font-semibold text-[var(--browser-home-foreground)]">
-                  Scanning local servers
-                </p>
-                <p className="mt-2 text-ui leading-snug text-[var(--browser-home-foreground-secondary)]">
-                  Checking localhost ports
-                </p>
+                <RefreshCwIcon className="mb-4 size-12 animate-spin text-white/20" />
+                <p className="text-base font-semibold text-white">Scanning local servers</p>
+                <p className="mt-2 text-ui leading-snug text-white/35">Checking localhost ports</p>
               </>
             ) : (
               <>
-                <GlobeIcon className="mb-4 size-16 stroke-[1.5] text-[var(--browser-home-foreground-tertiary)]" />
-                <p className="text-base font-semibold text-[var(--browser-home-foreground)]">
-                  No local servers
-                </p>
-                <p className="mt-2 text-ui leading-snug text-[var(--browser-home-foreground-secondary)]">
-                  Try another browser URL
-                </p>
+                <GlobeIcon className="mb-4 size-16 stroke-[1.5] text-white/30" />
+                <p className="text-base font-semibold text-white">No local servers</p>
+                <p className="mt-2 text-ui leading-snug text-white/35">Try another browser URL</p>
               </>
             )}
           </div>
@@ -555,12 +553,12 @@ function BrowserLocalServersHome({
                       onNavigate(url, activeTabId);
                     }
                   }}
-                  className="group grid w-full shrink-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3.5 rounded-xl border border-[var(--browser-home-card-border)] px-3 py-2.5 text-left transition-colors hover:border-[var(--browser-home-card-border-hover)] hover:bg-[var(--browser-home-card-hover)] disabled:cursor-not-allowed disabled:opacity-45"
+                  className="group grid w-full shrink-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3.5 rounded-xl border border-white/[0.07] px-3 py-2.5 text-left transition-colors hover:border-white/[0.14] hover:bg-white/[0.04] disabled:cursor-not-allowed disabled:opacity-45"
                 >
                   <BrowserLocalServerThumbnail server={server} />
                   <LocalServerIdentity server={server} tone="browser" />
                   <span
-                    className="mr-1 size-2 rounded-full bg-[var(--browser-home-online)] shadow-[0_0_0_2.5px_var(--browser-home-online-ring)]"
+                    className="mr-1 size-2 rounded-full bg-[#36d07b] shadow-[0_0_0_2.5px_rgba(54,208,123,0.16)]"
                     aria-hidden
                   />
                 </button>
@@ -2011,7 +2009,7 @@ export function BrowserPanel({
                 data-floating-browser-viewport={isFloatingMode ? "true" : undefined}
                 className={cn(
                   "absolute overflow-hidden",
-                  isFloatingMode ? "bg-transparent" : "bg-[var(--browser-home-surface)]",
+                  isFloatingMode ? "bg-transparent" : "bg-[#0d0d0d]",
                   isFloatingMode && "rounded-[10px] [clip-path:inset(0_round_10px)]",
                   "inset-0",
                 )}

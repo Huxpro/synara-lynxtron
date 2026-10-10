@@ -17,7 +17,6 @@ export function DockFilePane(props: {
   onReferenceInChat?: ((reference: ChatFileReference) => void) | undefined;
   onAskWhyInChat?: ((reference: ChatFileReference) => void) | undefined;
   onCommentInChat?: ((comment: FileCommentSelection) => void) | undefined;
-  onClosePreview?: (() => void) | undefined;
 }) {
   return (
     <WorkspaceFilePreview
@@ -33,7 +32,6 @@ export function DockFilePane(props: {
       onReferenceInChat={props.onReferenceInChat}
       onAskWhyInChat={props.onAskWhyInChat}
       onCommentInChat={props.onCommentInChat}
-      onClosePreview={props.onClosePreview}
     />
   );
 }

@@ -15,8 +15,8 @@ import { EditProvider, File as PierreFile } from "@pierre/diffs/react";
 import {
   isSupportedLocalImagePath,
   isSupportedLocalPdfPath,
+  lowerCaseExtensionOf,
 } from "@synara/shared/localPreviewFiles";
-import { isMarkdownPreviewablePath, resolveFilePreviewMode } from "@synara/shared/filePreviewMode";
 import {
   isLocalAbsolutePath,
   isWorkspaceRelativePathSafe,
@@ -86,14 +86,18 @@ import { FileLineCommentBox } from "./chat/FileLineCommentBox";
 import { PanelStateMessage } from "./chat/PanelStateMessage";
 import { useFileLineCommenting } from "./chat/useFileLineCommenting";
 import { WorkspaceFilePreviewHeader } from "./chat/WorkspaceFilePreviewHeader";
-import { WorkspaceFilePreviewErrorState } from "./WorkspaceFilePreviewErrorState";
 import { TranscriptSelectionAction } from "./chat/TranscriptSelectionAction";
 import { useCodeSelectionAction } from "./chat/useCodeSelectionAction";
 import { LocalImagePreview } from "./LocalImagePreview";
 import { PdfFilePreview } from "./PdfFilePreview";
 import { Skeleton } from "./ui/skeleton";
 
-export { isMarkdownPreviewablePath } from "@synara/shared/filePreviewMode";
+const MARKDOWN_PREVIEW_EXTENSIONS = new Set([".markdown", ".md", ".mdx"]);
+
+export function isMarkdownPreviewablePath(filePath: string): boolean {
+  const extension = lowerCaseExtensionOf(filePath);
+  return extension !== null && MARKDOWN_PREVIEW_EXTENSIONS.has(extension);
+}
 
 function parentDirectoryFromPath(path: string): string | null {
   const normalized = path.replace(/\\/g, "/");
@@ -550,7 +554,6 @@ export interface WorkspaceFilePreviewProps {
   onReferenceInChat?: ((reference: ChatFileReference) => void) | undefined;
   onAskWhyInChat?: ((reference: ChatFileReference) => void) | undefined;
   onCommentInChat?: ((comment: FileCommentSelection) => void) | undefined;
-  onClosePreview?: (() => void) | undefined;
   onEditFile?: ((filePath: string) => void) | undefined;
 }
 
@@ -1161,19 +1164,13 @@ export function WorkspaceFilePreview(props: WorkspaceFilePreviewProps) {
             onPreviewError={handleBinaryPreviewError}
           />
         </div>
-      ) : fileQuery.isPending ? (
+      ) : fileQuery.isLoading ? (
         <FilePreviewLoadingState />
       ) : !hasFileContents && fileReadError ? (
-        <WorkspaceFilePreviewErrorState
-          detail={fileReadError instanceof Error ? fileReadError.message : null}
-          retrying={fileQuery.isFetching}
-          onRetry={() => void fileQuery.refetch()}
-          onClose={props.onClosePreview}
-        />
-      ) : !editableDocument && fileQuery.data !== undefined && fileContents.length === 0 ? (
-        // Zero-byte read-only files are a successful read, not a loading or error state.
-        <PanelStateMessage density="compact" fill="flex">
-          <p>Empty file.</p>
+        <PanelStateMessage density="compact" fill="flex" className="items-start justify-start p-3">
+          <p className="text-left text-ui-sm text-destructive/85">
+            {fileReadError instanceof Error ? fileReadError.message : "Could not read file."}
+          </p>
         </PanelStateMessage>
       ) : !hasFileContents ? (
         <FilePreviewLoadingState />

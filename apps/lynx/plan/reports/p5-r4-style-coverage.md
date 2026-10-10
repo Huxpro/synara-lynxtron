@@ -2,20 +2,20 @@
 
 Generated from the eligible module union of all six P5-R1 screen graphs.
 
-- Unique utility tokens: **2772**
+- Unique utility tokens: **2764**
 - Authored component classes excluded from the utility denominator: **109**
-- Extracted utility occurrences: **21357**
-- Eligible occurrences (registered platform-unsupported utilities excluded): **20064**
-- Covered by generated or deterministic patched CSS: **19673 (98.05%)**
+- Extracted utility occurrences: **21329**
+- Eligible occurrences (registered platform-unsupported utilities excluded): **20042**
+- Covered by generated or deterministic patched CSS: **19652 (98.05%)**
 - Required threshold: **95%**
-- Runtime CSS emission (currently physically shared modules only): **1299 classes / 18612 source occurrences**
+- Runtime CSS emission (currently physically shared modules only): **1289 classes / 18564 source occurrences**
 
 | Status      | Classes | Weighted occurrences |
 | ----------- | ------: | -------------------: |
-| GENERATED   |    1354 |                16959 |
-| PATCHED     |     648 |                 2714 |
-| UNSUPPORTED |     504 |                 1293 |
-| UNMAPPED    |     266 |                  391 |
+| GENERATED   |    1351 |                16939 |
+| PATCHED     |     648 |                 2713 |
+| UNSUPPORTED |     500 |                 1287 |
+| UNMAPPED    |     265 |                  390 |
 | CUSTOM      |     109 |                  191 |
 
 ## Highest-weight uncovered classes
@@ -26,7 +26,7 @@ Generated from the eligible module union of all six P5-R1 screen graphs.
 | `outline-none`                                                            |          71 | UNSUPPORTED |
 | `focus-visible:outline-none`                                              |          54 | UNSUPPORTED |
 | `motion-reduce:transition-none`                                           |          53 | UNSUPPORTED |
-| `overflow-y-auto`                                                         |          47 | UNSUPPORTED |
+| `overflow-y-auto`                                                         |          46 | UNSUPPORTED |
 | `select-none`                                                             |          34 | UNSUPPORTED |
 | `sr-only`                                                                 |          31 | UNSUPPORTED |
 | `overflow-auto`                                                           |          25 | UNSUPPORTED |
@@ -34,10 +34,10 @@ Generated from the eligible module union of all six P5-R1 screen graphs.
 | `uppercase`                                                               |          15 | UNSUPPORTED |
 | `before:absolute`                                                         |          14 | UNSUPPORTED |
 | `duration-220`                                                            |          14 | UNMAPPED    |
-| `overscroll-contain`                                                      |          13 | UNSUPPORTED |
 | `[&_svg]:pointer-events-none`                                             |          12 | UNSUPPORTED |
 | `line-clamp-2`                                                            |          12 | UNSUPPORTED |
 | `outline-hidden`                                                          |          12 | UNMAPPED    |
+| `overscroll-contain`                                                      |          12 | UNSUPPORTED |
 | `[&_svg]:shrink-0`                                                        |          10 | UNSUPPORTED |
 | `focus-visible:ring-[color:var(--color-border-focus)]/60`                 |          10 | UNSUPPORTED |
 | `list-none`                                                               |          10 | UNSUPPORTED |
@@ -72,6 +72,7 @@ Generated from the eligible module union of all six P5-R1 screen graphs.
 | `dark:before:shadow-[0_-1px_--theme(--color-white/6%)]`                   |           5 | UNSUPPORTED |
 | `first:border-t-0`                                                        |           5 | UNSUPPORTED |
 | `focus-visible:ring-offset-1`                                             |           5 | UNSUPPORTED |
+| `has-disabled:opacity-64`                                                 |           5 | UNSUPPORTED |
 | `has-focus-visible:ring-0`                                                |           5 | UNSUPPORTED |
 | `in-data-[side=none]:min-w-[calc(var(--anchor-width)+1.25rem)]`           |           5 | UNMAPPED    |
 | `line-clamp-3`                                                            |           5 | UNSUPPORTED |
@@ -101,6 +102,5 @@ Generated from the eligible module union of all six P5-R1 screen graphs.
 | `dark:has-autofill:bg-foreground/8`                                       |           3 | UNSUPPORTED |
 | `drop-shadow-[0_1px_2px_rgb(0_0_0/0.6)]`                                  |           3 | UNMAPPED    |
 | `focus-visible:ring-offset-0`                                             |           3 | UNSUPPORTED |
-| `group-hover/dock-tab:opacity-100`                                        |           3 | UNSUPPORTED |
 
 The full per-class file/screen provenance is in `p5-r4-core-class-manifest.json`.

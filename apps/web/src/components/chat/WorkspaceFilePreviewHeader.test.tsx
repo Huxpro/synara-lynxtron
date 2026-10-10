@@ -43,15 +43,4 @@ describe("WorkspaceFilePreviewHeader", () => {
     expect(markup).toContain("hidden @sm/header-actions:inline");
     expect(markup).toContain(">Shown partially</span>");
   });
-
-  it("keeps successful zero-byte files distinguishable from loading and errors", () => {
-    const previewSource = readFileSync(
-      new URL("../WorkspaceFilePreview.tsx", import.meta.url),
-      "utf8",
-    );
-
-    expect(previewSource).toContain("fileQuery.isPending");
-    expect(previewSource).toContain("fileQuery.data !== undefined && fileContents.length === 0");
-    expect(previewSource).toContain("<p>Empty file.</p>");
-  });
 });

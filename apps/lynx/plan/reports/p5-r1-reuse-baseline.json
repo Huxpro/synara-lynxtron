@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-10T11:57:24.949Z",
+  "generatedAt": "2026-10-10T12:09:29.984Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -322,7 +322,7 @@
       "lynxConceptualEntries": ["src/app/router.tsx", "src/components/sidebar/Sidebar.lynx.tsx"],
       "graph": {
         "modules": 607,
-        "loc": 137868,
+        "loc": 137861,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -467,7 +467,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 542,
-          "loc": 127418
+          "loc": 127411
         },
         "PATCHED": {
           "modules": 1,
@@ -484,11 +484,11 @@
       },
       "eligible": {
         "modules": 591,
-        "loc": 135146
+        "loc": 135139
       },
       "currentReuse": {
         "modules": 310,
-        "loc": 79749,
+        "loc": 79742,
         "modulePercent": 52.45,
         "locPercent": 59.01,
         "gatePercent": 52.45
@@ -919,7 +919,7 @@
         },
         {
           "path": "apps/web/src/components/chat/composerPickerStyles.ts",
-          "loc": 293,
+          "loc": 287,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -5183,7 +5183,7 @@
         },
         {
           "path": "apps/web/src/lib/gitReactQuery.ts",
-          "loc": 850,
+          "loc": 849,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -7678,7 +7678,7 @@
       "lynxConceptualEntries": ["src/components/sidebar/Sidebar.lynx.tsx"],
       "graph": {
         "modules": 483,
-        "loc": 118439,
+        "loc": 118432,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -7819,7 +7819,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 427,
-          "loc": 108870
+          "loc": 108863
         },
         "PATCHED": {
           "modules": 1,
@@ -7836,13 +7836,13 @@
       },
       "eligible": {
         "modules": 474,
-        "loc": 116574
+        "loc": 116567
       },
       "currentReuse": {
         "modules": 280,
-        "loc": 72620,
+        "loc": 72613,
         "modulePercent": 59.07,
-        "locPercent": 62.3,
+        "locPercent": 62.29,
         "gatePercent": 59.07
       },
       "modules": [
@@ -8098,7 +8098,7 @@
         },
         {
           "path": "apps/web/src/components/chat/composerPickerStyles.ts",
-          "loc": 293,
+          "loc": 287,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -11714,7 +11714,7 @@
         },
         {
           "path": "apps/web/src/lib/gitReactQuery.ts",
-          "loc": 850,
+          "loc": 849,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -13415,8 +13415,8 @@
       ],
       "lynxConceptualEntries": ["src/app/Transcript.tsx", "src/components/composer/Composer.tsx"],
       "graph": {
-        "modules": 1051,
-        "loc": 234046,
+        "modules": 1049,
+        "loc": 234015,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -13489,7 +13489,6 @@
           "@synara/shared/errorMessages",
           "@synara/shared/fileAttachmentPresentation",
           "@synara/shared/filePreviewBreadcrumb",
-          "@synara/shared/filePreviewMode",
           "@synara/shared/formatBytes",
           "@synara/shared/git",
           "@synara/shared/githubAvatar",
@@ -13596,8 +13595,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 971,
-          "loc": 217708
+          "modules": 969,
+          "loc": 217620
         },
         "PATCHED": {
           "modules": 1,
@@ -13609,19 +13608,19 @@
         },
         "EXCLUSIVE": {
           "modules": 26,
-          "loc": 7915
+          "loc": 7972
         }
       },
       "eligible": {
-        "modules": 1025,
-        "loc": 226131
+        "modules": 1023,
+        "loc": 226043
       },
       "currentReuse": {
-        "modules": 363,
-        "loc": 87350,
-        "modulePercent": 35.41,
-        "locPercent": 38.63,
-        "gatePercent": 35.41
+        "modules": 361,
+        "loc": 87282,
+        "modulePercent": 35.29,
+        "locPercent": 38.61,
+        "gatePercent": 35.29
       },
       "modules": [
         {
@@ -14078,7 +14077,7 @@
         },
         {
           "path": "apps/web/src/components/BrowserPanel.tsx",
-          "loc": 1939,
+          "loc": 1996,
           "classification": "EXCLUSIVE",
           "reason": "webview/contentEditable hard island",
           "currentReuse": "UNMAPPED",
@@ -15015,7 +15014,7 @@
         },
         {
           "path": "apps/web/src/components/chat/ComposerPendingApprovalPanel.tsx",
-          "loc": 483,
+          "loc": 476,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -15084,7 +15083,7 @@
         },
         {
           "path": "apps/web/src/components/chat/composerPickerStyles.ts",
-          "loc": 293,
+          "loc": 287,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -15466,7 +15465,7 @@
         },
         {
           "path": "apps/web/src/components/chat/DockFilePane.tsx",
-          "loc": 31,
+          "loc": 29,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -18211,7 +18210,7 @@
         },
         {
           "path": "apps/web/src/components/chat/UserInputQuestionForm.tsx",
-          "loc": 197,
+          "loc": 190,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -22380,7 +22379,7 @@
         },
         {
           "path": "apps/web/src/components/WorkspaceFilePreview.tsx",
-          "loc": 1262,
+          "loc": 1258,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -22389,7 +22388,6 @@
             "apps/web/src/components/DiffTruncationWarning.tsx",
             "apps/web/src/components/LocalImagePreview.tsx",
             "apps/web/src/components/PdfFilePreview.tsx",
-            "apps/web/src/components/WorkspaceFilePreviewErrorState.tsx",
             "apps/web/src/components/chat/FileLineCommentBox.tsx",
             "apps/web/src/components/chat/PanelStateMessage.tsx",
             "apps/web/src/components/chat/TranscriptSelectionAction.tsx",
@@ -22416,22 +22414,6 @@
             "apps/web/src/lib/workspaceFileEditor.ts",
             "apps/web/src/nativeApi.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/components/WorkspaceFilePreviewErrorState.tsx",
-          "loc": 19,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/components/WorkspaceFilePreviewErrorStateElements.tsx"]
-        },
-        {
-          "path": "apps/web/src/components/WorkspaceFilePreviewErrorStateElements.tsx",
-          "loc": 42,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/components/ui/button.tsx"]
         },
         {
           "path": "apps/web/src/components/WorkspaceSearchPalette.logic.ts",
@@ -24436,7 +24418,7 @@
         },
         {
           "path": "apps/web/src/lib/gitReactQuery.ts",
-          "loc": 850,
+          "loc": 849,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -27282,7 +27264,7 @@
       "lynxConceptualEntries": ["src/app/SettingsPage.tsx"],
       "graph": {
         "modules": 655,
-        "loc": 151764,
+        "loc": 151757,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -27431,7 +27413,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 589,
-          "loc": 141283
+          "loc": 141276
         },
         "PATCHED": {
           "modules": 1,
@@ -27448,11 +27430,11 @@
       },
       "eligible": {
         "modules": 639,
-        "loc": 149042
+        "loc": 149035
       },
       "currentReuse": {
         "modules": 311,
-        "loc": 79887,
+        "loc": 79880,
         "modulePercent": 48.67,
         "locPercent": 53.6,
         "gatePercent": 48.67
@@ -27896,7 +27878,7 @@
         },
         {
           "path": "apps/web/src/components/chat/composerPickerStyles.ts",
-          "loc": 293,
+          "loc": 287,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -32839,7 +32821,7 @@
         },
         {
           "path": "apps/web/src/lib/gitReactQuery.ts",
-          "loc": 850,
+          "loc": 849,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -35388,7 +35370,7 @@
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
         "modules": 678,
-        "loc": 153427,
+        "loc": 153420,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -35546,7 +35528,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 609,
-          "loc": 140557
+          "loc": 140550
         },
         "PATCHED": {
           "modules": 1,
@@ -35563,11 +35545,11 @@
       },
       "eligible": {
         "modules": 660,
-        "loc": 148696
+        "loc": 148689
       },
       "currentReuse": {
         "modules": 325,
-        "loc": 81958,
+        "loc": 81951,
         "modulePercent": 49.24,
         "locPercent": 55.12,
         "gatePercent": 49.24
@@ -36209,7 +36191,7 @@
         },
         {
           "path": "apps/web/src/components/chat/composerPickerStyles.ts",
-          "loc": 293,
+          "loc": 287,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -41260,7 +41242,7 @@
         },
         {
           "path": "apps/web/src/lib/gitReactQuery.ts",
-          "loc": 850,
+          "loc": 849,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -43808,7 +43790,7 @@
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
         "modules": 678,
-        "loc": 153428,
+        "loc": 153421,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -43966,7 +43948,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 609,
-          "loc": 140558
+          "loc": 140551
         },
         "PATCHED": {
           "modules": 1,
@@ -43983,11 +43965,11 @@
       },
       "eligible": {
         "modules": 660,
-        "loc": 148697
+        "loc": 148690
       },
       "currentReuse": {
         "modules": 325,
-        "loc": 81958,
+        "loc": 81951,
         "modulePercent": 49.24,
         "locPercent": 55.12,
         "gatePercent": 49.24
@@ -44629,7 +44611,7 @@
         },
         {
           "path": "apps/web/src/components/chat/composerPickerStyles.ts",
-          "loc": 293,
+          "loc": 287,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -49680,7 +49662,7 @@
         },
         {
           "path": "apps/web/src/lib/gitReactQuery.ts",
-          "loc": 850,
+          "loc": 849,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -52227,8 +52209,8 @@
       ],
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
-        "modules": 1021,
-        "loc": 228771,
+        "modules": 1019,
+        "loc": 228742,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -52301,7 +52283,6 @@
           "@synara/shared/errorMessages",
           "@synara/shared/fileAttachmentPresentation",
           "@synara/shared/filePreviewBreadcrumb",
-          "@synara/shared/filePreviewMode",
           "@synara/shared/formatBytes",
           "@synara/shared/git",
           "@synara/shared/githubAvatar",
@@ -52407,8 +52388,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 941,
-          "loc": 212433
+          "modules": 939,
+          "loc": 212347
         },
         "PATCHED": {
           "modules": 1,
@@ -52420,19 +52401,19 @@
         },
         "EXCLUSIVE": {
           "modules": 26,
-          "loc": 7915
+          "loc": 7972
         }
       },
       "eligible": {
-        "modules": 995,
-        "loc": 220856
+        "modules": 993,
+        "loc": 220770
       },
       "currentReuse": {
-        "modules": 364,
-        "loc": 87796,
-        "modulePercent": 36.58,
-        "locPercent": 39.75,
-        "gatePercent": 36.58
+        "modules": 362,
+        "loc": 87728,
+        "modulePercent": 36.46,
+        "locPercent": 39.74,
+        "gatePercent": 36.46
       },
       "modules": [
         {
@@ -52878,7 +52859,7 @@
         },
         {
           "path": "apps/web/src/components/BrowserPanel.tsx",
-          "loc": 1939,
+          "loc": 1996,
           "classification": "EXCLUSIVE",
           "reason": "webview/contentEditable hard island",
           "currentReuse": "UNMAPPED",
@@ -53783,7 +53764,7 @@
         },
         {
           "path": "apps/web/src/components/chat/ComposerPendingApprovalPanel.tsx",
-          "loc": 483,
+          "loc": 476,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -53852,7 +53833,7 @@
         },
         {
           "path": "apps/web/src/components/chat/composerPickerStyles.ts",
-          "loc": 293,
+          "loc": 287,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -56735,7 +56716,7 @@
         },
         {
           "path": "apps/web/src/components/chat/UserInputQuestionForm.tsx",
-          "loc": 197,
+          "loc": 190,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -60913,7 +60894,7 @@
         },
         {
           "path": "apps/web/src/components/WorkspaceFilePreview.tsx",
-          "loc": 1262,
+          "loc": 1258,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -60922,7 +60903,6 @@
             "apps/web/src/components/DiffTruncationWarning.tsx",
             "apps/web/src/components/LocalImagePreview.tsx",
             "apps/web/src/components/PdfFilePreview.tsx",
-            "apps/web/src/components/WorkspaceFilePreviewErrorState.tsx",
             "apps/web/src/components/chat/FileLineCommentBox.tsx",
             "apps/web/src/components/chat/PanelStateMessage.tsx",
             "apps/web/src/components/chat/TranscriptSelectionAction.tsx",
@@ -60949,22 +60929,6 @@
             "apps/web/src/lib/workspaceFileEditor.ts",
             "apps/web/src/nativeApi.ts"
           ]
-        },
-        {
-          "path": "apps/web/src/components/WorkspaceFilePreviewErrorState.tsx",
-          "loc": 19,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/components/WorkspaceFilePreviewErrorStateElements.tsx"]
-        },
-        {
-          "path": "apps/web/src/components/WorkspaceFilePreviewErrorStateElements.tsx",
-          "loc": 42,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/components/ui/button.tsx"]
         },
         {
           "path": "apps/web/src/composer-editor-mentions.ts",
@@ -62865,7 +62829,7 @@
         },
         {
           "path": "apps/web/src/lib/gitReactQuery.ts",
-          "loc": 850,
+          "loc": 849,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
