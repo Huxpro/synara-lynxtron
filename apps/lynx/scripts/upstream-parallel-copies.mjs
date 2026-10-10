@@ -14,6 +14,12 @@
 // or removed one of them: re-sync the fork copy (or better, replace it with a
 // generated extract or a direct import and drop the entry), then `--update`.
 //
+// Logic that upstream keeps inline in a component has no top-level name to
+// hash. An entry lists such statements under `fragments`: each must still be
+// in the upstream file, compared with whitespace removed. A fragment that is
+// gone is drift; `--update` does not record fragments, they are edited by hand
+// together with the fork copy.
+//
 //   node scripts/upstream-parallel-copies.mjs --check
 //   node scripts/upstream-parallel-copies.mjs --update
 
@@ -77,15 +83,26 @@ export function hashDeclarations(sourceText, fileName, symbols) {
   return hash.digest("hex");
 }
 
+const withoutWhitespace = (text) => text.replace(/\s+/g, "");
+
+/** The entry's `fragments` that the upstream file no longer contains. */
+export function missingFragments(sourceText, fragments = []) {
+  const source = withoutWhitespace(sourceText);
+  return fragments.filter((fragment) => !source.includes(withoutWhitespace(fragment)));
+}
+
 /** Problems for one manifest entry; empty when upstream still matches. */
 export function checkEntry(entry, sourceText) {
+  const copies = entry.copies.join(", ") || "the fork copy";
+  const fragmentProblems = missingFragments(sourceText, entry.fragments).map(
+    (fragment) => `${entry.upstream}: upstream no longer has \`${fragment}\`; re-sync ${copies}`,
+  );
   try {
     const actual = hashDeclarations(sourceText, entry.upstream, entry.symbols);
-    if (actual === entry.sha256) return [];
+    if (actual === entry.sha256) return fragmentProblems;
     return [
-      `${entry.upstream}: upstream changed ${entry.symbols.join(", ")}; re-sync ${
-        entry.copies.join(", ") || "the fork copy"
-      }`,
+      `${entry.upstream}: upstream changed ${entry.symbols.join(", ")}; re-sync ${copies}`,
+      ...fragmentProblems,
     ];
   } catch (error) {
     if (!(error instanceof ParallelCopyError)) throw error;

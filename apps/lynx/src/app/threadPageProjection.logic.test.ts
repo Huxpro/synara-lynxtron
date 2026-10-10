@@ -1,6 +1,7 @@
 import { describe, expect, it } from "@rstest/core";
-import { MessageId, TurnId } from "@synara/contracts";
-import { makeThread } from "@synara-web/storeTestFixtures";
+import { MessageId, ThreadId, TurnId } from "@synara/contracts";
+import { applyOrchestrationEvents } from "@synara-web/storeEventReducer";
+import { makeDomainEvent, makeState, makeThread, threadsOf } from "@synara-web/storeTestFixtures";
 import type { Thread } from "@synara-web/types";
 
 import { isRpcTransportError } from "../data/rpcTransport.logic";
@@ -9,6 +10,7 @@ import {
   projectThreadHeaderSummary,
   projectThreadTranscriptRows,
   resolveThreadPageRead,
+  resolveTranscriptTurnActivity,
   type ThreadPageData,
 } from "./threadPageProjection.logic";
 
@@ -101,6 +103,148 @@ describe("projectThreadTranscriptRows", () => {
     expect(
       texts(threadWith({ messages, sidechatSourceThreadId: "thread-source" as never })),
     ).toEqual(["Asked in the Side"]);
+  });
+});
+
+describe("the running turn's rows", () => {
+  const TURN = TurnId.makeUnsafe("turn-1");
+  const STARTED_AT = "2026-02-27T00:01:00.000Z";
+  const COMPLETED_AT = "2026-02-27T00:01:30.000Z";
+  type Session = NonNullable<Thread["session"]>;
+  type LatestTurn = NonNullable<Thread["latestTurn"]>;
+
+  const session = (
+    status: Session["status"],
+    orchestrationStatus: Session["orchestrationStatus"],
+    activeTurnId?: typeof TURN,
+  ): Session => ({
+    provider: "codex",
+    status,
+    orchestrationStatus,
+    ...(activeTurnId ? { activeTurnId } : {}),
+    createdAt: "2026-02-27T00:00:00.000Z",
+    updatedAt: COMPLETED_AT,
+  });
+  const latestTurn = (state: LatestTurn["state"], completedAt: string | null): LatestTurn => ({
+    turnId: TURN,
+    state,
+    requestedAt: STARTED_AT,
+    startedAt: STARTED_AT,
+    completedAt,
+    assistantMessageId: MessageId.makeUnsafe("reply"),
+  });
+  const turnMessages = (streaming: boolean): Thread["messages"] => [
+    chatMessage("a", "user", "Question"),
+    { ...chatMessage("reply", "assistant", "Answer"), turnId: TURN, streaming },
+  ];
+  const workingRowKinds = (thread: Thread) =>
+    projectThreadTranscriptRows(thread)
+      .map((row) => row.kind)
+      .filter((kind) => kind === "working" || kind === "working-header");
+
+  it("shows the header and the Thinking row while the session runs the turn", () => {
+    const thread = threadWith({
+      messages: turnMessages(true),
+      session: session("running", "running", TURN),
+      latestTurn: latestTurn("running", null),
+    });
+    expect(resolveTranscriptTurnActivity(thread)).toEqual({
+      isWorking: true,
+      activeTurnInProgress: true,
+      activeTurnId: TURN,
+      activeTurnStartedAt: STARTED_AT,
+    });
+    expect(workingRowKinds(thread)).toEqual(["working-header", "working"]);
+    const header = projectThreadTranscriptRows(thread).find((row) => row.kind === "working-header");
+    expect(header?.createdAt).toBe(STARTED_AT);
+  });
+
+  it("shows Thinking without a timer while the provider session connects", () => {
+    const thread = threadWith({
+      messages: [chatMessage("a", "user", "Question")],
+      session: session("connecting", "starting"),
+    });
+    expect(resolveTranscriptTurnActivity(thread)).toMatchObject({
+      isWorking: true,
+      activeTurnStartedAt: null,
+    });
+    expect(workingRowKinds(thread)).toEqual(["working"]);
+  });
+
+  it.each([
+    ["completed", session("ready", "ready"), latestTurn("completed", COMPLETED_AT)],
+    ["interrupted", session("ready", "interrupted"), latestTurn("interrupted", COMPLETED_AT)],
+    ["failed", session("error", "error"), latestTurn("error", COMPLETED_AT)],
+    [
+      "opened after completion, session stopped",
+      session("closed", "stopped"),
+      latestTurn("completed", COMPLETED_AT),
+    ],
+    ["opened after completion, no session", null, latestTurn("completed", COMPLETED_AT)],
+  ] as const)("has no working rows once the turn is %s", (_name, threadSession, turn) => {
+    const thread = threadWith({
+      messages: turnMessages(false),
+      session: threadSession,
+      latestTurn: turn,
+    });
+    expect(resolveTranscriptTurnActivity(thread)).toEqual({
+      isWorking: false,
+      activeTurnInProgress: false,
+      activeTurnId: null,
+      activeTurnStartedAt: null,
+    });
+    expect(workingRowKinds(thread)).toEqual([]);
+  });
+
+  it("has no working rows when the turn reads running but the session has settled", () => {
+    // What upstream's reducer leaves when a streaming assistant message of the
+    // turn is applied after the session event that settled it.
+    const settled = makeThread({
+      id: ThreadId.makeUnsafe("thread-1"),
+      messages: turnMessages(true),
+      session: session("ready", "ready"),
+      latestTurn: latestTurn("completed", COMPLETED_AT),
+    });
+    const [thread] = threadsOf(
+      applyOrchestrationEvents(makeState(settled), [
+        makeDomainEvent("thread.message-sent", {
+          threadId: settled.id,
+          messageId: MessageId.makeUnsafe("reply"),
+          role: "assistant",
+          text: " late delta",
+          turnId: TURN,
+          streaming: true,
+          createdAt: STARTED_AT,
+          updatedAt: "2026-02-27T00:01:31.000Z",
+          attachments: [],
+          source: "native",
+        }),
+      ]),
+    );
+    expect(thread?.latestTurn).toMatchObject({ state: "running", completedAt: COMPLETED_AT });
+    expect(thread?.session?.status).toBe("ready");
+    expect(resolveTranscriptTurnActivity(thread!)).toMatchObject({
+      isWorking: false,
+      activeTurnInProgress: false,
+      activeTurnId: null,
+    });
+    expect(workingRowKinds(thread!)).toEqual([]);
+  });
+
+  it("keeps the newest turn inline, without working rows, while only its text still streams", () => {
+    // Claude clears the session's turn before the last text has arrived.
+    const thread = threadWith({
+      messages: turnMessages(true),
+      session: session("ready", "ready"),
+      latestTurn: latestTurn("running", null),
+    });
+    expect(resolveTranscriptTurnActivity(thread)).toEqual({
+      isWorking: false,
+      activeTurnInProgress: true,
+      activeTurnId: TURN,
+      activeTurnStartedAt: STARTED_AT,
+    });
+    expect(workingRowKinds(thread)).toEqual([]);
   });
 });
 

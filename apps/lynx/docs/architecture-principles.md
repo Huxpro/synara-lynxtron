@@ -35,7 +35,7 @@ npm 包默认看到真实运行时，只有一个例外：`@tanstack/query-core`
 
 注入只绑定裸的全局名。上游写成 `globalThis.localStorage`、`globalThis.navigator` 的地方在 Lynx 上仍然读到真实运行时（没有值）：`appSettings.ts` 因此还没有还原，`lib/modelFavorites.ts`、`lib/starredModels.ts` 在 Lynx 上不持久化。
 
-上游文件还原之后，fork 以前抽出去的逻辑（`*.logic.ts`、`apps/lynx/src/logic`、`@synara/shared/*` 里 fork 加的模块）就成了只有 Lynx 在读的平行副本。`scripts/upstream-parallel-copies.mjs` 在 `plan/upstream-parallel-copies.json` 里记录每份副本对应的上游顶层声明和它们文本的哈希，`--check`（挂在 `typecheck` 和 `audit:reuse:check` 上）在上游改动、改名或删除其中一个时失败。这是过渡手段：副本应当换成直接 import 上游或生成，换掉一份就删掉一条记录。
+上游文件还原之后，fork 以前抽出去的逻辑（`*.logic.ts`、`apps/lynx/src/logic`、`@synara/shared/*` 里 fork 加的模块）就成了只有 Lynx 在读的平行副本。`scripts/upstream-parallel-copies.mjs` 在 `plan/upstream-parallel-copies.json` 里记录每份副本对应的上游顶层声明和它们文本的哈希，`--check`（挂在 `typecheck` 和 `audit:reuse:check` 上）在上游改动、改名或删除其中一个时失败。上游写在组件函数体内、没有顶层名字的逻辑（例如 `ChatView.tsx` 里判断回合是否在运行的几行，Lynx 的副本是 `threadPageProjection.logic.ts` 的 `resolveTranscriptTurnActivity`）记在条目的 `fragments` 里：每条语句去掉空白后必须仍在上游文件中，少了一条就失败；`--update` 不改写 `fragments`，它和副本一起手工同步。这是过渡手段：副本应当换成直接 import 上游或生成，换掉一份就删掉一条记录。
 
 现存的手工差异是存量债务，只许减少：`bun run --cwd apps/lynx audit:upstream-footprint` 统计上游拥有的路径里被 fork 改过的文件数、改动行数，以及 fork 放在这些路径里的文件数，CI 在任何一项增加时失败。清理顺序按"最机械的先做"：
 

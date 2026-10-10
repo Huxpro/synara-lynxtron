@@ -29,6 +29,22 @@
       "sha256": "57ecdc3056a72a7e1cef840247e97e2f06d29c369f58e8724829b8aab8a68688"
     },
     {
+      "upstream": "apps/web/src/components/ChatView.tsx",
+      "symbols": [],
+      "fragments": [
+        "const latestTurnSettled = latestTurnSettledByProvider && !hasLiveTurnTail;",
+        "const phase = derivePhase(activeThread?.session ?? null); const isConnecting = phase === \"connecting\";",
+        "const hasLiveTurn = phase === \"running\";",
+        "const activeTurnIdForTranscript = latestTurnSettled ? null : (activeThread?.session?.activeTurnId ?? activeLatestTurnId);",
+        "const isWorking = hasLiveTurn || isSendBusy || isConnecting || isRevertingCheckpoint || isAwaitingTurnStart;",
+        "const activeTurnLayoutLive = isWorking || !latestTurnSettled;",
+        "const activeWorkStartedAt = hasLiveTurnTail ? (activeLatestTurn?.startedAt ?? null) : hasLiveTurn ? deriveActiveWorkStartedAt(activeLatestTurn, activeThread?.session ?? null, null) : null;",
+        "const activeTurnInProgress = activeTurnLayoutLive || keepSettledActiveTurnLayout;"
+      ],
+      "copies": ["apps/lynx/src/app/threadPageProjection.logic.ts"],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
       "upstream": "apps/web/src/components/RestoreOrCreateChatRoute.tsx",
       "symbols": ["RestoreRouteResolverInput", "RestoreRouteResolver"],
       "copies": ["apps/web/src/components/useRestoreOrCreateChatRoute.logic.ts"],
