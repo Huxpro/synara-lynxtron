@@ -6,6 +6,8 @@ import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import { useTheme } from "./useTheme.lynx";
 import { useLynxInteractiveState } from "./useLynxInteractiveState";
 import {
+  CONTEXT_WINDOW_METER_GEOMETRY,
+  contextWindowMeterSectorPath,
   formatContextWindowTokens,
   formatCostUsd,
   type ContextWindowMeterDisplay,
@@ -138,20 +140,17 @@ export function ComposerContextWindowMeterElement(props: {
   const [open, setOpen] = useState(props.initialOpen ?? false);
   const initialOpenRef = useRef(props.initialOpen);
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const { semanticIconColor } = useTheme();
-  const radius = 6;
-  const percentage = Math.max(0, Math.min(100, props.display.normalizedPercentage));
-  const endAngle = -90 + (percentage / 100) * 360;
-  const endRadians = (endAngle * Math.PI) / 180;
-  const endX = 8 + radius * Math.cos(endRadians);
-  const endY = 8 + radius * Math.sin(endRadians);
-  const progressShape =
-    percentage <= 0
-      ? ""
-      : percentage >= 100
-        ? `<circle cx="8" cy="8" r="${radius}" fill="none" stroke="${semanticIconColor("primary")}" stroke-width="2"/>`
-        : `<path d="M 8 2 A ${radius} ${radius} 0 ${percentage > 50 ? 1 : 0} 1 ${endX} ${endY}" fill="none" stroke="${semanticIconColor("primary")}" stroke-width="2" stroke-linecap="round"/>`;
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="${radius}" fill="none" stroke="${semanticIconColor("secondary")}" stroke-opacity="0.4" stroke-width="2"/>${progressShape}</svg>`;
+  const { resolvedTheme, semanticIconColor } = useTheme();
+  // Upstream's gauge: a filled sector over a faint disc inside a closed outline ring. Never
+  // an empty dial once anything is used: a sliver keeps "some" distinct from "none".
+  const percentage = props.display.normalizedPercentage;
+  const sectorPath = contextWindowMeterSectorPath(percentage > 0 ? Math.max(percentage, 4) : 0);
+  const { center, outlineRadius, pieRadius } = CONTEXT_WINDOW_METER_GEOMETRY;
+  const dark = resolvedTheme === "dark";
+  const mutedColor = semanticIconColor("secondary");
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="${center}" cy="${center}" r="${outlineRadius}" fill="none" stroke="${mutedColor}" stroke-opacity="${dark ? 0.55 : 0.45}" stroke-width="1.5"/><circle cx="${center}" cy="${center}" r="${pieRadius}" fill="${mutedColor}" fill-opacity="${dark ? 0.3 : 0.2}"/>${
+    sectorPath ? `<path d="${sectorPath}" fill="${semanticIconColor("primary")}"/>` : ""
+  }</svg>`;
   const popoverRows = [
     { tone: "title" as const, text: "Context window" },
     ...(props.pendingWindowLabel

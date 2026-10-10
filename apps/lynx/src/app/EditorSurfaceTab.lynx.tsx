@@ -18,8 +18,8 @@ import {
 
 import "./editor-surface-tab.css";
 
-/** The `--content` chip's shrink floor (upstream `min-w-[9em]` of its 12px font) and strip gap. */
-const CONTENT_TAB_FLOOR_PX = 108;
+/** The `--content` chip's shrink floor (upstream `min-w-[12em]` of its 12px font) and strip gap. */
+const CONTENT_TAB_FLOOR_PX = 144;
 const CONTENT_TAB_GAP_PX = 4;
 /** The `--content` chip's box as editor-surface-tab.css lays it out, for slot arithmetic. */
 export const CONTENT_TAB_METRICS = {

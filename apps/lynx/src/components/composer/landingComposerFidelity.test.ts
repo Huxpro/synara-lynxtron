@@ -183,7 +183,10 @@ describe("landing composer fidelity contract", () => {
 
     expect(appStyles).toMatch(/\.SliceRoot\s*\{[^}]*--type-ui-row-size:\s*12px;/s);
     expect(appStyles).toMatch(/\.SliceRoot\s*\{[^}]*--type-composer-editor-size:\s*12px;/s);
-    expect(headingStyles).toContain("var(--engine-landing-heading-letter-spacing, -1.8px)");
+    expect(headingStyles).toContain("var(--engine-landing-heading-letter-spacing, 0px)");
+    expect(headingStyles).toMatch(
+      /\.CenteredEmptyLandingHeading\s*\{[^}]*font-optical-sizing:\s*auto;[^}]*font-variation-settings:\s*"wdth" 99;/s,
+    );
     expect(webHostSource).toContain('"--engine-landing-heading-letter-spacing"');
     expect(webHostSource).toContain('"-0.45px"');
   });

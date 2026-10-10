@@ -214,6 +214,7 @@ import {
 } from "./githubInbox";
 import {
   ExternalMcpCreateIntegrationInput,
+  ExternalMcpUpdateIntegrationInput,
   ExternalMcpRefreshPairingInput,
   ExternalMcpRevokeIntegrationInput,
 } from "./externalMcp";
@@ -315,6 +316,7 @@ export const WS_METHODS = {
   serverUpdateProvider: "server.updateProvider",
   serverListExternalMcpIntegrations: "server.listExternalMcpIntegrations",
   serverCreateExternalMcpIntegration: "server.createExternalMcpIntegration",
+  serverUpdateExternalMcpIntegration: "server.updateExternalMcpIntegration",
   serverRevokeExternalMcpIntegration: "server.revokeExternalMcpIntegration",
   serverRefreshExternalMcpPairing: "server.refreshExternalMcpPairing",
   serverListWorktrees: "server.listWorktrees",
@@ -599,6 +601,7 @@ const WebSocketRequestBody = Schema.Union([
   tagRequestBody(WS_METHODS.serverUpdateProvider, ServerProviderUpdateInput),
   tagRequestBody(WS_METHODS.serverListExternalMcpIntegrations, Schema.Struct({})),
   tagRequestBody(WS_METHODS.serverCreateExternalMcpIntegration, ExternalMcpCreateIntegrationInput),
+  tagRequestBody(WS_METHODS.serverUpdateExternalMcpIntegration, ExternalMcpUpdateIntegrationInput),
   tagRequestBody(WS_METHODS.serverRevokeExternalMcpIntegration, ExternalMcpRevokeIntegrationInput),
   tagRequestBody(WS_METHODS.serverRefreshExternalMcpPairing, ExternalMcpRefreshPairingInput),
   tagRequestBody(WS_METHODS.serverListWorktrees, Schema.Struct({})),
