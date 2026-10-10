@@ -81,6 +81,27 @@ export async function runComposerOutgoingSend<Draft>(input: {
   return "sent";
 }
 
+/**
+ * The order upstream's send keeps (`chat/useChatTurnExecution.ts`): attachments are staged
+ * first, then the thread is handed off when the send needs it, then the turn is dispatched.
+ * A file that cannot be uploaded therefore never leaves the thread on another provider, and
+ * the staged uploads' cleanup scope (`runWithDispatch`) covers both the handoff wait and
+ * the dispatch: a failure in either cancels them.
+ */
+export async function dispatchComposerTurnAfterStaging<Attachments, Result>(input: {
+  readonly stage: () => Promise<{
+    readonly runWithDispatch: <A>(dispatch: (attachments: Attachments) => Promise<A>) => Promise<A>;
+  }>;
+  readonly handOff: () => Promise<void>;
+  readonly dispatch: (attachments: Attachments) => Promise<Result>;
+}): Promise<Result> {
+  const staged = await input.stage();
+  return staged.runWithDispatch(async (attachments) => {
+    await input.handOff();
+    return input.dispatch(attachments);
+  });
+}
+
 export function buildComposerTurnStartCommand(input: {
   /** Omitting it makes the server buffer the reply (no live text), so it is required. */
   readonly assistantDeliveryMode: AssistantDeliveryMode;

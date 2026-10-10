@@ -26,6 +26,17 @@ describe("Lynx composer send attempt", () => {
     expect(sendBody).toContain("draftStore.restoreDraftContent(brandedThreadId, outgoing)");
   });
 
+  it("stages attachments, then hands off, then dispatches, with the captured selection", () => {
+    const stage = sendBody.indexOf("stage: () => stageNativeComposerFiles(");
+    const handOff = sendBody.indexOf("providerHandoff.handOff()");
+    const createdAt = sendBody.indexOf("createdAt: providerHandoff.resolveCreatedAt()");
+    expect(stage).toBeGreaterThan(-1);
+    expect(handOff).toBeGreaterThan(stage);
+    expect(createdAt).toBeGreaterThan(handOff);
+    expect(sendBody).toContain("await dispatchComposerTurnAfterStaging({");
+    expect(sendBody).toContain("modelSelection: activeModelSelection as never,");
+  });
+
   it("upstream's ownership runs one attempt per thread and frees it when it settles", async () => {
     const threadId = "thread-ownership" as ThreadId;
     let finish!: (value: boolean) => void;

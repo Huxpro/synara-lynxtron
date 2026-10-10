@@ -124,6 +124,7 @@ import {
   buildComposerTurnStartCommand,
   isConnectingComposerSession,
   isRunningComposerSession,
+  dispatchComposerTurnAfterStaging,
   runComposerOutgoingSend,
 } from "./composerDispatch.logic";
 import {
@@ -1687,32 +1688,37 @@ export function Composer({
               runtimeMode,
               text: outgoingText,
             });
-            // A failed handoff stops the send here, before it reaches the wrong provider.
-            await providerHandoff.handOff().catch((error: unknown) => {
-              providerHandoffError =
-                error instanceof Error ? error.message : "Could not hand off this thread.";
-              throw error;
-            });
-            const stagedFiles = await stageNativeComposerFiles({ files: outgoingFiles, threadId });
             const assistantDeliveryMode = await resolveNativeAssistantDeliveryMode();
-            await stagedFiles.runWithDispatch((attachments) =>
-              ensureNativeApi().orchestration.dispatchCommand(
-                buildComposerTurnStartCommand({
-                  assistantDeliveryMode,
-                  attachments: [...attachments, ...outgoing.assistantSelections],
-                  commandId: createComposerDispatchId("command"),
-                  createdAt: providerHandoff.resolveCreatedAt(),
-                  interactionMode,
-                  messageId: createComposerDispatchId("message"),
-                  modelSelection: activeModelSelection as never,
-                  runtimeMode,
-                  text: outgoingText,
-                  threadId,
-                  mentions: outgoing.mentions,
-                  skills: outgoing.skills,
+            // Staged before the handoff, as upstream awaits attachments first: a file that
+            // cannot be uploaded must not leave the thread on another provider.
+            await dispatchComposerTurnAfterStaging({
+              stage: () => stageNativeComposerFiles({ files: outgoingFiles, threadId }),
+              // A failed handoff stops the send here, before it reaches the wrong provider.
+              handOff: () =>
+                providerHandoff.handOff().catch((error: unknown) => {
+                  providerHandoffError =
+                    error instanceof Error ? error.message : "Could not hand off this thread.";
+                  throw error;
                 }),
-              ),
-            );
+              dispatch: (attachments) =>
+                ensureNativeApi().orchestration.dispatchCommand(
+                  buildComposerTurnStartCommand({
+                    assistantDeliveryMode,
+                    attachments: [...attachments, ...outgoing.assistantSelections],
+                    commandId: createComposerDispatchId("command"),
+                    // After the handoff row when there was one.
+                    createdAt: providerHandoff.resolveCreatedAt(),
+                    interactionMode,
+                    messageId: createComposerDispatchId("message"),
+                    modelSelection: activeModelSelection as never,
+                    runtimeMode,
+                    text: outgoingText,
+                    threadId,
+                    mentions: outgoing.mentions,
+                    skills: outgoing.skills,
+                  }),
+                ),
+            });
             await Promise.all(outgoingFiles.map((file) => releasePickedComposerFile(file.token)));
           },
           // By thread id in the draft store, so it also reaches a composer that was
