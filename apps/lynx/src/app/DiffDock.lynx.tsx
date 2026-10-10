@@ -5,6 +5,7 @@ import {
   gitStatusQueryOptions,
   gitWorkingTreeDiffQueryOptions,
 } from "@synara-web/lib/gitReactQuery";
+import { resolveAdjacentDiffFilePath } from "@synara-web/components/DiffPanel.logic";
 import {
   checkpointDiffQueryOptions,
   resolveCheckpointDiffQueryDisplayState,
@@ -82,6 +83,7 @@ import { ExplorerFileActionsMenu } from "./ExplorerPreviewHeader.lynx";
 import { EnvironmentGitAction } from "./EnvironmentPanel.lynx";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import { DiffDockChangeMarkers } from "./DiffDockChangeMarkers.lynx";
+import { useDiffDockVisibleFilePath } from "./useDiffDockVisibleFilePath.lynx";
 import { buildDiffHunkSeparators, buildDiffLineNumberDigits } from "./diffHunkSeparators.logic";
 import { useTheme } from "../adapters/useTheme.lynx";
 import {
@@ -392,10 +394,22 @@ function OpenDiffDock(props: {
     pendingFileJumpKeyRef.current = file.key;
     closeFileJump();
   };
-  // Upstream's Previous/Next change walk the patch hunk by hunk. The Native patch view has
-  // no hunk anchors yet, so these step through the changed files instead.
+  // Upstream's Previous/Next change step to the adjacent file of the one under the
+  // viewport's top (`goToAdjacentChange` in DiffPanel.tsx), leaving collapsed state alone.
   const changeFiles = view.kind === "files" ? view.files : [];
-  const changeIndex = changeFiles.findIndex((file) => file.key === selectedFile?.key);
+  const changeFilePaths = changeFiles.map((file) => file.path);
+  const { visibleFilePath, handleScroll: handlePatchScroll } = useDiffDockVisibleFilePath({
+    viewportId: patchViewportId,
+    files: visibleFiles.map((file) => ({ path: file.path, elementId: fileElementId(file.key) })),
+    layoutRevision: patchLayoutRevision,
+  });
+  const activeFilePath = visibleFilePath ?? selectedFilePath;
+  const previousChangePath = resolveAdjacentDiffFilePath(
+    changeFilePaths,
+    activeFilePath,
+    "previous",
+  );
+  const nextChangePath = resolveAdjacentDiffFilePath(changeFilePaths, activeFilePath, "next");
   const scrollToFile = (file: PullRequestDiffFileView) => {
     "background only";
     setSelectedFilePath(file.path);
@@ -404,15 +418,6 @@ function OpenDiffDock(props: {
     } else {
       pendingFileJumpKeyRef.current = file.key;
     }
-  };
-  const goToChange = (delta: 1 | -1) => {
-    "background only";
-    const file = changeFiles[changeIndex + delta];
-    if (!file) return;
-    setExpandedFileKeys((current) =>
-      current === null || current.includes(file.key) ? current : [...current, file.key],
-    );
-    scrollToFile(file);
   };
   // Upstream's markers scroll to the file and leave its collapsed state alone.
   const scrollToFilePath = (path: string) => {
@@ -549,9 +554,9 @@ function OpenDiffDock(props: {
               />
               <DockHeaderIconButton
                 className="DiffDockToolbarIconButton"
-                disabled={changeIndex <= 0}
+                disabled={previousChangePath === null}
                 label="Previous change"
-                onActivate={() => goToChange(-1)}
+                onActivate={() => previousChangePath && scrollToFilePath(previousChangePath)}
               >
                 <svg
                   className="DiffDockToolbarGlyph"
@@ -560,9 +565,9 @@ function OpenDiffDock(props: {
               </DockHeaderIconButton>
               <DockHeaderIconButton
                 className="DiffDockToolbarIconButton"
-                disabled={changeIndex < 0 || changeIndex >= changeFiles.length - 1}
+                disabled={nextChangePath === null}
                 label="Next change"
-                onActivate={() => goToChange(1)}
+                onActivate={() => nextChangePath && scrollToFilePath(nextChangePath)}
               >
                 <svg
                   className="DiffDockToolbarGlyph"
@@ -689,6 +694,7 @@ function OpenDiffDock(props: {
             className="DiffDockScroller DiffDockPatchViewport"
             scroll-y
             enable-scroll-bar
+            bindscroll={handlePatchScroll}
           >
             {/* The scroll-view's only child: its box is the scrolled content, which is
                 what the change markers measure file positions against. */}
