@@ -1,4 +1,6 @@
-import type { ReactNode } from "@lynx-js/react";
+import { getRectByRef } from "@lynx-js/lynx-ui";
+import { useRef, type ReactNode } from "@lynx-js/react";
+import type { NodesRef } from "@lynx-js/types";
 
 import {
   lynxNestedInteractiveEventProps,
@@ -6,6 +8,8 @@ import {
 } from "../adapters/useLynxInteractiveState";
 import { XIcon } from "../lib/icons.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
+import { resolveSecondaryPointerOffset } from "../components/sidebar/threadContextActions.logic";
+import { sleepOnHost } from "../platform/timer";
 
 import "./editor-surface-tab.css";
 
@@ -50,9 +54,32 @@ export function EditorSurfaceTab(props: {
   readonly leading?: ReactNode;
   readonly onClose: () => void;
   readonly onSelect?: () => void;
+  /** Secondary click on the tab, at the pointer's window position. */
+  readonly onContextMenu?: (position: { readonly x: number; readonly y: number }) => void;
   readonly visualState?: "default" | "hover" | "focus" | "pressed";
 }) {
   const { semanticIconColor } = useTheme();
+  const tabRef = useRef<NodesRef>(null);
+  const openContextMenu = (event: {
+    readonly button?: number;
+    readonly buttons?: number;
+    readonly x?: number;
+    readonly y?: number;
+  }) => {
+    "background only";
+    const offset = resolveSecondaryPointerOffset(event);
+    if (!offset || !props.onContextMenu) return;
+    void getRectByRef(tabRef, true)
+      .then(async (rect) => {
+        // As for sidebar rows: let the secondary-button release finish before AppKit
+        // places the first native menu item under the pointer.
+        await sleepOnHost(50);
+        props.onContextMenu?.({ x: rect.left + offset.x, y: rect.top + offset.y });
+      })
+      .catch(() => {
+        // A context menu with invented coordinates is worse than no menu.
+      });
+  };
   const tab = useLynxInteractiveState({
     baseClassName: `EditorSurfaceTab${
       props.active ? " EditorSurfaceTab--active" : ""
@@ -82,8 +109,14 @@ export function EditorSurfaceTab(props: {
   if (props.closePlacement === "trailing") {
     return (
       <view
+        ref={tabRef}
         className={`${tab.className} EditorSurfaceTab--content${deterministicState}`}
         {...tab.eventProps}
+        bindmousedown={(event: Parameters<typeof openContextMenu>[0]) => {
+          "background only";
+          tab.eventProps.bindmousedown?.();
+          openContextMenu(event);
+        }}
       >
         <view className="EditorSurfaceTabIconSlot">{props.icon}</view>
         {label}

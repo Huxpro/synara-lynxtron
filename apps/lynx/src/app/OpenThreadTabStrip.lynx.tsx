@@ -4,7 +4,9 @@
 // Layer: Lynx presentation. Which tabs exist, their order, titles and the tab that takes
 //   over after a close come from upstream's openThreadTabsStore, useOpenThreadTabs and
 //   openThreadTabs.logic.
-// Not ported: drag to reorder, the tab context menu and the previous/next tab shortcuts.
+//   The tab context menu offers upstream's scoped closes (left, right, others).
+// Not ported: drag to reorder, the thread actions upstream merges into the tab menu, and
+//   the previous/next tab shortcuts (Native has no keybinding command dispatcher yet).
 
 import type { ThreadId } from "@synara/contracts";
 import { useRouter } from "@tanstack/react-router";
@@ -14,19 +16,46 @@ import { useComposerDraftStore } from "@synara-web/composerDraftStore";
 import {
   buildOpenThreadTabs,
   canKeepOpenThreadTab,
+  closeOpenThreadTabs,
+  createOpenThreadTabCloseQueue,
   resolveOpenThreadTabCloseTarget,
+  resolveOpenThreadTabsInCloseScope,
   type OpenThreadTab,
+  type OpenThreadTabCloseScope,
 } from "@synara-web/openThreadTabs.logic";
 import { useOpenThreadTabsStore } from "@synara-web/openThreadTabsStore";
 import { useStore } from "@synara-web/store";
 import { selectThreadTerminalState, useTerminalStateStore } from "@synara-web/terminalStateStore";
-import { useEffect, useRef } from "@lynx-js/react";
+import { useEffect, useRef, useState } from "@lynx-js/react";
 import { useShallow } from "zustand/react/shallow";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import { contentTabListStyle, EditorSurfaceTab } from "./EditorSurfaceTab.lynx";
 import "./open-thread-tab-strip.css";
+
+/** Upstream's `CLOSE_TABS_MENU_ROWS` (components/chat/OpenThreadTabStrip.tsx), in its order. */
+export const CLOSE_TABS_MENU_ROWS: readonly {
+  readonly scope: OpenThreadTabCloseScope;
+  readonly label: string;
+}[] = [
+  { scope: "left", label: "Close Tabs to the Left" },
+  { scope: "right", label: "Close Tabs to the Right" },
+  { scope: "others", label: "Close Other Tabs" },
+];
+
+/**
+ * The rows a tab's context menu lists: only the scopes that have tabs in them, so none on
+ * a lone tab and no left (or right) row on the first (or last) tab, as upstream.
+ */
+export function resolveCloseTabsMenuItems(
+  tabs: readonly Pick<OpenThreadTab, "threadId">[],
+  anchorThreadId: ThreadId,
+): { readonly id: OpenThreadTabCloseScope; readonly label: string }[] {
+  return CLOSE_TABS_MENU_ROWS.filter(
+    (row) => resolveOpenThreadTabsInCloseScope(tabs, anchorThreadId, row.scope).length > 0,
+  ).map((row) => ({ id: row.scope, label: row.label }));
+}
 
 /**
  * Upstream's `hooks/useOpenThreadTabs` (useOpenThreadTabs + useRecordOpenThreadTab) on the
@@ -99,6 +128,44 @@ export function OpenThreadTabStrip(props: {
     "background only";
     void router.navigate(threadId ? { to: "/$threadId", params: { threadId } } : { to: "/" });
   };
+  // The route's thread as of the latest render, for closes that finish after a navigation.
+  const routeThreadIdRef = useRef(activeThreadId);
+  routeThreadIdRef.current = activeThreadId;
+  const pruneThreadTabs = useOpenThreadTabsStore((state) => state.pruneThreadTabs);
+  const [enqueueClose] = useState(createOpenThreadTabCloseQueue);
+  const openTabContextMenu = async (
+    tab: OpenThreadTab,
+    position: { readonly x: number; readonly y: number },
+  ) => {
+    "background only";
+    const items = resolveCloseTabsMenuItems(tabs, tab.threadId);
+    if (items.length === 0) return;
+    const { showContextMenu } = await import(/* webpackMode: "eager" */ "../platform/contextMenu");
+    const scope = await showContextMenu(items, position);
+    if (!scope) return;
+    void enqueueClose(() => {
+      const openThreadIds = useOpenThreadTabsStore.getState().threadIds;
+      // The route's thread: the one on screen, then the kept tab once navigating to it
+      // has resolved (the render that would refresh the ref may not have run yet).
+      let routeThreadId: ThreadId | null = routeThreadIdRef.current;
+      return closeOpenThreadTabs({
+        closedThreadIds: resolveOpenThreadTabsInCloseScope(
+          // The tabs as right-clicked, minus any an earlier queued close has since dropped.
+          tabs.filter((candidate) => openThreadIds.includes(candidate.threadId)),
+          tab.threadId,
+          scope,
+        ),
+        keptThreadId: tab.threadId,
+        activeThreadId: routeThreadIdRef.current,
+        closeTabs: (threadIds) => pruneThreadTabs((threadId) => !threadIds.includes(threadId)),
+        openTab: async (threadId) => {
+          await router.navigate({ to: "/$threadId", params: { threadId } });
+          routeThreadId = threadId;
+        },
+        readRouteThreadId: () => routeThreadId,
+      });
+    });
+  };
   const closeTab = (threadId: ThreadId) => {
     "background only";
     const target = resolveOpenThreadTabCloseTarget({
@@ -139,6 +206,7 @@ export function OpenThreadTabStrip(props: {
                 }
                 label={tab.title}
                 onClose={() => closeTab(tab.threadId)}
+                onContextMenu={(position) => void openTabContextMenu(tab, position)}
                 onSelect={active ? props.onRenameActiveThread : () => openThread(tab.threadId)}
               />
             );
