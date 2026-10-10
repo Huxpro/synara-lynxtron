@@ -1,25 +1,27 @@
 /* P2-V3: tokens.css contains semantic aliases to Tailwind v4 base palette
    variables. The web build generates those variables; Lynx does not run the
-   web Tailwind pipeline, so supply only the referenced base palette here. */
+   web Tailwind pipeline, so supply only the referenced base palette here.
+   Every value is the Tailwind v4 oklch colour Electron resolves, in sRGB
+   (scripts/comparison-colours.mjs compares the derived tokens). */
 :root {
   --color-white: #ffffff;
   --color-black: #000000;
   --color-neutral-100: #f5f5f5;
-  --color-neutral-400: #a3a3a3;
+  --color-neutral-400: #a1a1a1;
   --color-neutral-500: #737373;
   --color-neutral-800: #262626;
   --color-neutral-900: #171717;
-  --color-red-400: #f87171;
-  --color-red-500: #ef4444;
-  --color-red-700: #b91c1c;
-  --color-amber-400: #fbbf24;
-  --color-amber-500: #f59e0b;
-  --color-amber-700: #b45309;
-  --color-emerald-400: #34d399;
-  --color-emerald-500: #10b981;
-  --color-emerald-700: #047857;
-  --color-indigo-500: #6366f1;
-  --color-zinc-500: #71717a;
+  --color-red-400: #ff6467;
+  --color-red-500: #fb2c36;
+  --color-red-700: #c10007;
+  --color-amber-400: #ffb900;
+  --color-amber-500: #fe9a00;
+  --color-amber-700: #bb4d00;
+  --color-emerald-400: #00d492;
+  --color-emerald-500: #00bc7d;
+  --color-emerald-700: #007a55;
+  --color-indigo-500: #615fff;
+  --color-zinc-500: #71717b;
   /* Project palette (tokens.css --project-*): Tailwind v4 oklch values in sRGB. */
   --color-orange-500: #ff6900;
   --color-yellow-400: #fdc700;

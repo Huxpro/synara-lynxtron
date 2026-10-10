@@ -812,7 +812,7 @@ export async function workflowJ2(context) {
  * text nodes). `scope` limits the search: "explorer" is the Explorer pane,
  * whose preview must not be confused with the same text in the transcript.
  */
-async function renderedTextIncludes(driver, needle, scope = null) {
+export async function renderedTextIncludes(driver, needle, scope = null) {
   if (driver.kind === "electron") {
     const root =
       scope === "explorer"
@@ -865,7 +865,7 @@ function dockTab(driver, title) {
 }
 
 /** Selects a dock tab, adding its pane from the Add panel menu when the dock lacks it. */
-async function openDockTab(driver, title) {
+export async function openDockTab(driver, title) {
   const tab = dockTab(driver, title);
   if (!(await driver.find(tab))) {
     await driver.tap(DOCK_TARGETS.addPanel);
@@ -887,7 +887,7 @@ function treeRow(driver, path, kind) {
   });
 }
 
-async function openExplorerFromDock(driver) {
+export async function openExplorerFromDock(driver) {
   // From the empty dock's launcher Files opens directly; otherwise add it as a tab.
   await openDockWithPane(driver, "Open Files");
   if (!(await driver.find(DOCK_TARGETS.search))) {
@@ -897,7 +897,7 @@ async function openExplorerFromDock(driver) {
   await waitFor(() => driver.find(DOCK_TARGETS.search), { label: "the Explorer pane" });
 }
 
-async function openTreeFile(driver, path) {
+export async function openTreeFile(driver, path) {
   const directory = path.split("/").slice(0, -1).join("/");
   const fileTarget = treeRow(driver, path, "file");
   const visible = () =>

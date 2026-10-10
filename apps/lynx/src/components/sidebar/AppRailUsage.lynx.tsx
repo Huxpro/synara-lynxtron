@@ -42,12 +42,13 @@ import { OpenAIProviderIcon } from "../OpenAIProviderIcon.lynx";
 import { webStorage } from "../../platform/storage";
 import { useLynxInteractiveState } from "../ui/interactive-state.lynx";
 
-// Tailwind emerald/yellow/orange/red-500, as upstream's RING_TONE_CLASS_NAME.
+// Tailwind v4 emerald/yellow/orange/red-500 in sRGB, as upstream's RING_TONE_CLASS_NAME
+// resolves them (the same values as the palette in app/lynx-overrides.css).
 const RING_TONE_COLOR: Record<RailUsageRingTone, string> = {
-  healthy: "#10b981",
-  fair: "#eab308",
-  low: "#f97316",
-  critical: "#ef4444",
+  healthy: "#00bc7d",
+  fair: "#f0b100",
+  low: "#ff6900",
+  critical: "#fb2c36",
 };
 
 // Upstream SINGLE_RING / DOUBLE_RING / RING_SPACING.
@@ -140,7 +141,7 @@ function AppRailUsageRing(props: {
   readonly codexHomePath: string | null;
   readonly onOpenUsageSettings: () => void;
 }) {
-  const { semanticIconColor } = useTheme();
+  const { svgColors } = useTheme();
   const { instance, label } = props.account;
   const provider = instance.driver;
   const threads = useStore(selectAccountRateLimitThreads);
@@ -186,7 +187,7 @@ function AppRailUsageRing(props: {
       <svg
         className="AppRailUsageRing"
         style={{ width: `${ring.box}px`, height: `${ring.box}px` }}
-        content={ringSvg({ ring, rings, trackColor: semanticIconColor("secondary") })}
+        content={ringSvg({ ring, rings, trackColor: svgColors.sectionLabelForeground })}
       />
       <view
         className={`AppRailUsageIcon${unavailable ? " AppRailUsageIcon--unavailable" : ""}`}

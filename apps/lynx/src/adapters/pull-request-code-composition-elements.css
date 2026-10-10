@@ -392,22 +392,6 @@
   padding-left: 7px;
 }
 
-.SliceRoot--theme-dark .SharedPrCodeLine--addition {
-  background-color: rgba(94, 204, 113, 0.016);
-}
-
-.SliceRoot--theme-dark .SharedPrCodeLine--deletion {
-  background-color: rgba(255, 103, 98, 0.016);
-}
-
-.SliceRoot--theme-dark .SharedPrCodeSplitSide .SharedPrCodeLine--addition .SharedPrCodeLineNumber {
-  background-color: rgba(94, 204, 113, 0.018);
-}
-
-.SliceRoot--theme-dark .SharedPrCodeSplitSide .SharedPrCodeLine--deletion .SharedPrCodeLineNumber {
-  background-color: rgba(255, 103, 98, 0.018);
-}
-
 .SharedPrCodeLine--addition .SharedPrCodeLinePrefix {
   color: var(--success);
 }

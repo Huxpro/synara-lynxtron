@@ -698,6 +698,11 @@
   line-height: 15px;
 }
 
+/* Upstream's trigger status label: `dark:text-muted-foreground/45`. */
+.SliceRoot--theme-dark .ComposerModelTriggerMetaLynx {
+  color: color-mix(in srgb, var(--muted-foreground) 45%, transparent);
+}
+
 .ComposerModelTriggerFastIconLynx {
   width: 14px;
   height: 14px;

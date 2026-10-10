@@ -1,0 +1,2421 @@
+{
+  "dark": {
+    "runId": "2026-10-10T06-27-42-408Z-50264",
+    "measuredAt": "2026-10-10T06:58:57.428Z",
+    "note": "First pass, before the fixes in this change. Background pairs for inline text runs were still recorded (paragraph pixels) and are not comparable with the later pass.",
+    "tally": {
+      "total": {
+        "compared": 1323,
+        "within": 1061
+      },
+      "byKind": {
+        "background": {
+          "compared": 376,
+          "within": 347
+        },
+        "text": {
+          "compared": 376,
+          "within": 345
+        },
+        "control": {
+          "compared": 367,
+          "within": 344
+        },
+        "icon": {
+          "compared": 188,
+          "within": 23
+        },
+        "border": {
+          "compared": 16,
+          "within": 2
+        }
+      }
+    },
+    "surfaces": {
+      "landing": {
+        "tally": {
+          "total": {
+            "compared": 81,
+            "within": 60
+          },
+          "byKind": {
+            "background": {
+              "compared": 19,
+              "within": 18
+            },
+            "text": {
+              "compared": 19,
+              "within": 13
+            },
+            "control": {
+              "compared": 29,
+              "within": 27
+            },
+            "icon": {
+              "compared": 14,
+              "within": 2
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 256,
+          "share": 2.4
+        }
+      },
+      "thread": {
+        "tally": {
+          "total": {
+            "compared": 133,
+            "within": 106
+          },
+          "byKind": {
+            "background": {
+              "compared": 40,
+              "within": 35
+            },
+            "text": {
+              "compared": 40,
+              "within": 37
+            },
+            "control": {
+              "compared": 35,
+              "within": 33
+            },
+            "icon": {
+              "compared": 17,
+              "within": 1
+            },
+            "border": {
+              "compared": 1,
+              "within": 0
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 292,
+          "share": 2.8
+        }
+      },
+      "thread-model-menu": {
+        "tally": {
+          "total": {
+            "compared": 214,
+            "within": 183
+          },
+          "byKind": {
+            "background": {
+              "compared": 61,
+              "within": 56
+            },
+            "text": {
+              "compared": 61,
+              "within": 57
+            },
+            "control": {
+              "compared": 61,
+              "within": 59
+            },
+            "icon": {
+              "compared": 30,
+              "within": 11
+            },
+            "border": {
+              "compared": 1,
+              "within": 0
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 298,
+          "share": 2.8
+        }
+      },
+      "thread-dock-diff": {
+        "tally": {
+          "total": {
+            "compared": 171,
+            "within": 125
+          },
+          "byKind": {
+            "background": {
+              "compared": 41,
+              "within": 35
+            },
+            "text": {
+              "compared": 41,
+              "within": 38
+            },
+            "control": {
+              "compared": 54,
+              "within": 48
+            },
+            "icon": {
+              "compared": 30,
+              "within": 4
+            },
+            "border": {
+              "compared": 5,
+              "within": 0
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 1320,
+          "share": 12.6
+        }
+      },
+      "thread-dock-explorer": {
+        "tally": {
+          "total": {
+            "compared": 155,
+            "within": 119
+          },
+          "byKind": {
+            "background": {
+              "compared": 44,
+              "within": 38
+            },
+            "text": {
+              "compared": 44,
+              "within": 38
+            },
+            "control": {
+              "compared": 42,
+              "within": 39
+            },
+            "icon": {
+              "compared": 22,
+              "within": 4
+            },
+            "border": {
+              "compared": 3,
+              "within": 0
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 427,
+          "share": 4.1
+        }
+      },
+      "settings-general": {
+        "tally": {
+          "total": {
+            "compared": 114,
+            "within": 96
+          },
+          "byKind": {
+            "background": {
+              "compared": 39,
+              "within": 39
+            },
+            "text": {
+              "compared": 39,
+              "within": 38
+            },
+            "control": {
+              "compared": 21,
+              "within": 18
+            },
+            "icon": {
+              "compared": 11,
+              "within": 0
+            },
+            "border": {
+              "compared": 4,
+              "within": 1
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 259,
+          "share": 2.5
+        }
+      },
+      "settings-appearance": {
+        "tally": {
+          "total": {
+            "compared": 118,
+            "within": 104
+          },
+          "byKind": {
+            "background": {
+              "compared": 41,
+              "within": 41
+            },
+            "text": {
+              "compared": 41,
+              "within": 40
+            },
+            "control": {
+              "compared": 23,
+              "within": 22
+            },
+            "icon": {
+              "compared": 12,
+              "within": 0
+            },
+            "border": {
+              "compared": 1,
+              "within": 1
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 445,
+          "share": 4.2
+        }
+      },
+      "kanban": {
+        "tally": {
+          "total": {
+            "compared": 68,
+            "within": 52
+          },
+          "byKind": {
+            "background": {
+              "compared": 19,
+              "within": 19
+            },
+            "text": {
+              "compared": 19,
+              "within": 15
+            },
+            "control": {
+              "compared": 18,
+              "within": 18
+            },
+            "icon": {
+              "compared": 12,
+              "within": 0
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 27,
+          "share": 0.3
+        }
+      },
+      "code-review": {
+        "tally": {
+          "total": {
+            "compared": 60,
+            "within": 48
+          },
+          "byKind": {
+            "background": {
+              "compared": 11,
+              "within": 11
+            },
+            "text": {
+              "compared": 11,
+              "within": 11
+            },
+            "control": {
+              "compared": 26,
+              "within": 26
+            },
+            "icon": {
+              "compared": 12,
+              "within": 0
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 20,
+          "share": 0.2
+        }
+      },
+      "automations": {
+        "tally": {
+          "total": {
+            "compared": 40,
+            "within": 28
+          },
+          "byKind": {
+            "background": {
+              "compared": 6,
+              "within": 6
+            },
+            "text": {
+              "compared": 6,
+              "within": 6
+            },
+            "control": {
+              "compared": 17,
+              "within": 16
+            },
+            "icon": {
+              "compared": 11,
+              "within": 0
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 168,
+          "share": 1.6
+        }
+      },
+      "automation-dialog": {
+        "tally": {
+          "total": {
+            "compared": 36,
+            "within": 36
+          },
+          "byKind": {
+            "background": {
+              "compared": 15,
+              "within": 15
+            },
+            "text": {
+              "compared": 15,
+              "within": 15
+            },
+            "control": {
+              "compared": 6,
+              "within": 6
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 7,
+          "share": 0.1
+        }
+      },
+      "about-dialog": {
+        "error": "Timed out waiting for Electron {\"selector\":\"[role=\\\"menuitem\\\"]\",\"text\":\"About Synara\"}."
+      },
+      "rail-hover": {
+        "tally": {
+          "total": {
+            "compared": 133,
+            "within": 104
+          },
+          "byKind": {
+            "background": {
+              "compared": 40,
+              "within": 34
+            },
+            "text": {
+              "compared": 40,
+              "within": 37
+            },
+            "control": {
+              "compared": 35,
+              "within": 32
+            },
+            "icon": {
+              "compared": 17,
+              "within": 1
+            },
+            "border": {
+              "compared": 1,
+              "within": 0
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 337,
+          "share": 3.2
+        }
+      }
+    },
+    "findings": [
+      {
+        "kind": "control",
+        "electron": "#ffffff",
+        "native": "#3386d6",
+        "channel": 204,
+        "deltaE": 66.2,
+        "count": 1,
+        "surfaces": ["settings-general"],
+        "examples": ["Move sent messages to top"]
+      },
+      {
+        "kind": "control",
+        "electron": "#424242",
+        "native": "#fcfcfc",
+        "channel": 186,
+        "deltaE": 71,
+        "count": 1,
+        "surfaces": ["landing"],
+        "examples": ["Send message"]
+      },
+      {
+        "kind": "control",
+        "electron": "#ffffff",
+        "native": "#454545",
+        "channel": 186,
+        "deltaE": 70.7,
+        "count": 1,
+        "surfaces": ["settings-general"],
+        "examples": ["Delete worktree on archive"]
+      },
+      {
+        "kind": "border",
+        "electron": "#ffffff",
+        "native": "#5e5e5e",
+        "channel": 160.5,
+        "deltaE": 59.9,
+        "count": 1,
+        "surfaces": ["settings-general"],
+        "examples": ["Delete worktree on archive"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#fcfcfc",
+        "native": "#757575",
+        "channel": 134.6,
+        "deltaE": 49.5,
+        "count": 1,
+        "surfaces": ["thread-model-menu"],
+        "examples": ["Pi"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#818181",
+        "native": "#fcfcfc",
+        "channel": 123.3,
+        "deltaE": 45.1,
+        "count": 2,
+        "surfaces": ["thread-dock-diff"],
+        "examples": ["File actions"]
+      },
+      {
+        "kind": "text",
+        "electron": "#f0f0f0",
+        "native": "#7b7b7b",
+        "channel": 117.3,
+        "deltaE": 43.3,
+        "count": 2,
+        "surfaces": ["settings-general", "settings-appearance"],
+        "examples": ["Computer use"]
+      },
+      {
+        "kind": "text",
+        "electron": "#fcfcfc",
+        "native": "#989898",
+        "channel": 100,
+        "deltaE": 36.1,
+        "count": 4,
+        "surfaces": ["landing", "kanban", "rail-hover"],
+        "examples": ["Temporary", "Worktree", "New task", "Chats"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#fcfcfc",
+        "native": "#999999",
+        "channel": 98.7,
+        "deltaE": 35.6,
+        "count": 1,
+        "surfaces": ["rail-hover"],
+        "examples": ["Automations"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#6e6e6e",
+        "native": "#cdcdcd",
+        "channel": 94.8,
+        "deltaE": 35.9,
+        "count": 5,
+        "surfaces": [
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer",
+          "rail-hover"
+        ],
+        "examples": ["Add action"]
+      },
+      {
+        "kind": "text",
+        "electron": "#505050",
+        "native": "#9b9b9b",
+        "channel": 75.2,
+        "deltaE": 30,
+        "count": 5,
+        "surfaces": ["landing", "thread", "thread-dock-diff", "thread-dock-explorer", "rail-hover"],
+        "examples": ["Medium", "Low"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#606060",
+        "native": "#aaaaaa",
+        "channel": 74.1,
+        "deltaE": 28.9,
+        "count": 1,
+        "surfaces": ["settings-appearance"],
+        "examples": ["Reset Dark theme accent color"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#6e6e6e",
+        "native": "#b5b5b5",
+        "channel": 71.2,
+        "deltaE": 27.3,
+        "count": 4,
+        "surfaces": ["landing", "thread", "thread-model-menu", "rail-hover"],
+        "examples": ["Toggle right sidebar"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#fcfcfc",
+        "native": "#bcbcbc",
+        "channel": 63.7,
+        "deltaE": 22.6,
+        "count": 9,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer",
+          "kanban",
+          "code-review",
+          "automations",
+          "rail-hover"
+        ],
+        "examples": ["Home", "Tasks", "Code review", "Automations"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#5d5d5d",
+        "native": "#999999",
+        "channel": 59.9,
+        "deltaE": 23.7,
+        "count": 40,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer",
+          "settings-general",
+          "settings-appearance",
+          "kanban",
+          "code-review",
+          "automations",
+          "rail-hover"
+        ],
+        "examples": ["Spaces", "Tasks", "Code review", "Automations"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#989898",
+        "native": "#d2d2d2",
+        "channel": 58.4,
+        "deltaE": 21.5,
+        "count": 5,
+        "surfaces": [
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer",
+          "rail-hover"
+        ],
+        "examples": ["Fork thread from this turn"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#707070",
+        "native": "#3b3b3b",
+        "channel": 53.2,
+        "deltaE": 22.5,
+        "count": 1,
+        "surfaces": ["thread-model-menu"],
+        "examples": ["Cursor"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#aaaaaa",
+        "native": "#757575",
+        "channel": 52.6,
+        "deltaE": 20.2,
+        "count": 1,
+        "surfaces": ["thread-model-menu"],
+        "examples": ["Add providers"]
+      },
+      {
+        "kind": "text",
+        "electron": "#d3d3d3",
+        "native": "#9f9f9f",
+        "channel": 52.4,
+        "deltaE": 19.2,
+        "count": 1,
+        "surfaces": ["thread-model-menu"],
+        "examples": ["7"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#fcfcfc",
+        "native": "#cbcbcb",
+        "channel": 49,
+        "deltaE": 17.3,
+        "count": 5,
+        "surfaces": [
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer",
+          "rail-hover"
+        ],
+        "examples": ["Context window 7.9% used"]
+      },
+      {
+        "kind": "text",
+        "electron": "#d3d3d3",
+        "native": "#a7a7a7",
+        "channel": 44,
+        "deltaE": 16.1,
+        "count": 1,
+        "surfaces": ["thread-model-menu"],
+        "examples": ["5"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#6e6e6e",
+        "native": "#989898",
+        "channel": 42.3,
+        "deltaE": 16.5,
+        "count": 5,
+        "surfaces": [
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer",
+          "rail-hover"
+        ],
+        "examples": ["Hand off thread"]
+      },
+      {
+        "kind": "text",
+        "electron": "#d6d5d3",
+        "native": "#fcfcfc",
+        "channel": 41,
+        "deltaE": 13.7,
+        "count": 1,
+        "surfaces": ["thread-dock-explorer"],
+        "examples": ["Open"]
+      },
+      {
+        "kind": "text",
+        "electron": "#7c7c7c",
+        "native": "#545454",
+        "channel": 40,
+        "deltaE": 16.3,
+        "count": 1,
+        "surfaces": ["kanban"],
+        "examples": ["Needs review"]
+      },
+      {
+        "kind": "border",
+        "electron": "#252525",
+        "native": "#000000",
+        "channel": 37.2,
+        "deltaE": 14.8,
+        "count": 4,
+        "surfaces": ["thread-dock-diff"],
+        "examples": ["Choose diff source", "Diff tools", "Choose turn diff", "Panel"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#797979",
+        "native": "#999999",
+        "channel": 32.3,
+        "deltaE": 12.5,
+        "count": 16,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer",
+          "settings-general",
+          "settings-appearance",
+          "kanban",
+          "code-review",
+          "automations",
+          "rail-hover"
+        ],
+        "examples": ["Inbox", "Home"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#808080",
+        "native": "#a0a0a0",
+        "channel": 31.8,
+        "deltaE": 12.2,
+        "count": 5,
+        "surfaces": ["thread-dock-diff"],
+        "examples": ["Reload diff", "Diff view options", "Show file tree", "Panel"]
+      },
+      {
+        "kind": "text",
+        "electron": "#7b7b7b",
+        "native": "#989898",
+        "channel": 29.9,
+        "deltaE": 11.6,
+        "count": 5,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer"
+        ],
+        "examples": ["Chats"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#7c7c7c",
+        "native": "#999999",
+        "channel": 29.4,
+        "deltaE": 11.4,
+        "count": 18,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer",
+          "settings-general",
+          "settings-appearance",
+          "kanban",
+          "code-review",
+          "automations",
+          "rail-hover"
+        ],
+        "examples": ["Back", "Add panel", "Maximize panel", "Collapse panel"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#808080",
+        "native": "#9b9b9b",
+        "channel": 27.2,
+        "deltaE": 10.5,
+        "count": 1,
+        "surfaces": ["thread-dock-diff"],
+        "examples": ["Next change"]
+      },
+      {
+        "kind": "text",
+        "electron": "#fcfcfc",
+        "native": "#e1e1e1",
+        "channel": 27,
+        "deltaE": 9.4,
+        "count": 1,
+        "surfaces": ["landing"],
+        "examples": ["New thread"]
+      },
+      {
+        "kind": "border",
+        "electron": "#1a1a1a",
+        "native": "#000000",
+        "channel": 26.5,
+        "deltaE": 9.5,
+        "count": 1,
+        "surfaces": ["thread-dock-explorer"],
+        "examples": ["Editor options"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#606060",
+        "native": "#777777",
+        "channel": 23,
+        "deltaE": 9.3,
+        "count": 11,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer",
+          "settings-general",
+          "settings-appearance",
+          "kanban",
+          "code-review",
+          "automations",
+          "rail-hover"
+        ],
+        "examples": ["Toggle thread sidebar"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#545454",
+        "native": "#686868",
+        "channel": 20.3,
+        "deltaE": 8.4,
+        "count": 11,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer",
+          "settings-general",
+          "settings-appearance",
+          "kanban",
+          "code-review",
+          "automations",
+          "rail-hover"
+        ],
+        "examples": ["Forward"]
+      },
+      {
+        "kind": "border",
+        "electron": "#0d0d0d",
+        "native": "#212121",
+        "channel": 19.7,
+        "deltaE": 8.9,
+        "count": 6,
+        "surfaces": [
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer",
+          "rail-hover"
+        ],
+        "examples": ["Add action", "Open in editor"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#00bc7d",
+        "native": "#10b981",
+        "channel": 16,
+        "deltaE": 4.3,
+        "count": 11,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer",
+          "settings-general",
+          "settings-appearance",
+          "kanban",
+          "code-review",
+          "automations",
+          "rail-hover"
+        ],
+        "examples": [
+          "Claude usage: 5h 80% remaining, Weekly 24% remaining, Fable 89% remaining. Open ",
+          "Claude usage: 5h 78% remaining, Weekly 24% remaining, Fable 89% remaining. Open "
+        ]
+      },
+      {
+        "kind": "icon",
+        "electron": "#898989",
+        "native": "#999999",
+        "channel": 15.9,
+        "deltaE": 6.1,
+        "count": 1,
+        "surfaces": ["kanban"],
+        "examples": ["New task in synara-fixture-app"]
+      },
+      {
+        "kind": "control",
+        "electron": "#202020",
+        "native": "#111111",
+        "channel": 15,
+        "deltaE": 7.2,
+        "count": 10,
+        "surfaces": [
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer",
+          "rail-hover"
+        ],
+        "examples": ["Close Fixture transcript", "Open threads", "Open panels", "Close Diff"]
+      },
+      {
+        "kind": "background",
+        "electron": "#202020",
+        "native": "#111111",
+        "channel": 15,
+        "deltaE": 7.2,
+        "count": 7,
+        "surfaces": [
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer",
+          "rail-hover"
+        ],
+        "examples": ["Fixture transcript", "Diff", "Explorer"]
+      },
+      {
+        "kind": "text",
+        "electron": "#7f7f7f",
+        "native": "#707070",
+        "channel": 14.8,
+        "deltaE": 5.9,
+        "count": 2,
+        "surfaces": ["kanban"],
+        "examples": ["Done"]
+      },
+      {
+        "kind": "border",
+        "electron": "#252525",
+        "native": "#171717",
+        "channel": 14.2,
+        "deltaE": 7,
+        "count": 2,
+        "surfaces": ["settings-general"],
+        "examples": ["Default provider", "Default thread mode"]
+      },
+      {
+        "kind": "text",
+        "electron": "#f0f0f0",
+        "native": "#fcfcfc",
+        "channel": 12,
+        "deltaE": 4.2,
+        "count": 6,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer",
+          "rail-hover"
+        ],
+        "examples": ["synara-fixture-app"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#f0b100",
+        "native": "#eab308",
+        "channel": 8,
+        "deltaE": 3.8,
+        "count": 11,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer",
+          "settings-general",
+          "settings-appearance",
+          "kanban",
+          "code-review",
+          "automations",
+          "rail-hover"
+        ],
+        "examples": ["Codex usage: Weekly 38% remaining. Open usage settings"]
+      },
+      {
+        "kind": "control",
+        "electron": "#161616",
+        "native": "#101010",
+        "channel": 6,
+        "deltaE": 2.6,
+        "count": 2,
+        "surfaces": ["thread-dock-diff"],
+        "examples": ["File actions"]
+      },
+      {
+        "kind": "control",
+        "electron": "#0d0d0d",
+        "native": "#131313",
+        "channel": 6,
+        "deltaE": 2.2,
+        "count": 2,
+        "surfaces": ["settings-general", "settings-appearance"],
+        "examples": ["Resize Sidebar"]
+      },
+      {
+        "kind": "background",
+        "electron": "#171717",
+        "native": "#111111",
+        "channel": 6,
+        "deltaE": 2.7,
+        "count": 1,
+        "surfaces": ["landing"],
+        "examples": ["New thread"]
+      },
+      {
+        "kind": "text",
+        "electron": "#c7c7c7",
+        "native": "#cdcdcd",
+        "channel": 5.4,
+        "deltaE": 1.9,
+        "count": 2,
+        "surfaces": ["thread-dock-explorer"],
+        "examples": ["docs", "src"]
+      },
+      {
+        "kind": "background",
+        "electron": "#151515",
+        "native": "#101010",
+        "channel": 5,
+        "deltaE": 2.1,
+        "count": 20,
+        "surfaces": [
+          "thread",
+          "thread-model-menu",
+          "thread-dock-diff",
+          "thread-dock-explorer",
+          "rail-hover"
+        ],
+        "examples": ["const", "readonly", "async", "await"]
+      },
+      {
+        "kind": "control",
+        "electron": "#0d0d0d",
+        "native": "#121212",
+        "channel": 5,
+        "deltaE": 1.8,
+        "count": 5,
+        "surfaces": ["landing", "thread", "thread-model-menu", "automations", "rail-hover"],
+        "examples": ["Resize Sidebar"]
+      },
+      {
+        "kind": "background",
+        "electron": "#161616",
+        "native": "#111111",
+        "channel": 5,
+        "deltaE": 2.2,
+        "count": 1,
+        "surfaces": ["rail-hover"],
+        "examples": ["Chats"]
+      },
+      {
+        "kind": "control",
+        "electron": "#161616",
+        "native": "#111111",
+        "channel": 5,
+        "deltaE": 2.2,
+        "count": 1,
+        "surfaces": ["rail-hover"],
+        "examples": ["Automations"]
+      }
+    ],
+    "tokens": [
+      {
+        "kind": "inline",
+        "name": "--app-content-surface",
+        "native": "#111111",
+        "electron": "rgba(0, 0, 0, 0)",
+        "channel": 238,
+        "within": false,
+        "material": true
+      },
+      {
+        "kind": "inline",
+        "name": "--app-shell-background",
+        "native": "#101010",
+        "electron": "rgba(0, 0, 0, 0)",
+        "channel": 239,
+        "within": false,
+        "material": true
+      },
+      {
+        "kind": "inline",
+        "name": "--app-sidebar-chip-surface",
+        "native": "#111111",
+        "electron": "color(srgb 0.0533333 0.0533333 0.0533333 / 0.9)",
+        "channel": 20.7,
+        "within": false,
+        "material": true
+      },
+      {
+        "kind": "inline",
+        "name": "--app-settings-surface",
+        "native": "#111111",
+        "electron": "rgba(0, 0, 0, 0)",
+        "channel": 238,
+        "within": false,
+        "material": true
+      },
+      {
+        "kind": "inline",
+        "name": "--app-window-background",
+        "native": "#101010",
+        "electron": "color(srgb 0.0533333 0.0533333 0.0533333 / 0.9)",
+        "channel": 21.7,
+        "within": false,
+        "material": true
+      },
+      {
+        "kind": "inline",
+        "name": "--app-sidebar-surface",
+        "native": "#111111",
+        "electron": "rgba(0, 0, 0, 0)",
+        "channel": 238,
+        "within": false,
+        "material": true
+      },
+      {
+        "kind": "stylesheet",
+        "name": "--control-focus-ring-color",
+        "native": "rgba(245, 128, 86, 0.378824)",
+        "electron": "color(srgb 0.2 0.52549 0.839216 / 0.378824)",
+        "channel": 73.5,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-border-focus) 60%, transparent)"
+      },
+      {
+        "kind": "stylesheet",
+        "name": "--status-merged",
+        "native": "rgba(143, 145, 245, 1)",
+        "electron": "color(srgb 0.555134 0.547785 1.00558)",
+        "channel": 11.4,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-indigo-500) 72%, var(--color-white))"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-c7d69dcd75",
+        "native": "rgba(245, 158, 11, 0.16)",
+        "electron": "color(srgb 0.994197 0.602133 -0.217475 / 0.16)",
+        "channel": 10.6,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-amber-500) 16%, transparent)"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-b5be8b7cf8",
+        "native": "rgba(245, 128, 86, 0.378824)",
+        "electron": "color(srgb 0.2 0.52549 0.839216 / 0.378824)",
+        "channel": 73.5,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-border-focus) 60%, transparent)"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-268c630f45",
+        "native": "rgba(71, 216, 129, 1)",
+        "electron": "color(srgb 0.139992 0.846775 0.507272)",
+        "channel": 35.3,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-green-500) 72%, var(--color-white))"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-83c66e9919",
+        "native": "rgba(143, 145, 245, 1)",
+        "electron": "color(srgb 0.555134 0.547785 1.00558)",
+        "channel": 11.4,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-indigo-500) 72%, var(--color-white))"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-7167ab2c52",
+        "native": "rgba(255, 147, 71, 1)",
+        "electron": "color(srgb 1.0134 0.57576 0.160678)",
+        "channel": 30,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-orange-500) 72%, var(--color-white))"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-c2cce6723e",
+        "native": "rgba(243, 120, 120, 1)",
+        "electron": "color(srgb 0.987481 0.403749 0.433451)",
+        "channel": 17,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-red-500) 72%, var(--color-white))"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-cc38c3995d",
+        "native": "rgba(241, 87, 87, 1)",
+        "electron": "color(srgb 0.984352 0.254686 0.291814)",
+        "channel": 22.1,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-red-500) 90%, var(--color-white))"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-83e3b78aef",
+        "native": "rgba(245, 128, 86, 0.16)",
+        "electron": "color(srgb 0.2 0.52549 0.839216 / 0.16)",
+        "channel": 31,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-text-accent) 16%, transparent)"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-52134d36a0",
+        "native": "rgba(174, 130, 255, 1)",
+        "electron": "color(srgb 0.68024 0.509109 1.01994)",
+        "channel": 5.1,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-violet-500) 72%, var(--color-white))"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-2d03650d86",
+        "native": "rgba(253, 210, 51, 1)",
+        "electron": "color(srgb 0.994326 0.82559 -0.0152641)",
+        "channel": 54.9,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-yellow-400) 80%, var(--color-white))"
+      }
+    ]
+  },
+  "light": {
+    "runId": "2026-10-10T07-13-54-273Z-42779",
+    "measuredAt": "2026-10-10T07:14:49.167Z",
+    "note": "First pass, before the fixes in this change. Background pairs for inline text runs were still recorded (paragraph pixels) and are not comparable with the later pass.",
+    "tally": {
+      "total": {
+        "compared": 1151,
+        "within": 942
+      },
+      "byKind": {
+        "background": {
+          "compared": 334,
+          "within": 296
+        },
+        "text": {
+          "compared": 334,
+          "within": 308
+        },
+        "control": {
+          "compared": 313,
+          "within": 305
+        },
+        "icon": {
+          "compared": 159,
+          "within": 31
+        },
+        "border": {
+          "compared": 11,
+          "within": 2
+        }
+      }
+    },
+    "surfaces": {
+      "landing": {
+        "tally": {
+          "total": {
+            "compared": 81,
+            "within": 63
+          },
+          "byKind": {
+            "background": {
+              "compared": 19,
+              "within": 18
+            },
+            "text": {
+              "compared": 19,
+              "within": 13
+            },
+            "control": {
+              "compared": 29,
+              "within": 29
+            },
+            "icon": {
+              "compared": 14,
+              "within": 3
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 89,
+          "share": 0.8
+        }
+      },
+      "thread": {
+        "tally": {
+          "total": {
+            "compared": 133,
+            "within": 113
+          },
+          "byKind": {
+            "background": {
+              "compared": 40,
+              "within": 37
+            },
+            "text": {
+              "compared": 40,
+              "within": 38
+            },
+            "control": {
+              "compared": 35,
+              "within": 35
+            },
+            "icon": {
+              "compared": 17,
+              "within": 3
+            },
+            "border": {
+              "compared": 1,
+              "within": 0
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 80,
+          "share": 0.8
+        }
+      },
+      "thread-model-menu": {
+        "tally": {
+          "total": {
+            "compared": 215,
+            "within": 189
+          },
+          "byKind": {
+            "background": {
+              "compared": 61,
+              "within": 58
+            },
+            "text": {
+              "compared": 61,
+              "within": 57
+            },
+            "control": {
+              "compared": 61,
+              "within": 61
+            },
+            "icon": {
+              "compared": 31,
+              "within": 13
+            },
+            "border": {
+              "compared": 1,
+              "within": 0
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 85,
+          "share": 0.8
+        }
+      },
+      "thread-dock-diff": {
+        "error": "Timed out waiting for the dock on electron."
+      },
+      "thread-dock-explorer": {
+        "tally": {
+          "total": {
+            "compared": 153,
+            "within": 125
+          },
+          "byKind": {
+            "background": {
+              "compared": 43,
+              "within": 39
+            },
+            "text": {
+              "compared": 43,
+              "within": 39
+            },
+            "control": {
+              "compared": 42,
+              "within": 41
+            },
+            "icon": {
+              "compared": 22,
+              "within": 6
+            },
+            "border": {
+              "compared": 3,
+              "within": 0
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 153,
+          "share": 1.5
+        }
+      },
+      "settings-general": {
+        "tally": {
+          "total": {
+            "compared": 114,
+            "within": 85
+          },
+          "byKind": {
+            "background": {
+              "compared": 39,
+              "within": 28
+            },
+            "text": {
+              "compared": 39,
+              "within": 37
+            },
+            "control": {
+              "compared": 21,
+              "within": 19
+            },
+            "icon": {
+              "compared": 11,
+              "within": 0
+            },
+            "border": {
+              "compared": 4,
+              "within": 1
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 3189,
+          "share": 30.4
+        }
+      },
+      "settings-appearance": {
+        "tally": {
+          "total": {
+            "compared": 118,
+            "within": 91
+          },
+          "byKind": {
+            "background": {
+              "compared": 41,
+              "within": 30
+            },
+            "text": {
+              "compared": 41,
+              "within": 40
+            },
+            "control": {
+              "compared": 23,
+              "within": 20
+            },
+            "icon": {
+              "compared": 12,
+              "within": 0
+            },
+            "border": {
+              "compared": 1,
+              "within": 1
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 2461,
+          "share": 23.4
+        }
+      },
+      "kanban": {
+        "tally": {
+          "total": {
+            "compared": 68,
+            "within": 52
+          },
+          "byKind": {
+            "background": {
+              "compared": 19,
+              "within": 18
+            },
+            "text": {
+              "compared": 19,
+              "within": 15
+            },
+            "control": {
+              "compared": 18,
+              "within": 18
+            },
+            "icon": {
+              "compared": 12,
+              "within": 1
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 53,
+          "share": 0.5
+        }
+      },
+      "code-review": {
+        "tally": {
+          "total": {
+            "compared": 60,
+            "within": 48
+          },
+          "byKind": {
+            "background": {
+              "compared": 11,
+              "within": 11
+            },
+            "text": {
+              "compared": 11,
+              "within": 11
+            },
+            "control": {
+              "compared": 26,
+              "within": 25
+            },
+            "icon": {
+              "compared": 12,
+              "within": 1
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 121,
+          "share": 1.2
+        }
+      },
+      "automations": {
+        "tally": {
+          "total": {
+            "compared": 40,
+            "within": 30
+          },
+          "byKind": {
+            "background": {
+              "compared": 6,
+              "within": 6
+            },
+            "text": {
+              "compared": 6,
+              "within": 6
+            },
+            "control": {
+              "compared": 17,
+              "within": 17
+            },
+            "icon": {
+              "compared": 11,
+              "within": 1
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 6,
+          "share": 0.1
+        }
+      },
+      "automation-dialog": {
+        "tally": {
+          "total": {
+            "compared": 36,
+            "within": 35
+          },
+          "byKind": {
+            "background": {
+              "compared": 15,
+              "within": 15
+            },
+            "text": {
+              "compared": 15,
+              "within": 14
+            },
+            "control": {
+              "compared": 6,
+              "within": 6
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 48,
+          "share": 0.5
+        }
+      },
+      "rail-hover": {
+        "tally": {
+          "total": {
+            "compared": 133,
+            "within": 111
+          },
+          "byKind": {
+            "background": {
+              "compared": 40,
+              "within": 36
+            },
+            "text": {
+              "compared": 40,
+              "within": 38
+            },
+            "control": {
+              "compared": 35,
+              "within": 34
+            },
+            "icon": {
+              "compared": 17,
+              "within": 3
+            },
+            "border": {
+              "compared": 1,
+              "within": 0
+            }
+          }
+        },
+        "grid": {
+          "cells": 10496,
+          "differing": 119,
+          "share": 1.1
+        }
+      },
+      "thread-dock-diff (rerun; Electron showed a server capacity error instead of the diff)": {
+        "tally": {
+          "total": {
+            "compared": 140,
+            "within": 111
+          },
+          "byKind": {
+            "background": {
+              "compared": 14,
+              "within": 14
+            },
+            "text": {
+              "compared": 42,
+              "within": 40
+            },
+            "control": {
+              "compared": 51,
+              "within": 51
+            },
+            "icon": {
+              "compared": 28,
+              "within": 6
+            },
+            "border": {
+              "compared": 5,
+              "within": 0
+            }
+          }
+        }
+      }
+    },
+    "findings": [
+      {
+        "kind": "control",
+        "electron": "#ffffff",
+        "native": "#0169cc",
+        "channel": 254,
+        "deltaE": 81.2,
+        "count": 1,
+        "surfaces": ["settings-general"],
+        "examples": ["Move sent messages to top"]
+      },
+      {
+        "kind": "border",
+        "electron": "#eeeeee",
+        "native": "#000000",
+        "channel": 238.1,
+        "deltaE": 94.1,
+        "count": 1,
+        "surfaces": ["thread-dock-explorer"],
+        "examples": ["Editor options"]
+      },
+      {
+        "kind": "text",
+        "electron": "#474747",
+        "native": "#ffffff",
+        "channel": 183.8,
+        "deltaE": 69.7,
+        "count": 1,
+        "surfaces": ["automation-dialog"],
+        "examples": ["No automations yet"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#0d0d0d",
+        "native": "#999999",
+        "channel": 140.4,
+        "deltaE": 59.7,
+        "count": 1,
+        "surfaces": ["thread-model-menu"],
+        "examples": ["Pi"]
+      },
+      {
+        "kind": "text",
+        "electron": "#191919",
+        "native": "#929292",
+        "channel": 121,
+        "deltaE": 51.8,
+        "count": 2,
+        "surfaces": ["settings-general", "settings-appearance"],
+        "examples": ["Computer use"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#ffffff",
+        "native": "#999999",
+        "channel": 101.6,
+        "deltaE": 36.6,
+        "count": 1,
+        "surfaces": ["thread-model-menu"],
+        "examples": ["OpenCode"]
+      },
+      {
+        "kind": "text",
+        "electron": "#6f6f6f",
+        "native": "#0d0d0d",
+        "channel": 98,
+        "deltaE": 43.2,
+        "count": 1,
+        "surfaces": ["landing"],
+        "examples": ["Support Synara"]
+      },
+      {
+        "kind": "text",
+        "electron": "#0d0d0d",
+        "native": "#6f6f6f",
+        "channel": 97.7,
+        "deltaE": 43.1,
+        "count": 4,
+        "surfaces": ["landing", "kanban", "rail-hover"],
+        "examples": ["Temporary", "Worktree", "New task", "Chats"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#0d0d0d",
+        "native": "#6e6e6e",
+        "channel": 97.3,
+        "deltaE": 42.9,
+        "count": 1,
+        "surfaces": ["rail-hover"],
+        "examples": ["Automations"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#9a9a9a",
+        "native": "#3d3d3d",
+        "channel": 92.6,
+        "deltaE": 37.7,
+        "count": 8,
+        "surfaces": ["thread", "thread-model-menu", "thread-dock-explorer", "rail-hover"],
+        "examples": ["Hand off thread", "Add action"]
+      },
+      {
+        "kind": "text",
+        "electron": "#0d0d0d",
+        "native": "#646464",
+        "channel": 87.1,
+        "deltaE": 38.8,
+        "count": 1,
+        "surfaces": ["settings-general"],
+        "examples": ["Restore defaults"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#9a9a9a",
+        "native": "#565656",
+        "channel": 68.4,
+        "deltaE": 27.2,
+        "count": 4,
+        "surfaces": ["landing", "thread", "thread-model-menu", "rail-hover"],
+        "examples": ["Toggle right sidebar"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#ababab",
+        "native": "#6e6e6e",
+        "channel": 61.1,
+        "deltaE": 23.6,
+        "count": 36,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-explorer",
+          "settings-general",
+          "settings-appearance",
+          "kanban",
+          "code-review",
+          "automations",
+          "rail-hover"
+        ],
+        "examples": ["Spaces", "Tasks", "Code review", "Automations"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#5f5f5f",
+        "native": "#999999",
+        "channel": 58.4,
+        "deltaE": 23,
+        "count": 1,
+        "surfaces": ["thread-model-menu"],
+        "examples": ["Add providers"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#9c9c9c",
+        "native": "#626262",
+        "channel": 58.1,
+        "deltaE": 22.9,
+        "count": 1,
+        "surfaces": ["settings-appearance"],
+        "examples": ["Reset Light theme accent color"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#6f6f6f",
+        "native": "#353535",
+        "channel": 57.8,
+        "deltaE": 24.6,
+        "count": 4,
+        "surfaces": ["thread", "thread-model-menu", "thread-dock-explorer", "rail-hover"],
+        "examples": ["Fork thread from this turn"]
+      },
+      {
+        "kind": "text",
+        "electron": "#393939",
+        "native": "#737373",
+        "channel": 57.8,
+        "deltaE": 24.4,
+        "count": 1,
+        "surfaces": ["thread-model-menu"],
+        "examples": ["7"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#9e9e9e",
+        "native": "#d6d6d6",
+        "channel": 56.1,
+        "deltaE": 20.6,
+        "count": 1,
+        "surfaces": ["thread-model-menu"],
+        "examples": ["Cursor"]
+      },
+      {
+        "kind": "text",
+        "electron": "#3b3b3b",
+        "native": "#6d6d6d",
+        "channel": 49.8,
+        "deltaE": 21.1,
+        "count": 1,
+        "surfaces": ["thread-model-menu"],
+        "examples": ["5"]
+      },
+      {
+        "kind": "control",
+        "electron": "#ffffff",
+        "native": "#cfcfcf",
+        "channel": 48,
+        "deltaE": 16.9,
+        "count": 1,
+        "surfaces": ["settings-general"],
+        "examples": ["Delete worktree on archive"]
+      },
+      {
+        "kind": "text",
+        "electron": "#8c8c8c",
+        "native": "#b7b7b7",
+        "channel": 43.3,
+        "deltaE": 16.3,
+        "count": 1,
+        "surfaces": ["kanban"],
+        "examples": ["Needs review"]
+      },
+      {
+        "kind": "border",
+        "electron": "#dddddd",
+        "native": "#b4b4b4",
+        "channel": 40.7,
+        "deltaE": 14.7,
+        "count": 1,
+        "surfaces": ["settings-general"],
+        "examples": ["Delete worktree on archive"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#919191",
+        "native": "#6e6e6e",
+        "channel": 34.7,
+        "deltaE": 13.6,
+        "count": 14,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-dock-explorer",
+          "settings-general",
+          "settings-appearance",
+          "kanban",
+          "code-review",
+          "automations",
+          "rail-hover"
+        ],
+        "examples": ["Inbox", "Home"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#909090",
+        "native": "#6e6e6e",
+        "channel": 33.7,
+        "deltaE": 13.2,
+        "count": 1,
+        "surfaces": ["thread-model-menu"],
+        "examples": ["Inbox"]
+      },
+      {
+        "kind": "text",
+        "electron": "#8d8d8d",
+        "native": "#6f6f6f",
+        "channel": 30.3,
+        "deltaE": 11.9,
+        "count": 4,
+        "surfaces": ["landing", "thread", "thread-model-menu", "thread-dock-explorer"],
+        "examples": ["Chats"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#8c8c8c",
+        "native": "#6e6e6e",
+        "channel": 29.3,
+        "deltaE": 11.6,
+        "count": 14,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-explorer",
+          "settings-general",
+          "settings-appearance",
+          "kanban",
+          "code-review",
+          "automations",
+          "rail-hover"
+        ],
+        "examples": ["Back", "Add panel", "Maximize panel", "Collapse panel"]
+      },
+      {
+        "kind": "text",
+        "electron": "#0d0d0d",
+        "native": "#292929",
+        "channel": 28,
+        "deltaE": 13,
+        "count": 1,
+        "surfaces": ["landing"],
+        "examples": ["New thread"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#a8a8a8",
+        "native": "#929292",
+        "channel": 22,
+        "deltaE": 8.3,
+        "count": 10,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-explorer",
+          "settings-general",
+          "settings-appearance",
+          "kanban",
+          "code-review",
+          "automations",
+          "rail-hover"
+        ],
+        "examples": ["Toggle thread sidebar"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#b5b5b5",
+        "native": "#a2a2a2",
+        "channel": 18.8,
+        "deltaE": 7,
+        "count": 10,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-explorer",
+          "settings-general",
+          "settings-appearance",
+          "kanban",
+          "code-review",
+          "automations",
+          "rail-hover"
+        ],
+        "examples": ["Forward"]
+      },
+      {
+        "kind": "border",
+        "electron": "#ececec",
+        "native": "#ffffff",
+        "channel": 18.8,
+        "deltaE": 6.5,
+        "count": 2,
+        "surfaces": ["settings-general"],
+        "examples": ["Default provider", "Default thread mode"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#7f7f7f",
+        "native": "#6e6e6e",
+        "channel": 16.7,
+        "deltaE": 6.6,
+        "count": 1,
+        "surfaces": ["kanban"],
+        "examples": ["New task in synara-fixture-app"]
+      },
+      {
+        "kind": "border",
+        "electron": "#ffffff",
+        "native": "#efefef",
+        "channel": 16.1,
+        "deltaE": 5.6,
+        "count": 5,
+        "surfaces": ["thread", "thread-model-menu", "thread-dock-explorer", "rail-hover"],
+        "examples": ["Add action", "Open in editor"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#00bc7d",
+        "native": "#10b981",
+        "channel": 16,
+        "deltaE": 4.3,
+        "count": 10,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-explorer",
+          "settings-general",
+          "settings-appearance",
+          "kanban",
+          "code-review",
+          "automations",
+          "rail-hover"
+        ],
+        "examples": [
+          "Claude usage: 5h 76% remaining, Weekly 23% remaining, Fable 89% remaining. Open "
+        ]
+      },
+      {
+        "kind": "text",
+        "electron": "#8c8c8c",
+        "native": "#9a9a9a",
+        "channel": 14.4,
+        "deltaE": 5.5,
+        "count": 2,
+        "surfaces": ["kanban"],
+        "examples": ["Done"]
+      },
+      {
+        "kind": "text",
+        "electron": "#191919",
+        "native": "#0d0d0d",
+        "channel": 12.1,
+        "deltaE": 5.2,
+        "count": 5,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-explorer",
+          "rail-hover"
+        ],
+        "examples": ["synara-fixture-app"]
+      },
+      {
+        "kind": "background",
+        "electron": "#f6f6f6",
+        "native": "#ffffff",
+        "channel": 9,
+        "deltaE": 3.1,
+        "count": 1,
+        "surfaces": ["kanban"],
+        "examples": ["New task"]
+      },
+      {
+        "kind": "icon",
+        "electron": "#f0b100",
+        "native": "#eab308",
+        "channel": 8,
+        "deltaE": 3.8,
+        "count": 10,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-explorer",
+          "settings-general",
+          "settings-appearance",
+          "kanban",
+          "code-review",
+          "automations",
+          "rail-hover"
+        ],
+        "examples": ["Codex usage: Weekly 38% remaining. Open usage settings"]
+      },
+      {
+        "kind": "background",
+        "electron": "#f8f8f8",
+        "native": "#ffffff",
+        "channel": 7,
+        "deltaE": 2.4,
+        "count": 15,
+        "surfaces": [
+          "landing",
+          "thread",
+          "thread-model-menu",
+          "thread-dock-explorer",
+          "rail-hover"
+        ],
+        "examples": ["New thread", "readonly", "async", "await"]
+      },
+      {
+        "kind": "control",
+        "electron": "#ffffff",
+        "native": "#f8f8f8",
+        "channel": 7,
+        "deltaE": 2.4,
+        "count": 1,
+        "surfaces": ["thread-dock-explorer"],
+        "examples": ["Search files"]
+      },
+      {
+        "kind": "control",
+        "electron": "#f8f8f8",
+        "native": "#ffffff",
+        "channel": 7,
+        "deltaE": 2.4,
+        "count": 1,
+        "surfaces": ["rail-hover"],
+        "examples": ["Automations"]
+      },
+      {
+        "kind": "background",
+        "electron": "#fafafa",
+        "native": "#ffffff",
+        "channel": 5,
+        "deltaE": 1.7,
+        "count": 22,
+        "surfaces": ["settings-general", "settings-appearance"],
+        "examples": [
+          "Default provider",
+          "Provider used for new chats until you pick a model. New chats then reuse your mo",
+          "New threads",
+          "Pick the default workspace mode for newly created draft threads."
+        ]
+      },
+      {
+        "kind": "control",
+        "electron": "#fdfdfd",
+        "native": "#f8f8f8",
+        "channel": 5,
+        "deltaE": 1.7,
+        "count": 2,
+        "surfaces": ["settings-appearance"],
+        "examples": ["Light theme UI font", "Light theme code font"]
+      },
+      {
+        "kind": "control",
+        "electron": "#fafafa",
+        "native": "#ffffff",
+        "channel": 5,
+        "deltaE": 1.7,
+        "count": 1,
+        "surfaces": ["settings-appearance"],
+        "examples": ["Reset Light theme accent color"]
+      },
+      {
+        "kind": "control",
+        "electron": "#ffffff",
+        "native": "#fafafa",
+        "channel": 5,
+        "deltaE": 1.7,
+        "count": 1,
+        "surfaces": ["code-review"],
+        "examples": ["Search pull requests and issues"]
+      },
+      {
+        "kind": "text",
+        "electron": "#424242",
+        "native": "#3d3d3d",
+        "channel": 4.8,
+        "deltaE": 2.1,
+        "count": 2,
+        "surfaces": ["thread-dock-explorer"],
+        "examples": ["docs", "src"]
+      }
+    ],
+    "tokens": [
+      {
+        "kind": "inline",
+        "name": "--app-content-surface",
+        "native": "#ffffff",
+        "electron": "rgba(0, 0, 0, 0)",
+        "channel": 255,
+        "within": false,
+        "material": true
+      },
+      {
+        "kind": "inline",
+        "name": "--app-shell-background",
+        "native": "#ffffff",
+        "electron": "rgba(0, 0, 0, 0)",
+        "channel": 255,
+        "within": false,
+        "material": true
+      },
+      {
+        "kind": "inline",
+        "name": "--app-sidebar-chip-surface",
+        "native": "#ffffff",
+        "electron": "color(srgb 1 1 1 / 0.9)",
+        "channel": 25.5,
+        "within": false,
+        "material": true
+      },
+      {
+        "kind": "inline",
+        "name": "--app-settings-surface",
+        "native": "#ffffff",
+        "electron": "rgba(0, 0, 0, 0)",
+        "channel": 255,
+        "within": false,
+        "material": true
+      },
+      {
+        "kind": "inline",
+        "name": "--app-window-background",
+        "native": "#ffffff",
+        "electron": "color(srgb 1 1 1 / 0.9)",
+        "channel": 25.5,
+        "within": false,
+        "material": true
+      },
+      {
+        "kind": "inline",
+        "name": "--app-sidebar-surface",
+        "native": "#ffffff",
+        "electron": "rgba(0, 0, 0, 0)",
+        "channel": 255,
+        "within": false,
+        "material": true
+      },
+      {
+        "kind": "stylesheet",
+        "name": "--app-composer-picker-surface",
+        "native": "rgba(255, 255, 255, 0.55)",
+        "electron": "color(srgb 1 1 1 / 0.31)",
+        "channel": 61.2,
+        "within": false,
+        "material": true,
+        "expression": "color-mix(in srgb, var(--popover) 55%, transparent)"
+      },
+      {
+        "kind": "stylesheet",
+        "name": "--app-overlay-surface",
+        "native": "rgba(255, 255, 255, 0.55)",
+        "electron": "color(srgb 1 1 1 / 0.31)",
+        "channel": 61.2,
+        "within": false,
+        "material": true,
+        "expression": "color-mix(in srgb, var(--popover) 55%, transparent)"
+      },
+      {
+        "kind": "stylesheet",
+        "name": "--control-focus-ring-color",
+        "native": "rgba(199, 70, 20, 0.6)",
+        "electron": "color(srgb 0.00392157 0.411765 0.8 / 0.6)",
+        "channel": 118.8,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-border-focus) 60%, transparent)"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-c7d69dcd75",
+        "native": "rgba(245, 158, 11, 0.16)",
+        "electron": "color(srgb 0.994197 0.602133 -0.217475 / 0.16)",
+        "channel": 10.6,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-amber-500) 16%, transparent)"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-b5be8b7cf8",
+        "native": "rgba(199, 70, 20, 0.6)",
+        "electron": "color(srgb 0.00392157 0.411765 0.8 / 0.6)",
+        "channel": 118.8,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-border-focus) 60%, transparent)"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-268c630f45",
+        "native": "rgba(71, 216, 129, 1)",
+        "electron": "color(srgb 0.139992 0.846775 0.507272)",
+        "channel": 35.3,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-green-500) 72%, var(--color-white))"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-83c66e9919",
+        "native": "rgba(143, 145, 245, 1)",
+        "electron": "color(srgb 0.555134 0.547785 1.00558)",
+        "channel": 11.4,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-indigo-500) 72%, var(--color-white))"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-7167ab2c52",
+        "native": "rgba(255, 147, 71, 1)",
+        "electron": "color(srgb 1.0134 0.57576 0.160678)",
+        "channel": 30,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-orange-500) 72%, var(--color-white))"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-c2cce6723e",
+        "native": "rgba(243, 120, 120, 1)",
+        "electron": "color(srgb 0.987481 0.403749 0.433451)",
+        "channel": 17,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-red-500) 72%, var(--color-white))"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-cc38c3995d",
+        "native": "rgba(241, 87, 87, 1)",
+        "electron": "color(srgb 0.984352 0.254686 0.291814)",
+        "channel": 22.1,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-red-500) 90%, var(--color-white))"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-83e3b78aef",
+        "native": "rgba(199, 70, 20, 0.16)",
+        "electron": "color(srgb 0.00392157 0.411765 0.8 / 0.16)",
+        "channel": 31.7,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-text-accent) 16%, transparent)"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-52134d36a0",
+        "native": "rgba(174, 130, 255, 1)",
+        "electron": "color(srgb 0.68024 0.509109 1.01994)",
+        "channel": 5.1,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-violet-500) 72%, var(--color-white))"
+      },
+      {
+        "kind": "colour-mix",
+        "name": "--color-mix-2d03650d86",
+        "native": "rgba(253, 210, 51, 1)",
+        "electron": "color(srgb 0.994326 0.82559 -0.0152641)",
+        "channel": 54.9,
+        "within": false,
+        "expression": "color-mix(in srgb, var(--color-yellow-400) 80%, var(--color-white))"
+      }
+    ]
+  }
+}

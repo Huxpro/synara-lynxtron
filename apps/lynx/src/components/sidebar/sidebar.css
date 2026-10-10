@@ -899,8 +899,9 @@
   padding-right: 8px;
 }
 
+/* Upstream's Chats header label is `text-muted-foreground/80` (measured on Electron). */
 .SharedSidebarChatsLabel {
-  color: var(--muted-foreground);
+  color: color-mix(in srgb, var(--muted-foreground) 80%, transparent);
   font-size: 12px;
   font-weight: 500;
 }
