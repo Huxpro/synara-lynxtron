@@ -7,14 +7,21 @@ on:
   push:
     branches:
       - huxcx/lynxtron-port-current-state
+  # Only for the `rerun` job at the bottom; the gates skip this event.
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
 
 concurrency:
-  group: lynx-fork-${{ github.workflow }}-${{ github.ref }}
+  # A workflow_run event carries the default branch's ref, so key it by the CI run
+  # it reports on; otherwise it would cancel the gates of a push to that branch.
+  group: lynx-fork-${{ github.workflow }}-${{ github.event_name == 'workflow_run' && github.event.workflow_run.id || github.ref }}
   cancel-in-progress: true
 
 jobs:
   footprint:
     name: Upstream footprint (only shrinks)
+    if: github.event_name != 'workflow_run'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -33,6 +40,7 @@ jobs:
 
   lynx:
     name: Lynx typecheck, audits, build
+    if: github.event_name != 'workflow_run'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -53,3 +61,55 @@ jobs:
 
       - name: Unit tests (rstest)
         run: bun run --cwd apps/lynx test
+
+  # Upstream's CI (ci.yml) has one browser test that races a one-time coachmark
+  # (tracking issue #50; mechanism in apps/lynx/scripts/ci-known-flake.mjs). When a
+  # first attempt of CI fails on that test alone, this re-runs the failed jobs once.
+  # Every other failure, and a second failure of the same test, stays red.
+  # Remove this job, the workflow_run trigger, and the script once the upstream
+  # test fix is merged in.
+  rerun:
+    name: Re-run CI once for the known coachmark race
+    if: >-
+      github.event_name == 'workflow_run' &&
+      github.event.workflow_run.conclusion == 'failure' &&
+      github.event.workflow_run.run_attempt == 1
+    permissions:
+      actions: write
+      contents: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RUN_ID: ${{ github.event.workflow_run.id }}
+    steps:
+      # Default-branch checkout: the decision script never comes from the PR.
+      - name: Checkout the decision script
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: |
+            apps/lynx/scripts/ci-known-flake.mjs
+            package.json
+          sparse-checkout-cone-mode: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+
+      - name: Decide
+        id: decide
+        run: |
+          gh api --paginate "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/attempts/1/jobs?per_page=100" \
+            --jq '.jobs[] | {id, name, conclusion}' | jq -s . > "$RUNNER_TEMP/jobs.json"
+          shard=$(jq -r '[.[] | select(.conclusion == "failure" and (.name | startswith("Browser Tests (chat-workflows ")))][0].id // empty' "$RUNNER_TEMP/jobs.json")
+          if [ -n "$shard" ]; then
+            gh api "repos/$GITHUB_REPOSITORY/actions/jobs/$shard/logs" > "$RUNNER_TEMP/shard.log"
+            node apps/lynx/scripts/ci-known-flake.mjs --attempt 1 --jobs "$RUNNER_TEMP/jobs.json" --log "$RUNNER_TEMP/shard.log"
+          else
+            node apps/lynx/scripts/ci-known-flake.mjs --attempt 1 --jobs "$RUNNER_TEMP/jobs.json"
+          fi
+
+      - name: Re-run the failed jobs
+        if: steps.decide.outputs.rerun == 'true'
+        run: gh run rerun "$RUN_ID" --failed --repo "$GITHUB_REPOSITORY"
