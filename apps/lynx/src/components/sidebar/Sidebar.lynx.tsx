@@ -38,14 +38,12 @@ import { SidebarThreadRowComposition } from "@synara-web/components/SidebarThrea
 import { shouldShowSidebarThreadProviderIdentity } from "@synara-web/components/SidebarThreadProviderIdentity";
 import { resolveSidebarThreadMetaDescriptors } from "@synara-web/components/SidebarThreadMetaModel.logic";
 import { SidebarThreadTrailingCluster } from "@synara-web/components/SidebarThreadTrailingCluster";
-import {
-  resolveSidebarProjectStatus,
-  resolveSidebarStatusPresentation,
-} from "@synara-web/components/SidebarStatus.logic";
+import { resolveSidebarStatusPresentation } from "@synara-web/components/SidebarStatus.logic";
 import { resolveSidebarProjectsSectionState } from "@synara-web/components/SidebarProjectsState.logic";
 import { resolveSidebarThreadRowModel } from "@synara-web/components/SidebarThreadRowModel.logic";
 import {
   findDeepestWorkspaceRootMatch,
+  resolveProjectStatusIndicator,
   resolveThreadHoverCardMetadata,
 } from "@synara-web/components/Sidebar.logic";
 import { getFallbackThreadIdAfterDelete } from "@synara-web/components/SidebarThreadSort.logic";
@@ -168,6 +166,10 @@ import { LYNX_SIDEBAR_PRIMARY_ICONS } from "./SidebarPrimaryIcons.lynx";
 import { SidebarHoverAction, SidebarNavigationRow } from "./SidebarNavigationRow.lynx";
 import { SidebarSurfaceHeader } from "./SidebarSurfaceHeader.lynx";
 import { SidebarActivityView } from "./SidebarActivityView.lynx";
+import {
+  sidebarPendingApprovalColorClass,
+  sidebarTrailingClusterStatus,
+} from "./sidebarStatusGlyph.logic";
 import { useThreadSettledOverrides } from "./useThreadSettledOverrides.lynx";
 import { hasUnreadActivity as hasUnreadActivityOutsideActiveThread } from "@synara-web/components/SidebarActivityView.logic";
 import folderClosedSvg from "@synara-central-icons/folder-2.svg?raw";
@@ -285,7 +287,7 @@ function SidebarThreadTrailing({ thread }: { readonly thread: ThreadSummary }) {
             ))
           : null
       }
-      status={status}
+      status={sidebarTrailingClusterStatus(status)}
     />
   );
 }
@@ -1339,7 +1341,7 @@ export function Sidebar({
           working: thread.live,
           connecting: thread.sessionStatus === "connecting",
         }),
-      resolveProjectStatus: resolveSidebarProjectStatus,
+      resolveProjectStatus: resolveProjectStatusIndicator,
       threadListExtraPagesByProjectCwd: new Map(Object.entries(projectExtraPagesByCwd)),
       normalizeProjectCwd: normalizeSidebarProjectThreadListCwd,
       activeThreadId: activeThreadId ?? undefined,
@@ -1677,6 +1679,7 @@ export function Sidebar({
                           isActive={rowModel.isActive}
                           variant="pinned"
                           subagentIndentPx={rowModel.subagentIndentPx}
+                          pendingStatusColorClass={sidebarPendingApprovalColorClass(thread.status)}
                           suffix={<SidebarThreadTrailing thread={thread} />}
                         />
                       </SidebarNavigationRow>
@@ -1722,6 +1725,9 @@ export function Sidebar({
                             isActive={rowModel.isActive}
                             variant="standard"
                             subagentIndentPx={Math.max(rowModel.subagentIndentPx, depth * 10)}
+                            pendingStatusColorClass={sidebarPendingApprovalColorClass(
+                              thread.status,
+                            )}
                             suffix={<SidebarThreadTrailing thread={thread} />}
                           />
                         </SidebarNavigationRow>
@@ -1903,7 +1909,7 @@ export function Sidebar({
                                       <ProjectRunIndicatorDot />
                                     ) : null
                                   }
-                                  status={collapsedProjectStatus}
+                                  status={sidebarTrailingClusterStatus(collapsedProjectStatus)}
                                 />
                               ) : null}
                             </SidebarNavigationRow>
@@ -1944,6 +1950,9 @@ export function Sidebar({
                                   isActive={rowModel.isActive}
                                   variant="standard"
                                   subagentIndentPx={Math.max(rowModel.subagentIndentPx, depth * 10)}
+                                  pendingStatusColorClass={sidebarPendingApprovalColorClass(
+                                    thread.status,
+                                  )}
                                   suffix={<SidebarThreadTrailing thread={thread} />}
                                 />
                               </SidebarNavigationRow>
@@ -2033,6 +2042,7 @@ export function Sidebar({
                     isActive={rowModel.isActive}
                     variant="standard"
                     subagentIndentPx={Math.max(rowModel.subagentIndentPx, depth * 10)}
+                    pendingStatusColorClass={sidebarPendingApprovalColorClass(thread.status)}
                     suffix={<SidebarThreadTrailing thread={thread} />}
                   />
                 </SidebarNavigationRow>

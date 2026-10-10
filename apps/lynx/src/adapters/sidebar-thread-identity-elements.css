@@ -32,8 +32,13 @@
   opacity: 0.8;
 }
 
+/* Upstream: `shrink-0 text-ui-xs font-medium` in the status' amber. */
 .SharedSidebarThreadIdentityPending {
+  flex-shrink: 0;
   color: var(--warning-foreground, #a16207);
-  font-size: var(--app-font-size-ui-2xs, 10px);
+  font-size: var(--app-font-size-ui-xs, 11px);
   font-weight: 500;
+  /* `text-ui-xs`'s 1.5 line box, and the row's `gap-2` before the trailing slot (measured). */
+  line-height: 16.5px;
+  margin-right: 2px;
 }

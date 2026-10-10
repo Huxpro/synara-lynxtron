@@ -114,6 +114,7 @@ import {
   isRunningComposerSession,
   runComposerSendTransaction,
 } from "./composerDispatch.logic";
+import { runComposerSendOnce } from "@synara-web/lib/composerSendOwnership";
 import { resolveComposerInputTransition } from "./composerPastedTextInput.logic";
 import {
   cutComposerNativeEditorSelection,
@@ -1622,44 +1623,49 @@ export function Composer({
     setIsSending(true);
     setSendError(null);
     try {
-      await runComposerSendTransaction({
-        prepare: () =>
-          onBeforeSend?.({
-            interactionMode,
-            modelSelection: activeModelSelection,
-            runtimeMode,
-            text: text || "Review the attachment.",
-          }),
-        dispatch: async () => {
-          const stagedFiles = await stageNativeComposerFiles({
-            files: [...images, ...files],
-            threadId,
-          });
-          const assistantDeliveryMode = await resolveNativeAssistantDeliveryMode();
-          await stagedFiles.runWithDispatch((attachments) =>
-            ensureNativeApi().orchestration.dispatchCommand(
-              buildComposerTurnStartCommand({
-                assistantDeliveryMode,
-                attachments: [...attachments, ...assistantSelections],
-                commandId: createComposerDispatchId("command"),
-                createdAt: new Date().toISOString(),
-                interactionMode,
-                messageId: createComposerDispatchId("message"),
-                modelSelection: activeModelSelection as never,
-                runtimeMode,
-                text: text || "Review the attachment.",
-                threadId,
-                mentions: projectedEditor.mentions,
-                skills: projectedEditor.skills,
-              }),
-            ),
-          );
-          await Promise.all(
-            [...images, ...files].map((file) => releasePickedComposerFile(file.token)),
-          );
-        },
-        clearDraft: clearDraftAfterSend,
-        onSucceeded: onSendSucceeded,
+      // Upstream's send ownership (lib/composerSendOwnership): the sidebar reads it to show
+      // "Preparing worktree" on a worktree thread whose first send is still in flight.
+      await runComposerSendOnce(threadId as never, async () => {
+        await runComposerSendTransaction({
+          prepare: () =>
+            onBeforeSend?.({
+              interactionMode,
+              modelSelection: activeModelSelection,
+              runtimeMode,
+              text: text || "Review the attachment.",
+            }),
+          dispatch: async () => {
+            const stagedFiles = await stageNativeComposerFiles({
+              files: [...images, ...files],
+              threadId,
+            });
+            const assistantDeliveryMode = await resolveNativeAssistantDeliveryMode();
+            await stagedFiles.runWithDispatch((attachments) =>
+              ensureNativeApi().orchestration.dispatchCommand(
+                buildComposerTurnStartCommand({
+                  assistantDeliveryMode,
+                  attachments: [...attachments, ...assistantSelections],
+                  commandId: createComposerDispatchId("command"),
+                  createdAt: new Date().toISOString(),
+                  interactionMode,
+                  messageId: createComposerDispatchId("message"),
+                  modelSelection: activeModelSelection as never,
+                  runtimeMode,
+                  text: text || "Review the attachment.",
+                  threadId,
+                  mentions: projectedEditor.mentions,
+                  skills: projectedEditor.skills,
+                }),
+              ),
+            );
+            await Promise.all(
+              [...images, ...files].map((file) => releasePickedComposerFile(file.token)),
+            );
+          },
+          clearDraft: clearDraftAfterSend,
+          onSucceeded: onSendSucceeded,
+        });
+        return true;
       });
     } catch (error) {
       console.error("[slice] failed to send composer turn", error);

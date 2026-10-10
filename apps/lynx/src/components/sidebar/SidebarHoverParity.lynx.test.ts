@@ -141,7 +141,7 @@ describe("Lynx sidebar hover parity", () => {
     expect(source).toContain("props.pinned ? pinFilledSvg : pinSvg");
     expect(source).toContain("projectRun || projectRunServer");
     expect(source).toContain("findDeepestWorkspaceRootMatch(");
-    expect(source).toContain("status={collapsedProjectStatus}");
+    expect(source).toContain("status={sidebarTrailingClusterStatus(collapsedProjectStatus)}");
     expect(styles).toMatch(
       /\.AppSidebarProjectRunDot\s*\{[^}]*width:\s*6px;[^}]*height:\s*6px;[^}]*background-color:\s*#34d399;/s,
     );

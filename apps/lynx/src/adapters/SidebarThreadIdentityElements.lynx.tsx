@@ -45,5 +45,13 @@ export function SidebarThreadIdentityTitleElement({
 export function SidebarThreadIdentityPendingElement({
   children,
 }: ChildrenProps & { readonly colorClass: string }) {
-  return <text className="SharedSidebarThreadIdentityPending">{children}</text>;
+  return (
+    <text
+      className="SharedSidebarThreadIdentityPending"
+      accessibility-element={true}
+      accessibility-label="Pending approval"
+    >
+      {children}
+    </text>
+  );
 }
