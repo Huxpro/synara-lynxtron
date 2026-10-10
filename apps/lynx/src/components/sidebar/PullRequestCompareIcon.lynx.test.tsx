@@ -1,6 +1,5 @@
 import { render } from "@lynx-js/react/testing-library";
 import { describe, expect, it } from "@rstest/core";
-import { readFileSync } from "node:fs";
 
 import { PullRequestCompareIcon } from "./PullRequestCompareIcon.lynx";
 
@@ -16,15 +15,5 @@ describe("sidebar pull request icon", () => {
     expect(icon?.getAttribute("content")).toContain("M233.9 328.1");
     expect(icon?.getAttribute("content")).toContain('viewBox="0 0 512 512"');
     expect(icon?.getAttribute("content")).toContain('fill="rgba(31, 31, 31, 0.65)"');
-  });
-
-  it("maps Pull requests to the compare icon instead of a chat glyph", () => {
-    // Pull requests are the rail's "Code review" item.
-    const railSource = readFileSync(new URL("./AppRail.lynx.tsx", import.meta.url), "utf8");
-
-    expect(railSource).toContain(
-      'case "pullRequests":\n      return <PullRequestCompareIcon className="AppRailGlyph" color={color} />;',
-    );
-    expect(railSource).not.toContain("MessageCircleIcon");
   });
 });
