@@ -3,7 +3,6 @@ import { runOnMainThread, useEffect, useRef, useState, type ReactNode } from "@l
 import { SettingsNavigationComposition } from "@synara-web/components/SettingsNavigationComposition";
 import { SettingsSidebarChromeComposition } from "@synara-web/components/settings/SettingsSidebarChromeComposition";
 import { AppShellFrame } from "@synara-web/components/AppShellFrame";
-import { SettingsAppearanceComposition } from "@synara-web/components/settings/SettingsAppearanceComposition";
 import {
   settingsAppearanceValuesEqual,
   type SettingsAppearanceKey,
@@ -96,6 +95,7 @@ import type {
   ServerSettingsView,
 } from "@synara/contracts";
 import { SettingsUsagePanel } from "./SettingsUsagePanel";
+import { SettingsAppearancePanel } from "./SettingsAppearancePanel.lynx";
 import { SettingsProfilePanel } from "./SettingsProfilePanel.lynx";
 import { SettingsProviderToolsPanel } from "./SettingsProviderToolsPanel.lynx";
 import { SettingsArchivedPanel } from "./SettingsArchivedPanel.lynx";
@@ -826,13 +826,10 @@ export function SettingsPage({
                 ) : section === "profile" ? (
                   <SettingsProfilePanel />
                 ) : section === "appearance" ? (
-                  <SettingsAppearanceComposition
+                  <SettingsAppearancePanel
                     values={appearance}
                     defaults={DEFAULT_SETTINGS_APPEARANCE_VALUES}
                     resolvedTheme={resolvedTheme}
-                    showCodeThemeSelection={false}
-                    showFontSmoothing={false}
-                    showTimestampFormat={false}
                     themeState={themeState}
                     onThemeStateChange={updateThemeState}
                     onChange={updateAppearance}

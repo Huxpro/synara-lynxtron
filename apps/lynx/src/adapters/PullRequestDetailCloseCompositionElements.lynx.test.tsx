@@ -50,7 +50,7 @@ describe("Pull Request detail close fidelity", () => {
     expect(external?.getAttribute("accessibility-label")).toBe("Open in external browser");
     expect(external?.querySelector("svg")?.getAttribute("content")).toContain('stroke="#0d0d0d"');
     const routeSource = readFileSync(
-      new URL("../app/FeatureListsPage.tsx", import.meta.url),
+      new URL("../app/PullRequestDetailPane.lynx.tsx", import.meta.url),
       "utf8",
     );
     const styles = readFileSync(

@@ -23,7 +23,8 @@ describe("Native search input geometry", () => {
       ["../components/composer/ComposerModelControl.lynx.tsx", "<Input"],
       ["../adapters/ComposerProjectPickerCompositionElements.lynx.tsx", "<Input"],
       ["../adapters/KeyboardShortcutsSettingsCompositionElements.lynx.tsx", "<Input"],
-      ["../adapters/PullRequestRouteControlsCompositionElements.lynx.tsx", "<Input"],
+      // The Code review search reuses the settings sidebar's search field.
+      ["../adapters/SettingsSidebarChromeCompositionElements.lynx.tsx", "<Input"],
       ["./EditorProjectSwitchMenu.lynx.tsx", "<Input"],
       ["./DiffDock.lynx.tsx", "<Input"],
       ["./ExplorerDock.lynx.tsx", "<Input"],

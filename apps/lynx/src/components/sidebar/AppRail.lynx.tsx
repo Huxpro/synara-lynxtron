@@ -24,8 +24,9 @@ import {
 } from "@synara-web/appRail.logic";
 import { resolvePullRequestReviewBadge } from "@synara-web/components/SidebarActionBadges.logic";
 import { useRailShellStore } from "@synara-web/railShellStore";
+import { githubInboxReviewBadgeQueryOptions } from "@synara-web/lib/pullRequestReactQuery";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPullRequests } from "../../app/queries";
+import { useGitHubInboxSettings } from "../../app/githubInboxSettings.lynx";
 import { useTheme } from "../../adapters/useTheme.lynx";
 import { ClockIcon, FoldersIcon, HomeIcon } from "../../lib/icons.lynx";
 import { colorizeLynxSvg } from "../../lib/themedSvg.lynx";
@@ -35,7 +36,6 @@ import { toastManager } from "../ui/toast.lynx";
 import { AppRailHelp } from "./AppRailHelp.lynx";
 import { AppRailUsage } from "./AppRailUsage.lynx";
 import { PullRequestCompareIcon } from "./PullRequestCompareIcon.lynx";
-import { countUniqueViewerReviewRequests } from "./sidebar.logic";
 import "./app-rail.css";
 
 /** Upstream's `sidebarNavDescriptors` labels for the rail's route items. */
@@ -53,7 +53,7 @@ const RAIL_ROUTE_ITEM_PATHS: Partial<Record<RailOrderableItemId, string>> = {
   // Upstream's Tasks surface is a List/Kanban switch; Native has the Kanban board only.
   tasks: "/kanban",
   kanban: "/kanban",
-  // Upstream's Code review inbox; Native has the pull request list only.
+  // Upstream's Code review inbox (app/GitHubInboxPage.lynx.tsx).
   pullRequests: "/pull-requests",
   automations: "/automations",
   studio: "/studio",
@@ -170,20 +170,13 @@ function AppRail(props: { readonly onHome: () => void }) {
   const selectPanelItem = useRailShellStore((store) => store.selectPanelItem);
   const selectRouteItem = useRailShellStore((store) => store.selectRouteItem);
   const upstreamPathname = railPathname(pathname);
-  // The viewer's open review requests, as upstream's Code review rail badge.
-  const { data: pullRequests } = useQuery({
-    queryKey: ["pull-requests", "sidebar-review-count"],
-    queryFn: () =>
-      fetchPullRequests({
-        state: "open",
-        projectId: null,
-      }),
-  });
-  const pullRequestsReviewBadge = resolvePullRequestReviewBadge(
-    pullRequests
-      ? { count: countUniqueViewerReviewRequests(pullRequests.entries), incomplete: false }
-      : undefined,
+  // The viewer's open review requests, as upstream's Code review rail badge: it observes
+  // the open inbox list, so with the page open the badge costs no extra request.
+  const { settings: inboxSettings } = useGitHubInboxSettings();
+  const { data: reviewRequests } = useQuery(
+    githubInboxReviewBadgeQueryOptions(inboxSettings.githubInboxSort),
   );
+  const pullRequestsReviewBadge = resolvePullRequestReviewBadge(reviewRequests);
   useEffect(() => {
     "background only";
     reconcile({

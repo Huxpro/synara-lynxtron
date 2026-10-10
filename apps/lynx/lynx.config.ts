@@ -419,10 +419,6 @@ export default defineConfig({
         rootPath,
         "./src/adapters/PullRequestListCompositionElements.lynx.tsx",
       ),
-      "~/components/pullRequest/PullRequestRouteControlsCompositionElements$": path.resolve(
-        rootPath,
-        "./src/adapters/PullRequestRouteControlsCompositionElements.lynx.tsx",
-      ),
       "~/components/pullRequest/PullRequestSummaryCompositionElements$": path.resolve(
         rootPath,
         "./src/adapters/PullRequestSummaryCompositionElements.lynx.tsx",
@@ -624,6 +620,11 @@ export default defineConfig({
       {
         alignMouseEventWithW3C: true,
         enableCSSInheritance: true,
+        // The root view carries upstream's theme variables in its `style`
+        // (appTheme.logic). Lynx ignores custom properties set inline unless this is
+        // on, which left an edited theme pack (and any default newer than the
+        // generated stylesheet) unpainted. See plan/04-lynx-patterns.md P-45.
+        enableCSSInlineVariables: true,
       },
       {
         configKeys: [...configKeys, "alignMouseEventWithW3C"],

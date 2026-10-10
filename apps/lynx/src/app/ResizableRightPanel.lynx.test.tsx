@@ -80,19 +80,24 @@ describe("Lynx resizable right panels", () => {
     expect(webStorage.getItem("panel_probe_width")).toBe("720");
   });
 
-  it("wires both right-panel consumers without overriding narrow master-detail", () => {
+  it("wires the diff dock; Code review resizes its list column on the same session logic", () => {
     const diffSource = readFileSync(new URL("./DiffDock.lynx.tsx", import.meta.url), "utf8");
-    const prSource = readFileSync(new URL("./FeatureListsPage.tsx", import.meta.url), "utf8");
-    const styles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
+    const inboxSource = readFileSync(
+      new URL("./GitHubInboxPage.lynx.tsx", import.meta.url),
+      "utf8",
+    );
+    const styles = readFileSync(new URL("./github-inbox.css", import.meta.url), "utf8");
 
     expect(diffSource).toContain("<ResizableRightPanel");
     expect(diffSource).toContain("maxWidth={720}");
     expect(diffSource).not.toContain('storageKey="chat_right_panel_width:working-tree"');
-    expect(prSource).toContain("<ResizableRightPanel");
-    expect(prSource).not.toContain('storageKey="pull_requests_detail_panel_width"');
-    expect(prSource).toContain("minWidth={416}");
+    // Upstream's inbox resizes the list (left) column and never persists its width.
+    expect(inboxSource).toContain("createLynxSidebarResizeSession({");
+    expect(inboxSource).toContain("minWidth: LIST_MIN_WIDTH,");
+    expect(inboxSource).toContain("minimumContentWidth: DETAIL_MIN_WIDTH,");
+    expect(inboxSource).not.toContain("storageKey");
     expect(styles).toMatch(
-      /\.SliceRoot--viewport-medium\s+\.SharedPrRouteBody--detail-open\s+\.SharedPrDetailDock\s*\{[^}]*width:\s*100%;[^}]*min-width:\s*0;/s,
+      /\.SliceRoot--viewport-compact \.GitHubInboxBody--detail-open \.GitHubInboxDetail\s*\{[^}]*display:\s*flex;/s,
     );
   });
 

@@ -391,11 +391,11 @@ describe("shared sidebar surface routing", () => {
     expect(source).toContain("const studioSectionVisible = initialSortSettings.showStudioSection");
     expect(source).toContain("resolveSidebarSurfacePickerViews(studioSectionVisible)");
     expect(source).toContain("chatsSectionVisible &&");
-    // The review-request count feeds the rail's Code review badge.
+    // The rail's Code review badge observes upstream's open inbox list.
     const railSource = readFileSync(new URL("./AppRail.lynx.tsx", import.meta.url), "utf8");
     expect(railSource).toContain(
-      'fetchPullRequests({\n        state: "open",\n        projectId: null,',
+      "githubInboxReviewBadgeQueryOptions(inboxSettings.githubInboxSort)",
     );
-    expect(railSource).not.toContain("queryFn: fetchPullRequests");
+    expect(railSource).not.toContain("queryFn:");
   });
 });

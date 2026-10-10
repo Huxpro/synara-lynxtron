@@ -111,10 +111,7 @@ describe("semantic icon consumer audit", () => {
   it("classifies remaining route and shared-adapter neutral SVG icons", () => {
     for (const [relativePath, expected] of [
       ["./AppSnapWelcomeDialog.lynx.tsx", 'semanticIconColor("primary")'],
-      [
-        "../adapters/PullRequestRouteControlsCompositionElements.lynx.tsx",
-        'semanticIconColor("primary")',
-      ],
+      ["./GitHubInboxFilterBar.lynx.tsx", 'semanticIconColor("secondary")'],
       // Upstream's sidebar rows draw provider glyphs in the foreground.
       [
         "../adapters/SidebarThreadProviderIdentityElements.lynx.tsx",

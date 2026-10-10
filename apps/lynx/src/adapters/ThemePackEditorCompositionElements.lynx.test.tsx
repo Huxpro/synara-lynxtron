@@ -79,10 +79,10 @@ describe("ThemePack boolean interaction contract", () => {
     expect(styles).toMatch(
       /\.SharedThemePackRoot\s*\{[^}]*border-left-color:\s*var\(--border\);[^}]*border-right-color:\s*var\(--border\);[^}]*border-top-color:\s*var\(--border\);[^}]*border-bottom-color:\s*var\(--border\);[^}]*border-radius:\s*10px;/s,
     );
+    // Upstream's header is one 56px row (`py-3.5` around 28px controls).
     expect(styles).toMatch(
-      /\.SharedThemePackHeader\s*\{[^}]*height:\s*84px;[^}]*flex-wrap:\s*wrap;[^}]*padding:\s*12px 16px;/s,
+      /\.SharedThemePackHeader\s*\{[^}]*height:\s*56px;[^}]*padding:\s*14px 16px;/s,
     );
-    expect(styles).toMatch(/\.SharedThemePackHeader\s*>\s*\.LxMenuRoot\s*\{[^}]*width:\s*100%;/s);
     expect(styles).toMatch(
       /\.SharedThemePackCodeSelect\s*\{[^}]*width:\s*100%;[^}]*min-height:\s*28px;/s,
     );
@@ -90,7 +90,7 @@ describe("ThemePack boolean interaction contract", () => {
       /\.SharedThemePackTitle\s*\{[^}]*font-size:\s*14px;[^}]*font-weight:\s*500;[^}]*line-height:\s*20px;/s,
     );
     expect(styles).toMatch(
-      /\.SharedThemePackContext\s*\{[^}]*font-size:\s*11px;[^}]*line-height:\s*16\.5px;/s,
+      /\.SharedThemePackContext\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
     );
     expect(styles).toMatch(
       /\.SharedThemePackRowLabel\s*\{[^}]*color:\s*var\(--settings-row-label-strong\);[^}]*font-size:\s*14px;[^}]*font-weight:\s*400;[^}]*line-height:\s*20px;/s,

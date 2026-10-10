@@ -1,16 +1,6 @@
 import type { KanbanBoard, KanbanProjectBoard } from "@synara-web/components/kanban/kanban.logic";
 import { buildKanbanBoard } from "@synara-web/components/kanban/kanban.logic";
-import {
-  filterInboxItemsByInvolvement,
-  groupPullRequestEntriesByInvolvement,
-  matchesPullRequestSearchQuery,
-  orderPullRequestEntriesPinnedFirst,
-  type PullRequestListGroup,
-} from "@synara-web/components/pullRequest/pullRequestList.logic";
-import { coalescePullRequestListEntries } from "@synara/shared/githubRepository";
-import type { PullRequestInvolvement } from "@synara-web/components/pullRequest/PullRequestRouteControlsComposition";
-import type { PullRequestListEntry } from "@synara/contracts";
-import type { PullRequestSnapshot, SidebarSnapshot } from "./queries";
+import type { SidebarSnapshot } from "./queries";
 
 export const EMPTY_KANBAN_BOARD: KanbanBoard = {
   projects: [],
@@ -53,16 +43,6 @@ export function selectKanbanProjectBoard(
   return board.projects.find((project) => project.projectId === projectId);
 }
 
-export interface CanonicalSlicePullRequestList {
-  readonly entries: readonly PullRequestListEntry[];
-  readonly grouped: readonly PullRequestListGroup<PullRequestListEntry>[] | null;
-}
-
-export const EMPTY_PULL_REQUEST_LIST: CanonicalSlicePullRequestList = {
-  entries: [],
-  grouped: null,
-};
-
 export interface PullRequestActionGate {
   readonly tryAcquire: () => boolean;
   readonly release: () => void;
@@ -81,35 +61,5 @@ export function createPullRequestActionGate(): PullRequestActionGate {
     release: () => {
       active = false;
     },
-  };
-}
-
-/** The Lynx page's three involvement pills, as upstream's inbox involvement filter. */
-const PULL_REQUEST_INVOLVEMENT_FILTER = {
-  all: "everything",
-  reviewing: "reviewRequested",
-  authored: "authored",
-} as const;
-
-export function buildCanonicalSlicePullRequestList(
-  snapshot: PullRequestSnapshot | undefined,
-  involvement: PullRequestInvolvement = "all",
-  searchQuery = "",
-): CanonicalSlicePullRequestList {
-  if (!snapshot) return EMPTY_PULL_REQUEST_LIST;
-  const normalizedQuery = searchQuery.trim().toLowerCase();
-  const entries = orderPullRequestEntriesPinnedFirst(
-    coalescePullRequestListEntries<PullRequestListEntry>(
-      filterInboxItemsByInvolvement(
-        snapshot.entries,
-        snapshot.viewer,
-        PULL_REQUEST_INVOLVEMENT_FILTER[involvement],
-      ).filter((entry) => matchesPullRequestSearchQuery(entry, normalizedQuery)),
-    ),
-  );
-  return {
-    entries,
-    grouped:
-      involvement === "all" ? groupPullRequestEntriesByInvolvement(entries, snapshot.viewer) : null,
   };
 }

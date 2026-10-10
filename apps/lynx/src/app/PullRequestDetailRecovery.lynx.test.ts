@@ -1,25 +1,24 @@
 import { describe, expect, it } from "@rstest/core";
 import { readFileSync } from "node:fs";
 
-describe("Pull Request detail recovery fidelity", () => {
-  it("reuses the recoverable unavailable surface in the detail dock", () => {
-    const source = readFileSync(new URL("./FeatureListsPage.tsx", import.meta.url), "utf8");
+const source = readFileSync(new URL("./PullRequestDetailPane.lynx.tsx", import.meta.url), "utf8");
 
-    expect(source).toContain("isFetching: selectedDetailFetching");
+describe("Pull Request detail recovery fidelity", () => {
+  it("reuses the recoverable unavailable surface for a cold-load failure", () => {
+    expect(source).toContain("pullRequestQueryErrorState(detailQuery)");
     expect(source).toMatch(
-      /selectedDetailError && !selectedDetail \? \(\s*<PullRequestsUnavailableState\s+error=\{selectedDetailError\}\s+retrying=\{selectedDetailFetching\}\s+onRetry=\{\(\) => void refetchSelectedDetail\(\)\}/s,
+      /detailInitialError \? \(\s*<PullRequestsUnavailableState\s+error=\{detailInitialError\}\s+retrying=\{detailQuery\.isFetching\}\s+onRetry=\{\(\) => void detailQuery\.refetch\(\)\}/s,
     );
+    expect(source).toContain("Could not refresh pull request details. Showing saved data.");
     expect(source).not.toContain("The detail could not be loaded. Close the panel and try again.");
   });
 
   it("keeps the existing detail skeleton and code-specific recovery paths", () => {
-    const source = readFileSync(new URL("./FeatureListsPage.tsx", import.meta.url), "utf8");
-
     expect(source).toContain("rowCount={4}");
     expect(source).toContain('label="Loading pull request details…"');
     expect(source).toContain('className="SharedPrDetailLoading"');
-    expect(source).toContain("retrying={selectedDiffFetching}");
-    expect(source).toContain("onRetry={() => void refetchSelectedDiff()}");
+    expect(source).toContain("retrying={diffQuery.isFetching}");
+    expect(source).toContain("onRetry={() => void diffQuery.refetch()}");
   });
 
   it("keeps detail skeletons inside the Web 20px panel inset", () => {
