@@ -8,6 +8,7 @@ import {
   type SidebarSearchPaletteMode,
   type ImportProviderKind,
 } from "@synara-web/components/SidebarSearchPaletteComposition";
+import { isFilesystemBrowseQuery } from "@synara-web/lib/projectPaths";
 import { newCommandId } from "@synara-web/lib/utils";
 import {
   APP_SETTINGS_STORAGE_KEY,
@@ -15,6 +16,7 @@ import {
 } from "@synara-web/appSettingsStorageProjection.logic";
 import { providerComposerCapabilitiesQueryOptions } from "@synara-web/lib/providerDiscoveryReactQuery";
 import { queryClient, type SidebarSnapshot } from "../../app/queries";
+import { getNavigatorPlatform } from "~/platform/env";
 import { webStorage } from "../../platform/storage";
 import {
   buildNativeSearchImportThreadCreateCommand,
@@ -22,6 +24,12 @@ import {
 } from "./sidebarSearchActions.logic";
 import { buildLynxSidebarSearchActions } from "./sidebarSearchSpaceActions.logic";
 import { FeedbackDialogLynx, resolveNativeFeedbackContext } from "./FeedbackDialog.lynx";
+import {
+  useSidebarSearchThreadsWithLoadedMessages,
+  useSidebarThreadSearch,
+} from "./useSidebarThreadSearch.lynx";
+
+const EMPTY_SEARCH_THREADS: SidebarSnapshot["searchThreads"] = [];
 
 const IMPORT_PROVIDERS: readonly ImportProviderKind[] = [
   "codex",
@@ -64,7 +72,19 @@ export function SidebarSearchPaletteLynx(props: {
       ),
     [props.snapshot],
   );
-  const threads = props.snapshot?.searchThreads ?? [];
+  // The palette owns its input; this mirrors what is typed, for the server search.
+  const [query, setQuery] = useState(() => props.initialQuery ?? "");
+  const trimmedQuery = query.trim();
+  const serverThreadMatches = useSidebarThreadSearch({
+    query,
+    enabled:
+      props.open &&
+      !(trimmedQuery.length > 0 && isFilesystemBrowseQuery(trimmedQuery, getNavigatorPlatform())),
+  });
+  const threads = useSidebarSearchThreadsWithLoadedMessages(
+    props.snapshot?.searchThreads ?? EMPTY_SEARCH_THREADS,
+    props.open,
+  );
   const newThreadProjectId =
     props.snapshot?.projects.find((project) => project.kind === "project")?.id ?? null;
   const { data: importProviders = [] } = useQuery({
@@ -153,6 +173,8 @@ export function SidebarSearchPaletteLynx(props: {
         actions={actions}
         projects={projects}
         threads={threads}
+        serverThreadMatches={serverThreadMatches}
+        onQueryChange={setQuery}
         searchStatus={props.searchStatus}
         searchErrorMessage={props.searchErrorMessage}
         onRetrySearch={props.onRetrySearch}

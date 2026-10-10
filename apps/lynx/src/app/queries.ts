@@ -1,7 +1,6 @@
 // P2-V6: react-query selectors over the real Synara Effect-RPC WebSocket
 // snapshot. The transport is a singleton; both queries share its latest read.
 
-import { ORCHESTRATION_WS_METHODS } from "@synara/contracts";
 import { ensureNativeApi } from "~/nativeApi";
 import { queryClient } from "./queryClient";
 import {
@@ -42,7 +41,6 @@ import type {
   ProjectReadFileResult,
   ProjectSearchEntriesResult,
   OrchestrationMessage,
-  OrchestrationSidebarSearchSnapshot,
   OrchestrationCheckpointSummary,
   OrchestrationThreadActivity,
   ThreadHandoff,
@@ -224,18 +222,6 @@ export async function resolveNativeAssistantDeliveryMode(): Promise<AssistantDel
       webStorage.getItem(APP_SETTINGS_STORAGE_KEY),
       serverSettings?.enableAssistantStreaming,
     ),
-  );
-}
-
-/** Message windows for the sidebar search palette; a server read upstream does not have. */
-export async function fetchSidebarSearchSnapshot(): Promise<OrchestrationSidebarSearchSnapshot> {
-  "background only";
-  // `orchestration.getSidebarSearchSnapshot` is a fork-only RPC with no method
-  // on upstream's facade, so it goes straight to the shared host relay request.
-  const { nativeRpcRequest } = await import(/* webpackMode: "eager" */ "../data/nativeRpcBridge");
-  return nativeRpcRequest<OrchestrationSidebarSearchSnapshot>(
-    ORCHESTRATION_WS_METHODS.getSidebarSearchSnapshot,
-    {},
   );
 }
 

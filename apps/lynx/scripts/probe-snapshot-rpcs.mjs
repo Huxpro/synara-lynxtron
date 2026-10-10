@@ -85,12 +85,7 @@ async function main() {
   const feature = await openSocket(featureUrl.toString());
   const results = [];
   try {
-    for (const tag of [
-      "orchestration.getSnapshot",
-      "orchestration.getShellSnapshot",
-      "orchestration.getSidebarShellSnapshot",
-      "orchestration.getSidebarSearchSnapshot",
-    ]) {
+    for (const tag of ["orchestration.getSnapshot", "orchestration.getShellSnapshot"]) {
       const result = await request(feature, tag);
       results.push({
         tag: result.tag,

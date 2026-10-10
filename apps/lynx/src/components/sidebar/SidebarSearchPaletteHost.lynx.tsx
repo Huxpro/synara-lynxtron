@@ -1,4 +1,4 @@
-import { useEffect, useState } from "@lynx-js/react";
+import { useState } from "@lynx-js/react";
 import { ensureNativeApi } from "~/nativeApi";
 import type { ProjectId, SpaceIconName, SpaceId } from "@synara/contracts";
 import { newSpaceId } from "@synara-web/lib/utils";
@@ -34,13 +34,8 @@ export function SidebarSearchPaletteHost(props: {
   const setActiveSpaceId = useSpacesUiStore((state) => state.setActiveSpaceId);
   const { data, error, isPending, refetch } = useSidebarSnapshot();
 
-  // Projects, threads and titles are live from the shared store. Message
-  // windows are a separate server read: take a fresh one each time the palette
-  // opens instead of polling for it.
-  useEffect(() => {
-    "background only";
-    if (props.open) void refetch();
-  }, [props.open, refetch]);
+  // Projects, threads and titles are live from the shared store; message hits
+  // come from upstream's server search inside the palette.
 
   const saveSpace = async (value: { readonly icon: SpaceIconName; readonly name: string }) => {
     "background only";

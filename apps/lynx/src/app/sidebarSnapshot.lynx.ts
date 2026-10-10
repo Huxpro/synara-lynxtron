@@ -6,10 +6,9 @@
 // sidebar, the search palette, Kanban and the Settings panels follow every
 // shell change without a request and without a poll.
 //
-// Two inputs of the projection are not in the store and stay Lynx-side:
-// the dismissed status keys (renderer UI state in storage) and the sidebar
-// search snapshot (message windows for the search palette; a server read that
-// upstream does not have). Both live in a small local store next to it.
+// One input of the projection is not in the store and stays Lynx-side: the
+// dismissed status keys (renderer UI state in storage), in a small local store
+// next to it. Message search is upstream's server search, asked by the palette.
 //
 // Session sync reports no failure of its own, so "never hydrated" is turned
 // into an error with a Retry by `sessionShellBootstrap.logic.ts`.
@@ -22,7 +21,7 @@ import {
   getActiveComposerSendThreadIds,
   subscribeComposerSends,
 } from "@synara-web/lib/composerSendOwnership";
-import { fetchSidebarSearchSnapshot, type SidebarSnapshot, type ThreadSummary } from "./queries";
+import type { SidebarSnapshot, ThreadSummary } from "./queries";
 import { createShellBootstrapWatch, type ShellBootstrapWatch } from "./sessionShellBootstrap.logic";
 import {
   createRouteThreadSummariesSelector,
@@ -33,7 +32,6 @@ import {
 
 const useSidebarSnapshotLocalInputs = create<SidebarSnapshotLocalInputs>(() => ({
   ready: false,
-  searchSnapshot: undefined,
   dismissedThreadStatusKeyByThreadId: {},
 }));
 
@@ -46,7 +44,6 @@ const selectSidebarSnapshot = createSidebarSnapshotSelector();
 const selectRouteThreadSummaries = createRouteThreadSummariesSelector();
 
 let localInputsRequest: Promise<void> | null = null;
-let searchSnapshotRequest: Promise<void> | null = null;
 let shellBootstrapWatch: ShellBootstrapWatch | null = null;
 
 function ensureSidebarSnapshotLocalInputs(): Promise<void> {
@@ -117,38 +114,11 @@ function ensureShellBootstrapWatch(): ShellBootstrapWatch {
   return watch;
 }
 
-/**
- * Reads the sidebar search snapshot from the server. Requests are coalesced;
- * a failure keeps the previous snapshot (the palette then searches titles and
- * whatever messages the store holds).
- */
-export function refreshSidebarSearchSnapshot(): Promise<void> {
-  "background only";
-  searchSnapshotRequest ??= (async () => {
-    const searchSnapshot = await fetchSidebarSearchSnapshot();
-    if (
-      useSidebarSnapshotLocalInputs.getState().searchSnapshot?.snapshotSequence ===
-      searchSnapshot.snapshotSequence
-    ) {
-      return;
-    }
-    useSidebarSnapshotLocalInputs.setState({ searchSnapshot });
-  })()
-    .catch((error: unknown) => {
-      console.warn("[slice] sidebar search projection unavailable", String(error));
-    })
-    .finally(() => {
-      searchSnapshotRequest = null;
-    });
-  return searchSnapshotRequest;
-}
-
-/** Retry for every sidebar surface: the shell if it never loaded, then the search messages. */
+/** Retry for every sidebar surface: the shell, if it never loaded. */
 async function refetchSidebarSnapshot(): Promise<void> {
   "background only";
   void ensureSidebarSnapshotLocalInputs();
   await ensureShellBootstrapWatch().retry();
-  await refreshSidebarSearchSnapshot();
 }
 
 export interface SidebarSnapshotResult {
@@ -160,7 +130,7 @@ export interface SidebarSnapshotResult {
   readonly error: Error | null;
   readonly isError: boolean;
   readonly isFetching: boolean;
-  /** Retries the shell bootstrap if it never completed, and refreshes the search messages. */
+  /** Retries the shell bootstrap if it never completed. */
   readonly refetch: () => Promise<void>;
 }
 
@@ -171,7 +141,6 @@ export interface SidebarSnapshotResult {
  */
 export function useSidebarSnapshot(): SidebarSnapshotResult {
   const local = useSidebarSnapshotLocalInputs();
-  const hydrated = useStore((state) => state.threadsHydrated);
   const data = useStore((state) => selectSidebarSnapshot(state, local));
   const bootstrapError = useShellBootstrapError((state) => state.error);
 
@@ -180,14 +149,6 @@ export function useSidebarSnapshot(): SidebarSnapshotResult {
     void ensureSidebarSnapshotLocalInputs();
     ensureShellBootstrapWatch();
   }, []);
-  useEffect(() => {
-    "background only";
-    // The first read waits for hydration: before it the server may not be
-    // reachable yet, and nothing can render the result anyway.
-    if (!hydrated) return;
-    if (useSidebarSnapshotLocalInputs.getState().searchSnapshot !== undefined) return;
-    void refreshSidebarSearchSnapshot();
-  }, [hydrated]);
 
   return useMemo(() => {
     const error = data === undefined ? bootstrapError : null;

@@ -5,11 +5,9 @@
 import type { ComponentType } from "react";
 
 import type { ProviderKind } from "@synara/contracts";
-import { SIDEBAR_SEARCH_LIMITS } from "@synara/shared/sidebarSearch";
 import { basenameOfPath } from "../file-icons";
 import type { ProjectAppearance } from "../lib/projectAppearance";
-
-export { SIDEBAR_SEARCH_LIMITS } from "@synara/shared/sidebarSearch";
+import type { ThemeMode, ThemeVariant } from "../theme/theme.logic";
 
 export interface SidebarSearchAction {
   id: string;
@@ -36,9 +34,9 @@ export interface SidebarSearchTheme {
   label: string;
   description: string;
   keywords?: readonly string[];
-  mode?: "light" | "dark" | "system";
+  mode?: ThemeMode;
   codeThemeId?: string;
-  variant?: "light" | "dark";
+  variant?: ThemeVariant;
   isActive: boolean;
 }
 
@@ -117,15 +115,12 @@ export interface SidebarSearchThreadMatch {
   messageMatchCount: number;
 }
 
-/** One bounded contract shared by Web projection, Native background projection,
- * and the portable palette. Keep title/project candidates complete; only message
- * bodies use the recent-thread scan window. */
 function normalizeText(value: string): string {
-  return value.trim().replace(/\s+/g, " ").toLowerCase();
+  return value.trim().replaceAll(/\s+/g, " ").toLowerCase();
 }
 
 function normalizeDisplayText(value: string): string {
-  return value.trim().replace(/\s+/g, " ");
+  return value.trim().replaceAll(/\s+/g, " ");
 }
 
 function tokenizeQuery(value: string): string[] {
@@ -309,7 +304,7 @@ export function matchSidebarSearchActions(
       score: scoreAction(action, normalizedQuery),
     }))
     .filter((candidate) => candidate.score !== null)
-    .sort((left, right) => {
+    .toSorted((left, right) => {
       if (left.score !== right.score) return (right.score ?? 0) - (left.score ?? 0);
       return left.index - right.index;
     })
@@ -332,7 +327,7 @@ export function matchSidebarSearchThemes(
       score: scoreTheme(theme, normalizedQuery),
     }))
     .filter((candidate) => candidate.score !== null)
-    .sort((left, right) => {
+    .toSorted((left, right) => {
       if (left.score !== right.score) return (right.score ?? 0) - (left.score ?? 0);
       if (left.theme.isActive !== right.theme.isActive) {
         return left.theme.isActive ? -1 : 1;
@@ -345,7 +340,7 @@ export function matchSidebarSearchThemes(
 export function matchSidebarSearchProjects(
   projects: readonly SidebarSearchProject[],
   query: string,
-  limit = SIDEBAR_SEARCH_LIMITS.projectResults,
+  limit = 6,
 ): SidebarSearchProjectMatch[] {
   const normalizedQuery = normalizeText(query);
   if (!normalizedQuery) return [];
@@ -358,7 +353,7 @@ export function matchSidebarSearchProjects(
       recency: Date.parse(project.updatedAt ?? project.createdAt ?? "") || 0,
     }))
     .filter((candidate) => candidate.score !== null)
-    .sort((left, right) => {
+    .toSorted((left, right) => {
       if (left.score !== right.score) return (right.score ?? 0) - (left.score ?? 0);
       if (left.recency !== right.recency) return right.recency - left.recency;
       return left.project.name.localeCompare(right.project.name);
@@ -426,7 +421,7 @@ function resolveMessageMatch(
 export function matchSidebarSearchThreads(
   threads: readonly SidebarSearchThread[],
   query: string,
-  limit = SIDEBAR_SEARCH_LIMITS.threadResults,
+  limit = 8,
   serverMatches?: ReadonlyMap<string, SidebarSearchServerThreadMatch>,
 ): SidebarSearchThreadMatch[] {
   const normalizedQuery = normalizeText(query);
@@ -442,8 +437,8 @@ export function matchSidebarSearchThreads(
         messageMatchCount: 0,
         recency: Date.parse(thread.updatedAt ?? thread.createdAt) || 0,
       }))
-      .sort((left, right) => right.recency - left.recency)
-      .slice(0, SIDEBAR_SEARCH_LIMITS.recentThreadResults)
+      .toSorted((left, right) => right.recency - left.recency)
+      .slice(0, 3)
       .map(({ id, matchKind, messageMatchCount, snippet, thread }) => ({
         id,
         thread,
@@ -512,7 +507,7 @@ export function matchSidebarSearchThreads(
       };
     })
     .filter((candidate) => candidate.score !== null)
-    .sort((left, right) => {
+    .toSorted((left, right) => {
       if (left.score !== right.score) return (right.score ?? 0) - (left.score ?? 0);
       if (left.recency !== right.recency) return right.recency - left.recency;
       if (left.titleLength !== right.titleLength) return left.titleLength - right.titleLength;
