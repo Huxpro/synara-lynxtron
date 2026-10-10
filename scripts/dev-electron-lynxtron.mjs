@@ -23,6 +23,11 @@ import {
   SYNARA_SOURCE_DESKTOP_BUILD_MARKER,
 } from "@synara/shared/desktopIdentity";
 import {
+  ELECTRON_ROW_IS_ACTIVE_SOURCE,
+  electronProjectNewThreadButtonSelector,
+  electronThreadRowSelector,
+} from "./comparison-electron-selectors.mjs";
+import {
   comparisonFixtureMismatches,
   openSynaraRpcSession,
   readComparisonFixtureEntities,
@@ -662,7 +667,9 @@ export function comparisonRouteRestoreExpression(expectedUrl) {
 export function comparisonNewThreadOpenExpression(options) {
   const projectId = comparisonNewThreadProjectId(options);
   if (projectId === null) return null;
-  return `(() => { const projectId = ${JSON.stringify(projectId)}; const trigger = Array.from(document.querySelectorAll('[data-testid=\"new-thread-button\"][data-project-id]')).find((node) => node.getAttribute('data-project-id') === projectId); if (!(trigger instanceof HTMLButtonElement)) return { clicked: false, projectId }; trigger.click(); return { clicked: true, projectId }; })()`;
+  return `(() => { const projectId = ${JSON.stringify(projectId)}; const trigger = document.querySelector(${JSON.stringify(
+    electronProjectNewThreadButtonSelector(projectId),
+  )}); if (!(trigger instanceof HTMLButtonElement)) return { clicked: false, projectId }; trigger.click(); return { clicked: true, projectId }; })()`;
 }
 
 export function comparisonNewThreadLandingReadyExpression(options) {
@@ -740,10 +747,11 @@ export function comparisonThreadId(options) {
 }
 
 export function comparisonThreadIdentityReadyExpression(threadId) {
-  const selector = `[data-thread-id=${JSON.stringify(threadId)}]`;
+  // Upstream's own row markup; see comparison-electron-selectors.mjs.
+  const selector = electronThreadRowSelector(threadId);
   return `(() => { const rows = Array.from(document.querySelectorAll(${JSON.stringify(
     selector,
-  )})); const activeRows = rows.filter((row) => row.getAttribute('data-active') === 'true'); return { threadId: ${JSON.stringify(
+  )})); const activeRows = rows.filter(${ELECTRON_ROW_IS_ACTIVE_SOURCE}); return { threadId: ${JSON.stringify(
     threadId,
   )}, count: rows.length, activeCount: activeRows.length, visibleActiveCount: activeRows.filter((row) => { const rect = row.getBoundingClientRect(); return rect.width > 0 && rect.height > 0; }).length }; })()`;
 }

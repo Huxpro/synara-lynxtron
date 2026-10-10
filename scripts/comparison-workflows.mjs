@@ -5,6 +5,7 @@ import { execFileSync } from "node:child_process";
 import { chmodSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
+import { electronActiveThreadIdExpression } from "./comparison-electron-selectors.mjs";
 import { readComparisonFixtureManifest } from "./comparison-fixture.mjs";
 import { COMPARISON_UNKNOWN_SETTING } from "./dev-electron-lynxtron.mjs";
 import { nativeNodesMatchingClasses } from "./comparison-measure.mjs";
@@ -49,9 +50,7 @@ export async function renderedMessageIds(driver) {
 /** The thread the sidebar marks active, or null. */
 export async function activeThreadId(driver) {
   if (driver.kind === "electron") {
-    return driver.evaluate(
-      `document.querySelector('[data-thread-id][data-active="true"]')?.getAttribute('data-thread-id') ?? null`,
-    );
+    return driver.evaluate(electronActiveThreadIdExpression());
   }
   const queue = [await driver.documentRoot()];
   while (queue.length > 0) {

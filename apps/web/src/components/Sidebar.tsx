@@ -5246,9 +5246,6 @@ export default function Sidebar() {
             role="button"
             tabIndex={0}
             data-thread-item
-            data-thread-id={thread.id}
-            data-project-id={thread.projectId}
-            data-active={isActive}
             aria-label={resolveThreadRowAriaLabel(thread)}
             aria-description={prChip?.tooltip}
             className={cn(
@@ -5397,8 +5394,6 @@ export default function Sidebar() {
             render={
               <SidebarMenuSubButton
                 render={<div role="button" tabIndex={0} />}
-                data-thread-id={thread.id}
-                data-project-id={thread.projectId}
                 data-thread-entry-point={threadEntryPoint}
                 size="sm"
                 isActive={isActive}
@@ -5678,7 +5673,6 @@ export default function Sidebar() {
             }
           >
             <SidebarMenuButton
-              data-project-id={project.id}
               ref={isManualProjectSorting ? dragHandleProps?.setActivatorNodeRef : undefined}
               size="sm"
               className={cn(

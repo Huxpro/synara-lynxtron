@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-10T11:34:28.650Z",
+  "generatedAt": "2026-10-10T11:57:24.949Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -322,7 +322,7 @@
       "lynxConceptualEntries": ["src/app/router.tsx", "src/components/sidebar/Sidebar.lynx.tsx"],
       "graph": {
         "modules": 607,
-        "loc": 137874,
+        "loc": 137868,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -467,7 +467,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 542,
-          "loc": 127424
+          "loc": 127418
         },
         "PATCHED": {
           "modules": 1,
@@ -484,7 +484,7 @@
       },
       "eligible": {
         "modules": 591,
-        "loc": 135152
+        "loc": 135146
       },
       "currentReuse": {
         "modules": 310,
@@ -2484,7 +2484,7 @@
         },
         {
           "path": "apps/web/src/components/Sidebar.tsx",
-          "loc": 8076,
+          "loc": 8070,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -7678,7 +7678,7 @@
       "lynxConceptualEntries": ["src/components/sidebar/Sidebar.lynx.tsx"],
       "graph": {
         "modules": 483,
-        "loc": 118445,
+        "loc": 118439,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -7819,7 +7819,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 427,
-          "loc": 108876
+          "loc": 108870
         },
         "PATCHED": {
           "modules": 1,
@@ -7836,13 +7836,13 @@
       },
       "eligible": {
         "modules": 474,
-        "loc": 116580
+        "loc": 116574
       },
       "currentReuse": {
         "modules": 280,
         "loc": 72620,
         "modulePercent": 59.07,
-        "locPercent": 62.29,
+        "locPercent": 62.3,
         "gatePercent": 59.07
       },
       "modules": [
@@ -9443,7 +9443,7 @@
         },
         {
           "path": "apps/web/src/components/Sidebar.tsx",
-          "loc": 8076,
+          "loc": 8070,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -13416,7 +13416,7 @@
       "lynxConceptualEntries": ["src/app/Transcript.tsx", "src/components/composer/Composer.tsx"],
       "graph": {
         "modules": 1051,
-        "loc": 234052,
+        "loc": 234046,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -13597,7 +13597,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 971,
-          "loc": 217714
+          "loc": 217708
         },
         "PATCHED": {
           "modules": 1,
@@ -13614,7 +13614,7 @@
       },
       "eligible": {
         "modules": 1025,
-        "loc": 226137
+        "loc": 226131
       },
       "currentReuse": {
         "modules": 363,
@@ -20943,7 +20943,7 @@
         },
         {
           "path": "apps/web/src/components/Sidebar.tsx",
-          "loc": 8076,
+          "loc": 8070,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -27282,7 +27282,7 @@
       "lynxConceptualEntries": ["src/app/SettingsPage.tsx"],
       "graph": {
         "modules": 655,
-        "loc": 151770,
+        "loc": 151764,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -27431,7 +27431,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 589,
-          "loc": 141289
+          "loc": 141283
         },
         "PATCHED": {
           "modules": 1,
@@ -27448,7 +27448,7 @@
       },
       "eligible": {
         "modules": 639,
-        "loc": 149048
+        "loc": 149042
       },
       "currentReuse": {
         "modules": 311,
@@ -30064,7 +30064,7 @@
         },
         {
           "path": "apps/web/src/components/Sidebar.tsx",
-          "loc": 8076,
+          "loc": 8070,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -35388,7 +35388,7 @@
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
         "modules": 678,
-        "loc": 153433,
+        "loc": 153427,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -35546,7 +35546,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 609,
-          "loc": 140563
+          "loc": 140557
         },
         "PATCHED": {
           "modules": 1,
@@ -35563,7 +35563,7 @@
       },
       "eligible": {
         "modules": 660,
-        "loc": 148702
+        "loc": 148696
       },
       "currentReuse": {
         "modules": 325,
@@ -38401,7 +38401,7 @@
         },
         {
           "path": "apps/web/src/components/Sidebar.tsx",
-          "loc": 8076,
+          "loc": 8070,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -43808,7 +43808,7 @@
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
         "modules": 678,
-        "loc": 153434,
+        "loc": 153428,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -43966,7 +43966,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 609,
-          "loc": 140564
+          "loc": 140558
         },
         "PATCHED": {
           "modules": 1,
@@ -43983,7 +43983,7 @@
       },
       "eligible": {
         "modules": 660,
-        "loc": 148703
+        "loc": 148697
       },
       "currentReuse": {
         "modules": 325,
@@ -46821,7 +46821,7 @@
         },
         {
           "path": "apps/web/src/components/Sidebar.tsx",
-          "loc": 8076,
+          "loc": 8070,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -52228,7 +52228,7 @@
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
         "modules": 1021,
-        "loc": 228777,
+        "loc": 228771,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -52408,7 +52408,7 @@
       "targetClassification": {
         "SHARED": {
           "modules": 941,
-          "loc": 212439
+          "loc": 212433
         },
         "PATCHED": {
           "modules": 1,
@@ -52425,7 +52425,7 @@
       },
       "eligible": {
         "modules": 995,
-        "loc": 220862
+        "loc": 220856
       },
       "currentReuse": {
         "modules": 364,
@@ -59476,7 +59476,7 @@
         },
         {
           "path": "apps/web/src/components/Sidebar.tsx",
-          "loc": 8076,
+          "loc": 8070,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
