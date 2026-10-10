@@ -8,7 +8,6 @@ import {
   type StartRpcTimeout,
 } from "../../data/rpcTransport.logic";
 import {
-  nativeEventStreamChannel,
   parseNativeRpcCompatibility,
   type NativeRpcCompatibility,
   type NativeRpcStreamResetReply,
@@ -157,26 +156,15 @@ function toRelayError(
   return relayError;
 }
 
-export async function handleNativeRpc(
-  method: "synaraRpc" | "synaraRpcStream",
-  data: {
-    readonly tag?: unknown;
-    readonly payload?: unknown;
-    readonly timeoutMs?: unknown;
-  },
-  onProgress?: (event: unknown) => void,
-): Promise<unknown> {
+/** One unary RPC. Streams are request-scoped and go through `runNativeRpcStream`. */
+export async function handleNativeRpc(data: {
+  readonly tag?: unknown;
+  readonly payload?: unknown;
+  readonly timeoutMs?: unknown;
+}): Promise<unknown> {
   const tag = String(data.tag ?? "").trim();
   if (!tag) throw new Error("Synara RPC tag is required");
   try {
-    if (method === "synaraRpcStream") {
-      const events: unknown[] = [];
-      await featureManager.requestStream(tag, data.payload, (event) => {
-        if (nativeEventStreamChannel(tag) === null) events.push(event);
-        onProgress?.(event);
-      });
-      return events;
-    }
     return await featureManager.request(tag, normalizeLynxRpcPayload(tag, data.payload), {
       // `null` disables the watchdog for calls the renderer declared long-running
       // (provider updates, recap generation); a number is the renderer's own
