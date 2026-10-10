@@ -516,7 +516,33 @@ function groupByLabel(entries) {
  * occur once on each side are compared (repeated labels cannot be paired
  * safely); the rest are reported as counts.
  */
-export function compareControls(electron, native, tolerance = CONTROL_TOLERANCE_PX) {
+/**
+ * The rail's usage buttons are labelled with live quota read from the provider at that
+ * moment ("Claude usage: 5h 81% remaining, …" or "… Unavailable …"), which each renderer
+ * fetches on its own. Pair them by provider so the button's geometry is still compared and
+ * a quota endpoint hiccup on one side does not fail every cell.
+ */
+export function comparableLabel(label) {
+  const usage = /^(.+? usage): .*\. Open usage settings$/.exec(label);
+  return usage ? `${usage[1]}. Open usage settings` : label;
+}
+
+function byComparableLabel(controls) {
+  const keyed = new Map();
+  for (const [label, boxes] of controls) {
+    const key = comparableLabel(label);
+    keyed.set(key, [...(keyed.get(key) ?? []), ...boxes]);
+  }
+  return keyed;
+}
+
+export function compareControls(
+  electronControls,
+  nativeControls,
+  tolerance = CONTROL_TOLERANCE_PX,
+) {
+  const electron = byComparableLabel(electronControls);
+  const native = byComparableLabel(nativeControls);
   const compared = [];
   for (const [label, electronBoxes] of electron) {
     const nativeBoxes = native.get(label);

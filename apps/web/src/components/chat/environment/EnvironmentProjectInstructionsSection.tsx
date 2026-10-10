@@ -31,7 +31,7 @@ export function useProjectInstructionsAutosave({
 }) {
   const [value, setValue] = useState(instructions);
   const [focused, setFocused] = useState(false);
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const debounceRef = useRef<number | null>(null);
   const valueRef = useRef(value);
   const lastCommittedRef = useRef(instructions);
   const projectIdRef = useRef(projectId);
@@ -50,7 +50,7 @@ export function useProjectInstructionsAutosave({
   // closure would re-run the effects (and the unmount flush) on every keystroke.
   const flush = useCallback(() => {
     if (debounceRef.current !== null) {
-      clearTimeout(debounceRef.current);
+      window.clearTimeout(debounceRef.current);
       debounceRef.current = null;
     }
     const pendingSave = pendingSaveRef.current;
@@ -102,7 +102,7 @@ export function useProjectInstructionsAutosave({
     if (!currentProjectId) {
       pendingSaveRef.current = null;
       if (debounceRef.current !== null) {
-        clearTimeout(debounceRef.current);
+        window.clearTimeout(debounceRef.current);
         debounceRef.current = null;
       }
       return;
@@ -114,9 +114,9 @@ export function useProjectInstructionsAutosave({
       lastCommitted: lastCommittedRef.current,
     };
     if (debounceRef.current !== null) {
-      clearTimeout(debounceRef.current);
+      window.clearTimeout(debounceRef.current);
     }
-    debounceRef.current = setTimeout(flush, PROJECT_INSTRUCTIONS_AUTOSAVE_DEBOUNCE_MS);
+    debounceRef.current = window.setTimeout(flush, PROJECT_INSTRUCTIONS_AUTOSAVE_DEBOUNCE_MS);
   };
 
   return {

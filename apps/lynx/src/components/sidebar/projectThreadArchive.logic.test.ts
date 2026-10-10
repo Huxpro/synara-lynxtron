@@ -3,7 +3,7 @@ import {
   deriveProjectThreadArchivePlan,
   projectThreadArchiveConfirmation,
   projectThreadArchiveResultMessage,
-} from "@synara/shared/projectThreadArchive";
+} from "../../logic/projectThreadArchive";
 
 describe("shared project thread archive policy in Native", () => {
   it("excludes archived rows and only skips sessions with a live running turn", () => {

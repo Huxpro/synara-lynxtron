@@ -18,7 +18,6 @@ import {
   expensiveReadErrorRefetchInterval,
 } from "./expensiveReadRetry";
 import { resolveWorkspaceFileReferenceBatched } from "./workspaceFileReferenceBatch";
-import { getDocument } from "~/platform/env";
 
 export const projectQueryKeys = {
   all: ["projects"] as const,
@@ -264,15 +263,9 @@ export function projectReadFileQueryOptions(input: {
       );
     },
     enabled: (input.enabled ?? true) && effectiveCwd !== null && input.relativePath !== null,
-    // File reads use Synara's WebSocket transport rather than browser fetch.
-    // Let that transport report failures so the preview can expose Retry even
-    // when TanStack Query's browser online heuristic is temporarily offline.
-    networkMode: "always",
     staleTime: input.staleTime ?? DEFAULT_READ_FILE_STALE_TIME,
-    // File-not-found must surface immediately for out-of-root relocation, and
-    // the preview owns an explicit Retry action: automatic retries can pause
-    // while the desktop window is inactive and leave a missing file looking
-    // permanently pending. Capacity is retried in-place by the transport.
+    // File-not-found must surface immediately for out-of-root relocation.
+    // Capacity is retried in-place by the transport; do not stack another budget.
     retry: false,
     refetchInterval: expensiveReadErrorRefetchInterval,
   });
@@ -298,7 +291,7 @@ export function projectResolveWorkspaceFileReferenceQueryOptions(input: {
       (input.enabled ?? true) &&
       input.cwd !== null &&
       input.relativePath !== null &&
-      getDocument() !== null,
+      typeof window !== "undefined",
     staleTime: DEFAULT_WORKSPACE_FILE_REFERENCE_STALE_TIME,
     ...EXPENSIVE_READ_RETRY_OPTIONS,
   });
@@ -329,7 +322,7 @@ export function projectResolveOutOfRootFileReferenceQueryOptions(input: {
       (input.enabled ?? true) &&
       input.cwd !== null &&
       input.relativePath !== null &&
-      getDocument() !== null,
+      typeof window !== "undefined",
     staleTime: 30_000,
   });
 }

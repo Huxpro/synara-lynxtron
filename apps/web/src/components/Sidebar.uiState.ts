@@ -3,15 +3,10 @@
 // Layer: Browser storage helper
 // Exports: sidebar UI state read/write helpers.
 
+import { normalizeWorkspaceRootForComparison } from "@synara/shared/threadWorkspace";
 import type { LastThreadRoute } from "../chatRouteRestore";
 import type { ActivityScopeSelection } from "./SidebarActivityView.logic";
 
-import { webStorage } from "~/platform/storage";
-import { isBrowser } from "~/platform/env";
-import { SIDEBAR_CHAT_SECTION_DEFAULT_EXPANDED } from "./SidebarDefaults.logic";
-import { normalizeSidebarProjectThreadListCwd } from "./SidebarProjectPaging.logic";
-import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
-export { normalizeSidebarProjectThreadListCwd } from "./SidebarProjectPaging.logic";
 const SIDEBAR_UI_STATE_STORAGE_KEY = "synara:sidebar-ui:v1";
 
 // Same-tab readers (the Inbox) hear the sidebar's own writes; "storage" events only
@@ -31,7 +26,7 @@ export type SidebarUiState = {
 };
 
 const DEFAULT_SIDEBAR_UI_STATE: SidebarUiState = {
-  chatSectionExpanded: SIDEBAR_CHAT_SECTION_DEFAULT_EXPANDED,
+  chatSectionExpanded: false,
   chatThreadListExtraPages: 0,
   projectThreadListExtraPagesByCwd: {},
   dismissedThreadStatusKeyByThreadId: {},
@@ -43,6 +38,10 @@ const DEFAULT_SIDEBAR_UI_STATE: SidebarUiState = {
 // Persisted paging is a request, not a promise: render-time clamping trims it to the real
 // thread count, so the cap here only guards against absurd/corrupted stored values.
 const MAX_PERSISTED_THREAD_LIST_EXTRA_PAGES = 1000;
+
+export function normalizeSidebarProjectThreadListCwd(cwd: string): string {
+  return normalizeWorkspaceRootForComparison(cwd);
+}
 
 function sanitizeThreadListExtraPages(value: unknown): number {
   if (typeof value !== "number" || !Number.isFinite(value)) {
@@ -75,12 +74,12 @@ function sanitizeProjectThreadListExtraPagesByCwd(
 }
 
 export function readSidebarUiState(): SidebarUiState {
-  if (!isBrowser()) {
+  if (typeof window === "undefined") {
     return DEFAULT_SIDEBAR_UI_STATE;
   }
 
   try {
-    const raw = webStorage.getItem(SIDEBAR_UI_STATE_STORAGE_KEY);
+    const raw = window.localStorage.getItem(SIDEBAR_UI_STATE_STORAGE_KEY);
     if (!raw) {
       return DEFAULT_SIDEBAR_UI_STATE;
     }
@@ -161,15 +160,15 @@ export function readSidebarUiState(): SidebarUiState {
  * Activity view toggle (last writer wins and the toggle feels "stuck").
  */
 export function subscribeSidebarUiState(listener: (state: SidebarUiState) => void): () => void {
-  if (!isBrowser()) {
+  if (typeof window === "undefined") {
     return () => {};
   }
   const handleStorage = (event: StorageEvent) => {
     if (event.key !== SIDEBAR_UI_STATE_STORAGE_KEY) return;
     listener(readSidebarUiState());
   };
-  addWindowEventListener("storage", handleStorage);
-  return () => removeWindowEventListener("storage", handleStorage);
+  window.addEventListener("storage", handleStorage);
+  return () => window.removeEventListener("storage", handleStorage);
 }
 
 let snapshotRaw: string | null | undefined;
@@ -180,12 +179,12 @@ let snapshot: SidebarUiState = DEFAULT_SIDEBAR_UI_STATE;
  * reference between writes (as useSyncExternalStore requires).
  */
 export function readSidebarUiStateSnapshot(): SidebarUiState {
-  if (!isBrowser()) {
+  if (typeof window === "undefined") {
     return DEFAULT_SIDEBAR_UI_STATE;
   }
   let raw: string | null = null;
   try {
-    raw = webStorage.getItem(SIDEBAR_UI_STATE_STORAGE_KEY);
+    raw = window.localStorage.getItem(SIDEBAR_UI_STATE_STORAGE_KEY);
   } catch {
     raw = null;
   }
@@ -198,27 +197,27 @@ export function readSidebarUiStateSnapshot(): SidebarUiState {
 
 /** Notifies on every write of the sidebar UI state, from this tab or another. */
 export function subscribeSidebarUiStateWrites(listener: () => void): () => void {
-  if (!isBrowser()) {
+  if (typeof window === "undefined") {
     return () => {};
   }
   const handleStorage = (event: StorageEvent) => {
     if (event.key === SIDEBAR_UI_STATE_STORAGE_KEY) listener();
   };
   sameTabWriteListeners.add(listener);
-  addWindowEventListener("storage", handleStorage);
+  window.addEventListener("storage", handleStorage);
   return () => {
     sameTabWriteListeners.delete(listener);
-    removeWindowEventListener("storage", handleStorage);
+    window.removeEventListener("storage", handleStorage);
   };
 }
 
 export function persistSidebarUiState(input: SidebarUiState): void {
-  if (!isBrowser()) {
+  if (typeof window === "undefined") {
     return;
   }
 
   try {
-    webStorage.setItem(
+    window.localStorage.setItem(
       SIDEBAR_UI_STATE_STORAGE_KEY,
       JSON.stringify({
         chatSectionExpanded: input.chatSectionExpanded,

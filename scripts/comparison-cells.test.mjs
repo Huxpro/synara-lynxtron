@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  comparableLabel,
   compareControls,
   errorsBetweenProbes,
   modelTriggerSettled,
@@ -10,6 +11,31 @@ import {
 } from "./comparison-cells.mjs";
 
 describe("comparison cells", () => {
+  it("pairs the rail's usage buttons by provider, not by their live quota text", () => {
+    const box = { x: 7.5, y: 640, width: 36, height: 36, gutter: 0 };
+    const electron = new Map([["Claude usage: Unavailable. Open usage settings", [box]]]);
+    const native = new Map([
+      [
+        "Claude usage: 5h 81% remaining, Weekly 9% remaining. Open usage settings",
+        [{ ...box, x: 8 }],
+      ],
+    ]);
+    const result = compareControls(electron, native);
+    expect(result.compared).toBe(1);
+    expect(result.matched).toBe(1);
+    expect(result.missing).toEqual([]);
+    // Geometry is still compared.
+    const moved = compareControls(
+      electron,
+      new Map([[[...native.keys()][0], [{ ...box, x: 20 }]]]),
+    );
+    expect(moved.outside).toHaveLength(1);
+    expect(comparableLabel("Codex usage: Weekly 41% remaining. Open usage settings")).toBe(
+      "Codex usage. Open usage settings",
+    );
+    expect(comparableLabel("Open usage settings")).toBe("Open usage settings");
+  });
+
   it("names a pure horizontal shift inside a classic-scrollbar pane", () => {
     const electron = { x: 886, y: 165, width: 176, height: 32, gutter: 10 };
     expect(scrollbarGutterExemption(electron, { x: 5, y: 0, width: 0, height: 0 })).toBe(

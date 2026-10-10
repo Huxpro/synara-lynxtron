@@ -104,7 +104,10 @@ jobs:
             --jq '.jobs[] | {id, name, conclusion}' | jq -s . > "$RUNNER_TEMP/jobs.json"
           shard=$(jq -r '[.[] | select(.conclusion == "failure" and (.name | startswith("Browser Tests (chat-workflows ")))][0].id // empty' "$RUNNER_TEMP/jobs.json")
           if [ -n "$shard" ]; then
-            gh api "repos/$GITHUB_REPOSITORY/actions/jobs/$shard/logs" > "$RUNNER_TEMP/shard.log"
+            # Job logs carry ANSI colour codes, which `gh api` refuses to print; fetch the raw file.
+            curl --fail --silent --show-error --location \
+              --header "Authorization: Bearer $GH_TOKEN" --header "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/jobs/$shard/logs" > "$RUNNER_TEMP/shard.log"
             node apps/lynx/scripts/ci-known-flake.mjs --attempt 1 --jobs "$RUNNER_TEMP/jobs.json" --log "$RUNNER_TEMP/shard.log"
           else
             node apps/lynx/scripts/ci-known-flake.mjs --attempt 1 --jobs "$RUNNER_TEMP/jobs.json"

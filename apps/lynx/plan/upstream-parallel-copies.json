@@ -1,0 +1,228 @@
+{
+  "description": "Upstream declarations the fork keeps a parallel copy of for Lynx. See apps/lynx/scripts/upstream-parallel-copies.mjs.",
+  "entries": [
+    {
+      "upstream": "apps/web/src/components/AppSnapWelcomeDialog.tsx",
+      "symbols": [
+        "APP_SNAP_WELCOME_STORAGE_KEY",
+        "AppSnapWelcomeStorageSchema",
+        "AppSnapWelcomeStorage",
+        "INITIAL_STORAGE"
+      ],
+      "copies": ["apps/web/src/components/AppSnapWelcomeDialog.logic.ts"],
+      "sha256": "0ee4107ac3238e0befc9a913fe541f60117729fad953bbeb988a899f9a26767f"
+    },
+    {
+      "upstream": "apps/web/src/components/BrowserPanel.tsx",
+      "symbols": ["browserLocalServerUrl"],
+      "copies": ["packages/shared/src/localServers.ts"],
+      "sha256": "b63c8a1e788686de1618721a502c9df3cc3fd5215475914662b658c5bc625f46"
+    },
+    {
+      "upstream": "apps/web/src/components/ChatMarkdown.tsx",
+      "symbols": [
+        "MARKDOWN_LINK_POSITION_SUFFIX_PATTERN",
+        "INLINE_CODE_FILE_PATH_MAX_LENGTH",
+        "inlineCodeFilePath"
+      ],
+      "copies": ["apps/web/src/lib/markdownFileReferences.ts"],
+      "sha256": "57ecdc3056a72a7e1cef840247e97e2f06d29c369f58e8724829b8aab8a68688"
+    },
+    {
+      "upstream": "apps/web/src/components/RestoreOrCreateChatRoute.tsx",
+      "symbols": ["RestoreRouteResolverInput", "RestoreRouteResolver"],
+      "copies": ["apps/web/src/components/useRestoreOrCreateChatRoute.logic.ts"],
+      "sha256": "0435a0c63d7d9cc9aa215a06180e99a83b0ca23bf86a428dd5c100aac5db357c"
+    },
+    {
+      "upstream": "apps/web/src/components/Sidebar.uiState.ts",
+      "symbols": ["normalizeSidebarProjectThreadListCwd"],
+      "copies": [
+        "apps/web/src/components/SidebarDefaults.logic.ts",
+        "apps/web/src/components/SidebarProjectPaging.logic.ts"
+      ],
+      "sha256": "1fe9bf3e5de12c8fd7df764377cf9dfc16fadf05fba75ae303c9305ce395dc6f"
+    },
+    {
+      "upstream": "apps/web/src/components/SpaceIcon.tsx",
+      "symbols": ["SPACE_ICON_LABELS"],
+      "copies": ["apps/lynx/src/logic/spacePresentation.ts"],
+      "sha256": "54996172dfbc72ccac69ade6430397dfb3bb359e0713973974a5c98450a566d3"
+    },
+    {
+      "upstream": "apps/web/src/components/chat/FileAttachmentChip.tsx",
+      "symbols": ["MIME_TYPE_LABEL_BY_TYPE", "fileAttachmentTypeLabel"],
+      "copies": ["apps/lynx/src/logic/fileAttachmentPresentation.ts"],
+      "sha256": "e2512e7bda41efe83f67d078db6aa3d4e292bba9a657f48e5aef53db6733808c"
+    },
+    {
+      "upstream": "apps/web/src/components/chat/FileEntryIcon.tsx",
+      "symbols": ["FILE_ICON_COLOR_CLASS_BY_ICON_NAME"],
+      "copies": ["apps/web/src/file-icons.ts"],
+      "sha256": "a39dc8e6cf82ca0fb7bb119fa86dde890d60e76b922bab449ce07790367cd1fc"
+    },
+    {
+      "upstream": "apps/web/src/components/chat/rightDockPaneMeta.tsx",
+      "symbols": ["RIGHT_DOCK_LAUNCHER_ORDER", "RIGHT_DOCK_LAUNCHER_LABELS"],
+      "copies": ["apps/web/src/components/chat/rightDockLauncher.logic.ts"],
+      "sha256": "6e97f265709e9c5d34823ce022e845dd07a09c9cd46dee3cc8d5361aa488b831"
+    },
+    {
+      "upstream": "apps/web/src/components/composerInlineChip.ts",
+      "symbols": [
+        "AgentChipColor",
+        "DEFAULT_AGENT_CHIP_COLOR",
+        "AGENT_CHIP_COLOR_BY_NAME",
+        "resolveAgentChipColor",
+        "formatComposerInlineTokenLabel",
+        "formatComposerSkillChipLabel",
+        "formatComposerSlashCommandChipLabel"
+      ],
+      "copies": ["apps/web/src/components/composerInlineChip.logic.ts"],
+      "sha256": "4e5e62592310a9f036e3f15053ed645224a11669e412243850472531efd9e1ce"
+    },
+    {
+      "upstream": "apps/web/src/components/terminal/terminalRuntimeAppearance.ts",
+      "symbols": ["TERMINAL_FONT_WEIGHT", "TERMINAL_BOLD_FONT_WEIGHT"],
+      "copies": ["packages/shared/src/terminalThreads.ts"],
+      "sha256": "ff90e62c3de38af15120659ef42c9e6a7637dc85c78d8b429a40a60dbf541ff0"
+    },
+    {
+      "upstream": "apps/web/src/components/ui/sidebar.tsx",
+      "symbols": ["clampSidebarWidth"],
+      "copies": ["apps/web/src/components/sidebarResize.logic.ts"],
+      "sha256": "bcbfc718cef7103b9dd866a39e93417254e67eb361541ca8b91fff7fe5451525"
+    },
+    {
+      "upstream": "apps/web/src/components/ui/time-picker.tsx",
+      "symbols": ["HOURS", "MINUTES", "pad", "parseTime"],
+      "copies": ["apps/lynx/src/logic/timePicker.ts"],
+      "sha256": "7f58ecf36d3f979c7283e2ee0f5bc9da6da9a076befb27dc3ab6fb9b11095e7e"
+    },
+    {
+      "upstream": "apps/web/src/feedback.ts",
+      "symbols": ["DEFAULT_FEEDBACK_ENDPOINT", "FEEDBACK_REQUEST_TIMEOUT_MS"],
+      "copies": ["apps/lynx/src/logic/feedbackDelivery.ts"],
+      "sha256": "7deb5f6b84e9f574e0807979099160881f4c3c40b6b4738dba9d37077f8782ad"
+    },
+    {
+      "upstream": "apps/web/src/hooks/useMediaQuery.ts",
+      "symbols": ["BREAKPOINTS"],
+      "copies": ["apps/web/src/responsiveLayout.logic.ts"],
+      "sha256": "d2ce527bc47c00853e102ffe72c798724db5794183559bc8bcd09ffe33dca9bf"
+    },
+    {
+      "upstream": "apps/web/src/hooks/useSidebarProjectRunController.ts",
+      "symbols": ["firstLocalServerUrl"],
+      "copies": ["packages/shared/src/localServers.ts"],
+      "sha256": "f55b2d1a6ad44eb55ff099d569663180b17c594f465354934f0ac61f70c9107f"
+    },
+    {
+      "upstream": "apps/web/src/hooks/useTheme.ts",
+      "symbols": ["STORAGE_KEY"],
+      "copies": ["apps/web/src/appSettingsStorageProjection.logic.ts"],
+      "sha256": "45c85b224b11c49d5bea095c89acbf0097f576ffa1aec540fef4e04f43bc2e09"
+    },
+    {
+      "upstream": "apps/web/src/lib/codeFence.ts",
+      "symbols": [
+        "directoryFromPath",
+        "fileReferenceInfo",
+        "LEADING_WHITESPACE_REGEX",
+        "dedentCode",
+        "CODE_REFERENCE_REGEX"
+      ],
+      "copies": ["apps/web/src/lib/codeFenceCore.ts"],
+      "sha256": "21933e8df98649c414a76b5e81aa8138c14758ec2abf9b8265488b4750ae6711"
+    },
+    {
+      "upstream": "apps/web/src/lib/pdf/pdfZoom.ts",
+      "symbols": [
+        "PDF_PAGE_MARGIN_PX",
+        "PDF_MIN_SCALE",
+        "PDF_MAX_SCALE",
+        "PDF_ZOOM_PRESETS",
+        "PdfZoomMode",
+        "PdfPageIntrinsicSize",
+        "PdfViewportSize",
+        "clampPdfScale",
+        "fitWidthScale",
+        "fitPageScale",
+        "resolvePdfScale",
+        "nextZoomScale",
+        "previousZoomScale",
+        "formatZoomPercent"
+      ],
+      "copies": ["packages/shared/src/pdfZoom.ts"],
+      "sha256": "8fc8861cd3acd2f60c1319b62f06aa28599737964f86b7fd98a9bd6cea0b6be9"
+    },
+    {
+      "upstream": "apps/web/src/lib/pin.tsx",
+      "symbols": ["pinActionLabel"],
+      "copies": ["apps/web/src/lib/pin.logic.ts"],
+      "sha256": "fd81bc5d1149a0099858cf1948fbdb35682e10d4a1deb4010c323f999a1c0101"
+    },
+    {
+      "upstream": "apps/web/src/lib/subagentPresentation.ts",
+      "symbols": [
+        "SUBAGENT_ACCENT_PALETTE",
+        "GENERIC_SUBAGENT_TITLES",
+        "basename",
+        "fallbackSubagentLabel",
+        "suppressWorkerTierRole",
+        "isGenericSubagentTitle",
+        "parseBracketedSubagentLabel",
+        "capitalizeRoleLabel",
+        "hashLabelSeed"
+      ],
+      "copies": ["apps/web/src/components/SidebarThreadSubagentModel.logic.ts"],
+      "sha256": "571c2bb32a0f707b925f775c8def25881878a812a83cc02ff7542d905e39fb4b"
+    },
+    {
+      "upstream": "apps/web/src/lib/usagePace.ts",
+      "symbols": [
+        "UsagePaceStatus",
+        "UsagePaceSummary",
+        "MIN_PROJECTION_ELAPSED_FRACTION",
+        "clampPercent",
+        "compactDuration",
+        "paceStatus",
+        "reserveOrDeficitText",
+        "deriveUsagePace"
+      ],
+      "copies": ["apps/lynx/src/logic/providerUsageDisplay.ts"],
+      "sha256": "21fbd27fea810bc23b420b3e53eeefaf88f094886a099b44b43393276a484645"
+    },
+    {
+      "upstream": "apps/web/src/persistedRecord.ts",
+      "symbols": ["isPlainObject", "UNSAFE_RECORD_KEYS", "sanitizeStringKeyedRecord"],
+      "copies": ["packages/shared/src/persistedRecord.ts"],
+      "sha256": "1bf807ce4d82e3daae8b616f66dd657e6733406fc7adc463f7a54fa30b722287"
+    },
+    {
+      "upstream": "apps/web/src/pinnedMessages.ts",
+      "symbols": [
+        "LEADING_BLOCK_MARKER_PATTERN",
+        "INLINE_EMPHASIS_PATTERN",
+        "derivePinLabel",
+        "displayLabelFor"
+      ],
+      "copies": ["packages/shared/src/pinnedMessages.ts"],
+      "sha256": "98886d1a50fcb2a579e2f8eb5f7887cad101703f3a0b5d60442ece49acb138d3"
+    },
+    {
+      "upstream": "apps/web/src/session-logic.ts",
+      "symbols": [
+        "LatestTurnTiming",
+        "SessionActivityState",
+        "isLatestTurnSettled",
+        "hasLiveLatestTurn"
+      ],
+      "copies": [
+        "apps/lynx/src/logic/composerPlaceholder.ts",
+        "apps/web/src/sessionActivity.logic.ts"
+      ],
+      "sha256": "8c1a928da6354c17211b983267ffcece1015d328723d631ebfc9326323ed2a45"
+    }
+  ]
+}

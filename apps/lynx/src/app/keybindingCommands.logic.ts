@@ -36,7 +36,8 @@ export interface LynxShortcutKeyEvent {
 export function shortcutEventFromLynxKey(event: LynxShortcutKeyEvent): ShortcutEventLike {
   return {
     type: "keydown",
-    key: event.key,
+    // Upstream's matcher takes a string; a host that reports no key matches nothing.
+    key: typeof event.key === "string" ? event.key : "",
     ...(typeof event.code === "string" ? { code: event.code } : {}),
     metaKey: event.metaKey === true,
     ctrlKey: event.ctrlKey === true,

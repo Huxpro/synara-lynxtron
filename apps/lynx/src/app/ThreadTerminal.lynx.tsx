@@ -12,13 +12,13 @@ import {
   flattenTerminalTextLines,
   normalizeTerminalClipboardText,
   nextTerminalTextMatchIndex,
-} from "@synara/shared/terminalTextProjection";
+} from "../logic/terminalTextProjection";
 import type {
   TerminalCursorSnapshot,
   TerminalTextColor,
   TerminalTextLine,
   TerminalTextRun,
-} from "@synara/shared/terminalTextProjection";
+} from "../logic/terminalTextProjection";
 import {
   APP_SETTINGS_STORAGE_KEY,
   readSettingsBehaviorProjection,

@@ -59,7 +59,6 @@ export interface ComposerFooterTierStep {
 
 export function resolveNextComposerFooterTier(input: {
   currentTier: number;
-  minimumTier?: number;
   clientWidth: number;
   // Whether the rendered footer content currently overflows. Callers must
   // also account for clusters that CLIP (overflow-hidden) rather than grow
@@ -68,13 +67,12 @@ export function resolveNextComposerFooterTier(input: {
   demotionWidths: ReadonlyArray<number | undefined>;
 }): ComposerFooterTierStep {
   const demotionWidths = [...input.demotionWidths];
-  const minimumTier = Math.max(0, Math.min(input.minimumTier ?? 0, COMPOSER_FOOTER_MAX_TIER));
-  let tier = Math.max(minimumTier, Math.min(input.currentTier, COMPOSER_FOOTER_MAX_TIER));
+  let tier = Math.max(0, Math.min(input.currentTier, COMPOSER_FOOTER_MAX_TIER));
 
   // Promote toward richer tiers while the footer is comfortably wider than the
   // width at which the richer tier last overflowed. An unknown demotion width
   // means that tier never overflowed, so promotion is always allowed.
-  while (tier > minimumTier) {
+  while (tier > 0) {
     const richerTierOverflowedAt = demotionWidths[tier - 1];
     if (
       richerTierOverflowedAt !== undefined &&

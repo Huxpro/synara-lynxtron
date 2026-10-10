@@ -237,19 +237,6 @@ describe("useComposerVoiceController", () => {
     });
   });
 
-  it("uses the shared pending-input guard before opening the recorder", async () => {
-    recorder.isRecording = false;
-    render({ pendingUserInputCount: 1 });
-
-    await result.startComposerVoiceRecording();
-
-    expect(recorder.startRecording).not.toHaveBeenCalled();
-    expect(toast.add).toHaveBeenCalledWith({
-      type: "error",
-      title: "Answer plan questions before recording a voice note.",
-    });
-  });
-
   it.each(["thread", "provider", "instance", "cancel"] as const)(
     "ignores a stale transcription after %s changes",
     async (staleCause) => {
@@ -345,9 +332,7 @@ describe("useComposerVoiceController", () => {
   });
 
   it("refreshes status for expired auth and keeps the refresh action available", async () => {
-    nativeApi.transcribeVoice.mockRejectedValueOnce(
-      new Error("Your ChatGPT login has expired. Sign in again."),
-    );
+    nativeApi.transcribeVoice.mockRejectedValueOnce(new Error("session expired"));
 
     await expect(result.submitComposerVoiceRecording()).resolves.toBe(false);
 

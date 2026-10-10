@@ -9,6 +9,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { electronThreadRowSelector } from "./comparison-electron-selectors.mjs";
 import { openSynaraRpcSession } from "./comparison-fixture.mjs";
 import { nativeNodesMatchingClasses } from "./comparison-measure.mjs";
 
@@ -73,18 +74,22 @@ export function nativeTargetMatches(node, target) {
   return false;
 }
 
-/** CSS selector for an Electron target (label, testId, attribute or raw selector). */
-function electronSelectorFor(target) {
-  return (
-    target.selector ??
-    (target.label !== undefined
-      ? `[aria-label=${JSON.stringify(String(target.label))}]`
-      : target.testId !== undefined
-        ? `[data-testid=${JSON.stringify(target.testId)}]`
-        : target.attribute !== undefined
-          ? `[${target.attribute[0]}=${JSON.stringify(target.attribute[1])}]`
-          : null)
-  );
+/**
+ * CSS selector for an Electron target (label, testId, attribute or raw selector).
+ * `data-thread-id` is the Lynx renderer's own row attribute; upstream's sidebar has
+ * no such attribute, so on Electron the same logical target resolves through
+ * upstream's hover anchors (comparison-electron-selectors.mjs).
+ */
+export function electronSelectorFor(target) {
+  if (target.selector !== undefined) return target.selector;
+  if (target.label !== undefined) return `[aria-label=${JSON.stringify(String(target.label))}]`;
+  if (target.testId !== undefined) return `[data-testid=${JSON.stringify(target.testId)}]`;
+  if (target.attribute !== undefined) {
+    const [name, value] = target.attribute;
+    if (name === "data-thread-id") return electronThreadRowSelector(value);
+    return `[${name}=${JSON.stringify(value)}]`;
+  }
+  return null;
 }
 
 function allNodes(root) {

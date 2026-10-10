@@ -89,7 +89,7 @@ describe("EnvironmentNotesSection", () => {
       ),
     );
     document.querySelector<HTMLTextAreaElement>("textarea")?.blur();
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await new Promise((resolve) => window.setTimeout(resolve, 0));
 
     expect(document.querySelector<HTMLTextAreaElement>("textarea")?.value).toBe("server new");
   });

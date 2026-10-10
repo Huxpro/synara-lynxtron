@@ -436,19 +436,11 @@ export function createRpcSocketManager(input: {
         options?.timeoutMs === undefined ? input.requestTimeoutMs : options.timeoutMs,
       );
     },
-    async requestStream<A>(
-      tag: string,
-      payload: unknown,
-      onChunk: (value: A) => void,
-    ): Promise<void> {
-      const socket = await getSocket();
-      ensureResponseListener(socket);
-      await requestOnSocket<void>(socket, tag, payload, (value) => onChunk(value as A), null);
-    },
     /**
-     * Like `requestStream`, but cancellable: `cancel()` sends an Effect RPC
-     * `Interrupt` for the request and settles the stream locally. Cancelling
-     * before the socket is open just skips sending the request.
+     * A stream request: every chunk goes to `onChunk`, `settled` resolves when
+     * the server ends it. `cancel()` sends an Effect RPC `Interrupt` for the
+     * request and settles the stream locally. Cancelling before the socket is
+     * open just skips sending the request.
      */
     openStream<A>(tag: string, payload: unknown, onChunk: (value: A) => void): RpcStreamHandle {
       let cancelled = false;

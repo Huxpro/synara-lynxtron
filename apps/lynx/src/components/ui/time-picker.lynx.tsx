@@ -3,7 +3,7 @@ import {
   parseTimePickerValue,
   TIME_PICKER_HOURS,
   TIME_PICKER_MINUTES,
-} from "@synara/shared/timePicker";
+} from "../../logic/timePicker";
 import { Button } from "./button.lynx";
 import { Separator } from "./separator.lynx";
 import "./primitives.css";

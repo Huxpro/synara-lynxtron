@@ -141,7 +141,7 @@ describe("MessagesTimeline message enter animation", () => {
         .toBe(true);
 
       await new Promise<void>((resolve) => {
-        setTimeout(() => resolve(), 320);
+        window.setTimeout(() => resolve(), 320);
       });
 
       await expect

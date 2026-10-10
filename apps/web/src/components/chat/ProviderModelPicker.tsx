@@ -960,7 +960,7 @@ type ProviderModelPickerProps = {
 export const ProviderModelPicker = function ProviderModelPicker(props: ProviderModelPickerProps) {
   const { onOpenChange, onSelectionCommitted, open } = props;
   const [uncontrolledMenuOpen, setUncontrolledMenuOpen] = useState(false);
-  const selectionCommitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const selectionCommitTimerRef = useRef<number | null>(null);
   const isMenuOpen = open ?? uncontrolledMenuOpen;
   const activeProvider = props.lockedProvider ?? props.provider;
   const selectedModelLabel = resolveProviderModelLabel({
@@ -1011,10 +1011,10 @@ export const ProviderModelPicker = function ProviderModelPicker(props: ProviderM
   };
   const scheduleSelectionCommitted = () => {
     if (selectionCommitTimerRef.current !== null) {
-      clearTimeout(selectionCommitTimerRef.current);
+      window.clearTimeout(selectionCommitTimerRef.current);
     }
     // Base UI restores focus to the trigger while closing; refocus callers after that tick.
-    selectionCommitTimerRef.current = setTimeout(() => {
+    selectionCommitTimerRef.current = window.setTimeout(() => {
       selectionCommitTimerRef.current = null;
       onSelectionCommitted?.();
     }, 0);
@@ -1022,7 +1022,7 @@ export const ProviderModelPicker = function ProviderModelPicker(props: ProviderM
   useEffect(
     () => () => {
       if (selectionCommitTimerRef.current !== null) {
-        clearTimeout(selectionCommitTimerRef.current);
+        window.clearTimeout(selectionCommitTimerRef.current);
       }
     },
     [],

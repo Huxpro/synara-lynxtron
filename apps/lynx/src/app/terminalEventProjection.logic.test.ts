@@ -7,7 +7,7 @@ import {
   flattenTerminalTextLines,
   nextTerminalTextMatchIndex,
   projectTerminalText,
-} from "@synara/shared/terminalTextProjection";
+} from "../logic/terminalTextProjection";
 
 import { applyTerminalEventToSnapshot, utf8ByteLength } from "./terminalEventProjection.logic";
 

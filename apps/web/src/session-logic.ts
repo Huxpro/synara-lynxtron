@@ -1,4 +1,3 @@
-import { resolveSessionPhase } from "@synara/shared/composerPlaceholder";
 import {
   type OrchestrationLatestTurn,
   type OrchestrationProposedPlanId,
@@ -10,12 +9,6 @@ import {
 import { VISIBLE_PROVIDER_DESCRIPTORS } from "./betaFeatures";
 
 import { orderedActivities, parseTaskListTasks } from "./workLog";
-import {
-  hasLiveLatestTurn,
-  isLatestTurnSettled,
-  type LatestTurnTiming,
-  type SessionActivityState,
-} from "./sessionActivity.logic";
 
 import type {
   ChatMessage,
@@ -50,7 +43,6 @@ export {
   type WorkLogSynaraCreatedThread,
   type WorkLogSynaraThreadCreation,
 } from "./workLog";
-export { hasLiveLatestTurn, isLatestTurnSettled } from "./sessionActivity.logic";
 
 export type ProviderPickerKind = ProviderKind;
 
@@ -133,6 +125,36 @@ export function formatElapsed(startIso: string, endIso: string | undefined): str
   return formatDuration(endedAt - startedAt);
 }
 
+type LatestTurnTiming = Pick<
+  OrchestrationLatestTurn,
+  "turnId" | "state" | "startedAt" | "completedAt"
+>;
+type SessionActivityState = Pick<ThreadSession, "orchestrationStatus" | "activeTurnId">;
+
+export function isLatestTurnSettled(
+  latestTurn: LatestTurnTiming | null,
+  session: SessionActivityState | null,
+): boolean {
+  if (!latestTurn?.startedAt) return false;
+  if (!latestTurn.completedAt) return false;
+  if (latestTurn.state === "interrupted" || latestTurn.state === "error") {
+    return true;
+  }
+  if (!session) return true;
+  if (session.orchestrationStatus === "running") return false;
+  return true;
+}
+
+export function hasLiveLatestTurn(
+  latestTurn: LatestTurnTiming | null,
+  session: SessionActivityState | null,
+): boolean {
+  if (!latestTurn?.startedAt) {
+    return false;
+  }
+  return !isLatestTurnSettled(latestTurn, session);
+}
+
 /**
  * Pending approval / user-input requests are only actionable while the session
  * that raised them can still receive the answer. Once the session is closed or
@@ -176,7 +198,7 @@ export function isSessionRunningTurn<T extends RunningTurnSessionView>(
 }
 
 export function deriveActiveWorkStartedAt(
-  latestTurn: (LatestTurnTiming & { readonly turnId: TurnId }) | null,
+  latestTurn: LatestTurnTiming | null,
   session: SessionActivityState | null,
   sendStartedAt: string | null,
 ): string | null {
@@ -577,5 +599,8 @@ export function inferCheckpointTurnCountByTurnId(
 }
 
 export function derivePhase(session: ThreadSession | null): SessionPhase {
-  return resolveSessionPhase(session?.status);
+  if (!session || session.status === "closed") return "disconnected";
+  if (session.status === "connecting") return "connecting";
+  if (session.status === "running") return "running";
+  return "ready";
 }

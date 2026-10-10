@@ -15,8 +15,10 @@ import {
 } from "react";
 
 import { cn } from "~/lib/utils";
-import { ComposerColumnFrameSurface } from "./ComposerColumnFrameSurface";
-import { COMPOSER_STACKED_HEADER_FRAME_CLASS_NAME } from "./composerPickerStyles";
+import {
+  COMPOSER_COLUMN_FRAME_CLASS_NAME,
+  COMPOSER_STACKED_HEADER_FRAME_CLASS_NAME,
+} from "./composerPickerStyles";
 
 const ComposerColumnFrameContext = createContext(false);
 
@@ -42,7 +44,7 @@ export const ComposerColumnFrame = function ComposerColumnFrame({
 }: ComposerColumnFrameProps) {
   return (
     <ComposerColumnFrameContext.Provider value={true}>
-      <ComposerColumnFrameSurface className={className}>{children}</ComposerColumnFrameSurface>
+      <div className={cn(COMPOSER_COLUMN_FRAME_CLASS_NAME, className)}>{children}</div>
     </ComposerColumnFrameContext.Provider>
   );
 };

@@ -8,7 +8,7 @@ import type {
   ProviderToolField,
   ProviderToolPasswordKey,
   ProviderToolTextKey,
-} from "@synara/shared/providerTools";
+} from "../logic/providerTools";
 
 export type ProviderTextFieldId = ProviderToolTextKey | ProviderToolPasswordKey;
 export type { ProviderToolConfig, ProviderToolField };

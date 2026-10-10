@@ -232,12 +232,6 @@
       "~/components/SidebarChatsSectionElements": [
         "./src/adapters/SidebarChatsSectionElements.lynx.tsx"
       ],
-      "~/components/SidebarDesktopHeaderElements": [
-        "./src/adapters/SidebarDesktopHeaderElements.lynx.tsx"
-      ],
-      "~/components/SidebarFooterSectionElements": [
-        "./src/adapters/SidebarFooterSectionElements.lynx.tsx"
-      ],
       "~/components/SidebarListSectionHeaderElements": [
         "./src/adapters/SidebarListSectionHeaderElements.lynx.tsx"
       ],
@@ -261,9 +255,6 @@
       ],
       "~/components/SidebarSearchPaletteElements": [
         "./src/adapters/SidebarSearchPaletteElements.lynx.tsx"
-      ],
-      "~/components/SidebarSettingsEntryElements": [
-        "./src/adapters/SidebarSettingsEntryElements.lynx.tsx"
       ],
       "~/components/SidebarStudioSectionElements": [
         "./src/adapters/SidebarStudioSectionElements.lynx.tsx"

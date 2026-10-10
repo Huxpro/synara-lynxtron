@@ -29,16 +29,20 @@ npm 包默认看到真实运行时，只有一个例外：`@tanstack/query-core`
 **还原一个 Lynx 会执行的上游文件之前，要检查它的分支。** 注入之后 `typeof window` 在 Lynx 上恒为已定义。fork 以前把上游的同一个判断改写成了两种谓词：`isBrowser()`（Lynx 上为真）和 `getDocument() !== null`（Lynx 上为假）。还原后两者都变成"为真"，所以 fork 原先刻意关掉的分支会被打开。已知的三处：
 
 - `hooks/useSmoothStreamedText.ts`、`hooks/useThrottledStreamingValue.ts`：目前不在 Lynx 的模块图里；一旦有 Lynx 使用方，逐帧动画和节流会在 Lynx 上启用（以前被 `getDocument() === null` 关掉）。
-- `lib/projectReactQuery.ts`：两个 workspace 文件引用查询以前在 Lynx 上是禁用的。这个文件因此还没有还原。
+- `lib/projectReactQuery.ts`：两个 workspace 文件引用查询以前在 Lynx 上是禁用的。文件已还原；这两个查询在 Lynx 上没有调用方，`src/platform/browserEnvironmentBranchGuards.lynx.test.ts` 在出现调用方时失败（上面两个 hook 也在它的清单里）。
 
 需要真实 DOM 的上游辅助函数（`lib/browserDownload.ts` 创建 `<a>` 并挂到 `body`、`lib/domLayout.ts` 调 `getComputedStyle`、设置页登出用的 `location.assign`）在环境里是"调用即抛出"。它们目前没有 Lynx 使用方；在增加任何 Lynx 使用方之前，先用模块替换给出 Lynx 适配实现，不要让环境假装下载或导航成功。
+
+注入只绑定裸的全局名。上游写成 `globalThis.localStorage`、`globalThis.navigator` 的地方在 Lynx 上仍然读到真实运行时（没有值）：`appSettings.ts` 因此还没有还原，`lib/modelFavorites.ts`、`lib/starredModels.ts` 在 Lynx 上不持久化。
+
+上游文件还原之后，fork 以前抽出去的逻辑（`*.logic.ts`、`apps/lynx/src/logic`、`@synara/shared/*` 里 fork 加的模块）就成了只有 Lynx 在读的平行副本。`scripts/upstream-parallel-copies.mjs` 在 `plan/upstream-parallel-copies.json` 里记录每份副本对应的上游顶层声明和它们文本的哈希，`--check`（挂在 `typecheck` 和 `audit:reuse:check` 上）在上游改动、改名或删除其中一个时失败。这是过渡手段：副本应当换成直接 import 上游或生成，换掉一份就删掉一条记录。
 
 现存的手工差异是存量债务，只许减少：`bun run --cwd apps/lynx audit:upstream-footprint` 统计上游拥有的路径里被 fork 改过的文件数、改动行数，以及 fork 放在这些路径里的文件数，CI 在任何一项增加时失败。清理顺序按"最机械的先做"：
 
 1. `window.x` → `~/platform/x` 的改写：改为环境注入，上游文件还原。
 2. 给 Lynx 加的导出、共用的常量和 token、抽出去的逻辑：改为生成。
 3. fork 放在上游目录里的文件：搬到 fork 自己的目录。
-4. `data-*` 测试钩子：对比 harness 改用上游已有的角色、文字和属性定位。
+4. `data-*` 测试钩子：对比 harness 改用上游已有的角色、文字和属性定位（侧边栏的行已经这样做，选择器在 `scripts/comparison-electron-selectors.mjs`，并有一个对着上游源码的单元测试）。
 
 值得提给上游的只有真正的上游缺陷。被接受，fork 的差异归零；不被接受，fork 不受影响。fork 的架构不依赖上游接受任何东西。
 
@@ -113,9 +117,8 @@ npm 包默认看到真实运行时，只有一个例外：`@tanstack/query-core`
 ## 已知的缺口
 
 - **编排层仍是两份。** 合并成本的大头在 `ChatView.tsx`、`Sidebar.tsx` 这类容器和 Lynx 自己的对应物上，状态层共享并没有消掉它。
-- **fork 在上游文件里的差异仍然很多。** 2026-10-09 合并后的基线是 260 个上游文件被改过（6,672 行），另有 400 个 fork 文件放在上游的目录里；`~/platform` 改写的第一批还原、并删掉一个 fork 自加的 RPC 之后是 184 个文件（5,883 行）和 395 个 fork 文件。原因见最近一次合并报告的附录；它直接决定下一次合并的成本，也是 Electron 行为回退的来源。
+- **fork 在上游文件里的差异仍然很多。** 2026-10-09 合并后的基线是 260 个上游文件被改过（6,672 行），另有 400 个 fork 文件放在上游的目录里；第一批还原之后是 184 个文件（5,883 行）和 395 个 fork 文件；第二轮 D 阶段之后是 105 个文件（3,681 行）和 328 个 fork 文件。剩下的按原因分类、连同每组的工作量估计，见 [upstream-footprint-classification-2026-10-10.md](../plan/reports/upstream-footprint-classification-2026-10-10.md)。它直接决定下一次合并的成本，也是 Electron 行为回退的来源。
 - **线程详情还有请求式的读取方。** Thread 页已经读 `store`。右侧 dock 里的 Side 面板、侧边栏和 Kanban 的线程操作、任务完成通知、Environment 面板的 recap 仍用 `queries.ts` 里的 `getThreadDetailSnapshot` 读取（只投影、不提交）。Side 面板要先让上游的 `EventRouter` 知道 Lynx 的 dock 状态才能拿到流租约。
 - **仍有读取用 Lynx 自己的 query key。** `synaraClient.lynx.ts` 已删除，请求全部走门面；模型目录已换成上游的 `providerModelsQueryOptions`，Code review 页面（列表、PR 与 issue 详情、diff、操作、评论、置顶）也都换成了上游的 query 和 mutation options，但 Automations、插件库等读取还没有换成上游的 query options，清单见计划文档。
 - **单元格矩阵覆盖的界面都已按上游移植。** 应用外壳、模型菜单、dock 头部与 diff 工具栏（含 change markers）、Code review 页面、Appearance 的主题包编辑器。每个里程碑的通过数记录在计划文档；仍是占位的功能（Inbox、Spaces、线程内切换 provider、窗口半透明等）列在合并报告的移植队列里。
-- **宿主里还有没有调用方的旧流路径**（不带 `streamId` 的 `synaraRpcStream` 和固定通道表里的终端、shell 通道）。它和在用的代码交织在两个宿主里，删除前要先把 Lynx-for-Web 宿主跑通一遍。
 - **上游新界面的移植队列**见最近一次合并报告。

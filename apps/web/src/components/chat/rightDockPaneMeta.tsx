@@ -23,7 +23,6 @@ import { type RightDockPane, type RightDockPaneKind } from "~/rightDockStore.log
 import { CHAT_SURFACE_CHIP_ICON_CLASS_NAME, SurfaceChipIcon } from "./chatHeaderControls";
 import { FileEntryIcon } from "./FileEntryIcon";
 import { pullRequestPaneTabLabel } from "../pullRequest/pullRequestDetail.logic";
-import { resolveRightDockLauncherEntries } from "./rightDockLauncher.logic";
 
 export interface RightDockPaneMeta {
   label: string;
@@ -63,14 +62,60 @@ export function getRightDockPaneMeta(kind: RightDockPaneKind): RightDockPaneMeta
   return RIGHT_DOCK_PANE_META[kind] ?? FALLBACK_RIGHT_DOCK_PANE_META;
 }
 
-export function resolveRightDockLauncherItems(
-  input: Parameters<typeof resolveRightDockLauncherEntries>[0],
-): readonly RightDockLauncherItem[] {
-  return resolveRightDockLauncherEntries(input).map(({ kind, label }) => ({
-    kind,
-    label,
-    Icon: getRightDockPaneMeta(kind).Icon,
-  }));
+// Empty-dock launchers prioritize the everyday workspace tools. Review only
+// appears when the selected diff scope contains changes, Git is gated by
+// repository discovery, and Explorer needs a concrete workspace. Context-only
+// file and pull-request panes continue to open from their owning surfaces.
+const RIGHT_DOCK_LAUNCHER_ORDER: readonly RightDockPaneKind[] = [
+  "diff",
+  "terminal",
+  "browser",
+  "explorer",
+  "sidechat",
+  "device",
+  "git",
+];
+
+const RIGHT_DOCK_LAUNCHER_LABELS: Partial<Record<RightDockPaneKind, string>> = {
+  diff: "Review",
+  explorer: "Files",
+  sidechat: "Side chats",
+  git: "Source control",
+};
+
+export function resolveRightDockLauncherItems(input: {
+  hasWorkspace: boolean;
+  hasGitRepository: boolean;
+  hasReview: boolean;
+  /**
+   * Simulators need a macOS server with Xcode. Off macOS the entry is hidden
+   * outright rather than shown disabled: there is nothing the user could do
+   * from this machine to make it work.
+   */
+  hasDeviceSupport?: boolean;
+}): readonly RightDockLauncherItem[] {
+  return RIGHT_DOCK_LAUNCHER_ORDER.flatMap((kind) => {
+    if (kind === "diff" && !input.hasReview) {
+      return [];
+    }
+    if (kind === "git" && !input.hasGitRepository) {
+      return [];
+    }
+    if (kind === "explorer" && !input.hasWorkspace) {
+      return [];
+    }
+    if (kind === "device" && input.hasDeviceSupport !== true) {
+      return [];
+    }
+    const meta = getRightDockPaneMeta(kind);
+    return [
+      {
+        kind,
+        Icon: meta.Icon,
+        label: RIGHT_DOCK_LAUNCHER_LABELS[kind] ?? meta.label,
+      },
+    ];
+  });
 }
 
 // Resolves a tab label, preferring caller-provided per-pane overrides (e.g. the

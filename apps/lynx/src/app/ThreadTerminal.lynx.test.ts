@@ -30,7 +30,7 @@ describe("Lynx thread terminal", () => {
     expect(terminalSource).toContain("writeExit: platformTerminal.write");
     expect(terminalSource).not.toContain("if (snapshot) {");
     expect(terminalSource).toContain("await refresh();");
-    expect(terminalSource).toContain('from "@synara/shared/terminalTextProjection"');
+    expect(terminalSource).toContain('from "../logic/terminalTextProjection"');
     expect(terminalSource).toContain("resetProjection(`${next.replayPreamble}${next.history}`)");
     expect(terminalSource).toContain("textProjectorRef.current.write(event.data)");
     expect(terminalSource).toContain("textProjectorRef.current.toStyledLines()");

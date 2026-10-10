@@ -19,9 +19,9 @@ export async function waitForTerminalFontReady(input: {
   const fontFamily = input.fontFamily.trim();
   if (!fontFamily) return;
 
-  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  let timeoutId: number | null = null;
   const timeout = new Promise<void>((resolve) => {
-    timeoutId = setTimeout(resolve, input.timeoutMs ?? DEFAULT_FONT_LOAD_TIMEOUT_MS);
+    timeoutId = window.setTimeout(resolve, input.timeoutMs ?? DEFAULT_FONT_LOAD_TIMEOUT_MS);
   });
 
   try {
@@ -30,7 +30,7 @@ export async function waitForTerminalFontReady(input: {
     // Refit anyway; a bad font spec should not permanently strand terminal dimensions.
   } finally {
     if (timeoutId !== null) {
-      clearTimeout(timeoutId);
+      window.clearTimeout(timeoutId);
     }
   }
 }

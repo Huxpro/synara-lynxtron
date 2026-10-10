@@ -21,9 +21,6 @@ import { useIsMobile } from "~/hooks/useMediaQuery";
 import { getLocalStorageItem, setLocalStorageItem } from "~/hooks/useLocalStorage";
 import { Schema } from "effect";
 
-import { isBrowser } from "~/platform/env";
-import { raf, cancelRaf } from "~/platform/frame";
-import { clampSidebarWidth, sidebarWidthFromPointer } from "~/components/sidebarResize.logic";
 const SIDEBAR_WIDTH = "16rem";
 const SIDEBAR_WIDTH_MOBILE = "calc(100vw - var(--spacing(3)))";
 const SIDEBAR_WIDTH_ICON = "3rem";
@@ -432,6 +429,10 @@ function SidebarHeaderTrigger({
   return <SidebarTrigger className={className} onClick={onClick} {...props} />;
 }
 
+function clampSidebarWidth(width: number, options: SidebarResolvedResizableOptions): number {
+  return Math.max(options.minWidth, Math.min(width, options.maxWidth));
+}
+
 function SidebarRail({
   placement: placementProp,
   className,
@@ -478,12 +479,12 @@ function SidebarRail({
         return;
       }
       if (resizeState.rafId !== null) {
-        cancelRaf(resizeState.rafId);
+        window.cancelAnimationFrame(resizeState.rafId);
       }
       resizeState.transitionTargets.forEach((element) => {
         element.style.removeProperty("transition-duration");
       });
-      if (resolvedResizable?.storageKey && isBrowser()) {
+      if (resolvedResizable?.storageKey && typeof window !== "undefined") {
         setLocalStorageItem(resolvedResizable.storageKey, resizeState.width, Schema.Finite);
       }
       resolvedResizable?.onResize?.(resizeState.width);
@@ -561,22 +562,22 @@ function SidebarRail({
       if (!resizeState || resizeState.pointerId !== event.pointerId || !resolvedResizable) return;
 
       event.preventDefault();
-      const nextUnclampedWidth = sidebarWidthFromPointer({
-        currentX: event.clientX,
-        side: resizeState.side,
-        startWidth: resizeState.startWidth,
-        startX: resizeState.startX,
-      });
-      const delta = nextUnclampedWidth - resizeState.startWidth;
+      const delta =
+        resizeState.side === "right"
+          ? resizeState.startX - event.clientX
+          : event.clientX - resizeState.startX;
       if (Math.abs(delta) > 2) {
         resizeState.moved = true;
       }
-      resizeState.pendingWidth = clampSidebarWidth(nextUnclampedWidth, resolvedResizable);
+      resizeState.pendingWidth = clampSidebarWidth(
+        resizeState.startWidth + delta,
+        resolvedResizable,
+      );
       if (resizeState.rafId !== null) {
         return;
       }
 
-      resizeState.rafId = raf(() => {
+      resizeState.rafId = window.requestAnimationFrame(() => {
         const activeResizeState = resizeStateRef.current;
         if (!activeResizeState || !resolvedResizable) return;
 
@@ -642,7 +643,7 @@ function SidebarRail({
   };
 
   React.useEffect(() => {
-    if (!resolvedResizable?.storageKey || !isBrowser()) return;
+    if (!resolvedResizable?.storageKey || typeof window === "undefined") return;
     const rail = railRef.current;
     if (!rail) return;
     const wrapper = rail.closest<HTMLElement>("[data-slot='sidebar-wrapper']");
@@ -659,7 +660,7 @@ function SidebarRail({
     return () => {
       const resizeState = resizeStateRef.current;
       if (resizeState?.rafId != null) {
-        cancelRaf(resizeState.rafId);
+        window.cancelAnimationFrame(resizeState.rafId);
       }
       resizeState?.transitionTargets.forEach((element) => {
         element.style.removeProperty("transition-duration");

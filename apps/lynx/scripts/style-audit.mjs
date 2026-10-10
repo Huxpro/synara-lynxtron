@@ -488,6 +488,10 @@ function genericPatch(token) {
     if (value) return `width:${value};height:${value}`;
   }
   if (token === "overflow-clip") return "overflow:hidden";
+  // Tailwind v4 accepts any whole percentage (`opacity-64`); the v3 scale the
+  // Lynx preset generates from stops at steps of five.
+  const opacity = token.match(/^opacity-(\d{1,3})$/);
+  if (opacity && Number(opacity[1]) <= 100) return `opacity:${Number(opacity[1]) / 100}`;
   const shadow = token.match(/^shadow-(xs|sm|md|lg)(?:\/\d+)?$/);
   if (shadow) {
     const blur = { xs: 2, sm: 3, md: 6, lg: 12 }[shadow[1]];

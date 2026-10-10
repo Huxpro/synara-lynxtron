@@ -10,43 +10,43 @@
   ],
   "threshold": 95,
   "summary": {
-    "classes": 2772,
+    "classes": 2764,
     "customClasses": 109,
-    "surfaceWeighted": 21357,
-    "totalWeighted": 20064,
-    "coveredWeighted": 19673,
-    "coveragePercent": 98.05,
+    "surfaceWeighted": 21386,
+    "totalWeighted": 20099,
+    "coveredWeighted": 19709,
+    "coveragePercent": 98.06,
     "status": {
       "GENERATED": {
-        "classes": 1354,
-        "weighted": 16959
+        "classes": 1351,
+        "weighted": 16990
       },
       "PATCHED": {
         "classes": 648,
-        "weighted": 2714
+        "weighted": 2719
       },
       "UNSUPPORTED": {
-        "classes": 504,
-        "weighted": 1293
+        "classes": 500,
+        "weighted": 1287
       },
       "UNMAPPED": {
-        "classes": 266,
-        "weighted": 391
+        "classes": 265,
+        "weighted": 390
       },
       "CUSTOM": {
         "classes": 109,
-        "weighted": 191
+        "weighted": 202
       }
     },
     "runtime": {
-      "classes": 1299,
-      "weighted": 18612
+      "classes": 1291,
+      "weighted": 18651
     }
   },
   "classes": [
     {
       "token": "flex",
-      "occurrences": 1194,
+      "occurrences": 1195,
       "files": [
         "apps/web/src/components/AnnouncementSheet.tsx",
         "apps/web/src/components/AppNavigationButtons.tsx",
@@ -138,7 +138,7 @@
         "apps/web/src/components/chat/BrowserAnnotationChip.tsx",
         "apps/web/src/components/chat/BrowserAnnotationStrip.tsx",
         "apps/web/src/components/chat/ChatComposerFooter.tsx",
-        "apps/web/src/components/chat/ChatEmptyStateHeroElements.tsx",
+        "apps/web/src/components/chat/ChatEmptyStateHero.tsx",
         "apps/web/src/components/chat/ChatHeader.tsx",
         "apps/web/src/components/chat/ChatPaneKeepAlive.tsx",
         "apps/web/src/components/chat/ChatThreadSurfacePrimitives.tsx",
@@ -313,7 +313,6 @@
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
         "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
         "apps/web/src/components/settings/ShortcutRecorderDialog.tsx",
         "apps/web/src/components/settings/SkillsSettingsPanel.tsx",
         "apps/web/src/components/settings/ThemeModePicker.tsx",
@@ -473,7 +472,7 @@
         "apps/web/src/components/chat/BrowserAnnotationChip.tsx",
         "apps/web/src/components/chat/BrowserAnnotationStrip.tsx",
         "apps/web/src/components/chat/ChatComposerFooter.tsx",
-        "apps/web/src/components/chat/ChatEmptyStateHeroElements.tsx",
+        "apps/web/src/components/chat/ChatEmptyStateHero.tsx",
         "apps/web/src/components/chat/ChatHeader.tsx",
         "apps/web/src/components/chat/ChatThreadSurfacePrimitives.tsx",
         "apps/web/src/components/chat/ChatTranscriptPane.tsx",
@@ -632,7 +631,6 @@
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
         "apps/web/src/components/settings/SettingControls.tsx",
         "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
         "apps/web/src/components/settings/ShortcutRecorderDialog.tsx",
         "apps/web/src/components/settings/SkillsSettingsPanel.tsx",
         "apps/web/src/components/settings/ThemeModePicker.tsx",
@@ -904,7 +902,6 @@
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
         "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
         "apps/web/src/components/settings/ShortcutRecorderDialog.tsx",
         "apps/web/src/components/settings/SkillsSettingsPanel.tsx",
         "apps/web/src/components/sidebarContextMenuStyles.tsx",
@@ -1128,7 +1125,6 @@
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
         "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
         "apps/web/src/components/settings/ShortcutRecorderDialog.tsx",
         "apps/web/src/components/settings/SkillsSettingsPanel.tsx",
         "apps/web/src/components/settings/ThemeModePicker.tsx",
@@ -1339,7 +1335,6 @@
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
         "apps/web/src/components/settings/SettingControls.tsx",
         "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
         "apps/web/src/components/settings/ShortcutRecorderDialog.tsx",
         "apps/web/src/components/settings/SkillsSettingsPanel.tsx",
         "apps/web/src/components/settings/ThemeModePicker.tsx",
@@ -1905,7 +1900,6 @@
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
         "apps/web/src/components/settings/SettingControls.tsx",
         "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
         "apps/web/src/components/settings/ShortcutRecorderDialog.tsx",
         "apps/web/src/components/settings/ThemeModePicker.tsx",
         "apps/web/src/components/ui/autocomplete.tsx",
@@ -1948,7 +1942,7 @@
     },
     {
       "token": "flex-col",
-      "occurrences": 328,
+      "occurrences": 329,
       "files": [
         "apps/web/src/components/AnnouncementSheet.tsx",
         "apps/web/src/components/AppRail.tsx",
@@ -1993,7 +1987,7 @@
         "apps/web/src/components/WorkspaceFilePreviewErrorStateElements.tsx",
         "apps/web/src/components/chat-drop-overlay/ChatPaneDropOverlay.tsx",
         "apps/web/src/components/chat/AttachmentCard.tsx",
-        "apps/web/src/components/chat/ChatEmptyStateHeroElements.tsx",
+        "apps/web/src/components/chat/ChatEmptyStateHero.tsx",
         "apps/web/src/components/chat/ChatHeader.tsx",
         "apps/web/src/components/chat/ChatTranscriptPane.tsx",
         "apps/web/src/components/chat/ComposerModelPicker.tsx",
@@ -2230,7 +2224,7 @@
         "apps/web/src/components/settings/ProviderSignInDialog.tsx",
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
+        "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
         "apps/web/src/components/settings/ShortcutRecorderDialog.tsx",
         "apps/web/src/components/settings/SkillsSettingsPanel.tsx",
         "apps/web/src/components/sidebarHoverCardStyles.ts",
@@ -2396,7 +2390,6 @@
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
         "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
         "apps/web/src/components/settings/ShortcutRecorderDialog.tsx",
         "apps/web/src/components/tasks/NewTaskButton.tsx",
         "apps/web/src/components/ui/alert-dialog.tsx",
@@ -3004,7 +2997,6 @@
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
         "apps/web/src/components/settings/SettingControls.tsx",
         "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
         "apps/web/src/components/settings/ThemeModePicker.tsx",
         "apps/web/src/components/sidebarHoverCardStyles.ts",
         "apps/web/src/components/ui/alert-dialog.tsx",
@@ -3161,7 +3153,7 @@
         "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
+        "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
         "apps/web/src/components/settings/ShortcutRecorderDialog.tsx",
         "apps/web/src/components/settings/SkillsSettingsPanel.tsx",
         "apps/web/src/components/sidebarContextMenuStyles.tsx",
@@ -3314,7 +3306,7 @@
         "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
         "apps/web/src/components/settings/ProviderAccentColorControl.tsx",
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
+        "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
         "apps/web/src/components/settings/ShortcutRecorderDialog.tsx",
         "apps/web/src/components/settings/SkillsSettingsPanel.tsx",
         "apps/web/src/components/settings/ThemeModePicker.tsx",
@@ -3350,7 +3342,7 @@
     },
     {
       "token": "text-foreground",
-      "occurrences": 202,
+      "occurrences": 203,
       "files": [
         "apps/web/src/components/AppRailUsage.tsx",
         "apps/web/src/components/AppSnapWelcomeDialog.tsx",
@@ -3398,6 +3390,7 @@
         "apps/web/src/components/chat/DockPaneHeader.tsx",
         "apps/web/src/components/chat/FileAttachmentChip.tsx",
         "apps/web/src/components/chat/FileDiffHeader.tsx",
+        "apps/web/src/components/chat/FileEntryIcon.tsx",
         "apps/web/src/components/chat/FloatingBrowserPanel.tsx",
         "apps/web/src/components/chat/GitPanel.tsx",
         "apps/web/src/components/chat/MessageTrail.tsx",
@@ -4027,7 +4020,7 @@
         "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
         "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
         "apps/web/src/components/settings/SettingControls.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
+        "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
         "apps/web/src/components/settings/SkillsSettingsPanel.tsx",
         "apps/web/src/components/sidebarContextMenuStyles.tsx",
         "apps/web/src/components/ui/autocomplete.tsx",
@@ -5033,7 +5026,7 @@
     },
     {
       "token": "overflow-hidden",
-      "occurrences": 115,
+      "occurrences": 117,
       "files": [
         "apps/web/src/components/AppShellTopStrip.tsx",
         "apps/web/src/components/ChatView.tsx",
@@ -5081,6 +5074,7 @@
         "apps/web/src/components/chat/ToolCallDetailsDialog.tsx",
         "apps/web/src/components/chat/TraitsPicker.tsx",
         "apps/web/src/components/chat/TranscriptSelectionAction.tsx",
+        "apps/web/src/components/chat/UserInputQuestionForm.tsx",
         "apps/web/src/components/chat/WorkspaceFileEditorChrome.tsx",
         "apps/web/src/components/chat/WorkspaceFilePreviewHeader.tsx",
         "apps/web/src/components/chat/composerPickerStyles.ts",
@@ -5271,6 +5265,90 @@
       "reason": "display:flex"
     },
     {
+      "token": "cursor-pointer",
+      "occurrences": 95,
+      "files": [
+        "apps/web/src/components/ChatView.tsx",
+        "apps/web/src/components/CreateProjectDialog.tsx",
+        "apps/web/src/components/DiffPanelChangeMarkers.tsx",
+        "apps/web/src/components/DiffPanelToolbar.tsx",
+        "apps/web/src/components/EditProjectDialog.tsx",
+        "apps/web/src/components/GitCreatePrDialog.tsx",
+        "apps/web/src/components/ProjectAppearancePicker.tsx",
+        "apps/web/src/components/ProjectHoverCardContent.tsx",
+        "apps/web/src/components/RunningChatsQuitDialog.tsx",
+        "apps/web/src/components/Sidebar.tsx",
+        "apps/web/src/components/SidebarActivityView.tsx",
+        "apps/web/src/components/SidebarGroupsSurface.tsx",
+        "apps/web/src/components/SidebarIconButton.tsx",
+        "apps/web/src/components/SidebarListSection.tsx",
+        "apps/web/src/components/SidebarSearchPalette.tsx",
+        "apps/web/src/components/SpaceEditorDialog.tsx",
+        "apps/web/src/components/SpaceProjectPickerDialog.tsx",
+        "apps/web/src/components/SpaceSwitcher.tsx",
+        "apps/web/src/components/SponsorLandingBanner.tsx",
+        "apps/web/src/components/ThemePackEditor.tsx",
+        "apps/web/src/components/ThreadHoverCardContent.tsx",
+        "apps/web/src/components/WorkspaceSearchPalette.tsx",
+        "apps/web/src/components/chat/ComposerEffortSliderCard.tsx",
+        "apps/web/src/components/chat/ComposerLocalDirectoryMenu.tsx",
+        "apps/web/src/components/chat/ComposerModelPickerTabs.tsx",
+        "apps/web/src/components/chat/CrossTaskOriginLabel.tsx",
+        "apps/web/src/components/chat/ModelStarButton.tsx",
+        "apps/web/src/components/chat/ProjectPicker.tsx",
+        "apps/web/src/components/chat/PullRequestContextCard.tsx",
+        "apps/web/src/components/chat/TimelineWorkEntryRow.tsx",
+        "apps/web/src/components/chat/TraitsPicker.tsx",
+        "apps/web/src/components/chat/WorkspaceFilePreviewHeader.tsx",
+        "apps/web/src/components/chat/chatHeaderControls.tsx",
+        "apps/web/src/components/chat/composerPickerStyles.ts",
+        "apps/web/src/components/chat/environment/EnvironmentEditableChecklistRow.tsx",
+        "apps/web/src/components/chat/environment/EnvironmentPullRequestSection.tsx",
+        "apps/web/src/components/chat/environment/EnvironmentRow.tsx",
+        "apps/web/src/components/chat/fileRowStyles.ts",
+        "apps/web/src/components/chat/group/GroupGeneralSection.tsx",
+        "apps/web/src/components/chat/workspaceExplorer.tsx",
+        "apps/web/src/components/device/DeviceControlRail.tsx",
+        "apps/web/src/components/device/DeviceFrame.tsx",
+        "apps/web/src/components/kanban/KanbanCardView.tsx",
+        "apps/web/src/components/kanban/KanbanNewTaskDialog.tsx",
+        "apps/web/src/components/kanban/NeedsReviewFilter.tsx",
+        "apps/web/src/components/pullRequest/GitHubItemHeader.tsx",
+        "apps/web/src/components/pullRequest/PrStateChip.tsx",
+        "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
+        "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
+        "apps/web/src/components/settings/ProviderAccentColorControl.tsx",
+        "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
+        "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
+        "apps/web/src/components/ui/autocomplete.tsx",
+        "apps/web/src/components/ui/collapsible.tsx",
+        "apps/web/src/components/ui/combobox.tsx",
+        "apps/web/src/components/ui/select.tsx",
+        "apps/web/src/components/ui/sidebar.tsx",
+        "apps/web/src/components/ui/switch.tsx",
+        "apps/web/src/onboarding/steps/ProjectStep.tsx",
+        "apps/web/src/onboarding/steps/ProvidersStep.tsx",
+        "apps/web/src/onboarding/steps/ThemeStep.tsx",
+        "apps/web/src/projectImport/ProjectImportPanel.tsx",
+        "apps/web/src/projectImport/ProjectImportProjectCard.tsx",
+        "apps/web/src/routes/-automations.list.tsx",
+        "apps/web/src/routes/__root.tsx",
+        "apps/web/src/whatsNew/WhatsNewPopoutCard.tsx"
+      ],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "PATCHED",
+      "reason": "cursor:pointer"
+    },
+    {
       "token": "font-normal",
       "occurrences": 95,
       "files": [
@@ -5346,89 +5424,6 @@
       "runtime": true,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "cursor-pointer",
-      "occurrences": 94,
-      "files": [
-        "apps/web/src/components/ChatView.tsx",
-        "apps/web/src/components/CreateProjectDialog.tsx",
-        "apps/web/src/components/DiffPanelChangeMarkers.tsx",
-        "apps/web/src/components/DiffPanelToolbar.tsx",
-        "apps/web/src/components/EditProjectDialog.tsx",
-        "apps/web/src/components/GitCreatePrDialog.tsx",
-        "apps/web/src/components/ProjectAppearancePicker.tsx",
-        "apps/web/src/components/ProjectHoverCardContent.tsx",
-        "apps/web/src/components/RunningChatsQuitDialog.tsx",
-        "apps/web/src/components/Sidebar.tsx",
-        "apps/web/src/components/SidebarActivityView.tsx",
-        "apps/web/src/components/SidebarGroupsSurface.tsx",
-        "apps/web/src/components/SidebarIconButton.tsx",
-        "apps/web/src/components/SidebarListSection.tsx",
-        "apps/web/src/components/SidebarSearchPalette.tsx",
-        "apps/web/src/components/SpaceEditorDialog.tsx",
-        "apps/web/src/components/SpaceProjectPickerDialog.tsx",
-        "apps/web/src/components/SpaceSwitcher.tsx",
-        "apps/web/src/components/SponsorLandingBanner.tsx",
-        "apps/web/src/components/ThemePackEditor.tsx",
-        "apps/web/src/components/ThreadHoverCardContent.tsx",
-        "apps/web/src/components/WorkspaceSearchPalette.tsx",
-        "apps/web/src/components/chat/ComposerEffortSliderCard.tsx",
-        "apps/web/src/components/chat/ComposerLocalDirectoryMenu.tsx",
-        "apps/web/src/components/chat/ComposerModelPickerTabs.tsx",
-        "apps/web/src/components/chat/CrossTaskOriginLabel.tsx",
-        "apps/web/src/components/chat/ModelStarButton.tsx",
-        "apps/web/src/components/chat/ProjectPicker.tsx",
-        "apps/web/src/components/chat/PullRequestContextCard.tsx",
-        "apps/web/src/components/chat/TimelineWorkEntryRow.tsx",
-        "apps/web/src/components/chat/TraitsPicker.tsx",
-        "apps/web/src/components/chat/WorkspaceFilePreviewHeader.tsx",
-        "apps/web/src/components/chat/chatHeaderControls.tsx",
-        "apps/web/src/components/chat/composerPickerStyles.ts",
-        "apps/web/src/components/chat/environment/EnvironmentEditableChecklistRow.tsx",
-        "apps/web/src/components/chat/environment/EnvironmentPullRequestSection.tsx",
-        "apps/web/src/components/chat/environment/EnvironmentRow.tsx",
-        "apps/web/src/components/chat/fileRowStyles.ts",
-        "apps/web/src/components/chat/group/GroupGeneralSection.tsx",
-        "apps/web/src/components/chat/workspaceExplorer.tsx",
-        "apps/web/src/components/device/DeviceControlRail.tsx",
-        "apps/web/src/components/device/DeviceFrame.tsx",
-        "apps/web/src/components/kanban/KanbanCardView.tsx",
-        "apps/web/src/components/kanban/KanbanNewTaskDialog.tsx",
-        "apps/web/src/components/kanban/NeedsReviewFilter.tsx",
-        "apps/web/src/components/pullRequest/GitHubItemHeader.tsx",
-        "apps/web/src/components/pullRequest/PrStateChip.tsx",
-        "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
-        "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
-        "apps/web/src/components/settings/ProviderAccentColorControl.tsx",
-        "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
-        "apps/web/src/components/ui/autocomplete.tsx",
-        "apps/web/src/components/ui/collapsible.tsx",
-        "apps/web/src/components/ui/combobox.tsx",
-        "apps/web/src/components/ui/select.tsx",
-        "apps/web/src/components/ui/sidebar.tsx",
-        "apps/web/src/components/ui/switch.tsx",
-        "apps/web/src/onboarding/steps/ProjectStep.tsx",
-        "apps/web/src/onboarding/steps/ProvidersStep.tsx",
-        "apps/web/src/onboarding/steps/ThemeStep.tsx",
-        "apps/web/src/projectImport/ProjectImportPanel.tsx",
-        "apps/web/src/projectImport/ProjectImportProjectCard.tsx",
-        "apps/web/src/routes/-automations.list.tsx",
-        "apps/web/src/routes/__root.tsx",
-        "apps/web/src/whatsNew/WhatsNewPopoutCard.tsx"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "PATCHED",
-      "reason": "cursor:pointer"
     },
     {
       "token": "text-muted-foreground/70",
@@ -5523,7 +5518,7 @@
         "apps/web/src/components/SponsorLandingBanner.tsx",
         "apps/web/src/components/chat/ActiveTaskListCard.tsx",
         "apps/web/src/components/chat/AttachmentCard.tsx",
-        "apps/web/src/components/chat/ChatEmptyStateHeroElements.tsx",
+        "apps/web/src/components/chat/ChatEmptyStateHero.tsx",
         "apps/web/src/components/chat/ChatHeader.tsx",
         "apps/web/src/components/chat/ComposerModelPickerTabs.tsx",
         "apps/web/src/components/chat/DockPaneHeader.tsx",
@@ -7386,8 +7381,52 @@
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
-      "token": "overflow-y-auto",
+      "token": "space-y-1",
       "occurrences": 47,
+      "files": [
+        "apps/web/src/components/BrowserCookieImport.tsx",
+        "apps/web/src/components/BrowserVaultMaster.tsx",
+        "apps/web/src/components/CreateProjectDialog.tsx",
+        "apps/web/src/components/DevicePanel.tsx",
+        "apps/web/src/components/EditorWorkspaceView.tsx",
+        "apps/web/src/components/GitCommitDialog.tsx",
+        "apps/web/src/components/GitDialogChrome.tsx",
+        "apps/web/src/components/PlanSidebar.tsx",
+        "apps/web/src/components/PluginLibrary.tsx",
+        "apps/web/src/components/ProviderUsageLimitRows.tsx",
+        "apps/web/src/components/SpaceProjectPickerDialog.tsx",
+        "apps/web/src/components/chat/BrowserAnnotationChip.tsx",
+        "apps/web/src/components/chat/ComposerPendingApprovalPanel.tsx",
+        "apps/web/src/components/chat/ComposerSlashStatusDialog.tsx",
+        "apps/web/src/components/chat/ComputerActionCard.tsx",
+        "apps/web/src/components/chat/ContextWindowMeter.tsx",
+        "apps/web/src/components/chat/FileAttachmentChip.tsx",
+        "apps/web/src/components/chat/SplitChatSurface.tsx",
+        "apps/web/src/components/chat/group/CharacterCountTextarea.tsx",
+        "apps/web/src/components/chat/group/GroupMemorySection.tsx",
+        "apps/web/src/components/pullRequest/PullRequestSummaryTab.tsx",
+        "apps/web/src/components/settings/AddProviderAccountDialog.tsx",
+        "apps/web/src/components/settings/ConversationStorageSettingsPanels.tsx",
+        "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
+        "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
+        "apps/web/src/components/settings/ProvidersSettingsPanel.tsx"
+      ],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "PATCHED",
+      "reason": "gap:4px"
+    },
+    {
+      "token": "overflow-y-auto",
+      "occurrences": 46,
       "files": [
         "apps/web/src/components/AnnouncementSheet.tsx",
         "apps/web/src/components/AppRail.tsx",
@@ -7443,50 +7482,6 @@
       "runtime": true,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
-    },
-    {
-      "token": "space-y-1",
-      "occurrences": 47,
-      "files": [
-        "apps/web/src/components/BrowserCookieImport.tsx",
-        "apps/web/src/components/BrowserVaultMaster.tsx",
-        "apps/web/src/components/CreateProjectDialog.tsx",
-        "apps/web/src/components/DevicePanel.tsx",
-        "apps/web/src/components/EditorWorkspaceView.tsx",
-        "apps/web/src/components/GitCommitDialog.tsx",
-        "apps/web/src/components/GitDialogChrome.tsx",
-        "apps/web/src/components/PlanSidebar.tsx",
-        "apps/web/src/components/PluginLibrary.tsx",
-        "apps/web/src/components/ProviderUsageLimitRows.tsx",
-        "apps/web/src/components/SpaceProjectPickerDialog.tsx",
-        "apps/web/src/components/chat/BrowserAnnotationChip.tsx",
-        "apps/web/src/components/chat/ComposerPendingApprovalPanel.tsx",
-        "apps/web/src/components/chat/ComposerSlashStatusDialog.tsx",
-        "apps/web/src/components/chat/ComputerActionCard.tsx",
-        "apps/web/src/components/chat/ContextWindowMeter.tsx",
-        "apps/web/src/components/chat/FileAttachmentChip.tsx",
-        "apps/web/src/components/chat/SplitChatSurface.tsx",
-        "apps/web/src/components/chat/group/CharacterCountTextarea.tsx",
-        "apps/web/src/components/chat/group/GroupMemorySection.tsx",
-        "apps/web/src/components/pullRequest/PullRequestSummaryTab.tsx",
-        "apps/web/src/components/settings/AddProviderAccountDialog.tsx",
-        "apps/web/src/components/settings/ConversationStorageSettingsPanels.tsx",
-        "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
-        "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
-        "apps/web/src/components/settings/ProvidersSettingsPanel.tsx"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "PATCHED",
-      "reason": "gap:4px"
     },
     {
       "token": "bg-transparent",
@@ -7904,7 +7899,7 @@
         "apps/web/src/components/SidebarThreadRowContent.tsx",
         "apps/web/src/components/ThemePackEditor.tsx",
         "apps/web/src/components/chat/BrowserAnnotationChip.tsx",
-        "apps/web/src/components/chat/ChatEmptyStateHeroElements.tsx",
+        "apps/web/src/components/chat/ChatEmptyStateHero.tsx",
         "apps/web/src/components/chat/ComposerAutomationSetupBanner.tsx",
         "apps/web/src/components/chat/ComposerLocalDirectoryMenu.tsx",
         "apps/web/src/components/chat/FileLineCommentBox.tsx",
@@ -7927,6 +7922,54 @@
         "apps/web/src/whatsNew/ChangelogAccordion.tsx",
         "apps/web/src/whatsNew/FeatureSection.tsx",
         "apps/web/src/whatsNew/WhatsNewPopoutCard.tsx"
+      ],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "gap-2.5",
+      "occurrences": 41,
+      "files": [
+        "apps/web/src/components/BetaWelcomeDialog.tsx",
+        "apps/web/src/components/CreateProjectDialog.tsx",
+        "apps/web/src/components/DebugFeatureFlagsMenu.tsx",
+        "apps/web/src/components/GitDialogChrome.tsx",
+        "apps/web/src/components/PlanSidebar.tsx",
+        "apps/web/src/components/ProjectFolderList.tsx",
+        "apps/web/src/components/ProjectHoverCardContent.tsx",
+        "apps/web/src/components/RunningChatsQuitDialog.tsx",
+        "apps/web/src/components/SpaceProjectPickerDialog.tsx",
+        "apps/web/src/components/ThemePackEditor.tsx",
+        "apps/web/src/components/chat/ComposerChoiceRow.tsx",
+        "apps/web/src/components/chat/ComposerVoiceRecorderBar.tsx",
+        "apps/web/src/components/chat/MessagesTimeline.tsx",
+        "apps/web/src/components/chat/SynaraThreadCreationCard.tsx",
+        "apps/web/src/components/chat/ThreadFindBar.tsx",
+        "apps/web/src/components/device/DeviceScreenStates.tsx",
+        "apps/web/src/components/githubInbox/GitHubInboxFilterBar.tsx",
+        "apps/web/src/components/settings/AppSnapPermissionGuide.tsx",
+        "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
+        "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
+        "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
+        "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
+        "apps/web/src/components/sidebarHoverCardStyles.ts",
+        "apps/web/src/components/ui/alert.tsx",
+        "apps/web/src/onboarding/steps/FeatureTourStep.tsx",
+        "apps/web/src/onboarding/steps/ProvidersStep.tsx",
+        "apps/web/src/onboarding/steps/ThemeStep.tsx",
+        "apps/web/src/onboarding/steps/WelcomeStep.tsx",
+        "apps/web/src/projectImport/ProjectImportProjectCard.tsx",
+        "apps/web/src/routes/-automations.list.tsx"
       ],
       "screens": [
         "kanban",
@@ -7975,54 +8018,6 @@
         "apps/web/src/components/ui/scroll-area.tsx",
         "apps/web/src/components/ui/slider.tsx",
         "apps/web/src/lib/disclosureMotion.ts",
-        "apps/web/src/routes/-automations.list.tsx"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "gap-2.5",
-      "occurrences": 40,
-      "files": [
-        "apps/web/src/components/BetaWelcomeDialog.tsx",
-        "apps/web/src/components/CreateProjectDialog.tsx",
-        "apps/web/src/components/DebugFeatureFlagsMenu.tsx",
-        "apps/web/src/components/GitDialogChrome.tsx",
-        "apps/web/src/components/PlanSidebar.tsx",
-        "apps/web/src/components/ProjectFolderList.tsx",
-        "apps/web/src/components/ProjectHoverCardContent.tsx",
-        "apps/web/src/components/RunningChatsQuitDialog.tsx",
-        "apps/web/src/components/SpaceProjectPickerDialog.tsx",
-        "apps/web/src/components/ThemePackEditor.tsx",
-        "apps/web/src/components/chat/ComposerChoiceRow.tsx",
-        "apps/web/src/components/chat/ComposerVoiceRecorderBar.tsx",
-        "apps/web/src/components/chat/MessagesTimeline.tsx",
-        "apps/web/src/components/chat/SynaraThreadCreationCard.tsx",
-        "apps/web/src/components/chat/ThreadFindBar.tsx",
-        "apps/web/src/components/device/DeviceScreenStates.tsx",
-        "apps/web/src/components/githubInbox/GitHubInboxFilterBar.tsx",
-        "apps/web/src/components/settings/AppSnapPermissionGuide.tsx",
-        "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
-        "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
-        "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
-        "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-        "apps/web/src/components/sidebarHoverCardStyles.ts",
-        "apps/web/src/components/ui/alert.tsx",
-        "apps/web/src/onboarding/steps/FeatureTourStep.tsx",
-        "apps/web/src/onboarding/steps/ProvidersStep.tsx",
-        "apps/web/src/onboarding/steps/ThemeStep.tsx",
-        "apps/web/src/onboarding/steps/WelcomeStep.tsx",
-        "apps/web/src/projectImport/ProjectImportProjectCard.tsx",
         "apps/web/src/routes/-automations.list.tsx"
       ],
       "screens": [
@@ -8562,7 +8557,7 @@
         "apps/web/src/components/SafariAccessOnboarding.tsx",
         "apps/web/src/components/SidebarActivityView.tsx",
         "apps/web/src/components/SplashScreen.tsx",
-        "apps/web/src/components/chat/ChatEmptyStateHeroElements.tsx",
+        "apps/web/src/components/chat/ChatEmptyStateHero.tsx",
         "apps/web/src/components/chat/ComposerLocalDirectoryMenu.tsx",
         "apps/web/src/components/chat/ComputerPreviewPopover.tsx",
         "apps/web/src/components/chat/ExpandedImageOverlay.tsx",
@@ -9095,39 +9090,6 @@
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
-      "token": "break-words",
-      "occurrences": 29,
-      "files": [
-        "apps/web/src/components/BrowserVault.tsx",
-        "apps/web/src/components/ThreadHoverCardContent.tsx",
-        "apps/web/src/components/WorkspaceFilePreviewErrorStateElements.tsx",
-        "apps/web/src/components/chat/ComposerChoiceRow.tsx",
-        "apps/web/src/components/chat/ComposerGoalHeader.tsx",
-        "apps/web/src/components/chat/ComposerPendingApprovalPanel.tsx",
-        "apps/web/src/components/chat/MessagesTimeline.tsx",
-        "apps/web/src/components/chat/PastedTextChip.tsx",
-        "apps/web/src/components/chat/PullRequestContextCard.tsx",
-        "apps/web/src/components/chat/TimelineWorkEntryRow.tsx",
-        "apps/web/src/components/chat/ToolCallDetailsDialog.tsx",
-        "apps/web/src/components/pullRequest/GitHubItemHeader.tsx",
-        "apps/web/src/components/pullRequest/PullRequestRow.tsx",
-        "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
-        "apps/web/src/components/ui/toast.tsx"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "PATCHED",
-      "reason": "word-break:break-word"
-    },
-    {
       "token": "leading-tight",
       "occurrences": 28,
       "files": [
@@ -9452,7 +9414,6 @@
         "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
         "apps/web/src/components/settings/ProviderUsageSettingsPanel.tsx",
         "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
         "apps/web/src/components/settings/ShortcutRecorderDialog.tsx"
       ],
       "screens": [
@@ -9543,6 +9504,38 @@
       "runtime": true,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "break-words",
+      "occurrences": 26,
+      "files": [
+        "apps/web/src/components/BrowserVault.tsx",
+        "apps/web/src/components/ThreadHoverCardContent.tsx",
+        "apps/web/src/components/WorkspaceFilePreviewErrorStateElements.tsx",
+        "apps/web/src/components/chat/ComposerGoalHeader.tsx",
+        "apps/web/src/components/chat/ComposerPendingApprovalPanel.tsx",
+        "apps/web/src/components/chat/MessagesTimeline.tsx",
+        "apps/web/src/components/chat/PastedTextChip.tsx",
+        "apps/web/src/components/chat/PullRequestContextCard.tsx",
+        "apps/web/src/components/chat/TimelineWorkEntryRow.tsx",
+        "apps/web/src/components/chat/ToolCallDetailsDialog.tsx",
+        "apps/web/src/components/pullRequest/GitHubItemHeader.tsx",
+        "apps/web/src/components/pullRequest/PullRequestRow.tsx",
+        "apps/web/src/components/settings/ExternalMcpSettingsPanel.tsx",
+        "apps/web/src/components/ui/toast.tsx"
+      ],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "PATCHED",
+      "reason": "word-break:break-word"
     },
     {
       "token": "ease-out",
@@ -9674,7 +9667,7 @@
         "apps/web/src/components/githubInbox/GitHubInboxFilterBar.tsx",
         "apps/web/src/components/pullRequest/GitHubItemPageLayout.tsx",
         "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
+        "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
         "apps/web/src/components/ui/dialog.tsx",
         "apps/web/src/featureTour/FeatureTourPreview.tsx",
         "apps/web/src/routes/-automations.shared.tsx"
@@ -10314,6 +10307,41 @@
       "reason": "color:rgba(38,38,38,0.8)"
     },
     {
+      "token": "text-muted-foreground/50",
+      "occurrences": 22,
+      "files": [
+        "apps/web/src/components/ChatView.tsx",
+        "apps/web/src/components/PlanSidebar.tsx",
+        "apps/web/src/components/ThreadPinToggleButton.tsx",
+        "apps/web/src/components/chat/ComposerAutomationSetupBanner.tsx",
+        "apps/web/src/components/chat/ComposerBranchMismatchBanner.tsx",
+        "apps/web/src/components/chat/ComposerCommandMenu.tsx",
+        "apps/web/src/components/chat/ComposerLocalDirectoryMenu.tsx",
+        "apps/web/src/components/chat/ComposerPendingApprovalPanel.tsx",
+        "apps/web/src/components/chat/ModelStarButton.tsx",
+        "apps/web/src/components/chat/TaskProgressSteps.tsx",
+        "apps/web/src/components/chat/ThreadDetailHydrationState.tsx",
+        "apps/web/src/components/chat/WorkflowRunCard.tsx",
+        "apps/web/src/components/chat/environment/EnvironmentLocalServersSection.tsx",
+        "apps/web/src/components/chat/environment/EnvironmentStudioOutputsSection.tsx",
+        "apps/web/src/components/kanban/KanbanNewTaskDialog.tsx",
+        "apps/web/src/components/kanban/KanbanOverview.tsx",
+        "apps/web/src/components/pullRequest/PullRequestChecksRing.tsx"
+      ],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "PATCHED",
+      "reason": "color:rgba(104,104,104,0.5)"
+    },
+    {
       "token": "z-10",
       "occurrences": 22,
       "files": [
@@ -10559,40 +10587,6 @@
       "runtime": true,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-muted-foreground/50",
-      "occurrences": 21,
-      "files": [
-        "apps/web/src/components/ChatView.tsx",
-        "apps/web/src/components/PlanSidebar.tsx",
-        "apps/web/src/components/chat/ComposerAutomationSetupBanner.tsx",
-        "apps/web/src/components/chat/ComposerBranchMismatchBanner.tsx",
-        "apps/web/src/components/chat/ComposerCommandMenu.tsx",
-        "apps/web/src/components/chat/ComposerLocalDirectoryMenu.tsx",
-        "apps/web/src/components/chat/ComposerPendingApprovalPanel.tsx",
-        "apps/web/src/components/chat/ModelStarButton.tsx",
-        "apps/web/src/components/chat/TaskProgressSteps.tsx",
-        "apps/web/src/components/chat/ThreadDetailHydrationState.tsx",
-        "apps/web/src/components/chat/WorkflowRunCard.tsx",
-        "apps/web/src/components/chat/environment/EnvironmentLocalServersSection.tsx",
-        "apps/web/src/components/chat/environment/EnvironmentStudioOutputsSection.tsx",
-        "apps/web/src/components/kanban/KanbanNewTaskDialog.tsx",
-        "apps/web/src/components/kanban/KanbanOverview.tsx",
-        "apps/web/src/components/pullRequest/PullRequestChecksRing.tsx"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "PATCHED",
-      "reason": "color:rgba(104,104,104,0.5)"
     },
     {
       "token": "text-muted-foreground/56",
@@ -11930,7 +11924,7 @@
         "apps/web/src/components/DesktopWindowControls.tsx",
         "apps/web/src/components/PlanSidebar.tsx",
         "apps/web/src/components/ThemePackEditor.tsx",
-        "apps/web/src/components/chat/ChatEmptyStateHeroElements.tsx",
+        "apps/web/src/components/chat/ChatEmptyStateHero.tsx",
         "apps/web/src/components/chat/ComposerChoiceRow.tsx",
         "apps/web/src/components/chat/ComposerClaudeCacheReviewPanel.tsx",
         "apps/web/src/components/chat/ComposerPendingApprovalPanel.tsx",
@@ -12118,36 +12112,6 @@
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
-      "token": "overscroll-contain",
-      "occurrences": 13,
-      "files": [
-        "apps/web/src/components/BrowserTabStrip.tsx",
-        "apps/web/src/components/SidebarSearchPalette.tsx",
-        "apps/web/src/components/chat/BrowserAnnotationStrip.tsx",
-        "apps/web/src/components/chat/ComposerModelPicker.tsx",
-        "apps/web/src/components/chat/MessageTrail.tsx",
-        "apps/web/src/components/chat/PickerPanelShell.tsx",
-        "apps/web/src/components/chat/ProviderModelPicker.tsx",
-        "apps/web/src/components/chat/chatHeaderControls.tsx",
-        "apps/web/src/components/chat/composerPickerStyles.ts",
-        "apps/web/src/components/chat/composerStackedPanelStyles.ts",
-        "apps/web/src/components/ui/scroll-area.tsx",
-        "apps/web/src/components/ui/time-picker.tsx"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "UNSUPPORTED",
-      "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
-    },
-    {
       "token": "px-0",
       "occurrences": 13,
       "files": [
@@ -12235,7 +12199,7 @@
       "files": [
         "apps/web/src/components/PlanSidebar.tsx",
         "apps/web/src/components/Sidebar.tsx",
-        "apps/web/src/components/chat/ChatEmptyStateHeroElements.tsx",
+        "apps/web/src/components/chat/ChatEmptyStateHero.tsx",
         "apps/web/src/components/chat/ComposerLocalDirectoryMenu.tsx",
         "apps/web/src/components/chat/WorkflowRunCard.tsx",
         "apps/web/src/components/chat/WorkspaceFileEditorChrome.tsx",
@@ -12554,7 +12518,7 @@
         "apps/web/src/components/chat/WorkflowRunCard.tsx",
         "apps/web/src/components/chat/workspaceExplorer.tsx",
         "apps/web/src/components/githubInbox/GitHubInboxFilterBar.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
+        "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
         "apps/web/src/components/ui/badge.tsx",
         "apps/web/src/components/ui/kbd.tsx",
         "apps/web/src/components/ui/sidebar.tsx"
@@ -12704,6 +12668,36 @@
       "runtime": true,
       "status": "UNMAPPED",
       "reason": "no generated selector or approved deterministic patch"
+    },
+    {
+      "token": "overscroll-contain",
+      "occurrences": 12,
+      "files": [
+        "apps/web/src/components/BrowserTabStrip.tsx",
+        "apps/web/src/components/SidebarSearchPalette.tsx",
+        "apps/web/src/components/chat/BrowserAnnotationStrip.tsx",
+        "apps/web/src/components/chat/ComposerModelPicker.tsx",
+        "apps/web/src/components/chat/MessageTrail.tsx",
+        "apps/web/src/components/chat/PickerPanelShell.tsx",
+        "apps/web/src/components/chat/ProviderModelPicker.tsx",
+        "apps/web/src/components/chat/chatHeaderControls.tsx",
+        "apps/web/src/components/chat/composerPickerStyles.ts",
+        "apps/web/src/components/chat/composerStackedPanelStyles.ts",
+        "apps/web/src/components/ui/scroll-area.tsx",
+        "apps/web/src/components/ui/time-picker.tsx"
+      ],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "UNSUPPORTED",
+      "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
     {
       "token": "pb-3",
@@ -12895,7 +12889,6 @@
         "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
         "apps/web/src/components/settings/SettingControls.tsx",
         "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
         "apps/web/src/routes/_chat.settings.tsx"
       ],
       "screens": [
@@ -13688,6 +13681,33 @@
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
+      "token": "sm:flex-row",
+      "occurrences": 10,
+      "files": [
+        "apps/web/src/components/chat/group/GroupSettingsDialog.tsx",
+        "apps/web/src/components/profile/EditProfileDialog.tsx",
+        "apps/web/src/components/settings/ComputerSettingsPanel.tsx",
+        "apps/web/src/components/settings/ModelsSettingsPanel.tsx",
+        "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
+        "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
+        "apps/web/src/components/ui/alert-dialog.tsx",
+        "apps/web/src/components/ui/dialog.tsx",
+        "apps/web/src/components/ui/sheet.tsx"
+      ],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "PATCHED",
+      "reason": "state/responsive adapter over flex-row"
+    },
+    {
       "token": "sm:grid-cols-2",
       "occurrences": 10,
       "files": [
@@ -13721,7 +13741,6 @@
         "apps/web/src/components/settings/ComputerSettingsPanel.tsx",
         "apps/web/src/components/settings/DesktopSettingsPanels.tsx",
         "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
         "apps/web/src/components/ui/alert-dialog.tsx",
         "apps/web/src/components/ui/dialog.tsx",
         "apps/web/src/components/ui/sheet.tsx"
@@ -14347,33 +14366,6 @@
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
-      "token": "sm:flex-row",
-      "occurrences": 9,
-      "files": [
-        "apps/web/src/components/chat/group/GroupSettingsDialog.tsx",
-        "apps/web/src/components/profile/EditProfileDialog.tsx",
-        "apps/web/src/components/settings/ComputerSettingsPanel.tsx",
-        "apps/web/src/components/settings/ModelsSettingsPanel.tsx",
-        "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
-        "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-        "apps/web/src/components/ui/alert-dialog.tsx",
-        "apps/web/src/components/ui/dialog.tsx",
-        "apps/web/src/components/ui/sheet.tsx"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "PATCHED",
-      "reason": "state/responsive adapter over flex-row"
-    },
-    {
       "token": "text-chat-meta",
       "occurrences": 9,
       "files": [
@@ -14537,6 +14529,31 @@
       "runtime": true,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "data-disabled:opacity-64",
+      "occurrences": 8,
+      "files": [
+        "apps/web/src/components/chat/composerPickerStyles.ts",
+        "apps/web/src/components/ui/autocomplete.tsx",
+        "apps/web/src/components/ui/checkbox.tsx",
+        "apps/web/src/components/ui/combobox.tsx",
+        "apps/web/src/components/ui/select.tsx",
+        "apps/web/src/components/ui/slider.tsx",
+        "apps/web/src/components/ui/switch.tsx"
+      ],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "PATCHED",
+      "reason": "state/responsive adapter over opacity-64"
     },
     {
       "token": "divide-y",
@@ -14905,7 +14922,7 @@
       "token": "text-lg",
       "occurrences": 8,
       "files": [
-        "apps/web/src/components/chat/ChatEmptyStateHeroElements.tsx",
+        "apps/web/src/components/chat/ChatEmptyStateHero.tsx",
         "apps/web/src/components/profile/EditProfileDialog.tsx",
         "apps/web/src/components/profile/ShareCard.tsx",
         "apps/web/src/components/pullRequest/PullRequestSummaryTab.tsx",
@@ -15734,7 +15751,7 @@
       "files": [
         "apps/web/src/components/ChatView.tsx",
         "apps/web/src/components/SponsorLandingBanner.tsx",
-        "apps/web/src/components/chat/ChatEmptyStateHeroElements.tsx",
+        "apps/web/src/components/chat/ChatEmptyStateHero.tsx",
         "apps/web/src/components/chat/SynaraThreadCreationCard.tsx",
         "apps/web/src/components/settings/AppIconPicker.tsx",
         "apps/web/src/components/ui/button.tsx",
@@ -16368,29 +16385,6 @@
       "runtime": true,
       "status": "PATCHED",
       "reason": "cursor:col-resize"
-    },
-    {
-      "token": "data-disabled:opacity-[var(--control-disabled-opacity)]",
-      "occurrences": 6,
-      "files": [
-        "apps/web/src/components/chat/composerPickerStyles.ts",
-        "apps/web/src/components/ui/autocomplete.tsx",
-        "apps/web/src/components/ui/combobox.tsx",
-        "apps/web/src/components/ui/select.tsx",
-        "apps/web/src/components/ui/switch.tsx"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "PATCHED",
-      "reason": "state/responsive adapter over opacity-[var(--control-disabled-opacity)]"
     },
     {
       "token": "data-ending-style:scale-98",
@@ -17036,10 +17030,27 @@
       "reason": "state/responsive adapter over px-6"
     },
     {
+      "token": "text-[#22c55e]",
+      "occurrences": 6,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
       "token": "text-2xl",
       "occurrences": 6,
       "files": [
-        "apps/web/src/components/chat/ChatEmptyStateHeroElements.tsx",
+        "apps/web/src/components/chat/ChatEmptyStateHero.tsx",
         "apps/web/src/components/profile/ShareCard.tsx",
         "apps/web/src/components/settings/ProfileSettingsPanel.tsx",
         "apps/web/src/routes/__root.tsx"
@@ -17651,6 +17662,28 @@
       "runtime": true,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "has-disabled:opacity-64",
+      "occurrences": 5,
+      "files": [
+        "apps/web/src/components/ui/autocomplete.tsx",
+        "apps/web/src/components/ui/combobox.tsx",
+        "apps/web/src/components/ui/input.tsx",
+        "apps/web/src/components/ui/textarea.tsx"
+      ],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "UNSUPPORTED",
+      "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
     {
       "token": "has-focus-visible:ring-0",
@@ -18488,7 +18521,7 @@
         "apps/web/src/components/AppRail.tsx",
         "apps/web/src/components/FeatureTourDialog.tsx",
         "apps/web/src/components/WorkspaceFilePreview.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
+        "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
         "apps/web/src/components/ui/sidebar.tsx"
       ],
       "screens": [
@@ -20199,6 +20232,48 @@
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
+      "token": "sm:items-center",
+      "occurrences": 4,
+      "files": [
+        "apps/web/src/components/settings/ModelsSettingsPanel.tsx",
+        "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
+        "apps/web/src/components/settings/SettingsPanelPrimitives.tsx"
+      ],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "PATCHED",
+      "reason": "state/responsive adapter over items-center"
+    },
+    {
+      "token": "sm:justify-between",
+      "occurrences": 4,
+      "files": [
+        "apps/web/src/components/WhatsNewDialog.tsx",
+        "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
+        "apps/web/src/components/settings/SettingsPanelPrimitives.tsx"
+      ],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "PATCHED",
+      "reason": "state/responsive adapter over justify-between"
+    },
+    {
       "token": "sm:size-4",
       "occurrences": 4,
       "files": ["apps/web/src/components/ui/checkbox.tsx", "apps/web/src/components/ui/select.tsx"],
@@ -20299,6 +20374,40 @@
       "runtime": true,
       "status": "UNMAPPED",
       "reason": "no generated selector or approved deterministic patch"
+    },
+    {
+      "token": "text-[#94a3b8]",
+      "occurrences": 4,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#f59e0b]",
+      "occurrences": 4,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
       "token": "text-foreground/95",
@@ -21119,6 +21228,23 @@
       "reason": "project component class; covered by authored CSS, not the utility denominator"
     },
     {
+      "token": "code-brackets",
+      "occurrences": 3,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "CUSTOM",
+      "reason": "project component class; covered by authored CSS, not the utility denominator"
+    },
+    {
       "token": "dark:before:shadow-none",
       "occurrences": 3,
       "files": [
@@ -21614,26 +21740,6 @@
         "apps/web/src/components/ui/combobox.tsx",
         "apps/web/src/components/ui/input-group.tsx",
         "apps/web/src/components/ui/input.tsx"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "UNSUPPORTED",
-      "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
-    },
-    {
-      "token": "has-disabled:opacity-[var(--control-disabled-opacity)]",
-      "occurrences": 3,
-      "files": [
-        "apps/web/src/components/ui/autocomplete.tsx",
-        "apps/web/src/components/ui/combobox.tsx"
       ],
       "screens": [
         "kanban",
@@ -22621,7 +22727,6 @@
       "occurrences": 3,
       "files": [
         "apps/web/src/components/settings/SettingsPanelPrimitives.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx",
         "apps/web/src/routes/_chat.settings.tsx"
       ],
       "screens": [
@@ -22729,27 +22834,6 @@
       "reason": "state/responsive adapter over h-9"
     },
     {
-      "token": "sm:items-center",
-      "occurrences": 3,
-      "files": [
-        "apps/web/src/components/settings/ModelsSettingsPanel.tsx",
-        "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
-        "apps/web/src/components/settings/SettingsPanelPrimitives.tsx"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "PATCHED",
-      "reason": "state/responsive adapter over items-center"
-    },
-    {
       "token": "sm:items-end",
       "occurrences": 3,
       "files": [
@@ -22768,27 +22852,6 @@
       "runtime": false,
       "status": "PATCHED",
       "reason": "state/responsive adapter over items-end"
-    },
-    {
-      "token": "sm:justify-between",
-      "occurrences": 3,
-      "files": [
-        "apps/web/src/components/WhatsNewDialog.tsx",
-        "apps/web/src/components/settings/ProvidersSettingsPanel.tsx",
-        "apps/web/src/components/settings/SettingsPanelPrimitives.tsx"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "PATCHED",
-      "reason": "state/responsive adapter over justify-between"
     },
     {
       "token": "sm:min-h-8",
@@ -22897,23 +22960,6 @@
       "runtime": false,
       "status": "UNMAPPED",
       "reason": "no generated selector or approved deterministic patch"
-    },
-    {
-      "token": "text-[#22c55e]",
-      "occurrences": 3,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
       "token": "text-[hsl(var(--chart-4))]",
@@ -25148,6 +25194,23 @@
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
+      "token": "calendar-days",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "CUSTOM",
+      "reason": "project component class; covered by authored CSS, not the utility denominator"
+    },
+    {
       "token": "chat-composer-shell",
       "occurrences": 2,
       "files": [
@@ -25521,23 +25584,6 @@
       "runtime": true,
       "status": "PATCHED",
       "reason": "state/responsive adapter over text-[var(--sidebar-accent-foreground)]"
-    },
-    {
-      "token": "data-disabled:opacity-64",
-      "occurrences": 2,
-      "files": ["apps/web/src/components/ui/checkbox.tsx", "apps/web/src/components/ui/slider.tsx"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "UNSUPPORTED",
-      "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
     {
       "token": "data-expanded:opacity-100",
@@ -25964,6 +26010,91 @@
       "reason": "project component class; covered by authored CSS, not the utility denominator"
     },
     {
+      "token": "file-jpg",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "CUSTOM",
+      "reason": "project component class; covered by authored CSS, not the utility denominator"
+    },
+    {
+      "token": "file-pdf",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "CUSTOM",
+      "reason": "project component class; covered by authored CSS, not the utility denominator"
+    },
+    {
+      "token": "file-png",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "CUSTOM",
+      "reason": "project component class; covered by authored CSS, not the utility denominator"
+    },
+    {
+      "token": "file-text",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "CUSTOM",
+      "reason": "project component class; covered by authored CSS, not the utility denominator"
+    },
+    {
+      "token": "file-zip",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "CUSTOM",
+      "reason": "project component class; covered by authored CSS, not the utility denominator"
+    },
+    {
       "token": "flex-nowrap",
       "occurrences": 2,
       "files": [
@@ -26108,7 +26239,7 @@
       "occurrences": 2,
       "files": [
         "apps/web/src/components/SplashScreen.tsx",
-        "apps/web/src/components/chat/ChatEmptyStateHeroElements.tsx"
+        "apps/web/src/components/chat/ChatEmptyStateHero.tsx"
       ],
       "screens": ["pull-requests", "thread", "threads"],
       "runtime": false,
@@ -26606,23 +26737,6 @@
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
     {
-      "token": "has-disabled:opacity-64",
-      "occurrences": 2,
-      "files": ["apps/web/src/components/ui/input.tsx", "apps/web/src/components/ui/textarea.tsx"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "UNSUPPORTED",
-      "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
-    },
-    {
       "token": "has-focus-visible:border-foreground/30",
       "occurrences": 2,
       "files": ["apps/web/src/components/ui/input.tsx", "apps/web/src/components/ui/textarea.tsx"],
@@ -26848,6 +26962,26 @@
       "reason": "state/responsive adapter over text-foreground/70"
     },
     {
+      "token": "hover:text-foreground/82",
+      "occurrences": 2,
+      "files": [
+        "apps/web/src/components/ThreadPinToggleButton.tsx",
+        "apps/web/src/components/chat/CrossTaskOriginLabel.tsx"
+      ],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": false,
+      "status": "PATCHED",
+      "reason": "state/responsive adapter over text-foreground/82"
+    },
+    {
       "token": "hover:text-foreground/89",
       "occurrences": 2,
       "files": [
@@ -26871,6 +27005,23 @@
       "token": "icon-xs",
       "occurrences": 2,
       "files": ["apps/web/src/components/ui/button.tsx"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "CUSTOM",
+      "reason": "project component class; covered by authored CSS, not the utility denominator"
+    },
+    {
+      "token": "image-alt-text",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
       "screens": [
         "kanban",
         "projects",
@@ -27838,7 +27989,7 @@
       "occurrences": 2,
       "files": [
         "apps/web/src/components/SidebarActivityView.tsx",
-        "apps/web/src/components/settings/SettingsRow.tsx"
+        "apps/web/src/components/settings/SettingsPanelPrimitives.tsx"
       ],
       "screens": [
         "kanban",
@@ -28178,26 +28329,6 @@
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
-      "token": "overflow-x-hidden",
-      "occurrences": 2,
-      "files": [
-        "apps/web/src/components/chat/AgentActivityDetailView.tsx",
-        "apps/web/src/components/chat/composerPickerStyles.ts"
-      ],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
       "token": "overflow-y-hidden",
       "occurrences": 2,
       "files": [
@@ -28240,6 +28371,23 @@
       "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "page-text",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "CUSTOM",
+      "reason": "project component class; covered by authored CSS, not the utility denominator"
     },
     {
       "token": "palette-surface",
@@ -28904,6 +29052,23 @@
       "reason": "no generated selector or approved deterministic patch"
     },
     {
+      "token": "settings-gear-1",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "CUSTOM",
+      "reason": "project component class; covered by authored CSS, not the utility denominator"
+    },
+    {
       "token": "shadow-[0_16px_50px_-12px_rgba(0,0,0,0.34)]",
       "occurrences": 2,
       "files": [
@@ -29251,9 +29416,9 @@
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
-      "token": "text-[#94a3b8]",
+      "token": "text-[#3178c6]",
       "occurrences": 2,
-      "files": ["apps/web/src/file-icons.ts"],
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
       "screens": [
         "kanban",
         "projects",
@@ -29268,9 +29433,349 @@
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
-      "token": "text-[#f59e0b]",
+      "token": "text-[#3776ab]",
       "occurrences": 2,
-      "files": ["apps/web/src/file-icons.ts"],
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#38bdf8]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#42b883]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#4ade80]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#61dafb]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#659ad2]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#6cb6ff]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#777bb4]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#9ca3af]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#a78bfa]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#c084fc]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#cb3837]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#dea584]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#ef4444]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#f05032]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#f4d7a1]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#f5c542]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#f7df1e]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#f89820]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#f97316]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": true,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "text-[#ff3e00]",
+      "occurrences": 2,
+      "files": ["apps/web/src/components/chat/FileEntryIcon.tsx", "apps/web/src/file-icons.ts"],
       "screens": [
         "kanban",
         "projects",
@@ -35752,23 +36257,6 @@
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
-      "token": "calendar-days",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "CUSTOM",
-      "reason": "project component class; covered by authored CSS, not the utility denominator"
-    },
-    {
       "token": "chat-composer-surface",
       "occurrences": 1,
       "files": ["apps/web/src/components/chat/composerPickerStyles.ts"],
@@ -36199,23 +36687,6 @@
       "occurrences": 1,
       "files": ["apps/web/src/components/chat/chatTypography.ts"],
       "screens": ["pull-requests", "thread"],
-      "runtime": true,
-      "status": "CUSTOM",
-      "reason": "project component class; covered by authored CSS, not the utility denominator"
-    },
-    {
-      "token": "code-brackets",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
       "runtime": true,
       "status": "CUSTOM",
       "reason": "project component class; covered by authored CSS, not the utility denominator"
@@ -38583,40 +39054,6 @@
       "reason": "state/responsive adapter over bg-popover"
     },
     {
-      "token": "data-pressed:ring-[color:var(--color-border)]",
-      "occurrences": 1,
-      "files": ["apps/web/src/components/ui/switch.tsx"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "UNSUPPORTED",
-      "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
-    },
-    {
-      "token": "data-pressed:ring-1",
-      "occurrences": 1,
-      "files": ["apps/web/src/components/ui/switch.tsx"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "PATCHED",
-      "reason": "state/responsive adapter over ring-1"
-    },
-    {
       "token": "data-pressed:text-[var(--notification-fg)]",
       "occurrences": 1,
       "files": ["apps/web/src/components/ui/toast.tsx"],
@@ -38917,23 +39354,6 @@
       "reason": "state/responsive adapter over scale-100"
     },
     {
-      "token": "disabled:opacity-[var(--control-disabled-opacity)]",
-      "occurrences": 1,
-      "files": ["apps/web/src/components/ui/badge.tsx"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": false,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
       "token": "disabled:opacity-20",
       "occurrences": 1,
       "files": ["apps/web/src/components/ui/button.tsx"],
@@ -38975,6 +39395,23 @@
       "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
+      "token": "disabled:opacity-64",
+      "occurrences": 1,
+      "files": ["apps/web/src/components/ui/badge.tsx"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": false,
+      "status": "PATCHED",
+      "reason": "state/responsive adapter over opacity-64"
     },
     {
       "token": "disabled:opacity-70",
@@ -39371,91 +39808,6 @@
         "threads-shell"
       ],
       "runtime": false,
-      "status": "CUSTOM",
-      "reason": "project component class; covered by authored CSS, not the utility denominator"
-    },
-    {
-      "token": "file-jpg",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "CUSTOM",
-      "reason": "project component class; covered by authored CSS, not the utility denominator"
-    },
-    {
-      "token": "file-pdf",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "CUSTOM",
-      "reason": "project component class; covered by authored CSS, not the utility denominator"
-    },
-    {
-      "token": "file-png",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "CUSTOM",
-      "reason": "project component class; covered by authored CSS, not the utility denominator"
-    },
-    {
-      "token": "file-text",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "CUSTOM",
-      "reason": "project component class; covered by authored CSS, not the utility denominator"
-    },
-    {
-      "token": "file-zip",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
       "status": "CUSTOM",
       "reason": "project component class; covered by authored CSS, not the utility denominator"
     },
@@ -43356,40 +43708,6 @@
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
     {
-      "token": "hover:ring-[color:var(--color-border)]",
-      "occurrences": 1,
-      "files": ["apps/web/src/components/ui/switch.tsx"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "UNSUPPORTED",
-      "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
-    },
-    {
-      "token": "hover:ring-1",
-      "occurrences": 1,
-      "files": ["apps/web/src/components/ui/switch.tsx"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "PATCHED",
-      "reason": "state/responsive adapter over ring-1"
-    },
-    {
       "token": "hover:scale-[1.005]",
       "occurrences": 1,
       "files": ["apps/web/src/components/ThemePackEditor.tsx"],
@@ -43451,23 +43769,6 @@
       "reason": "state/responsive adapter over shadow-2xl"
     },
     {
-      "token": "hover:text-[var(--color-icon-secondary)]",
-      "occurrences": 1,
-      "files": ["apps/web/src/components/ThreadPinToggleButton.tsx"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": false,
-      "status": "PATCHED",
-      "reason": "state/responsive adapter over text-[var(--color-icon-secondary)]"
-    },
-    {
       "token": "hover:text-amber-300",
       "occurrences": 1,
       "files": ["apps/web/src/components/chat/ModelStarButton.tsx"],
@@ -43492,15 +43793,6 @@
       "runtime": false,
       "status": "PATCHED",
       "reason": "state/responsive adapter over text-foreground/72"
-    },
-    {
-      "token": "hover:text-foreground/82",
-      "occurrences": 1,
-      "files": ["apps/web/src/components/chat/CrossTaskOriginLabel.tsx"],
-      "screens": ["pull-requests", "thread"],
-      "runtime": false,
-      "status": "PATCHED",
-      "reason": "state/responsive adapter over text-foreground/82"
     },
     {
       "token": "hover:text-muted-foreground",
@@ -43591,23 +43883,6 @@
       "token": "icon-xl",
       "occurrences": 1,
       "files": ["apps/web/src/components/ui/button.tsx"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "CUSTOM",
-      "reason": "project component class; covered by authored CSS, not the utility denominator"
-    },
-    {
-      "token": "image-alt-text",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
       "screens": [
         "kanban",
         "projects",
@@ -43809,7 +44084,7 @@
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
     {
-      "token": "in-[[role=switch]:active,[role=switch][data-pressed],[data-slot=label]:active,[data-slot=field-label]:active]:not-data-disabled:scale-x-110",
+      "token": "in-[[role=switch]:active,[data-slot=label]:active,[data-slot=field-label]:active]:not-data-disabled:scale-x-110",
       "occurrences": 1,
       "files": ["apps/web/src/components/ui/switch.tsx"],
       "screens": [
@@ -43826,7 +44101,7 @@
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
     {
-      "token": "in-[[role=switch]:active,[role=switch][data-pressed],[data-slot=label]:active,[data-slot=field-label]:active]:rounded-[var(--thumb-size)/calc(var(--thumb-size)*1.1)]",
+      "token": "in-[[role=switch]:active,[data-slot=label]:active,[data-slot=field-label]:active]:rounded-[var(--thumb-size)/calc(var(--thumb-size)*1.1)]",
       "occurrences": 1,
       "files": ["apps/web/src/components/ui/switch.tsx"],
       "screens": [
@@ -44522,23 +44797,6 @@
       "occurrences": 1,
       "files": ["apps/web/src/components/chat/ExpandedImageOverlay.tsx"],
       "screens": ["kanban", "projects", "pull-requests", "thread"],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "max-h-[calc(100vh-210px)]",
-      "occurrences": 1,
-      "files": ["apps/web/src/components/chat/composerPickerStyles.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
       "runtime": true,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
@@ -46406,8 +46664,8 @@
       "files": ["apps/web/src/components/GitActionsControl.tsx"],
       "screens": ["pull-requests", "thread"],
       "runtime": false,
-      "status": "UNMAPPED",
-      "reason": "no generated selector or approved deterministic patch"
+      "status": "PATCHED",
+      "reason": "opacity:0.64"
     },
     {
       "token": "opacity-65",
@@ -46522,6 +46780,15 @@
       "reason": "no generated selector or approved deterministic patch"
     },
     {
+      "token": "overflow-x-hidden",
+      "occurrences": 1,
+      "files": ["apps/web/src/components/chat/AgentActivityDetailView.tsx"],
+      "screens": ["pull-requests", "thread"],
+      "runtime": false,
+      "status": "GENERATED",
+      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
+    },
+    {
       "token": "p-[calc(--spacing(1)-1px)]",
       "occurrences": 1,
       "files": ["apps/web/src/components/ui/combobox.tsx"],
@@ -46555,23 +46822,6 @@
       "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "page-text",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "CUSTOM",
-      "reason": "project component class; covered by authored CSS, not the utility denominator"
     },
     {
       "token": "pb-[3px]",
@@ -48113,23 +48363,6 @@
       "token": "secondary-outline",
       "occurrences": 1,
       "files": ["apps/web/src/components/ui/button.tsx"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "CUSTOM",
-      "reason": "project component class; covered by authored CSS, not the utility denominator"
-    },
-    {
-      "token": "settings-gear-1",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
       "screens": [
         "kanban",
         "projects",
@@ -49928,91 +50161,6 @@
       "reason": "project component class; covered by authored CSS, not the utility denominator"
     },
     {
-      "token": "text-[#3178c6]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#3776ab]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#38bdf8]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#42b883]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#4ade80]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
       "token": "text-[#5e6ad2]",
       "occurrences": 1,
       "files": ["apps/web/src/components/kanban/KanbanStatusIcon.tsx"],
@@ -50022,299 +50170,10 @@
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
     {
-      "token": "text-[#61dafb]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#659ad2]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#6cb6ff]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#777bb4]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#9ca3af]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#a78bfa]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#c084fc]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#cb3837]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#dea584]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#ef4444]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#f05032]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
       "token": "text-[#f2c94c]",
       "occurrences": 1,
       "files": ["apps/web/src/components/kanban/KanbanStatusIcon.tsx"],
       "screens": ["kanban", "projects"],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#f4d7a1]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#f5c542]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#f7df1e]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#f89820]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#f97316]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
-      "runtime": true,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[#ff3e00]",
-      "occurrences": 1,
-      "files": ["apps/web/src/file-icons.ts"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
       "runtime": true,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
@@ -50490,23 +50349,6 @@
       "occurrences": 1,
       "files": ["apps/web/src/components/BetaWelcomeDialog.tsx"],
       "screens": ["kanban", "projects", "pull-requests", "settings", "thread", "threads"],
-      "runtime": false,
-      "status": "GENERATED",
-      "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
-    },
-    {
-      "token": "text-[var(--color-icon-secondary)]",
-      "occurrences": 1,
-      "files": ["apps/web/src/components/ThreadPinToggleButton.tsx"],
-      "screens": [
-        "kanban",
-        "projects",
-        "pull-requests",
-        "settings",
-        "thread",
-        "threads",
-        "threads-shell"
-      ],
       "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
@@ -50762,6 +50604,23 @@
       "runtime": false,
       "status": "PATCHED",
       "reason": "color:rgba(104,104,104,0.26)"
+    },
+    {
+      "token": "text-muted-foreground/34",
+      "occurrences": 1,
+      "files": ["apps/web/src/components/ThreadPinToggleButton.tsx"],
+      "screens": [
+        "kanban",
+        "projects",
+        "pull-requests",
+        "settings",
+        "thread",
+        "threads",
+        "threads-shell"
+      ],
+      "runtime": false,
+      "status": "PATCHED",
+      "reason": "color:rgba(104,104,104,0.34)"
     },
     {
       "token": "text-muted-foreground/40!",

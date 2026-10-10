@@ -1,28 +1,11 @@
-// Long-lived Synara RPC streams the desktop host relays to the renderer as
-// global events, one channel per stream. Their items are delivered as they
-// arrive instead of being buffered into the RPC reply.
-export const NATIVE_EVENT_STREAM_CHANNELS = Object.freeze({
-  "terminal.subscribeEvents": "synara:terminal-event",
-  "orchestration.subscribeShell": "synara:orchestration-shell-event",
-  "server.subscribeSettings": "synara:server-settings-event",
-} as const);
-
-export type NativeEventStreamTag = keyof typeof NATIVE_EVENT_STREAM_CHANNELS;
-
-export function nativeEventStreamChannel(tag: string): string | null {
-  return Object.hasOwn(NATIVE_EVENT_STREAM_CHANNELS, tag)
-    ? NATIVE_EVENT_STREAM_CHANNELS[tag as NativeEventStreamTag]
-    : null;
-}
-
 /**
  * Request-scoped stream relay used by the shared `WsTransport` compat class
  * (`adapters/wsTransport.lynx.ts`). The renderer picks a `streamId`, the host
  * runs the RPC stream and publishes every item as one global event carrying
  * that id, and the bridge reply settles when the stream ends. The renderer can
  * end it early with `synaraRpcStreamCancel`, which the host turns into an
- * Effect RPC `Interrupt` frame. Unlike the fixed channel table above, this lets
- * one bridge method carry any stream tag, including per-thread subscriptions.
+ * Effect RPC `Interrupt` frame. One bridge method carries any stream tag,
+ * including per-thread subscriptions; there is no fixed channel per stream.
  */
 export const NATIVE_RPC_STREAM_ITEM_EVENT = "synara:rpc-stream-item";
 export const NATIVE_RPC_STREAM_CANCEL_METHOD = "synaraRpcStreamCancel";

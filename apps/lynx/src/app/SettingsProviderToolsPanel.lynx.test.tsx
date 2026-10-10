@@ -89,7 +89,7 @@ describe("Settings Provider tools fidelity", () => {
     expect(source).toContain("disclosureContentClassName(");
     expect(source).toContain("disclosureChevronClassName(");
     expect(source).toContain("openExternalBestEffort(props.href)");
-    expect(source).toContain('from "@synara/shared/providerTools"');
+    expect(source).toContain('from "../logic/providerTools"');
     expect(source).toContain("PROVIDER_TOOL_CONFIGS");
     expect(source).toContain("providerToolDescriptionText");
     expect(source).not.toContain("provider: 'opencode'");

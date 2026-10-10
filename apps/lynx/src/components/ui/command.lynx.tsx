@@ -8,7 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "@lynx-js/react";
-import { resolveCommandNavigation } from "@synara/shared/commandNavigation";
+import { resolveCommandNavigation } from "../../logic/commandNavigation";
 
 import { Dialog, DialogPopup } from "./dialog.lynx";
 import { toLynxInputKeyEvent, type LynxInputKeyEvent } from "./input.lynx";

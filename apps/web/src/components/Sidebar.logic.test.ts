@@ -1,4 +1,3 @@
-import type { OrchestrationLatestTurn } from "@synara/contracts";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -64,7 +63,7 @@ import {
 function makeLatestTurn(overrides?: {
   completedAt?: string | null;
   startedAt?: string | null;
-}): OrchestrationLatestTurn {
+}): Parameters<typeof hasUnseenCompletion>[0]["latestTurn"] {
   return {
     turnId: "turn-1" as never,
     state: "completed",

@@ -72,18 +72,6 @@ describe("resolveNextComposerFooterTier", () => {
     expect(tier).toBe(COMPOSER_FOOTER_MAX_TIER);
   });
 
-  it("does not promote below the compact mode minimum tier", () => {
-    expect(
-      resolveNextComposerFooterTier({
-        currentTier: 0,
-        minimumTier: 3,
-        clientWidth: 150,
-        isOverflowing: false,
-        demotionWidths: [],
-      }),
-    ).toEqual({ tier: 3, demotionWidths: [] });
-  });
-
   it("promotes back only after clearing the recorded width plus slack", () => {
     const demotionWidths = [400];
     const tooNarrow = resolveNextComposerFooterTier({

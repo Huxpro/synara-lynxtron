@@ -3,12 +3,12 @@
 // Layer: Terminal runtime infrastructure
 
 import { Terminal, type ITheme } from "@xterm/xterm";
-import { TERMINAL_BOLD_FONT_WEIGHT, TERMINAL_FONT_WEIGHT } from "@synara/shared/terminalThreads";
 
-import { isBrowser, getComputedStyleSafe, getDocumentElement } from "~/platform/env";
-const FALLBACK_TERMINAL_FONT_SIZE_PX = 12;
 const FALLBACK_MONO_FONT_FAMILY =
   '"JetBrains Mono", "JetBrainsMono NFM", "JetBrainsMono NF", monospace';
+const FALLBACK_TERMINAL_FONT_SIZE_PX = 12;
+const TERMINAL_FONT_WEIGHT = 300;
+const TERMINAL_BOLD_FONT_WEIGHT = 500;
 
 const DARK_TERMINAL_THEME_FALLBACK = {
   background: "rgb(14, 18, 24)",
@@ -65,26 +65,24 @@ const LIGHT_TERMINAL_THEME_FALLBACK = {
 let colorNormalizationContext: CanvasRenderingContext2D | null | undefined;
 
 export function getTerminalFontFamily(): string {
-  if (!isBrowser()) {
+  if (typeof window === "undefined") {
     return FALLBACK_MONO_FONT_FAMILY;
   }
 
-  const root = getDocumentElement();
-  const computedStyle = root ? getComputedStyleSafe(root) : null;
-  const configuredFontFamily = computedStyle?.getPropertyValue("--terminal-font-family").trim();
+  const configuredFontFamily = getComputedStyle(document.documentElement)
+    .getPropertyValue("--terminal-font-family")
+    .trim();
   return configuredFontFamily || FALLBACK_MONO_FONT_FAMILY;
 }
 
 export function getTerminalFontSizePx(): number {
-  if (!isBrowser()) {
+  if (typeof window === "undefined") {
     return FALLBACK_TERMINAL_FONT_SIZE_PX;
   }
 
-  const root = getDocumentElement();
-  const rawValue =
-    (root ? getComputedStyleSafe(root) : null)
-      ?.getPropertyValue("--app-font-size-terminal")
-      .trim() ?? "";
+  const rawValue = getComputedStyle(document.documentElement)
+    .getPropertyValue("--app-font-size-terminal")
+    .trim();
   const parsedValue = Number.parseFloat(rawValue);
   return Number.isFinite(parsedValue) && parsedValue > 0
     ? parsedValue
@@ -158,7 +156,7 @@ function resolveTerminalCssColor(
   fallback: string,
   property: "backgroundColor" | "color" = "color",
 ): string {
-  if (!isBrowser() || typeof document === "undefined" || !document.body) {
+  if (typeof window === "undefined" || typeof document === "undefined" || !document.body) {
     return fallback;
   }
 

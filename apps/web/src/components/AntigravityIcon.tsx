@@ -2,11 +2,10 @@
 // Purpose: Renders the official compact Antigravity mark used across provider surfaces.
 // Layer: Shared web UI icon
 
-import { type SVGProps } from "react";
+import { useId, type SVGProps } from "react";
 
-import { useUniqueId } from "~/hooks/useUniqueId";
 export function AntigravityBrandIcon(props: SVGProps<SVGSVGElement>) {
-  const prefix = useUniqueId();
+  const prefix = useId();
   const maskId = `${prefix}-antigravity-mask`;
   const filterIds = Array.from(
     { length: 11 },

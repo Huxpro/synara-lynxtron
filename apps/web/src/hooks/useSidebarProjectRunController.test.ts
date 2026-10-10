@@ -223,15 +223,11 @@ beforeEach(() => {
   harness.stopDevServer.mockResolvedValue(undefined);
   harness.listDevServers.mockResolvedValue({ servers: [] });
   harness.dispatchCommand.mockResolvedValue(undefined);
-  // App code calls bare setTimeout (F2 port convergence); stub both the window
-  // reference and the global so the settle effect stays synchronous in tests.
-  const syncSetTimeout = (callback: () => void) => {
-    callback();
-    return 1;
-  };
-  vi.stubGlobal("setTimeout", syncSetTimeout);
   vi.stubGlobal("window", {
-    setTimeout: syncSetTimeout,
+    setTimeout: (callback: () => void) => {
+      callback();
+      return 1;
+    },
     clearTimeout: vi.fn(),
   });
 });

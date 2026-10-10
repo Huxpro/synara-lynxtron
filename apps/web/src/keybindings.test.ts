@@ -988,23 +988,6 @@ describe("cross-command precedence", () => {
 });
 
 describe("resolveShortcutCommand", () => {
-  it("ignores host events without a Web KeyboardEvent key", () => {
-    assert.isNull(
-      resolveShortcutCommand(
-        {
-          type: "keydown",
-          key: undefined,
-          metaKey: true,
-          ctrlKey: false,
-          shiftKey: false,
-          altKey: false,
-        },
-        DEFAULT_BINDINGS,
-        { platform: "MacIntel" },
-      ),
-    );
-  });
-
   it.each(["MacIntel", "Win32", "Linux"])(
     "cycles effort with Shift+Tab only in the composer on %s",
     (platform) => {
@@ -1170,19 +1153,6 @@ describe("isTerminalClearShortcut", () => {
 
   it("ignores non-keydown events", () => {
     assert.isFalse(isTerminalClearShortcut(event({ type: "keyup", key: "l", ctrlKey: true })));
-  });
-
-  it("ignores host events without a Web KeyboardEvent key", () => {
-    assert.isFalse(
-      isTerminalClearShortcut({
-        type: "keydown",
-        key: undefined,
-        metaKey: false,
-        ctrlKey: true,
-        shiftKey: false,
-        altKey: false,
-      }),
-    );
   });
 });
 

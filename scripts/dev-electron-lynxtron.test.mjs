@@ -401,7 +401,9 @@ describe("Electron and Lynxtron comparison launcher", () => {
 
     const openExpression = comparisonNewThreadOpenExpression(options);
     expect(openExpression).toContain("new-thread-button");
-    expect(openExpression).toContain("data-project-id");
+    // Upstream's own project header anchor, not a fork-added attribute.
+    expect(openExpression).toContain("data-project-hover-anchor");
+    expect(openExpression).not.toContain("data-project-id");
     expect(openExpression).toContain("trigger.click()");
     expect(openExpression).toContain(JSON.stringify("project one"));
 
@@ -428,8 +430,16 @@ describe("Electron and Lynxtron comparison launcher", () => {
 
   it("requires the exact routed thread row to be uniquely active and visible", () => {
     const expression = comparisonThreadIdentityReadyExpression("thread-a/b");
-    expect(expression).toContain(JSON.stringify('[data-thread-id="thread-a/b"]'));
+    // Rows are found through upstream's hover anchors (pinned, chat and project
+    // scopes), and "active" is upstream's own marker for each kind of row.
+    for (const scope of ["pinned", "chat", "project"]) {
+      const anchor = `[data-thread-hover-anchor="${scope}:thread-a/b"]`;
+      // The selector is embedded as a JSON string inside the expression.
+      expect(expression).toContain(JSON.stringify(anchor).slice(1, -1));
+    }
+    expect(expression).not.toContain("data-thread-id");
     expect(expression).toContain("getAttribute('data-active') === 'true'");
+    expect(expression).toContain("bg-[var(--sidebar-selected)]");
     expect(expression).toContain("visibleActiveCount");
   });
 

@@ -97,8 +97,6 @@ const OFFLINE_RETRY_DELAY_MS = 5_000;
 const INITIAL_OVERLAY_POSITION_RETRY_MS = 50;
 const INITIAL_OVERLAY_POSITION_TIMEOUT_MS = 15_000;
 const TRANSPORT_STATE_EVENT = "synara:transport-state";
-const GIT_ACTION_PROGRESS_EVENT = "synara:git-action-progress";
-const TERMINAL_EVENT = "synara:terminal-event";
 const COMPOSER_MODEL_MENU_QUERY = "composerModelMenu";
 const COMPOSER_MODEL_PROVIDER_QUERY = "composerModelProvider";
 const STORAGE_PREFIX = "synara.lynx.";
@@ -118,8 +116,7 @@ interface PendingRelayRequest {
   readonly resolve: (value: unknown) => void;
   readonly reject: (error: Error) => void;
   readonly timer: ReturnType<typeof setTimeout> | null;
-  readonly chunks?: unknown[];
-  /** Request-scoped stream (shared WsTransport compat): items bypass the chunk buffer. */
+  /** Request-scoped stream (shared WsTransport compat): where its items go. */
   readonly onItem?: (item: unknown) => void;
 }
 
@@ -177,7 +174,6 @@ let pendingInitialRoute: string | null = null;
 let lastRendererReadyRoute: string | null = null;
 let publishRelayTransportState: ((state: "connected" | "reconnecting" | "offline") => void) | null =
   null;
-let publishRelayGitActionProgress: ((event: unknown) => void) | null = null;
 let publishRelayStreamItem: ((event: NativeRpcStreamItemEvent) => void) | null = null;
 
 interface LynxWebRuntimeConfig {
@@ -438,19 +434,10 @@ async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
     const pending = relayPending.get(message.requestId);
     if (!pending) return;
     if (message._tag === "Chunk") {
+      // Only a request-scoped stream has a consumer; a chunk for a unary
+      // request is acknowledged and dropped.
       if (pending.onItem) {
-        for (const value of message.values) pending.onItem(value);
-      } else {
-        if (pending.tag !== "terminal.subscribeEvents") {
-          pending.chunks?.push(...(message as WebRpcChunkFrame).values);
-        }
-        for (const value of message.values) {
-          if (pending.tag === "terminal.subscribeEvents") {
-            lynxView.sendGlobalEvent?.(TERMINAL_EVENT, [value]);
-          } else {
-            publishRelayGitActionProgress?.(value);
-          }
-        }
+        for (const value of (message as WebRpcChunkFrame).values) pending.onItem(value);
       }
       try {
         socket.send(
@@ -473,7 +460,7 @@ async function openFeatureSocket(baseUrl: string): Promise<WebSocket> {
     const exitMessage = message as WebRpcExitFrame;
     if (exitMessage.exit._tag === "Success") {
       relayLastRpcError = null;
-      pending.resolve(pending.chunks ?? exitMessage.exit.value);
+      pending.resolve(exitMessage.exit.value);
       return;
     }
     const error = new SynaraRpcResponseError(
@@ -575,7 +562,6 @@ async function synaraRpc(
   baseUrlValue: unknown,
   tagValue: unknown,
   payload: unknown,
-  stream = false,
   options: {
     /** `null` disables the watchdog; a number replaces the host default. */
     readonly timeoutMs?: number | null;
@@ -597,9 +583,8 @@ async function synaraRpc(
   const id = String(++relaySequence);
   const timeoutMs = options.timeoutMs === undefined ? RPC_REQUEST_TIMEOUT_MS : options.timeoutMs;
   return new Promise((resolve, reject) => {
-    const timer = stream
-      ? undefined
-      : timeoutMs === null
+    const timer =
+      timeoutMs === null
         ? undefined
         : setTimeout(() => {
             relayPending.delete(id);
@@ -612,7 +597,6 @@ async function synaraRpc(
       resolve,
       reject,
       timer: timer ?? null,
-      ...(stream ? { chunks: [] } : {}),
     });
     try {
       socket.send(JSON.stringify({ _tag: "Request", id, tag, payload, headers: [] }));
@@ -793,27 +777,23 @@ async function handleBridgeCall(
         }
       }
       const tag = String(params.tag ?? "");
-      return await synaraRpc(
-        params.baseUrl,
-        tag,
-        normalizeLynxRpcPayload(tag, params.payload),
-        false,
-        {
-          timeoutMs:
-            params.timeoutMs === null
-              ? null
-              : typeof params.timeoutMs === "number"
-                ? params.timeoutMs
-                : undefined,
-        },
-      );
+      return await synaraRpc(params.baseUrl, tag, normalizeLynxRpcPayload(tag, params.payload), {
+        timeoutMs:
+          params.timeoutMs === null
+            ? null
+            : typeof params.timeoutMs === "number"
+              ? params.timeoutMs
+              : undefined,
+      });
     }
     if (method === "synaraRpcStream") {
-      if (typeof params.streamId === "string") {
-        await runScopedRelayStream(params.baseUrl, params.streamId, params.tag, params.payload);
-        return null;
+      // Every stream is request-scoped: the renderer names it and receives its
+      // items on `NATIVE_RPC_STREAM_ITEM_EVENT`.
+      if (typeof params.streamId !== "string") {
+        throw new Error("synaraRpcStream requires a streamId");
       }
-      return await synaraRpc(params.baseUrl, params.tag, params.payload, true);
+      await runScopedRelayStream(params.baseUrl, params.streamId, params.tag, params.payload);
+      return null;
     }
     if (method === NATIVE_RPC_STREAM_CANCEL_METHOD) {
       return { cancelled: scopedStreams.cancel(String(params.streamId ?? "")) };
@@ -1198,9 +1178,6 @@ lynxView.injectStyleRules = LYNX_WEB_STYLE_RULES;
 
 publishRelayTransportState = (state) => {
   lynxView.sendGlobalEvent?.(TRANSPORT_STATE_EVENT, [state]);
-};
-publishRelayGitActionProgress = (event) => {
-  lynxView.sendGlobalEvent?.(GIT_ACTION_PROGRESS_EVENT, [event]);
 };
 publishRelayStreamItem = (event) => {
   lynxView.sendGlobalEvent?.(NATIVE_RPC_STREAM_ITEM_EVENT, [event]);

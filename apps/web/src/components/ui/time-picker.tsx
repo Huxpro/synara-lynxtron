@@ -4,12 +4,24 @@ import { useEffect, useRef } from "react";
 
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
-import {
-  formatTimePickerPart as pad,
-  parseTimePickerValue as parseTime,
-  TIME_PICKER_HOURS as HOURS,
-  TIME_PICKER_MINUTES as MINUTES,
-} from "@synara/shared/timePicker";
+
+const HOURS = Array.from({ length: 24 }, (_, index) => index);
+const MINUTES = Array.from({ length: 60 }, (_, index) => index);
+
+function pad(value: number): string {
+  return value.toString().padStart(2, "0");
+}
+
+/** Parse an "HH:MM" string into clamped hour/minute numbers (defaults to 00:00). */
+function parseTime(value: string): { hour: number; minute: number } {
+  const [rawHour, rawMinute] = value.split(":");
+  const hour = Number.parseInt(rawHour ?? "", 10);
+  const minute = Number.parseInt(rawMinute ?? "", 10);
+  return {
+    hour: Number.isNaN(hour) ? 0 : Math.min(23, Math.max(0, hour)),
+    minute: Number.isNaN(minute) ? 0 : Math.min(59, Math.max(0, minute)),
+  };
+}
 
 /**
  * shadcn-style scrollable time picker: two columns (hours / minutes) of selectable

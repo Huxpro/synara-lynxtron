@@ -2,7 +2,7 @@ import { useRef } from "@lynx-js/react";
 import { getRectByRef } from "@lynx-js/lynx-ui";
 import type { NodesRef } from "@lynx-js/types";
 import type { OrchestrationSpaceShell, SpaceId } from "@synara/contracts";
-import type { SpaceActivityTone } from "@synara/shared/spaceActivity";
+import type { SpaceActivityTone } from "../../logic/spaceActivity";
 
 import { LynxSpaceIcon } from "../../adapters/ComposerProjectPickerCompositionElements.lynx";
 import { useLynxInteractiveState } from "../ui/interactive-state.lynx";

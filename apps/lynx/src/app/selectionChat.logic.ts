@@ -6,7 +6,7 @@ import type {
   ThreadEnvironmentMode,
 } from "@synara/contracts";
 import { MessageId } from "@synara/contracts";
-import { TRANSCRIPT_SELECTION_ACTION_HEIGHT_PX } from "@synara/shared/selectionActionLayout";
+import { TRANSCRIPT_SELECTION_ACTION_HEIGHT_PX } from "../logic/selectionActionLayout";
 import type { TranscriptAssistantSelection } from "@synara-web/components/chat/chatSelectionActions";
 import { createAssistantSelectionAttachment } from "@synara-web/lib/assistantSelections";
 

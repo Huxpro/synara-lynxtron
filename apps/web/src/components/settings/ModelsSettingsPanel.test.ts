@@ -1,6 +1,9 @@
 import { getModelOptions } from "@synara/shared/model";
-import { MAX_CUSTOM_MODEL_LENGTH, validateCustomModelInput } from "@synara/shared/customModels";
 import { describe, expect, it } from "vitest";
+
+import { MAX_CUSTOM_MODEL_LENGTH } from "~/appSettings";
+
+import { validateCustomModelInput } from "./ModelsSettingsPanel";
 
 describe("validateCustomModelInput", () => {
   it("returns the same validation messages as the custom-model editor", () => {

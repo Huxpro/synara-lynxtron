@@ -82,7 +82,6 @@ import {
   NATIVE_RPC_STREAM_ITEM_EVENT,
   NATIVE_RPC_STREAM_RESET_METHOD,
   NATIVE_TRANSPORT_STATE_EVENT,
-  nativeEventStreamChannel,
   type NativeRpcStreamItemEvent,
 } from "../nativeEventStreams.logic";
 import {
@@ -908,16 +907,10 @@ app.whenReady().then(() => {
                   const event: NativeRpcStreamItemEvent = { streamId: data.streamId, item };
                   w.sendGlobalEvent(NATIVE_RPC_STREAM_ITEM_EVENT, event);
                 })
-              : await handleNativeRpc(
-                  name === "synaraRpcStream" ? "synaraRpcStream" : "synaraRpc",
-                  rpcData,
-                  (event) => {
-                    const channel =
-                      nativeEventStreamChannel(String(rpcData.tag ?? "")) ??
-                      "synara:git-action-progress";
-                    w.sendGlobalEvent(channel, event);
-                  },
-                );
+              : name === "synaraRpcStream"
+                ? // Every stream is request-scoped; there is no fixed-channel relay.
+                  await Promise.reject(new Error("synaraRpcStream requires a streamId"))
+                : await handleNativeRpc(rpcData);
         callback.sendReply(
           JSON.stringify({
             _tag: "NativeRpcResult",

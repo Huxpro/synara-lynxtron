@@ -5,11 +5,6 @@
 
 import { useEffect, useSyncExternalStore } from "react";
 import { isElectron } from "../env";
-import { THEME_STORAGE_KEY } from "../appSettingsStorageProjection.logic";
-import { webStorage } from "~/platform/storage";
-import { getDocumentElement, isBrowser, matchMediaSafe } from "~/platform/env";
-import { getDesktopBridge } from "~/platform/desktopBridge";
-import { addWindowEventListener, removeWindowEventListener } from "~/platform/events";
 import { isMacNavigatorPlatform } from "../lib/utils";
 import {
   DEFAULT_THEME_STATE,
@@ -45,6 +40,7 @@ type ThemeSnapshot = {
   desktopBlurUnavailable: boolean;
 };
 
+const STORAGE_KEY = "synara:theme";
 const MEDIA_QUERY = "(prefers-color-scheme: dark)";
 
 let listeners: Array<() => void> = [];
@@ -69,11 +65,11 @@ function emitChange() {
 }
 
 function hasThemeStorage(): boolean {
-  return isBrowser();
+  return typeof window !== "undefined" && typeof localStorage !== "undefined";
 }
 
 function getSystemDark(): boolean {
-  return isBrowser() && (matchMediaSafe(MEDIA_QUERY)?.matches ?? false);
+  return typeof window !== "undefined" && window.matchMedia(MEDIA_QUERY).matches;
 }
 
 function readStoredThemeState(): ThemeState {
@@ -82,7 +78,7 @@ function readStoredThemeState(): ThemeState {
   }
 
   try {
-    return parseStoredThemeState(webStorage.getItem(THEME_STORAGE_KEY));
+    return parseStoredThemeState(localStorage.getItem(STORAGE_KEY));
   } catch {
     return DEFAULT_THEME_STATE;
   }
@@ -93,7 +89,7 @@ function writeStoredThemeState(state: ThemeState) {
     return;
   }
 
-  webStorage.setItem(THEME_STORAGE_KEY, serializeThemeState(state));
+  localStorage.setItem(STORAGE_KEY, serializeThemeState(state));
 }
 
 function computeSnapshot(): ThemeSnapshot {
@@ -130,18 +126,13 @@ function updateStoredThemeState(update: (state: ThemeState) => ThemeState) {
 }
 
 function subscribe(listener: () => void): () => void {
-  if (!isBrowser()) {
+  if (typeof window === "undefined") {
     return () => {};
   }
 
   listeners.push(listener);
 
-  const mediaQuery = matchMediaSafe(MEDIA_QUERY);
-  if (!mediaQuery) {
-    return () => {
-      listeners = listeners.filter((currentListener) => currentListener !== listener);
-    };
-  }
+  const mediaQuery = window.matchMedia(MEDIA_QUERY);
   const handleMediaChange = () => {
     const state = readStoredThemeState();
     if (state.mode === "system") {
@@ -150,7 +141,7 @@ function subscribe(listener: () => void): () => void {
     emitChange();
   };
   const handleStorage = (event: StorageEvent) => {
-    if (event.key !== THEME_STORAGE_KEY) {
+    if (event.key !== STORAGE_KEY) {
       return;
     }
     applyThemeState(readStoredThemeState(), true);
@@ -158,26 +149,23 @@ function subscribe(listener: () => void): () => void {
   };
 
   mediaQuery.addEventListener("change", handleMediaChange);
-  addWindowEventListener("storage", handleStorage);
+  window.addEventListener("storage", handleStorage);
 
   return () => {
     listeners = listeners.filter((currentListener) => currentListener !== listener);
     mediaQuery.removeEventListener("change", handleMediaChange);
-    removeWindowEventListener("storage", handleStorage);
+    window.removeEventListener("storage", handleStorage);
   };
 }
 
 // ─── DOM projection ───────────────────────────────────────────────────────
 
 function applyThemeState(state: ThemeState, suppressTransitions = false) {
-  if (!isBrowser()) {
+  if (typeof document === "undefined" || typeof window === "undefined") {
     return;
   }
 
-  const root = getDocumentElement();
-  if (!root) {
-    return;
-  }
+  const root = document.documentElement;
   // Some server-rendered tests stub only the tiny DOM surface they need.
   if (
     typeof root.classList?.toggle !== "function" ||
@@ -230,11 +218,11 @@ function applyThemeState(state: ThemeState, suppressTransitions = false) {
 }
 
 function syncDesktopTheme(theme: ThemeMode) {
-  if (!isBrowser()) {
+  if (typeof window === "undefined") {
     return;
   }
 
-  const bridge = getDesktopBridge();
+  const bridge = window.desktopBridge;
   if (!bridge || lastDesktopTheme === theme) {
     return;
   }
@@ -278,7 +266,7 @@ function syncDesktopWindowMaterial(cssMaterial: WindowMaterial, blur: number | n
 }
 
 // Apply immediately on module load to minimize flash before React mounts.
-if (isBrowser()) {
+if (typeof document !== "undefined") {
   applyThemeState(readStoredThemeState());
 }
 

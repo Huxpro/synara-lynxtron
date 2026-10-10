@@ -1,7 +1,7 @@
 import { type ReactNode } from "@lynx-js/react";
 
 import { formatPastedTextCountLabel, pastedTextTitle } from "@synara-web/lib/composerPastedText";
-import { fileAttachmentTypeLabel } from "@synara/shared/fileAttachmentPresentation";
+import { fileAttachmentTypeLabel } from "../logic/fileAttachmentPresentation";
 import { FileEntryIcon } from "../components/FileEntryIcon.lynx";
 import {
   ChevronRightIcon,

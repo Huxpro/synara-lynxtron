@@ -13,11 +13,10 @@ import { isKeyboardShortcutsHelpChord } from "@synara/shared/browserShortcuts";
 import { isUnassignedKeybindingShortcut } from "@synara/shared/keybindingRules";
 import { isMacPlatform, isWindowsPlatform } from "./lib/utils";
 
-import { getNavigatorPlatform } from "~/platform/env";
 export interface ShortcutEventLike {
   type?: string;
   code?: string;
-  key?: unknown;
+  key: string;
   metaKey: boolean;
   ctrlKey: boolean;
   shiftKey: boolean;
@@ -442,8 +441,7 @@ export function isShortcutDispatchSuspended(): boolean {
   return dispatchSuspensions > 0;
 }
 
-function normalizeEventKey(key: unknown): string | null {
-  if (typeof key !== "string") return null;
+function normalizeEventKey(key: string): string {
   const normalized = key.toLowerCase();
   if (normalized === "esc") return "escape";
   if (normalized === "{") return "[";
@@ -460,8 +458,8 @@ function normalizeEventKey(key: unknown): string | null {
  */
 function resolveEventKeys(event: ShortcutEventLike): Set<string> {
   const typed = normalizeEventKey(event.key);
-  const keys = new Set<string>(typed === null ? [] : [typed]);
-  if (typed !== null && /^[a-z0-9]$/.test(typed)) return keys;
+  const keys = new Set([typed]);
+  if (/^[a-z0-9]$/.test(typed)) return keys;
   const aliases = event.code ? EVENT_CODE_KEY_ALIASES[event.code] : undefined;
   if (!aliases) return keys;
 
@@ -474,7 +472,7 @@ function resolveEventKeys(event: ShortcutEventLike): Set<string> {
 function matchesShortcutModifiers(
   event: ShortcutEventLike,
   shortcut: KeybindingShortcut,
-  platform = getNavigatorPlatform(),
+  platform = navigator.platform,
 ): boolean {
   const useMetaForMod = isMacPlatform(platform);
   const expectedMeta = shortcut.metaKey || (shortcut.modKey && useMetaForMod);
@@ -491,14 +489,14 @@ function matchesShortcutModifiers(
 export function matchesShortcut(
   event: ShortcutEventLike,
   shortcut: KeybindingShortcut,
-  platform = getNavigatorPlatform(),
+  platform = navigator.platform,
 ): boolean {
   if (!matchesShortcutModifiers(event, shortcut, platform)) return false;
   return resolveEventKeys(event).has(shortcut.key);
 }
 
 function resolvePlatform(options: ShortcutMatchOptions | undefined): string {
-  return options?.platform ?? getNavigatorPlatform();
+  return options?.platform ?? navigator.platform;
 }
 
 function resolveContext(options: ShortcutMatchOptions | undefined): ShortcutMatchContext {
@@ -542,7 +540,7 @@ function matchesWhenClause(
 /** Identity of the physical chord a shortcut resolves to on `platform`. */
 export function shortcutConflictKey(
   shortcut: KeybindingShortcut,
-  platform = getNavigatorPlatform(),
+  platform = navigator.platform,
 ): string {
   const useMetaForMod = isMacPlatform(platform);
   const metaKey = shortcut.metaKey || (shortcut.modKey && useMetaForMod);
@@ -691,7 +689,7 @@ function formatShortcutKeyLabel(key: string): string {
 
 export function formatShortcutLabel(
   shortcut: KeybindingShortcut,
-  platform = getNavigatorPlatform(),
+  platform = navigator.platform,
 ): string {
   const keyLabel = formatShortcutKeyLabel(shortcut.key);
   const useMetaForMod = isMacPlatform(platform);
@@ -850,19 +848,19 @@ export function isTerminalClearShortcut(event: ShortcutEventLike): boolean {
     return false;
   }
 
-  const key = normalizeEventKey(event.key);
+  const key = event.key.toLowerCase();
 
   return key === "l" && event.ctrlKey && !event.metaKey && !event.altKey && !event.shiftKey;
 }
 
 export function isKeyboardShortcutsHelpShortcut(
   event: ShortcutEventLike,
-  platform = getNavigatorPlatform(),
+  platform = navigator.platform,
 ): boolean {
   if (dispatchSuspensions > 0) return false;
   return isKeyboardShortcutsHelpChord(
     {
-      key: typeof event.key === "string" ? event.key : "",
+      key: event.key,
       meta: event.metaKey,
       ctrl: event.ctrlKey,
       shift: event.shiftKey,
@@ -880,7 +878,7 @@ export function isKeyboardShortcutsHelpShortcut(
 
 export function terminalNavigationShortcutData(
   event: ShortcutEventLike,
-  platform = getNavigatorPlatform(),
+  platform = navigator.platform,
 ): string | null {
   if (event.type !== undefined && event.type !== "keydown") {
     return null;

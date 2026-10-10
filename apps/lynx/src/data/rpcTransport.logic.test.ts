@@ -325,9 +325,9 @@ describe("rpc transport manager", () => {
       closeWhenIdle: true,
     });
     const chunks: unknown[] = [];
-    const pending = manager.requestStream("git.runStackedAction", { action: "commit" }, (value) =>
+    const pending = manager.openStream("git.runStackedAction", { action: "commit" }, (value) =>
       chunks.push(value),
-    );
+    ).settled;
     await flushUntil(() => socket.sent.length === 1);
     expect(timeouts.size).toBe(0);
     socket.chunkLast({ kind: "action_started" }, { kind: "phase_started" });

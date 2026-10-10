@@ -141,7 +141,7 @@ describe("Lynx Settings section labels", () => {
     );
     expect(usageStyles).toMatch(/\.SettingsUsageDetails\s*\{[^}]*gap:\s*14px;/s);
     expect(usageSource).toContain(
-      'import { deriveProviderUsageLimitDisplay } from "@synara/shared/providerUsageDisplay";',
+      'import { deriveProviderUsageLimitDisplay } from "../logic/providerUsageDisplay";',
     );
     expect(usageSource).toContain("const display = deriveProviderUsageLimitDisplay(props.limit);");
     expect(usageSource).toContain('className="SettingsUsageLimitTitle"');

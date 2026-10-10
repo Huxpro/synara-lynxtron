@@ -90,7 +90,7 @@ vi.mock("./wsTransport", () => {
   };
 });
 
-vi.mock("~/contextMenuFallback", () => ({
+vi.mock("./contextMenuFallback", () => ({
   showContextMenuFallback: showContextMenuFallbackMock,
 }));
 

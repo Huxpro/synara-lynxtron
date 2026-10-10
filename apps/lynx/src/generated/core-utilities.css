@@ -303,9 +303,6 @@
 .max-h-\[92vh\] {
   max-height: 92vh;
 }
-.max-h-\[calc\(100vh-210px\)\] {
-  max-height: calc(100vh - 210px);
-}
 .max-h-\[min\(var\(--available-height\)\2c 23rem\)\] {
   max-height: min(var(--available-height), 23rem);
 }
@@ -1679,9 +1676,6 @@
 .overflow-visible {
   overflow: visible;
 }
-.overflow-x-hidden {
-  overflow-x: hidden;
-}
 .overflow-y-hidden {
   overflow-y: hidden;
 }
@@ -2075,14 +2069,14 @@
 .border-border\/70 {
   border-color: rgba(0, 0, 0, 0.7);
 }
-.break-words {
-  word-break: break-word;
-}
 .pointer-events-auto {
   pointer-events: auto;
 }
 .space-y-0\.5 {
   gap: 2px;
+}
+.break-words {
+  word-break: break-word;
 }
 .border-border\/60 {
   border-color: rgba(0, 0, 0, 0.6);
@@ -2155,6 +2149,9 @@
 .inline {
   display: flex;
 }
+.sm\:flex-row {
+  flex-direction: row;
+}
 .sm\:justify-end {
   justify-content: flex-end;
 }
@@ -2167,8 +2164,8 @@
 .hover\:opacity-100.ui-hover {
   opacity: 1;
 }
-.sm\:flex-row {
-  flex-direction: row;
+.data-disabled\:opacity-64.ui-disabled {
+  opacity: 0.64;
 }
 .sm\:text-ui-sm {
   font-size: var(--app-font-size-ui-sm);
@@ -2184,9 +2181,6 @@
 }
 .cursor-col-resize {
   cursor: col-resize;
-}
-.data-disabled\:opacity-\[var\(--control-disabled-opacity\)\].ui-disabled {
-  opacity: var(--control-disabled-opacity);
 }
 .data-highlighted\:bg-\[var\(--color-background-button-secondary-hover\)\].ui-highlighted {
   background-color: var(--color-background-button-secondary-hover);
@@ -2259,6 +2253,12 @@
 }
 .shadow-lg\/5 {
   box-shadow: 0 1px 12px rgba(0, 0, 0, 0.08);
+}
+.sm\:items-center {
+  align-items: center;
+}
+.sm\:justify-between {
+  justify-content: space-between;
 }
 .sm\:size-4 {
   width: 1rem;
@@ -2333,12 +2333,6 @@
 }
 .sm\:h-9 {
   height: 2.25rem;
-}
-.sm\:items-center {
-  align-items: center;
-}
-.sm\:justify-between {
-  justify-content: space-between;
 }
 .sm\:min-h-8 {
   min-height: 2rem;
@@ -2762,9 +2756,6 @@
 .data-pressed\:bg-\[var\(--color-background-button-secondary\)\].ui-pressed {
   background-color: var(--color-background-button-secondary);
 }
-.data-pressed\:ring-1.ui-pressed {
-  box-shadow: 0 0 0 1px var(--ring);
-}
 .data-pressed\:text-\[var\(--notification-fg\)\].ui-pressed {
   color: var(--notification-fg);
 }
@@ -2847,9 +2838,6 @@
 }
 .hover\:bg-\[var\(--sidebar-selected\)\].ui-hover {
   background-color: var(--sidebar-selected);
-}
-.hover\:ring-1.ui-hover {
-  box-shadow: 0 0 0 1px var(--ring);
 }
 .hover\:scale-105.ui-hover {
   --tw-sx: 1.05;

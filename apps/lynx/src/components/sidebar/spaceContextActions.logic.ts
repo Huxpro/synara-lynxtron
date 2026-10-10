@@ -5,7 +5,7 @@ import type {
   SpaceIconName,
   SpaceId,
 } from "@synara/contracts";
-import { chunkSpaceProjectIds } from "@synara/shared/spaceProjectPicker";
+import { chunkSpaceProjectIds } from "../../logic/spaceProjectPicker";
 
 function commandId(prefix: string): string {
   return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;

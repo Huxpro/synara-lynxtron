@@ -4,15 +4,7 @@
 // Depends on: The public trysynara feedback endpoint.
 
 import { APP_VERSION } from "./branding";
-import { DEFAULT_FEEDBACK_ENDPOINT, submitFeedbackPayload } from "@synara/shared/feedbackDelivery";
 
-import {
-  getNavigatorPlatform,
-  getViewportWidth,
-  getViewportHeight,
-  getNavigatorUserAgent,
-  getNavigatorLanguage,
-} from "~/platform/env";
 /**
  * `lead` opens the reported summary in the reporter's voice, so the category is
  * readable as a sentence rather than as an enum value.
@@ -62,6 +54,9 @@ export interface FeedbackSubmission {
   summary: string;
   diagnostics: FeedbackDiagnostics;
 }
+
+const DEFAULT_FEEDBACK_ENDPOINT = "https://www.trysynara.com/api/feedback";
+const FEEDBACK_REQUEST_TIMEOUT_MS = 20_000;
 
 function formatStateFlags(diagnostics: FeedbackThreadContext): string {
   const flags: string[] = [];
@@ -129,14 +124,14 @@ export function buildFeedbackSubmission(input: {
   language?: string;
   viewport?: { width: number; height: number };
 }): FeedbackSubmission {
-  const viewport = input.viewport ?? { width: getViewportWidth(), height: getViewportHeight() };
+  const viewport = input.viewport ?? { width: window.innerWidth, height: window.innerHeight };
   const diagnostics: FeedbackDiagnostics = {
     ...input.context,
     appVersion: APP_VERSION,
     submittedAt: (input.now ?? new Date()).toISOString(),
-    userAgent: input.userAgent ?? getNavigatorUserAgent(),
-    platform: input.platform ?? getNavigatorPlatform(),
-    language: input.language ?? getNavigatorLanguage(),
+    userAgent: input.userAgent ?? navigator.userAgent,
+    platform: input.platform ?? navigator.platform,
+    language: input.language ?? navigator.language,
     viewport: `${viewport.width}x${viewport.height}`,
   };
 
@@ -159,8 +154,29 @@ export async function submitFeedback(
   submission: FeedbackSubmission,
   fetchImplementation: typeof fetch = fetch,
 ): Promise<void> {
-  return submitFeedbackPayload(submission, {
-    endpoint: feedbackEndpoint(),
-    fetchImplementation,
-  });
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), FEEDBACK_REQUEST_TIMEOUT_MS);
+  try {
+    const response = await fetchImplementation(feedbackEndpoint(), {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-synara-feedback": "1",
+      },
+      body: JSON.stringify(submission),
+      signal: controller.signal,
+    });
+    if (response.ok) return;
+
+    const payload = (await response.json().catch(() => null)) as { error?: unknown } | null;
+    const message = typeof payload?.error === "string" ? payload.error.trim() : "";
+    throw new Error(message || `Feedback could not be sent (${response.status}).`);
+  } catch (error) {
+    if (error instanceof DOMException && error.name === "AbortError") {
+      throw new Error("Feedback delivery timed out. Please try again.");
+    }
+    throw error;
+  } finally {
+    window.clearTimeout(timeout);
+  }
 }
