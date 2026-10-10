@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-10T01:09:58.820Z",
+  "generatedAt": "2026-10-10T01:42:31.617Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -12,7 +12,7 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxGraph": {
     "entries": ["src/app/index.tsx"],
-    "modules": 893,
+    "modules": 900,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/checkbox",
@@ -13807,11 +13807,11 @@
         "loc": 226411
       },
       "currentReuse": {
-        "modules": 368,
-        "loc": 86826,
-        "modulePercent": 35.59,
-        "locPercent": 38.35,
-        "gatePercent": 35.59
+        "modules": 370,
+        "loc": 87341,
+        "modulePercent": 35.78,
+        "locPercent": 38.58,
+        "gatePercent": 35.78
       },
       "modules": [
         {
@@ -19328,7 +19328,7 @@
           "loc": 377,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/ChatView.logic.ts",
             "apps/web/src/composerDraftStore.ts",
@@ -26661,7 +26661,7 @@
           "loc": 138,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -53002,11 +53002,11 @@
         "loc": 221136
       },
       "currentReuse": {
-        "modules": 369,
-        "loc": 87272,
-        "modulePercent": 36.75,
-        "locPercent": 39.47,
-        "gatePercent": 36.75
+        "modules": 371,
+        "loc": 87787,
+        "modulePercent": 36.95,
+        "locPercent": 39.7,
+        "gatePercent": 36.95
       },
       "modules": [
         {
@@ -58117,7 +58117,7 @@
           "loc": 377,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/ChatView.logic.ts",
             "apps/web/src/composerDraftStore.ts",
@@ -65466,7 +65466,7 @@
           "loc": 138,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {

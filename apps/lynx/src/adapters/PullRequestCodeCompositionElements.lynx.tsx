@@ -1,4 +1,4 @@
-import type { ReactNode } from "@lynx-js/react";
+import { createContext, useContext, type ReactNode } from "@lynx-js/react";
 
 import {
   formatGitPathForDisplay,
@@ -22,6 +22,57 @@ const DIFF_BUFFER_PATTERN_SVG = `
 <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
   <path d="M-2 2L2-2M0 8L8 0M6 10L10 6" fill="none" stroke="currentColor" stroke-width="1"/>
 </svg>`;
+
+/** One collapsed stretch of unchanged lines in front of a hunk. */
+export interface PullRequestCodeHunkSeparator {
+  readonly unmodifiedLines: number;
+  /** Nothing of the file is rendered above it (upstream drops its top margin). */
+  readonly first: boolean;
+}
+
+/**
+ * Lynx-only: hunk separators by line id (the hunk row's and its first code
+ * line's). A surface that provides it gets upstream's "N unmodified lines" band
+ * where a hunk begins, in place of the raw `@@` row; without a provider the
+ * lines render as before. The shared composition leaves hunk rows out of the
+ * split grid, so the split row finds its separator through its first line.
+ */
+export const PullRequestCodeHunkSeparatorsContext = createContext<Readonly<
+  Record<string, PullRequestCodeHunkSeparator>
+> | null>(null);
+
+/**
+ * Lynx-only: for each line id, how many digits the widest line number of its
+ * file has. Upstream's split gutter is as wide as that number; the fixed
+ * column here fits one digit, and a longer number wrapped onto a second line,
+ * doubling the row. With a provider every number of a file is padded to the
+ * same length and the column grows with it.
+ */
+export const PullRequestCodeLineNumberDigitsContext = createContext<Readonly<
+  Record<string, number>
+> | null>(null);
+
+function PullRequestCodeHunkSeparatorElement(props: PullRequestCodeHunkSeparator) {
+  return (
+    <view
+      className={`SharedPrCodeHunkSeparator${
+        props.first ? " SharedPrCodeHunkSeparator--first" : ""
+      }`}
+    >
+      <view className="SharedPrCodeHunkSeparatorBand">
+        <text className="SharedPrCodeHunkSeparatorText">
+          {props.unmodifiedLines} unmodified {props.unmodifiedLines === 1 ? "line" : "lines"}
+        </text>
+      </view>
+    </view>
+  );
+}
+
+/** The line id the shared composition spread onto a line element. */
+function lineElementId(node: ReactNode): string | null {
+  const id = (node as { readonly props?: { readonly id?: unknown } } | null | undefined)?.props?.id;
+  return typeof id === "string" ? id : null;
+}
 
 export function PullRequestCodeRootElement(props: ChildrenProps) {
   return <view className="SharedPrCodeRoot">{props.children}</view>;
@@ -158,6 +209,7 @@ export function PullRequestCodeLinesElement(props: ChildrenProps & { readonly wo
 }
 
 export function PullRequestCodeLineElement(props: {
+  readonly id?: string;
   readonly kind: PullRequestDiffLineKind;
   readonly oldLine: number | null;
   readonly newLine: number | null;
@@ -167,6 +219,19 @@ export function PullRequestCodeLineElement(props: {
   readonly wordWrap: boolean;
 }) {
   const { codeFontFamily } = useTheme();
+  const hunkSeparators = useContext(PullRequestCodeHunkSeparatorsContext);
+  const lineNumberDigits = useContext(PullRequestCodeLineNumberDigitsContext);
+  const digits = props.side && props.id ? (lineNumberDigits?.[props.id] ?? 0) : 0;
+  // No-break spaces: the code font is monospaced, so equal lengths are equal widths.
+  const lineNumber = (value: number | null) =>
+    value === null ? "" : digits > 0 ? String(value).padStart(digits, "\u00a0") : value;
+  const lineNumberClassName = `SharedPrCodeLineNumber${
+    digits > 0 ? " SharedPrCodeLineNumber--intrinsic" : ""
+  }`;
+  if (props.kind === "hunk" && hunkSeparators) {
+    const separator = props.id ? hunkSeparators[props.id] : undefined;
+    return separator ? <PullRequestCodeHunkSeparatorElement {...separator} /> : null;
+  }
   const prefix =
     props.kind === "addition"
       ? "+"
@@ -184,13 +249,13 @@ export function PullRequestCodeLineElement(props: {
       }${props.side ? ` SharedPrCodeLine--split-${props.side}` : ""}`}
     >
       {props.side === "right" ? null : (
-        <text className="SharedPrCodeLineNumber" style={{ fontFamily: codeFontFamily }}>
-          {props.oldLine ?? ""}
+        <text className={lineNumberClassName} style={{ fontFamily: codeFontFamily }}>
+          {lineNumber(props.oldLine)}
         </text>
       )}
       {props.side === "left" ? null : (
-        <text className="SharedPrCodeLineNumber" style={{ fontFamily: codeFontFamily }}>
-          {props.newLine ?? ""}
+        <text className={lineNumberClassName} style={{ fontFamily: codeFontFamily }}>
+          {lineNumber(props.newLine)}
         </text>
       )}
       {props.side ? null : (
@@ -234,7 +299,12 @@ export function PullRequestCodeSplitRowElement(props: {
 }) {
   const leftEmpty = !props.left;
   const rightEmpty = !props.right;
-  return (
+  const hunkSeparators = useContext(PullRequestCodeHunkSeparatorsContext);
+  const separator = hunkSeparators
+    ? (hunkSeparators[lineElementId(props.left) ?? ""] ??
+      hunkSeparators[lineElementId(props.right) ?? ""])
+    : undefined;
+  const row = (
     <view className="SharedPrCodeSplitRow">
       <view
         className={`SharedPrCodeSplitSide SharedPrCodeSplitSide--left${
@@ -255,6 +325,13 @@ export function PullRequestCodeSplitRowElement(props: {
         )}
       </view>
     </view>
+  );
+  if (!separator) return row;
+  return (
+    <>
+      <PullRequestCodeHunkSeparatorElement {...separator} />
+      {row}
+    </>
   );
 }
 

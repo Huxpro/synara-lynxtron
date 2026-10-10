@@ -10,13 +10,13 @@
 
 Lynx 通过构建时的**派生层**消费原样的上游源码。派生层有四种手段，全部在 Lynx 一侧、声明式、可检查：
 
-| 手段            | 用在哪                                             | 例子                                                               |
-| --------------- | -------------------------------------------------- | ------------------------------------------------------------------ |
-| 模块替换        | 上游模块整体换成 Lynx 实现                         | `~/wsTransport`、`~/nativeApi`、`~/platform/*`、UI 原语            |
-| 环境注入        | 上游代码直接用的全局对象，由 Lynx 的构建提供       | `window`、`document`、`navigator`、`localStorage`（见下）          |
-| 生成            | 需要上游文件里的一部分（未导出的函数、常量、逻辑） | `EventRouter` 从 `routes/__root.tsx` 生成，带 `--check` 防漂移     |
-| 带守卫的补丁    | 上游的缺陷，Lynx 无法绕开，上游又不能改            | 生成器在抽取前应用 `scripts/event-router-patches.mjs` 里的补丁     |
-| Lynx 自己的界面 | 上游把逻辑和 DOM 标记写在一起、无法派生的界面      | Lynx 的页面和 `.lynx.tsx`，只复用上游导出的逻辑、store 和 selector |
+| 手段            | 用在哪                                             | 例子                                                                                                                      |
+| --------------- | -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| 模块替换        | 上游模块整体换成 Lynx 实现                         | `~/wsTransport`、`~/nativeApi`、`~/platform/*`、UI 原语                                                                   |
+| 环境注入        | 上游代码直接用的全局对象，由 Lynx 的构建提供       | `window`、`document`、`navigator`、`localStorage`（见下）                                                                 |
+| 生成            | 需要上游文件里的一部分（未导出的函数、常量、逻辑） | `EventRouter` 从 `routes/__root.tsx` 生成，带 `--check` 防漂移；变更标记的名称/颜色表从 `DiffPanelChangeMarkers.tsx` 生成 |
+| 带守卫的补丁    | 上游的缺陷，Lynx 无法绕开，上游又不能改            | 生成器在抽取前应用 `scripts/event-router-patches.mjs` 里的补丁                                                            |
+| Lynx 自己的界面 | 上游把逻辑和 DOM 标记写在一起、无法派生的界面      | Lynx 的页面和 `.lynx.tsx`，只复用上游导出的逻辑、store 和 selector                                                        |
 
 带守卫的补丁只用于修正上游的缺陷，不用于改行为或加功能。每个补丁用 AST 定位锚点：上游的代码不是补丁所针对的形状时生成器停止且不写文件；检测到上游自己修了就什么都不改，并提示删除补丁；每个补丁有一个去掉它就失败的行为测试。补丁在生成物里以 `LYNX PATCH` 标出，并列在文件头。现有一个：`drop-queued-thread-events-covered-by-snapshot`（线程快照替换线程时，丢掉队列里已被该快照包含的流式增量，否则助手文字会重复）。
 
@@ -64,7 +64,7 @@ npm 包默认看到真实运行时，只有一个例外：`@tanstack/query-core`
 5. **Lynx 不自建数据通道。** 读写都走上游的 `NativeApi` 门面、`store` selector 和上游的 query options，使用上游的 query key。不新增轮询，不新增 `synaraClient` 中继函数。
 6. **破坏性操作读权威数据。** 删除、强制清理之类的操作在决定前向服务器取一次最新快照，不依赖可能过期的 `store`。
 7. **Lynx 专属代码只在专属层。** `apps/lynx/src/{adapters,platform,main,data}` 和 `*.lynx.*` 文件。
-8. **生成物不手改。** `src/generated/eventRouter.generated.tsx` 由 `scripts/generate-event-router.mjs` 从上游的 `routes/__root.tsx` 生成。上游改了就重新生成；生成器不认识的形状要扩展生成器并加测试。与上游逐字不同的地方只能来自 `scripts/event-router-patches.mjs` 里带守卫的补丁。
+8. **生成物不手改。** `src/generated/eventRouter.generated.tsx` 由 `scripts/generate-event-router.mjs` 从上游的 `routes/__root.tsx` 生成。`src/generated/diffChangeMarkers.generated.ts` 由 `scripts/generate-diff-change-markers.mjs` 用同一个抽取器从 `DiffPanelChangeMarkers.tsx` 生成，`--check` 同样挂在 `typecheck` 和 `audit:reuse:check` 上。上游改了就重新生成；生成器不认识的形状要扩展生成器并加测试。与上游逐字不同的地方只能来自 `scripts/event-router-patches.mjs` 里带守卫的补丁。
 9. **持久化的 store 在存储就绪后才可写。** Lynx 的本地存储是异步加载的，共享 store 的初始化和写入必须在 `persistedStoreHydration` 边界之后。
 10. **依赖解析跟随上游。** `bun.lock` 以上游的为基础，用上游固定的 bun 版本生成。Lynx 与 Web 共用的包，Lynx 的版本范围不得高于 Web 的范围；Lynx 构建工具链的版本单独钉住。
 
@@ -116,6 +116,6 @@ npm 包默认看到真实运行时，只有一个例外：`@tanstack/query-core`
 - **fork 在上游文件里的差异仍然很多。** 2026-10-09 合并后的基线是 260 个上游文件被改过（6,672 行），另有 400 个 fork 文件放在上游的目录里；`~/platform` 改写的第一批还原、并删掉一个 fork 自加的 RPC 之后是 184 个文件（5,883 行）和 395 个 fork 文件。原因见最近一次合并报告的附录；它直接决定下一次合并的成本，也是 Electron 行为回退的来源。
 - **线程详情还有请求式的读取方。** Thread 页已经读 `store`。右侧 dock 里的 Side 面板、侧边栏和 Kanban 的线程操作、任务完成通知、Environment 面板的 recap 仍用 `queries.ts` 里的 `getThreadDetailSnapshot` 读取（只投影、不提交）。Side 面板要先让上游的 `EventRouter` 知道 Lynx 的 dock 状态才能拿到流租约。
 - **仍有读取用 Lynx 自己的 query key。** `synaraClient.lynx.ts` 已删除，请求全部走门面；模型目录已换成上游的 `providerModelsQueryOptions`，Code review 页面（列表、PR 与 issue 详情、diff、操作、评论、置顶）也都换成了上游的 query 和 mutation options，但 Automations、插件库等读取还没有换成上游的 query options，清单见计划文档。
-- **单元格矩阵只恢复了一部分。** 应用外壳（图标栏、面板列、线程标签页）已按上游移植，landing、thread、settings、kanban、automations 五个基础单元格重新通过；模型菜单（线程和 Automation 对话框）、空 Dock 的 launcher 三个增量单元格也通过。Dock 的面板标签条、Maximize 和 Diff 工具栏已移植，`add-panel-menu` 只差 Diff 面板右缘的变更标记条（"Change markers"）：上游的标记算法在引入 `@pierre/diffs` 的模块里，位置又取决于补丁正文的行布局，而 Native 的补丁正文没有上游的 hunk 分隔行。Code review 页面（上游的 GitHub inbox）和 Appearance 的主题包编辑器已按上游移植，`pr` 基础单元格和 `settings-appearance` 增量单元格通过；两者没有移植的部分（inbox 的 Ask 侧聊和 Send to agent、详情页的信息栏，窗口半透明的渲染）在界面上标明不可用。其余条目见最近一次合并报告的移植队列。工作流 J2–J6 仍是有效门禁。
+- **单元格矩阵覆盖的界面都已按上游移植。** 应用外壳、模型菜单、dock 头部与 diff 工具栏（含 change markers）、Code review 页面、Appearance 的主题包编辑器。每个里程碑的通过数记录在计划文档；仍是占位的功能（Inbox、Spaces、线程内切换 provider、窗口半透明等）列在合并报告的移植队列里。
 - **宿主里还有没有调用方的旧流路径**（不带 `streamId` 的 `synaraRpcStream` 和固定通道表里的终端、shell 通道）。它和在用的代码交织在两个宿主里，删除前要先把 Lynx-for-Web 宿主跑通一遍。
 - **上游新界面的移植队列**见最近一次合并报告。

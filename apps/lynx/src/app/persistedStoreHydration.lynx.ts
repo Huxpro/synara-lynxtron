@@ -38,6 +38,7 @@ export async function rehydratePersistedStores(): Promise<void> {
     { usePinnedThreadsStore },
     { usePinnedProjectsStore },
     { useProjectInstructionsStore },
+    { useRepoDiffScopeStore },
   ] = await Promise.all([
     import(/* webpackMode: "eager" */ "@synara-web/storePersistence"),
     import(/* webpackMode: "eager" */ "@synara-web/store"),
@@ -50,6 +51,8 @@ export async function rehydratePersistedStores(): Promise<void> {
     import(/* webpackMode: "eager" */ "@synara-web/pinnedThreadsStore"),
     import(/* webpackMode: "eager" */ "@synara-web/pinnedProjectsStore"),
     import(/* webpackMode: "eager" */ "@synara-web/projectInstructionsStore"),
+    // Created with `DiffPanel.logic` (the diff dock's change markers import it).
+    import(/* webpackMode: "eager" */ "@synara-web/repoDiffScopeStore"),
   ]);
   readPersistedState(useStore.getState());
   await Promise.all(
@@ -63,6 +66,7 @@ export async function rehydratePersistedStores(): Promise<void> {
       usePinnedThreadsStore,
       usePinnedProjectsStore,
       useProjectInstructionsStore,
+      useRepoDiffScopeStore,
     ].map((store) => store.persist.rehydrate()),
   );
 }
