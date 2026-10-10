@@ -141,7 +141,7 @@ describe("landing composer fidelity contract", () => {
     expect(composerSource).toContain("const { resolvedTheme, svgColors } = useTheme()");
     expect(composerSource).not.toContain('resolvedTheme="light"');
     expect(sidebarPrimaryActionStyles).toMatch(
-      /\.SharedSidebarPrimaryActionLabel\s*\{[^}]*font-size:\s*var\(--app-font-size-ui,\s*12px\);[^}]*line-height:\s*18px;[^}]*font-weight:\s*400;[^}]*opacity:\s*0\.89;/s,
+      /\.SharedSidebarPrimaryActionLabel\s*\{[^}]*font-size:\s*var\(--app-font-size-ui,\s*12px\);[^}]*line-height:\s*var\(--app-line-height-ui-18, 18px\);[^}]*font-weight:\s*400;[^}]*opacity:\s*0\.89;/s,
     );
     expect(sidebarPrimaryActionStyles).toMatch(
       /\.SharedSidebarPrimaryActionLeading\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*opacity:\s*0\.89;/s,
@@ -163,7 +163,7 @@ describe("landing composer fidelity contract", () => {
     expect(composerSource).toContain("buildComposerRuntimeModeSetCommand({");
     expect(landingStyles).not.toMatch(/\.LandingComposer\s*\{[^}]*margin-top:/s);
     expect(frameStyles).toMatch(
-      /\.ComposerColumnFrameSurfaceLynx[^}]*width:\s*calc\(100% - 24px\);[^}]*max-width:\s*736px;/s,
+      /\.ComposerColumnFrameSurfaceLynx[^}]*width:\s*calc\(100% - 24px\);[^}]*max-width:\s*var\(--app-chat-max-width, 736px\);/s,
     );
     expect(frameStyles).toMatch(
       /\.ComposerColumnFrameSurfaceLynx\.ComposerColumnFrameSurfaceLynx\s*\{[^}]*margin-left:\s*0;[^}]*margin-right:\s*0;[^}]*align-self:\s*center;/s,

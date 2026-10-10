@@ -25,7 +25,7 @@ describe("Lynx Settings section labels", () => {
     expect(webStyles).toContain("SETTINGS_SECTION_LABEL_CLASS_NAME");
     for (const styles of sources) {
       expect(styles).toMatch(
-        /SectionTitle\s*\{[^}]*padding:\s*4px 8px;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*400;[^}]*line-height:\s*18px;[^}]*opacity:\s*0\.58;/s,
+        /SectionTitle\s*\{[^}]*padding:\s*4px 8px;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*400;[^}]*line-height:\s*var\(--app-line-height-ui-sm-18, 18px\);[^}]*opacity:\s*0\.58;/s,
       );
     }
   });
@@ -89,7 +89,7 @@ describe("Lynx Settings section labels", () => {
       /\.SettingsUsageRefresh\s*\{[^}]*width:\s*72px;[^}]*height:\s*24px;[^}]*padding:\s*0 7px;/s,
     );
     expect(usageStyles).toMatch(
-      /\.SettingsUsageRefresh \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-2xs, 10px\);[^}]*line-height:\s*15px;/s,
+      /\.SettingsUsageRefresh \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-2xs, 10px\);[^}]*line-height:\s*var\(--app-line-height-ui-2xs-15, 15px\);/s,
     );
     expect(usageSource).toContain("<OpenAIProviderIcon provider={snapshot.provider} />");
     expect(usageSource).toContain("<RefreshCwIcon");
@@ -137,7 +137,7 @@ describe("Lynx Settings section labels", () => {
       /\.SettingsUsageNoticeIcon\s*\{[^}]*width:\s*14px;[^}]*height:\s*14px;[^}]*margin-top:\s*2px;/s,
     );
     expect(usageStyles).toMatch(
-      /\.SettingsUsageNoticeText\s*\{[^}]*color:\s*var\(--settings-usage-warning-text\);[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*19\.5px;/s,
+      /\.SettingsUsageNoticeText\s*\{[^}]*color:\s*var\(--settings-usage-warning-text\);[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*var\(--app-line-height-ui-sm-19p5, 19\.5px\);/s,
     );
     expect(usageStyles).toMatch(/\.SettingsUsageDetails\s*\{[^}]*gap:\s*14px;/s);
     expect(usageSource).toContain(
@@ -162,13 +162,13 @@ describe("Lynx Settings section labels", () => {
       /\.SettingsUsagePaceDot\s*\{[^}]*width:\s*6px;[^}]*height:\s*6px;[^}]*border-radius:\s*999px;/s,
     );
     expect(usageStyles).toMatch(
-      /\.SettingsUsageMetaText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*16\.5px;/s,
+      /\.SettingsUsageMetaText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*var\(--app-line-height-ui-xs-16p5, 16\.5px\);/s,
     );
     expect(usageStyles).toMatch(
       /\.SettingsUsageTrackMarkerGap\s*\{[^}]*width:\s*8px;[^}]*margin-left:\s*-4px;[^}]*padding:\s*0 3px;/s,
     );
     expect(usageStyles).toMatch(
-      /\.SettingsUsageSubtitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*16\.5px;[^}]*opacity:\s*0\.8;/s,
+      /\.SettingsUsageSubtitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*var\(--app-line-height-ui-xs-16p5, 16\.5px\);[^}]*opacity:\s*0\.8;/s,
     );
     expect(usageStyles).toMatch(
       /\.SettingsUsageLabel,\s*\.SettingsUsageValue\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;/s,
@@ -196,10 +196,10 @@ describe("Lynx Settings section labels", () => {
       /\.SharedSettingsProviderPickerTitle\s*\{[^}]*font-size:\s*var\(--type-settings-row-title-size\);[^}]*line-height:\s*var\(--type-settings-row-title-line-height\);/s,
     );
     expect(providerStyles).toMatch(
-      /\.SharedSettingsProviderPickerItemTitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*line-height:\s*20px;/s,
+      /\.SharedSettingsProviderPickerItemTitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*line-height:\s*var\(--app-line-height-ui-lg-20, 20px\);/s,
     );
     expect(providerStyles).toMatch(
-      /\.SharedSettingsProviderPickerDescription\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
+      /\.SharedSettingsProviderPickerDescription\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*var\(--app-line-height-ui-sm-18, 18px\);/s,
     );
     expect(providerStyles).toMatch(
       /\.SharedSettingsProviderPickerStatus\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*17px;/s,

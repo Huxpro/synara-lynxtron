@@ -255,7 +255,7 @@ export function ThemePackCodeThemeControlElement(props: {
 }) {
   return (
     <Menu>
-      <MenuTrigger ariaLabel={props.ariaLabel}>
+      <MenuTrigger ariaLabel={props.ariaLabel} className="SharedThemePackCodeTrigger">
         <Button
           variant="outline"
           className="SharedThemePackCodeSelect"

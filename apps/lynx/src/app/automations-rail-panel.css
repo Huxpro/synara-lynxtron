@@ -26,7 +26,7 @@
   padding: 16px 8px 0;
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 19.5px;
+  line-height: var(--app-line-height-ui-19p5, 19.5px);
   text-align: center;
   opacity: 0.58;
 }
@@ -42,7 +42,7 @@
   padding: 4px 8px;
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 19.5px;
+  line-height: var(--app-line-height-ui-19p5, 19.5px);
   opacity: 0.58;
 }
 
@@ -78,5 +78,5 @@
   flex: 1;
   color: var(--foreground);
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 19.5px;
+  line-height: var(--app-line-height-ui-19p5, 19.5px);
 }

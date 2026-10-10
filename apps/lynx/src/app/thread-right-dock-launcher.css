@@ -48,5 +48,5 @@
   color: var(--foreground);
   font-size: var(--app-font-size-ui-lg, 14px);
   font-weight: 400;
-  line-height: 21px;
+  line-height: var(--app-line-height-ui-lg-21, 21px);
 }

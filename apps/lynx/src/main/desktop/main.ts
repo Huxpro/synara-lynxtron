@@ -20,7 +20,11 @@ import path from "path";
 import {
   appendShellLog,
   buildSynaraRelaunchArguments,
+  buildCommandAcceleratorMenuItems,
   buildModelPickerShortcutMenuItems,
+  collectMenuAccelerators,
+  type CommandAccelerator,
+  parseCommandAccelerators,
   buildSearchNavigationMenuItems,
   buildRecentViewNavigationMenuItems,
   buildTerminalInputMenuItems,
@@ -108,6 +112,9 @@ const nativeLynxtron = require("lynxtron") as {
 let mainWindow: LynxWindow | null = null;
 let searchNavigationEnabled = false;
 let modelPickerShortcutsEnabled = false;
+// Chords of the keybinding commands the renderer handles (keybindingDispatcher.lynx.tsx).
+let commandAccelerators: readonly CommandAccelerator[] = [];
+let acceptedCommandAccelerators: readonly string[] = [];
 let recentViewNavigationEnabled = false;
 let terminalInputOwner: string | null = null;
 let terminalSelectionOwner: string | null = null;
@@ -451,7 +458,7 @@ function relaunchApp(): void {
 }
 
 function installApplicationMenu(w: LynxWindow): void {
-  const menu = Menu.buildFromTemplate([
+  const template: Parameters<typeof Menu.buildFromTemplate>[0] = [
     {
       label: "Synara",
       submenu: [
@@ -672,8 +679,18 @@ function installApplicationMenu(w: LynxWindow): void {
       label: "Window",
       submenu: [{ role: "minimize" }, { role: "zoom" }, { role: "front" }],
     },
-  ]);
-  Menu.setApplicationMenu(menu);
+  ];
+  const mac = process.platform === "darwin";
+  const commandItems = buildCommandAcceleratorMenuItems(
+    commandAccelerators,
+    collectMenuAccelerators(template, mac),
+    mac,
+    (command) => dispatchShellEvent("shell:command", command),
+  );
+  const viewMenu = template.find((entry) => entry.label === "View");
+  if (viewMenu && Array.isArray(viewMenu.submenu)) viewMenu.submenu.push(...commandItems);
+  acceptedCommandAccelerators = commandItems.map((item) => item.label.slice("Command: ".length));
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
   appendShellLog(
     resolveShellPaths(
       resolveShellUserDataDir(app.getPath("userData"), process.env.SYNARA_LYNX_USER_DATA_DIR),
@@ -1068,6 +1085,14 @@ app.whenReady().then(() => {
           installApplicationMenu(w);
         }
         callback.sendReply(JSON.stringify({ ok: true }));
+      } else if (name === "shellSetCommandAccelerators") {
+        const next = parseCommandAccelerators(data?.accelerators);
+        if (JSON.stringify(next) !== JSON.stringify(commandAccelerators)) {
+          commandAccelerators = next;
+          installApplicationMenu(w);
+        }
+        // The commands whose chord the menu now owns; the rest stay with the key listener.
+        callback.sendReply(JSON.stringify({ ok: true, accepted: acceptedCommandAccelerators }));
       } else if (name === "shellSetRecentViewNavigationEnabled") {
         const enabled = data?.enabled === true;
         if (recentViewNavigationEnabled !== enabled) {

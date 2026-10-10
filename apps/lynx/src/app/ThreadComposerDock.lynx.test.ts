@@ -33,7 +33,7 @@ describe("Lynx thread composer dock fidelity", () => {
   it("centers the shared 736px composer frame inside the full chat pane", () => {
     expect(routerSource).toContain("<ComposerColumnFrameSurface>");
     expect(frameStyles).toMatch(
-      /\.ComposerColumnFrameSurfaceLynx\.ComposerColumnFrameSurfaceLynx\s*\{[^}]*width:\s*calc\(100% - 24px\);[^}]*max-width:\s*736px;[^}]*margin-left:\s*0;[^}]*margin-right:\s*0;[^}]*align-self:\s*center;/s,
+      /\.ComposerColumnFrameSurfaceLynx\.ComposerColumnFrameSurfaceLynx\s*\{[^}]*width:\s*calc\(100% - 24px\);[^}]*max-width:\s*var\(--app-chat-max-width, 736px\);[^}]*margin-left:\s*0;[^}]*margin-right:\s*0;[^}]*align-self:\s*center;/s,
     );
   });
 });

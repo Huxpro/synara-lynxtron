@@ -96,7 +96,7 @@ describe("Settings Skills fidelity", () => {
       /\.SettingsSkillsPath\s*\{[^}]*overflow:\s*hidden;[^}]*text-overflow:\s*ellipsis;[^}]*white-space:\s*nowrap;/s,
     );
     expect(styles).toMatch(
-      /\.SettingsSkillsSource,\s*\.SettingsSkillsPath,\s*\.SettingsSkillsSaving\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*16\.5px;/s,
+      /\.SettingsSkillsSource,\s*\.SettingsSkillsPath,\s*\.SettingsSkillsSaving\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*var\(--app-line-height-ui-xs-16p5, 16\.5px\);/s,
     );
     expect(styles).toMatch(
       /\.SettingsSkillsCount\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16px;/s,

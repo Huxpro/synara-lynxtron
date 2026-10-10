@@ -3,7 +3,7 @@
   z-index: 0;
   display: flex;
   width: calc(100% - 24px);
-  max-width: 736px;
+  max-width: var(--app-chat-max-width, 736px);
   min-height: 58px;
   margin: -20px auto 0;
   padding: 24px 8px 6px;
@@ -64,7 +64,7 @@
   /* Upstream's composer-row chips are `sm` buttons: `text-ui-sm` on an 18px line. */
   font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 400;
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   text-overflow: ellipsis;
   white-space: nowrap;
 }

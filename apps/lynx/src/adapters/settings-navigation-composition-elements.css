@@ -13,7 +13,7 @@
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 400;
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   padding: 4px 8px;
   opacity: 0.58;
 }
@@ -60,5 +60,5 @@
 .SharedSettingsNavigationItemLabel {
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }

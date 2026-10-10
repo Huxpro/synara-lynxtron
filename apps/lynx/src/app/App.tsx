@@ -43,6 +43,7 @@ import { resolveSliceThemeVariables, sliceThemeClassName } from "./appTheme.logi
 import { queryClient } from "./queries";
 import { SliceRouter } from "./router";
 import { SessionSync } from "./SessionSync.lynx";
+import { KeybindingDispatcher } from "./keybindingDispatcher.lynx";
 import { retryActiveSynaraQueries } from "./transportRetry.logic";
 import { shouldRefetchAfterTransportRecovery } from "./transportRecovery.logic";
 import { setLynxThemeState, subscribeLynxThemeState } from "../adapters/useTheme.lynx";
@@ -50,6 +51,8 @@ import { useSynaraTransportState } from "../data/useSynaraTransportState.lynx";
 import { MenuOverlayProvider } from "../components/ui/menu.lynx";
 import { SynaraLogo } from "../adapters/SynaraLogo.lynx";
 import "./native-fonts.css";
+import { resolveChatWidthVariables } from "./chatWidthSetting.logic";
+import { hydrateChatWidthSetting, useChatWidthSetting } from "./chatWidthSetting.lynx";
 import "./App.css";
 
 async function readPersistedAppearance(): Promise<{
@@ -197,9 +200,15 @@ export function App() {
   // One inline map on the root view: theme colours (and the colour mixes derived from
   // them) plus the typography scale. Every custom property the stylesheets read from the
   // root is concrete here; the generated stylesheets hold the same names as the fallback.
+  const chatWidth = useChatWidthSetting();
   const rootVariables = useMemo(
-    () => ({ ...themeVariables, ...typographyVariables }),
-    [themeVariables, typographyVariables],
+    () => ({
+      ...themeVariables,
+      ...typographyVariables,
+      // Upstream `useChatWidth`: the chat column's max width (Settings › Appearance).
+      ...resolveChatWidthVariables(chatWidth),
+    }),
+    [chatWidth, themeVariables, typographyVariables],
   );
 
   useEffect(() => {
@@ -209,6 +218,7 @@ export function App() {
       if (!active) return;
       setAppearance(persisted.appearance);
       if (initialThemeMode === null) setThemeState(persisted.themeState);
+      hydrateChatWidthSetting();
       setStorageReady(true);
     });
     return () => {
@@ -294,6 +304,7 @@ export function App() {
         style={rootVariables}
       >
         {storageReady ? <SessionSync /> : null}
+        {storageReady ? <KeybindingDispatcher /> : null}
         <MenuOverlayProvider>
           {storageReady ? (
             <SliceRouter

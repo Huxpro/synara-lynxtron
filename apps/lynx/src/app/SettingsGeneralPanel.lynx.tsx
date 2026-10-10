@@ -7,6 +7,7 @@
 // Not rendered: upstream's Safari import button and Synara Beta card, which exist only
 //   where the Electron desktop bridge reports them supported.
 
+import { useState } from "@lynx-js/react";
 import {
   SETTINGS_GENERAL_SECTIONS,
   isSettingsGeneralOption,
@@ -24,7 +25,12 @@ import {
 } from "../adapters/SettingsGeneralCompositionElements.lynx";
 import { Button } from "../components/ui/button";
 import { toastManager } from "../components/ui/toast.lynx";
-import { webStorage } from "../platform/storage";
+import { setPersistedStorageItem, webStorage } from "../platform/storage";
+import {
+  DEFAULT_ARCHIVE_DELETES_ORPHANED_WORKTREE,
+  readArchiveDeletesOrphanedWorktree,
+  writeArchiveDeletesOrphanedWorktree,
+} from "./archiveWorktreeSetting.logic";
 
 const NOT_AVAILABLE = "is not available in the Native app yet";
 
@@ -34,19 +40,21 @@ const UPSTREAM_ROW_DESCRIPTIONS: Partial<Record<SettingsGeneralKey, string>> = {
     "Provider used for new chats until you pick a model. New chats then reuse your most recent model and options.",
 };
 
+/** Upstream's row (`renderBooleanSettingRow` in routes/_chat.settings.tsx). */
+const ARCHIVE_WORKTREE_ROW = {
+  title: "Delete worktree on archive",
+  description:
+    "After Archive's Undo period, remove a clean worktree only if the task has stopped and no other task uses it. Its branch remains available for recovery.",
+  resetLabel: "delete worktree on archive",
+} as const;
+
 /**
- * Upstream rows whose behavior the Native app does not implement yet. They show the stored
- * value (the setting is shared with Electron through app settings) and cannot be changed
- * here, so the switch never promises a behavior this renderer would not honor.
+ * An upstream row whose behavior the Native app does not implement yet: Native's transcript
+ * follows the reply at the bottom and has no tail anchor (upstream `useChatTurnFollowUps`).
+ * The row shows the stored value and cannot be changed here, so the switch never promises
+ * a behavior this renderer would not honor.
  */
 const UNPORTED_BOOLEAN_ROWS = [
-  {
-    settingKey: "archiveDeletesOrphanedWorktree",
-    defaultValue: false,
-    title: "Delete worktree on archive",
-    description:
-      "After Archive's Undo period, remove a clean worktree only if the task has stopped and no other task uses it. Its branch remains available for recovery.",
-  },
   {
     settingKey: "anchorSentMessagesToTop",
     defaultValue: true,
@@ -66,6 +74,46 @@ function readStoredBoolean(key: string, fallback: boolean): boolean {
   } catch {
     return fallback;
   }
+}
+
+/**
+ * "Delete worktree on archive": stored in the app settings record (merged, so keys this
+ * build does not know survive) and honored by `scheduleArchiveWorktreeCleanup`.
+ */
+function ArchiveWorktreeRow() {
+  const [enabled, setEnabled] = useState(() =>
+    readArchiveDeletesOrphanedWorktree(webStorage.getItem(APP_SETTINGS_STORAGE_KEY)),
+  );
+  const change = (next: boolean) => {
+    "background only";
+    const previous = enabled;
+    setEnabled(next);
+    void setPersistedStorageItem(
+      APP_SETTINGS_STORAGE_KEY,
+      writeArchiveDeletesOrphanedWorktree(webStorage.getItem(APP_SETTINGS_STORAGE_KEY), next),
+    ).catch(() => {
+      setEnabled(previous);
+      toastManager.add({
+        type: "error",
+        title: "Changes could not be saved. Your current values are still shown.",
+      });
+    });
+  };
+  return (
+    <SettingsGeneralRowElement
+      title={ARCHIVE_WORKTREE_ROW.title}
+      description={ARCHIVE_WORKTREE_ROW.description}
+      resetLabel={ARCHIVE_WORKTREE_ROW.resetLabel}
+      changed={enabled !== DEFAULT_ARCHIVE_DELETES_ORPHANED_WORKTREE}
+      onReset={() => change(DEFAULT_ARCHIVE_DELETES_ORPHANED_WORKTREE)}
+    >
+      <SettingsGeneralBooleanControlElement
+        checked={enabled}
+        ariaLabel={ARCHIVE_WORKTREE_ROW.title}
+        onChange={change}
+      />
+    </SettingsGeneralRowElement>
+  );
 }
 
 function announceUnavailable(feature: string) {
@@ -126,6 +174,8 @@ export function SettingsGeneralPanel(props: {
     key: Key,
     value: SettingsGeneralValues[Key],
   ) => void;
+  /** Bumped by "Restore defaults", which also rewrites the rows this panel stores itself. */
+  readonly resetRevision?: number;
 }) {
   return (
     <SettingsGeneralRootElement>
@@ -150,6 +200,7 @@ export function SettingsGeneralPanel(props: {
             ))}
             {coreDefaults ? (
               <>
+                <ArchiveWorktreeRow key={props.resetRevision ?? 0} />
                 {UNPORTED_BOOLEAN_ROWS.map((row) => (
                   <SettingsGeneralRowElement
                     key={row.settingKey}

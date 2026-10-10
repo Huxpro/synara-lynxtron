@@ -6,7 +6,7 @@ import {
   resolveLatestProjectTargetIdWithFallback,
   resolveNewThreadTarget,
 } from "@synara-web/lib/projectShortcutTargets";
-import { useCallback, useEffect, useMemo, useState } from "@lynx-js/react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "@lynx-js/react";
 import {
   buildProjectContextMenuItems,
   buildSpaceContextMenuItems,
@@ -28,6 +28,10 @@ import terminalSvg from "@synara-central-icons/console.svg?raw";
 import worktreeSvg from "@synara-central-icons/arrow-split-right.svg?raw";
 
 import { SidebarPrimaryNavigation } from "@synara-web/components/SidebarPrimaryNavigation";
+import {
+  registerThreadContextMenu,
+  type ThreadContextMenuOptions,
+} from "@synara-web/lib/threadContextMenu";
 import { SidebarGlyph } from "@synara-web/components/sidebarGlyphs";
 import { splitShortcutLabel } from "@synara-web/keybindings";
 import { resolveSidebarPrimarySurface } from "@synara-web/components/SidebarSurface.logic";
@@ -38,14 +42,12 @@ import { SidebarThreadRowComposition } from "@synara-web/components/SidebarThrea
 import { shouldShowSidebarThreadProviderIdentity } from "@synara-web/components/SidebarThreadProviderIdentity";
 import { resolveSidebarThreadMetaDescriptors } from "@synara-web/components/SidebarThreadMetaModel.logic";
 import { SidebarThreadTrailingCluster } from "@synara-web/components/SidebarThreadTrailingCluster";
-import {
-  resolveSidebarProjectStatus,
-  resolveSidebarStatusPresentation,
-} from "@synara-web/components/SidebarStatus.logic";
+import { resolveSidebarStatusPresentation } from "@synara-web/components/SidebarStatus.logic";
 import { resolveSidebarProjectsSectionState } from "@synara-web/components/SidebarProjectsState.logic";
 import { resolveSidebarThreadRowModel } from "@synara-web/components/SidebarThreadRowModel.logic";
 import {
   findDeepestWorkspaceRootMatch,
+  resolveProjectStatusIndicator,
   resolveThreadHoverCardMetadata,
 } from "@synara-web/components/Sidebar.logic";
 import { getFallbackThreadIdAfterDelete } from "@synara-web/components/SidebarThreadSort.logic";
@@ -149,6 +151,7 @@ import { clipboard } from "../../platform/clipboard";
 import { platformWindow } from "../../platform/window";
 import { platformTerminal } from "../../platform/terminal";
 import { removeRightDockThreadState } from "../../app/rightDockState.lynx";
+import { scheduleArchiveWorktreeCleanup } from "../../app/archiveWorktreeCleanup.lynx";
 import {
   buildNativeThreadContextCommand,
   isThreadContextMenuActionId,
@@ -167,6 +170,10 @@ import { LYNX_SIDEBAR_PRIMARY_ICONS } from "./SidebarPrimaryIcons.lynx";
 import { SidebarHoverAction, SidebarNavigationRow } from "./SidebarNavigationRow.lynx";
 import { SidebarSurfaceHeader } from "./SidebarSurfaceHeader.lynx";
 import { SidebarActivityView } from "./SidebarActivityView.lynx";
+import {
+  sidebarPendingApprovalColorClass,
+  sidebarTrailingClusterStatus,
+} from "./sidebarStatusGlyph.logic";
 import { useThreadSettledOverrides } from "./useThreadSettledOverrides.lynx";
 import { hasUnreadActivity as hasUnreadActivityOutsideActiveThread } from "@synara-web/components/SidebarActivityView.logic";
 import folderClosedSvg from "@synara-central-icons/folder-2.svg?raw";
@@ -284,7 +291,7 @@ function SidebarThreadTrailing({ thread }: { readonly thread: ThreadSummary }) {
             ))
           : null
       }
-      status={status}
+      status={sidebarTrailingClusterStatus(status)}
     />
   );
 }
@@ -615,9 +622,12 @@ export function Sidebar({
     workspaceRoot: string,
     position: { readonly x: number; readonly y: number },
     restoreFocus: () => void,
+    // Rows another surface adds to this menu (the open-thread tabs' close rows), as upstream.
+    options?: ThreadContextMenuOptions,
   ) {
     "background only";
     const isPinned = thread.isPinned === true || persistedPinnedThreadIds.includes(thread.id);
+    const extraItems = options?.extraItems ?? [];
     const { showContextMenu } = await import(
       /* webpackMode: "eager" */ "../../platform/contextMenu"
     );
@@ -638,6 +648,7 @@ export function Sidebar({
         })),
         copyPathAvailable: workspaceRoot.length > 0,
         openPathInTerminalAvailable: workspaceRoot.length > 0,
+        extraItems,
         archiveAvailable: !thread.live,
         deleteAvailable: !thread.live,
       }),
@@ -645,6 +656,10 @@ export function Sidebar({
       { restoreFocus },
     )) as string | null;
     if (!action) return;
+    if (extraItems.some((item) => item.id === action)) {
+      await options?.onExtraAction?.(action);
+      return;
+    }
     if (action === "rename") {
       setRenameThreadId(thread.id);
       return;
@@ -677,6 +692,28 @@ export function Sidebar({
     if (!isThreadContextMenuActionId(action)) return;
     await performThreadAction(thread, workspaceRoot, action);
   }
+
+  // Upstream's lib/threadContextMenu: other surfaces open this menu for a thread they show.
+  const openThreadContextMenuRef = useRef(openThreadContextMenu);
+  openThreadContextMenuRef.current = openThreadContextMenu;
+  const threadContextMenuSourceRef = useRef({ threads: data?.threads, sections });
+  threadContextMenuSourceRef.current = { threads: data?.threads, sections };
+  useEffect(() => {
+    "background only";
+    return registerThreadContextMenu(async (threadId, position, options) => {
+      const source = threadContextMenuSourceRef.current;
+      const thread = source.threads?.find((candidate) => candidate.id === threadId);
+      if (!thread) return;
+      await openThreadContextMenuRef.current(
+        thread,
+        source.sections.projectGroups.find((group) => group.id === thread.projectId)
+          ?.workspaceRoot ?? "",
+        position,
+        () => {},
+        options,
+      );
+    });
+  }, []);
 
   async function cleanupDeletedThreadState(threadId: import("@synara/contracts").ThreadId) {
     "background only";
@@ -752,7 +789,10 @@ export function Sidebar({
       threadId: thread.id,
     });
     if (!command) return;
-    await ensureNativeApi().orchestration.dispatchCommand(command);
+    const receipt = await ensureNativeApi().orchestration.dispatchCommand(command);
+    if (command.type === "thread.archive") {
+      scheduleArchiveWorktreeCleanup({ threadId: thread.id, archiveSequence: receipt.sequence });
+    }
 
     if (action === "toggle-pin") {
       const { usePinnedThreadsStore } = await import(
@@ -1335,7 +1375,7 @@ export function Sidebar({
           working: thread.live,
           connecting: thread.sessionStatus === "connecting",
         }),
-      resolveProjectStatus: resolveSidebarProjectStatus,
+      resolveProjectStatus: resolveProjectStatusIndicator,
       threadListExtraPagesByProjectCwd: new Map(Object.entries(projectExtraPagesByCwd)),
       normalizeProjectCwd: normalizeSidebarProjectThreadListCwd,
       activeThreadId: activeThreadId ?? undefined,
@@ -1673,6 +1713,7 @@ export function Sidebar({
                           isActive={rowModel.isActive}
                           variant="pinned"
                           subagentIndentPx={rowModel.subagentIndentPx}
+                          pendingStatusColorClass={sidebarPendingApprovalColorClass(thread.status)}
                           suffix={<SidebarThreadTrailing thread={thread} />}
                         />
                       </SidebarNavigationRow>
@@ -1718,6 +1759,9 @@ export function Sidebar({
                             isActive={rowModel.isActive}
                             variant="standard"
                             subagentIndentPx={Math.max(rowModel.subagentIndentPx, depth * 10)}
+                            pendingStatusColorClass={sidebarPendingApprovalColorClass(
+                              thread.status,
+                            )}
                             suffix={<SidebarThreadTrailing thread={thread} />}
                           />
                         </SidebarNavigationRow>
@@ -1899,7 +1943,7 @@ export function Sidebar({
                                       <ProjectRunIndicatorDot />
                                     ) : null
                                   }
-                                  status={collapsedProjectStatus}
+                                  status={sidebarTrailingClusterStatus(collapsedProjectStatus)}
                                 />
                               ) : null}
                             </SidebarNavigationRow>
@@ -1940,6 +1984,9 @@ export function Sidebar({
                                   isActive={rowModel.isActive}
                                   variant="standard"
                                   subagentIndentPx={Math.max(rowModel.subagentIndentPx, depth * 10)}
+                                  pendingStatusColorClass={sidebarPendingApprovalColorClass(
+                                    thread.status,
+                                  )}
                                   suffix={<SidebarThreadTrailing thread={thread} />}
                                 />
                               </SidebarNavigationRow>
@@ -2029,6 +2076,7 @@ export function Sidebar({
                     isActive={rowModel.isActive}
                     variant="standard"
                     subagentIndentPx={Math.max(rowModel.subagentIndentPx, depth * 10)}
+                    pendingStatusColorClass={sidebarPendingApprovalColorClass(thread.status)}
                     suffix={<SidebarThreadTrailing thread={thread} />}
                   />
                 </SidebarNavigationRow>

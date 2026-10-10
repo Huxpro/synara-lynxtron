@@ -50,6 +50,17 @@ describe("Diff Dock chrome fidelity", () => {
     }
   });
 
+  it("steps Previous/Next change with upstream's adjacent-file logic from the visible file", () => {
+    const source = readFileSync(new URL("./DiffDock.lynx.tsx", import.meta.url), "utf8");
+    expect(source).toContain(
+      'import { resolveAdjacentDiffFilePath } from "@synara-web/components/DiffPanel.logic";',
+    );
+    expect(source).toContain("const activeFilePath = visibleFilePath ?? selectedFilePath;");
+    expect(source).toContain("disabled={previousChangePath === null}");
+    expect(source).toContain("disabled={nextChangePath === null}");
+    expect(source).toContain("bindscroll={handlePatchScroll}");
+  });
+
   it("uses Web neutral hover material for close and retry controls", () => {
     const styles = readFileSync(new URL("./diff-dock.css", import.meta.url), "utf8");
 

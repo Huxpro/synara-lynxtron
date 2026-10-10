@@ -68,7 +68,7 @@ npm 包默认看到真实运行时，只有一个例外：`@tanstack/query-core`
 5. **Lynx 不自建数据通道。** 读写都走上游的 `NativeApi` 门面、`store` selector 和上游的 query options，使用上游的 query key。不新增轮询，不新增 `synaraClient` 中继函数。
 6. **破坏性操作读权威数据。** 删除、强制清理之类的操作在决定前向服务器取一次最新快照，不依赖可能过期的 `store`。
 7. **Lynx 专属代码只在专属层。** `apps/lynx/src/{adapters,platform,main,data}` 和 `*.lynx.*` 文件。
-8. **生成物不手改。** `src/generated/eventRouter.generated.tsx` 由 `scripts/generate-event-router.mjs` 从上游的 `routes/__root.tsx` 生成。`src/generated/diffChangeMarkers.generated.ts` 由 `scripts/generate-diff-change-markers.mjs` 用同一个抽取器从 `DiffPanelChangeMarkers.tsx` 生成，`--check` 同样挂在 `typecheck` 和 `audit:reuse:check` 上。上游改了就重新生成；生成器不认识的形状要扩展生成器并加测试。与上游逐字不同的地方只能来自 `scripts/event-router-patches.mjs` 里带守卫的补丁。
+8. **生成物不手改。** `src/generated/eventRouter.generated.tsx` 由 `scripts/generate-event-router.mjs` 从上游的 `routes/__root.tsx` 生成。`src/generated/diffChangeMarkers.generated.ts` 由 `scripts/generate-diff-change-markers.mjs` 用同一个抽取器从 `DiffPanelChangeMarkers.tsx` 生成，`--check` 同样挂在 `typecheck` 和 `audit:reuse:check` 上。`src/generated/hugeicons.generated.ts` 由 `scripts/generate-hugeicons.mjs` 生成：用一个输出 SVG 字符串的 JSX 工厂执行上游的 `lib/hugeicons.tsx`，按 `lib/icons.tsx` 的导出名存放，同样有 `--check`。上游改了就重新生成；生成器不认识的形状要扩展生成器并加测试。与上游逐字不同的地方只能来自 `scripts/event-router-patches.mjs` 里带守卫的补丁。
 9. **持久化的 store 在存储就绪后才可写。** Lynx 的本地存储是异步加载的，共享 store 的初始化和写入必须在 `persistedStoreHydration` 边界之后。
 10. **依赖解析跟随上游。** `bun.lock` 以上游的为基础，用上游固定的 bun 版本生成。Lynx 与 Web 共用的包，Lynx 的版本范围不得高于 Web 的范围；Lynx 构建工具链的版本单独钉住。
 

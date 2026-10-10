@@ -50,7 +50,7 @@ import type {
   TurnId,
   RuntimeMode,
 } from "@synara/contracts";
-import type { SidebarStatusPresentation } from "@synara-web/components/SidebarStatus.logic";
+import type { ThreadStatusPill } from "@synara-web/components/Sidebar.logic";
 import type { MessagesTimelineRow } from "@synara-web/components/chat/MessagesTimeline.logic";
 import { threadHasProviderLockingActivity } from "@synara-web/components/ChatView.logic";
 import {
@@ -108,7 +108,7 @@ export interface ThreadSummary {
   readonly worktreePath?: string | null;
   readonly associatedWorktreePath?: string | null;
   readonly associatedWorktreeBranch?: string | null;
-  readonly status?: SidebarStatusPresentation | null;
+  readonly status?: ThreadStatusPill | null;
 }
 
 export interface ProjectSummary {

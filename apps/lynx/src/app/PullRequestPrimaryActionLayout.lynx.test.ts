@@ -19,7 +19,7 @@ describe("Pull Request primary action layout fidelity", () => {
       /\.SharedPrHeaderPrimaryAction\s*\{[^}]*min-height:\s*28px;[^}]*height:\s*28px;[^}]*padding:\s*0 12px;[^}]*border-radius:\s*8px;/s,
     );
     expect(styles).toMatch(
-      /\.SharedPrHeaderPrimaryAction \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;[^}]*font-weight:\s*400;/s,
+      /\.SharedPrHeaderPrimaryAction \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*var\(--app-line-height-ui-sm-18, 18px\);[^}]*font-weight:\s*400;/s,
     );
     expect(styles).not.toMatch(/\.SharedPrActionBar\s*\{/);
   });

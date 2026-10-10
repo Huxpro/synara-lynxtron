@@ -25,7 +25,7 @@
   flex: 1;
   color: var(--foreground);
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-18, 18px);
   word-break: break-word;
 }
 

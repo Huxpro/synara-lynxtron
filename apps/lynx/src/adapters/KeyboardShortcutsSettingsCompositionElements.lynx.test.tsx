@@ -15,7 +15,7 @@ describe("Keyboard Shortcuts settings anatomy", () => {
       /\.SharedKeyboardShortcutsHeader\s*\{[^}]*padding:\s*8px 12px;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s,
     );
     expect(styles).toMatch(
-      /\.SharedKeyboardShortcutsHeaderText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*16\.5px;/s,
+      /\.SharedKeyboardShortcutsHeaderText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*var\(--app-line-height-ui-xs-16p5, 16\.5px\);/s,
     );
     expect(styles).toMatch(
       /\.SharedKeyboardShortcutsRow\s*\{[^}]*min-height:\s*59px;[^}]*padding:\s*10px 12px;[^}]*border-bottom-width:\s*1px;[^}]*border-bottom-style:\s*solid;[^}]*border-bottom-color:\s*var\(--border\);/s,

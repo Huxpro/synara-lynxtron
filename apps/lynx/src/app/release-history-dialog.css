@@ -135,12 +135,12 @@
 
 .SettingsAdvancedReleaseFeatureDescription {
   font-size: var(--app-font-size-ui-lg, 14px);
-  line-height: 22.75px;
+  line-height: var(--app-line-height-ui-lg-22p75, 22.75px);
 }
 
 .SettingsAdvancedReleaseFeatureDetails {
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 19.5px;
+  line-height: var(--app-line-height-ui-sm-19p5, 19.5px);
 }
 
 .SettingsAdvancedReleaseFeatureDetails {
@@ -157,7 +157,7 @@
   color: #111111;
   font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .SliceRoot--viewport-short-height .LxDialogPopup.SettingsAdvancedReleaseDialog {

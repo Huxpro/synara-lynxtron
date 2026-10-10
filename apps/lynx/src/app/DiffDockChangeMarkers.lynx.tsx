@@ -112,16 +112,22 @@ export function DiffDockChangeMarkers(props: {
 
   if (markers.length === 0) return null;
 
+  // Upstream's strip is `pointer-events-none` with `pointer-events-auto` ticks. On Lynx a
+  // view takes the tap for its whole box whatever its `pointer-events`, and
+  // `user-interaction-enabled={false}` switches off its children too, so the labeled strip
+  // refuses touch and the ticks are its siblings, laid over the same 6px column.
   return (
-    <view
-      className="DiffDockChangeMarkers"
-      accessibility-element={true}
-      accessibility-label="Change markers"
-      accessibility-trait="none"
-    >
+    <>
+      <view
+        className="DiffDockChangeMarkers"
+        user-interaction-enabled={false}
+        accessibility-element={true}
+        accessibility-label="Change markers"
+        accessibility-trait="none"
+      />
       {markers.map((marker) => (
         <ChangeMarker key={marker.path} marker={marker} onSelectFilePath={props.onSelectFilePath} />
       ))}
-    </view>
+    </>
   );
 }

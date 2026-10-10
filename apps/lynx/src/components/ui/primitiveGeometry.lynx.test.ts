@@ -34,16 +34,16 @@ describe("shared primitive geometry", () => {
 
   it("matches the Electron text line boxes across the Button size axis", () => {
     expect(css).toMatch(
-      /\.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*18px;/s,
+      /\.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*var\(--app-line-height-ui-sm-18, 18px\);/s,
     );
     expect(css).toMatch(
-      /\.LxButton--xs \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-2xs, 10px\);[^}]*line-height:\s*15px;/s,
+      /\.LxButton--xs \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-2xs, 10px\);[^}]*line-height:\s*var\(--app-line-height-ui-2xs-15, 15px\);/s,
     );
     expect(css).toMatch(
-      /\.LxButton--xl \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui, 13px\);[^}]*line-height:\s*19\.5px;/s,
+      /\.LxButton--xl \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui, 13px\);[^}]*line-height:\s*var\(--app-line-height-ui-19p5, 19\.5px\);/s,
     );
     expect(css).toMatch(
-      /\.LxButton--chip \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*16\.5px;/s,
+      /\.LxButton--chip \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*var\(--app-line-height-ui-xs-16p5, 16\.5px\);/s,
     );
   });
 
@@ -74,8 +74,15 @@ describe("shared primitive geometry", () => {
     // (generated for the default pack, evaluated at run time for any other); App.css no
     // longer pins it to one pack's accent.
     expect(app).not.toContain("--control-focus-ring-color:");
-    expect(app).toContain("--control-input-focus-border: rgba(13, 13, 13, 0.3);");
-    expect(app).toContain("--control-input-focus-border: rgba(252, 252, 252, 0.3);");
+    // The input focus border comes from the root inline map, with the generated colour-mix
+    // stylesheet as the static fallback; App.css keeps no copy.
+    const colorMix = readFileSync(
+      new URL("../../generated/native-color-mix-variables.css", import.meta.url),
+      "utf8",
+    );
+    expect(app).not.toContain("--control-input-focus-border:");
+    expect(colorMix).toContain("--control-input-focus-border: rgba(13, 13, 13, 0.3);");
+    expect(colorMix).toContain("--control-input-focus-border: rgba(252, 252, 252, 0.3);");
     expect(css.match(/opacity:\s*var\(--control-disabled-opacity\);/g)).toHaveLength(6);
     expect(css).toMatch(
       /\.LxButton\.ui-focus\s*\{[^}]*box-shadow:[^;]*var\(--control-focus-ring-color\);/s,
@@ -96,7 +103,7 @@ describe("shared primitive geometry", () => {
       /\.LxTooltipPopup--picker\s*\{[^}]*border-radius:\s*10\.4px;[^}]*box-shadow:/s,
     );
     expect(css).toMatch(
-      /\.LxTooltipText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*16\.5px;/s,
+      /\.LxTooltipText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*var\(--app-line-height-ui-xs-16p5, 16\.5px\);/s,
     );
     expect(tooltip).toContain('props.variant === "picker" && "LxTooltipPopup--picker"');
   });

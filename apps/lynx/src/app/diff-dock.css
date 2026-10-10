@@ -427,7 +427,7 @@
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -435,7 +435,7 @@
 .DiffDockStats {
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .DiffDockActiveStats {
@@ -528,7 +528,7 @@
   background-color: var(--muted);
   font-size: var(--app-font-size-ui-xs, 11px);
   font-weight: 500;
-  line-height: 16.5px;
+  line-height: var(--app-line-height-ui-xs-16p5, 16.5px);
 }
 
 .DiffDockSourceMenu {
@@ -772,7 +772,10 @@
   padding-bottom: 8px;
 }
 
-/* Upstream DiffPanelChangeMarkers: `absolute inset-y-0 right-[10px] w-[6px]`. */
+/* Upstream DiffPanelChangeMarkers: `pointer-events-none absolute inset-y-0 right-[10px] w-[6px]`.
+   The strip lies over the patch's right edge for its whole height, so only its ticks may
+   take a tap: the strip refuses touch (`user-interaction-enabled` in the component, and
+   `pointer-events` for the browser host) and the ticks are its siblings in the same column. */
 .DiffDockChangeMarkers {
   position: absolute;
   top: 0;
@@ -780,12 +783,14 @@
   bottom: 0;
   z-index: 10;
   width: 6px;
+  pointer-events: none;
 }
 
 .DiffDockChangeMarker {
   position: absolute;
-  left: 0;
-  width: 100%;
+  right: 10px;
+  z-index: 10;
+  width: 6px;
   border-radius: 9999px;
   opacity: 0.7;
 }
@@ -932,7 +937,7 @@
 .DiffDockStateText {
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .DiffDockRetry {
@@ -953,7 +958,7 @@
 .DiffDockRetryText {
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .DiffDockFileJumpViewport {

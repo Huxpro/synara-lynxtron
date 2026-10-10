@@ -22,7 +22,7 @@ describe("Settings Appearance fidelity", () => {
     expect(styles).toMatch(/\.SharedSettingsAppearanceRoot\s*\{[^}]*gap:\s*24px;/s);
     expect(styles).toMatch(/\.SharedSettingsAppearanceSection\s*\{[^}]*gap:\s*6px;/s);
     expect(styles).toMatch(
-      /\.SharedSettingsAppearanceSectionTitle\s*\{[^}]*padding:\s*4px 8px;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*400;[^}]*line-height:\s*18px;/s,
+      /\.SharedSettingsAppearanceSectionTitle\s*\{[^}]*padding:\s*4px 8px;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*400;[^}]*line-height:\s*var\(--app-line-height-ui-sm-18, 18px\);/s,
     );
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceRow\s*\{[^}]*padding:\s*var\(--app-density-settings-row-padding-y,\s*0\.625rem\) 12px;/s,

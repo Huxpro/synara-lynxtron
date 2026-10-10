@@ -48,7 +48,7 @@
   overflow: hidden;
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   text-overflow: ellipsis;
   white-space: normal;
 }
@@ -121,14 +121,14 @@
   color: var(--foreground);
   font-size: var(--app-font-size-ui, 13px);
   font-weight: 500;
-  line-height: 17.875px;
+  line-height: var(--app-line-height-ui-17p875, 17.875px);
 }
 
 .ThreadErrorBannerDescription {
   margin-top: 2px;
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 17.875px;
+  line-height: var(--app-line-height-ui-17p875, 17.875px);
 }
 
 .ThreadErrorBannerActions {
@@ -163,5 +163,5 @@
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-xs, 11px);
   font-weight: 500;
-  line-height: 15.125px;
+  line-height: var(--app-line-height-ui-xs-15p125, 15.125px);
 }

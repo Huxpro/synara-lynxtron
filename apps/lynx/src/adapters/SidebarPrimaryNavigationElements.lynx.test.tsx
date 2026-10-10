@@ -49,7 +49,7 @@ describe("sidebar primary navigation shortcut", () => {
     expect(sidebarStyles).not.toMatch(/\.AppSidebarPrimaryNav\s*\{[^}]*margin-bottom:/s);
     expect(sidebarStyles).toMatch(/\.SharedSidebarProjectsRoot,[^{]*\{[^}]*padding:\s*6px;/s);
     expect(sidebarStyles).toMatch(
-      /\.SharedSidebarProjectsState\s*\{[^}]*padding:\s*16px 8px 0;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
+      /\.SharedSidebarProjectsState\s*\{[^}]*padding:\s*16px 8px 0;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*var\(--app-line-height-ui-sm-18, 18px\);/s,
     );
     expect(sidebarStyles).toMatch(/\.SharedSidebarChatsRoot\s*\{[^}]*padding:\s*4px 6px 8px;/s);
     expect(sidebarStyles).toMatch(
@@ -94,7 +94,7 @@ describe("sidebar primary navigation shortcut", () => {
       /\.SharedSidebarPrimaryActionButton\.ui-pressed\s*\{[^}]*opacity:/s,
     );
     expect(sectionHeaderStyles).toMatch(
-      /\.SharedSidebarListSectionHeaderText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui,\s*12px\);[^}]*line-height:\s*18px;[^}]*font-weight:\s*400;[^}]*opacity:\s*0\.58;/s,
+      /\.SharedSidebarListSectionHeaderText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui,\s*12px\);[^}]*line-height:\s*var\(--app-line-height-ui-18, 18px\);[^}]*font-weight:\s*400;[^}]*opacity:\s*0\.58;/s,
     );
     expect(sidebarSource).toContain(
       "shortcutParts: splitShortcutLabel(LYNX_PRIMARY_SHORTCUT_LABELS.newThread),",

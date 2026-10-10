@@ -68,7 +68,7 @@
   max-width: 260px;
   overflow: hidden;
   font-size: var(--app-font-size-ui-xs, 11px);
-  line-height: 16.5px;
+  line-height: var(--app-line-height-ui-xs-16p5, 16.5px);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -115,7 +115,7 @@
 
 .ComposerProjectPickerSearchLynx .LxInput {
   font-size: var(--app-font-size-ui-xs, 11px);
-  line-height: 16.5px;
+  line-height: var(--app-line-height-ui-xs-16p5, 16.5px);
 }
 
 .ComposerProjectPickerListLynx {

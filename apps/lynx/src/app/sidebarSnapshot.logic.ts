@@ -10,7 +10,7 @@ import type {
   ProjectId,
 } from "@synara/contracts";
 import { isThreadActivelyWorking } from "@synara-web/components/SidebarThreadSort.logic";
-import { resolveThreadStatusPill } from "@synara-web/components/SidebarThreadStatus.logic";
+import { resolveThreadStatusPill } from "@synara-web/components/Sidebar.logic";
 import {
   projectSidebarSearchProject,
   projectSidebarSearchThreads,
@@ -33,7 +33,17 @@ export interface SidebarSnapshotLocalInputs {
   /** Message windows for the search palette; a Lynx-only server read. */
   readonly searchSnapshot: OrchestrationSidebarSearchSnapshot | undefined;
   readonly dismissedThreadStatusKeyByThreadId: Readonly<Record<string, string>>;
+  /**
+   * Threads with a composer send in flight (upstream `composerSendOwnership`): a worktree
+   * thread among them with no turn and no session yet reads "Preparing worktree".
+   */
+  readonly activeComposerSendThreadIds?: ReadonlySet<string>;
 }
+
+type SidebarSnapshotProjectionLocalInputs = Pick<
+  SidebarSnapshotLocalInputs,
+  "searchSnapshot" | "dismissedThreadStatusKeyByThreadId" | "activeComposerSendThreadIds"
+>;
 
 /** What the sidebar shows of an archived thread shell, before project names and counts. */
 interface ArchivedThreadBase {
@@ -149,7 +159,7 @@ function keepEqualRows<Row extends object>(
 
 function projectSidebarSnapshotFromInputs(
   inputs: SidebarSnapshotInputs,
-  local: Pick<SidebarSnapshotLocalInputs, "searchSnapshot" | "dismissedThreadStatusKeyByThreadId">,
+  local: SidebarSnapshotProjectionLocalInputs,
 ): SidebarSnapshot {
   const { projects, spaces, displayThreads, messageCountByThreadId } = inputs;
   const projectNames = new Map(projects.map((project) => [project.id, project.name]));
@@ -200,6 +210,12 @@ function projectSidebarSnapshotFromInputs(
       },
       hasPendingApprovals: thread.hasPendingApprovals,
       hasPendingUserInput: thread.hasPendingUserInput,
+      // Upstream `resolveThreadStatusForSidebar` (components/Sidebar.tsx).
+      isPreparingWorktree:
+        local.activeComposerSendThreadIds?.has(thread.id) === true &&
+        thread.envMode === "worktree" &&
+        thread.latestTurn === null &&
+        thread.session === null,
     }),
   }));
   const archivedThreads = inputs.archivedThreads.map((thread) => ({
@@ -279,7 +295,7 @@ function projectSidebarSnapshotFromInputs(
 /** One-off projection of a store state (no memoization). */
 export function projectSidebarSnapshot(
   state: AppState,
-  local: Pick<SidebarSnapshotLocalInputs, "searchSnapshot" | "dismissedThreadStatusKeyByThreadId">,
+  local: SidebarSnapshotProjectionLocalInputs,
 ): SidebarSnapshot {
   return projectSidebarSnapshotFromInputs(
     reduceSidebarSnapshotInputs(state, {
@@ -299,7 +315,7 @@ export function projectSidebarSnapshot(
 export function projectFreshSidebarSnapshot(
   state: AppState,
   shell: OrchestrationShellSnapshot,
-  local: Pick<SidebarSnapshotLocalInputs, "searchSnapshot" | "dismissedThreadStatusKeyByThreadId">,
+  local: SidebarSnapshotProjectionLocalInputs,
 ): SidebarSnapshot {
   return projectSidebarSnapshot(syncServerShellSnapshot(state, shell), local);
 }

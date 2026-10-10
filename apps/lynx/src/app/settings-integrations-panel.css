@@ -94,7 +94,7 @@
 .SettingsIntegrationsPermissionDescription {
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-xs, 11px);
-  line-height: 17.875px;
+  line-height: var(--app-line-height-ui-xs-17p875, 17.875px);
 }
 
 .SettingsIntegrationsNameInput {

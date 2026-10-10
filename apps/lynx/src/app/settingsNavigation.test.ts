@@ -132,8 +132,8 @@ describe("shared settings navigation projection", () => {
     expect(source).toContain(
       '"Desktop app notifications use your operating system notification center."',
     );
-    // Native has fixed highlighter themes, host font smoothing and one time format, so the
-    // Appearance panel offers none of the three.
+    // Native has host font smoothing and one time format, so the Appearance panel offers
+    // neither. The code theme select seeds the pack with upstream's reducer.
     const appearanceSource = readFileSync(
       new URL("./SettingsAppearancePanel.lynx.tsx", import.meta.url),
       "utf8",
@@ -142,7 +142,11 @@ describe("shared settings navigation projection", () => {
       new URL("./ThemePackEditor.lynx.tsx", import.meta.url),
       "utf8",
     );
-    expect(editorSource).not.toContain("ThemePackCodeThemeControlElement");
+    expect(editorSource).toContain("<ThemePackCodeThemeControlElement");
+    expect(editorSource).toContain("ariaLabel={`${title} code theme`}");
+    expect(appearanceSource).toContain(
+      "props.onThemeStateChange(setThemeCodeThemeId(themeState, variant, codeThemeId))",
+    );
     expect(appearanceSource).not.toContain("enableNativeFontSmoothing");
     expect(appearanceSource).not.toContain("timestampFormat");
     const sidebarSource = readFileSync(

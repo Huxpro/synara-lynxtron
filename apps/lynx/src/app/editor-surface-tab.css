@@ -130,7 +130,7 @@
 .EditorSurfaceTab--content .EditorSurfaceTabLabel {
   flex: 1;
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .EditorSurfaceTab--content .EditorSurfaceTabIconSlot svg {

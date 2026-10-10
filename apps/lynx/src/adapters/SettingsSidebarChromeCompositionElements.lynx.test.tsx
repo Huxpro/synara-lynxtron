@@ -47,7 +47,7 @@ describe("Lynx Settings search input", () => {
 
     expect(webStyles).toContain("font-normal");
     expect(styles).toMatch(
-      /\.SharedSettingsSidebarBackLabel\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*400;[^}]*line-height:\s*18px;/s,
+      /\.SharedSettingsSidebarBackLabel\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*400;[^}]*line-height:\s*var\(--app-line-height-ui-sm-18, 18px\);/s,
     );
     expect(styles).toMatch(
       /\.SharedSettingsSidebarSearch\s*>\s*\.SharedSettingsSidebarSearchIcon\s*\{[^}]*opacity:\s*0\.7;/s,

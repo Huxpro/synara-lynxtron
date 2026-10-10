@@ -100,7 +100,11 @@ node scripts/message-formats-desktop.mjs --thread failed --out "$OUT" --blocks -
 ```
 
 - Run the standard cell matrix and the workflows on a launch without `--message-formats`: the extra threads change the sidebar.
-- The measurer travels on Native through the message trail (one stop per user message), not by dragging. On the main fixture thread a DevTool finger drag that brings an unmeasured tall row into range sends the list to its top, and at the top a downward drag does not move it. Not yet reproduced with a real wheel; tracked in the issue.
+- The measurer travels on Native through the message trail (one stop per user message), not by dragging. A DevTool finger drag is a press and a move, and on this desktop host a press and a move that start on selectable message text (`<text text-selection>`: assistant markdown and user bubbles) begin a text selection instead of a pan. The list then goes to its top in one scroll event (`scrollTop` 4928 → 4, `eventSource` 2), and at the top the viewport's centre is over the first answer's text, so every further drag is the same gesture and nothing moves. Measured on the main fixture thread (2026-10-10):
+  - It is not size estimation, anchoring or the follow/detach logic: it reproduces after every row has been measured (`scrollHeight` steady at 3941) with the reader detached, and the same scroll offsets are crossed without a jump when the drag starts on a row's padding or on a card.
+  - It is not the transcript's own selection handling: it reproduces from a user bubble, which has no selection callback and draws no toolbar.
+  - A wheel or trackpad scroll has no press, so it cannot take this path. What is not known is whether a real mouse press-and-drag over message text (selecting text to copy) moves the list the same way; the DevTool has no wheel or real mouse input (`Input.dispatchMouseEvent` is not implemented), so that needs Computer Use or a person: press on a paragraph in the middle of a long thread, drag a few lines, and watch whether the list stays where it was.
+  - Row estimates are about twice the real height for long markdown answers (1950 against 831 for the first answer; `scrollHeight` 6191 before the rows are measured, 3941 after). The list corrects its offset as each row is bound, so nothing jumps, but the scroll indicator's thumb grows while scrolling up.
 - `--click-text "Worked for 13s"` expands a work log first. It works on Native; the Electron click does not land yet, so the expanded state has no Native ↔ Electron numbers.
 
 Row heights at 1280×820, dark, default chat font size (Electron / Native before / Native after the fixes of this pass). Light gives the same heights on the main and failed threads.
@@ -111,7 +115,7 @@ Row heights at 1280×820, dark, default chat font size (Electron / Native before
 | Assistant: inline markdown, lists, quote, alert, math |    842.5 |    829 |   831 | −11.5: display and inline math are source text (−10.9); the rest is −0.7                                  |
 | User: multi-line with markdown and pasted link        |      188 |    187 |   188 | Matches; the bubble is 46px wider (the link chip shows the whole address)                                 |
 | Assistant: table, code blocks, file chips, image      |   1362.6 |   1229 |  1233 | −129.6: image placeholder (−116), no horizontal scrollbar under the long line (−10), line rounding (−2.7) |
-| User: `@` mentions                                    |     84.1 |     84 |    84 | Matches; chip labels are 11px instead of 13px                                                             |
+| User: `@` mentions                                    |     84.1 |     84 |    84 | Matches                                                                                                   |
 | Assistant: collapsed work, text, changed-files card   |    320.1 |    323 |   322 | Matches (+1.9)                                                                                            |
 | User: file and image attachment                       |    186.1 |    186 |   186 | Matches in size; the image thumbnail shows the file icon                                                  |
 | Assistant: one paragraph                              |     59.1 |     59 |    59 | Matches                                                                                                   |
@@ -134,10 +138,9 @@ What differed on Native only, and where it is handled:
 
 Shared defects found on the way (also wrong on Lynx for Web): long sidebar thread titles wrapped onto the next row (now one line), and work entries inside a message row had 6px above and below (upstream has `mb-1.5` before the text and `mt-1.5` after it).
 
+Closed since (2026-10-10): mention and file chips take the text's size (`1em`; Native does not take `inherit` there), nested list markers are drawn as shapes, and a thread waiting on an approval shows upstream's "Pending" word and 6px state dot.
+
 Still open on Native:
 
 - Streaming message (−2.2): upstream's code block keeps its 10.4px bottom margin as the last child of `.chat-markdown` (its rule comes after `> :last-child`), and its footer without actions is 17.9px; Lynx drops the margin and keeps the footer at 24px.
-- Mention and file chips ignore `font-size: inherit` and stay at the base token's 11px.
 - The user image thumbnail falls back to the file icon.
-- The sidebar row of a thread with a pending approval has no "Pending" label.
-- Nested list markers: the hollow circle and the square are drawn as a small dot and a faint box.

@@ -18,6 +18,16 @@
   background-color: #8b5cf6;
 }
 
+/* Upstream StatusDot: `size-1.5` (6px), centred in the 15px trailing slot. */
+.LynxSidebarThreadStatus--attention,
+.LynxSidebarThreadStatus--decision,
+.LynxSidebarThreadStatus--idle {
+  width: 6px;
+  height: 6px;
+  margin-right: 4.5px;
+  margin-left: 4.5px;
+}
+
 .LynxSidebarThreadStatus--completed {
   width: 15px;
   height: 15px;
@@ -27,5 +37,21 @@
 .LynxSidebarThreadStatusCheck {
   width: 15px;
   height: 15px;
+  flex-shrink: 0;
+}
+
+/* Reminder clock and background-work ring: upstream's `inline-flex shrink-0` around a `size-3` glyph. */
+.LynxSidebarThreadStatusGlyph {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 12px;
+}
+
+.LynxSidebarThreadStatusRing {
+  width: 12px;
+  height: 12px;
   flex-shrink: 0;
 }

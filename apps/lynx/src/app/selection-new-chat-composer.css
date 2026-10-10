@@ -94,7 +94,7 @@
 .SelectionChatOpenLabel {
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-xs, 11px);
-  line-height: 16.5px;
+  line-height: var(--app-line-height-ui-xs-16p5, 16.5px);
   white-space: nowrap;
 }
 
@@ -126,14 +126,14 @@
   padding: 0;
   color: var(--foreground);
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 21.125px;
+  line-height: var(--app-line-height-ui-21p125, 21.125px);
 }
 
 .SelectionChatError {
   padding: 0 12px 8px;
   color: var(--destructive);
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 17.875px;
+  line-height: var(--app-line-height-ui-17p875, 17.875px);
 }
 
 /* COMPOSER_FOOTER_ROW with `gap-2`: `px-1.5 pr-2 pb-1.5`. */
@@ -178,7 +178,7 @@
 .SelectionChatEnvLabel {
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .SelectionChatEnvChevron {
@@ -203,7 +203,7 @@
 .SelectionChatEnvItemLabel {
   color: var(--foreground);
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 17.875px;
+  line-height: var(--app-line-height-ui-17p875, 17.875px);
 }
 
 /* AssistantSelectionsSummaryChip without a remove action: a 28px capsule, 6px end inset. */
@@ -215,5 +215,5 @@
 
 .SelectionChatHeader .ComposerReferenceLabelLynx {
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }

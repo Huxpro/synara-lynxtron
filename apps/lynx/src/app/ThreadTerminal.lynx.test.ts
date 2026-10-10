@@ -102,7 +102,13 @@ describe("Lynx thread terminal", () => {
     expect(terminalSource).toContain("const focusTerminalInput = () => {");
     expect(terminalSource).toContain("setInputFocused(true);");
     expect(terminalSource).toContain("bindmousedown={focusTerminalInput}");
-    expect(terminalSource).toContain("bindtap={focusTerminalInput}");
+    // The tap is taken on the scroller, so the empty area below the output focuses too.
+    expect(terminalSource).toMatch(
+      /className="ThreadTerminalOutputScroller"[^>]*?bindtap=\{focusTerminalInput\}/s,
+    );
+    expect(terminalSource).not.toMatch(
+      /className="ThreadTerminalScreen"[^>]*?bindtap=\{focusTerminalInput\}/s,
+    );
     expect(terminalSource).toContain('bridgeCall("shellSetTerminalInputEnabled", {');
     expect(terminalSource).toContain('const owner = threadId + "\\u0000" + terminalId;');
     expect(terminalSource).toContain('onGlobalEvent("terminal:input-key"');

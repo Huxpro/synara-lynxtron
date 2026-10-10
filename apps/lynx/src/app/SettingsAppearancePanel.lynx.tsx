@@ -6,7 +6,7 @@
 //   (a Theme row and the font switch in a card above the packs); upstream writes this panel
 //   as inline JSX. Theme state edits still go through upstream's theme.logic reducers.
 // Not rendered: upstream's App section (app icon, custom title bar), which exists only on
-//   the Electron desktop bridge, and the Chat width row (Native has one chat width).
+//   the Electron desktop bridge.
 
 import type { ReactNode } from "@lynx-js/react";
 import {
@@ -15,6 +15,7 @@ import {
   createThemeShareString,
   resetThemeVariant,
   resolveThemePack,
+  setThemeCodeThemeId,
   setThemeFonts,
   setWindowTranslucency,
   updateChromeTheme,
@@ -44,6 +45,10 @@ import {
 import { SettingsHeadingElement } from "../adapters/SettingsHeadingElement.lynx";
 import { SettingsResetIcon } from "../adapters/SettingsResetIcon.lynx";
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
+import { DEFAULT_CHAT_WIDTH, isChatWidthMode, type ChatWidthMode } from "@synara-web/lib/chatWidth";
+import { toastManager } from "../components/ui/toast.lynx";
+import { CHAT_WIDTH_OPTIONS } from "./chatWidthSetting.logic";
+import { setChatWidthSetting, useChatWidthSetting } from "./chatWidthSetting.lynx";
 import { ThemePackEditor } from "./ThemePackEditor.lynx";
 import "./settings-appearance-panel.css";
 
@@ -180,6 +185,16 @@ export function SettingsAppearancePanel(props: {
   ) => void;
 }) {
   const { values, defaults, themeState } = props;
+  const chatWidth = useChatWidthSetting();
+  const changeChatWidth = (mode: ChatWidthMode) => {
+    "background only";
+    void setChatWidthSetting(mode).catch(() => {
+      toastManager.add({
+        type: "error",
+        title: "Changes could not be saved. Your current values are still shown.",
+      });
+    });
+  };
   const row = (
     key: SettingsAppearanceKey,
     title: string,
@@ -254,6 +269,9 @@ export function SettingsAppearancePanel(props: {
                   props.onThemeStateChange(resetThemeVariant(themeState, variant))
                 }
                 onUseVariant={() => props.onChange("themeMode", variant)}
+                onSetCodeThemeId={(codeThemeId) =>
+                  props.onThemeStateChange(setThemeCodeThemeId(themeState, variant, codeThemeId))
+                }
                 onUpdateTheme={(patch) =>
                   props.onThemeStateChange(updateChromeTheme(themeState, variant, patch))
                 }
@@ -294,6 +312,22 @@ export function SettingsAppearancePanel(props: {
               }
             />,
           )}
+          <SettingsAppearanceRowElement
+            title="Chat width"
+            description="Control how wide the chat column grows. Wide and Full give tables and wide content more room."
+            resetLabel="chat width"
+            changed={chatWidth !== DEFAULT_CHAT_WIDTH}
+            onReset={() => changeChatWidth(DEFAULT_CHAT_WIDTH)}
+          >
+            <SettingsAppearanceSegmentedControlElement
+              value={chatWidth}
+              ariaLabel="Chat width"
+              options={CHAT_WIDTH_OPTIONS}
+              onChange={(value) => {
+                if (isChatWidthMode(value)) changeChatWidth(value);
+              }}
+            />
+          </SettingsAppearanceRowElement>
           {row(
             "chatFontSizePx",
             "Base font size",
