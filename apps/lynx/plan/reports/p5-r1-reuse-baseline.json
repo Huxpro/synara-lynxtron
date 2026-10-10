@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-10T08:40:43.901Z",
+  "generatedAt": "2026-10-10T10:33:01.740Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -12,7 +12,7 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxGraph": {
     "entries": ["src/app/index.tsx"],
-    "modules": 908,
+    "modules": 917,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/checkbox",
@@ -40,9 +40,12 @@
       "@pierre/diffs/react",
       "@synara-central-icons-fill/circle-check.svg?raw",
       "@synara-central-icons-fill/circle-x.svg?raw",
+      "@synara-central-icons-fill/columns-3-wide.svg?raw",
+      "@synara-central-icons-fill/dot-grid-1x3-horizontal.svg?raw",
       "@synara-central-icons-fill/loader.svg?raw",
       "@synara-central-icons-fill/pin.svg?raw",
       "@synara-central-icons-fill/play.svg?raw",
+      "@synara-central-icons-fill/settings-gear-4.svg?raw",
       "@synara-central-icons-fill/star.svg?raw",
       "@synara-central-icons-fill/zap.svg?raw",
       "@synara-central-icons/agent.svg?raw",
@@ -65,7 +68,6 @@
       "@synara-central-icons/chain-link-3.svg?raw",
       "@synara-central-icons/changes.svg?raw",
       "@synara-central-icons/chat-bubble-7.svg?raw",
-      "@synara-central-icons/checklist.svg?raw",
       "@synara-central-icons/chevron-down-small.svg?raw",
       "@synara-central-icons/chevron-top-small.svg?raw",
       "@synara-central-icons/circle-check.svg?raw",
@@ -104,7 +106,6 @@
       "@synara-central-icons/globe-2.svg?raw",
       "@synara-central-icons/globe.svg?raw",
       "@synara-central-icons/image-alt-text.svg?raw",
-      "@synara-central-icons/inbox-empty.svg?raw",
       "@synara-central-icons/info-simple.svg?raw",
       "@synara-central-icons/java.svg?raw",
       "@synara-central-icons/javascript.svg?raw",
@@ -490,11 +491,11 @@
         "loc": 135424
       },
       "currentReuse": {
-        "modules": 320,
-        "loc": 80014,
-        "modulePercent": 53.33,
-        "locPercent": 59.08,
-        "gatePercent": 53.33
+        "modules": 321,
+        "loc": 80052,
+        "modulePercent": 53.5,
+        "locPercent": 59.11,
+        "gatePercent": 53.5
       },
       "modules": [
         {
@@ -5048,7 +5049,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -7938,11 +7939,11 @@
         "loc": 116837
       },
       "currentReuse": {
-        "modules": 289,
-        "loc": 72865,
-        "modulePercent": 59.83,
-        "locPercent": 62.36,
-        "gatePercent": 59.83
+        "modules": 290,
+        "loc": 72903,
+        "modulePercent": 60.04,
+        "locPercent": 62.4,
+        "gatePercent": 60.04
       },
       "modules": [
         {
@@ -11722,7 +11723,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -13810,11 +13811,11 @@
         "loc": 226411
       },
       "currentReuse": {
-        "modules": 373,
-        "loc": 87617,
-        "modulePercent": 36.07,
-        "locPercent": 38.7,
-        "gatePercent": 36.07
+        "modules": 374,
+        "loc": 87655,
+        "modulePercent": 36.17,
+        "locPercent": 38.71,
+        "gatePercent": 36.17
       },
       "modules": [
         {
@@ -24403,7 +24404,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -27740,11 +27741,11 @@
         "loc": 149320
       },
       "currentReuse": {
-        "modules": 321,
-        "loc": 80152,
-        "modulePercent": 49.54,
-        "locPercent": 53.68,
-        "gatePercent": 49.54
+        "modules": 322,
+        "loc": 80190,
+        "modulePercent": 49.69,
+        "locPercent": 53.7,
+        "gatePercent": 49.69
       },
       "modules": [
         {
@@ -32982,7 +32983,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -35951,11 +35952,11 @@
         "loc": 148974
       },
       "currentReuse": {
-        "modules": 335,
-        "loc": 82223,
-        "modulePercent": 50.07,
-        "locPercent": 55.19,
-        "gatePercent": 50.07
+        "modules": 336,
+        "loc": 82261,
+        "modulePercent": 50.22,
+        "locPercent": 55.22,
+        "gatePercent": 50.22
       },
       "modules": [
         {
@@ -41493,7 +41494,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -44467,11 +44468,11 @@
         "loc": 148975
       },
       "currentReuse": {
-        "modules": 335,
-        "loc": 82223,
-        "modulePercent": 50.07,
-        "locPercent": 55.19,
-        "gatePercent": 50.07
+        "modules": 336,
+        "loc": 82261,
+        "modulePercent": 50.22,
+        "locPercent": 55.22,
+        "gatePercent": 50.22
       },
       "modules": [
         {
@@ -50009,7 +50010,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -53005,11 +53006,11 @@
         "loc": 221136
       },
       "currentReuse": {
-        "modules": 374,
-        "loc": 88063,
-        "modulePercent": 37.25,
-        "locPercent": 39.82,
-        "gatePercent": 37.25
+        "modules": 375,
+        "loc": 88101,
+        "modulePercent": 37.35,
+        "locPercent": 39.84,
+        "gatePercent": 37.35
       },
       "modules": [
         {
@@ -63224,7 +63225,7 @@
           "loc": 38,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
