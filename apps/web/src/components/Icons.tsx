@@ -19,13 +19,12 @@ import {
 } from "react-icons/si";
 import { AntigravityBrandIcon } from "./AntigravityIcon";
 
-import { useUniqueId } from "~/hooks/useUniqueId";
 export type Icon = React.FC<SVGProps<SVGSVGElement>>;
 
 // Adapts Simple Icons components to the app's SVG icon shape without changing call sites.
 function adaptSimpleIcon(Component: IconType): Icon {
   return function SimpleIcon({ color, ...props }) {
-    const { children: _children, ...iconProps } = props;
+    const iconProps = props as Omit<SVGProps<SVGElement>, "color">;
     return <Component {...iconProps} {...(typeof color === "string" ? { color } : {})} />;
   };
 }
@@ -49,7 +48,7 @@ export const CursorIcon: Icon = (props) => (
 );
 
 export const VisualStudioCode: Icon = (props) => {
-  const id = useUniqueId();
+  const id = useId();
   const maskId = `${id}-vscode-a`;
   const topShadowFilterId = `${id}-vscode-b`;
   const sideShadowFilterId = `${id}-vscode-c`;
@@ -143,7 +142,7 @@ export const VisualStudioCode: Icon = (props) => {
 };
 
 export const Zed: Icon = (props) => {
-  const id = useUniqueId();
+  const id = useId();
   const clipPathId = `${id}-zed-logo-a`;
 
   return (
@@ -165,7 +164,9 @@ export const Zed: Icon = (props) => {
   );
 };
 
-export const OpenAI: Icon = ({ color, children: _children, ...iconProps }) => {
+export const OpenAI: Icon = ({ color, ...props }) => {
+  const iconProps = props as Omit<SVGProps<SVGElement>, "color">;
+
   return <SiOpenai {...iconProps} {...(typeof color === "string" ? { color } : {})} />;
 };
 

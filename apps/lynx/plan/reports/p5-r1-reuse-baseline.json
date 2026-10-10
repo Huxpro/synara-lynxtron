@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-10T08:40:43.901Z",
+  "generatedAt": "2026-10-10T11:18:44.982Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -12,7 +12,7 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxGraph": {
     "entries": ["src/app/index.tsx"],
-    "modules": 908,
+    "modules": 907,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/checkbox",
@@ -322,8 +322,8 @@
       ],
       "lynxConceptualEntries": ["src/app/router.tsx", "src/components/sidebar/Sidebar.lynx.tsx"],
       "graph": {
-        "modules": 616,
-        "loc": 138151,
+        "modules": 615,
+        "loc": 138131,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -469,8 +469,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 549,
-          "loc": 127607
+          "modules": 548,
+          "loc": 127587
         },
         "PATCHED": {
           "modules": 1,
@@ -486,15 +486,15 @@
         }
       },
       "eligible": {
-        "modules": 600,
-        "loc": 135424
+        "modules": 599,
+        "loc": 135404
       },
       "currentReuse": {
-        "modules": 320,
-        "loc": 80014,
-        "modulePercent": 53.33,
-        "locPercent": 59.08,
-        "gatePercent": 53.33
+        "modules": 319,
+        "loc": 80004,
+        "modulePercent": 53.26,
+        "locPercent": 59.09,
+        "gatePercent": 53.26
       },
       "modules": [
         {
@@ -666,11 +666,11 @@
         },
         {
           "path": "apps/web/src/components/AntigravityIcon.tsx",
-          "loc": 134,
+          "loc": 133,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/hooks/useUniqueId.ts"]
+          "dependencies": []
         },
         {
           "path": "apps/web/src/components/AppNavigationButtons.tsx",
@@ -1807,14 +1807,11 @@
         },
         {
           "path": "apps/web/src/components/Icons.tsx",
-          "loc": 329,
+          "loc": 330,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/AntigravityIcon.tsx",
-            "apps/web/src/hooks/useUniqueId.ts"
-          ]
+          "dependencies": ["apps/web/src/components/AntigravityIcon.tsx"]
         },
         {
           "path": "apps/web/src/components/inbox/inbox.logic.ts",
@@ -2945,7 +2942,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
-          "loc": 1305,
+          "loc": 1295,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -4709,14 +4706,6 @@
         {
           "path": "apps/web/src/hooks/useThrottledStreamingValue.ts",
           "loc": 64,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
-          "path": "apps/web/src/hooks/useUniqueId.ts",
-          "loc": 10,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -7774,8 +7763,8 @@
       "webEntries": ["apps/web/src/components/Sidebar.tsx"],
       "lynxConceptualEntries": ["src/components/sidebar/Sidebar.lynx.tsx"],
       "graph": {
-        "modules": 492,
-        "loc": 118707,
+        "modules": 491,
+        "loc": 118687,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -7917,8 +7906,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 433,
-          "loc": 109040
+          "modules": 432,
+          "loc": 109020
         },
         "PATCHED": {
           "modules": 1,
@@ -7934,15 +7923,15 @@
         }
       },
       "eligible": {
-        "modules": 483,
-        "loc": 116837
+        "modules": 482,
+        "loc": 116817
       },
       "currentReuse": {
-        "modules": 289,
-        "loc": 72865,
-        "modulePercent": 59.83,
-        "locPercent": 62.36,
-        "gatePercent": 59.83
+        "modules": 288,
+        "loc": 72855,
+        "modulePercent": 59.75,
+        "locPercent": 62.37,
+        "gatePercent": 59.75
       },
       "modules": [
         {
@@ -8052,11 +8041,11 @@
         },
         {
           "path": "apps/web/src/components/AntigravityIcon.tsx",
-          "loc": 134,
+          "loc": 133,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/hooks/useUniqueId.ts"]
+          "dependencies": []
         },
         {
           "path": "apps/web/src/components/AppNavigationButtons.tsx",
@@ -8992,14 +8981,11 @@
         },
         {
           "path": "apps/web/src/components/Icons.tsx",
-          "loc": 329,
+          "loc": 330,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/AntigravityIcon.tsx",
-            "apps/web/src/hooks/useUniqueId.ts"
-          ]
+          "dependencies": ["apps/web/src/components/AntigravityIcon.tsx"]
         },
         {
           "path": "apps/web/src/components/inbox/inbox.logic.ts",
@@ -9990,7 +9976,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
-          "loc": 1305,
+          "loc": 1295,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -11431,14 +11417,6 @@
         {
           "path": "apps/web/src/hooks/useThrottledStreamingValue.ts",
           "loc": 64,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
-          "path": "apps/web/src/hooks/useUniqueId.ts",
-          "loc": 10,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -13606,8 +13584,8 @@
       ],
       "lynxConceptualEntries": ["src/app/Transcript.tsx", "src/components/composer/Composer.tsx"],
       "graph": {
-        "modules": 1060,
-        "loc": 234331,
+        "modules": 1059,
+        "loc": 234309,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -13789,8 +13767,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 978,
-          "loc": 217899
+          "modules": 977,
+          "loc": 217877
         },
         "PATCHED": {
           "modules": 1,
@@ -13806,15 +13784,15 @@
         }
       },
       "eligible": {
-        "modules": 1034,
-        "loc": 226411
+        "modules": 1033,
+        "loc": 226389
       },
       "currentReuse": {
-        "modules": 373,
-        "loc": 87617,
-        "modulePercent": 36.07,
+        "modules": 372,
+        "loc": 87605,
+        "modulePercent": 36.01,
         "locPercent": 38.7,
-        "gatePercent": 36.07
+        "gatePercent": 36.01
       },
       "modules": [
         {
@@ -14002,11 +13980,11 @@
         },
         {
           "path": "apps/web/src/components/AntigravityIcon.tsx",
-          "loc": 134,
+          "loc": 133,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/hooks/useUniqueId.ts"]
+          "dependencies": []
         },
         {
           "path": "apps/web/src/components/AppNavigationButtons.tsx",
@@ -14777,7 +14755,7 @@
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/chatFontSize.ts"]
+          "dependencies": ["apps/web/src/appSettings.ts"]
         },
         {
           "path": "apps/web/src/components/chat/ClaudeCacheDetails.tsx",
@@ -19043,7 +19021,7 @@
         },
         {
           "path": "apps/web/src/components/composerFooterLayout.ts",
-          "loc": 60,
+          "loc": 58,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -19767,14 +19745,11 @@
         },
         {
           "path": "apps/web/src/components/Icons.tsx",
-          "loc": 329,
+          "loc": 330,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/AntigravityIcon.tsx",
-            "apps/web/src/hooks/useUniqueId.ts"
-          ]
+          "dependencies": ["apps/web/src/components/AntigravityIcon.tsx"]
         },
         {
           "path": "apps/web/src/components/inbox/inbox.logic.ts",
@@ -21594,7 +21569,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
-          "loc": 1305,
+          "loc": 1295,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -23943,14 +23918,6 @@
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/session-logic.ts", "apps/web/src/types.ts"]
-        },
-        {
-          "path": "apps/web/src/hooks/useUniqueId.ts",
-          "loc": 10,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/hooks/useVisibleDiffFilePath.ts",
@@ -27568,8 +27535,8 @@
       ],
       "lynxConceptualEntries": ["src/app/SettingsPage.tsx"],
       "graph": {
-        "modules": 664,
-        "loc": 152047,
+        "modules": 663,
+        "loc": 152027,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -27719,8 +27686,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 596,
-          "loc": 141472
+          "modules": 595,
+          "loc": 141452
         },
         "PATCHED": {
           "modules": 1,
@@ -27736,15 +27703,15 @@
         }
       },
       "eligible": {
-        "modules": 648,
-        "loc": 149320
+        "modules": 647,
+        "loc": 149300
       },
       "currentReuse": {
-        "modules": 321,
-        "loc": 80152,
-        "modulePercent": 49.54,
+        "modules": 320,
+        "loc": 80142,
+        "modulePercent": 49.46,
         "locPercent": 53.68,
-        "gatePercent": 49.54
+        "gatePercent": 49.46
       },
       "modules": [
         {
@@ -27929,11 +27896,11 @@
         },
         {
           "path": "apps/web/src/components/AntigravityIcon.tsx",
-          "loc": 134,
+          "loc": 133,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/hooks/useUniqueId.ts"]
+          "dependencies": []
         },
         {
           "path": "apps/web/src/components/AppNavigationButtons.tsx",
@@ -29070,14 +29037,11 @@
         },
         {
           "path": "apps/web/src/components/Icons.tsx",
-          "loc": 329,
+          "loc": 330,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/AntigravityIcon.tsx",
-            "apps/web/src/hooks/useUniqueId.ts"
-          ]
+          "dependencies": ["apps/web/src/components/AntigravityIcon.tsx"]
         },
         {
           "path": "apps/web/src/components/inbox/inbox.logic.ts",
@@ -30811,7 +30775,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
-          "loc": 1305,
+          "loc": 1295,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -32610,14 +32574,6 @@
         {
           "path": "apps/web/src/hooks/useThrottledStreamingValue.ts",
           "loc": 64,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
-          "path": "apps/web/src/hooks/useUniqueId.ts",
-          "loc": 10,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -35770,8 +35726,8 @@
       ],
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
-        "modules": 687,
-        "loc": 153710,
+        "modules": 686,
+        "loc": 153690,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -35930,8 +35886,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 616,
-          "loc": 140746
+          "modules": 615,
+          "loc": 140726
         },
         "PATCHED": {
           "modules": 1,
@@ -35947,15 +35903,15 @@
         }
       },
       "eligible": {
-        "modules": 669,
-        "loc": 148974
+        "modules": 668,
+        "loc": 148954
       },
       "currentReuse": {
-        "modules": 335,
-        "loc": 82223,
-        "modulePercent": 50.07,
+        "modules": 334,
+        "loc": 82213,
+        "modulePercent": 50,
         "locPercent": 55.19,
-        "gatePercent": 50.07
+        "gatePercent": 50
       },
       "modules": [
         {
@@ -36116,11 +36072,11 @@
         },
         {
           "path": "apps/web/src/components/AntigravityIcon.tsx",
-          "loc": 134,
+          "loc": 133,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/hooks/useUniqueId.ts"]
+          "dependencies": []
         },
         {
           "path": "apps/web/src/components/AppNavigationButtons.tsx",
@@ -37733,14 +37689,11 @@
         },
         {
           "path": "apps/web/src/components/Icons.tsx",
-          "loc": 329,
+          "loc": 330,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/AntigravityIcon.tsx",
-            "apps/web/src/hooks/useUniqueId.ts"
-          ]
+          "dependencies": ["apps/web/src/components/AntigravityIcon.tsx"]
         },
         {
           "path": "apps/web/src/components/inbox/inbox.logic.ts",
@@ -39244,7 +39197,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
-          "loc": 1305,
+          "loc": 1295,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -41138,14 +41091,6 @@
         {
           "path": "apps/web/src/hooks/useThrottledStreamingValue.ts",
           "loc": 64,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
-          "path": "apps/web/src/hooks/useUniqueId.ts",
-          "loc": 10,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -44286,8 +44231,8 @@
       ],
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
-        "modules": 687,
-        "loc": 153711,
+        "modules": 686,
+        "loc": 153691,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -44446,8 +44391,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 616,
-          "loc": 140747
+          "modules": 615,
+          "loc": 140727
         },
         "PATCHED": {
           "modules": 1,
@@ -44463,15 +44408,15 @@
         }
       },
       "eligible": {
-        "modules": 669,
-        "loc": 148975
+        "modules": 668,
+        "loc": 148955
       },
       "currentReuse": {
-        "modules": 335,
-        "loc": 82223,
-        "modulePercent": 50.07,
+        "modules": 334,
+        "loc": 82213,
+        "modulePercent": 50,
         "locPercent": 55.19,
-        "gatePercent": 50.07
+        "gatePercent": 50
       },
       "modules": [
         {
@@ -44632,11 +44577,11 @@
         },
         {
           "path": "apps/web/src/components/AntigravityIcon.tsx",
-          "loc": 134,
+          "loc": 133,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/hooks/useUniqueId.ts"]
+          "dependencies": []
         },
         {
           "path": "apps/web/src/components/AppNavigationButtons.tsx",
@@ -46249,14 +46194,11 @@
         },
         {
           "path": "apps/web/src/components/Icons.tsx",
-          "loc": 329,
+          "loc": 330,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/AntigravityIcon.tsx",
-            "apps/web/src/hooks/useUniqueId.ts"
-          ]
+          "dependencies": ["apps/web/src/components/AntigravityIcon.tsx"]
         },
         {
           "path": "apps/web/src/components/inbox/inbox.logic.ts",
@@ -47760,7 +47702,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
-          "loc": 1305,
+          "loc": 1295,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -49654,14 +49596,6 @@
         {
           "path": "apps/web/src/hooks/useThrottledStreamingValue.ts",
           "loc": 64,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
-        },
-        {
-          "path": "apps/web/src/hooks/useUniqueId.ts",
-          "loc": 10,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -52802,8 +52736,8 @@
       ],
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
-        "modules": 1030,
-        "loc": 229056,
+        "modules": 1029,
+        "loc": 229034,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -52984,8 +52918,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 948,
-          "loc": 212624
+          "modules": 947,
+          "loc": 212602
         },
         "PATCHED": {
           "modules": 1,
@@ -53001,15 +52935,15 @@
         }
       },
       "eligible": {
-        "modules": 1004,
-        "loc": 221136
+        "modules": 1003,
+        "loc": 221114
       },
       "currentReuse": {
-        "modules": 374,
-        "loc": 88063,
-        "modulePercent": 37.25,
+        "modules": 373,
+        "loc": 88051,
+        "modulePercent": 37.19,
         "locPercent": 39.82,
-        "gatePercent": 37.25
+        "gatePercent": 37.19
       },
       "modules": [
         {
@@ -53186,11 +53120,11 @@
         },
         {
           "path": "apps/web/src/components/AntigravityIcon.tsx",
-          "loc": 134,
+          "loc": 133,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/hooks/useUniqueId.ts"]
+          "dependencies": []
         },
         {
           "path": "apps/web/src/components/AppNavigationButtons.tsx",
@@ -53929,7 +53863,7 @@
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": ["apps/web/src/chatFontSize.ts"]
+          "dependencies": ["apps/web/src/appSettings.ts"]
         },
         {
           "path": "apps/web/src/components/chat/ClaudeCacheDetails.tsx",
@@ -57832,7 +57766,7 @@
         },
         {
           "path": "apps/web/src/components/composerFooterLayout.ts",
-          "loc": 60,
+          "loc": 58,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
@@ -58667,14 +58601,11 @@
         },
         {
           "path": "apps/web/src/components/Icons.tsx",
-          "loc": 329,
+          "loc": 330,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "SHARED",
-          "dependencies": [
-            "apps/web/src/components/AntigravityIcon.tsx",
-            "apps/web/src/hooks/useUniqueId.ts"
-          ]
+          "dependencies": ["apps/web/src/components/AntigravityIcon.tsx"]
         },
         {
           "path": "apps/web/src/components/inbox/inbox.logic.ts",
@@ -60511,7 +60442,7 @@
         },
         {
           "path": "apps/web/src/components/SidebarSearchPalette.tsx",
-          "loc": 1305,
+          "loc": 1295,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -62783,14 +62714,6 @@
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
           "dependencies": ["apps/web/src/session-logic.ts", "apps/web/src/types.ts"]
-        },
-        {
-          "path": "apps/web/src/hooks/useUniqueId.ts",
-          "loc": 10,
-          "classification": "SHARED",
-          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "SHARED",
-          "dependencies": []
         },
         {
           "path": "apps/web/src/hooks/useVisibleDiffFilePath.ts",

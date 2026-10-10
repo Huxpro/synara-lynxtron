@@ -4,7 +4,7 @@
 // Exports: transcript measurement helpers and inline styles for chat text
 
 import type { CSSProperties } from "react";
-import { DEFAULT_CHAT_FONT_SIZE_PX, normalizeChatFontSizePx } from "../../chatFontSize";
+import { DEFAULT_CHAT_FONT_SIZE_PX, normalizeChatFontSizePx } from "../../appSettings";
 
 // index.css shares composer corner smoothing; keep the radius as the browser fallback.
 export const USER_MESSAGE_BUBBLE_RADIUS_CLASS_NAME =

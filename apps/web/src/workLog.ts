@@ -362,7 +362,7 @@ export function orderedActivities(
 
   const ordered = isActivityOrderStable(activities)
     ? activities
-    : [...activities].sort(compareActivitiesByOrder);
+    : activities.toSorted(compareActivitiesByOrder);
   orderedActivitiesCache.set(activities, ordered);
   return ordered;
 }
@@ -3071,7 +3071,7 @@ function sortedTimelineEntries(
   entries: TimelineEntry[],
   compare: TimelineComparator,
 ): TimelineEntry[] {
-  return areTimelineEntriesOrdered(entries, compare) ? entries : [...entries].sort(compare);
+  return areTimelineEntriesOrdered(entries, compare) ? entries : entries.toSorted(compare);
 }
 
 function mergeTimelineEntries(

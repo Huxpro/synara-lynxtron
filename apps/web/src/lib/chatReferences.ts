@@ -217,7 +217,7 @@ export function normalizeSelectionSnippet(text: string): string | null {
 function getSelectionRangeWithin(
   container: HTMLElement,
 ): { selection: Selection; range: Range; selectedText: string } | null {
-  const selection = container.ownerDocument.getSelection();
+  const selection = window.getSelection();
   if (!selection || selection.rangeCount === 0 || selection.isCollapsed) {
     return null;
   }
@@ -241,7 +241,7 @@ export function getSelectionWithin(container: HTMLElement): SelectionWithin | nu
   if (!scoped) {
     return null;
   }
-  const prefixRange = container.ownerDocument.createRange();
+  const prefixRange = document.createRange();
   prefixRange.selectNodeContents(container);
   prefixRange.setEnd(scoped.range.startContainer, scoped.range.startOffset);
   const prefixText = prefixRange.toString();
