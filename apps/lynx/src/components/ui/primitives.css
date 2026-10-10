@@ -79,7 +79,7 @@
   color: var(--primary-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .LxButton--secondary,
@@ -231,7 +231,7 @@
 
 .LxButton--xs .LxButton__text {
   font-size: var(--app-font-size-ui-2xs, 10px);
-  line-height: 15px;
+  line-height: var(--app-line-height-ui-2xs-15, 15px);
 }
 
 .LxButton--sm,
@@ -266,7 +266,7 @@
 
 .LxButton--xl .LxButton__text {
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 19.5px;
+  line-height: var(--app-line-height-ui-19p5, 19.5px);
 }
 
 .LxButton--chip {
@@ -277,7 +277,7 @@
 
 .LxButton--chip .LxButton__text {
   font-size: var(--app-font-size-ui-xs, 11px);
-  line-height: 16.5px;
+  line-height: var(--app-line-height-ui-xs-16p5, 16.5px);
 }
 
 .LxButton--icon,
@@ -395,7 +395,7 @@
   padding-bottom: 6px;
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   background-color: transparent;
 }
 
@@ -403,7 +403,7 @@
   padding-top: 4px;
   padding-bottom: 4px;
   font-size: var(--app-font-size-ui-xs, 11px);
-  line-height: 16.5px;
+  line-height: var(--app-line-height-ui-xs-16p5, 16.5px);
 }
 
 .LxInputControl--lg > .LxInput {
@@ -607,7 +607,7 @@
   color: var(--primary-foreground);
   font-size: var(--app-font-size-ui-2xs, 10px);
   font-weight: 500;
-  line-height: 15px;
+  line-height: var(--app-line-height-ui-2xs-15, 15px);
 }
 .LxBadge--sm {
   min-width: 16px;
@@ -616,7 +616,7 @@
 }
 .LxBadge--sm .LxBadge__text {
   font-size: var(--app-font-size-ui-timestamp, 9px);
-  line-height: 13.5px;
+  line-height: var(--app-line-height-ui-timestamp-13p5, 13.5px);
 }
 .LxBadge--lg {
   min-width: 22px;
@@ -625,7 +625,7 @@
 }
 .LxBadge--lg .LxBadge__text {
   font-size: var(--app-font-size-ui-xs, 11px);
-  line-height: 16.5px;
+  line-height: var(--app-line-height-ui-xs-16p5, 16.5px);
 }
 .LxBadge--secondary {
   background-color: var(--secondary);
@@ -889,7 +889,7 @@
   background-color: transparent;
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .LxCommandList {
@@ -1376,7 +1376,7 @@
 .LxMenuItem__text {
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .LxMenuItem--destructive .LxMenuItem__text {
@@ -1433,7 +1433,7 @@
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   letter-spacing: 1.2px;
   opacity: 0.72;
 }
@@ -1471,5 +1471,5 @@
 .LxTooltipText {
   color: var(--popover-foreground);
   font-size: var(--app-font-size-ui-xs, 11px);
-  line-height: 16.5px;
+  line-height: var(--app-line-height-ui-xs-16p5, 16.5px);
 }

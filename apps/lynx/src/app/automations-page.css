@@ -353,7 +353,7 @@
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 400;
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -376,7 +376,7 @@
   background-color: transparent;
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   text-align: right;
 }
 
@@ -384,7 +384,7 @@
   height: 28px;
   padding: 4px 8px;
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   text-align: right;
 }
 
@@ -809,7 +809,7 @@
 .AutomationCreateWarningTitle,
 .AutomationCreateWarningDetail {
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 17.875px;
+  line-height: var(--app-line-height-ui-17p875, 17.875px);
 }
 
 .AutomationCreateWarningTitle {
@@ -858,7 +858,7 @@
   background-color: var(--background);
   color: var(--foreground);
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-18, 18px);
 }
 
 .LxMenuPopup.AutomationTimePickerPopup {
@@ -960,7 +960,7 @@
   min-width: 0;
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 17.875px;
+  line-height: var(--app-line-height-ui-17p875, 17.875px);
 }
 
 .AutomationCreateFooterActions .LxButton__text,
@@ -968,7 +968,7 @@
   /* Lynx lays a text run out about 1.3px wider than Chromium; see composer-model-picker.css. */
   margin-right: -1px;
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 19.5px;
+  line-height: var(--app-line-height-ui-19p5, 19.5px);
 }
 
 .AutomationCreateFooterActions {
@@ -1008,13 +1008,13 @@
   color: var(--color-text-foreground-secondary);
   font-size: var(--app-font-size-ui, 13px);
   font-weight: 400;
-  line-height: 19.5px;
+  line-height: var(--app-line-height-ui-19p5, 19.5px);
 }
 
 .AutomationCreateToolbar .ComposerModelTriggerLabelLynx {
   margin-right: -1px;
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .AutomationCreateProjectLabel {
@@ -1122,14 +1122,14 @@
   color: var(--foreground);
   font-size: var(--app-font-size-ui-lg, 14px);
   font-weight: 500;
-  line-height: 21px;
+  line-height: var(--app-line-height-ui-lg-21, 21px);
 }
 
 .AutomationsIndexPromptText {
   max-width: 320px;
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 17.875px;
+  line-height: var(--app-line-height-ui-17p875, 17.875px);
   text-align: center;
 }
 

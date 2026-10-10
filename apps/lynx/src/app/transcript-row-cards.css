@@ -65,7 +65,7 @@
 .TranscriptUserFileChipSize {
   font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .TranscriptUserFileChipName {
@@ -218,7 +218,7 @@
   color: var(--secondary-foreground);
   font-size: var(--app-font-size-ui-xs, 11px);
   font-weight: 500;
-  line-height: 16.5px;
+  line-height: var(--app-line-height-ui-xs-16p5, 16.5px);
 }
 
 .TranscriptPlanTitle {
@@ -227,7 +227,7 @@
   color: var(--foreground);
   font-size: var(--app-font-size-ui-lg, 14px);
   font-weight: 500;
-  line-height: 21px;
+  line-height: var(--app-line-height-ui-lg-21, 21px);
 }
 
 .TranscriptPlanBody {
@@ -271,7 +271,7 @@
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 /* End-of-turn changes: `mt-2 mb-1 overflow-hidden rounded-[0.65rem] border`. */

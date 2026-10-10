@@ -99,7 +99,7 @@ describe("Settings Archived fidelity", () => {
       /\.LxButton--xs\s*\{[^}]*height:\s*24px;[^}]*padding-left:\s*7px;[^}]*padding-right:\s*7px;[^}]*padding-top:\s*0;[^}]*padding-bottom:\s*0;[^}]*gap:\s*4px;/s,
     );
     expect(primitiveStyles).toMatch(
-      /\.LxButton--xs \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-2xs, 10px\);[^}]*line-height:\s*15px;/s,
+      /\.LxButton--xs \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-2xs, 10px\);[^}]*line-height:\s*var\(--app-line-height-ui-2xs-15, 15px\);/s,
     );
   });
 });

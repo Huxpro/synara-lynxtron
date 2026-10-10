@@ -16,7 +16,7 @@
 
 .SharedSettingsAppearanceSectionTitle.SettingsThemeSectionTitle {
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 19.5px;
+  line-height: var(--app-line-height-ui-19p5, 19.5px);
 }
 
 /* SettingResetButton: a 24px ghost icon button at the row's end. */
@@ -134,7 +134,7 @@
 .SettingsThemeModeLabel {
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 17.875px;
+  line-height: var(--app-line-height-ui-17p875, 17.875px);
 }
 
 .SettingsThemeModeOption--active .SettingsThemeModeLabel {

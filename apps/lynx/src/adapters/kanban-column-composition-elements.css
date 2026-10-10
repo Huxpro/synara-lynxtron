@@ -23,14 +23,14 @@
   color: var(--foreground);
   font-size: var(--app-font-size-ui-lg, 14px);
   font-weight: 500;
-  line-height: 21px;
+  line-height: var(--app-line-height-ui-lg-21, 21px);
   opacity: 0.9;
 }
 
 .SharedKanbanColumnCount {
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 17.875px;
+  line-height: var(--app-line-height-ui-17p875, 17.875px);
   opacity: 0.7;
 }
 

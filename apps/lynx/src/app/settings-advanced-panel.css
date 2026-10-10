@@ -76,7 +76,7 @@
   color: var(--foreground);
   font-family: var(--font-mono-family);
   font-size: var(--app-font-size-ui-xs, 11px);
-  line-height: 16.5px;
+  line-height: var(--app-line-height-ui-xs-16p5, 16.5px);
 }
 
 .SettingsAdvancedMetadata {
@@ -90,7 +90,7 @@
 .SettingsAdvancedMetadataText {
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-xs, 11px);
-  line-height: 16.5px;
+  line-height: var(--app-line-height-ui-xs-16p5, 16.5px);
 }
 
 .SettingsAdvancedAction {
@@ -100,7 +100,7 @@
 
 .SettingsAdvancedAction .LxButton__text {
   font-size: var(--app-font-size-ui-2xs, 10px);
-  line-height: 15px;
+  line-height: var(--app-line-height-ui-2xs-15, 15px);
 }
 
 .SettingsAdvancedRecoveryDisclosure {

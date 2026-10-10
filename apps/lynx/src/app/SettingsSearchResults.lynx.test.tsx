@@ -31,7 +31,7 @@ describe("Lynx Settings search result anatomy", () => {
       /\.SettingsSearchResultTitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui, 13px\);[^}]*line-height:\s*20px;/s,
     );
     expect(styles).toMatch(
-      /\.SettingsSearchEmpty\s*\{[^}]*padding:\s*4px 8px;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*400;[^}]*line-height:\s*18px;[^}]*opacity:\s*0\.58;/s,
+      /\.SettingsSearchEmpty\s*\{[^}]*padding:\s*4px 8px;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*400;[^}]*line-height:\s*var\(--app-line-height-ui-sm-18, 18px\);[^}]*opacity:\s*0\.58;/s,
     );
   });
 });

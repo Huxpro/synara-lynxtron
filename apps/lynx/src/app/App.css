@@ -20,8 +20,11 @@
   --font-ui-family: system-ui;
   --radius-lg: 10px;
   --type-ui-row-size: 12px;
+  --type-ui-row-line-height: 18px;
   --type-ui-supporting-size: 11px;
+  --type-ui-supporting-line-height: 16px;
   --type-ui-meta-size: 10px;
+  --type-ui-meta-line-height: 15px;
   --type-composer-editor-size: 12px;
   /* Default-size fallback for the `--type-*` roles. tokens.css defines them as aliases of
      `--app-font-size-*`, and Lynx does not resolve a custom property whose value is
@@ -270,7 +273,7 @@
 .TransportStatusNoticeText {
   color: var(--color-text-status-neutral);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .TransportStatusNotice--offline .TransportStatusNoticeText {
@@ -364,7 +367,7 @@
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .VoiceNotificationToastDescription {
@@ -582,7 +585,7 @@
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 600;
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .TaskCompletionToastBody {
@@ -726,7 +729,7 @@
   white-space: nowrap;
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   font-weight: 400;
 }
 
@@ -1039,7 +1042,7 @@
   flex: 1;
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1465,7 +1468,7 @@
 
 .SharedPrHeaderPrimaryAction .LxButton__text {
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   font-weight: 400;
 }
 
@@ -2353,7 +2356,7 @@
 .TranscriptSelectionActionLabel {
   color: var(--color-text-foreground);
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 17.875px;
+  line-height: var(--app-line-height-ui-17p875, 17.875px);
   white-space: nowrap;
 }
 
@@ -2553,7 +2556,7 @@
 .SettingsSearchResultSection {
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .SettingsSearchResultTitle {
@@ -2567,6 +2570,6 @@
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 400;
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   opacity: 0.58;
 }

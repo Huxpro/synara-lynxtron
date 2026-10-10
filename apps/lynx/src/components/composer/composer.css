@@ -578,7 +578,7 @@
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   text-align: right;
 }
 
@@ -682,7 +682,7 @@
   overflow: hidden;
   color: var(--foreground);
   font-size: var(--app-font-size-ui-xs, 11px);
-  line-height: 16.5px;
+  line-height: var(--app-line-height-ui-xs-16p5, 16.5px);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -695,7 +695,7 @@
 
 .ComposerModelTriggerMetaLynx {
   font-size: var(--app-font-size-ui-2xs, 10px);
-  line-height: 15px;
+  line-height: var(--app-line-height-ui-2xs-15, 15px);
 }
 
 /* Upstream's trigger status label: `dark:text-muted-foreground/45`. */
@@ -768,7 +768,7 @@
 .ComposerTraitsTriggerLabelLynx {
   margin-right: -1px;
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .ComposerTraitsTriggerFastLynx,
@@ -833,7 +833,7 @@
   margin-left: auto;
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   opacity: 0.8;
 }
 
@@ -908,7 +908,7 @@
   flex: 1;
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -979,7 +979,7 @@
   padding: 8px;
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .ComposerProviderOptionListLynx {
@@ -1028,7 +1028,7 @@
   flex: 1;
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   white-space: nowrap;
 }
 
@@ -1044,7 +1044,7 @@
 
 .ComposerProviderOptionLynx .ComposerModelTriggerLabelLynx {
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .ComposerProviderOptionLynx .ComposerModelTriggerMetaLynx {
@@ -1174,7 +1174,7 @@
 .ComposerTraitOptionLabelLynx {
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .ComposerProviderBackLynx {
@@ -1407,7 +1407,7 @@
   overflow: hidden;
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1480,7 +1480,7 @@
 .ComposerExtrasItemLabelLynx > text {
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .ComposerExtrasPopupLynx.LxMenuPopup,
@@ -1522,7 +1522,7 @@
 .ComposerRuntimeOptionTextLynx {
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   font-weight: 400;
 }
 
@@ -1610,7 +1610,7 @@
 .ComposerRuntimeTriggerLabelLynx {
   color: var(--foreground);
   font-size: var(--app-font-size-ui-xs, 11px);
-  line-height: 16.5px;
+  line-height: var(--app-line-height-ui-xs-16p5, 16.5px);
   font-weight: 400;
 }
 

@@ -122,7 +122,7 @@
 .SidebarSurfacePickerItemDescription {
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 16.5px;
+  line-height: var(--app-line-height-ui-sm-16p5, 16.5px);
 }
 
 /* Activity bell: `text-muted-foreground/75` at rest, accent on a 15% accent tint when on. */

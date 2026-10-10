@@ -9,10 +9,10 @@ describe("Kanban project typography fidelity", () => {
     );
 
     expect(styles).toMatch(
-      /\.SharedKanbanColumnTitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*21px;[^}]*opacity:\s*0\.9;/s,
+      /\.SharedKanbanColumnTitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*var\(--app-line-height-ui-lg-21, 21px\);[^}]*opacity:\s*0\.9;/s,
     );
     expect(styles).toMatch(
-      /\.SharedKanbanColumnCount\s*\{[^}]*font-size:\s*var\(--app-font-size-ui, 13px\);[^}]*line-height:\s*17\.875px;[^}]*opacity:\s*0\.7;/s,
+      /\.SharedKanbanColumnCount\s*\{[^}]*font-size:\s*var\(--app-font-size-ui, 13px\);[^}]*line-height:\s*var\(--app-line-height-ui-17p875, 17\.875px\);[^}]*opacity:\s*0\.7;/s,
     );
     expect(styles).toMatch(
       /\.SharedKanbanColumnHeader\s*\{[^}]*height:\s*32px;[^}]*gap:\s*8px;[^}]*padding:\s*0 6px 8px;/s,
@@ -33,11 +33,11 @@ describe("Kanban project typography fidelity", () => {
       /\.SharedKanbanCard\s*\{[^}]*gap:\s*6px;[^}]*padding:\s*10px 12px;[^}]*border-radius:\s*10px;/s,
     );
     expect(styles).toMatch(
-      /\.SharedKanbanCardTitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*19\.25px;/s,
+      /\.SharedKanbanCardTitle\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-lg, 14px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*var\(--app-line-height-ui-lg-19p25, 19\.25px\);/s,
     );
     expect(styles).not.toContain(".SharedKanbanCardActionsText");
     expect(styles).toMatch(
-      /\.SharedKanbanCardMetaText,[\s\S]*\.SharedKanbanCardWorking\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*16\.5px;[^}]*opacity:\s*0\.7;/s,
+      /\.SharedKanbanCardMetaText,[\s\S]*\.SharedKanbanCardWorking\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*var\(--app-line-height-ui-sm-16p5, 16\.5px\);[^}]*opacity:\s*0\.7;/s,
     );
     expect(styles).toMatch(
       /\.SharedKanbanCardMetaRow\s*\{[^}]*margin-top:\s*0;[^}]*padding-top:\s*2px;/s,
