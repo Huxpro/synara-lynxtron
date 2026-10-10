@@ -76,7 +76,6 @@
 }
 
 .SliceRoot--theme-light {
-  --control-focus-ring-color: rgba(1, 105, 204, 0.6);
   --control-input-focus-border: rgba(13, 13, 13, 0.3);
   --destructive-hover-fill: #e33531;
   --destructive-outline-state-border: rgba(224, 46, 42, 0.32);
@@ -118,7 +117,6 @@
 }
 
 .SliceRoot--theme-dark {
-  --control-focus-ring-color: rgba(51, 134, 214, 0.378);
   --control-input-focus-border: rgba(252, 252, 252, 0.3);
   --destructive-hover-fill: #cc2b28;
   --destructive-outline-state-border: rgba(224, 46, 42, 0.32);
@@ -428,9 +426,10 @@
   align-items: flex-start;
   border-width: 1px;
   border-style: solid;
-  border-color: rgba(51, 134, 214, 0.1);
+  border-color: color-mix(in srgb, var(--color-text-accent) 10%, transparent);
   border-radius: 18px;
-  background-color: #17212b;
+  /* The accent tint over the window, opaque: the prompt floats over content. */
+  background-color: color-mix(in srgb, var(--color-text-accent) 13%, var(--background));
   box-shadow: 0 4px 18px -6px rgba(0, 0, 0, 0.3);
 }
 
@@ -489,8 +488,8 @@
 }
 
 .SliceRoot--theme-light .ProviderUpdatePrompt {
-  border-color: rgba(1, 105, 204, 0.14);
-  background-color: #eaf3fc;
+  border-color: color-mix(in srgb, var(--color-text-accent) 14%, transparent);
+  background-color: color-mix(in srgb, var(--color-text-accent) 8%, var(--background));
   box-shadow: 0 4px 18px -6px rgba(0, 0, 0, 0.1);
 }
 

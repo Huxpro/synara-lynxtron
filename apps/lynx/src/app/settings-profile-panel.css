@@ -219,7 +219,8 @@
 }
 
 .SettingsProfileHeatmapCell--1 {
-  background-color: rgba(1, 105, 204, 0.24);
+  /* Upstream APP_HEATMAP_INTENSITY_CLASSES: the accent (--info) at 24 / 46 / 72%. */
+  background-color: color-mix(in srgb, var(--info) 24%, transparent);
   opacity: 1;
 }
 
@@ -229,12 +230,12 @@
 }
 
 .SettingsProfileHeatmapCell--2 {
-  background-color: rgba(1, 105, 204, 0.46);
+  background-color: color-mix(in srgb, var(--info) 46%, transparent);
   opacity: 1;
 }
 
 .SettingsProfileHeatmapCell--3 {
-  background-color: rgba(1, 105, 204, 0.72);
+  background-color: color-mix(in srgb, var(--info) 72%, transparent);
   opacity: 1;
 }
 

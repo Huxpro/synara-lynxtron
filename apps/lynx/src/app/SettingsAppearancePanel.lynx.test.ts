@@ -125,9 +125,11 @@ describe("Theme pack edits reach the app", () => {
     // The ink did not change, so neither does what derives from it.
     expect(after["--foreground"]).toBe(before["--foreground"]);
     // Concrete values only: Lynx does not resolve a custom property that is another var(),
-    // so those few upstream entries are left to the generated stylesheet.
+    // so the few upstream entries that are a color-mix() over one are evaluated for the
+    // active pack (55% of the edited popover surface).
     expect(Object.values(after).some((value) => String(value).includes("var("))).toBe(false);
-    expect(after["--app-overlay-surface"]).toBeUndefined();
+    expect(after["--app-overlay-surface"]).toMatch(/^rgba\(\d+, \d+, \d+, 0\.55\)$/);
+    expect(after["--app-overlay-surface"]).not.toBe(before["--app-overlay-surface"]);
   });
 
   it("turns inline custom properties on, which the root theme variables need", () => {

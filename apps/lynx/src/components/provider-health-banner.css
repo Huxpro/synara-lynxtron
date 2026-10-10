@@ -13,9 +13,9 @@
   flex-direction: row;
   align-items: flex-start;
   padding: 12px 40px 12px 14px;
-  border: 1px solid rgba(51, 134, 214, 0.1);
+  border: 1px solid color-mix(in srgb, var(--color-text-accent) 10%, transparent);
   border-radius: 18px;
-  background-color: rgba(51, 134, 214, 0.1);
+  background-color: color-mix(in srgb, var(--color-text-accent) 10%, transparent);
   box-shadow: 0 4px 18px -6px rgba(0, 0, 0, 0.3);
 }
 
@@ -31,8 +31,7 @@
 }
 
 .SliceRoot--theme-light .ProviderHealthBanner {
-  border-color: rgba(1, 105, 204, 0.14);
-  background-color: rgba(1, 105, 204, 0.1);
+  border-color: color-mix(in srgb, var(--color-text-accent) 14%, transparent);
   box-shadow: 0 4px 18px -6px rgba(0, 0, 0, 0.1);
 }
 

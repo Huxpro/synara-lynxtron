@@ -21,11 +21,20 @@ function linearToSrgb255(channel) {
   return encoded * 255;
 }
 
-/** sRGB (0–255) → OKLab, per Björn Ottosson's reference matrices. */
-export function srgb255ToOklab(r, g, b) {
-  const lr = srgbToLinear(r);
-  const lg = srgbToLinear(g);
-  const lb = srgbToLinear(b);
+// The extended (sign-preserving) transfer functions CSS Color 4 specifies for sRGB
+// channels outside 0–1, so a colour outside the sRGB gamut survives a round trip.
+function extendedSrgbToLinear(channel255) {
+  return Math.sign(channel255) * srgbToLinear(Math.abs(channel255));
+}
+
+function linearToExtendedSrgb255(channel) {
+  const magnitude = Math.abs(channel);
+  const encoded =
+    magnitude <= 0.0031308 ? 12.92 * magnitude : 1.055 * Math.pow(magnitude, 1 / 2.4) - 0.055;
+  return Math.sign(channel) * encoded * 255;
+}
+
+function linearSrgbToOklab(lr, lg, lb) {
   const l = Math.cbrt(0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb);
   const m = Math.cbrt(0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb);
   const s = Math.cbrt(0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb);
@@ -36,16 +45,39 @@ export function srgb255ToOklab(r, g, b) {
   ];
 }
 
-/** OKLab → sRGB (0–255). */
-export function oklabToSrgb255(l, a, b) {
+/** sRGB (0–255) → OKLab, per Björn Ottosson's reference matrices. */
+export function srgb255ToOklab(r, g, b) {
+  return linearSrgbToOklab(srgbToLinear(r), srgbToLinear(g), srgbToLinear(b));
+}
+
+/** As `srgb255ToOklab`, for channels that may lie outside 0–255. */
+export function extendedSrgb255ToOklab(r, g, b) {
+  return linearSrgbToOklab(
+    extendedSrgbToLinear(r),
+    extendedSrgbToLinear(g),
+    extendedSrgbToLinear(b),
+  );
+}
+
+function oklabToLinearSrgb(l, a, b) {
   const l_ = Math.pow(l + 0.3963377774 * a + 0.2158037573 * b, 3);
   const m_ = Math.pow(l - 0.1055613458 * a - 0.0638541728 * b, 3);
   const s_ = Math.pow(l - 0.0894841775 * a - 1.291485548 * b, 3);
   return [
-    linearToSrgb255(4.0767416621 * l_ - 3.3077115913 * m_ + 0.2309699292 * s_),
-    linearToSrgb255(-1.2684380046 * l_ + 2.6097574011 * m_ - 0.3413193965 * s_),
-    linearToSrgb255(-0.0041960863 * l_ - 0.7034186147 * m_ + 1.707614701 * s_),
+    4.0767416621 * l_ - 3.3077115913 * m_ + 0.2309699292 * s_,
+    -1.2684380046 * l_ + 2.6097574011 * m_ - 0.3413193965 * s_,
+    -0.0041960863 * l_ - 0.7034186147 * m_ + 1.707614701 * s_,
   ];
+}
+
+/** OKLab → sRGB (0–255), clipped to the sRGB gamut. */
+export function oklabToSrgb255(l, a, b) {
+  return oklabToLinearSrgb(l, a, b).map(linearToSrgb255);
+}
+
+/** OKLab → sRGB (0–255) without clipping: channels may lie outside 0–255. */
+export function oklabToExtendedSrgb255(l, a, b) {
+  return oklabToLinearSrgb(l, a, b).map(linearToExtendedSrgb255);
 }
 
 function splitArguments(body) {
@@ -64,9 +96,10 @@ function parseAlpha(text) {
 /**
  * Parses a CSS color into { r, g, b, a }, or null when unrecognized.
  * `quantizeLegacyAlpha` stores rgb()/hex/hsl() alpha at 8-bit precision, as
- * Chromium does before mixing.
+ * Chromium does before mixing. `clipToGamut: false` keeps an oklab()/oklch() colour
+ * that lies outside sRGB unclipped (channels outside 0–255), for mixing as specified.
  */
-export function parseCssColor(value, { quantizeLegacyAlpha = false } = {}) {
+export function parseCssColor(value, { quantizeLegacyAlpha = false, clipToGamut = true } = {}) {
   const text = String(value ?? "")
     .trim()
     .toLowerCase();
@@ -138,7 +171,7 @@ export function parseCssColor(value, { quantizeLegacyAlpha = false } = {}) {
       lab[1] === "oklab"
         ? [second, third]
         : [second * Math.cos((third * Math.PI) / 180), second * Math.sin((third * Math.PI) / 180)];
-    const [r, g, bl] = oklabToSrgb255(l, a, b);
+    const [r, g, bl] = clipToGamut ? oklabToSrgb255(l, a, b) : oklabToExtendedSrgb255(l, a, b);
     return { r, g, b: bl, a: parseAlpha(alpha) };
   }
   return null;
