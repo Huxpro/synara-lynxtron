@@ -43,6 +43,7 @@ import { resolveSliceThemeVariables, sliceThemeClassName } from "./appTheme.logi
 import { queryClient } from "./queries";
 import { SliceRouter } from "./router";
 import { SessionSync } from "./SessionSync.lynx";
+import { KeybindingDispatcher } from "./keybindingDispatcher.lynx";
 import { retryActiveSynaraQueries } from "./transportRetry.logic";
 import { shouldRefetchAfterTransportRecovery } from "./transportRecovery.logic";
 import { setLynxThemeState, subscribeLynxThemeState } from "../adapters/useTheme.lynx";
@@ -303,6 +304,7 @@ export function App() {
         style={rootVariables}
       >
         {storageReady ? <SessionSync /> : null}
+        {storageReady ? <KeybindingDispatcher /> : null}
         <MenuOverlayProvider>
           {storageReady ? (
             <SliceRouter

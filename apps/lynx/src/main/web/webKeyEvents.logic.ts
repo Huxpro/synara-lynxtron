@@ -97,6 +97,20 @@ export const WEB_KEY_DEFAULT_RULES: readonly WebKeyDefaultRule[] = [
       context.inModelPicker && key.key === "Tab" && !key.isComposing && !hasCommandModifier(key),
   },
   {
+    name: "keybinding-thread-tab",
+    handler: "keybindingDispatcher.lynx.tsx (threadTab.next / threadTab.previous, shipped chord)",
+    // Cmd+Ctrl+Left/Right steps through the open-thread tabs; in a text field the browser
+    // would also move the caret to the start or end of the line. A rebound chord has no
+    // rule: the table is static and the bindings live on the background thread.
+    applies: (key) =>
+      key.metaKey &&
+      key.ctrlKey &&
+      !key.altKey &&
+      !key.shiftKey &&
+      !key.isComposing &&
+      (key.key === "ArrowLeft" || key.key === "ArrowRight"),
+  },
+  {
     name: "overlay-list-navigation",
     handler: "menu.lynx.tsx / command.lynx.tsx resolveCommandNavigation",
     // Arrows move the highlight; in the list's search field they would move the caret,

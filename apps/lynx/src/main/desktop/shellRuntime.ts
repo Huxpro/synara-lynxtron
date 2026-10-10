@@ -128,6 +128,134 @@ export function resolveNativeRendererCommand(command: KeybindingCommand): Keybin
   return NATIVE_RENDERER_COMMANDS.has(command) ? command : null;
 }
 
+/** A chord the renderer asks the host to own for a keybinding command it handles. */
+export interface CommandAccelerator {
+  readonly command: string;
+  readonly accelerator: string;
+}
+
+// Chords the menu roles bind without naming them in the template.
+const ROLE_ACCELERATORS = [
+  "Cmd+Q",
+  "Cmd+H",
+  "Cmd+Alt+H",
+  "Cmd+M",
+  "Cmd+W",
+  "Cmd+Z",
+  "Cmd+Shift+Z",
+  "Cmd+X",
+  "Cmd+C",
+  "Cmd+V",
+  "Cmd+A",
+  "Cmd+Alt+I",
+] as const;
+
+const ACCELERATOR_MODIFIER_NAMES: Readonly<Record<string, string>> = {
+  cmd: "cmd",
+  command: "cmd",
+  ctrl: "ctrl",
+  control: "ctrl",
+  alt: "alt",
+  option: "alt",
+  shift: "shift",
+  super: "super",
+  meta: "super",
+};
+
+/** One spelling per chord, so `CmdOrCtrl+Shift+B` and `Shift+Cmd+B` compare equal. */
+export function canonicalAccelerator(accelerator: string, mac: boolean): string {
+  const parts = accelerator.split("+").map((part) => part.trim().toLowerCase());
+  const key = parts.pop() ?? "";
+  const modifiers = parts.map((part) =>
+    part === "cmdorctrl" || part === "commandorcontrol"
+      ? mac
+        ? "cmd"
+        : "ctrl"
+      : (ACCELERATOR_MODIFIER_NAMES[part] ?? part),
+  );
+  return [...[...new Set(modifiers)].sort(), key].join("+");
+}
+
+interface MenuTemplateNode {
+  readonly accelerator?: unknown;
+  readonly submenu?: unknown;
+}
+
+/** Every chord a menu template already binds, canonical, including the roles' own. */
+export function collectMenuAccelerators(
+  template: readonly unknown[],
+  mac: boolean,
+): ReadonlySet<string> {
+  const taken = new Set(
+    ROLE_ACCELERATORS.map((accelerator) => canonicalAccelerator(accelerator, mac)),
+  );
+  const visit = (nodes: readonly unknown[]) => {
+    for (const node of nodes as readonly MenuTemplateNode[]) {
+      if (!node || typeof node !== "object") continue;
+      if (typeof node.accelerator === "string") {
+        taken.add(canonicalAccelerator(node.accelerator, mac));
+      }
+      if (Array.isArray(node.submenu)) visit(node.submenu);
+    }
+  };
+  visit(template);
+  return taken;
+}
+
+const COMMAND_ACCELERATOR_PATTERN =
+  /^(?:(?:Cmd|Ctrl|Alt|Shift|Super)\+)+[A-Za-z0-9[\]\\;',./`=-]+$/;
+const MAX_COMMAND_ACCELERATORS = 64;
+
+/** The renderer's request, reduced to well-formed entries with a modifier. */
+export function parseCommandAccelerators(value: unknown): CommandAccelerator[] {
+  if (!Array.isArray(value)) return [];
+  const accelerators: CommandAccelerator[] = [];
+  for (const entry of value.slice(0, MAX_COMMAND_ACCELERATORS)) {
+    const command = (entry as { command?: unknown } | null)?.command;
+    const accelerator = (entry as { accelerator?: unknown } | null)?.accelerator;
+    if (typeof command !== "string" || !/^[A-Za-z0-9.-]{1,96}$/.test(command)) continue;
+    if (typeof accelerator !== "string" || !COMMAND_ACCELERATOR_PATTERN.test(accelerator)) continue;
+    accelerators.push({ command, accelerator });
+  }
+  return accelerators;
+}
+
+/**
+ * Hidden menu items for the keybinding commands the renderer handles, so their chords
+ * work while a native text field holds the keyboard. A chord a menu item already binds
+ * stays with that item: two items may not share an accelerator.
+ */
+export function buildCommandAcceleratorMenuItems(
+  accelerators: readonly CommandAccelerator[],
+  taken: ReadonlySet<string>,
+  mac: boolean,
+  dispatch: (command: string) => void,
+): readonly {
+  readonly label: string;
+  readonly accelerator: string;
+  readonly visible: false;
+  readonly acceleratorWorksWhenHidden: true;
+  readonly registerAccelerator: true;
+  readonly click: () => void;
+}[] {
+  const claimed = new Set(taken);
+  return accelerators.flatMap(({ command, accelerator }) => {
+    const canonical = canonicalAccelerator(accelerator, mac);
+    if (claimed.has(canonical)) return [];
+    claimed.add(canonical);
+    return [
+      {
+        label: `Command: ${command}`,
+        accelerator,
+        visible: false as const,
+        acceleratorWorksWhenHidden: true as const,
+        registerAccelerator: true as const,
+        click: () => dispatch(command),
+      },
+    ];
+  });
+}
+
 export interface ShellGlobalEventTarget {
   sendGlobalEvent(event: string, ...args: unknown[]): unknown;
 }
