@@ -615,9 +615,7 @@ async function main() {
   const run = readCertifiedRun();
   const electron = await openElectronDriver(run.options.electronCdpPort);
   const native = await openNativeDriver(run.native.devtool.port);
-  await electron.evaluate(
-    `window.__comparisonCellErrors ??= []; if (!window.__comparisonCellErrorsHooked) { window.__comparisonCellErrorsHooked = true; addEventListener("error", (event) => window.__comparisonCellErrors.push(String(event.message))); addEventListener("unhandledrejection", (event) => window.__comparisonCellErrors.push(String(event.reason))); }`,
-  );
+  await installElectronErrorHook(electron);
   // The DevTool hands the console backlog to the first `get-console` of an app
   // session and returns nothing to later ones. So the console is read once, at
   // the end, and the run brackets itself with two probe errors: errors are
@@ -633,6 +631,57 @@ async function main() {
     tolerancePx: CONTROL_TOLERANCE_PX,
     cells: {},
   };
+  const measured = await measureCells({
+    electron,
+    native,
+    surfaces,
+    increments,
+    title: `${run.options.theme} ${run.options.width}×${run.options.height}`,
+  });
+  report.cells = measured.cells;
+  report.increments = measured.increments;
+  await native.evaluate(`console.error(${JSON.stringify(`${consoleProbe}:end`)})`);
+  await sleep(500);
+  report.nativeConsoleErrors = errorsBetweenProbes(
+    nativeConsoleErrors(run.native.devtool.port),
+    consoleProbe,
+  );
+  electron.close();
+  native.close();
+  const out = option("--out");
+  if (out) {
+    mkdirSync(dirname(out), { recursive: true });
+    writeFileSync(out, `${JSON.stringify(report, null, 2)}\n`);
+  }
+  process.exit(0);
+}
+
+/**
+ * Hooks page errors on the reference renderer so each surface cell can report them. Safe
+ * to call again after a reload.
+ */
+export function installElectronErrorHook(electron) {
+  return electron.evaluate(
+    `window.__comparisonCellErrors ??= []; if (!window.__comparisonCellErrorsHooked) { window.__comparisonCellErrorsHooked = true; addEventListener("error", (event) => window.__comparisonCellErrors.push(String(event.message))); addEventListener("unhandledrejection", (event) => window.__comparisonCellErrors.push(String(event.reason))); }`,
+  );
+}
+
+/**
+ * Measures the named surfaces, then the named increments, on one open pair of drivers:
+ * the reference renderer (`electron`: Electron, or the Web original in a browser) and the
+ * Lynx renderer (`native`: Lynxtron, or Lynx for Web). One loop for every pair, so the
+ * desktop matrix and the browser pair (comparison-web.mjs) cannot measure differently.
+ * `title` prefixes each result line (theme and window size).
+ */
+export async function measureCells({
+  electron,
+  native,
+  surfaces,
+  increments,
+  title,
+  surfaceReadyTimeoutMs = 20_000,
+}) {
+  const report = { cells: {}, increments: {} };
   for (const name of surfaces) {
     const surface = SURFACES[name];
     const cell = { surface: name };
@@ -641,7 +690,7 @@ async function main() {
         await surface.open(driver);
         await waitFor(() => surface.ready(driver), {
           label: `${name} on ${driver.kind}`,
-          timeoutMs: 20_000,
+          timeoutMs: surfaceReadyTimeoutMs,
         });
       }
       await sleep(800);
@@ -670,11 +719,8 @@ async function main() {
     const summary = cell.comparison
       ? `${cell.comparison.matched}/${cell.comparison.compared} controls ≤${CONTROL_TOLERANCE_PX}px, ${cell.comparison.exempt.length} named exemptions`
       : cell.error;
-    console.log(
-      `[cell] ${run.options.theme} ${run.options.width}×${run.options.height} ${name}: ${cell.pass ? "PASS" : "FAIL"} (${summary})`,
-    );
+    console.log(`[cell] ${title} ${name}: ${cell.pass ? "PASS" : "FAIL"} (${summary})`);
   }
-  report.increments = {};
   for (const name of increments) {
     const increment = INCREMENTS[name];
     const base = SURFACES[increment.base];
@@ -684,7 +730,7 @@ async function main() {
         await base.open(driver);
         await waitFor(() => base.ready(driver), {
           label: `${increment.base} on ${driver.kind}`,
-          timeoutMs: 20_000,
+          timeoutMs: surfaceReadyTimeoutMs,
         });
         await increment.open(driver);
         await waitFor(
@@ -736,23 +782,10 @@ async function main() {
       )
       .join("; ");
     console.log(
-      `[increment] ${run.options.theme} ${run.options.width}×${run.options.height} ${name} (${increment.workflow}): ${cell.pass ? "PASS" : "FAIL"} ${cell.comparison ? `${cell.comparison.matched}/${cell.comparison.compared} controls` : cell.error} ${probeSummary}`,
+      `[increment] ${title} ${name} (${increment.workflow}): ${cell.pass ? "PASS" : "FAIL"} ${cell.comparison ? `${cell.comparison.matched}/${cell.comparison.compared} controls` : cell.error} ${probeSummary}`,
     );
   }
-  await native.evaluate(`console.error(${JSON.stringify(`${consoleProbe}:end`)})`);
-  await sleep(500);
-  report.nativeConsoleErrors = errorsBetweenProbes(
-    nativeConsoleErrors(run.native.devtool.port),
-    consoleProbe,
-  );
-  electron.close();
-  native.close();
-  const out = option("--out");
-  if (out) {
-    mkdirSync(dirname(out), { recursive: true });
-    writeFileSync(out, `${JSON.stringify(report, null, 2)}\n`);
-  }
-  process.exit(0);
+  return report;
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) await main();

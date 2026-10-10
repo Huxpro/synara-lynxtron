@@ -152,6 +152,7 @@ import { useNativeComposerVoice } from "./useNativeComposerVoice.lynx";
 import { ExpandedImageOverlay, type NativeExpandedImagePreview } from "./ExpandedImageOverlay.lynx";
 import { FileEntryIcon } from "../FileEntryIcon.lynx";
 import { Button } from "../ui/button";
+import { hostKeyHandler } from "../ui/keyEvent.lynx";
 import {
   buildLynxAgentMentionItems,
   buildLynxSlashCommandItems,
@@ -1867,7 +1868,7 @@ export function Composer({
                 void activatePrimaryAction();
               }
             }}
-            catchkeydown={handleComposerMenuKey}
+            catchkeydown={hostKeyHandler(handleComposerMenuKey)}
             bindfocus={() => {
               "background only";
               claimComposerInputOwnership();

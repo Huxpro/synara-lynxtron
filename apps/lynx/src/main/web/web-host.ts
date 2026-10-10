@@ -44,11 +44,16 @@ import {
 } from "./webRpcFrame.logic";
 import { isRelayPendingStream, summarizeRelayPendingRequests } from "./webRelayDiagnostics.logic";
 import { isWebSocketOpen } from "./webSocketState.logic";
+import { webHostStyleOverrideRules } from "./webHostStyleOverrides.logic";
+import { createWebVoiceRecorder } from "./webVoiceRecorder";
 import {
-  isWebTextareaConfirmKey,
-  WEB_TEXTAREA_CONFIRM_EVENT,
-  webTextareaConfirmEventInit,
-} from "./webTextareaConfirm.logic";
+  lynxKeyEventTarget,
+  WEB_KEY_COMPOSER_MENU_EMPTY_SELECTOR,
+  WEB_KEY_COMPOSER_MENU_SELECTOR,
+  webKeyContext,
+  webKeyDefaultRule,
+  type KeyPathNode,
+} from "./webKeyEvents.logic";
 import {
   WS_CLIENT_REQUIRED_CAPABILITIES,
   WS_PROTOCOL_EPOCH,
@@ -61,6 +66,12 @@ const nodejsAdapterUrl = "./nodejs-adapter-web.js";
 const LYNX_WEB_STYLE_RULES = [
   ".SharedThemePackImportTextarea::part(textarea) { box-sizing: border-box; width: 100%; height: 100%; padding: 0; }",
   ".EnvironmentScroller { flex: 0 1 auto; height: auto; min-height: 0; max-height: 100%; }",
+  // Every Lynx element sizes as a border box. web-core forwards a textarea's height and
+  // padding to the <textarea> inside it, which the browser sizes as a content box by
+  // default: a 112px editor with 4px padding came out 120px tall.
+  "x-textarea::part(textarea) { box-sizing: border-box !important; }",
+  // Window chrome and Native text-metric corrections that do not apply in a browser tab.
+  ...webHostStyleOverrideRules(),
 ];
 const webDocument = globalThis.document;
 webDocument.documentElement.style.width = "100%";
@@ -132,6 +143,7 @@ let relaySequence = 0;
 // the real Clipboard API first.
 let relayClipboardText = "";
 const relayPending = new Map<string, PendingRelayRequest>();
+const voiceRecorder = createWebVoiceRecorder();
 const scopedStreams = createScopedStreamRegistry();
 const relayRecentRpcTags: string[] = [];
 let transcriptScrollElement: HTMLElement | null = null;
@@ -871,6 +883,10 @@ async function handleBridgeCall(
       lastRendererReadyRoute = route;
       return { ok: true, route };
     }
+    if (method === "voiceGetState") return await voiceRecorder.getState();
+    if (method === "voiceStartRecording") return await voiceRecorder.start();
+    if (method === "voiceStopRecording") return voiceRecorder.stop();
+    if (method === "voiceCancelRecording") return voiceRecorder.cancel();
     if (method === "notificationsIsSupported") {
       return { supported: false };
     }
@@ -1289,31 +1305,38 @@ const installInteractionBridge = () => {
       });
     },
   );
-  // See webTextareaConfirm.logic.ts: element keydown handlers do not run on
-  // this host, so the host turns Enter in a send textarea into its `confirm`.
-  root.addEventListener(
-    "keydown",
-    (event) => {
-      if (!(event instanceof KeyboardEvent)) return;
-      const path = event.composedPath();
-      const textarea = path.find(
-        (target): target is HTMLElement =>
-          target instanceof HTMLElement && target.tagName === "X-TEXTAREA",
-      );
-      if (!textarea || !isWebTextareaConfirmKey(event, textarea.getAttribute("confirm-type"))) {
-        return;
+  // See webKeyEvents.logic.ts. Runs on `window` in the capture phase, so before
+  // web-core's `document` listener: cancel the default the consuming handler stands for,
+  // then let web-core see the Lynx element the key was pressed in.
+  const restoreKeyTarget = (event: Event) => {
+    delete (event as { target?: unknown }).target;
+  };
+  const deliverKeyEvent = (event: Event) => {
+    if (!(event instanceof KeyboardEvent)) return;
+    const path = event.composedPath() as unknown as KeyPathNode[];
+    const target = lynxKeyEventTarget(path, root);
+    if (!target) return;
+    if (event.type === "keydown") {
+      const composerMenuOpen =
+        root.querySelector(WEB_KEY_COMPOSER_MENU_SELECTOR) !== null &&
+        root.querySelector(WEB_KEY_COMPOSER_MENU_EMPTY_SELECTOR) === null;
+      if (webKeyDefaultRule(event, webKeyContext(path, root, composerMenuOpen))) {
+        event.preventDefault();
       }
-      event.preventDefault();
-      const editor = path[0];
-      textarea.dispatchEvent(
-        new CustomEvent(
-          WEB_TEXTAREA_CONFIRM_EVENT,
-          webTextareaConfirmEventInit(editor instanceof HTMLTextAreaElement ? editor.value : ""),
-        ),
-      );
-    },
-    { capture: true, signal: interactionBridgeController.signal },
-  );
+    }
+    Object.defineProperty(event, "target", { configurable: true, get: () => target });
+    // Re-added on every key so it is the last of document's capture listeners at this
+    // moment, after web-core's: the override lasts for web-core's dispatch and no longer,
+    // and listeners inside the shadow tree see the event as the browser made it.
+    webDocument.removeEventListener(event.type, restoreKeyTarget, true);
+    webDocument.addEventListener(event.type, restoreKeyTarget, true);
+  };
+  for (const type of ["keydown", "keyup"] as const) {
+    globalThis.addEventListener(type, deliverKeyEvent, {
+      capture: true,
+      signal: interactionBridgeController.signal,
+    });
+  }
   if (initialExplorerActionMenuOpen) {
     positionInitialOverlayWhenReady(() => {
       const trigger = queryDeep<HTMLElement>(root, ".ExplorerDockPreviewActions");
