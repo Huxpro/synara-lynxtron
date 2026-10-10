@@ -4,7 +4,7 @@ import {
   deriveSpaceProjectPickerGroups,
   spaceProjectPickerFailureMessage,
   toggleSpaceProjectSelection,
-} from "@synara/shared/spaceProjectPicker";
+} from "../../logic/spaceProjectPicker";
 
 const spaces = [
   { id: "space-a", name: "Alpha", icon: "bag" as const },

@@ -1,4 +1,4 @@
-import type { TerminalCursorSnapshot } from "@synara/shared/terminalTextProjection";
+import type { TerminalCursorSnapshot } from "../logic/terminalTextProjection";
 
 import { resolveLynxTerminalCellMetrics } from "./terminalGridSize.logic";
 

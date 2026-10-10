@@ -14,7 +14,7 @@ import {
   providerToolDescriptionText,
   type ProviderToolConfig,
   type ProviderToolField,
-} from "@synara/shared/providerTools";
+} from "../logic/providerTools";
 import {
   formatProviderVersion,
   getVisibleProviderUpdateStatuses,

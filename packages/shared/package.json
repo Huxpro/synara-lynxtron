@@ -432,14 +432,6 @@
       "types": "./src/customModels.ts",
       "import": "./src/customModels.ts"
     },
-    "./threadHeaderActions": {
-      "types": "./src/threadHeaderActions.ts",
-      "import": "./src/threadHeaderActions.ts"
-    },
-    "./projectActionScripts": {
-      "types": "./src/projectActionScripts.ts",
-      "import": "./src/projectActionScripts.ts"
-    },
     "./rightDock": {
       "types": "./src/rightDock.ts",
       "import": "./src/rightDock.ts"
@@ -452,81 +444,21 @@
       "types": "./src/contextMenu.ts",
       "import": "./src/contextMenu.ts"
     },
-    "./spacePresentation": {
-      "types": "./src/spacePresentation.ts",
-      "import": "./src/spacePresentation.ts"
-    },
-    "./spaceActivity": {
-      "types": "./src/spaceActivity.ts",
-      "import": "./src/spaceActivity.ts"
-    },
-    "./spaceProjectPicker": {
-      "types": "./src/spaceProjectPicker.ts",
-      "import": "./src/spaceProjectPicker.ts"
-    },
-    "./projectThreadArchive": {
-      "types": "./src/projectThreadArchive.ts",
-      "import": "./src/projectThreadArchive.ts"
-    },
     "./filePreviewBreadcrumb": {
       "types": "./src/filePreviewBreadcrumb.ts",
       "import": "./src/filePreviewBreadcrumb.ts"
-    },
-    "./fileAttachmentPresentation": {
-      "types": "./src/fileAttachmentPresentation.ts",
-      "import": "./src/fileAttachmentPresentation.ts"
     },
     "./filePreviewMode": {
       "types": "./src/filePreviewMode.ts",
       "import": "./src/filePreviewMode.ts"
     },
-    "./fileContextMenu": {
-      "types": "./src/fileContextMenu.ts",
-      "import": "./src/fileContextMenu.ts"
-    },
-    "./pathTree": {
-      "types": "./src/pathTree.ts",
-      "import": "./src/pathTree.ts"
-    },
-    "./terminalTextProjection": {
-      "types": "./src/terminalTextProjection.ts",
-      "import": "./src/terminalTextProjection.ts"
-    },
-    "./selectionActionLayout": {
-      "types": "./src/selectionActionLayout.ts",
-      "import": "./src/selectionActionLayout.ts"
-    },
-    "./composerPlaceholder": {
-      "types": "./src/composerPlaceholder.ts",
-      "import": "./src/composerPlaceholder.ts"
-    },
-    "./providerUsageDisplay": {
-      "types": "./src/providerUsageDisplay.ts",
-      "import": "./src/providerUsageDisplay.ts"
-    },
     "./providerDiscoveryPresentation": {
       "types": "./src/providerDiscoveryPresentation.ts",
       "import": "./src/providerDiscoveryPresentation.ts"
     },
-    "./providerTools": {
-      "types": "./src/providerTools.ts",
-      "import": "./src/providerTools.ts"
-    },
     "./sidebarSearch": {
       "types": "./src/sidebarSearch.ts",
       "import": "./src/sidebarSearch.ts"
-    },
-    "./commandNavigation": {
-      "types": "./src/commandNavigation.ts",
-      "import": "./src/commandNavigation.ts"
-    },
-    "./feedbackDelivery": {
-      "types": "./src/feedbackDelivery.ts",
-      "import": "./src/feedbackDelivery.ts"
-    },
-    "./workspaceExplorer": {
-      "types": "./src/workspaceExplorer.ts",
-      "import": "./src/workspaceExplorer.ts"
     },
     "./automationList": {
       "types": "./src/automationList.ts",
@@ -543,10 +475,6 @@
     "./componentLabFixtures": {
       "types": "./src/componentLabFixtures.ts",
       "import": "./src/componentLabFixtures.ts"
-    },
-    "./timePicker": {
-      "types": "./src/timePicker.ts",
-      "import": "./src/timePicker.ts"
     },
     "./semanticIconTone": {
       "types": "./src/semanticIconTone.ts",

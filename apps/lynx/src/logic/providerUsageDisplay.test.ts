@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, rs } from "@rstest/core";
 import type { ServerProviderUsageSnapshot } from "@synara/contracts";
 
 import {
@@ -6,7 +6,7 @@ import {
   deriveUsagePace,
   formatProviderUsageResetCountdown,
 } from "./providerUsageDisplay";
-import { mergeProviderUsageRefresh } from "./providerUsage";
+import { mergeProviderUsageRefresh } from "@synara/shared/providerUsage";
 
 describe("providerUsageDisplay", () => {
   it("uses the reported duration when an archived label is stale", () => {
@@ -88,7 +88,8 @@ describe("providerUsageDisplay", () => {
   });
 
   it("preserves the established pace and countdown edge cases", () => {
-    vi.setSystemTime("2026-06-09T12:00:00.000Z");
+    rs.useFakeTimers();
+    rs.setSystemTime(new Date("2026-06-09T12:00:00.000Z"));
 
     expect(
       deriveUsagePace({
@@ -98,7 +99,7 @@ describe("providerUsageDisplay", () => {
     expect(formatProviderUsageResetCountdown("invalid")).toBe("");
     expect(formatProviderUsageResetCountdown("2026-06-09T11:00:00.000Z")).toBe("Resets soon");
 
-    vi.useRealTimers();
+    rs.useRealTimers();
   });
 
   it("keeps prior provider cards when a forced refresh omits a transient result", () => {

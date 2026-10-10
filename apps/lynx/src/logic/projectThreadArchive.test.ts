@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it, rs } from "@rstest/core";
 import {
   deleteProjectThreadsSequentially,
   deriveProjectThreadArchivePlan,
@@ -46,7 +46,7 @@ describe("project thread archive policy", () => {
 describe("project deletion policy", () => {
   it("deletes sequentially, continues after failures, and reports successful ids", async () => {
     const calls: string[] = [];
-    const onFailure = vi.fn();
+    const onFailure = rs.fn();
     const result = await deleteProjectThreadsSequentially({
       threads: [{ id: "a" }, { id: "b" }, { id: "c" }],
       deleteThread: async ({ id }) => {

@@ -25,7 +25,7 @@ import {
   resolveChatComposerPlaceholder,
   resolveEmptyComposerEditorMinHeightPx,
   resolveSessionPhase,
-} from "@synara/shared/composerPlaceholder";
+} from "../../logic/composerPlaceholder";
 import { DEFAULT_CHAT_FONT_SIZE_PX, normalizeChatFontSizePx } from "@synara-web/chatFontSize";
 
 import { useComposerDraftStore } from "../../adapters/composerDraftStore.lynx";

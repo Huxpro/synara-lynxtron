@@ -9,10 +9,7 @@
 // itself (@tanstack/history) is pure JS and works fine, so routes are matched
 // and rendered by hand here (see synara-lynx plan 04 pattern P-08).
 
-import {
-  resolveChatComposerPlaceholder,
-  resolveSessionPhase,
-} from "@synara/shared/composerPlaceholder";
+import { resolveChatComposerPlaceholder, resolveSessionPhase } from "../logic/composerPlaceholder";
 import { createMemoryHistory } from "@tanstack/history";
 import {
   useCallback,
@@ -45,7 +42,7 @@ import {
   type RightDockPaneKind,
   type RightDockThreadState,
 } from "@synara/shared/rightDock";
-import { resolveThreadHeaderActionState } from "@synara/shared/threadHeaderActions";
+import { resolveThreadHeaderActionState } from "../logic/threadHeaderActions";
 import { buildPullRequestCodeView } from "@synara-web/components/pullRequest/pullRequestCode.logic";
 import type { SettingsAppearanceValues } from "@synara-web/components/settings/SettingsAppearanceComposition.logic";
 import type { ThemeState } from "@synara-web/theme/theme.logic";

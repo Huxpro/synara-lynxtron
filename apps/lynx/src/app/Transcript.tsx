@@ -34,7 +34,7 @@ import {
   appendOriginalComposerPromptBlocks,
   deriveDisplayedUserMessageState,
 } from "@synara-web/lib/terminalContext";
-import { resolveSelectionActionLayout } from "@synara/shared/selectionActionLayout";
+import { resolveSelectionActionLayout } from "../logic/selectionActionLayout";
 import { pinActionLabel } from "@synara-web/lib/pin.logic";
 import { formatDayAwareTimestamp } from "@synara-web/timestampFormat";
 import {

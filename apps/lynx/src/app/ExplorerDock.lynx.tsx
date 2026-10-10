@@ -5,7 +5,7 @@ import {
   isSupportedLocalPdfPath,
 } from "@synara/shared/localPreviewFiles";
 import { RIGHT_DOCK_MIN_WIDTH_PX } from "@synara/shared/rightDock";
-import { buildFileContextMenuItems } from "@synara/shared/fileContextMenu";
+import { buildFileContextMenuItems } from "../logic/fileContextMenu";
 import {
   defaultFilePreviewMode,
   isMarkdownPreviewablePath,

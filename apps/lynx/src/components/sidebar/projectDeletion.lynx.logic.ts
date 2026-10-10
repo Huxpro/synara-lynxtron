@@ -1,5 +1,5 @@
 import type { ClientOrchestrationCommand, ThreadId } from "@synara/contracts";
-import { deleteProjectThreadsSequentially } from "@synara/shared/projectThreadArchive";
+import { deleteProjectThreadsSequentially } from "../../logic/projectThreadArchive";
 
 interface NativeProjectThread {
   readonly id: string;

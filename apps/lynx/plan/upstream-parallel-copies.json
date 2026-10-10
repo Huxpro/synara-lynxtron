@@ -46,7 +46,7 @@
     {
       "upstream": "apps/web/src/components/SpaceIcon.tsx",
       "symbols": ["SPACE_ICON_LABELS"],
-      "copies": ["packages/shared/src/spacePresentation.ts"],
+      "copies": ["apps/lynx/src/logic/spacePresentation.ts"],
       "sha256": "54996172dfbc72ccac69ade6430397dfb3bb359e0713973974a5c98450a566d3"
     },
     {
@@ -58,7 +58,7 @@
     {
       "upstream": "apps/web/src/components/chat/FileAttachmentChip.tsx",
       "symbols": ["MIME_TYPE_LABEL_BY_TYPE", "fileAttachmentTypeLabel"],
-      "copies": ["packages/shared/src/fileAttachmentPresentation.ts"],
+      "copies": ["apps/lynx/src/logic/fileAttachmentPresentation.ts"],
       "sha256": "e2512e7bda41efe83f67d078db6aa3d4e292bba9a657f48e5aef53db6733808c"
     },
     {
@@ -102,13 +102,13 @@
     {
       "upstream": "apps/web/src/components/ui/time-picker.tsx",
       "symbols": ["HOURS", "MINUTES", "pad", "parseTime"],
-      "copies": ["packages/shared/src/timePicker.ts"],
+      "copies": ["apps/lynx/src/logic/timePicker.ts"],
       "sha256": "7f58ecf36d3f979c7283e2ee0f5bc9da6da9a076befb27dc3ab6fb9b11095e7e"
     },
     {
       "upstream": "apps/web/src/feedback.ts",
       "symbols": ["DEFAULT_FEEDBACK_ENDPOINT", "FEEDBACK_REQUEST_TIMEOUT_MS"],
-      "copies": ["packages/shared/src/feedbackDelivery.ts"],
+      "copies": ["apps/lynx/src/logic/feedbackDelivery.ts"],
       "sha256": "7deb5f6b84e9f574e0807979099160881f4c3c40b6b4738dba9d37077f8782ad"
     },
     {
@@ -196,7 +196,7 @@
         "reserveOrDeficitText",
         "deriveUsagePace"
       ],
-      "copies": ["packages/shared/src/providerUsageDisplay.ts"],
+      "copies": ["apps/lynx/src/logic/providerUsageDisplay.ts"],
       "sha256": "21fbd27fea810bc23b420b3e53eeefaf88f094886a099b44b43393276a484645"
     },
     {
@@ -225,7 +225,7 @@
         "hasLiveLatestTurn"
       ],
       "copies": [
-        "packages/shared/src/composerPlaceholder.ts",
+        "apps/lynx/src/logic/composerPlaceholder.ts",
         "apps/web/src/sessionActivity.logic.ts"
       ],
       "sha256": "8c1a928da6354c17211b983267ffcece1015d328723d631ebfc9326323ed2a45"

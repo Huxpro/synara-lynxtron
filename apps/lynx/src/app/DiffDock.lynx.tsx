@@ -15,7 +15,7 @@ import {
   type OrchestrationCheckpointSummary,
 } from "@synara/contracts";
 import { RIGHT_DOCK_MIN_WIDTH_PX } from "@synara/shared/rightDock";
-import { buildPathTree, filterPathsForSearch, type PathTreeNode } from "@synara/shared/pathTree";
+import { buildPathTree, filterPathsForSearch, type PathTreeNode } from "../logic/pathTree";
 import {
   formatGitPathForDisplay,
   PULL_REQUEST_DIFF_INITIAL_LINE_COUNT,

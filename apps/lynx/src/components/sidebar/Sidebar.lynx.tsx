@@ -51,14 +51,14 @@ import {
 import { getFallbackThreadIdAfterDelete } from "@synara-web/components/SidebarThreadSort.logic";
 import { sortThreadsForSidebar } from "@synara-web/components/SidebarThreadSort.logic";
 import { useSpacesUiStore } from "@synara-web/spacesUiStore";
-import { deriveSpaceActivityById, type SpaceActivityTone } from "@synara/shared/spaceActivity";
+import { deriveSpaceActivityById, type SpaceActivityTone } from "../../logic/spaceActivity";
 import {
   projectRemoveConfirmation,
   deriveProjectThreadArchivePlan,
   projectThreadArchiveConfirmation,
   projectThreadArchiveResultMessage,
   projectThreadDeleteConfirmation,
-} from "@synara/shared/projectThreadArchive";
+} from "../../logic/projectThreadArchive";
 import { firstLocalServerUrl, localServerMatchesRun } from "@synara/shared/localServers";
 import { newCommandId, newSpaceId, newThreadId } from "@synara-web/lib/utils";
 import { defaultModelSelectionForProvider } from "../../lib/defaultModelSelection";

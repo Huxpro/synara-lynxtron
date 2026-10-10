@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "@rstest/core";
 import type { ProjectScript } from "@synara/contracts";
 import { addProjectAction, deleteProjectAction, updateProjectAction } from "./projectActionScripts";
 

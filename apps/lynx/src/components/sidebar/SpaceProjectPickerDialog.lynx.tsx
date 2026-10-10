@@ -5,7 +5,7 @@ import {
   deriveSpaceProjectPickerGroups,
   spaceProjectPickerFailureMessage,
   toggleSpaceProjectSelection,
-} from "@synara/shared/spaceProjectPicker";
+} from "../../logic/spaceProjectPicker";
 
 import type { ProjectSummary } from "../../app/queries";
 import { LynxSpaceIcon } from "../../adapters/ComposerProjectPickerCompositionElements.lynx";

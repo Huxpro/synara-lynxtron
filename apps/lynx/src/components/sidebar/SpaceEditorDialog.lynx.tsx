@@ -5,7 +5,7 @@ import {
 } from "@synara/contracts";
 import type { InputRef } from "@lynx-js/lynx-ui";
 import { useEffect, useRef, useState } from "@lynx-js/react";
-import { SPACE_ICON_OPTIONS, validateSpaceName } from "@synara/shared/spacePresentation";
+import { SPACE_ICON_OPTIONS, validateSpaceName } from "../../logic/spacePresentation";
 
 import { LynxSpaceIcon } from "../../adapters/ComposerProjectPickerCompositionElements.lynx";
 import { Button } from "../ui/button";

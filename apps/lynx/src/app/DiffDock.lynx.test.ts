@@ -117,7 +117,7 @@ describe("Diff Dock chrome fidelity", () => {
     const source = readFileSync(new URL("./DiffDock.lynx.tsx", import.meta.url), "utf8");
     const styles = readFileSync(new URL("./diff-dock.css", import.meta.url), "utf8");
 
-    expect(source).toContain('from "@synara/shared/pathTree"');
+    expect(source).toContain('from "../logic/pathTree"');
     expect(source).toContain('label={fileTreeOpen ? "Hide file tree" : "Show file tree"}');
     expect(source).toContain("<FoldersIcon");
     expect(source).toContain("<ReviewFileTree");

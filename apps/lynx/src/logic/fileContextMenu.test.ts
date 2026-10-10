@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "@rstest/core";
 import { buildFileContextMenuItems } from "./fileContextMenu";
 
 describe("file context menu policy", () => {

@@ -30,7 +30,7 @@ import {
   ATTACHMENT_UPLOAD_ROUTE_PATH,
 } from "@synara/shared/binaryTransfer";
 import { WebSocketServer } from "ws";
-import { submitFeedbackPayload } from "@synara/shared/feedbackDelivery";
+import { submitFeedbackPayload } from "../../logic/feedbackDelivery";
 import { resolveShellPaths, resolveShellUserDataDir, SHELL_CAPABILITIES } from "./shellRuntime";
 import { resolveSynaraWsUrl } from "./runtimeEndpoint.logic";
 import {

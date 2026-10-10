@@ -7,12 +7,12 @@ import type {
   ProviderKind,
 } from "@synara/contracts";
 import { PROVIDER_DISPLAY_NAMES } from "@synara/contracts";
-import type { ThreadHeaderActionState } from "@synara/shared/threadHeaderActions";
+import type { ThreadHeaderActionState } from "../logic/threadHeaderActions";
 import {
   addProjectAction,
   deleteProjectAction,
   updateProjectAction,
-} from "@synara/shared/projectActionScripts";
+} from "../logic/projectActionScripts";
 import {
   decodeProjectScriptKeybindingRule,
   keybindingValueForCommand,

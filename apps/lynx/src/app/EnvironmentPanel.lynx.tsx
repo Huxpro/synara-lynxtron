@@ -46,7 +46,7 @@ import {
   providerUsageDisplayName,
   providerUsageNeedsAuthDetail,
 } from "@synara/shared/providerUsage";
-import { deriveProviderUsageLimitDisplay } from "@synara/shared/providerUsageDisplay";
+import { deriveProviderUsageLimitDisplay } from "../logic/providerUsageDisplay";
 import { localServerAddressLabel, localServerPrimaryLabel } from "@synara/shared/localServers";
 import settingsSvg from "@synara-central-icons/settings-gear-4.svg?raw";
 import windowSvg from "@synara-central-icons/window.svg?raw";

@@ -5,7 +5,7 @@ import {
   providerUsageDisplayName,
   providerUsageNeedsAuthDetail,
 } from "@synara/shared/providerUsage";
-import { deriveProviderUsageLimitDisplay } from "@synara/shared/providerUsageDisplay";
+import { deriveProviderUsageLimitDisplay } from "../logic/providerUsageDisplay";
 import {
   fetchAllProviderUsage,
   serverAllProviderUsageQueryOptions,

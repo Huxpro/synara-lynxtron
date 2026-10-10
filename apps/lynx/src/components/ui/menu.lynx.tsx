@@ -12,7 +12,7 @@ import {
 import type { CSSProperties } from "@lynx-js/types";
 import { getRectById, getRectByRef } from "@lynx-js/lynx-ui";
 import type { NodesRef } from "@lynx-js/types";
-import { resolveCommandNavigation } from "@synara/shared/commandNavigation";
+import { resolveCommandNavigation } from "../../logic/commandNavigation";
 
 import { CheckIcon, ChevronRightIcon } from "../../lib/icons.lynx";
 import { useTheme } from "../../adapters/useTheme.lynx";

@@ -1,4 +1,4 @@
-import { shouldShowWorkspaceExplorerEntry } from "@synara/shared/workspaceExplorer";
+import { shouldShowWorkspaceExplorerEntry } from "../logic/workspaceExplorer";
 
 // Search results (ProjectEntry) carry no `name`; derive it from the path so hidden-directory
 // filtering never reads an undefined name.
