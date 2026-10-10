@@ -39,8 +39,8 @@
       }
     },
     "runtime": {
-      "classes": 1344,
-      "weighted": 18737
+      "classes": 1299,
+      "weighted": 18612
     }
   },
   "classes": [
@@ -10414,7 +10414,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -11267,7 +11267,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -13150,7 +13150,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -14923,7 +14923,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -15365,7 +15365,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -21063,7 +21063,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -25393,7 +25393,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "PATCHED",
       "reason": "state/responsive adapter over shadow-[0_16px_50px_-12px_rgba(0,0,0,0.7)]"
     },
@@ -25959,7 +25959,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "CUSTOM",
       "reason": "project component class; covered by authored CSS, not the utility denominator"
     },
@@ -26245,7 +26245,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -26601,7 +26601,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
@@ -26897,7 +26897,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
@@ -26914,7 +26914,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
@@ -26963,7 +26963,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -27215,7 +27215,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -27235,7 +27235,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -27255,7 +27255,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -27275,7 +27275,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
@@ -27295,7 +27295,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
@@ -27315,7 +27315,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -27335,7 +27335,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -27355,7 +27355,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -27375,7 +27375,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -27395,7 +27395,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -27415,7 +27415,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -28919,7 +28919,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -31029,7 +31029,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -31575,7 +31575,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
@@ -31592,7 +31592,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
@@ -31609,7 +31609,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
@@ -42867,7 +42867,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
@@ -42884,7 +42884,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
@@ -42979,7 +42979,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
@@ -43634,7 +43634,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
@@ -43651,7 +43651,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
@@ -43668,7 +43668,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
@@ -44766,7 +44766,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNMAPPED",
       "reason": "no generated selector or approved deterministic patch"
     },
@@ -44783,7 +44783,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNMAPPED",
       "reason": "no generated selector or approved deterministic patch"
     },
@@ -44800,7 +44800,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNMAPPED",
       "reason": "no generated selector or approved deterministic patch"
     },
@@ -45718,7 +45718,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNMAPPED",
       "reason": "no generated selector or approved deterministic patch"
     },
@@ -45735,7 +45735,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNMAPPED",
       "reason": "no generated selector or approved deterministic patch"
     },
@@ -45752,7 +45752,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNMAPPED",
       "reason": "no generated selector or approved deterministic patch"
     },
@@ -46267,7 +46267,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "UNSUPPORTED",
       "reason": "selector/media/overflow behavior has no direct Lynx equivalent"
     },
@@ -47278,7 +47278,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -47295,7 +47295,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },
@@ -47312,7 +47312,7 @@
         "threads",
         "threads-shell"
       ],
-      "runtime": true,
+      "runtime": false,
       "status": "GENERATED",
       "reason": "Tailwind v3 + Lynx preset/theme emitted the selector"
     },

@@ -3,7 +3,10 @@ import { readFileSync } from "node:fs";
 
 describe("Pull Request primary action layout fidelity", () => {
   it("keeps the primary action in the 48px header cluster", () => {
-    const source = readFileSync(new URL("./FeatureListsPage.tsx", import.meta.url), "utf8");
+    const source = readFileSync(
+      new URL("./PullRequestDetailPane.lynx.tsx", import.meta.url),
+      "utf8",
+    );
     const styles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
 
     expect(source).toContain('className="SharedPrDetailDockActions"');
@@ -22,7 +25,10 @@ describe("Pull Request primary action layout fidelity", () => {
   });
 
   it("retains failed-action recovery as a conditional inline status", () => {
-    const source = readFileSync(new URL("./FeatureListsPage.tsx", import.meta.url), "utf8");
+    const source = readFileSync(
+      new URL("./PullRequestDetailPane.lynx.tsx", import.meta.url),
+      "utf8",
+    );
     const styles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
 
     expect(source).toContain("{lastFailedAction ? (");

@@ -7,7 +7,7 @@
   "lynxEntries": ["src/app/index.tsx"],
   "parallelImplementationBaseline": {
     "synaraClientImporters": 0,
-    "useQueryCallSites": 24,
+    "useQueryCallSites": 20,
     "refetchIntervalSites": 1,
     "routerTsxLines": 3581
   },

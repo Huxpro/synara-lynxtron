@@ -1,7 +1,6 @@
 // P2-V6: react-query selectors over the real Synara Effect-RPC WebSocket
 // snapshot. The transport is a singleton; both queries share its latest read.
 
-import { pullRequestListEntryHasProject } from "@synara/shared/githubRepository";
 import { ORCHESTRATION_WS_METHODS, type ThreadId } from "@synara/contracts";
 import { ensureNativeApi } from "~/nativeApi";
 import { queryClient } from "./queryClient";
@@ -241,27 +240,6 @@ const transcriptRowsByThreadId = new Map<
     readonly rows: ThreadTranscriptRow[];
   }
 >();
-
-/** A project or repository whose pull requests are missing or stale. */
-export interface PullRequestListError {
-  readonly projectId: ProjectId;
-  readonly projectTitle: string;
-  readonly message: string;
-}
-
-export interface PullRequestRepositoryBatch {
-  readonly repository: string;
-  readonly projectIds: readonly ProjectId[];
-  /** More pull requests exist in the listed state than the server returned. */
-  readonly truncated: boolean;
-}
-
-export interface PullRequestSnapshot {
-  readonly viewer: string | null;
-  readonly entries: readonly PullRequestListEntry[];
-  readonly errors: readonly PullRequestListError[];
-  readonly repositoryBatches: readonly PullRequestRepositoryBatch[];
-}
 
 /** Message windows for the sidebar search palette; a server read upstream does not have. */
 export async function fetchSidebarSearchSnapshot(): Promise<OrchestrationSidebarSearchSnapshot> {
@@ -520,42 +498,4 @@ export async function generatePreparedThreadRecap(input: {
     webStorage,
   );
   return persisted;
-}
-
-/**
- * Pull requests for the Lynx list. Upstream replaced `pullRequests.list` with the GitHub
- * inbox (`githubInbox.list`: pull requests and issues of every project in one superset); this
- * keeps the pull-request rows and scopes them to `projectId` on the client, as upstream does.
- * The inbox knows open and closed; merged pull requests arrive in the closed list.
- */
-export async function fetchPullRequests(input: {
-  readonly state: PullRequestState;
-  readonly projectId: ProjectId | null;
-}): Promise<PullRequestSnapshot> {
-  "background only";
-  const result = await ensureNativeApi().githubInbox.list({
-    state: input.state === "open" ? "open" : "closed",
-  });
-  const inProject = (projectIds: readonly ProjectId[]) =>
-    input.projectId === null || projectIds.includes(input.projectId);
-  return {
-    viewer: result.viewer,
-    entries: result.items.flatMap((item) => {
-      if (item.kind !== "pullRequest" || item.state !== input.state) return [];
-      const { kind: _kind, ...entry } = item;
-      return input.projectId === null || pullRequestListEntryHasProject(entry, input.projectId)
-        ? [entry]
-        : [];
-    }),
-    errors: result.errors
-      .filter((error) => !error.showingCachedData && inProject([error.projectId]))
-      .map(({ projectId, projectTitle, message }) => ({ projectId, projectTitle, message })),
-    repositoryBatches: result.repositoryBatches
-      .filter((batch) => inProject(batch.projectIds))
-      .map((batch) => ({
-        repository: batch.repository,
-        projectIds: batch.projectIds,
-        truncated: batch.truncatedPullRequests,
-      })),
-  };
 }

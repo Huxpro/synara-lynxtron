@@ -31,11 +31,3 @@
   font-size: var(--app-font-size-ui-sm);
   line-height: 18px;
 }
-
-.SharedPrListFootnote {
-  margin-top: 12px;
-  padding: 0 4px;
-  color: var(--muted-foreground);
-  font-size: var(--app-font-size-ui-sm);
-  line-height: 18px;
-}

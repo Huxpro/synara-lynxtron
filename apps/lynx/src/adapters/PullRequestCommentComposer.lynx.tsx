@@ -1,9 +1,5 @@
-import type {
-  PullRequestActionResult,
-  PullRequestCommentInput,
-  PullRequestDetail,
-} from "@synara/contracts";
-import { ensureNativeApi } from "~/nativeApi";
+import type { PullRequestCommentInput, PullRequestDetail } from "@synara/contracts";
+import { pullRequestCommentMutationOptions } from "@synara-web/lib/pullRequestReactQuery";
 import { createElement, useRef, useState } from "@lynx-js/react";
 import githubSvg from "@synara-central-icons/github.svg?raw";
 import sendArrowSvg from "@synara-central-icons/arrow-up.svg?raw";
@@ -55,8 +51,10 @@ function NativeCommentTextarea(props: {
 }
 
 export function PullRequestCommentComposer(props: {
-  readonly detail: PullRequestDetail;
-  readonly postComment?: (input: PullRequestCommentInput) => Promise<PullRequestActionResult>;
+  /** The item commented on: a pull request, or an issue with its own `postComment`. */
+  readonly detail: Pick<PullRequestDetail, "projectId" | "repository" | "number">;
+  /** Defaults to upstream's pull request comment mutation, which refreshes its caches. */
+  readonly postComment?: (input: PullRequestCommentInput) => Promise<unknown>;
 }) {
   const [body, setBody] = useState("");
   const [editorRevision, setEditorRevision] = useState(0);
@@ -71,7 +69,11 @@ export function PullRequestCommentComposer(props: {
   const { activeTheme, semanticIconColor } = useTheme();
   const postComment =
     props.postComment ??
-    ((input: PullRequestCommentInput) => ensureNativeApi().pullRequests.comment(input));
+    ((input: PullRequestCommentInput) =>
+      queryClient
+        .getMutationCache()
+        .build(queryClient, pullRequestCommentMutationOptions(queryClient))
+        .execute(input));
   const normalizedBody = body.trim();
   const canSubmit =
     normalizedBody.length > 0 &&
@@ -110,20 +112,6 @@ export function PullRequestCommentComposer(props: {
       })
       .finally(() => {
         submittingRef.current = false;
-        void Promise.all([
-          queryClient.invalidateQueries({
-            queryKey: [
-              "pull-request-detail",
-              props.detail.projectId,
-              props.detail.repository,
-              props.detail.number,
-            ],
-            exact: true,
-          }),
-          queryClient.invalidateQueries({
-            queryKey: ["pull-requests"],
-          }),
-        ]);
       });
   };
 

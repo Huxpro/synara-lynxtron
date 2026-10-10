@@ -38,7 +38,7 @@ describe("Pull Requests unavailable state fidelity", () => {
 
   it("wires the route error branch to refetch instead of a dead empty state", () => {
     const routeSource = readFileSync(
-      new URL("../app/FeatureListsPage.tsx", import.meta.url),
+      new URL("../app/GitHubInboxPage.lynx.tsx", import.meta.url),
       "utf8",
     );
     const styles = readFileSync(
@@ -47,8 +47,8 @@ describe("Pull Requests unavailable state fidelity", () => {
     );
 
     expect(routeSource).toContain("<PullRequestsUnavailableState");
-    expect(routeSource).toContain("retrying={isFetching}");
-    expect(routeSource).toContain("onRetry={() => void refetch()}");
+    expect(routeSource).toContain("retrying={listQuery.isFetching}");
+    expect(routeSource).toContain("onRetry={() => void listQuery.refetch()}");
     expect(styles).toMatch(
       /\.SharedPrUnavailable\s*\{[^}]*width:\s*100%;[^}]*min-height:\s*180px;[^}]*gap:\s*12px;[^}]*padding:\s*64px 24px;/s,
     );

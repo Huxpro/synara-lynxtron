@@ -50,7 +50,6 @@ import { buildPullRequestCodeView } from "@synara-web/components/pullRequest/pul
 import type { SettingsAppearanceValues } from "@synara-web/components/settings/SettingsAppearanceComposition.logic";
 import type { ThemeState } from "@synara-web/theme/theme.logic";
 import type { SettingsSectionId } from "@synara-web/settingsNavigation";
-import type { Project } from "@synara-web/types";
 import { useSessionShellProjects, useSessionShellSpaces } from "./sessionShell.lynx";
 import { useRouteThreadSummaries } from "./sidebarSnapshot.lynx";
 import { useSpacesUiStore } from "@synara-web/spacesUiStore";
@@ -65,7 +64,7 @@ import {
 } from "@synara-web/recentViews.logic";
 import { dockTerminalThreadId } from "@synara-web/lib/dockTerminalScope";
 import { quotePosixShellArgument } from "@synara-web/lib/shellQuote";
-import { DEFAULT_THREAD_TERMINAL_ID } from "@synara-web/types";
+import { DEFAULT_THREAD_TERMINAL_ID, type Project } from "@synara-web/types";
 import { newCommandId } from "@synara-web/lib/utils";
 import {
   flushTerminalStatePersistence,
@@ -123,7 +122,8 @@ import {
 import type { TranscriptAssistantSelection } from "@synara-web/components/chat/chatSelectionActions";
 import { SettingsPage } from "./SettingsPage";
 import { UpdatePage } from "./UpdatePage";
-import { KanbanProjectPage, ProjectsPage, PullRequestsPage } from "./FeatureListsPage";
+import { KanbanProjectPage, ProjectsPage } from "./FeatureListsPage";
+import { GitHubInboxPage } from "./GitHubInboxPage.lynx";
 import { AutomationsPage } from "./AutomationsPage.lynx";
 import { AutomationsRailPanel } from "./AutomationsRailPanel.lynx";
 import { PluginLibraryPage } from "./PluginLibraryPage.lynx";
@@ -3479,7 +3479,7 @@ export function SliceRouter({
       <KanbanProjectPage navigate={(to) => history.push(to)} projectId={route.params.projectId!} />
     );
   } else if (route.pathname === "/pull-requests") {
-    page = <PullRequestsPage />;
+    page = <GitHubInboxPage />;
   } else if (route.pathname === "/plugins") {
     page = <PluginLibraryPage />;
   } else if (route.pathname === "/automations") {

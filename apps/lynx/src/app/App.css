@@ -246,8 +246,7 @@
 }
 
 .AppMain--sidebar-closed .AppWindowDragRegion--padded,
-.AppMain--sidebar-closed .SharedKanbanRouteHeader,
-.AppMain--sidebar-closed .SharedPrRouteHeader {
+.AppMain--sidebar-closed .SharedKanbanRouteHeader {
   /* Upstream: the leading window controls end at x=174 and the header row's `gap-3`
      follows; the rail takes the first 51px. */
   padding-left: 135px;
@@ -268,11 +267,6 @@
 
 .SliceRoot--viewport-compact .AppMain--sidebar-closed .SharedKanbanRouteHeader,
 .SliceRoot--viewport-medium .AppMain--sidebar-closed .SharedKanbanRouteHeader {
-  height: 92px;
-  padding: 46px 20px 0;
-}
-
-.SliceRoot--viewport-compact .AppMain--sidebar-closed .SharedPrRouteHeader {
   height: 92px;
   padding: 46px 20px 0;
 }
@@ -1464,36 +1458,6 @@
   padding: 30px 34px 44px;
 }
 
-.FeaturePageInner--pullRequests {
-  width: 100%;
-  max-width: 1024px;
-  margin: 0 auto;
-  padding: 16px 28px 48px;
-}
-
-.FeaturePageInner--pullRequests > .SharedPrWarningBanner--callout {
-  margin-top: 16px;
-}
-
-.SharedPrRoutePage {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-.SharedPrRouteBody {
-  width: 100%;
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: row;
-}
-
-.SharedPrRouteScroller {
-  flex: 1;
-  min-height: 0;
-}
-
 .SharedPrDetailDock {
   width: 50%;
   min-width: 416px;
@@ -1545,39 +1509,6 @@
 .SharedPrDetailLoading {
   width: 100%;
   padding: 20px;
-}
-
-.SliceRoot--viewport-compact .SharedPrRouteBody--detail-open .SharedPrRouteScroller,
-.SliceRoot--viewport-medium .SharedPrRouteBody--detail-open .SharedPrRouteScroller {
-  display: none;
-}
-
-.SliceRoot--viewport-compact .SharedPrRouteBody--detail-open .SharedPrDetailDock,
-.SliceRoot--viewport-medium .SharedPrRouteBody--detail-open .SharedPrDetailDock {
-  width: 100%;
-  min-width: 0;
-  border-left-width: 0;
-}
-
-.SharedPrMutationRecovery {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-  padding: 8px 10px;
-  border: 1px solid var(--pr-comment-error-border);
-  border-radius: 8px;
-  background-color: var(--pr-comment-error-surface);
-}
-
-.SharedPrMutationError {
-  min-width: 0;
-  flex: 1;
-  color: var(--destructive);
-  font-size: var(--app-font-size-ui);
-  line-height: 18px;
 }
 
 .SharedPrActionRecovery {

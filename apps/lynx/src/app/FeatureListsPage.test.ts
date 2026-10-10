@@ -2,15 +2,13 @@ import { describe, expect, it } from "@rstest/core";
 
 import {
   buildCanonicalSliceKanbanBoard,
-  buildCanonicalSlicePullRequestList,
   createPullRequestActionGate,
   EMPTY_KANBAN_BOARD,
-  EMPTY_PULL_REQUEST_LIST,
   selectKanbanProjectBoard,
 } from "./FeatureListsPage.logic";
 import type { KanbanBoard, KanbanProjectBoard } from "@synara-web/components/kanban/kanban.logic";
-import { ProjectId, type PullRequestListEntry } from "@synara/contracts";
-import type { PullRequestSnapshot, SidebarSnapshot } from "./queries";
+import { ProjectId } from "@synara/contracts";
+import type { SidebarSnapshot } from "./queries";
 
 describe("buildCanonicalSliceKanbanBoard", () => {
   it("folds home chat containers into the trailing canonical Chats board", () => {
@@ -122,64 +120,6 @@ describe("selectKanbanProjectBoard", () => {
   });
 });
 
-describe("buildCanonicalSlicePullRequestList", () => {
-  it("uses the canonical pinned-first grouping without rebuilding entries", () => {
-    const regular = makePullRequest("regular", false, true);
-    const pinned = makePullRequest("pinned", true, false);
-    const list = buildCanonicalSlicePullRequestList(
-      makePullRequestSnapshot("viewer", [regular, pinned]),
-    );
-
-    expect(list.entries).toEqual([pinned, regular]);
-    expect(list.entries[0]?.mergeability).toBe("unknown");
-    expect(list.grouped?.map((group) => group.label)).toEqual(["Pinned", "Needs my review"]);
-  });
-
-  it("provides a stable empty fallback before the query resolves", () => {
-    expect(buildCanonicalSlicePullRequestList(undefined)).toBe(EMPTY_PULL_REQUEST_LIST);
-  });
-
-  it("uses the canonical involvement filter and ungroups a scoped tab", () => {
-    const requested = makePullRequest("requested", false, true);
-    const authored: PullRequestListEntry = {
-      ...makePullRequest("authored", false, false),
-      author: { login: "viewer", name: "Viewer", url: null, avatarUrl: null },
-    };
-
-    const list = buildCanonicalSlicePullRequestList(
-      makePullRequestSnapshot("viewer", [requested, authored]),
-      "authored",
-    );
-
-    expect(list.entries).toEqual([authored]);
-    expect(list.grouped).toBeNull();
-  });
-
-  it("uses the shared free-text matcher without changing canonical ordering", () => {
-    const branchMatch: PullRequestListEntry = {
-      ...makePullRequest("unrelated title", false, false),
-      headBranch: "feature/Search-Fidelity",
-      author: { login: "reviewer", name: "Reviewer", url: null, avatarUrl: null },
-    };
-    const numberMatch: PullRequestListEntry = {
-      ...makePullRequest("number match", true, false),
-      number: 350,
-    };
-    const snapshot = makePullRequestSnapshot("viewer", [branchMatch, numberMatch]);
-
-    expect(
-      buildCanonicalSlicePullRequestList(snapshot, "all", "  SEARCH-fidelity ").entries,
-    ).toEqual([branchMatch]);
-    expect(buildCanonicalSlicePullRequestList(snapshot, "all", "#350").entries).toEqual([
-      numberMatch,
-    ]);
-    expect(buildCanonicalSlicePullRequestList(snapshot, "all", "reviewer").entries).toEqual([
-      branchMatch,
-    ]);
-    expect(buildCanonicalSlicePullRequestList(snapshot, "all", "no match").entries).toEqual([]);
-  });
-});
-
 describe("createPullRequestActionGate", () => {
   it("rejects a same-frame duplicate and opens again after settlement", () => {
     const gate = createPullRequestActionGate();
@@ -189,46 +129,3 @@ describe("createPullRequestActionGate", () => {
     expect(gate.tryAcquire()).toBe(true);
   });
 });
-
-function makePullRequestSnapshot(
-  viewer: string,
-  entries: readonly PullRequestListEntry[],
-): PullRequestSnapshot {
-  return { viewer, entries, errors: [], repositoryBatches: [] };
-}
-
-function makePullRequest(
-  title: string,
-  isPinned: boolean,
-  viewerReviewRequested: boolean,
-): PullRequestListEntry {
-  return {
-    projectId: ProjectId.makeUnsafe("project-a"),
-    projectTitle: "Project A",
-    repository: `acme/${title}`,
-    number: isPinned ? 1 : 2,
-    title,
-    url: `https://github.com/acme/${title}/pull/1`,
-    author: null,
-    headBranch: title,
-    baseBranch: "main",
-    state: "open",
-    isDraft: false,
-    additions: 1,
-    deletions: 0,
-    createdAt: "2026-07-30T08:00:00.000Z",
-    updatedAt: "2026-07-30T09:00:00.000Z",
-    reviewDecision: null,
-    viewerReviewRequested,
-    isPinned,
-    projectContexts: [
-      {
-        projectId: ProjectId.makeUnsafe("project-a"),
-        projectTitle: "Project A",
-        isPinned,
-      },
-    ],
-    mergeability: "unknown",
-    labels: [],
-  };
-}

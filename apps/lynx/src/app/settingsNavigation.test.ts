@@ -79,7 +79,7 @@ describe("shared settings navigation projection", () => {
     > = {
       general: "<SettingsGeneralPanel",
       profile: "<SettingsProfilePanel />",
-      appearance: "<SettingsAppearanceComposition",
+      appearance: "<SettingsAppearancePanel",
       notifications: "<SettingsNotificationsPanel",
       behavior: "<SettingsBehaviorPanel",
       appsnap: "<SettingsAppSnapPanel />",
@@ -132,9 +132,19 @@ describe("shared settings navigation projection", () => {
     expect(source).toContain(
       '"Desktop app notifications use your operating system notification center."',
     );
-    expect(source).toContain("showCodeThemeSelection={false}");
-    expect(source).toContain("showFontSmoothing={false}");
-    expect(source).toContain("showTimestampFormat={false}");
+    // Native has fixed highlighter themes, host font smoothing and one time format, so the
+    // Appearance panel offers none of the three.
+    const appearanceSource = readFileSync(
+      new URL("./SettingsAppearancePanel.lynx.tsx", import.meta.url),
+      "utf8",
+    );
+    const editorSource = readFileSync(
+      new URL("./ThemePackEditor.lynx.tsx", import.meta.url),
+      "utf8",
+    );
+    expect(editorSource).not.toContain("ThemePackCodeThemeControlElement");
+    expect(appearanceSource).not.toContain("enableNativeFontSmoothing");
+    expect(appearanceSource).not.toContain("timestampFormat");
     const sidebarSource = readFileSync(
       new URL("../components/sidebar/Sidebar.lynx.tsx", import.meta.url),
       "utf8",
