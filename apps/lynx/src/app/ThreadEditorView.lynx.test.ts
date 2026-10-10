@@ -46,7 +46,11 @@ describe("Lynx Editor view", () => {
     expect(actionsSource).toContain("useQuery(serverSettingsQueryOptions())");
     expect(actionsSource).not.toContain("thread-handoff-providers");
     expect(actionsSource).toContain("resolveNativeThreadHandoffTargets(");
-    expect(actionsSource).toContain("await createNativeThreadHandoff({");
+    // Both of upstream's destinations, through upstream's hook.
+    expect(actionsSource).toContain("<MenuGroupLabel>Continue in this thread</MenuGroupLabel>");
+    expect(actionsSource).toContain("<MenuGroupLabel>Continue in a new thread</MenuGroupLabel>");
+    expect(actionsSource).toContain("await continueThreadHandoff(storeThread, target.provider");
+    expect(actionsSource).toContain("await createThreadHandoff(");
     expect(routerSource).toContain("subscribeOpenThreadPathInTerminal(");
     expect(routerSource).toContain("consumeOpenThreadPathInTerminal(threadId)");
     expect(routerSource).toContain('data: "cd " + quotePosixShellArgument(intent.cwd) + "\\r"');

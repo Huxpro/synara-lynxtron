@@ -93,8 +93,12 @@ describe("Lynx sidebar hover parity", () => {
     expect(source).toContain('if (action === "mark-unread")');
     expect(source).toContain("useStore.getState().markThreadUnread(thread.id as never)");
     expect(source).toContain("resolveNativeThreadHandoffTargets(detail, handoffProviders)");
-    expect(source).toContain('id: "handoff:" + provider');
-    expect(source).toContain("await createNativeThreadHandoff({");
+    // Upstream's Handoff submenu, and upstream's hook for both destinations.
+    expect(source).toContain(
+      "middleItems: buildNativeThreadHandoffMenuItems(handoffTargets, continueHandoffTargets)",
+    );
+    expect(source).toContain("await continueThreadHandoff(read.thread, target.provider");
+    expect(source).toContain("await createThreadHandoff(");
     expect(source).toContain('if (action === "open-path-in-terminal")');
     expect(source).toContain(
       "requestOpenThreadPathInTerminal({ threadId: thread.id, cwd: workspaceRoot })",
