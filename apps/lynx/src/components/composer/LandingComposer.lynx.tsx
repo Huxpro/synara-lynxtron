@@ -32,6 +32,7 @@ import {
   type LandingThreadCreationState,
 } from "./landingThreadCreation.logic";
 import { landingDraftId } from "./landingDraftIdentity.logic";
+import { registerLandingProjectPickerOpener } from "./landingProjectPickerRequest.logic";
 import { resolveLandingWorkspaceContext } from "./landingStudioFolder.logic";
 
 import "./landing-composer.css";
@@ -327,6 +328,9 @@ export function LandingComposer(props: {
       setProjectPickerError(null);
     }
   };
+  // Upstream's heading names the project with a second ProjectPicker trigger; here the
+  // heading opens this composer's own picker.
+  useEffect(() => registerLandingProjectPickerOpener(() => setProjectPickerOpen(true)), []);
 
   const selectProject = (projectId: string | null) => {
     "background only";

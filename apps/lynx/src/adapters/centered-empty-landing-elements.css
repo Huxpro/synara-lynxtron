@@ -15,24 +15,42 @@
   margin-bottom: 16px;
 }
 
-/* `text-[26px] sm:text-[30px] leading-[1.15] tracking-[-0.015em] text-foreground/95`. */
+/* Upstream's <h2>: a centred block as wide as its one-line text, or the column once it
+   wraps. The box carries the project heading's accessible name. */
+.CenteredEmptyLandingHeadingBox {
+  display: flex;
+  max-width: 100%;
+  flex-direction: column;
+  align-items: stretch;
+  align-self: center;
+}
+
+/* `text-[26px] sm:text-[30px] leading-[1.15] tracking-[-0.015em] text-foreground/95`.
+   Chromium draws the system font's display cut with its built-in tracking, which cancels
+   upstream's -0.45px to about -0.05px a glyph. Native has the cut (optical sizing) but not
+   the tracking, steps letter-spacing by 0.5px and rounds the font size to whole pixels, so
+   the remainder (3px in 525) is taken off the font's width axis. */
 .CenteredEmptyLandingHeading {
-  width: 321px;
   color: var(--foreground);
   opacity: 0.95;
   font-size: 30px;
   font-weight: 400;
+  font-optical-sizing: auto;
+  font-variation-settings: "wdth" 99;
   line-height: 35px;
-  letter-spacing: var(--engine-landing-heading-letter-spacing, -1.8px);
+  letter-spacing: var(--engine-landing-heading-letter-spacing, 0px);
   text-align: center;
 }
 
-.CenteredEmptyLandingHeading--project {
-  width: 100%;
+/* One-line copy that gives the box its width; it takes no height and is not painted. */
+.CenteredEmptyLandingHeadingSizer {
+  height: 0;
+  visibility: hidden;
+  white-space: nowrap;
 }
 
-.SliceRoot--viewport-compact .CenteredEmptyLandingHeading {
-  width: calc(100% - 48px);
+.SliceRoot--viewport-compact .CenteredEmptyLandingHeadingBox {
+  max-width: calc(100% - 48px);
 }
 
 /* The project name is the heading's project-picker trigger: same tone, dotted underline. */

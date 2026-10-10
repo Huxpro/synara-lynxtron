@@ -47,7 +47,7 @@ describe("empty Thread landing fidelity", () => {
     );
   });
 
-  it("keeps project-specific heading copy on one line like Web", () => {
+  it("sizes and names the heading as Web's <h2>", () => {
     const headingSource = readFileSync(
       new URL("../adapters/CenteredEmptyLandingElements.lynx.tsx", import.meta.url),
       "utf8",
@@ -57,16 +57,23 @@ describe("empty Thread landing fidelity", () => {
       "utf8",
     );
 
-    expect(headingSource).toContain('projectName ? " CenteredEmptyLandingHeading--project" : ""');
     expect(headingStyles).toMatch(
       /\.CenteredEmptyLandingFrame\s*\{[^}]*width:\s*100%;[^}]*max-width:\s*var\(--app-chat-max-width, 736px\);[^}]*box-sizing:\s*border-box;[^}]*align-self:\s*center;/s,
     );
+    // Upstream's <h2> box: as wide as the one-line text, the whole column once it wraps.
     expect(headingStyles).toMatch(
-      /\.CenteredEmptyLandingHeading--project\s*\{[^}]*width:\s*100%;/s,
+      /\.CenteredEmptyLandingHeadingBox\s*\{[^}]*max-width:\s*100%;[^}]*align-items:\s*stretch;[^}]*align-self:\s*center;/s,
     );
     expect(headingStyles).toMatch(
-      /\.SliceRoot--viewport-compact \.CenteredEmptyLandingHeading\s*\{[^}]*width:\s*calc\(100% - 48px\);/s,
+      /\.CenteredEmptyLandingHeadingSizer\s*\{[^}]*height:\s*0;[^}]*visibility:\s*hidden;[^}]*white-space:\s*nowrap;/s,
     );
+    expect(headingStyles).toMatch(
+      /\.SliceRoot--viewport-compact \.CenteredEmptyLandingHeadingBox\s*\{[^}]*max-width:\s*calc\(100% - 48px\);/s,
+    );
+    // Upstream names the project heading and makes the project name its picker trigger.
+    expect(headingSource).toContain("accessibility-label={projectName ? plainHeading : undefined}");
+    expect(headingSource).toContain("landingProjectHeadingLabel(projectName)");
+    expect(headingSource).toContain("bindtap={openLandingProjectPicker}");
   });
 
   it("prioritizes the composer in short Thread viewports", () => {

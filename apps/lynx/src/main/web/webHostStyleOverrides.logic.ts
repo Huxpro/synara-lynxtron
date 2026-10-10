@@ -132,6 +132,14 @@ export const WEB_HOST_STYLE_OVERRIDES: readonly WebHostStyleOverride[] = [
   },
   {
     kind: "text-metrics",
+    source: "adapters/centered-empty-landing-elements.css",
+    selectors: [".CenteredEmptyLandingHeading"],
+    declarations: { "font-variation-settings": "normal" },
+    reason:
+      "Native narrows the heading 1% for the tracking its text engine lacks; Chromium applies that tracking itself.",
+  },
+  {
+    kind: "text-metrics",
     source: "components/markdown/markdown.css",
     selectors: [".MdText--inline-code"],
     declarations: { "padding-bottom": "0" },
