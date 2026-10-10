@@ -1749,6 +1749,23 @@
   background-color: var(--primary);
 }
 
+/* The edition eyebrow with the Lynx and Lynxtron marks ahead of it. */
+.UpdateEdition {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+
+.UpdateEdition .FeatureEyebrow {
+  margin-bottom: 0;
+}
+
+.UpdateEdition .UpdateEditionMarks {
+  gap: 6px;
+}
+
 .UpdateMarkText {
   color: var(--primary-foreground);
   font-size: 23px;
@@ -1836,6 +1853,7 @@
 }
 
 .SliceRoot--viewport-short-height .UpdateMark,
+.SliceRoot--viewport-short-height .UpdateEdition,
 .SliceRoot--viewport-short-height .UpdateCard .FeatureEyebrow,
 .SliceRoot--viewport-short-height .UpdateDescription,
 .SliceRoot--viewport-short-height .UpdateVersionPanel {

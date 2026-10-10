@@ -1,5 +1,6 @@
 import bookSvg from "@synara-central-icons/book-simple.svg?raw";
 import feedbackSvg from "@synara-central-icons/bubble-text.svg?raw";
+import infoSvg from "@synara-central-icons/circle-info.svg?raw";
 import helpSvg from "@synara-central-icons/circle-questionmark.svg?raw";
 import giftSvg from "@synara-central-icons/gift-2.svg?raw";
 import keyboardSvg from "@synara-central-icons/keyboard.svg?raw";
@@ -13,6 +14,7 @@ import {
 import { ReleaseHistoryDialogLynx } from "../../app/ReleaseHistoryDialog.lynx";
 import { useTheme } from "../../adapters/useTheme.lynx";
 import { colorizeLynxSvg } from "../../lib/themedSvg.lynx";
+import { AboutLynxDialog } from "../brand/AboutLynxDialog.lynx";
 import {
   Menu,
   MenuGroup,
@@ -58,6 +60,7 @@ function HelpMenuContent(props: {
   readonly onOpenShortcuts: () => void;
   readonly onOpenFeedback: () => void;
   readonly onOpenDocs: () => void;
+  readonly onOpenAbout: () => void;
 }) {
   return (
     <>
@@ -89,6 +92,15 @@ function HelpMenuContent(props: {
         <HelpMenuIconItem icon={feedbackSvg} label="Send feedback" onClick={props.onOpenFeedback} />
         <HelpMenuIconItem icon={bookSvg} label="Docs" onClick={props.onOpenDocs} />
       </MenuGroup>
+      {/* Lynx-only: upstream's menu ends at Docs. */}
+      <MenuSeparator className="SidebarHelpMenuSeparator" />
+      <MenuGroup>
+        <HelpMenuIconItem
+          icon={infoSvg}
+          label="About Synara for Lynx"
+          onClick={props.onOpenAbout}
+        />
+      </MenuGroup>
     </>
   );
 }
@@ -108,6 +120,7 @@ export function SidebarHelpMenu(props: {
     readonly version: string | null;
     readonly openCount: number;
   }>({ open: false, version: null, openCount: 0 });
+  const [aboutOpen, setAboutOpen] = useState(false);
   return (
     <>
       <Menu autoHighlightFirst={false}>
@@ -137,6 +150,7 @@ export function SidebarHelpMenu(props: {
             onOpenShortcuts={props.onOpenShortcuts}
             onOpenFeedback={props.onOpenFeedback}
             onOpenDocs={props.onOpenDocs}
+            onOpenAbout={() => setAboutOpen(true)}
           />
         </MenuPopup>
       </Menu>
@@ -146,6 +160,7 @@ export function SidebarHelpMenu(props: {
         onOpenChange={(open) => setReleaseHistory((previous) => ({ ...previous, open }))}
         defaultExpandedVersion={releaseHistory.version}
       />
+      <AboutLynxDialog open={aboutOpen} onOpenChange={setAboutOpen} />
     </>
   );
 }

@@ -334,7 +334,8 @@ function buildGraph(entries, root, resolver) {
     const parsed = parseModule(filePath);
     const dependencies = [];
     for (const specifier of parsed.imports) {
-      if (/\.(css|scss|sass|less)(\?.*)?$/.test(specifier)) continue;
+      // Stylesheets and bitmap assets are bundler inputs, not modules of the source graph.
+      if (/\.(css|scss|sass|less|png)(\?.*)?$/.test(specifier)) continue;
       const resolved = resolver(specifier, filePath);
       if (resolved) {
         dependencies.push(resolved);

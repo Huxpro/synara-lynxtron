@@ -1,0 +1,66 @@
+.LynxBrandMarks {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.LynxBrandMarksMark {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.LynxBrandMarksImage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* The dark bitmap reads on light surfaces and the light bitmap on dark ones. */
+.LynxBrandMarksLynxtron--on-dark {
+  display: none;
+}
+
+.SliceRoot--theme-dark .LynxBrandMarksLynxtron--on-light {
+  display: none;
+}
+
+.SliceRoot--theme-dark .LynxBrandMarksLynxtron--on-dark {
+  display: flex;
+}
+
+/* About dialog: one centered column. */
+.AboutLynxDialog {
+  width: 360px;
+}
+
+.AboutLynxDialogBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 0 4px;
+}
+
+.AboutLynxDialogMarks {
+  margin-bottom: 10px;
+}
+
+.AboutLynxDialogTagline {
+  color: var(--color-text-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  text-align: center;
+}
+
+.AboutLynxDialogVersions {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm, 12px);
+  text-align: center;
+}
+
+.AboutLynxDialogFooter {
+  justify-content: center;
+}
