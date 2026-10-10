@@ -8,6 +8,31 @@
   word-break: break-word;
 }
 
+/* The scroller the engine's selection reveal acts on (textSelectionScrollScope.logic.ts).
+   It never scrolls: it is exactly as tall as the markdown root inside it. */
+.MdSelectionScrollScope {
+  width: 100%;
+  min-width: 0;
+  flex-shrink: 0;
+}
+
+/* A scroll-view clips. An ordered list's markers grow leftward out of the root (a 48px
+   box anchored in the 20px gutter: "10." already leaves it), so the assistant scope is
+   32px wider on both sides and the root is set back by as much. The offsets are relative
+   positions, which move nothing else. A user bubble sizes itself to its text, so its scope
+   stays the root's size. */
+.MdSelectionScrollScope--bleed {
+  position: relative;
+  left: -32px;
+  width: calc(100% + 64px);
+}
+
+.MdSelectionScrollScope--bleed .MdRoot {
+  position: relative;
+  left: 32px;
+  width: calc(100% - 64px);
+}
+
 /* Vertical margins of every block come from `resolveMarkdownChildSpacing`
    (inline style): `.chat-markdown` margins collapse, a flex column's add up.
    Lengths written in rem upstream are px here at the Web app's 16px rem. */

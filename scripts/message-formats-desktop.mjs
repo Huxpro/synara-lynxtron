@@ -401,11 +401,15 @@ async function main() {
 
     // Native: one stop per user message, reached through the message trail (the app's own
     // "scroll to message"). Finger drags are not used to travel: a DevTool drag that starts
-    // on selectable message text begins a text selection and sends the list to its top
-    // (see the checklist). Short downward drags inside a mounted row only add the views of
-    // rows taller than the viewport.
+    // on selectable message text selects it and does not pan (see the checklist). Short
+    // downward drags only add the views of rows taller than the viewport, and start in the
+    // gutter beside the message column, where there is no text.
     let step = await nativeTree(native);
-    const centre = () => ({ x: step.list.x + step.list.w / 2, y: step.list.y + step.list.h / 2 });
+    const MESSAGE_COLUMN_WIDTH = 708;
+    const gutter = () => ({
+      x: step.list.x + Math.max(24, (step.list.w - MESSAGE_COLUMN_WIDTH) / 2 - 40),
+      y: step.list.y + step.list.h / 2,
+    });
     const visible = () => step.rows.filter((row) => row.x >= step.list.x - 1 && row.w > 0);
     const nativeContentY = new Map();
     let nativeSeen = 0;
@@ -476,7 +480,7 @@ async function main() {
         if (!last || last.y + last.h <= step.list.y + step.list.h - (nextStop ? 80 : 0)) break;
         const before = anchor ? (visible().find((row) => row.key === anchor.key)?.y ?? null) : null;
         for (let part = 0; part < 4; part += 1) {
-          await native.scroll(centre(), 100);
+          await native.scroll(gutter(), 100);
           await sleep(250);
         }
         await sleep(400);

@@ -103,10 +103,13 @@ import {
   resolveTranscriptPinnedFromSample,
   resolveMessageWorkPlacement,
   resolveTranscriptWorkEntryDisplayText,
-  transcriptRowVersion,
   type MessageTranscriptRow,
   type WorkLogEntry,
 } from "./transcriptRows.logic";
+import {
+  createTranscriptFollowController,
+  transcriptFollowVersion,
+} from "./transcriptFollow.logic";
 import { TRANSCRIPT_KEYBOARD_LANDMARK_PROPS } from "./transcriptFocus.logic";
 import {
   disclosureChevronClassName,
@@ -1391,17 +1394,28 @@ export function Transcript({
     }
   }
 
-  function scrollToBottom() {
+  function scrollToBottom(smooth = false) {
     "background only";
     const params = buildTranscriptScrollToBottomParams(rows.length, 1);
     if (!params) return;
     listRef.current
       ?.invoke({
         method: "scrollToPosition",
-        params,
+        params: smooth ? { ...params, smooth } : params,
       })
       .exec();
   }
+  // The follow controller outlives a render; it scrolls with the newest row count.
+  const scrollToBottomRef = useRef(scrollToBottom);
+  scrollToBottomRef.current = scrollToBottom;
+  const [follow] = useState(() =>
+    createTranscriptFollowController<ReturnType<typeof setTimeout>>({
+      isFollowing: () => pinnedRef.current,
+      scrollToEnd: ({ smooth }) => scrollToBottomRef.current(smooth),
+      setTimer: (callback, delayMs) => setTimeout(callback, delayMs),
+      clearTimer: (handle) => clearTimeout(handle),
+    }),
+  );
 
   function scrollToMessage(messageId: string) {
     "background only";
@@ -1476,8 +1490,15 @@ export function Transcript({
 
   useEffect(() => {
     "background only";
-    if (pinnedRef.current) scrollToBottom();
-  }, [rows.length, transcriptRowVersion(rows[rows.length - 1])]);
+    // Content never re-arms a reader who scrolled away: only their own scroll back to the
+    // end, the jump button or entering a thread sets pinnedRef.
+    follow.contentChanged();
+  }, [follow, transcriptFollowVersion(rows)]);
+
+  useEffect(() => {
+    "background only";
+    return () => follow.cancel();
+  }, [follow]);
 
   useEffect(() => {
     "background only";

@@ -50,6 +50,7 @@ import { MarkdownFileReferenceToken } from "./MarkdownFileReferenceToken.lynx";
 import { highlightExplorerCode } from "../../data/hostSyntaxHighlight.lynx";
 import type { NativeSyntaxHighlightResult } from "../../main/syntaxHighlightingContract.logic";
 import { useTheme } from "../../adapters/useTheme.lynx";
+import { TEXT_SELECTION_SCROLL_SCOPE_PROPS } from "./textSelectionScrollScope.logic";
 
 export interface ChatMarkdownProps {
   readonly text: string;
@@ -860,7 +861,7 @@ export function ChatMarkdown({
     variant,
   };
 
-  return (
+  const root = (
     <view
       className={`${className ? `MdRoot ${className}` : "MdRoot"}${
         variant === "user" ? " MdRoot--user" : ""
@@ -874,5 +875,20 @@ export function ChatMarkdown({
         </SelectableMarkdownText>
       )}
     </view>
+  );
+  if (!selectable) return root;
+  // See textSelectionScrollScope.logic.ts: without this scope, selecting text by dragging
+  // sends the scroller that holds the markdown (the transcript list) to its top.
+  return (
+    <scroll-view
+      className={
+        variant === "user"
+          ? "MdSelectionScrollScope"
+          : "MdSelectionScrollScope MdSelectionScrollScope--bleed"
+      }
+      {...TEXT_SELECTION_SCROLL_SCOPE_PROPS}
+    >
+      {root}
+    </scroll-view>
   );
 }
