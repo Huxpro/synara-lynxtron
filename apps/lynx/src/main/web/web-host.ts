@@ -42,8 +42,13 @@ import {
   type WebRpcChunkFrame,
   type WebRpcExitFrame,
 } from "./webRpcFrame.logic";
-import { summarizeRelayPendingRequests } from "./webRelayDiagnostics.logic";
+import { isRelayPendingStream, summarizeRelayPendingRequests } from "./webRelayDiagnostics.logic";
 import { isWebSocketOpen } from "./webSocketState.logic";
+import {
+  isWebTextareaConfirmKey,
+  WEB_TEXTAREA_CONFIRM_EVENT,
+  webTextareaConfirmEventInit,
+} from "./webTextareaConfirm.logic";
 import {
   WS_CLIENT_REQUIRED_CAPABILITIES,
   WS_PROTOCOL_EPOCH,
@@ -1184,7 +1189,7 @@ globalThis.__SYNARA_LYNX_RELAY_DIAGNOSTICS__ = () => {
   const pending = summarizeRelayPendingRequests(
     [...relayPending.values()].map((request) => ({
       tag: request.tag,
-      streaming: request.chunks !== undefined,
+      streaming: isRelayPendingStream(request),
     })),
   );
   return {
@@ -1283,6 +1288,31 @@ const installInteractionBridge = () => {
         ...(activation.provider ? { provider: activation.provider } : {}),
       });
     },
+  );
+  // See webTextareaConfirm.logic.ts: element keydown handlers do not run on
+  // this host, so the host turns Enter in a send textarea into its `confirm`.
+  root.addEventListener(
+    "keydown",
+    (event) => {
+      if (!(event instanceof KeyboardEvent)) return;
+      const path = event.composedPath();
+      const textarea = path.find(
+        (target): target is HTMLElement =>
+          target instanceof HTMLElement && target.tagName === "X-TEXTAREA",
+      );
+      if (!textarea || !isWebTextareaConfirmKey(event, textarea.getAttribute("confirm-type"))) {
+        return;
+      }
+      event.preventDefault();
+      const editor = path[0];
+      textarea.dispatchEvent(
+        new CustomEvent(
+          WEB_TEXTAREA_CONFIRM_EVENT,
+          webTextareaConfirmEventInit(editor instanceof HTMLTextAreaElement ? editor.value : ""),
+        ),
+      );
+    },
+    { capture: true, signal: interactionBridgeController.signal },
   );
   if (initialExplorerActionMenuOpen) {
     positionInitialOverlayWhenReady(() => {

@@ -256,6 +256,24 @@ function canonicalOffset(input: {
   return canonicalCursor;
 }
 
+/**
+ * Whether the native editor has to be rewritten to show `displayText`.
+ *
+ * `appliedDisplayText` is the last text known to be in the editor: what a sync
+ * wrote there, or what the user typed (the input handler records every edit).
+ * A sync writes the whole value and puts the caret at its end, so it must run
+ * only when the draft differs from what the editor shows (a restored draft, a
+ * token the projection collapsed, undo), never as an echo of the user's own
+ * keystroke.
+ */
+export function nativeComposerEditorNeedsSync(input: {
+  readonly appliedDisplayText: string | null;
+  readonly displayText: string;
+  readonly nativeValue: string;
+}): boolean {
+  return input.appliedDisplayText !== input.displayText || input.nativeValue !== input.displayText;
+}
+
 export function applyNativeComposerDisplayEdit(input: {
   readonly displaySelectionEnd: number;
   readonly displaySelectionStart: number;
