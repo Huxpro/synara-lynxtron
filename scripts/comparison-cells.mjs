@@ -197,6 +197,15 @@ const DIALOG_PROBE = {
   native: ".LxDialogPopup",
 };
 
+/** What the right dock shows: its tabs, the empty dock's launcher, or nothing. */
+async function dockShown(driver) {
+  if (await driver.find(DOCK_ADD_PANEL)) return "tabs";
+  return (await driver.find({ label: "Open Review" })) ? "launcher" : "closed";
+}
+
+/** The dock as "add-panel-menu" found it, per renderer, so its close can restore it. */
+const dockBeforeAddPanelMenu = new WeakMap();
+
 /**
  * State increments (plan N4), each tied to the workflow that exercises it: opened
  * from a base surface, measured (labelled controls plus popup/dialog boxes), closed.
@@ -223,13 +232,29 @@ export const INCREMENTS = Object.freeze({
     workflow: "J3",
     base: "thread",
     open: async (driver) => {
+      dockBeforeAddPanelMenu.set(driver, await dockShown(driver));
       await openDockWithPane(driver, "Open Review");
       await driver.tap(DOCK_ADD_PANEL);
     },
     // The dock keeps whichever panes earlier steps opened, so only the menu is awaited.
     ready: (driver) => probeBox(driver, MENU_PROBE),
     probes: [MENU_PROBE],
-    close: (driver) => driver.tap(DOCK_ADD_PANEL),
+    // Puts the dock back as it was found. A Diff pane left open sits ahead of the panes a
+    // later workflow adds, which changes that workflow's tab order on both renderers.
+    close: async (driver) => {
+      await driver.tap(DOCK_ADD_PANEL);
+      await waitFor(async () => !(await probeBox(driver, MENU_PROBE)), {
+        label: `the Add panel menu to close on ${driver.kind}`,
+      });
+      const before = dockBeforeAddPanelMenu.get(driver);
+      dockBeforeAddPanelMenu.delete(driver);
+      if (before === undefined || before === "tabs") return;
+      await driver.tap({ label: "Close Diff" });
+      await waitFor(() => driver.find({ label: "Open Review" }), {
+        label: `the empty dock on ${driver.kind}`,
+      });
+      if (before === "closed") await driver.tap(DOCK_TOGGLE);
+    },
   },
   "settings-appearance": {
     workflow: "J4",

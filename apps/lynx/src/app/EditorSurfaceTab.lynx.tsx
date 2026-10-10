@@ -9,6 +9,27 @@ import { useTheme } from "../adapters/useTheme.lynx";
 
 import "./editor-surface-tab.css";
 
+/** The `--content` chip's shrink floor (upstream `min-w-[9em]` of its 12px font) and strip gap. */
+const CONTENT_TAB_FLOOR_PX = 108;
+const CONTENT_TAB_GAP_PX = 4;
+
+/**
+ * Sizes the row of `closePlacement="trailing"` tabs inside its horizontal scroll-view as
+ * upstream's SurfaceContentTabs does: the row is as wide as the strip, so the tabs shrink
+ * together from their 216px basis, and it stops narrowing at the tabs' floor, where the
+ * strip scrolls instead. Without it the row takes its content width and no tab shrinks.
+ */
+export function contentTabListStyle(tabCount: number): {
+  readonly width: string;
+  readonly minWidth: string;
+} {
+  const count = Math.max(0, tabCount);
+  return {
+    width: "100%",
+    minWidth: `${count * CONTENT_TAB_FLOOR_PX + Math.max(0, count - 1) * CONTENT_TAB_GAP_PX}px`,
+  };
+}
+
 /**
  * Lynx counterpart of Web's SurfaceTabChip. Every closable editor/dock tab
  * goes through this primitive so its 16px icon slot, hover-to-close swap and

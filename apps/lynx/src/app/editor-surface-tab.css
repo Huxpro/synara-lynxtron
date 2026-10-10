@@ -112,6 +112,8 @@
 .EditorSurfaceTab--content {
   position: relative;
   width: 216px;
+  /* Upstream `min-w-[9em]`: the floor contentTabListStyle sizes the row by. */
+  min-width: 108px;
   max-width: 216px;
   height: 32px;
   padding: 0 32px 0 10px;

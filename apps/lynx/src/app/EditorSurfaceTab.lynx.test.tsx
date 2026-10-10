@@ -3,7 +3,7 @@ import { fireEvent, render, waitFor } from "@lynx-js/react/testing-library";
 import { readFileSync } from "node:fs";
 
 import { FileIcon } from "../lib/icons.lynx";
-import { EditorSurfaceTab } from "./EditorSurfaceTab.lynx";
+import { contentTabListStyle, EditorSurfaceTab } from "./EditorSurfaceTab.lynx";
 
 describe("Lynx editor surface tab", () => {
   it("matches the Web tab resting and close glyph treatment", () => {
@@ -73,5 +73,17 @@ describe("Lynx editor surface tab", () => {
     expect(elementTree.root?.querySelector(".EditorSurfaceTab")?.getAttribute("class")).toContain(
       "ui-focus",
     );
+  });
+
+  it("sizes a content tab row to shrink with its strip and scroll below the tab floor", () => {
+    const styles = readFileSync(new URL("./editor-surface-tab.css", import.meta.url), "utf8");
+    // The row fills the strip, so its 216px tabs shrink together; the floor is the chip's own.
+    expect(styles).toMatch(/\.EditorSurfaceTab--content\s*\{[^}]*min-width:\s*108px;/s);
+    expect(styles).toMatch(/\.EditorSurfaceTab--content\s*\{[^}]*flex-shrink:\s*1;/s);
+    expect(contentTabListStyle(1)).toEqual({ width: "100%", minWidth: "108px" });
+    // Two tabs in the default 376px dock strip: 186px each, both close buttons in reach.
+    expect(contentTabListStyle(2)).toEqual({ width: "100%", minWidth: "220px" });
+    expect(contentTabListStyle(4)).toEqual({ width: "100%", minWidth: "444px" });
+    expect(contentTabListStyle(0)).toEqual({ width: "100%", minWidth: "0px" });
   });
 });

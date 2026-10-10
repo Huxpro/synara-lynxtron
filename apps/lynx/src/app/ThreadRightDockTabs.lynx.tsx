@@ -9,7 +9,7 @@ import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { Menu, MenuGroup, MenuItem, MenuPopup, MenuTrigger } from "../components/ui/menu.lynx";
 import { toastManager } from "../components/ui/toast.lynx";
-import { EditorSurfaceTab } from "./EditorSurfaceTab.lynx";
+import { contentTabListStyle, EditorSurfaceTab } from "./EditorSurfaceTab.lynx";
 import { FileEntryIcon } from "../components/FileEntryIcon.lynx";
 import { RIGHT_DOCK_PANE_GLYPHS } from "./rightDockGlyphs.lynx";
 import { RightDockMaximizeContext } from "./ThreadRightDockHost.lynx";
@@ -146,7 +146,7 @@ export function ThreadRightDockTabs(props: {
         accessibility-trait="none"
       >
         <scroll-view className="ThreadRightDockTabScroller" scroll-orientation="horizontal">
-          <view className="ThreadRightDockTabList">
+          <view className="ThreadRightDockTabList" style={contentTabListStyle(panes.length)}>
             {panes.map((pane) => (
               <EditorSurfaceTab
                 key={pane.id}
