@@ -122,7 +122,8 @@ import {
   getNextVisibleSidebarThreadId,
 } from "@synara-web/components/SidebarThreadNavigation.logic";
 import { queryClient, type ThreadSummary } from "../../app/queries";
-import { readThreadDetailOnce, readThreadHeaderSummaryOnce } from "../../app/threadDetailRead.lynx";
+import { readThreadHeaderSummaryOnce } from "../../app/threadDetailRead.lynx";
+import { withLeasedThreadDetail } from "../../app/threadDetailLease.lynx";
 import { useThreadHandoff } from "../../generated/threadHandoff.generated";
 import { toastManager } from "../ui/toast.lynx";
 import { useSidebarSnapshot } from "../../app/sidebarSnapshot.lynx";
@@ -677,23 +678,20 @@ export function Sidebar({
       continueHandoffTargets,
     );
     if (handoffAction) {
-      // Upstream's hook takes the store's thread; a thread whose detail the store does
-      // not hold is read once and projected, as every other one-shot thread action.
-      const read = await readThreadDetailOnce(thread.id);
-      if (!read) return;
       const { destination, target } = handoffAction;
       try {
-        if (destination === "this-thread") {
-          await continueThreadHandoff(read.thread, target.provider, target.instanceId);
-        } else {
-          const nextThreadId = await createThreadHandoff(
-            read.thread,
-            target.provider,
-            target.instanceId,
-          );
-          // The hook already routed there; this records it as the last opened thread.
-          navigate("/thread/" + nextThreadId);
-        }
+        // The thread may not be open. Upstream's hook takes the store's thread and, for a
+        // handoff in place, waits for the server's outcome on it, so its detail is leased
+        // for the whole operation (session sync only streams leased threads).
+        const nextThreadId = await withLeasedThreadDetail(thread.id, async (storeThread) => {
+          if (destination === "this-thread") {
+            await continueThreadHandoff(storeThread, target.provider, target.instanceId);
+            return null;
+          }
+          return createThreadHandoff(storeThread, target.provider, target.instanceId);
+        });
+        // The hook already routed there; this records it as the last opened thread.
+        if (nextThreadId) navigate("/thread/" + nextThreadId);
       } catch (cause) {
         const title =
           destination === "this-thread"

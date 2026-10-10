@@ -4,10 +4,8 @@ import {
   serverConfigQueryOptions,
   serverSettingsQueryOptions,
 } from "@synara-web/lib/serverReactQuery";
-import type { KeybindingRule, ModelSelection, ProjectScript, ThreadId } from "@synara/contracts";
+import type { KeybindingRule, ModelSelection, ProjectScript } from "@synara/contracts";
 import type { ThreadHandoffTarget } from "@synara-web/lib/threadHandoff";
-import { useStore } from "@synara-web/store";
-import { getThreadFromState } from "@synara-web/threadDerivation";
 import type { ThreadHeaderActionState } from "../logic/threadHeaderActions";
 import {
   addProjectAction,
@@ -46,6 +44,7 @@ import { toastManager } from "../components/ui/toast.lynx";
 import { useThreadHandoff } from "../generated/threadHandoff.generated";
 import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
 import type { ThreadHeaderSummary } from "./queries";
+import { withLeasedThreadDetail } from "./threadDetailLease.lynx";
 import {
   resolveNativeContinueHandoffTargets,
   resolveNativeThreadHandoffTargets,
@@ -130,23 +129,22 @@ export function ThreadHeaderActions(props: {
   async function handOff(target: ThreadHandoffTarget, destination: "this-thread" | "new-thread") {
     "background only";
     if (!thread || !project || busy || !handoffAllowed) return;
-    // The hook takes the store's thread, as upstream's header passes `activeThread`.
-    const storeThread = getThreadFromState(useStore.getState(), thread.id as ThreadId);
-    if (!storeThread) return;
     setBusy(true);
     setError(null);
     try {
-      if (destination === "this-thread") {
-        await continueThreadHandoff(storeThread, target.provider, target.instanceId);
-      } else {
-        const nextThreadId = await createThreadHandoff(
-          storeThread,
-          target.provider,
-          target.instanceId,
-        );
-        // The hook already routed there; this records it as the last opened thread.
-        props.onNavigateToThread(nextThreadId);
-      }
+      // The hook takes the store's thread, as upstream's header passes `activeThread`, and
+      // waits on it for a handoff in place. The header's thread is the routed one, which
+      // the thread page already leases; holding a lease here as well keeps the wait fed if
+      // the user leaves the thread before the target provider has started.
+      const nextThreadId = await withLeasedThreadDetail(thread.id, async (storeThread) => {
+        if (destination === "this-thread") {
+          await continueThreadHandoff(storeThread, target.provider, target.instanceId);
+          return null;
+        }
+        return createThreadHandoff(storeThread, target.provider, target.instanceId);
+      });
+      // The hook already routed there; this records it as the last opened thread.
+      if (nextThreadId) props.onNavigateToThread(nextThreadId);
     } catch (cause) {
       const title =
         destination === "this-thread"

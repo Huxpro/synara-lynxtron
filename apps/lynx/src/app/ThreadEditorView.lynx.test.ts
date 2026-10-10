@@ -50,7 +50,10 @@ describe("Lynx Editor view", () => {
     expect(actionsSource).toContain("<MenuGroupLabel>Continue in this thread</MenuGroupLabel>");
     expect(actionsSource).toContain("<MenuGroupLabel>Continue in a new thread</MenuGroupLabel>");
     expect(actionsSource).toContain("await continueThreadHandoff(storeThread, target.provider");
-    expect(actionsSource).toContain("await createThreadHandoff(");
+    expect(actionsSource).toContain("return createThreadHandoff(storeThread, target.provider");
+    expect(actionsSource).toContain(
+      "await withLeasedThreadDetail(thread.id, async (storeThread) => {",
+    );
     expect(routerSource).toContain("subscribeOpenThreadPathInTerminal(");
     expect(routerSource).toContain("consumeOpenThreadPathInTerminal(threadId)");
     expect(routerSource).toContain('data: "cd " + quotePosixShellArgument(intent.cwd) + "\\r"');
