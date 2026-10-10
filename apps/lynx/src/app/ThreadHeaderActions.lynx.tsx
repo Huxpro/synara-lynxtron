@@ -4,13 +4,8 @@ import {
   serverConfigQueryOptions,
   serverSettingsQueryOptions,
 } from "@synara-web/lib/serverReactQuery";
-import type {
-  KeybindingRule,
-  ModelSelection,
-  ProjectScript,
-  ProviderKind,
-} from "@synara/contracts";
-import { PROVIDER_DISPLAY_NAMES } from "@synara/contracts";
+import type { KeybindingRule, ModelSelection, ProjectScript } from "@synara/contracts";
+import type { ThreadHandoffTarget } from "@synara-web/lib/threadHandoff";
 import type { ThreadHeaderActionState } from "../logic/threadHeaderActions";
 import {
   addProjectAction,
@@ -36,10 +31,24 @@ import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import { useTheme } from "../adapters/useTheme.lynx";
 import { platformTerminal } from "../platform/terminal";
 import { Button } from "../components/ui/button";
-import { Menu, MenuItem, MenuPopup, MenuTrigger } from "../components/ui/menu.lynx";
+import {
+  Menu,
+  MenuGroup,
+  MenuGroupLabel,
+  MenuItem,
+  MenuPopup,
+  MenuSeparator,
+  MenuTrigger,
+} from "../components/ui/menu.lynx";
+import { toastManager } from "../components/ui/toast.lynx";
+import { useThreadHandoff } from "../generated/threadHandoff.generated";
 import { OpenAIProviderIcon } from "../components/OpenAIProviderIcon.lynx";
 import type { ThreadHeaderSummary } from "./queries";
-import { createNativeThreadHandoff, resolveNativeThreadHandoffTargets } from "./threadHandoff.lynx";
+import { withLeasedThreadDetail } from "./threadDetailLease.lynx";
+import {
+  resolveNativeContinueHandoffTargets,
+  resolveNativeThreadHandoffTargets,
+} from "./threadHandoff.lynx";
 import { ProjectActionEditor, type ProjectActionEditorValue } from "./ProjectActionEditor.lynx";
 
 import "./thread-header-actions.css";
@@ -111,22 +120,45 @@ export function ThreadHeaderActions(props: {
     providerSettings: serverSettings.data?.providers ?? null,
     providerStatuses: serverConfig.data?.providers ?? [],
   });
+  const continueHandoffTargets = resolveNativeContinueHandoffTargets(thread, handoffTargets);
   const handoffAllowed = handoffTargets.length > 0;
+  // Upstream's hook: `continueThreadHandoff` keeps the thread and switches who runs its
+  // next turn; `createThreadHandoff` opens a new thread with the imported transcript.
+  const { continueThreadHandoff, createThreadHandoff } = useThreadHandoff();
 
-  async function createHandoff(targetProvider: ProviderKind) {
+  async function handOff(target: ThreadHandoffTarget, destination: "this-thread" | "new-thread") {
     "background only";
     if (!thread || !project || busy || !handoffAllowed) return;
     setBusy(true);
     setError(null);
     try {
-      const nextThreadId = await createNativeThreadHandoff({
-        project,
-        targetProvider,
-        thread,
+      // The hook takes the store's thread, as upstream's header passes `activeThread`, and
+      // waits on it for a handoff in place. The header's thread is the routed one, which
+      // the thread page already leases; holding a lease here as well keeps the wait fed if
+      // the user leaves the thread before the target provider has started.
+      const nextThreadId = await withLeasedThreadDetail(thread.id, async (storeThread) => {
+        if (destination === "this-thread") {
+          await continueThreadHandoff(storeThread, target.provider, target.instanceId);
+          return null;
+        }
+        return createThreadHandoff(storeThread, target.provider, target.instanceId);
       });
-      props.onNavigateToThread(nextThreadId);
+      // The hook already routed there; this records it as the last opened thread.
+      if (nextThreadId) props.onNavigateToThread(nextThreadId);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Could not hand off thread.");
+      const title =
+        destination === "this-thread"
+          ? "Could not hand off this thread"
+          : "Could not create handoff thread";
+      const description =
+        cause instanceof Error
+          ? cause.message
+          : destination === "this-thread"
+            ? "An error occurred while handing off the thread."
+            : "An error occurred while creating the handoff thread.";
+      toastManager.add({ type: "error", title, description });
+      // Lynx has no toast surface yet; the header's inline error line shows it.
+      setError(`${title}: ${description}`);
     } finally {
       setBusy(false);
     }
@@ -269,13 +301,41 @@ export function ThreadHeaderActions(props: {
               content={colorizeLynxSvg(handoffSvg, semanticIconColor("primary"))}
             />
           </MenuTrigger>
-          <MenuPopup align="end" className="ThreadHeaderActionMenu" side="bottom" sideOffset={6}>
-            {handoffTargets.map((provider) => (
-              <MenuItem key={provider} onClick={() => void createHandoff(provider)}>
-                <OpenAIProviderIcon provider={provider} />
-                <text>Handoff to {PROVIDER_DISPLAY_NAMES[provider]}</text>
-              </MenuItem>
-            ))}
+          <MenuPopup
+            align="end"
+            className="LxComposerPickerMenuPopup LxPickerMenuPopup ThreadHeaderActionMenu ThreadHeaderHandoffMenu"
+            side="bottom"
+            sideOffset={4}
+          >
+            {continueHandoffTargets.length > 0 ? (
+              <>
+                <MenuGroup className="ThreadHeaderHandoffGroup--this-thread">
+                  <MenuGroupLabel>Continue in this thread</MenuGroupLabel>
+                  {continueHandoffTargets.map((target) => (
+                    <MenuItem
+                      key={target.instanceId}
+                      onClick={() => void handOff(target, "this-thread")}
+                    >
+                      <OpenAIProviderIcon provider={target.provider} />
+                      <text className="ThreadHeaderHandoffItemLabel">{target.label}</text>
+                    </MenuItem>
+                  ))}
+                </MenuGroup>
+                <MenuSeparator />
+              </>
+            ) : null}
+            <MenuGroup className="ThreadHeaderHandoffGroup--new-thread">
+              <MenuGroupLabel>Continue in a new thread</MenuGroupLabel>
+              {handoffTargets.map((target) => (
+                <MenuItem
+                  key={target.instanceId}
+                  onClick={() => void handOff(target, "new-thread")}
+                >
+                  <OpenAIProviderIcon provider={target.provider} />
+                  <text className="ThreadHeaderHandoffItemLabel">{target.label}</text>
+                </MenuItem>
+              ))}
+            </MenuGroup>
           </MenuPopup>
         </Menu>
       ) : null}

@@ -35,6 +35,35 @@
   height: 14px;
 }
 
+/* Upstream's hand-off menu is a ComposerPickerMenuPopup, `w-56 min-w-56`. */
+.ThreadHeaderHandoffMenu {
+  width: 224px;
+  min-width: 224px;
+}
+
+.ThreadHeaderHandoffMenu .LxMenuGroupLabel {
+  line-height: var(--app-line-height-ui-sm-18, 18px);
+}
+
+.ThreadHeaderHandoffMenu .LxMenuSeparator {
+  margin: 4px 8px;
+}
+
+/* Option rows: `px-1.5 gap-1.5 text-ui`. */
+.ThreadHeaderHandoffMenu .LxMenuItem {
+  padding: 4px 6px;
+}
+
+.ThreadHeaderHandoffMenu .LxMenuItem__row {
+  gap: 6px;
+}
+
+.ThreadHeaderHandoffItemLabel {
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: var(--app-line-height-ui-19p5, 19.5px);
+}
+
 .ThreadHeaderActionDialog {
   width: min(420px, calc(100vw - 32px));
   border-radius: 18px;

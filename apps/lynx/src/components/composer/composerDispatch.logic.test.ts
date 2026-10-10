@@ -9,9 +9,20 @@ import {
   buildComposerTurnStartCommand,
   isConnectingComposerSession,
   isRunningComposerSession,
-  runComposerSendTransaction,
+  runComposerOutgoingSend,
 } from "./composerDispatch.logic";
 import { createPastedTextDraft } from "@synara-web/lib/composerPastedText";
+
+/** A promise the test settles by hand: the wait a send is in. */
+const deferred = () => {
+  let resolve!: () => void;
+  let reject!: (error: Error) => void;
+  const promise = new Promise<void>((onResolve, onReject) => {
+    resolve = onResolve;
+    reject = onReject;
+  });
+  return { promise, resolve, reject };
+};
 
 describe("composer dispatch logic", () => {
   it("materializes terminal context placeholders into the canonical send block", () => {
@@ -275,46 +286,101 @@ describe("composer dispatch logic", () => {
     );
   });
 
-  it("clears the draft only after a successful dispatch", async () => {
-    const calls: string[] = [];
+  // The draft store a send works on, by thread id: what a remounted composer also reads.
+  const draftStore = () => {
+    const drafts = new Map<string, string>();
+    const discarded: string[] = [];
+    return {
+      drafts,
+      discarded,
+      attempt: (threadId: string, send: (draft: string) => Promise<void>) =>
+        runComposerOutgoingSend<string>({
+          take: () => {
+            const draft = drafts.get(threadId) ?? null;
+            drafts.delete(threadId);
+            return draft;
+          },
+          send,
+          // Upstream's rule: only into an empty composer.
+          restore: (draft) => {
+            if (drafts.has(threadId)) return false;
+            drafts.set(threadId, draft);
+            return true;
+          },
+          discard: (draft) => {
+            discarded.push(draft);
+          },
+        }),
+    };
+  };
 
-    await runComposerSendTransaction({
-      prepare: () => {
-        calls.push("prepare");
+  it("takes the draft out before the send and runs the success hook after it", async () => {
+    const store = draftStore();
+    store.drafts.set("thread-1", "A");
+    const calls: string[] = [];
+    const result = await runComposerOutgoingSend<string>({
+      take: () => {
+        calls.push("take");
+        return "A";
       },
-      dispatch: async () => {
-        calls.push("dispatch");
+      send: async (draft) => {
+        calls.push(`send:${draft}`);
       },
-      clearDraft: () => {
-        calls.push("clear");
+      restore: () => {
+        calls.push("restore");
+        return true;
       },
       onSucceeded: () => {
         calls.push("succeeded");
       },
     });
-
-    expect(calls).toEqual(["prepare", "dispatch", "clear", "succeeded"]);
+    expect(result).toBe("sent");
+    expect(calls).toEqual(["take", "send:A", "succeeded"]);
+    // Nothing to send: no attempt at all.
+    expect(await store.attempt("thread-empty", async () => undefined)).toBe("empty");
   });
 
-  it("retains the draft and structured context when dispatch fails", async () => {
-    const calls: string[] = [];
-    const error = new Error("dispatch failed");
+  it("keeps what the user typed during the wait when the send succeeds", async () => {
+    const store = draftStore();
+    store.drafts.set("thread-1", "A");
+    const wait = deferred();
+    const sent: string[] = [];
+    const attempt = store.attempt("thread-1", async (draft) => {
+      await wait.promise;
+      sent.push(draft);
+    });
+    // The composer is empty and editable while the handoff waits; the user writes B.
+    expect(store.drafts.has("thread-1")).toBe(false);
+    store.drafts.set("thread-1", "B");
+    wait.resolve();
+    await expect(attempt).resolves.toBe("sent");
+    expect(sent).toEqual(["A"]);
+    expect(store.drafts.get("thread-1")).toBe("B");
+  });
 
+  it("keeps the newer draft and discards the failed one when the user typed during the wait", async () => {
+    const store = draftStore();
+    store.drafts.set("thread-1", "A");
+    const wait = deferred();
+    const attempt = store.attempt("thread-1", () => wait.promise);
+    store.drafts.set("thread-1", "B");
+    const error = new Error("Claude could not start");
+    wait.reject(error);
+    await expect(attempt).rejects.toBe(error);
+    expect(store.drafts.get("thread-1")).toBe("B");
+    expect(store.discarded).toEqual(["A"]);
+  });
+
+  it("puts the draft back when the send fails and the composer is still empty", async () => {
+    const store = draftStore();
+    store.drafts.set("thread-1", "A");
+    const error = new Error("dispatch failed");
     await expect(
-      runComposerSendTransaction({
-        dispatch: async () => {
-          calls.push("dispatch");
-          throw error;
-        },
-        clearDraft: () => {
-          calls.push("clear");
-        },
-        onSucceeded: () => {
-          calls.push("succeeded");
-        },
+      store.attempt("thread-1", async () => {
+        throw error;
       }),
     ).rejects.toBe(error);
-
-    expect(calls).toEqual(["dispatch"]);
+    expect(store.drafts.get("thread-1")).toBe("A");
+    expect(store.discarded).toEqual([]);
   });
 });

@@ -1782,6 +1782,498 @@ export async function workflowJ6(context) {
   return { token };
 }
 
+const HANDOFF_SOURCE = { provider: "codex", label: "Codex", modelText: "GPT-5.6 Luna" };
+const HANDOFF_TARGET = { provider: "claudeAgent", label: "Claude", modelText: "Claude Sonnet 5.5" };
+
+const MENU_LAYER = {
+  electron: { selector: '[data-slot="menu-popup"]' },
+  native: { className: "LxMenuLayer" },
+};
+
+/** Vertical centre of the in-place handoff boundaries the transcript shows, top to bottom. */
+async function handoffDividerCentres(driver) {
+  if (driver.kind === "electron") {
+    return driver.evaluate(
+      `Array.from(document.querySelectorAll('[data-provider-handoff-divider="true"]')).map((node) => { const r = node.getBoundingClientRect(); return r.top + r.height / 2; })`,
+    );
+  }
+  const centres = [];
+  for (const node of nativeNodesMatchingClasses(
+    await driver.documentRoot(),
+    ".ProviderHandoffDivider",
+  )) {
+    const quad = (await driver.send("DOM.getBoxModel", { nodeId: node.nodeId }))?.model?.border;
+    if (!quad) continue;
+    const ys = [quad[1], quad[3], quad[5], quad[7]];
+    if (Math.max(...ys) - Math.min(...ys) > 0)
+      centres.push((Math.min(...ys) + Math.max(...ys)) / 2);
+  }
+  return centres.toSorted((left, right) => left - right);
+}
+
+/**
+ * The canonical slug of the model the picker shows as `provider.modelText`, from the
+ * server's catalog for that provider (the picker's own source), aliases resolved. A send that carried the
+ * provider's default model instead of the picked one has a different slug.
+ */
+async function resolvePickedModelSlug(backend, provider) {
+  const result = await backend.request("provider.listModels", { provider: provider.provider });
+  // The picker formats the catalog's names: "GPT-5.6-Luna" reads "GPT-5.6 Luna", and
+  // Claude's "Sonnet 5.5" reads "Claude Sonnet 5.5". The row's text ends with the name.
+  const normalize = (name) =>
+    String(name)
+      .toLowerCase()
+      .replace(/[\s_-]+/g, " ")
+      .trim();
+  const shown = normalize(provider.modelText);
+  const matches = (result.models ?? []).filter((model) => {
+    const name = normalize(model.name);
+    return shown === name || shown.endsWith(` ${name}`);
+  });
+  if (matches.length !== 1)
+    throw new Error(
+      `${provider.label}'s catalog has ${matches.length} models named "${provider.modelText}" (${(result.models ?? []).map((model) => model.name).join(", ")}).`,
+    );
+  // An alias entry ("sonnet") names the model it resolves to; that is what a pick stores.
+  return matches[0].resolvedModel ?? matches[0].slug;
+}
+
+/** Throws unless every `[where, model]` pair names the expected slug. */
+function expectModelSlug(expected, pairs) {
+  for (const [where, model] of pairs) {
+    if (model !== expected) throw new Error(`${where} is ${model}, expected ${expected}.`);
+  }
+}
+
+/** The unsent text the composer holds. */
+async function composerText(driver) {
+  if (driver.kind === "electron") {
+    return driver.evaluate(
+      `(document.querySelector('[data-testid="composer-editor"]')?.innerText ?? "").trim()`,
+    );
+  }
+  // The Native editor is a host text view; its element carries the draft as `default-value`.
+  const queue = [await driver.documentRoot()];
+  while (queue.length > 0) {
+    const node = queue.shift();
+    const attributes = node?.attributes ?? [];
+    const map = {};
+    for (let index = 0; index + 1 < attributes.length; index += 2)
+      map[attributes[index]] = attributes[index + 1];
+    if (node?.nodeName === "TEXTAREA" && map["accessibility-label"] === "Message composer")
+      return String(map["default-value"] ?? "").trim();
+    queue.push(...(node?.children ?? []));
+  }
+  return "";
+}
+
+function handoffActivities(thread) {
+  return (thread.activities ?? []).filter((activity) => activity.kind === "provider.handoff");
+}
+
+/**
+ * Picks `provider.modelText` in the composer's model picker: its provider's tab, the
+ * search field (so the row is not under the effort footer), then the row of that name.
+ */
+async function pickComposerModel(driver, provider) {
+  await driver.tap({ label: "Change model and reasoning" });
+  await waitFor(() => driver.find(pick(driver, MENU_LAYER)), { label: "the model menu" });
+  await driver.tap(
+    pick(driver, {
+      electron: { selector: `[role="tab"][aria-label="${provider.label}"]` },
+      native: { label: provider.label, within: ".LxMenuLayer" },
+    }),
+  );
+  await driver.tap({ label: "Search models" });
+  await driver.type(provider.modelText);
+  const rowTarget = pick(driver, {
+    electron: {
+      selector:
+        '[data-slot="menu-popup"] [data-slot="menu-item"], [data-slot="menu-popup"] [data-slot="menu-sub-trigger"]',
+      text: provider.modelText,
+    },
+    native: { text: provider.modelText, within: ".LxMenuLayer" },
+  });
+  // Discovering a provider's models may take a moment, and the list re-renders when it
+  // lands: wait until the row has stopped moving before tapping it.
+  let row = await waitFor(() => driver.find(rowTarget), {
+    label: `a ${provider.modelText} row on the ${provider.label} tab`,
+    timeoutMs: 30_000,
+  });
+  await waitFor(
+    async () => {
+      await sleep(250);
+      const next = await driver.find(rowTarget);
+      const settled = next !== null && next.y === row.y && next.height === row.height;
+      if (next) row = next;
+      return settled;
+    },
+    { label: `the ${provider.modelText} row to settle`, timeoutMs: 10_000, intervalMs: 0 },
+  );
+  // A model with an effort ladder keeps the panel open for the slider; any other pick
+  // closes it. Either way the tapped row, not just any row, has to be the selected one.
+  const picked = pick(driver, {
+    electron: {
+      selector: '[data-slot="menu-popup"] [aria-current="true"]',
+      text: provider.modelText,
+    },
+    native: { className: ".ComposerModelPickerRowLynx--selected" },
+  });
+  for (let attempt = 1; ; attempt += 1) {
+    await driver.tap(rowTarget);
+    const selected = await waitFor(
+      async () => !(await driver.find(pick(driver, MENU_LAYER))) || (await driver.find(picked)),
+      { label: "the tapped row to become the selected model", timeoutMs: 2_500 },
+    ).catch(() => null);
+    if (selected) break;
+    // A click that lands while the list is still re-rendering is dropped; a user clicks again.
+    if (attempt === 3)
+      throw new Error(`Tapping the ${provider.modelText} row did not select it (3 attempts).`);
+  }
+  if (await driver.find(pick(driver, MENU_LAYER)))
+    await driver.tap({ label: "Change model and reasoning" });
+  await waitFor(async () => !(await driver.find(pick(driver, MENU_LAYER))), {
+    label: "the model menu to close",
+  });
+  // The composer now names the picked model (the trigger drops the provider's name).
+  const shownName = provider.modelText.replace(new RegExp(`^${provider.label} `), "");
+  await waitFor(
+    async () =>
+      driver.kind === "electron"
+        ? ((await driver.find({ label: "Change model and reasoning" }))?.text ?? "").includes(
+            shownName,
+          )
+        : renderedTextIncludes(driver, shownName),
+    { label: `the composer to show ${shownName}`, timeoutMs: 5_000 },
+  );
+  return row;
+}
+
+/** The header's Hand off menu row for `label` under one of upstream's two destinations. */
+function handoffMenuRow(driver, destination, label) {
+  return pick(driver, {
+    electron: { selector: `[data-handoff-destination="${destination}"]`, text: label },
+    native: { text: label, within: `.ThreadHeaderHandoffGroup--${destination}` },
+  });
+}
+
+/**
+ * J7 — hand off a thread to another provider: a real turn on Codex → pick a Claude
+ * model in the composer picker → send (upstream's in-thread handoff on send: same
+ * thread, the target session started first, the conversation carried as the
+ * prior-transcript context) → the transcript boundary → the header's "Hand off
+ * thread" action, in this thread and into a new one.
+ */
+export async function workflowJ7(context) {
+  const { driver, backend, step } = context;
+  const token = `J7-${driver.kind}-${Date.now().toString(36)}`;
+  const codeWord = `PLUM${Date.now().toString(36).toUpperCase()}`;
+  let thread = null;
+  let handoffThreadId = null;
+  let sourceSlug = null;
+  let targetSlug = null;
+  const lateDraft = `${token} typed while the handoff waits`;
+  try {
+    await step("both providers are installed and signed in", async () => {
+      const config = await backend.request("server.getConfig", {});
+      const usable = (config.providers ?? [])
+        .filter((status) => status.available && status.authStatus === "authenticated")
+        .map((status) => status.provider);
+      for (const { provider } of [HANDOFF_SOURCE, HANDOFF_TARGET]) {
+        if (!usable.includes(provider))
+          throw new Error(`${provider} is not usable in this home (usable: ${usable.join(", ")}).`);
+      }
+      // The slugs of the two models this workflow picks by name.
+      sourceSlug = await resolvePickedModelSlug(backend, HANDOFF_SOURCE);
+      targetSlug = await resolvePickedModelSlug(backend, HANDOFF_TARGET);
+      if (sourceSlug === targetSlug) throw new Error("The two picks resolve to one slug.");
+      return { usable, sourceSlug, targetSlug };
+    });
+
+    thread = await step(`complete a real turn on ${HANDOFF_SOURCE.label}`, async () => {
+      await openNewThread(driver);
+      // A new thread starts on whatever the composer last used; name the source explicitly.
+      await pickComposerModel(driver, HANDOFF_SOURCE);
+      const settled = await sendAndComplete(
+        driver,
+        backend,
+        `The code word for this conversation is ${codeWord}. Reply with exactly one line: ${token} ok`,
+        token,
+      );
+      if (settled.modelSelection.provider !== HANDOFF_SOURCE.provider)
+        throw new Error(`The new thread ran on ${settled.modelSelection.provider}.`);
+      // The picked model, not the provider's default.
+      expectModelSlug(sourceSlug, [["The source thread's model", settled.modelSelection.model]]);
+      return {
+        threadId: settled.id,
+        turnId: settled.latestTurn.turnId,
+        assistantMessageId: settled.messages.at(-1).id,
+        sourceModel: settled.modelSelection.model,
+      };
+    });
+
+    await step(`pick a ${HANDOFF_TARGET.label} model in the started thread's picker`, async () => {
+      // The other provider's models are listed (no notice, no lock) and can be picked.
+      const row = await pickComposerModel(driver, HANDOFF_TARGET);
+      // Nothing reaches the server until the send: the thread still names its own selection.
+      const current = await backend.thread(thread.threadId);
+      if (current.modelSelection.provider !== HANDOFF_SOURCE.provider)
+        throw new Error("Picking a model switched the thread before any message was sent.");
+      expectModelSlug(sourceSlug, [
+        ["The thread's model before the send", current.modelSelection.model],
+      ]);
+      if (handoffActivities(current).length !== 0)
+        throw new Error("Picking a model already handed the thread off.");
+      return { row: { width: row.width, height: row.height } };
+    });
+
+    const handedOff = await step(
+      "send: the thread is handed off in place, then the turn runs",
+      async () => {
+        const sendToken = `${token}-handoff`;
+        await composeAndSend(
+          driver,
+          `What is the code word for this conversation? Reply with exactly one line: ${sendToken} <the code word>`,
+        );
+        // The send takes its draft out of the composer at once. What the user types while the
+        // target provider starts is a new draft: it is neither sent nor cleared.
+        await waitFor(async () => (await composerText(driver)) === "", {
+          label: "the composer to empty when the send starts",
+          timeoutMs: 5_000,
+        });
+        await driver.tap(pick(driver, COMPOSER_TARGET));
+        await driver.type(lateDraft);
+        const typedDuringTheWait = (await threadWithMessage(backend, sendToken)) === null;
+        const sent = await waitFor(() => threadWithMessage(backend, sendToken), {
+          label: "the handoff send in the backend",
+          timeoutMs: 180_000,
+          intervalMs: 500,
+        });
+        if (sent.id !== thread.threadId)
+          throw new Error(`The send landed in thread ${sent.id}, not the thread it was typed in.`);
+        const settled = await waitForSettled(
+          backend,
+          thread.threadId,
+          "the turn after the handoff",
+          thread.turnId,
+          240_000,
+        );
+        if (settled.latestTurn.state !== "completed")
+          throw new Error(
+            `Turn ended ${settled.latestTurn.state}: ${settled.session?.lastError ?? ""}`,
+          );
+        if (userMessagesWith(settled, sendToken).length !== 1)
+          throw new Error("The message was not sent exactly once.");
+        if (await threadWithMessage(backend, lateDraft))
+          throw new Error("The draft typed during the handoff wait was sent.");
+        const keptDraft = await composerText(driver);
+        if (!keptDraft.includes(lateDraft))
+          throw new Error(
+            `The draft typed during the handoff wait is gone; the composer holds ${JSON.stringify(keptDraft)}.`,
+          );
+        // The turn ran on the target provider, in the same thread.
+        if (settled.modelSelection.provider !== HANDOFF_TARGET.provider)
+          throw new Error(`The thread's selection is ${settled.modelSelection.provider}.`);
+        const sessionProvider = settled.session?.providerName ?? null;
+        if (sessionProvider !== HANDOFF_TARGET.provider)
+          throw new Error(`The session runs on ${sessionProvider}.`);
+        // Upstream's record of the handoff: one outcome row, and the "handed off from" metadata.
+        const rows = handoffActivities(settled);
+        if (rows.length !== 1) throw new Error(`Expected one handoff row, found ${rows.length}.`);
+        const payload = rows[0].payload ?? {};
+        if (
+          payload.sourceProvider !== HANDOFF_SOURCE.provider ||
+          payload.targetProvider !== HANDOFF_TARGET.provider
+        )
+          throw new Error(`Handoff row: ${payload.sourceProvider} → ${payload.targetProvider}.`);
+        // The handoff and the turn carry the model that was picked, on both sides. (The
+        // session exposes its provider only; it has no model field.)
+        expectModelSlug(targetSlug, [
+          ["The thread's model after the handoff", settled.modelSelection.model],
+          ["The handoff row's target model", payload.targetModel],
+          ["The handoff row's target selection", payload.targetModelSelection?.model],
+        ]);
+        expectModelSlug(sourceSlug, [
+          ["The handoff row's source model", payload.sourceModel],
+          ["The handoff row's source selection", payload.sourceModelSelection?.model],
+        ]);
+        // The conversation travels as the prior-transcript context of the target's first turn.
+        if (!String(payload.contextText ?? "").includes(codeWord))
+          throw new Error("The handoff context does not carry the earlier conversation.");
+        if (
+          settled.handoff?.sourceProvider !== HANDOFF_SOURCE.provider ||
+          settled.handoff?.sourceThreadId !== thread.threadId
+        )
+          throw new Error(`Thread handoff metadata: ${JSON.stringify(settled.handoff)}`);
+        const userMessage = userMessagesWith(settled, sendToken)[0];
+        if (Date.parse(userMessage.createdAt) <= Date.parse(rows[0].createdAt))
+          throw new Error("The message is not positioned after the handoff row.");
+        const reply = settled.messages.at(-1);
+        if (reply.role !== "assistant" || !reply.text.includes(codeWord))
+          throw new Error(
+            `The target did not answer from the carried context: ${JSON.stringify(reply.text).slice(0, 200)}`,
+          );
+        thread.turnId = settled.latestTurn.turnId;
+        return {
+          targetModel: settled.modelSelection.model,
+          sessionProvider,
+          // False when the provider started before the harness had typed: the draft then only
+          // proves that a send does not clear what follows it.
+          typedDuringTheWait,
+          contextCharacters: payload.contextCharacters ?? null,
+          userMessageId: userMessage.id,
+          replyMessageId: reply.id,
+        };
+      },
+    );
+
+    await step("the transcript shows the handoff boundary between the two turns", async () => {
+      await waitFor(
+        async () => (await renderedMessageIds(driver)).includes(handedOff.replyMessageId),
+        { label: "the target's reply in the transcript", timeoutMs: 20_000 },
+      );
+      await waitFor(() => renderedTextIncludes(driver, "Context handoff"), {
+        label: 'the "Context handoff" boundary',
+      });
+      const centres = await handoffDividerCentres(driver);
+      if (centres.length !== 1) throw new Error(`Expected one boundary, found ${centres.length}.`);
+      const rects = await messageRowRects(driver);
+      const before = rects.find((row) => row.id === thread.assistantMessageId);
+      const after = rects.find((row) => row.id === handedOff.userMessageId);
+      if (!before || !after) throw new Error("The rows around the boundary are not on screen.");
+      if (!(before.bottom <= centres[0] && centres[0] <= after.top))
+        throw new Error(
+          `Boundary at ${centres[0]} is not between ${before.bottom} and ${after.top}.`,
+        );
+      // Opening it shows what was transferred.
+      const boundary = await driver.tap(
+        pick(driver, {
+          electron: { selector: '[data-provider-handoff-divider="true"] button' },
+          native: { label: /^Context handoff / },
+        }),
+      );
+      await waitFor(() => renderedTextIncludes(driver, "Transferred context"), {
+        label: "the transferred context",
+      });
+      if (!(await renderedTextIncludes(driver, "Sent ahead of your next message")))
+        throw new Error("The transferred-context note is missing.");
+      await driver.tap(
+        pick(driver, {
+          electron: { selector: '[data-provider-handoff-divider="true"] button' },
+          native: { label: /^Context handoff / },
+        }),
+      );
+      return {
+        // Offsets from the rows around it, so the two renderers can be compared.
+        boundary: {
+          x: boundary.x,
+          width: boundary.width,
+          height: boundary.height,
+          belowPreviousRow: centres[0] - before.bottom,
+          aboveNextRow: after.top - centres[0],
+        },
+      };
+    });
+
+    await step('header "Hand off thread": continue in this thread', async () => {
+      await driver.tap({ label: "Hand off thread" });
+      const row = handoffMenuRow(driver, "this-thread", HANDOFF_SOURCE.label);
+      await waitFor(() => driver.find(row), { label: "the Continue in this thread rows" });
+      for (const heading of ["Continue in this thread", "Continue in a new thread"]) {
+        if (!(await renderedTextIncludes(driver, heading)))
+          throw new Error(`The Hand off menu has no "${heading}" group.`);
+      }
+      const menu = await driver.find(
+        pick(driver, {
+          electron: { selector: '[data-slot="menu-popup"]' },
+          native: { className: ".LxMenuPopup", within: ".LxMenuLayer" },
+        }),
+      );
+      const tapped = await driver.tap(row);
+      const back = await waitFor(
+        async () => {
+          const current = await backend.thread(thread.threadId);
+          return handoffActivities(current).length === 2 ? current : null;
+        },
+        { label: "the second handoff row", timeoutMs: 150_000, intervalMs: 500 },
+      );
+      const payload = handoffActivities(back).at(-1).payload ?? {};
+      if (
+        payload.sourceProvider !== HANDOFF_TARGET.provider ||
+        payload.targetProvider !== HANDOFF_SOURCE.provider
+      )
+        throw new Error(`Handoff row: ${payload.sourceProvider} → ${payload.targetProvider}.`);
+      if (back.modelSelection.provider !== HANDOFF_SOURCE.provider)
+        throw new Error(`The thread's selection is ${back.modelSelection.provider}.`);
+      // The header names a provider only; upstream then uses that provider's sticky
+      // selection, which is the model picked for it at the start of this workflow.
+      expectModelSlug(sourceSlug, [
+        ["The thread's model after handing back", back.modelSelection.model],
+        ["The second handoff row's target model", payload.targetModel],
+        ["The second handoff row's target selection", payload.targetModelSelection?.model],
+      ]);
+      expectModelSlug(targetSlug, [["The second handoff row's source model", payload.sourceModel]]);
+      if (back.messages.length !== 4)
+        throw new Error(`The thread has ${back.messages.length} messages, expected its own 4.`);
+      await waitFor(async () => (await handoffDividerCentres(driver)).length === 2, {
+        label: "the second boundary in the transcript",
+        timeoutMs: 20_000,
+      });
+      return {
+        targetModel: back.modelSelection.model,
+        menu: menu ? { x: menu.x, y: menu.y, width: menu.width, height: menu.height } : null,
+        row: { x: tapped.x, y: tapped.y, width: tapped.width, height: tapped.height },
+      };
+    });
+
+    await step('header "Hand off thread": continue in a new thread', async () => {
+      const before = new Set((await backend.snapshot()).threads.map((entry) => entry.id));
+      // The header is busy until the previous handoff has settled in the renderer.
+      await sleep(500);
+      await driver.tap({ label: "Hand off thread" });
+      const row = handoffMenuRow(driver, "new-thread", HANDOFF_TARGET.label);
+      await waitFor(() => driver.find(row), { label: "the Continue in a new thread rows" });
+      await driver.tap(row);
+      const created = await waitFor(
+        async () =>
+          (await backend.snapshot()).threads.find(
+            (entry) => !before.has(entry.id) && entry.handoff?.sourceThreadId === thread.threadId,
+          ) ?? null,
+        { label: "the handoff thread", timeoutMs: 60_000, intervalMs: 500 },
+      );
+      handoffThreadId = created.id;
+      if (created.modelSelection.provider !== HANDOFF_TARGET.provider)
+        throw new Error(`The handoff thread is bound to ${created.modelSelection.provider}.`);
+      // Again the target provider's sticky selection: the model picked for it earlier.
+      expectModelSlug(targetSlug, [["The handoff thread's model", created.modelSelection.model]]);
+      if (created.handoff.sourceProvider !== HANDOFF_SOURCE.provider)
+        throw new Error(`Handoff metadata: ${JSON.stringify(created.handoff)}`);
+      // The new thread starts from the source's transcript, imported.
+      const imported = (created.messages ?? []).map((message) => `${message.role}:${message.text}`);
+      const source = (await backend.thread(thread.threadId)).messages.map(
+        (message) => `${message.role}:${message.text}`,
+      );
+      if (JSON.stringify(imported) !== JSON.stringify(source))
+        throw new Error(`Imported ${imported.length} messages, the source has ${source.length}.`);
+      await waitFor(async () => (await activeThreadId(driver)) === created.id, {
+        label: "the renderer on the handoff thread",
+        timeoutMs: 20_000,
+      });
+      // The unsent draft follows the conversation into the new thread.
+      await waitFor(async () => (await composerText(driver)).includes(lateDraft), {
+        label: "the unsent draft in the handoff thread's composer",
+        timeoutMs: 10_000,
+      });
+      return { handoffThreadId: created.id, importedMessages: imported.length };
+    });
+
+    return { threadId: thread.threadId, handoffThreadId, codeWord };
+  } finally {
+    await deleteWorkflowThread(backend, handoffThreadId);
+    await deleteWorkflowThread(backend, thread?.threadId ?? null);
+  }
+}
+
 export const WORKFLOWS = Object.freeze({
   J1: workflowJ1,
   J2: workflowJ2,
@@ -1789,4 +2281,5 @@ export const WORKFLOWS = Object.freeze({
   J4: workflowJ4,
   J5: workflowJ5,
   J6: workflowJ6,
+  J7: workflowJ7,
 });

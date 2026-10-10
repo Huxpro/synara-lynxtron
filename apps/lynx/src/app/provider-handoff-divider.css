@@ -1,0 +1,206 @@
+/* Upstream's ProviderHandoffDivider: `w-full py-3`, a centered button between two rules. */
+.ProviderHandoffDivider {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.ProviderHandoffDividerLine {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.ProviderHandoffDividerRule {
+  min-width: 0;
+  height: 1px;
+  flex: 1;
+  background-color: var(--color-border-light);
+}
+
+/* `inline-flex min-w-0 shrink items-center gap-2 rounded-sm text-ui-sm`. */
+.ProviderHandoffDividerButton {
+  display: flex;
+  min-width: 0;
+  flex-direction: row;
+  flex-shrink: 1;
+  align-items: center;
+  gap: 8px;
+  border-radius: 4px;
+}
+
+.ProviderHandoffDividerButton--hover,
+.ProviderHandoffDividerButton--pressed {
+  opacity: 0.8;
+}
+
+.ProviderHandoffDividerIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.ProviderHandoffDividerTitle,
+.ProviderHandoffEndpointModel,
+.ProviderHandoffEndpointStatus {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: var(--app-line-height-ui-sm-18, 18px);
+}
+
+.ProviderHandoffDividerTitle,
+.ProviderHandoffEndpointStatus {
+  flex-shrink: 0;
+}
+
+.ProviderHandoffDividerButton--failed .ProviderHandoffDividerTitle,
+.ProviderHandoffEndpoint--failed .ProviderHandoffEndpointModel,
+.ProviderHandoffEndpoint--failed .ProviderHandoffEndpointStatus {
+  color: var(--destructive);
+}
+
+/* The failed target reads struck through, as upstream's `line-through`. */
+.ProviderHandoffEndpoint--struck .ProviderHandoffEndpointModel {
+  text-decoration: line-through;
+}
+
+.ProviderHandoffDividerArrow {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* `inline-flex min-w-0 items-center gap-1.5`. */
+.ProviderHandoffEndpoint {
+  display: flex;
+  min-width: 0;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+}
+
+.ProviderHandoffEndpoint .OpenAIProviderIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.ProviderHandoffEndpointModel {
+  min-width: 0;
+  flex-shrink: 1;
+}
+
+/* `text-foreground/84` on the target of a completed handoff. */
+.ProviderHandoffEndpoint--target .ProviderHandoffEndpointModel,
+.ProviderHandoffEndpoint--target .ProviderHandoffEndpointStatus {
+  color: var(--foreground);
+  opacity: 0.84;
+}
+
+.ProviderHandoffEndpointFast {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+
+.ProviderHandoffEndpointStatus {
+  opacity: 0.7;
+}
+
+/* Upstream's region starts 4px above the line's bottom edge and pads 12px: 8px below it. */
+.ProviderHandoffDividerPanel {
+  min-width: 0;
+  padding-top: 8px;
+}
+
+/* ProviderHandoffDetails: `space-y-3`. */
+.ProviderHandoffDetails {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* `rounded-lg border border-border/45 bg-background/60 px-3 py-2.5 text-ui-sm`. */
+.ProviderHandoffDetailsCard,
+.ProviderHandoffContext {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border);
+  border-radius: 8px;
+  background-color: var(--background);
+  padding: 10px 12px;
+}
+
+.ProviderHandoffDetailsCard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ProviderHandoffDetailsRow {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.ProviderHandoffDetailsTerm,
+.ProviderHandoffDetailsValue,
+.ProviderHandoffContextTitle {
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: var(--app-line-height-ui-sm-18, 18px);
+}
+
+/* Upstream's first grid column is `max-content` (44.2px, "Context") with `gap-x-3`; the
+   column is 2px wider here so the word never wraps, and the gap gives the 2px back. */
+.ProviderHandoffDetailsTerm {
+  width: 46px;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  opacity: 0.56;
+}
+
+.ProviderHandoffDetailsValue {
+  min-width: 0;
+  flex: 1;
+  color: var(--foreground);
+  opacity: 0.84;
+}
+
+.ProviderHandoffContextSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ProviderHandoffContextTitle {
+  color: var(--muted-foreground);
+  font-weight: 500;
+  opacity: 0.56;
+}
+
+/* `max-h-56 overflow-auto`. */
+.ProviderHandoffContext {
+  max-height: 224px;
+}
+
+.ProviderHandoffContextText {
+  color: var(--foreground);
+  font-family: var(--font-mono-family);
+  font-size: var(--app-font-size-chat-code, 12px);
+  opacity: 0.84;
+}
+
+.ProviderHandoffContextNote {
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-xs, 11px);
+  line-height: var(--app-line-height-ui-xs-16p5, 16.5px);
+  opacity: 0.56;
+}

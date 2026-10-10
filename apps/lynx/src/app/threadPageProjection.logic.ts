@@ -378,7 +378,7 @@ export function projectThreadHeaderSummary(
     associatedWorktreeRef: thread.associatedWorktreeRef ?? null,
     createBranchFlowCompleted: thread.createBranchFlowCompleted ?? false,
     provider,
-    lockedProvider: threadHasProviderLockingActivity(thread) ? provider : null,
+    boundProvider: threadHasProviderLockingActivity(thread) ? provider : null,
     modelSelection: thread.modelSelection,
     runtimeMode: thread.runtimeMode,
     interactionMode: thread.interactionMode,

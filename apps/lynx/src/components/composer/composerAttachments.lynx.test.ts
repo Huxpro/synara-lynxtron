@@ -6,6 +6,7 @@ import {
   type NativeComposerFileAttachment,
   type NativeComposerImageAttachment,
 } from "./composerAttachments.lynx";
+import { dispatchComposerTurnAfterStaging } from "./composerDispatch.logic";
 
 const picked = (
   overrides: Partial<{
@@ -317,5 +318,86 @@ describe("native composer picked-file intake", () => {
 
     expect(uploaded).toEqual(["image-token", "file-token"]);
     expect(staged.attachments.map((attachment) => attachment.type)).toEqual(["image", "file"]);
+  });
+
+  // Upstream's order on a send that hands the thread to another provider: stage, hand off,
+  // dispatch. The handoff abandons the source provider's session, so nothing that can still
+  // fail on this side may come after it except the dispatch itself.
+  describe("a send that hands the thread off", () => {
+    const uploads = (failingToken?: string) => {
+      const calls: string[] = [];
+      let upload = 0;
+      async function request<T>(method: string, params: Record<string, unknown>): Promise<T> {
+        if (method === "attachmentsCancel") {
+          calls.push(`cancel:${String(params.attachmentId)}`);
+          return { cancelled: true } as T;
+        }
+        if (params.token === failingToken) {
+          calls.push("upload-failed");
+          throw new Error("picked file expired");
+        }
+        upload += 1;
+        calls.push(`upload:managed-${upload}`);
+        return { attachment: stagedAttachment(`managed-${upload}`) } as T;
+      }
+      return { calls, request };
+    };
+    const stage = (request: ReturnType<typeof uploads>["request"], tokens: string[]) => () =>
+      stageNativeComposerFiles(
+        { threadId: "thread-1", files: tokens.map((t) => nativeFile(t)) },
+        request,
+      );
+
+    it("leaves the thread on its provider when an attachment cannot be staged", async () => {
+      const { calls, request } = uploads("expired-token");
+      await expect(
+        dispatchComposerTurnAfterStaging({
+          stage: stage(request, ["first-token", "expired-token"]),
+          handOff: async () => {
+            calls.push("handoff");
+          },
+          dispatch: async () => {
+            calls.push("dispatch");
+          },
+        }),
+      ).rejects.toThrow("picked file expired");
+      // No handoff was requested, so the source session was never abandoned.
+      expect(calls).toEqual(["upload:managed-1", "upload-failed", "cancel:managed-1"]);
+    });
+
+    it("hands off only after every attachment is staged, then dispatches with them", async () => {
+      const { calls, request } = uploads();
+      await dispatchComposerTurnAfterStaging({
+        stage: stage(request, ["first-token", "second-token"]),
+        handOff: async () => {
+          calls.push("handoff");
+        },
+        dispatch: async (attachments) => {
+          calls.push(`dispatch:${attachments.map((attachment) => attachment.id).join(",")}`);
+        },
+      });
+      expect(calls).toEqual([
+        "upload:managed-1",
+        "upload:managed-2",
+        "handoff",
+        "dispatch:managed-1,managed-2",
+      ]);
+    });
+
+    it("cancels the staged uploads when the handoff fails, and never dispatches", async () => {
+      const { calls, request } = uploads();
+      await expect(
+        dispatchComposerTurnAfterStaging({
+          stage: stage(request, ["first-token"]),
+          handOff: async () => {
+            throw new Error("Claude could not start: signed out");
+          },
+          dispatch: async () => {
+            calls.push("dispatch");
+          },
+        }),
+      ).rejects.toThrow("Claude could not start: signed out");
+      expect(calls).toEqual(["upload:managed-1", "cancel:managed-1"]);
+    });
   });
 });
