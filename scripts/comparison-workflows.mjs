@@ -1813,17 +1813,29 @@ async function handoffDividerCentres(driver) {
 
 /**
  * The canonical slug of the model the picker shows as `provider.modelText`, from the
- * server's catalog for that provider (the picker's own source). A send that carried the
+ * server's catalog for that provider (the picker's own source), aliases resolved. A send that carried the
  * provider's default model instead of the picked one has a different slug.
  */
 async function resolvePickedModelSlug(backend, provider) {
   const result = await backend.request("provider.listModels", { provider: provider.provider });
-  const matches = (result.models ?? []).filter((model) => model.name === provider.modelText);
+  // The picker formats the catalog's names: "GPT-5.6-Luna" reads "GPT-5.6 Luna", and
+  // Claude's "Sonnet 5.5" reads "Claude Sonnet 5.5". The row's text ends with the name.
+  const normalize = (name) =>
+    String(name)
+      .toLowerCase()
+      .replace(/[\s_-]+/g, " ")
+      .trim();
+  const shown = normalize(provider.modelText);
+  const matches = (result.models ?? []).filter((model) => {
+    const name = normalize(model.name);
+    return shown === name || shown.endsWith(` ${name}`);
+  });
   if (matches.length !== 1)
     throw new Error(
       `${provider.label}'s catalog has ${matches.length} models named "${provider.modelText}" (${(result.models ?? []).map((model) => model.name).join(", ")}).`,
     );
-  return matches[0].slug;
+  // An alias entry ("sonnet") names the model it resolves to; that is what a pick stores.
+  return matches[0].resolvedModel ?? matches[0].slug;
 }
 
 /** Throws unless every `[where, model]` pair names the expected slug. */
@@ -1831,6 +1843,28 @@ function expectModelSlug(expected, pairs) {
   for (const [where, model] of pairs) {
     if (model !== expected) throw new Error(`${where} is ${model}, expected ${expected}.`);
   }
+}
+
+/** The unsent text the composer holds. */
+async function composerText(driver) {
+  if (driver.kind === "electron") {
+    return driver.evaluate(
+      `(document.querySelector('[data-testid="composer-editor"]')?.innerText ?? "").trim()`,
+    );
+  }
+  // The Native editor is a host text view; its element carries the draft as `default-value`.
+  const queue = [await driver.documentRoot()];
+  while (queue.length > 0) {
+    const node = queue.shift();
+    const attributes = node?.attributes ?? [];
+    const map = {};
+    for (let index = 0; index + 1 < attributes.length; index += 2)
+      map[attributes[index]] = attributes[index + 1];
+    if (node?.nodeName === "TEXTAREA" && map["accessibility-label"] === "Message composer")
+      return String(map["default-value"] ?? "").trim();
+    queue.push(...(node?.children ?? []));
+  }
+  return "";
 }
 
 function handoffActivities(thread) {
@@ -1901,6 +1935,17 @@ async function pickComposerModel(driver, provider) {
   await waitFor(async () => !(await driver.find(pick(driver, MENU_LAYER))), {
     label: "the model menu to close",
   });
+  // The composer now names the picked model (the trigger drops the provider's name).
+  const shownName = provider.modelText.replace(new RegExp(`^${provider.label} `), "");
+  await waitFor(
+    async () =>
+      driver.kind === "electron"
+        ? ((await driver.find({ label: "Change model and reasoning" }))?.text ?? "").includes(
+            shownName,
+          )
+        : renderedTextIncludes(driver, shownName),
+    { label: `the composer to show ${shownName}`, timeoutMs: 5_000 },
+  );
   return row;
 }
 
@@ -1927,6 +1972,7 @@ export async function workflowJ7(context) {
   let handoffThreadId = null;
   let sourceSlug = null;
   let targetSlug = null;
+  const lateDraft = `${token} typed while the handoff waits`;
   try {
     await step("both providers are installed and signed in", async () => {
       const config = await backend.request("server.getConfig", {});
@@ -1989,6 +2035,15 @@ export async function workflowJ7(context) {
           driver,
           `What is the code word for this conversation? Reply with exactly one line: ${sendToken} <the code word>`,
         );
+        // The send takes its draft out of the composer at once. What the user types while the
+        // target provider starts is a new draft: it is neither sent nor cleared.
+        await waitFor(async () => (await composerText(driver)) === "", {
+          label: "the composer to empty when the send starts",
+          timeoutMs: 5_000,
+        });
+        await driver.tap(pick(driver, COMPOSER_TARGET));
+        await driver.type(lateDraft);
+        const typedDuringTheWait = (await threadWithMessage(backend, sendToken)) === null;
         const sent = await waitFor(() => threadWithMessage(backend, sendToken), {
           label: "the handoff send in the backend",
           timeoutMs: 180_000,
@@ -2009,6 +2064,13 @@ export async function workflowJ7(context) {
           );
         if (userMessagesWith(settled, sendToken).length !== 1)
           throw new Error("The message was not sent exactly once.");
+        if (await threadWithMessage(backend, lateDraft))
+          throw new Error("The draft typed during the handoff wait was sent.");
+        const keptDraft = await composerText(driver);
+        if (!keptDraft.includes(lateDraft))
+          throw new Error(
+            `The draft typed during the handoff wait is gone; the composer holds ${JSON.stringify(keptDraft)}.`,
+          );
         // The turn ran on the target provider, in the same thread.
         if (settled.modelSelection.provider !== HANDOFF_TARGET.provider)
           throw new Error(`The thread's selection is ${settled.modelSelection.provider}.`);
@@ -2055,6 +2117,9 @@ export async function workflowJ7(context) {
         return {
           targetModel: settled.modelSelection.model,
           sessionProvider,
+          // False when the provider started before the harness had typed: the draft then only
+          // proves that a send does not clear what follows it.
+          typedDuringTheWait,
           contextCharacters: payload.contextCharacters ?? null,
           userMessageId: userMessage.id,
           replyMessageId: reply.id,
@@ -2193,6 +2258,11 @@ export async function workflowJ7(context) {
       await waitFor(async () => (await activeThreadId(driver)) === created.id, {
         label: "the renderer on the handoff thread",
         timeoutMs: 20_000,
+      });
+      // The unsent draft follows the conversation into the new thread.
+      await waitFor(async () => (await composerText(driver)).includes(lateDraft), {
+        label: "the unsent draft in the handoff thread's composer",
+        timeoutMs: 10_000,
       });
       return { handoffThreadId: created.id, importedMessages: imported.length };
     });

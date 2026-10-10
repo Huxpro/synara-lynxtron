@@ -136,6 +136,14 @@ describe("J7 handoff targets", () => {
       '["The handoff row\'s target selection", payload.targetModelSelection?.model]',
       '["The handoff row\'s source selection", payload.sourceModelSelection?.model]',
       '["The source thread\'s model", settled.modelSelection.model]',
+      // The catalog's alias entries resolve to the slug a pick stores.
+      "matches[0].resolvedModel ?? matches[0].slug",
+      // A draft typed while the target provider starts is neither sent nor cleared, and
+      // follows the conversation into a new-thread handoff.
+      "await driver.type(lateDraft);",
+      "if (await threadWithMessage(backend, lateDraft))",
+      "if (!keptDraft.includes(lateDraft))",
+      "(await composerText(driver)).includes(lateDraft)",
       'activity.kind === "provider.handoff"',
       "payload.contextText",
       "settled.handoff?.sourceThreadId !== thread.threadId",
