@@ -26,10 +26,14 @@ import {
   isReasoningUpdateWorkEntry,
 } from "@synara-web/components/chat/agentActivity.logic";
 import {
+  deriveActiveWorkStartedAt,
   derivePendingApprovals,
   derivePendingUserInputs,
+  derivePhase,
   deriveTimelineEntries,
   deriveWorkLogEntries,
+  hasLiveTurnTailWork,
+  isLatestTurnSettled,
 } from "@synara-web/session-logic";
 import type { ThreadDetailSyncState } from "@synara-web/storeState";
 import type { Project, Thread } from "@synara-web/types";
@@ -83,6 +87,56 @@ export function createThreadMarkdownCache(): ThreadMarkdownCache {
   return { trees: new Map() };
 }
 
+export interface TranscriptTurnActivity {
+  /** Draws the "Working for Ns" header and the "Thinking" row. */
+  readonly isWorking: boolean;
+  /** Keeps the newest turn's work inline instead of folded into "Worked for". */
+  readonly activeTurnInProgress: boolean;
+  readonly activeTurnId: NonNullable<Thread["latestTurn"]>["turnId"] | null;
+  readonly activeTurnStartedAt: string | null;
+}
+
+/**
+ * Whether a turn is live, by the rule upstream's `ChatView.tsx` applies before
+ * it calls `MessagesTimeline`; `plan/upstream-parallel-copies.json` lists those
+ * statements, so a change to them upstream fails the check.
+ *
+ * The session decides, not `latestTurn.state`: the store reducer puts a turn
+ * back to "running" whenever a streaming assistant message of that turn
+ * arrives, including after the session has settled it (it keeps `completedAt`
+ * then), and nothing is guaranteed to close it again.
+ *
+ * Upstream also counts state of its own component as working (a send in
+ * flight, a checkpoint revert) and holds the live layout for 180ms after a
+ * settle; neither is store state, so neither is here.
+ */
+export function resolveTranscriptTurnActivity(
+  thread: Pick<Thread, "latestTurn" | "session" | "messages" | "activities">,
+): TranscriptTurnActivity {
+  const latestTurn = thread.latestTurn ?? null;
+  const session = thread.session ?? null;
+  const hasLiveTurnTail = hasLiveTurnTailWork({
+    latestTurn,
+    messages: thread.messages,
+    activities: thread.activities,
+    session,
+  });
+  const latestTurnSettled = isLatestTurnSettled(latestTurn, session) && !hasLiveTurnTail;
+  const phase = derivePhase(session);
+  const hasLiveTurn = phase === "running";
+  const isWorking = hasLiveTurn || phase === "connecting";
+  return {
+    isWorking,
+    activeTurnInProgress: isWorking || !latestTurnSettled,
+    activeTurnId: latestTurnSettled ? null : (session?.activeTurnId ?? latestTurn?.turnId ?? null),
+    activeTurnStartedAt: hasLiveTurnTail
+      ? (latestTurn?.startedAt ?? null)
+      : hasLiveTurn
+        ? deriveActiveWorkStartedAt(latestTurn, session, null)
+        : null,
+  };
+}
+
 /**
  * Transcript rows of a store thread. `cache` is updated to hold exactly the
  * trees this projection used.
@@ -128,7 +182,7 @@ export function projectThreadTranscriptRows(
     thread.proposedPlans as Parameters<typeof deriveTimelineEntries>[1],
     workEntries,
   );
-  const activeTurnInProgress = thread.latestTurn?.state === "running";
+  const turnActivity = resolveTranscriptTurnActivity(thread);
   const { turnDiffSummaryByAssistantMessageId, inferredCheckpointTurnCountByTurnId } = reuseSlice(
     cache,
     "turnDiffs",
@@ -161,12 +215,12 @@ export function projectThreadTranscriptRows(
   });
   const derivedRows = deriveMessagesTimelineRows({
     timelineEntries,
-    isWorking: activeTurnInProgress,
+    isWorking: turnActivity.isWorking,
     worktreeSetup: null,
     worktreeSetupOpen: false,
-    activeTurnInProgress,
-    activeTurnId: thread.latestTurn?.turnId ?? null,
-    activeTurnStartedAt: thread.latestTurn?.startedAt ?? null,
+    activeTurnInProgress: turnActivity.activeTurnInProgress,
+    activeTurnId: turnActivity.activeTurnId,
+    activeTurnStartedAt: turnActivity.activeTurnStartedAt,
     turnDiffSummaryByAssistantMessageId,
     revertTurnCountByUserMessageId,
   });

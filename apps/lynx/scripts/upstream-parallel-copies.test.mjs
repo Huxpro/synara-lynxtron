@@ -10,6 +10,7 @@ import {
   checkEntry,
   declarationTexts,
   hashDeclarations,
+  missingFragments,
   runParallelCopies,
 } from "./upstream-parallel-copies.mjs";
 
@@ -52,6 +53,23 @@ test("a renamed or removed declaration stops the check instead of passing", () =
   const entry = { upstream: "a.ts", symbols: ["clamp"], copies: ["copy.ts"], sha256: "x" };
   const [problem] = checkEntry(entry, SOURCE.replace("function clamp", "function clampValue"));
   assert.match(problem, /top-level declaration clamp is gone/);
+});
+
+test("an inline fragment matches whatever its layout, and is reported once upstream rewrites it", () => {
+  const entry = {
+    upstream: "a.ts",
+    symbols: [],
+    fragments: ["const LIMIT = 9; return LIMIT;"],
+    copies: ["copy.ts"],
+    sha256: hashDeclarations(SOURCE, "a.ts", []),
+  };
+  assert.deepEqual(missingFragments(SOURCE, entry.fragments), []);
+  assert.deepEqual(checkEntry(entry, SOURCE), []);
+  const [problem] = checkEntry(entry, SOURCE.replace("const LIMIT = 9;", "const LIMIT = 8;"));
+  assert.match(
+    problem,
+    /a\.ts: upstream no longer has `const LIMIT = 9; return LIMIT;`; re-sync copy\.ts/,
+  );
 });
 
 test("--check exits 1 on drift and --update records the new text", () => {

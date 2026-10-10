@@ -180,6 +180,51 @@ describe("thread page read path over the shared store", () => {
     expect(messageRow?.markdownTree).toBeTruthy();
   });
 
+  it("shows the working rows while the session runs the turn, and drops them when it settles", async () => {
+    const turnId = "turn-1" as never;
+    const turnSnapshot = (snapshotSequence: number, running: boolean) =>
+      ({
+        kind: "snapshot",
+        snapshot: {
+          snapshotSequence,
+          thread: makeReadModelThread({
+            id: THREAD_1,
+            messages: message("Answer", running),
+            latestTurn: {
+              turnId,
+              state: running ? "running" : "completed",
+              requestedAt: "2026-02-27T00:01:00.000Z",
+              startedAt: "2026-02-27T00:01:00.000Z",
+              completedAt: running ? null : "2026-02-27T00:01:30.000Z",
+              assistantMessageId: MESSAGE_1,
+            },
+            session: {
+              threadId: THREAD_1,
+              status: running ? "running" : "ready",
+              providerName: "codex",
+              runtimeMode: "full-access",
+              activeTurnId: running ? turnId : null,
+              lastError: null,
+              updatedAt: running ? "2026-02-27T00:01:00.000Z" : "2026-02-27T00:01:30.000Z",
+            },
+          }),
+        },
+      }) as OrchestrationThreadStreamItem;
+    const workingRows = () =>
+      (read.data?.data ?? [])
+        .map((row) => row.kind)
+        .filter((kind) => kind === "working" || kind === "working-header");
+
+    await mount(THREAD_1);
+    act(() => pushShell(shellThread(THREAD_1, "One")));
+    act(() => fake.pushThread(turnSnapshot(5, true)));
+    expect(workingRows()).toEqual(["working-header", "working"]);
+
+    act(() => fake.pushThread(turnSnapshot(6, false)));
+    expect(rowTexts()).toEqual(["Answer"]);
+    expect(workingRows()).toEqual([]);
+  });
+
   it("appends streamed deltas once, and keeps unchanged rows reference-equal", async () => {
     const USER = {
       id: "message-user",
