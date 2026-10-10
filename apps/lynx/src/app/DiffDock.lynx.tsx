@@ -31,6 +31,10 @@ import {
   readSettingsBehaviorProjection,
 } from "@synara-web/appSettingsStorageProjection.logic";
 
+import {
+  PullRequestCodeHunkSeparatorsContext,
+  PullRequestCodeLineNumberDigitsContext,
+} from "../adapters/PullRequestCodeCompositionElements.lynx";
 import { useLynxInteractiveState } from "../adapters/useLynxInteractiveState";
 import changesSvg from "@synara-central-icons/changes.svg?raw";
 import chevronTopSvg from "@synara-central-icons/chevron-top-small.svg?raw";
@@ -77,6 +81,8 @@ import {
 import { ExplorerFileActionsMenu } from "./ExplorerPreviewHeader.lynx";
 import { EnvironmentGitAction } from "./EnvironmentPanel.lynx";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
+import { DiffDockChangeMarkers } from "./DiffDockChangeMarkers.lynx";
+import { buildDiffHunkSeparators, buildDiffLineNumberDigits } from "./diffHunkSeparators.logic";
 import { useTheme } from "../adapters/useTheme.lynx";
 import {
   buildDiffSyntaxHighlightRequests,
@@ -342,8 +348,22 @@ function OpenDiffDock(props: {
     if (view.kind !== "files") return;
     setExpandedFileKeys(allFilesCollapsed ? view.files.map((file) => file.key) : []);
   };
+  // Ids are looked up window-wide, and the editor's Changes view can be mounted
+  // next to the dock's, so each presentation names its own elements.
+  const elementIdPrefix = `diff-dock-${props.presentation}`;
+  const patchViewportId = `${elementIdPrefix}-patch-viewport`;
+  const patchContentId = `${elementIdPrefix}-patch-content`;
   const fileElementId = (fileKey: string) =>
-    `diff-dock-file-${view.kind === "files" ? view.files.findIndex((file) => file.key === fileKey) : -1}`;
+    `${elementIdPrefix}-file-${view.kind === "files" ? view.files.findIndex((file) => file.key === fileKey) : -1}`;
+  const [patchLayoutRevision, setPatchLayoutRevision] = useState(0);
+  // Upstream's patch renderer shows a band for the unchanged lines a hunk skips
+  // and puts its change markers beside the dock's patch; the editor's Changes
+  // view is a different upstream surface and keeps its own anatomy.
+  const dockPatchAnatomy = props.presentation !== "editor";
+  const hunkSeparators =
+    dockPatchAnatomy && view.kind === "files" ? buildDiffHunkSeparators(visibleFiles) : null;
+  const lineNumberDigits =
+    dockPatchAnatomy && view.kind === "files" ? buildDiffLineNumberDigits(visibleFiles) : null;
   const fileJumpFiles =
     view.kind === "files"
       ? view.files.filter((file) =>
@@ -376,19 +396,29 @@ function OpenDiffDock(props: {
   // no hunk anchors yet, so these step through the changed files instead.
   const changeFiles = view.kind === "files" ? view.files : [];
   const changeIndex = changeFiles.findIndex((file) => file.key === selectedFile?.key);
-  const goToChange = (delta: 1 | -1) => {
+  const scrollToFile = (file: PullRequestDiffFileView) => {
     "background only";
-    const file = changeFiles[changeIndex + delta];
-    if (!file) return;
     setSelectedFilePath(file.path);
-    setExpandedFileKeys((current) =>
-      current === null || current.includes(file.key) ? current : [...current, file.key],
-    );
     if (visibleFiles.some((candidate) => candidate.key === file.key)) {
       scrollLynxElementIntoViewById(fileElementId(file.key));
     } else {
       pendingFileJumpKeyRef.current = file.key;
     }
+  };
+  const goToChange = (delta: 1 | -1) => {
+    "background only";
+    const file = changeFiles[changeIndex + delta];
+    if (!file) return;
+    setExpandedFileKeys((current) =>
+      current === null || current.includes(file.key) ? current : [...current, file.key],
+    );
+    scrollToFile(file);
+  };
+  // Upstream's markers scroll to the file and leave its collapsed state alone.
+  const scrollToFilePath = (path: string) => {
+    "background only";
+    const file = changeFiles.find((candidate) => candidate.path === path);
+    if (file) scrollToFile(file);
   };
   const closeInteraction = useLynxInteractiveState({
     baseClassName: "DiffDockClose",
@@ -648,6 +678,7 @@ function OpenDiffDock(props: {
           </view>
         ) : null}
         <view
+          id={patchViewportId}
           className={`DiffDockPatchViewportFrame${
             props.presentation !== "editor" && fileTreeVisible
               ? " DiffDockPatchViewportFrame--with-review-tree"
@@ -659,90 +690,130 @@ function OpenDiffDock(props: {
             scroll-y
             enable-scroll-bar
           >
-            {props.unavailableLabel ? (
-              <view className="DiffDockState">
-                <text className="DiffDockStateText">{props.unavailableLabel}</text>
-              </view>
-            ) : diff.isPending ? (
-              <view className="DiffDockState">
-                <RefreshCwIcon size={16} color="var(--muted-foreground)" />
-                <text className="DiffDockStateText">Loading changes…</text>
-              </view>
-            ) : diff.error ? (
-              <view className="DiffDockState">
-                <text className="DiffDockStateText">Couldn’t load changes.</text>
-                <view className={retryInteraction.className} {...retryInteraction.eventProps}>
-                  <text className="DiffDockRetryText">Retry</text>
+            {/* The scroll-view's only child: its box is the scrolled content, which is
+                what the change markers measure file positions against. */}
+            <view
+              id={patchContentId}
+              className="DiffDockPatchContent"
+              bindlayoutchange={() => {
+                "background only";
+                setPatchLayoutRevision((revision) => revision + 1);
+              }}
+            >
+              {props.unavailableLabel ? (
+                <view className="DiffDockState">
+                  <text className="DiffDockStateText">{props.unavailableLabel}</text>
                 </view>
-              </view>
-            ) : (
-              <>
-                <PullRequestCodeComposition
-                  emptyLabel="No working tree changes."
-                  // Both the editor center and the dock follow the same compact file
-                  // header anatomy as Web: type glyph, basename, then muted directory.
-                  filePathPresentation="basename-first"
-                  renderMode={props.presentation !== "editor" ? diffRenderMode : "split"}
-                  // Like the web DiffPanel, aggregate stats live in the toolbar (dock)
-                  // or the changed-files sidebar (editor), never in a summary row.
-                  showSummary={false}
-                  syntaxTokensByLineId={syntaxTokensByLineId}
-                  wordWrap={diffWordWrap}
-                  renderFileActions={(filePath) => (
-                    <DiffFileActionsMenu
-                      defaultOpen={
-                        props.initialActionMenuOpen === true && filePath === selectedFile?.path
+              ) : diff.isPending ? (
+                <view className="DiffDockState">
+                  <RefreshCwIcon size={16} color="var(--muted-foreground)" />
+                  <text className="DiffDockStateText">Loading changes…</text>
+                </view>
+              ) : diff.error ? (
+                <view className="DiffDockState">
+                  <text className="DiffDockStateText">Couldn’t load changes.</text>
+                  <view className={retryInteraction.className} {...retryInteraction.eventProps}>
+                    <text className="DiffDockRetryText">Retry</text>
+                  </view>
+                </view>
+              ) : (
+                <>
+                  <PullRequestCodeHunkSeparatorsContext.Provider value={hunkSeparators}>
+                    <PullRequestCodeLineNumberDigitsContext.Provider value={lineNumberDigits}>
+                      <PullRequestCodeComposition
+                        emptyLabel="No working tree changes."
+                        // Both the editor center and the dock follow the same compact file
+                        // header anatomy as Web: type glyph, basename, then muted directory.
+                        filePathPresentation="basename-first"
+                        renderMode={props.presentation !== "editor" ? diffRenderMode : "split"}
+                        // Like the web DiffPanel, aggregate stats live in the toolbar (dock)
+                        // or the changed-files sidebar (editor), never in a summary row.
+                        showSummary={false}
+                        syntaxTokensByLineId={syntaxTokensByLineId}
+                        wordWrap={diffWordWrap}
+                        renderFileActions={(filePath) => (
+                          <DiffFileActionsMenu
+                            defaultOpen={
+                              props.initialActionMenuOpen === true &&
+                              filePath === selectedFile?.path
+                            }
+                            filePath={filePath}
+                            threadId={props.threadId}
+                          />
+                        )}
+                        fileElementId={fileElementId}
+                        view={visibleView}
+                        truncated={false}
+                        expandedFileKeys={visibleExpandedFileKeys}
+                        visibleLineCounts={visibleLineCounts}
+                        rawVisibleLineCount={rawVisibleLineCount}
+                        onToggleFile={(fileKey) =>
+                          setExpandedFileKeys(
+                            visibleExpandedFileKeys.includes(fileKey)
+                              ? visibleExpandedFileKeys.filter((key) => key !== fileKey)
+                              : [...visibleExpandedFileKeys, fileKey],
+                          )
+                        }
+                        onShowMoreFile={(fileKey) =>
+                          setVisibleLineCounts((current) => ({
+                            ...current,
+                            [fileKey]:
+                              (current[fileKey] ?? PULL_REQUEST_DIFF_INITIAL_LINE_COUNT) +
+                              PULL_REQUEST_DIFF_MORE_LINE_COUNT,
+                          }))
+                        }
+                        onShowMoreRaw={() =>
+                          setRawVisibleLineCount(
+                            (current) => current + PULL_REQUEST_DIFF_MORE_LINE_COUNT,
+                          )
+                        }
+                      />
+                    </PullRequestCodeLineNumberDigitsContext.Provider>
+                  </PullRequestCodeHunkSeparatorsContext.Provider>
+                  {view.kind === "files" && visibleFiles.length < view.files.length ? (
+                    <Button
+                      className="DiffDockShowMoreFiles"
+                      variant="ghost"
+                      onClick={() =>
+                        setVisibleFileCount((current) =>
+                          Math.min(view.files.length, current + DIFF_MORE_VISIBLE_FILE_COUNT),
+                        )
                       }
-                      filePath={filePath}
-                      threadId={props.threadId}
-                    />
-                  )}
-                  fileElementId={fileElementId}
-                  view={visibleView}
-                  truncated={false}
-                  expandedFileKeys={visibleExpandedFileKeys}
-                  visibleLineCounts={visibleLineCounts}
-                  rawVisibleLineCount={rawVisibleLineCount}
-                  onToggleFile={(fileKey) =>
-                    setExpandedFileKeys(
-                      visibleExpandedFileKeys.includes(fileKey)
-                        ? visibleExpandedFileKeys.filter((key) => key !== fileKey)
-                        : [...visibleExpandedFileKeys, fileKey],
-                    )
-                  }
-                  onShowMoreFile={(fileKey) =>
-                    setVisibleLineCounts((current) => ({
-                      ...current,
-                      [fileKey]:
-                        (current[fileKey] ?? PULL_REQUEST_DIFF_INITIAL_LINE_COUNT) +
-                        PULL_REQUEST_DIFF_MORE_LINE_COUNT,
-                    }))
-                  }
-                  onShowMoreRaw={() =>
-                    setRawVisibleLineCount((current) => current + PULL_REQUEST_DIFF_MORE_LINE_COUNT)
-                  }
-                />
-                {view.kind === "files" && visibleFiles.length < view.files.length ? (
-                  <Button
-                    className="DiffDockShowMoreFiles"
-                    variant="ghost"
-                    onClick={() =>
-                      setVisibleFileCount((current) =>
-                        Math.min(view.files.length, current + DIFF_MORE_VISIBLE_FILE_COUNT),
-                      )
-                    }
-                  >
-                    Show{" "}
-                    {Math.min(
-                      DIFF_MORE_VISIBLE_FILE_COUNT,
-                      view.files.length - visibleFiles.length,
-                    )}{" "}
-                    more files
-                  </Button>
-                ) : null}
-              </>
-            )}
+                    >
+                      Show{" "}
+                      {Math.min(
+                        DIFF_MORE_VISIBLE_FILE_COUNT,
+                        view.files.length - visibleFiles.length,
+                      )}{" "}
+                      more files
+                    </Button>
+                  ) : null}
+                </>
+              )}
+            </view>
           </scroll-view>
+          {dockPatchAnatomy &&
+          view.kind === "files" &&
+          !props.unavailableLabel &&
+          !diff.isPending &&
+          !diff.error ? (
+            <DiffDockChangeMarkers
+              viewportId={patchViewportId}
+              contentId={patchContentId}
+              files={visibleFiles.map((file) => ({
+                path: file.path,
+                elementId: fileElementId(file.key),
+                changeType:
+                  file.lifecycle === "added"
+                    ? "new"
+                    : file.lifecycle === "deleted"
+                      ? "deleted"
+                      : "change",
+              }))}
+              layoutRevision={patchLayoutRevision}
+              onSelectFilePath={scrollToFilePath}
+            />
+          ) : null}
         </view>
         {props.presentation !== "editor" &&
         (fileTreePresent || fileTreeVisible) &&

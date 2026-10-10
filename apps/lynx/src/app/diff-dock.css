@@ -737,18 +737,63 @@
   flex: 1;
 }
 
-.ThreadPage > .DiffDock .SharedPrCodeRoot {
-  gap: 16px;
+.DiffDockPatchContent {
+  display: flex;
+  width: 100%;
+  min-width: 100%;
+  flex-direction: column;
+}
+
+/* Upstream's review pane (DiffPanelFileList + @pierre/diffs): an 8px gutter around
+   the cards and between them, a 36px title row over a 1px rule, then the code with
+   an 8px tail. The gutter sits on the scrolled content, so the content box is the
+   whole scroll range the change markers are measured against. */
+.DiffDock--hosted .DiffDockScroller {
   padding: 0;
 }
 
-.ThreadPage > .DiffDock .SharedPrCodeFile {
-  border-radius: 8px;
+.DiffDock--hosted .DiffDockPatchContent {
+  padding: 8px;
 }
 
-.ThreadPage > .DiffDock .SharedPrCodeFileHeader {
-  min-height: 38px;
-  padding: 10px 12px;
+.DiffDock--hosted .SharedPrCodeRoot {
+  gap: 8px;
+  padding: 0;
+}
+
+.DiffDock--hosted .SharedPrCodeFileHeader {
+  height: 37px;
+  min-height: 37px;
+  padding: 0 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.DiffDock--hosted .SharedPrCodeLinesContent {
+  padding-bottom: 8px;
+}
+
+/* Upstream DiffPanelChangeMarkers: `absolute inset-y-0 right-[10px] w-[6px]`. */
+.DiffDockChangeMarkers {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  bottom: 0;
+  z-index: 10;
+  width: 6px;
+}
+
+.DiffDockChangeMarker {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  border-radius: 9999px;
+  opacity: 0.7;
+}
+
+.DiffDockChangeMarker.ui-hover,
+.DiffDockChangeMarker.ui-focus,
+.DiffDockChangeMarker.ui-pressed {
+  opacity: 1;
 }
 
 /* The editor owns the full center column. Its patch viewport already provides

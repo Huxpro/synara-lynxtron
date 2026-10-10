@@ -42,6 +42,8 @@
   --color-mix-94741172ed: rgba(253, 238, 238, 1);
   /* color-mix(in srgb, var(--background) 92%, var(--success)) */
   --color-mix-ba727eba9f: rgba(235, 248, 240, 1);
+  /* color-mix(in srgb, var(--background) 95%, var(--foreground)) */
+  --color-mix-22ffd4c2ee: rgba(243, 243, 243, 1);
   /* color-mix(in srgb, var(--background) 99%, var(--color-white)) */
   --color-mix-dc8dab7b73: rgba(255, 255, 255, 1);
   /* color-mix(in srgb, var(--border) 40%, transparent) */
@@ -223,6 +225,8 @@
   --color-mix-94741172ed: rgba(33, 18, 18, 1);
   /* color-mix(in srgb, var(--background) 92%, var(--success)) */
   --color-mix-ba727eba9f: rgba(15, 28, 20, 1);
+  /* color-mix(in srgb, var(--background) 95%, var(--foreground)) */
+  --color-mix-22ffd4c2ee: rgba(28, 28, 28, 1);
   /* color-mix(in srgb, var(--background) 99%, var(--color-white)) */
   --color-mix-dc8dab7b73: rgba(18, 18, 18, 1);
   /* color-mix(in srgb, var(--border) 40%, transparent) */
