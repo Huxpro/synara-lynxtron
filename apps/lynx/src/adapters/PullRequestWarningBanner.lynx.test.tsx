@@ -84,7 +84,7 @@ describe("Pull Request warning banner fidelity", () => {
     expect(source).toContain("rateLimitedWarningText(rateLimitedError, settings.timestampFormat)");
     expect(source).toContain('<PullRequestWarningBanner shape="callout">');
     expect(styles).toMatch(
-      /\.GitHubInboxFootnote\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
+      /\.GitHubInboxFootnote\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*var\(--app-line-height-ui-sm-18, 18px\);/s,
     );
   });
 

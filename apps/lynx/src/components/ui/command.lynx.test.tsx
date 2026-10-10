@@ -114,7 +114,7 @@ describe("Lynx CommandItem interaction contract", () => {
     expect(commandSource).not.toContain("<Input");
     expect(primitiveStyles).toContain(".LxCommandTextarea");
     expect(primitiveStyles).toMatch(
-      /\.LxCommandTextarea\s*\{[^}]*height:\s*36px;[^}]*box-sizing:\s*border-box;[^}]*padding-top:\s*9px;[^}]*padding-bottom:\s*9px;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
+      /\.LxCommandTextarea\s*\{[^}]*height:\s*36px;[^}]*box-sizing:\s*border-box;[^}]*padding-top:\s*9px;[^}]*padding-bottom:\s*9px;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*var\(--app-line-height-ui-sm-18, 18px\);/s,
     );
     expect(primitiveStyles).toMatch(
       /\.LxCommandInput > svg\s*\{[^}]*width:\s*16px;[^}]*height:\s*16px;[^}]*flex-shrink:\s*0;/s,
@@ -157,7 +157,7 @@ describe("Lynx CommandItem interaction contract", () => {
       /\.LxKbd__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*16px;/s,
     );
     expect(primitiveStyles).toMatch(
-      /\.LxCommandShortcut\s*\{[^}]*margin-left:\s*auto;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*18px;[^}]*letter-spacing:\s*1\.2px;[^}]*opacity:\s*0\.72;/s,
+      /\.LxCommandShortcut\s*\{[^}]*margin-left:\s*auto;[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*var\(--app-line-height-ui-sm-18, 18px\);[^}]*letter-spacing:\s*1\.2px;[^}]*opacity:\s*0\.72;/s,
     );
     expect(primitiveStyles).toMatch(
       /\.LxCommandFooter\s*\{[^}]*flex-direction:\s*row;[^}]*justify-content:\s*space-between;[^}]*border-bottom-left-radius:\s*17px;[^}]*border-bottom-right-radius:\s*17px;/s,

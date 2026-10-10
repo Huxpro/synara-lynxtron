@@ -6,7 +6,7 @@ import {
   resolveLatestProjectTargetIdWithFallback,
   resolveNewThreadTarget,
 } from "@synara-web/lib/projectShortcutTargets";
-import { useCallback, useEffect, useMemo, useState } from "@lynx-js/react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "@lynx-js/react";
 import {
   buildProjectContextMenuItems,
   buildSpaceContextMenuItems,
@@ -28,6 +28,10 @@ import terminalSvg from "@synara-central-icons/console.svg?raw";
 import worktreeSvg from "@synara-central-icons/arrow-split-right.svg?raw";
 
 import { SidebarPrimaryNavigation } from "@synara-web/components/SidebarPrimaryNavigation";
+import {
+  registerThreadContextMenu,
+  type ThreadContextMenuOptions,
+} from "@synara-web/lib/threadContextMenu";
 import { SidebarGlyph } from "@synara-web/components/sidebarGlyphs";
 import { splitShortcutLabel } from "@synara-web/keybindings";
 import { resolveSidebarPrimarySurface } from "@synara-web/components/SidebarSurface.logic";
@@ -618,9 +622,12 @@ export function Sidebar({
     workspaceRoot: string,
     position: { readonly x: number; readonly y: number },
     restoreFocus: () => void,
+    // Rows another surface adds to this menu (the open-thread tabs' close rows), as upstream.
+    options?: ThreadContextMenuOptions,
   ) {
     "background only";
     const isPinned = thread.isPinned === true || persistedPinnedThreadIds.includes(thread.id);
+    const extraItems = options?.extraItems ?? [];
     const { showContextMenu } = await import(
       /* webpackMode: "eager" */ "../../platform/contextMenu"
     );
@@ -641,6 +648,7 @@ export function Sidebar({
         })),
         copyPathAvailable: workspaceRoot.length > 0,
         openPathInTerminalAvailable: workspaceRoot.length > 0,
+        extraItems,
         archiveAvailable: !thread.live,
         deleteAvailable: !thread.live,
       }),
@@ -648,6 +656,10 @@ export function Sidebar({
       { restoreFocus },
     )) as string | null;
     if (!action) return;
+    if (extraItems.some((item) => item.id === action)) {
+      await options?.onExtraAction?.(action);
+      return;
+    }
     if (action === "rename") {
       setRenameThreadId(thread.id);
       return;
@@ -680,6 +692,28 @@ export function Sidebar({
     if (!isThreadContextMenuActionId(action)) return;
     await performThreadAction(thread, workspaceRoot, action);
   }
+
+  // Upstream's lib/threadContextMenu: other surfaces open this menu for a thread they show.
+  const openThreadContextMenuRef = useRef(openThreadContextMenu);
+  openThreadContextMenuRef.current = openThreadContextMenu;
+  const threadContextMenuSourceRef = useRef({ threads: data?.threads, sections });
+  threadContextMenuSourceRef.current = { threads: data?.threads, sections };
+  useEffect(() => {
+    "background only";
+    return registerThreadContextMenu(async (threadId, position, options) => {
+      const source = threadContextMenuSourceRef.current;
+      const thread = source.threads?.find((candidate) => candidate.id === threadId);
+      if (!thread) return;
+      await openThreadContextMenuRef.current(
+        thread,
+        source.sections.projectGroups.find((group) => group.id === thread.projectId)
+          ?.workspaceRoot ?? "",
+        position,
+        () => {},
+        options,
+      );
+    });
+  }, []);
 
   async function cleanupDeletedThreadState(threadId: import("@synara/contracts").ThreadId) {
     "background only";

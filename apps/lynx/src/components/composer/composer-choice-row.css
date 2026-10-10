@@ -47,20 +47,20 @@
   flex: 1;
   color: var(--foreground);
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-18, 18px);
   word-break: break-word;
 }
 
 .ComposerChoiceLabelLynx {
   color: inherit;
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-18, 18px);
   font-weight: 500;
 }
 
 .ComposerChoiceDescriptionLynx {
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   font-weight: 400;
 }

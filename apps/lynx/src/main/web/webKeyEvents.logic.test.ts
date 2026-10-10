@@ -42,6 +42,23 @@ function node(
 }
 
 describe("Lynx-for-Web key defaults", () => {
+  it("cancels the shipped open-thread tab chord anywhere, and nothing near it", () => {
+    for (const name of ["ArrowLeft", "ArrowRight"]) {
+      const chord = key(name, { metaKey: true, ctrlKey: true });
+      expect(webKeyDefaultRule(chord, composer)?.name).toBe("keybinding-thread-tab");
+      expect(webKeyDefaultRule(chord, nowhere)?.name).toBe("keybinding-thread-tab");
+    }
+    // Cmd+Left/Right stays the browser's caret movement.
+    expect(webKeyDefaultRule(key("ArrowRight", { metaKey: true }), composer)).toBeNull();
+    expect(webKeyDefaultRule(key("ArrowRight", { ctrlKey: true }), composer)).toBeNull();
+    expect(
+      webKeyDefaultRule(
+        key("ArrowRight", { metaKey: true, ctrlKey: true, shiftKey: true }),
+        composer,
+      ),
+    ).toBeNull();
+  });
+
   it("cancels Enter in a send textarea, but not Shift+Enter or an IME commit", () => {
     expect(webKeyDefaultRule(key("Enter"), composer)?.name).toBe("send-textarea-enter");
     expect(webKeyDefaultRule(key("Enter", { shiftKey: true }), composer)).toBeNull();

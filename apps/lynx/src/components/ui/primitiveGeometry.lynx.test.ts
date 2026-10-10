@@ -34,16 +34,16 @@ describe("shared primitive geometry", () => {
 
   it("matches the Electron text line boxes across the Button size axis", () => {
     expect(css).toMatch(
-      /\.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*18px;/s,
+      /\.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*font-weight:\s*500;[^}]*line-height:\s*var\(--app-line-height-ui-sm-18, 18px\);/s,
     );
     expect(css).toMatch(
-      /\.LxButton--xs \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-2xs, 10px\);[^}]*line-height:\s*15px;/s,
+      /\.LxButton--xs \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-2xs, 10px\);[^}]*line-height:\s*var\(--app-line-height-ui-2xs-15, 15px\);/s,
     );
     expect(css).toMatch(
-      /\.LxButton--xl \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui, 13px\);[^}]*line-height:\s*19\.5px;/s,
+      /\.LxButton--xl \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui, 13px\);[^}]*line-height:\s*var\(--app-line-height-ui-19p5, 19\.5px\);/s,
     );
     expect(css).toMatch(
-      /\.LxButton--chip \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*16\.5px;/s,
+      /\.LxButton--chip \.LxButton__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*var\(--app-line-height-ui-xs-16p5, 16\.5px\);/s,
     );
   });
 
@@ -103,7 +103,7 @@ describe("shared primitive geometry", () => {
       /\.LxTooltipPopup--picker\s*\{[^}]*border-radius:\s*10\.4px;[^}]*box-shadow:/s,
     );
     expect(css).toMatch(
-      /\.LxTooltipText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*16\.5px;/s,
+      /\.LxTooltipText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*var\(--app-line-height-ui-xs-16p5, 16\.5px\);/s,
     );
     expect(tooltip).toContain('props.variant === "picker" && "LxTooltipPopup--picker"');
   });

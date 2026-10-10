@@ -4,7 +4,11 @@ import path from "node:path";
 import { describe, expect, it } from "@rstest/core";
 
 import {
+  buildCommandAcceleratorMenuItems,
   buildModelPickerShortcutMenuItems,
+  canonicalAccelerator,
+  collectMenuAccelerators,
+  parseCommandAccelerators,
   INITIAL_SHELL_ROUTE_DELIVERY_STATE,
   buildSynaraRelaunchArguments,
   buildSearchNavigationMenuItems,
@@ -314,6 +318,56 @@ describe("shellRuntime", () => {
     expect(resolveNativeRendererCommand("view.recent.next")).toBe("view.recent.next");
     expect(resolveNativeRendererCommand("view.recent.previous")).toBe("view.recent.previous");
     expect(resolveNativeRendererCommand("terminal.toggle")).toBeNull();
+  });
+
+  it("owns the chords of the keybinding commands the renderer handles", () => {
+    expect(canonicalAccelerator("CmdOrCtrl+Shift+B", true)).toBe("cmd+shift+b");
+    expect(canonicalAccelerator("Shift+Cmd+B", true)).toBe("cmd+shift+b");
+    expect(canonicalAccelerator("CmdOrCtrl+Shift+B", false)).toBe("ctrl+shift+b");
+    const template = [
+      { label: "View", submenu: [{ label: "Search…", accelerator: "CmdOrCtrl+K" }] },
+      { label: "Window", submenu: [{ role: "minimize" }] },
+    ];
+    const taken = collectMenuAccelerators(template, true);
+    expect(taken.has("cmd+k")).toBe(true);
+    // Roles bind chords the template does not spell out.
+    expect(taken.has("cmd+m")).toBe(true);
+    const dispatched: string[] = [];
+    const items = buildCommandAcceleratorMenuItems(
+      [
+        { command: "threadTab.next", accelerator: "Cmd+Ctrl+Right" },
+        { command: "threadTab.previous", accelerator: "Cmd+Ctrl+Left" },
+        // Already a visible menu item's chord, and a second command on one chord.
+        { command: "sidebar.search", accelerator: "Cmd+K" },
+        { command: "chat.split", accelerator: "Ctrl+Cmd+Right" },
+      ],
+      taken,
+      true,
+      (command) => dispatched.push(command),
+    );
+    expect(items.map((item) => [item.label, item.accelerator])).toEqual([
+      ["Command: threadTab.next", "Cmd+Ctrl+Right"],
+      ["Command: threadTab.previous", "Cmd+Ctrl+Left"],
+    ]);
+    expect(items.every((item) => item.visible === false && item.acceleratorWorksWhenHidden)).toBe(
+      true,
+    );
+    items[1]?.click();
+    expect(dispatched).toEqual(["threadTab.previous"]);
+  });
+
+  it("accepts only well-formed command accelerators with a modifier", () => {
+    expect(
+      parseCommandAccelerators([
+        { command: "threadTab.next", accelerator: "Cmd+Ctrl+Right" },
+        { command: "threadTab.next", accelerator: "Right" },
+        { command: "threadTab.next", accelerator: "Cmd+Ctrl+Right; rm" },
+        { command: "bad command", accelerator: "Cmd+K" },
+        { command: 7, accelerator: "Cmd+K" },
+        null,
+      ]),
+    ).toEqual([{ command: "threadTab.next", accelerator: "Cmd+Ctrl+Right" }]);
+    expect(parseCommandAccelerators("Cmd+K")).toEqual([]);
   });
 
   it("registers commit and cancel accelerators only while recent views are open", () => {

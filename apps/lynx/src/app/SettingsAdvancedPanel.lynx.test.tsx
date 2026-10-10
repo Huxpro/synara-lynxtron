@@ -83,7 +83,7 @@ describe("Settings Advanced fidelity", () => {
       /\.SettingsAdvancedMetadata\s*\{[^}]*gap:\s*4px;[^}]*padding-top:\s*4px;/s,
     );
     expect(styles).toMatch(
-      /\.SettingsAdvancedMetadataText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*16\.5px;/s,
+      /\.SettingsAdvancedMetadataText\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-xs, 11px\);[^}]*line-height:\s*var\(--app-line-height-ui-xs-16p5, 16\.5px\);/s,
     );
     expect(styles).toMatch(
       /\.SettingsAdvancedAction\s*\{[^}]*min-height:\s*24px;[^}]*padding:\s*0 7px;/s,

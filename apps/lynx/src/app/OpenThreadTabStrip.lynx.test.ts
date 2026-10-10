@@ -22,6 +22,49 @@ async function menuLogic() {
 
 const tabs = ["a", "b", "c"].map((threadId) => ({ threadId: threadId as ThreadId }));
 
+describe("open thread tab shortcuts, reorder and thread actions", () => {
+  it("steps through the strip with upstream's commands and wrap-around", () => {
+    expect(upstream).toContain(
+      'if (command !== "threadTab.next" && command !== "threadTab.previous") return;',
+    );
+    expect(source).toContain('useKeybindingCommand("threadTab.next", () => stepTab("forward"));');
+    expect(source).toContain(
+      'useKeybindingCommand("threadTab.previous", () => stepTab("backward"));',
+    );
+    expect(source).toContain("const nextThreadId = getNextVisibleSidebarThreadId({");
+  });
+
+  it("reorders through upstream's store action", () => {
+    expect(upstream).toContain("onMove={moveThreadTab}");
+    expect(source).toContain(
+      "const moveThreadTab = useOpenThreadTabsStore((state) => state.moveThreadTab);",
+    );
+    expect(source).toContain("if (result.overKey) moveThreadTab(session.key, result.overKey);");
+    // Slots are resolved against the store's order, not the last render's: the host
+    // reports one pointer move as two events, and the second must see the first's move.
+    expect(source).toContain("keys: readTabOrder(),");
+    expect(source).toContain(
+      "return useOpenThreadTabsStore.getState().threadIds.filter((threadId) => shown.has(threadId));",
+    );
+  });
+
+  it("opens the sidebar's thread menu with the close rows, and falls back to them", () => {
+    expect(upstream).toContain("showThreadContextMenu(tab.threadId, position, {");
+    expect(source).toContain("showThreadContextMenu(tab.threadId, position, {");
+    expect(source).toContain("extraItems: closeItems,");
+    expect(source).toContain("const itemId = await showContextMenu(closeItems, position);");
+    const sidebar = read("../components/sidebar/Sidebar.lynx.tsx");
+    expect(sidebar).toContain(
+      "return registerThreadContextMenu(async (threadId, position, options) => {",
+    );
+    expect(sidebar).toContain("if (extraItems.some((item) => item.id === action)) {");
+    // Upstream's ids and grouping for the close rows.
+    expect(upstream).toContain('const CLOSE_TABS_MENU_ID_PREFIX = "close-tabs:";');
+    expect(source).toContain('export const CLOSE_TABS_MENU_ID_PREFIX = "close-tabs:";');
+    expect(source).toContain("separatorBefore: index === 0,");
+  });
+});
+
 describe("open thread tab context menu", () => {
   it("lists upstream's rows, in upstream's order", () => {
     const table = /const CLOSE_TABS_MENU_ROWS[^=]*=\s*\[([\s\S]*?)\];/;
@@ -57,6 +100,7 @@ describe("open thread tab context menu", () => {
       "closeTabs: (threadIds) => pruneThreadTabs((threadId) => !threadIds.includes(threadId)),",
     );
     expect(source).toContain("keptThreadId: tab.threadId,");
+    expect(source).toContain("if (scope) closeTabsInScope(tab, scope);");
     expect(source).toContain(
       "onContextMenu={(position) => void openTabContextMenu(tab, position)}",
     );

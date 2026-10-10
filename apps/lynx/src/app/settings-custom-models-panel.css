@@ -14,7 +14,7 @@
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 400;
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   opacity: 0.58;
 }
 
@@ -64,14 +64,14 @@
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
   font-weight: 500;
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .SettingsCustomModelsDescription,
 .SettingsCustomModelsState {
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .SettingsCustomModelsEditor {
@@ -105,7 +105,7 @@
   overflow: hidden;
   color: var(--foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -157,7 +157,7 @@
 .SettingsCustomModelsError {
   color: var(--destructive);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 .SettingsCustomModelsList {
@@ -182,7 +182,7 @@
   overflow: hidden;
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   text-overflow: ellipsis;
   white-space: nowrap;
 }

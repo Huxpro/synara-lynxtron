@@ -277,7 +277,7 @@
   margin-bottom: 6px;
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 19.5px;
+  line-height: var(--app-line-height-ui-19p5, 19.5px);
 }
 
 .GitHubInboxSectionRows {
@@ -294,7 +294,7 @@
 .GitHubInboxFootnote {
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 /* `absolute inset-y-0 right-0 z-20 w-2 translate-x-1/2 cursor-col-resize` with a 1px
@@ -368,14 +368,14 @@
 .GitHubInboxDetailEmptyTitle {
   color: var(--foreground);
   font-size: var(--app-font-size-ui-lg, 14px);
-  line-height: 21px;
+  line-height: var(--app-line-height-ui-lg-21, 21px);
   text-align: center;
 }
 
 .GitHubInboxDetailEmptyDescription {
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
   text-align: center;
 }
 
@@ -394,7 +394,7 @@
   flex: 1;
   color: var(--foreground);
   font-size: var(--app-font-size-ui-lg, 14px);
-  line-height: 21px;
+  line-height: var(--app-line-height-ui-lg-21, 21px);
 }
 
 .GitHubInboxAgentRow {
@@ -412,7 +412,7 @@
   flex: 1;
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 /* Narrow windows show the list or the detail (upstream `useIsMobile`). */

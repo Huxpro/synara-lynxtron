@@ -32,11 +32,11 @@
   color: var(--foreground);
   font-size: var(--app-font-size-ui, 13px);
   font-weight: 600;
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-18, 18px);
 }
 
 .SharedKanbanStateDescription {
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }

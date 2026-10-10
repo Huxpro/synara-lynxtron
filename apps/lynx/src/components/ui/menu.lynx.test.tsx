@@ -141,7 +141,7 @@ describe("Lynx Menu overlay contract", () => {
     const primitiveStyles = readFileSync(new URL("./primitives.css", import.meta.url), "utf8");
 
     expect(primitiveStyles).toMatch(
-      /\.LxMenuItem__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*18px;/s,
+      /\.LxMenuItem__text\s*\{[^}]*font-size:\s*var\(--app-font-size-ui-sm, 12px\);[^}]*line-height:\s*var\(--app-line-height-ui-sm-18, 18px\);/s,
     );
     expect(primitiveStyles).toMatch(
       /\.LxMenuItem--destructive \.LxMenuItem__text\s*\{[^}]*color:\s*var\(--destructive\);/s,

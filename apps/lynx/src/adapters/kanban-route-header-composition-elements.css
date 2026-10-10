@@ -86,7 +86,7 @@
 .SharedKanbanRouteNewTaskText {
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: 18px;
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
 
 /* Upstream Tasks header switches: `role=group flex items-center gap-1 text-ui` holding
@@ -121,7 +121,7 @@
   margin-right: -1px;
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui, 13px);
-  line-height: 19.5px;
+  line-height: var(--app-line-height-ui-19p5, 19.5px);
 }
 
 .SharedKanbanRouteViewSegment--selected .SharedKanbanRouteViewSegmentText {
@@ -151,5 +151,5 @@
 .SharedKanbanOverviewFilterText {
   color: var(--muted-foreground);
   font-size: var(--app-font-size-ui-xs, 11px);
-  line-height: 16.5px;
+  line-height: var(--app-line-height-ui-xs-16p5, 16.5px);
 }
