@@ -704,12 +704,12 @@ async function decode(png, cssWidth) {
   };
 }
 
-async function electronScreenshot(driver) {
+export async function electronScreenshot(driver) {
   const shot = await driver.send("Page.captureScreenshot", { format: "png" });
   return Buffer.from(shot.data, "base64");
 }
 
-async function nativeScreenshot(devtoolPort) {
+export async function nativeScreenshot(devtoolPort) {
   const connectorPath = process.env.LYNX_DEVTOOL_CONNECTOR?.trim() || defaultLynxDevtoolConnector;
   const { createDefaultConnector } = await import(connectorPath);
   let lastError;

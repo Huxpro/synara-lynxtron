@@ -35,6 +35,7 @@ export function SidebarThreadIdentityTitleElement({
       className={`SharedSidebarThreadIdentityTitle${
         active ? " SharedSidebarThreadIdentityTitle--active" : ""
       }${subagent ? " SharedSidebarThreadIdentityTitle--subagent" : ""}`}
+      text-maxline="1"
     >
       {children}
     </text>

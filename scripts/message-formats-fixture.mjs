@@ -975,6 +975,21 @@ export function installMessageFormatsFixture({ home, rebuild = false }) {
   });
   if (backup.status !== 0) throw new Error(`seed backup failed: ${backup.stderr}`);
 
+  const appended = appendMessageFormatsFixture({ home });
+  return { database, events: appended.events, threads: MESSAGE_FORMATS_THREAD_IDS };
+}
+
+/**
+ * Appends the fixture's events and attachment files to a home that already holds a
+ * clone of the comparison seed (`<home>/dev/state.sqlite`) and whose server is not
+ * running. The desktop launcher uses this on its own isolated clone
+ * (`compare:desktop --message-formats`).
+ */
+export function appendMessageFormatsFixture({ home }) {
+  const paths = resolveComparisonFixturePaths();
+  const stateDir = join(resolve(home), "dev");
+  const database = join(stateDir, "state.sqlite");
+  if (!existsSync(database)) throw new Error(`${database} is missing; clone the seed first`);
   const imagePath = join(resolve(home), "message-formats-assets", "diagram.png");
   mkdirSync(dirname(imagePath), { recursive: true });
   writeFileSync(imagePath, messageFormatsFixturePng(240, 120));
@@ -985,7 +1000,7 @@ export function installMessageFormatsFixture({ home, rebuild = false }) {
     writeFileSync(target, file.data);
   }
   sqlite(database, messageFormatsFixtureSql(fixture.events));
-  return { database, events: fixture.events.length, threads: MESSAGE_FORMATS_THREAD_IDS };
+  return { database, events: fixture.events.length };
 }
 
 export async function appendMessageFormatsLiveRequests(serverUrl) {

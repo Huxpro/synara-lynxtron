@@ -381,10 +381,13 @@ function TranscriptWorkEntries({
   chatFontSizePx,
   entries,
   markdownTreesByWorkEntryId,
+  placement,
   workspaceRoot,
 }: {
   readonly chatFontSizePx: number;
   readonly entries: readonly WorkLogEntry[];
+  /** Inside a message row: before its text (`mb-1.5`) or after it (`mt-1.5`). */
+  readonly placement?: "leading" | "trailing";
   readonly markdownTreesByWorkEntryId?: Readonly<
     Record<string, import("../components/markdown/markdownAst.lynx").MarkdownNode | null>
   >;
@@ -392,7 +395,13 @@ function TranscriptWorkEntries({
 }) {
   if (entries.length === 0) return null;
   return (
-    <view className="TranscriptWorkEntries">
+    <view
+      className={
+        placement
+          ? `TranscriptWorkEntries TranscriptWorkEntries--${placement}`
+          : "TranscriptWorkEntries"
+      }
+    >
       {entries.map((entry) => (
         <TranscriptWorkEntry
           key={entry.id}
@@ -935,6 +944,7 @@ function TranscriptMessage({
           chatFontSizePx={chatFontSizePx}
           entries={leadingWorkEntries}
           markdownTreesByWorkEntryId={row.markdownTreesByWorkEntryId}
+          placement="leading"
           workspaceRoot={workspaceRoot}
         />
         {assistantText === null ? null : (
@@ -964,6 +974,7 @@ function TranscriptMessage({
           chatFontSizePx={chatFontSizePx}
           entries={inlineWorkEntries}
           markdownTreesByWorkEntryId={row.markdownTreesByWorkEntryId}
+          placement="trailing"
           workspaceRoot={workspaceRoot}
         />
         {activeTextSelection ? (

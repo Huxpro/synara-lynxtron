@@ -2051,6 +2051,16 @@
   margin: 6px 0;
 }
 
+/* Upstream's work display inside a message row: `mb-1.5` before the text,
+   `mt-1.5` after it. */
+.TranscriptWorkEntries--leading {
+  margin-top: 0;
+}
+
+.TranscriptWorkEntries--trailing {
+  margin-bottom: 0;
+}
+
 /* Narration inside the expanded work log is ordinary chat markdown. */
 .TranscriptCollapsedNarration {
   color: var(--foreground);

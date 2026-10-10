@@ -42,6 +42,7 @@ import {
   lsofShowsPidListeningOnPort,
   pidOwnedDevtoolPortsFromLsof,
   resolveLynxDevtoolReadyTimeoutMs,
+  freezeBaseline,
   parseDesktopComparisonArgs,
   ownedElectronPidsFromPs,
   ownedWebPidsFromPs,
@@ -58,6 +59,15 @@ import { dirname, join } from "node:path";
 describe("Electron and Lynxtron comparison launcher", () => {
   it("uses the canonical fixture seed and matched dimensions by default", () => {
     expect(parseDesktopComparisonArgs([])).toEqual(DEFAULT_DESKTOP_COMPARISON_OPTIONS);
+    expect(DEFAULT_DESKTOP_COMPARISON_OPTIONS.messageFormats).toBe(false);
+    expect(parseDesktopComparisonArgs(["--message-formats"]).messageFormats).toBe(true);
+    // The data freeze then starts at what the backend exposed, not at the seed's journal.
+    const manifest = { sequence: 112, threads: [] };
+    expect(freezeBaseline(manifest, { messageFormats: false }, { sequence: 300 })).toBe(manifest);
+    expect(freezeBaseline(manifest, { messageFormats: true }, { sequence: 300 })).toEqual({
+      sequence: 300,
+      threads: [],
+    });
     expect(DEFAULT_DESKTOP_COMPARISON_OPTIONS).toMatchObject({
       threadId: null,
       seed: "fixture",
@@ -172,6 +182,7 @@ describe("Electron and Lynxtron comparison launcher", () => {
       skipLynxDevtool: true,
       skipBuild: true,
       regularApp: false,
+      messageFormats: false,
     });
   });
 

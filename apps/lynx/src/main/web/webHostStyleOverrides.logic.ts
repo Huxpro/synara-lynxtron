@@ -130,6 +130,14 @@ export const WEB_HOST_STYLE_OVERRIDES: readonly WebHostStyleOverride[] = [
     reason:
       "Native rounds the 39px two-line description up to 40px and uses 1px; Chromium keeps 39px, so upstream's 2px gap applies.",
   },
+  {
+    kind: "text-metrics",
+    source: "components/markdown/markdown.css",
+    selectors: [".MdText--inline-code"],
+    declarations: { "padding-bottom": "0" },
+    reason:
+      "Native adds the 1px Chromium's line box gains from an inline code run; Chromium lays this host's text out and has it already.",
+  },
 ];
 
 /** One CSS rule per override, for `<lynx-view>.injectStyleRules`. */

@@ -27,6 +27,7 @@ import { resolveAgentChipColor } from "@synara-web/components/composerInlineChip
 import {
   collapseMarkdownSoftBreaks,
   isMarkdownListLoose,
+  markdownNodeHasInlineCode,
   markdownNodePlainText,
   markdownSpacingStyle,
   resolveMarkdownChildSpacing,
@@ -289,7 +290,9 @@ function MarkdownTable(props: {
                   style={{ flexGrow: weights[cellIndex] ?? 1 }}
                 >
                   <text
-                    className={`${rowIndex === 0 ? "MdTableHeaderText" : "MdTableCellText"} MdTableText--${align}`}
+                    className={`${rowIndex === 0 ? "MdTableHeaderText" : "MdTableCellText"} MdTableText--${align}${
+                      markdownNodeHasInlineCode(cell) ? " MdText--inline-code" : ""
+                    }`}
                   >
                     {renderInlineChildren(
                       cell,
@@ -660,7 +663,14 @@ function renderNode(
       );
     case "paragraph":
       return (
-        <SelectableMarkdownText className="MdParagraph" context={context} key={key} style={style}>
+        <SelectableMarkdownText
+          className={
+            markdownNodeHasInlineCode(node) ? "MdParagraph MdText--inline-code" : "MdParagraph"
+          }
+          context={context}
+          key={key}
+          style={style}
+        >
           {children()}
         </SelectableMarkdownText>
       );

@@ -25,6 +25,7 @@ import {
   readComparisonFixtureManifest,
   resolveComparisonFixturePaths,
 } from "./comparison-fixture.mjs";
+import { appendMessageFormatsFixture } from "./message-formats-fixture.mjs";
 import {
   createRunManifest,
   inspectNativeBackendConnections,
@@ -91,6 +92,10 @@ export const DEFAULT_DESKTOP_COMPARISON_OPTIONS = Object.freeze({
   // that resolve targets from the running-application list (Computer Use) can
   // find them. A regular app gets a Dock icon and may take focus once at launch.
   regularApp: false,
+  // Appends the message-formats fixture threads (scripts/message-formats-fixture.mjs)
+  // to the cloned seed before the backend starts. The launch still certifies on the
+  // canonical thread; the extra threads are reached from the sidebar.
+  messageFormats: false,
 });
 
 function parsePositiveInteger(raw, flag) {
@@ -115,6 +120,10 @@ export function parseDesktopComparisonArgs(argv) {
     }
     if (argument === "--regular-app") {
       options.regularApp = true;
+      continue;
+    }
+    if (argument === "--message-formats") {
+      options.messageFormats = true;
       continue;
     }
     if (argument === "--exit-after-certify") {
@@ -1870,6 +1879,17 @@ async function readBackendIdentity(socketUrl) {
   }
 }
 
+/**
+ * What the data freeze compares against: the fixture manifest, with the event
+ * sequence taken from the started backend when the launch appended threads to the
+ * seed (the manifest's threads must still be intact either way).
+ */
+export function freezeBaseline(fixtureManifest, options, entitiesAtStart) {
+  return options.messageFormats
+    ? { ...fixtureManifest, sequence: entitiesAtStart.sequence }
+    : fixtureManifest;
+}
+
 async function main() {
   const parsedOptions = parseDesktopComparisonArgs(process.argv.slice(2));
   const fixtureManifest = parsedOptions.seed === "fixture" ? readComparisonFixtureManifest() : null;
@@ -2013,6 +2033,11 @@ async function main() {
         throw new Error(`Cloned fixture does not match fixture.json: ${mismatches.join("; ")}.`);
       }
     }
+    if (options.messageFormats) {
+      // After the clone check: the manifest describes the canonical seed, and the
+      // appended events are projected by the backend at startup.
+      run.messageFormats = appendMessageFormatsFixture({ home: paths.electronHome });
+    }
     const routedThreadId = comparisonThreadId(options);
     const electronAnchorThreadId = comparisonElectronAnchorThreadId(options);
     if (routedThreadId) assertComparisonThreadAvailable(paths, routedThreadId);
@@ -2062,11 +2087,13 @@ async function main() {
     await waitForPort(runtime.port);
     const socketUrl = new URL(`ws://127.0.0.1:${runtime.port}`);
     socketUrl.searchParams.set("token", authToken);
+    const identityAtStart = await readBackendIdentity(socketUrl.toString());
+    const { entities: entitiesAtStart, ...backendAtStart } = identityAtStart;
     run.backend = {
       port: runtime.port,
       pid: runtime.pid,
       stateDir: join(paths.electronHome, "dev"),
-      ...(await readBackendIdentity(socketUrl.toString())),
+      ...backendAtStart,
     };
     if (electronAnchorThreadId && !run.backend.visibleThreadIds.includes(electronAnchorThreadId)) {
       throw new Error(
@@ -2127,18 +2154,22 @@ async function main() {
       throw new Error("The backend restarted during certification.");
     }
     if (fixtureManifest) {
+      // With --message-formats the journal is longer than the seed's, and startup
+      // settles the fixture's open turns; the freeze is then measured from what the
+      // backend exposed before either renderer attached.
+      const frozen = freezeBaseline(fixtureManifest, options, entitiesAtStart);
       run.backend.sequenceSinceSeed = {
-        seed: fixtureManifest.sequence,
+        seed: frozen.sequence,
         live: entities.sequence,
       };
-      if (entities.sequence !== fixtureManifest.sequence) {
+      if (entities.sequence !== frozen.sequence) {
         // The fixture already contains everything the app settles on first
         // launch; any event now means a renderer mutated the certified data.
         throw new Error(
-          `Data changed during certification: event sequence ${entities.sequence} after seed ${fixtureManifest.sequence}.`,
+          `Data changed during certification: event sequence ${entities.sequence} after seed ${frozen.sequence}.`,
         );
       }
-      const mismatches = comparisonFixtureMismatches(fixtureManifest, entities);
+      const mismatches = comparisonFixtureMismatches(frozen, entities);
       if (mismatches.length > 0) {
         throw new Error(`Fixture entities changed during certification: ${mismatches.join("; ")}.`);
       }
