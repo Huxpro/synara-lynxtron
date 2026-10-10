@@ -2159,7 +2159,11 @@ export function Composer({
                     }}
                     onModelSelectionChange={(nextModelSelection) => {
                       "background only";
-                      setModelSelection(brandedThreadId, nextModelSelection);
+                      // Upstream's pick also becomes the provider's sticky selection, which
+                      // a later handoff to that provider defaults to.
+                      useComposerDraftStore
+                        .getState()
+                        .setModelSelectionAndSticky(brandedThreadId, nextModelSelection);
                       setModelCatalogProvider(null);
                     }}
                     onOpenProviderSettings={onOpenProviderSettings}
