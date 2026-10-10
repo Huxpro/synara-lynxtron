@@ -173,8 +173,12 @@ export async function openElectronDriver(cdpPort) {
   };
   return {
     kind: "electron",
+    send,
     evaluate,
     find,
+    /** Moves the pointer without pressing, for hover states. */
+    hover: (point) =>
+      send("Input.dispatchMouseEvent", { type: "mouseMoved", x: point.x, y: point.y }),
     async tap(target) {
       const box = await waitFor(() => find(target), {
         label: `Electron ${JSON.stringify(target)}`,

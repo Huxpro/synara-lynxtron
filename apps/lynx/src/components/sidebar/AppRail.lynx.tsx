@@ -79,8 +79,10 @@ export function railPanelShownForPathname(pathname: string): boolean {
 }
 
 function RailGlyph(props: { readonly id: RailItemId | "more"; readonly active: boolean }) {
-  const { semanticIconColor } = useTheme();
-  const color = semanticIconColor(props.active ? "primary" : "secondary");
+  // appRailButtonClassName: the active item takes `--sidebar-accent-foreground` (the
+  // foreground), a resting one the section-label tone.
+  const { svgColors } = useTheme();
+  const color = props.active ? svgColors.foreground : svgColors.sectionLabelForeground;
   const central = (content: string) => (
     <svg className="AppRailGlyph" content={colorizeLynxSvg(content, color)} />
   );

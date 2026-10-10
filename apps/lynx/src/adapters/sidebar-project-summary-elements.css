@@ -21,7 +21,8 @@
 .SharedSidebarProjectSummaryName {
   min-width: 0;
   overflow: hidden;
-  color: var(--sidebar-foreground);
+  /* SIDEBAR_ROW_LABEL_TEXT_CLASS_NAME: `text-foreground/95`. */
+  color: color-mix(in srgb, var(--sidebar-foreground) 95%, transparent);
   font-size: var(--type-ui-row-size);
   font-weight: 400;
   line-height: var(--type-ui-row-line-height);

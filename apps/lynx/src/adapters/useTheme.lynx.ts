@@ -142,6 +142,9 @@ export function useTheme() {
           ? withOpacity(resolvedTokens.derived.controlBackgroundOpaque, 0.32)
           : resolvedTokens.computed.surfaceUnder,
       secondaryForeground: resolveTextForegroundSecondary(activeTheme.theme, resolvedTheme),
+      // Upstream SIDEBAR_SECTION_LABEL_TONE_CLASS_NAME (`text-muted-foreground/58`): the
+      // resting tone of section labels and of the icon rail's glyphs.
+      sectionLabelForeground: scaleOpacity(resolvedTokens.derived.textForegroundSecondary, 0.58),
       surface: activeTheme.theme.surface,
       warning: warningColor,
     },
