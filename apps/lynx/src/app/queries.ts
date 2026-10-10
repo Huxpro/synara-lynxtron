@@ -143,8 +143,11 @@ export interface ThreadHeaderSummary {
   readonly associatedWorktreeRef: string | null;
   readonly createBranchFlowCompleted: boolean;
   readonly provider?: ProviderKind;
-  /** Electron's `lockedProvider`: a thread with native activity keeps its provider. */
-  readonly lockedProvider: ProviderKind | null;
+  /**
+   * Electron's `boundProvider`: the provider a thread with native activity runs on.
+   * Picking another one in the composer hands the thread off on the next send.
+   */
+  readonly boundProvider: ProviderKind | null;
   readonly modelSelection: ModelSelection;
   readonly runtimeMode: RuntimeMode;
   readonly interactionMode: ProviderInteractionMode;

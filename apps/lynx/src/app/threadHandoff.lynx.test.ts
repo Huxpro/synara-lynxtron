@@ -4,7 +4,9 @@ import { MessageId } from "@synara/contracts";
 import { DEFAULT_PROVIDER_ORDER } from "@synara-web/providerOrdering";
 
 import {
-  buildNativeThreadHandoffCreateCommand,
+  buildNativeThreadHandoffMenuItems,
+  resolveNativeContinueHandoffTargets,
+  resolveNativeThreadHandoffMenuAction,
   resolveNativeThreadHandoffTargets,
 } from "./threadHandoff.lynx";
 import type { ThreadHeaderSummary } from "./queries";
@@ -48,7 +50,7 @@ const eligibleThread: ThreadHeaderSummary = {
   associatedWorktreeBranch: null,
   associatedWorktreeRef: null,
   createBranchFlowCompleted: false,
-  lockedProvider: null,
+  boundProvider: null,
   workspaceRoot: null,
   notes: "",
   pinnedMessages: [],
@@ -86,10 +88,15 @@ describe("Native thread handoff service", () => {
         { provider: "opencode", instanceId: "opencode", available: true, authStatus: "unknown" },
       ] as never,
     };
-    expect(resolveNativeThreadHandoffTargets(eligibleThread, providers)).toEqual([
-      "claudeAgent",
-      "opencode",
+    const targets = resolveNativeThreadHandoffTargets(eligibleThread, providers);
+    // Upstream's target shape: the header and the thread menu label each row with it.
+    expect(targets).toEqual([
+      { provider: "claudeAgent", instanceId: "claudeAgent", label: "Claude" },
+      { provider: "opencode", instanceId: "opencode", label: "OpenCode" },
     ]);
+    // Every other provider can also take over the same thread.
+    expect(resolveNativeContinueHandoffTargets(eligibleThread, targets)).toEqual(targets);
+    expect(resolveNativeContinueHandoffTargets(undefined, targets)).toEqual([]);
     expect(
       resolveNativeThreadHandoffTargets(
         {
@@ -101,42 +108,65 @@ describe("Native thread handoff service", () => {
     ).toEqual([]);
   });
 
-  it("owns the complete canonical handoff command and imported activity flow", () => {
+  it("leaves the handoff itself to upstream's generated hook", () => {
     const source = readFileSync(new URL("./threadHandoff.lynx.ts", import.meta.url), "utf8");
-    expect(source).toContain("refreshServerProviderStatuses(queryClient)");
-    expect(source).toContain("resolveProviderSendAvailability({");
-    expect(source).toContain("resolveThreadHandoffModelSelection({");
-    expect(source).toContain("buildThreadHandoffImportedMessages(");
-    expect(source).toContain("buildThreadHandoffImportedActivities(");
-    expect(source).toContain('type: "thread.handoff.create"');
-    expect(source).toContain('type: "thread.activity.append"');
+    // No second implementation of either handoff command on Lynx.
+    expect(source).not.toContain("thread.handoff.create");
+    expect(source).not.toContain("thread.meta.update");
+    expect(source).not.toContain("dispatchCommand");
+    const generated = readFileSync(
+      new URL("../generated/threadHandoff.generated.ts", import.meta.url),
+      "utf8",
+    );
+    expect(generated).toContain('type: "thread.handoff.create"');
+    expect(generated).toContain("providerHandoff: true");
+    expect(generated).toContain('type: "thread.activity.append"');
+    for (const consumer of [
+      "./ThreadHeaderActions.lynx.tsx",
+      "../components/sidebar/Sidebar.lynx.tsx",
+      "../components/composer/useComposerProviderHandoff.lynx.ts",
+    ]) {
+      expect(readFileSync(new URL(consumer, import.meta.url), "utf8")).toContain(
+        'from "../generated/threadHandoff.generated"'.replace(
+          "../generated",
+          consumer.startsWith("./") ? "../generated" : "../../generated",
+        ),
+      );
+    }
   });
 
-  it("inherits the source project id even when thread titles are ambiguous", () => {
-    const command = buildNativeThreadHandoffCreateCommand({
-      createdAt: "2026-09-11T00:00:00.000Z",
-      nextThreadId: "thread-handoff",
-      project: {
-        id: "project-other",
-        defaultModelSelection: {
-          provider: "claudeAgent",
-          model: "claude-sonnet-5",
-        },
+  it("builds the thread menu's Handoff submenu as upstream's sidebar does", () => {
+    const claude = { provider: "claudeAgent", instanceId: "claudeAgent", label: "Claude" } as never;
+    const cursor = { provider: "cursor", instanceId: "cursor", label: "Cursor" } as never;
+    expect(buildNativeThreadHandoffMenuItems([claude, cursor], [claude, cursor])).toEqual([
+      {
+        id: "handoff",
+        label: "Handoff",
+        separatorBefore: true,
+        submenu: [
+          { id: "handoff-here:claudeAgent", label: "Claude in this thread" },
+          { id: "handoff-here:cursor", label: "Cursor in this thread" },
+          { id: "handoff:claudeAgent", label: "Claude in a new thread", separatorBefore: true },
+          { id: "handoff:cursor", label: "Cursor in a new thread" },
+        ],
       },
-      targetProvider: "claudeAgent",
-      thread: {
-        ...eligibleThread,
-        id: "thread-source",
-        title: "New chat",
-        projectId: "project-source",
-      },
-    });
+    ]);
+    // One choice collapses to a plain row with its full label.
+    expect(buildNativeThreadHandoffMenuItems([claude], [])).toEqual([
+      { id: "handoff:claudeAgent", label: "Handoff to Claude", separatorBefore: true },
+    ]);
+    expect(buildNativeThreadHandoffMenuItems([], [])).toEqual([]);
 
-    expect(command).toMatchObject({
-      type: "thread.handoff.create",
-      threadId: "thread-handoff",
-      sourceThreadId: "thread-source",
-      projectId: "project-source",
-    });
+    expect(
+      resolveNativeThreadHandoffMenuAction("handoff-here:cursor", [claude, cursor], [cursor]),
+    ).toEqual({ destination: "this-thread", target: cursor });
+    expect(
+      resolveNativeThreadHandoffMenuAction("handoff:claudeAgent", [claude, cursor], [cursor]),
+    ).toEqual({ destination: "new-thread", target: claude });
+    // A target the thread cannot continue on is not reachable by a stale id.
+    expect(
+      resolveNativeThreadHandoffMenuAction("handoff-here:claudeAgent", [claude, cursor], [cursor]),
+    ).toBeNull();
+    expect(resolveNativeThreadHandoffMenuAction("rename", [claude], [claude])).toBeNull();
   });
 });

@@ -39,9 +39,23 @@
         "const isWorking = hasLiveTurn || isSendBusy || isConnecting || isRevertingCheckpoint || isAwaitingTurnStart;",
         "const activeTurnLayoutLive = isWorking || !latestTurnSettled;",
         "const activeWorkStartedAt = hasLiveTurnTail ? (activeLatestTurn?.startedAt ?? null) : hasLiveTurn ? deriveActiveWorkStartedAt(activeLatestTurn, activeThread?.session ?? null, null) : null;",
-        "const activeTurnInProgress = activeTurnLayoutLive || keepSettledActiveTurnLayout;"
+        "const activeTurnInProgress = activeTurnLayoutLive || keepSettledActiveTurnLayout;",
+        "const providerHandoffPendingForSend = activeThread !== undefined && boundProvider !== null && selectedProvider !== boundProvider;",
+        "if (!providerHandoffPendingForSend || !handoffDisabled) { return true; }",
+        "const targetName = PROVIDER_DISPLAY_NAMES[selectedProvider] ?? selectedProvider; toastManager.add({ type: \"error\", title: `Cannot switch to ${targetName} yet`, description: \"Wait for the current turn to finish and answer any pending request, then send again.\", });",
+        "await continueThreadHandoff( threadForSend, selectionForSend.provider, selectionForSend.instanceId, selectionForSend, );",
+        "allowProviderHandoff: isServerThread && !isCoordinatorConversation,",
+        "title: \"Could not hand off this thread\",",
+        "title: \"Could not create handoff thread\",",
+        "setComposerDraftModelSelectionAndSticky(activeThread.id, nextModelSelection);"
       ],
-      "copies": ["apps/lynx/src/app/threadPageProjection.logic.ts"],
+      "copies": [
+        "apps/lynx/src/app/threadPageProjection.logic.ts",
+        "apps/lynx/src/app/providerHandoffSend.logic.ts",
+        "apps/lynx/src/components/composer/useComposerProviderHandoff.lynx.ts",
+        "apps/lynx/src/app/ThreadHeaderActions.lynx.tsx",
+        "apps/lynx/src/components/composer/Composer.lynx.tsx"
+      ],
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
@@ -49,6 +63,18 @@
       "symbols": ["RestoreRouteResolverInput", "RestoreRouteResolver"],
       "copies": ["apps/web/src/components/useRestoreOrCreateChatRoute.logic.ts"],
       "sha256": "0435a0c63d7d9cc9aa215a06180e99a83b0ca23bf86a428dd5c100aac5db357c"
+    },
+    {
+      "upstream": "apps/web/src/components/Sidebar.tsx",
+      "symbols": [],
+      "fragments": [
+        "id: `handoff-here:${target.instanceId}`, label: `${target.label} in this thread`, standaloneLabel: `Handoff to ${target.label} in this thread`,",
+        "id: `handoff:${target.instanceId}`, label: continueHandoffTargets.length > 0 ? `${target.label} in a new thread` : target.label, standaloneLabel: `Handoff to ${target.label}`,",
+        "...(index === 0 && continueHandoffTargets.length > 0 ? { separatorBefore: true } : {}),",
+        "{ id: \"handoff\", label: \"Handoff\", icon: THREAD_CONTEXT_MENU_ICONS.handoff },"
+      ],
+      "copies": ["apps/lynx/src/app/threadHandoff.lynx.ts"],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
       "upstream": "apps/web/src/components/Sidebar.uiState.ts",
@@ -72,6 +98,18 @@
       "sha256": "54996172dfbc72ccac69ade6430397dfb3bb359e0713973974a5c98450a566d3"
     },
     {
+      "upstream": "apps/web/src/components/chat/ChatHeader.tsx",
+      "symbols": [],
+      "fragments": [
+        "<MenuGroupLabel>Continue in this thread</MenuGroupLabel>",
+        "<MenuGroupLabel>Continue in a new thread</MenuGroupLabel>",
+        "disabled={handoffDisabled || handoffActionTargets.length === 0}",
+        "<ComposerPickerMenuPopup align=\"end\" side=\"bottom\" className=\"w-56 min-w-56\">"
+      ],
+      "copies": ["apps/lynx/src/app/ThreadHeaderActions.lynx.tsx"],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
       "upstream": "apps/web/src/components/chat/FileAttachmentChip.tsx",
       "symbols": ["MIME_TYPE_LABEL_BY_TYPE", "fileAttachmentTypeLabel"],
       "copies": ["apps/lynx/src/logic/fileAttachmentPresentation.ts"],
@@ -84,10 +122,54 @@
       "sha256": "a39dc8e6cf82ca0fb7bb119fa86dde890d60e76b922bab449ce07790367cd1fc"
     },
     {
+      "upstream": "apps/web/src/components/chat/ProviderHandoffDivider.tsx",
+      "symbols": ["HandoffEndpoint"],
+      "fragments": [
+        "<span className=\"shrink-0\">{failed ? \"Handoff failed\" : \"Context handoff\"}</span>"
+      ],
+      "copies": ["apps/lynx/src/app/ProviderHandoffDivider.lynx.tsx"],
+      "sha256": "39f801771880ae17cc506193dff2974d156f358965cdd526a5e260f1ac7ea842"
+    },
+    {
+      "upstream": "apps/web/src/components/chat/TimelineWorkEntryRow.tsx",
+      "symbols": ["providerModelLabel"],
+      "copies": ["apps/lynx/src/app/ProviderHandoffDivider.lynx.tsx"],
+      "sha256": "d30f3b91deade7882aaf6a174f1f8e6b37acc8de163e8537bddb8ac365382651"
+    },
+    {
       "upstream": "apps/web/src/components/chat/rightDockPaneMeta.tsx",
       "symbols": ["RIGHT_DOCK_LAUNCHER_ORDER", "RIGHT_DOCK_LAUNCHER_LABELS"],
       "copies": ["apps/web/src/components/chat/rightDockLauncher.logic.ts"],
       "sha256": "6e97f265709e9c5d34823ce022e845dd07a09c9cd46dee3cc8d5361aa488b831"
+    },
+    {
+      "upstream": "apps/web/src/components/chat/useChatProviderModels.ts",
+      "symbols": [],
+      "fragments": [
+        "const lockedProvider: ProviderKind | null = allowProviderHandoff === true ? null : boundProvider;"
+      ],
+      "copies": ["apps/lynx/src/components/composer/Composer.lynx.tsx"],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "upstream": "apps/web/src/components/chat/useChatTurnExecution.ts",
+      "symbols": [],
+      "fragments": [
+        "const needsProviderHandoff = isServerThread && queuedChatTurn === null && threadHasProviderLockingActivity(activeThread) && dispatchSettings.modelSelection.provider !== activeThread.modelSelection.provider;",
+        "if (needsProviderHandoff && prepareProviderHandoffForSend) { await prepareProviderHandoffForSend(activeThread, dispatchSettings.modelSelection);",
+        ")?.activities.findLast((activity) => activity.kind === \"provider.handoff\")?.createdAt;",
+        "messageCreatedAt = new Date( Math.max(Date.now(), Date.parse(handoffCreatedAt ?? messageCreatedAt) + 1), ).toISOString();",
+        "retryDraft.prompt.length === 0 && retryDraft.images.length === 0 && retryDraft.files.length === 0 && retryDraft.assistantSelections.length === 0 &&",
+        "retryDraft.fileComments.length === 0 && retryDraft.terminalContexts.length === 0 && retryDraft.pastedTexts.length === 0 &&",
+        "const stagedTurnAttachments = await turnAttachmentsPromise;"
+      ],
+      "copies": [
+        "apps/lynx/src/app/providerHandoffSend.logic.ts",
+        "apps/lynx/src/components/composer/useComposerProviderHandoff.lynx.ts",
+        "apps/lynx/src/adapters/composerDraftStore.lynx.ts",
+        "apps/lynx/src/components/composer/composerDispatch.logic.ts"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
       "upstream": "apps/web/src/components/composerInlineChip.ts",
@@ -132,6 +214,17 @@
       "symbols": ["BREAKPOINTS"],
       "copies": ["apps/web/src/responsiveLayout.logic.ts"],
       "sha256": "d2ce527bc47c00853e102ffe72c798724db5794183559bc8bcd09ffe33dca9bf"
+    },
+    {
+      "upstream": "apps/web/src/hooks/useProviderStatusRefresh.ts",
+      "symbols": [
+        "RefreshProviderStatusesOptions",
+        "RefreshProviderStatusesNow",
+        "writeProviderStatusesToConfigCache",
+        "useRefreshProviderStatusesNow"
+      ],
+      "copies": ["apps/lynx/src/adapters/useProviderStatusRefresh.lynx.ts"],
+      "sha256": "d31adb63f359829599230dcafec2cbb3ed0adcf91e177d7664d7b9e5ebe79bf9"
     },
     {
       "upstream": "apps/web/src/hooks/useSidebarProjectRunController.ts",

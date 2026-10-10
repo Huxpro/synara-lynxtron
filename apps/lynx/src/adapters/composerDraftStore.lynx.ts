@@ -11,6 +11,7 @@ import {
   PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
   type ChatAssistantSelectionAttachment,
   type ModelSelection,
+  type ProviderInstanceId,
   type ProviderMentionReference,
   type ProviderSkillReference,
   type RuntimeMode,
@@ -60,6 +61,43 @@ interface LynxComposerDraft {
   readonly skills: ReadonlyArray<ProviderSkillReference>;
 }
 
+/**
+ * What a send takes out of the composer: everything the user typed or attached.
+ * The model selection and the pre-send modes stay with the draft.
+ */
+export type LynxComposerDraftContent = Pick<
+  LynxComposerDraft,
+  | "assistantSelections"
+  | "files"
+  | "images"
+  | "nonPersistedImageIds"
+  | "fileComments"
+  | "mentions"
+  | "pastedTexts"
+  | "terminalContexts"
+  | "prompt"
+  | "skills"
+>;
+
+/**
+ * Upstream's test for "the user has not started a newer draft" before it puts a failed
+ * send back (`retryDraft` in `chat/useChatTurnExecution.ts`).
+ */
+export function isLynxComposerDraftContentEmpty(
+  draft: LynxComposerDraftContent | undefined,
+): boolean {
+  return (
+    !draft ||
+    (draft.prompt.length === 0 &&
+      draft.images.length === 0 &&
+      draft.files.length === 0 &&
+      draft.assistantSelections.length === 0 &&
+      draft.fileComments.length === 0 &&
+      draft.terminalContexts.length === 0 &&
+      draft.pastedTexts.length === 0)
+  );
+}
+
 interface LynxComposerDraftStoreState {
   readonly draftsByThreadId: Record<string, LynxComposerDraft>;
   /**
@@ -70,6 +108,13 @@ interface LynxComposerDraftStoreState {
    * threads' terminal state alive.
    */
   readonly draftThreadsByThreadId: Readonly<Record<string, never>>;
+  /**
+   * Upstream's last picked selection per provider account, which a handoff
+   * target defaults to (`resolveThreadHandoffModelSelection`). Lynx offers each
+   * provider's default account, whose id is the provider's; the map lives for
+   * the session and is fed by `setModelSelectionAndSticky`.
+   */
+  readonly stickyModelSelectionByProvider: Partial<Record<ProviderInstanceId, ModelSelection>>;
   readonly addAssistantSelection: (
     threadId: string,
     selection: ChatAssistantSelectionAttachment,
@@ -83,6 +128,16 @@ interface LynxComposerDraftStoreState {
   ) => void;
   readonly addFileComment: (threadId: string, comment: FileCommentDraft) => void;
   readonly clearDraft: (threadId: string) => void;
+  /**
+   * A send's first step, as upstream clears the composer before it prepares the turn:
+   * returns the draft's content and removes it in one update. `null` when there is none.
+   */
+  readonly takeDraftContent: (threadId: string) => LynxComposerDraftContent | null;
+  /**
+   * Puts a failed send's content back, unless the user has started a newer draft in the
+   * meantime (upstream's rule). Returns whether it was restored.
+   */
+  readonly restoreDraftContent: (threadId: string, content: LynxComposerDraftContent) => boolean;
   readonly discardDraft: (threadId: string) => void;
   readonly removePastedText: (threadId: string, pastedTextId: string) => void;
   readonly removeTerminalContext: (threadId: string, contextId: string) => void;
@@ -91,6 +146,16 @@ interface LynxComposerDraftStoreState {
   readonly removeFileComments: (threadId: string) => void;
   readonly removeAssistantSelections: (threadId: string) => void;
   readonly setModelSelection: (threadId: string, modelSelection: ModelSelection) => void;
+  /** Upstream's action of the same name: the draft's selection, remembered as the provider's. */
+  readonly setModelSelectionAndSticky: (threadId: string, modelSelection: ModelSelection) => void;
+  /**
+   * Upstream's action of the same name, for a new-thread handoff: the unsent
+   * draft follows the conversation. Lynx carries the text side (prompt,
+   * mentions, skills, pasted texts, file comments, assistant selections and
+   * terminal contexts). Picked images and files stay behind: each is a host
+   * token one draft owns and releases when it sends.
+   */
+  readonly copyTransferableComposerState: (sourceThreadId: string, targetThreadId: string) => void;
   readonly setRuntimeMode: (threadId: string, runtimeMode: RuntimeMode) => void;
   readonly setInteractionMode: (threadId: string, interactionMode: "default" | "plan") => void;
   readonly setMentions: (
@@ -381,9 +446,76 @@ function modelSelectionsEqual(left: ModelSelection | undefined, right: ModelSele
   return true;
 }
 
-export const useComposerDraftStore = create<LynxComposerDraftStoreState>()((set) => ({
+export const useComposerDraftStore = create<LynxComposerDraftStoreState>()((set, get) => ({
   draftsByThreadId: {},
   draftThreadsByThreadId: {},
+  stickyModelSelectionByProvider: {},
+  takeDraftContent: (threadId) => {
+    const current = get().draftsByThreadId[threadId];
+    if (!current) return null;
+    const content: LynxComposerDraftContent = {
+      assistantSelections: current.assistantSelections,
+      files: current.files,
+      images: current.images,
+      nonPersistedImageIds: current.nonPersistedImageIds,
+      fileComments: current.fileComments,
+      mentions: current.mentions,
+      pastedTexts: current.pastedTexts,
+      terminalContexts: current.terminalContexts,
+      prompt: current.prompt,
+      skills: current.skills,
+    };
+    get().clearDraft(threadId);
+    return content;
+  },
+  restoreDraftContent: (threadId, content) => {
+    let restored = false;
+    set((state) => {
+      const current = state.draftsByThreadId[threadId];
+      if (!isLynxComposerDraftContentEmpty(current)) return state;
+      restored = true;
+      const nextDraft: LynxComposerDraft = { ...(current ?? emptyDraft()), ...content };
+      const draftsByThreadId = { ...state.draftsByThreadId };
+      if (shouldRemoveDraft(nextDraft)) delete draftsByThreadId[threadId];
+      else draftsByThreadId[threadId] = nextDraft;
+      return { draftsByThreadId };
+    });
+    return restored;
+  },
+  setModelSelectionAndSticky: (threadId, modelSelection) => {
+    get().setModelSelection(threadId, modelSelection);
+    const stickyKey = (modelSelection.instanceId ?? modelSelection.provider) as ProviderInstanceId;
+    set((state) => ({
+      stickyModelSelectionByProvider: {
+        ...state.stickyModelSelectionByProvider,
+        [stickyKey]: modelSelection,
+      },
+    }));
+  },
+  copyTransferableComposerState: (sourceThreadId, targetThreadId) => {
+    if (sourceThreadId.length === 0 || targetThreadId.length === 0) return;
+    set((state) => {
+      const sourceDraft = state.draftsByThreadId[sourceThreadId];
+      if (!sourceDraft) return state;
+      const nextDraft: LynxComposerDraft = {
+        ...(state.draftsByThreadId[targetThreadId] ?? emptyDraft()),
+        prompt: sourceDraft.prompt,
+        assistantSelections: [...sourceDraft.assistantSelections],
+        fileComments: [...sourceDraft.fileComments],
+        mentions: [...sourceDraft.mentions],
+        pastedTexts: [...sourceDraft.pastedTexts],
+        skills: [...sourceDraft.skills],
+        terminalContexts: sourceDraft.terminalContexts.map((context) => ({
+          ...context,
+          threadId: targetThreadId as ThreadId,
+        })),
+      };
+      const draftsByThreadId = { ...state.draftsByThreadId };
+      if (shouldRemoveDraft(nextDraft)) delete draftsByThreadId[targetThreadId];
+      else draftsByThreadId[targetThreadId] = nextDraft;
+      return { draftsByThreadId };
+    });
+  },
   addAssistantSelection: (threadId, selection) =>
     set((state) => {
       const current = state.draftsByThreadId[threadId] ?? emptyDraft();

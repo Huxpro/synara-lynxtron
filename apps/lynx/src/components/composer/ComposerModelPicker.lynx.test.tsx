@@ -136,8 +136,13 @@ describe("Lynx composer model picker", () => {
     );
   });
 
-  it("lists the other providers of a started thread and explains they cannot take it over yet", async () => {
-    const props = renderPicker({ providers: [CODEX_READY, CLAUDE_READY] });
+  // Upstream's in-thread handoff: a started thread's picker is not locked, so the other
+  // providers' models are listed and can be picked; sending then hands the thread off.
+  it("lists and selects another provider's models in a started thread", async () => {
+    const props = renderPicker({
+      lockedProvider: null,
+      providers: [CODEX_READY, CLAUDE_READY],
+    });
     await openPicker();
 
     expect(all(".ComposerModelPickerTabLynx").map((tab) => tab.getAttribute("aria-label"))).toEqual(
@@ -148,23 +153,57 @@ describe("Lynx composer model picker", () => {
     );
     if (!claude) throw new Error("expected the Claude tab");
     fireEvent.tap(claude);
-    await waitFor(() => {
-      expect(query(".ComposerModelPickerNoticeTitleLynx").textContent).toBe(
-        "Claude cannot take over this thread yet",
-      );
+    // The tab reads that provider's catalog, as it does on a new thread.
+    expect(props.onCatalogProviderChange).toHaveBeenCalledWith("claudeAgent");
+    const rows = await waitFor(() => {
+      const claudeRows = all(".ComposerModelPickerRowLynx");
+      if (claudeRows.length === 0) throw new Error("expected Claude's models");
+      return claudeRows;
     });
-    expect(query(".ComposerModelPickerNoticeBodyLynx").textContent).toContain(
-      "not available in the Native app yet",
+    // No row of the handoff target is the current model, and none carries a handoff mark:
+    // upstream lists them exactly as on a new thread.
+    expect(
+      rows.some((row) =>
+        (row.getAttribute("class") ?? "").includes("ComposerModelPickerRowLynx--selected"),
+      ),
+    ).toBe(false);
+    expect(elementTree.root?.textContent ?? "").not.toMatch(/cannot take over|Native app yet/);
+
+    fireEvent.tap(rows[0]!);
+    expect(props.onModelSelectionChange).toHaveBeenCalledTimes(1);
+    expect(props.onModelSelectionChange).toHaveBeenCalledWith(
+      expect.objectContaining({ provider: "claudeAgent" }),
     );
-    // No models to pick, and no catalog read for a provider that cannot be used here.
-    expect(all(".ComposerModelPickerRowLynx")).toHaveLength(0);
-    expect(props.onCatalogProviderChange).not.toHaveBeenCalledWith("claudeAgent");
-    expect(props.onModelSelectionChange).not.toHaveBeenCalled();
+  });
+
+  it("shows the pending handoff target on the trigger once it is the composer's selection", () => {
+    renderPicker({
+      lockedProvider: null,
+      modelSelection: { provider: "claudeAgent", model: "claude-opus-4-8" } as ModelSelection,
+      catalogProvider: "claudeAgent",
+      runtimeModels: [],
+      providers: [CODEX_READY, CLAUDE_READY],
+    });
+    // The thread's own provider no longer overrides what the trigger shows.
+    expect(query(".ComposerModelTriggerLabelLynx").textContent).toMatch(/Opus/);
+  });
+
+  it("offers only its own provider when locked, as upstream's locked picker does", async () => {
+    const onOpenProviderSettings = rs.fn();
+    renderPicker({
+      lockedProvider: "codex",
+      providers: [CODEX_READY, CLAUDE_READY],
+      onOpenProviderSettings,
+    });
+    await openPicker();
+    expect(all(".ComposerModelPickerTabLynx").map((tab) => tab.getAttribute("aria-label"))).toEqual(
+      ["Starred", "Codex"],
+    );
   });
 
   it("offers Add providers on a new and on a started thread", async () => {
     const onOpenProviderSettings = rs.fn();
-    renderPicker({ onOpenProviderSettings });
+    renderPicker({ lockedProvider: null, onOpenProviderSettings });
     await openPicker();
     const add = all(".ComposerModelPickerTabLynx").find(
       (tab) => tab.getAttribute("aria-label") === "Add providers",

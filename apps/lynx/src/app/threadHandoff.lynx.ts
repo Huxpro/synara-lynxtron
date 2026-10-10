@@ -1,24 +1,21 @@
+// FILE: app/threadHandoff.lynx.ts
+// Purpose: Which providers a thread can be handed to, for the Lynx surfaces
+//   that offer Hand off (thread header, sidebar thread menu, composer send).
+//   The eligibility and ordering are upstream's (`lib/threadHandoff`); the hand
+//   off itself is upstream's `useThreadHandoff`, generated into
+//   `generated/threadHandoff.generated.ts`.
+// Layer: L3 orchestration (Lynx)
+
 import { PROVIDER_DISPLAY_NAMES } from "@synara/contracts";
 import { isProviderKind } from "@synara-web/providerOrdering";
-import type {
-  ClientOrchestrationCommand,
-  ModelSelection,
-  ProviderKind,
-  ServerProviderStatus,
-  ServerSettingsView,
-} from "@synara/contracts";
+import type { ContextMenuItem, ServerProviderStatus, ServerSettingsView } from "@synara/contracts";
+import { contextMenuGroup } from "@synara-web/lib/contextMenuGroup";
 import {
-  buildThreadHandoffImportedActivities,
-  buildThreadHandoffImportedMessages,
+  canContinueThreadHandoff,
   canCreateThreadHandoff,
   resolveAvailableHandoffTargets,
-  resolveThreadHandoffModelSelection,
-  resolveThreadHandoffTitle,
+  type ThreadHandoffTarget,
 } from "@synara-web/lib/threadHandoff";
-import { resolveProviderSendAvailability } from "@synara-web/lib/providerAvailability";
-import { newCommandId, newThreadId } from "@synara-web/lib/utils";
-
-import { ensureNativeApi } from "~/nativeApi";
 
 import type { ThreadHeaderSummary } from "./queries";
 import { queryClient } from "./queryClient";
@@ -27,11 +24,6 @@ import {
   readServerSettings,
   refreshServerProviderStatuses,
 } from "./settingsServerData.lynx";
-
-export interface NativeThreadHandoffProject {
-  readonly id: string;
-  readonly defaultModelSelection: ModelSelection | null;
-}
 
 /** Which providers can receive a handoff: enabled in settings and currently usable. */
 export interface NativeThreadHandoffProviderContext {
@@ -53,7 +45,7 @@ export async function fetchNativeThreadHandoffProviderContext(options?: {
 export function resolveNativeThreadHandoffTargets(
   thread: ThreadHeaderSummary | undefined,
   providers: NativeThreadHandoffProviderContext,
-): readonly ProviderKind[] {
+): readonly ThreadHandoffTarget[] {
   if (
     !thread ||
     !canCreateThreadHandoff({
@@ -84,87 +76,72 @@ export function resolveNativeThreadHandoffTargets(
       },
     ];
   });
-  return [
-    ...new Set(
-      resolveAvailableHandoffTargets({
-        sourceProvider: thread.modelSelection.provider,
-        providerInstances,
-        providerStatuses: providers.providerStatuses,
-      }).map((target) => target.provider),
-    ),
-  ];
-}
-
-export function buildNativeThreadHandoffCreateCommand(input: {
-  readonly createdAt: string;
-  readonly nextThreadId: string;
-  readonly project: NativeThreadHandoffProject;
-  readonly targetProvider: ProviderKind;
-  readonly thread: ThreadHeaderSummary;
-}): Extract<ClientOrchestrationCommand, { type: "thread.handoff.create" }> {
-  return {
-    type: "thread.handoff.create",
-    commandId: newCommandId(),
-    threadId: input.nextThreadId as never,
-    sourceThreadId: input.thread.id as never,
-    projectId: input.thread.projectId as never,
-    title: resolveThreadHandoffTitle(input.thread),
-    modelSelection: resolveThreadHandoffModelSelection({
-      sourceThread: input.thread,
-      targetProvider: input.targetProvider,
-      projectDefaultModelSelection: input.project.defaultModelSelection,
-      stickyModelSelectionByProvider: {},
-    }),
-    runtimeMode: input.thread.runtimeMode,
-    interactionMode: input.thread.interactionMode,
-    envMode: input.thread.envMode,
-    branch: input.thread.branch,
-    worktreePath: input.thread.worktreePath,
-    associatedWorktreePath: input.thread.associatedWorktreePath,
-    associatedWorktreeBranch: input.thread.associatedWorktreeBranch,
-    associatedWorktreeRef: input.thread.associatedWorktreeRef,
-    createBranchFlowCompleted: input.thread.createBranchFlowCompleted,
-    importedMessages: [...buildThreadHandoffImportedMessages(input.thread as never)],
-    createdAt: input.createdAt as never,
-  };
-}
-
-export async function createNativeThreadHandoff(input: {
-  readonly project: NativeThreadHandoffProject;
-  readonly targetProvider: ProviderKind;
-  readonly thread: ThreadHeaderSummary;
-}): Promise<string> {
-  "background only";
-  const providers = await fetchNativeThreadHandoffProviderContext({ fresh: true });
-  const targets = resolveNativeThreadHandoffTargets(input.thread, providers);
-  if (!targets.includes(input.targetProvider)) {
-    throw new Error("This handoff target is not available for the current thread.");
-  }
-  const availability = resolveProviderSendAvailability({
-    provider: input.targetProvider,
-    statuses: providers.providerStatuses,
+  return resolveAvailableHandoffTargets({
+    sourceProvider: thread.modelSelection.provider,
+    providerInstances,
+    providerStatuses: providers.providerStatuses,
   });
-  if (!availability.usable) throw new Error(availability.unavailableReason);
+}
 
-  const nextThreadId = newThreadId();
-  const createdAt = new Date().toISOString();
-  await ensureNativeApi().orchestration.dispatchCommand(
-    buildNativeThreadHandoffCreateCommand({
-      createdAt,
-      nextThreadId,
-      project: input.project,
-      targetProvider: input.targetProvider,
-      thread: input.thread,
+/**
+ * The targets that can take over the same thread (upstream's
+ * `continueHandoffTargets` in `ChatView.tsx` and `Sidebar.tsx`): every other
+ * provider, never another account of the thread's own.
+ */
+export function resolveNativeContinueHandoffTargets(
+  thread: Pick<ThreadHeaderSummary, "modelSelection"> | undefined,
+  targets: readonly ThreadHandoffTarget[],
+): readonly ThreadHandoffTarget[] {
+  if (!thread) return [];
+  return targets.filter((target) =>
+    canContinueThreadHandoff({
+      sourceProvider: thread.modelSelection.provider,
+      targetProvider: target.provider,
     }),
   );
-  for (const activity of buildThreadHandoffImportedActivities(input.thread as never)) {
-    await ensureNativeApi().orchestration.dispatchCommand({
-      type: "thread.activity.append",
-      commandId: newCommandId(),
-      threadId: nextThreadId,
-      activity,
-      createdAt,
-    });
-  }
-  return nextThreadId;
+}
+
+export interface NativeThreadHandoffMenuAction {
+  readonly destination: "this-thread" | "new-thread";
+  readonly target: ThreadHandoffTarget;
+}
+
+/**
+ * The thread menu's Handoff rows, as upstream's `Sidebar.tsx` builds them: one
+ * "Handoff" row whose submenu lists "<provider> in this thread" and
+ * "<provider> in a new thread", or a single plain row when there is one choice.
+ * Upstream's `contextMenuGroup` returns the submenu as `children`; the Lynx
+ * host menu reads `submenu`.
+ */
+export function buildNativeThreadHandoffMenuItems(
+  handoffTargets: readonly ThreadHandoffTarget[],
+  continueHandoffTargets: readonly ThreadHandoffTarget[],
+): ContextMenuItem<string>[] {
+  return contextMenuGroup<string>({ id: "handoff", label: "Handoff", separatorBefore: true }, [
+    ...continueHandoffTargets.map((target) => ({
+      id: `handoff-here:${target.instanceId}`,
+      label: `${target.label} in this thread`,
+      standaloneLabel: `Handoff to ${target.label} in this thread`,
+    })),
+    ...handoffTargets.map((target, index) => ({
+      id: `handoff:${target.instanceId}`,
+      label: continueHandoffTargets.length > 0 ? `${target.label} in a new thread` : target.label,
+      standaloneLabel: `Handoff to ${target.label}`,
+      ...(index === 0 && continueHandoffTargets.length > 0 ? { separatorBefore: true } : {}),
+    })),
+  ]).map(({ children, ...item }) => (children ? { ...item, submenu: children } : item));
+}
+
+/** The handoff a thread-menu action id names, or `null` for any other action. */
+export function resolveNativeThreadHandoffMenuAction(
+  action: string,
+  handoffTargets: readonly ThreadHandoffTarget[],
+  continueHandoffTargets: readonly ThreadHandoffTarget[],
+): NativeThreadHandoffMenuAction | null {
+  const continueTarget = continueHandoffTargets.find(
+    (target) => action === `handoff-here:${target.instanceId}`,
+  );
+  if (continueTarget) return { destination: "this-thread", target: continueTarget };
+  const target = handoffTargets.find((entry) => action === `handoff:${entry.instanceId}`);
+  return target ? { destination: "new-thread", target } : null;
 }

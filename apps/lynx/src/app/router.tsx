@@ -1784,7 +1784,7 @@ function ThreadPage(props: ThreadPageProps) {
         })}
         threadId={threadId}
         modelSelection={currentThread?.modelSelection}
-        lockedProvider={currentThread?.lockedProvider ?? null}
+        boundProvider={currentThread?.boundProvider ?? null}
         onOpenProviderSettings={() => history.push("/settings/providers")}
         runtimeMode={currentThread?.runtimeMode}
         interactionMode={

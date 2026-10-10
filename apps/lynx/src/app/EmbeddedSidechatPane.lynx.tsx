@@ -88,7 +88,7 @@ export function EmbeddedSidechatPane(props: {
             chatFontSizePx={props.chatFontSizePx}
             interactionMode={summary.interactionMode === "plan" ? "plan" : "default"}
             modelSelection={summary.modelSelection}
-            lockedProvider={summary.lockedProvider}
+            boundProvider={summary.boundProvider}
             runtimeMode={summary.runtimeMode}
             sessionStatus={summary.sessionStatus}
             threadId={props.threadId}

@@ -18,10 +18,8 @@ import {
   type ThreadContextMenuActionId,
 } from "@synara/shared/contextMenu";
 import {
-  PROVIDER_DISPLAY_NAMES,
   ProjectId,
   type OrchestrationSpaceShell,
-  type ProviderKind,
   type SpaceIconName,
   type SpaceId,
   type ThreadId,
@@ -125,6 +123,9 @@ import {
 } from "@synara-web/components/SidebarThreadNavigation.logic";
 import { queryClient, type ThreadSummary } from "../../app/queries";
 import { readThreadHeaderSummaryOnce } from "../../app/threadDetailRead.lynx";
+import { withLeasedThreadDetail } from "../../app/threadDetailLease.lynx";
+import { useThreadHandoff } from "../../generated/threadHandoff.generated";
+import { toastManager } from "../ui/toast.lynx";
 import { useSidebarSnapshot } from "../../app/sidebarSnapshot.lynx";
 import { ArchiveIcon, ClockIcon, ChevronDownIcon, GitBranchIcon, PlusIcon } from "../../lib/icons";
 import { colorizeLynxSvg } from "../../lib/themedSvg.lynx";
@@ -163,8 +164,10 @@ import {
   nativeThreadContextConfirmation,
 } from "./threadContextActions.logic";
 import {
-  createNativeThreadHandoff,
+  buildNativeThreadHandoffMenuItems,
   fetchNativeThreadHandoffProviderContext,
+  resolveNativeContinueHandoffTargets,
+  resolveNativeThreadHandoffMenuAction,
   resolveNativeThreadHandoffTargets,
 } from "../../app/threadHandoff.lynx";
 import { deleteNativeProjectThreads, removeNativeProject } from "./projectDeletion.lynx.logic";
@@ -382,6 +385,8 @@ export function Sidebar({
   );
   const { data, error, isPending } = useSidebarSnapshot();
   const serverConfigQuery = useQuery(serverConfigQueryOptions());
+  // Upstream's hook, as its sidebar uses it for the thread menu's Handoff rows.
+  const { continueThreadHandoff, createThreadHandoff } = useThreadHandoff();
   // Synara-owned dev servers: upstream's registry store, which session sync
   // seeds and keeps current from the dev-server event stream. Detected local
   // servers: upstream's sidebar query, which only polls while a run is active
@@ -640,14 +645,11 @@ export function Sidebar({
     const handoffTargets = handoffProviders
       ? resolveNativeThreadHandoffTargets(detail, handoffProviders)
       : [];
+    const continueHandoffTargets = resolveNativeContinueHandoffTargets(detail, handoffTargets);
     const action = (await showContextMenu(
       buildThreadContextMenuItems({
         isPinned,
-        middleItems: handoffTargets.map((provider, index) => ({
-          id: "handoff:" + provider,
-          label: "Handoff to " + PROVIDER_DISPLAY_NAMES[provider],
-          separatorBefore: index === 0,
-        })),
+        middleItems: buildNativeThreadHandoffMenuItems(handoffTargets, continueHandoffTargets),
         copyPathAvailable: workspaceRoot.length > 0,
         openPathInTerminalAvailable: workspaceRoot.length > 0,
         extraItems,
@@ -670,19 +672,39 @@ export function Sidebar({
       useStore.getState().markThreadUnread(thread.id as never);
       return;
     }
-    if (action.startsWith("handoff:")) {
-      const targetProvider = action.slice("handoff:".length) as ProviderKind;
-      const project = data?.projects.find((candidate) => candidate.id === thread.projectId);
-      if (!detail || !project || !handoffTargets.includes(targetProvider)) return;
+    const handoffAction = resolveNativeThreadHandoffMenuAction(
+      action,
+      handoffTargets,
+      continueHandoffTargets,
+    );
+    if (handoffAction) {
+      const { destination, target } = handoffAction;
       try {
-        const nextThreadId = await createNativeThreadHandoff({
-          project,
-          targetProvider,
-          thread: detail,
+        // The thread may not be open. Upstream's hook takes the store's thread and, for a
+        // handoff in place, waits for the server's outcome on it, so its detail is leased
+        // for the whole operation (session sync only streams leased threads).
+        const nextThreadId = await withLeasedThreadDetail(thread.id, async (storeThread) => {
+          if (destination === "this-thread") {
+            await continueThreadHandoff(storeThread, target.provider, target.instanceId);
+            return null;
+          }
+          return createThreadHandoff(storeThread, target.provider, target.instanceId);
         });
-        navigate("/thread/" + nextThreadId);
+        // The hook already routed there; this records it as the last opened thread.
+        if (nextThreadId) navigate("/thread/" + nextThreadId);
       } catch (cause) {
-        setSpaceActionError(cause instanceof Error ? cause.message : "Could not hand off thread.");
+        const title =
+          destination === "this-thread"
+            ? "Could not hand off this thread"
+            : "Could not create handoff thread";
+        const description =
+          cause instanceof Error
+            ? cause.message
+            : destination === "this-thread"
+              ? "An error occurred while handing off the thread."
+              : "An error occurred while creating the handoff thread.";
+        toastManager.add({ type: "error", title, description });
+        setSpaceActionError(`${title}: ${description}`);
       }
       return;
     }

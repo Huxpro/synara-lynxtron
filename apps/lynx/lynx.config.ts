@@ -447,6 +447,18 @@ export default defineConfig({
       // the Lynx glyph set and the icon-name constants instead.
       "~/lib/icons$": path.resolve(rootPath, "./src/adapters/webIcons.lynx.ts"),
       "~/hooks/useViewportLayout$": path.resolve(rootPath, "./src/hooks/useViewportLayout.lynx.ts"),
+      // The two hooks the generated `useThreadHandoff` needs replaced
+      // (scripts/generate-thread-handoff.mjs). Upstream's first one reads
+      // `useAppSettings`, which Lynx does not run.
+      "~/hooks/useProviderStatusesForLocalConfig$": path.resolve(
+        rootPath,
+        "./src/adapters/useProviderStatusesForLocalConfig.lynx.ts",
+      ),
+      // Upstream's module imports the DOM toast by a relative path.
+      "~/hooks/useProviderStatusRefresh$": path.resolve(
+        rootPath,
+        "./src/adapters/useProviderStatusRefresh.lynx.ts",
+      ),
       "~/nativeApi$": path.resolve(rootPath, "./src/adapters/nativeApi.lynx.ts"),
       // Shared state layer (plan/shared-state-architecture.md): the upstream
       // NativeApi facade runs on Lynx; only the transport and the DOM-bound

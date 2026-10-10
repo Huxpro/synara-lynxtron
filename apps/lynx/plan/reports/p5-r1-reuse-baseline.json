@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-10T15:16:31.519Z",
+  "generatedAt": "2026-10-10T17:16:50.235Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -12,7 +12,7 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxGraph": {
     "entries": ["src/app/index.tsx"],
-    "modules": 937,
+    "modules": 947,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/checkbox",
@@ -463,11 +463,11 @@
         "loc": 135201
       },
       "currentReuse": {
-        "modules": 304,
-        "loc": 79768,
-        "modulePercent": 52.32,
-        "locPercent": 59,
-        "gatePercent": 52.32
+        "modules": 309,
+        "loc": 80084,
+        "modulePercent": 53.18,
+        "locPercent": 59.23,
+        "gatePercent": 53.18
       },
       "modules": [
         {
@@ -3924,7 +3924,7 @@
           "loc": 50,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/persistedRecord.ts"]
         },
         {
@@ -4309,7 +4309,7 @@
           "loc": 37,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/confirmedCustomBinaryPathStore.ts",
@@ -4323,7 +4323,7 @@
           "loc": 156,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/ui/toast.tsx",
             "apps/web/src/lib/serverReactQuery.ts",
@@ -4909,7 +4909,7 @@
           "loc": 23,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -5963,7 +5963,7 @@
           "loc": 50,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerTraits.ts",
             "apps/web/src/providerModelOptions.ts"
@@ -7723,11 +7723,11 @@
         "loc": 116677
       },
       "currentReuse": {
-        "modules": 275,
-        "loc": 72769,
-        "modulePercent": 59.14,
-        "locPercent": 62.37,
-        "gatePercent": 59.14
+        "modules": 280,
+        "loc": 73085,
+        "modulePercent": 60.22,
+        "locPercent": 62.64,
+        "gatePercent": 60.22
       },
       "modules": [
         {
@@ -10656,7 +10656,7 @@
           "loc": 50,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/persistedRecord.ts"]
         },
         {
@@ -10916,7 +10916,7 @@
           "loc": 37,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/confirmedCustomBinaryPathStore.ts",
@@ -10930,7 +10930,7 @@
           "loc": 156,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/ui/toast.tsx",
             "apps/web/src/lib/serverReactQuery.ts",
@@ -11403,7 +11403,7 @@
           "loc": 23,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -12327,7 +12327,7 @@
           "loc": 50,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerTraits.ts",
             "apps/web/src/providerModelOptions.ts"
@@ -13415,11 +13415,11 @@
         "loc": 226453
       },
       "currentReuse": {
-        "modules": 355,
-        "loc": 87532,
-        "modulePercent": 35.08,
-        "locPercent": 38.65,
-        "gatePercent": 35.08
+        "modules": 360,
+        "loc": 87848,
+        "modulePercent": 35.57,
+        "locPercent": 38.79,
+        "gatePercent": 35.57
       },
       "modules": [
         {
@@ -22362,7 +22362,7 @@
           "loc": 50,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/persistedRecord.ts"]
         },
         {
@@ -23024,7 +23024,7 @@
           "loc": 37,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/confirmedCustomBinaryPathStore.ts",
@@ -23038,7 +23038,7 @@
           "loc": 156,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/ui/toast.tsx",
             "apps/web/src/lib/serverReactQuery.ts",
@@ -23884,7 +23884,7 @@
           "loc": 23,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -25222,7 +25222,7 @@
           "loc": 50,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerTraits.ts",
             "apps/web/src/providerModelOptions.ts"
@@ -27129,11 +27129,11 @@
         "loc": 149149
       },
       "currentReuse": {
-        "modules": 306,
-        "loc": 80036,
-        "modulePercent": 48.57,
-        "locPercent": 53.66,
-        "gatePercent": 48.57
+        "modules": 311,
+        "loc": 80352,
+        "modulePercent": 49.37,
+        "locPercent": 53.87,
+        "gatePercent": 49.37
       },
       "modules": [
         {
@@ -31230,7 +31230,7 @@
           "loc": 50,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/persistedRecord.ts"]
         },
         {
@@ -31623,7 +31623,7 @@
           "loc": 37,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/confirmedCustomBinaryPathStore.ts",
@@ -31637,7 +31637,7 @@
           "loc": 156,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/ui/toast.tsx",
             "apps/web/src/lib/serverReactQuery.ts",
@@ -32268,7 +32268,7 @@
           "loc": 23,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -33354,7 +33354,7 @@
           "loc": 50,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerTraits.ts",
             "apps/web/src/providerModelOptions.ts"
@@ -35160,11 +35160,11 @@
         "loc": 148904
       },
       "currentReuse": {
-        "modules": 320,
-        "loc": 82197,
-        "modulePercent": 49.16,
-        "locPercent": 55.2,
-        "gatePercent": 49.16
+        "modules": 325,
+        "loc": 82513,
+        "modulePercent": 49.92,
+        "locPercent": 55.41,
+        "gatePercent": 49.92
       },
       "modules": [
         {
@@ -39531,7 +39531,7 @@
           "loc": 50,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/persistedRecord.ts"]
         },
         {
@@ -39954,7 +39954,7 @@
           "loc": 37,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/confirmedCustomBinaryPathStore.ts",
@@ -39968,7 +39968,7 @@
           "loc": 156,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/ui/toast.tsx",
             "apps/web/src/lib/serverReactQuery.ts",
@@ -40600,7 +40600,7 @@
           "loc": 23,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -41709,7 +41709,7 @@
           "loc": 50,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerTraits.ts",
             "apps/web/src/providerModelOptions.ts"
@@ -43497,11 +43497,11 @@
         "loc": 148905
       },
       "currentReuse": {
-        "modules": 320,
-        "loc": 82197,
-        "modulePercent": 49.16,
-        "locPercent": 55.2,
-        "gatePercent": 49.16
+        "modules": 325,
+        "loc": 82513,
+        "modulePercent": 49.92,
+        "locPercent": 55.41,
+        "gatePercent": 49.92
       },
       "modules": [
         {
@@ -47868,7 +47868,7 @@
           "loc": 50,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/persistedRecord.ts"]
         },
         {
@@ -48291,7 +48291,7 @@
           "loc": 37,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/confirmedCustomBinaryPathStore.ts",
@@ -48305,7 +48305,7 @@
           "loc": 156,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/ui/toast.tsx",
             "apps/web/src/lib/serverReactQuery.ts",
@@ -48937,7 +48937,7 @@
           "loc": 23,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -50046,7 +50046,7 @@
           "loc": 50,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerTraits.ts",
             "apps/web/src/providerModelOptions.ts"
@@ -51854,11 +51854,11 @@
         "loc": 221178
       },
       "currentReuse": {
-        "modules": 356,
-        "loc": 87978,
-        "modulePercent": 36.25,
-        "locPercent": 39.78,
-        "gatePercent": 36.25
+        "modules": 361,
+        "loc": 88294,
+        "modulePercent": 36.76,
+        "locPercent": 39.92,
+        "gatePercent": 36.76
       },
       "modules": [
         {
@@ -60497,7 +60497,7 @@
           "loc": 50,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": ["apps/web/src/persistedRecord.ts"]
         },
         {
@@ -61108,7 +61108,7 @@
           "loc": 37,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/confirmedCustomBinaryPathStore.ts",
@@ -61122,7 +61122,7 @@
           "loc": 156,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/ui/toast.tsx",
             "apps/web/src/lib/serverReactQuery.ts",
@@ -61949,7 +61949,7 @@
           "loc": 23,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -63271,7 +63271,7 @@
           "loc": 50,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/composerTraits.ts",
             "apps/web/src/providerModelOptions.ts"

@@ -1,4 +1,11 @@
-import { useEffect, useInitData, useMemo, useRef, useState } from "@lynx-js/react";
+import {
+  useEffect,
+  useInitData,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "@lynx-js/react";
 import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { projectSearchEntriesQueryOptions } from "@synara-web/lib/projectReactQuery";
 import {
@@ -28,7 +35,12 @@ import {
 } from "../../logic/composerPlaceholder";
 import { DEFAULT_CHAT_FONT_SIZE_PX, normalizeChatFontSizePx } from "@synara-web/chatFontSize";
 
-import { useComposerDraftStore } from "../../adapters/composerDraftStore.lynx";
+import {
+  useComposerDraftStore,
+  type LynxComposerDraftContent,
+} from "../../adapters/composerDraftStore.lynx";
+import { toastManager } from "../ui/toast.lynx";
+import { useComposerProviderHandoff } from "./useComposerProviderHandoff.lynx";
 import { resolveNativeComposerMaxLines } from "./composerNativeLines.logic";
 import { useTheme } from "../../adapters/useTheme.lynx";
 import { ClockIcon, ExternalLinkIcon } from "../../lib/icons.lynx";
@@ -112,9 +124,14 @@ import {
   buildComposerTurnStartCommand,
   isConnectingComposerSession,
   isRunningComposerSession,
-  runComposerSendTransaction,
+  dispatchComposerTurnAfterStaging,
+  runComposerOutgoingSend,
 } from "./composerDispatch.logic";
-import { runComposerSendOnce } from "@synara-web/lib/composerSendOwnership";
+import {
+  hasActiveComposerSend,
+  runComposerSendOnce,
+  subscribeComposerSends,
+} from "@synara-web/lib/composerSendOwnership";
 import { resolveComposerInputTransition } from "./composerPastedTextInput.logic";
 import {
   cutComposerNativeEditorSelection,
@@ -336,8 +353,11 @@ interface ComposerProps {
   readonly draftId?: string;
   readonly workspaceRoot?: string | null;
   readonly emptyLanding?: boolean;
-  /** Provider a started thread is pinned to; the model picker hides every other provider. */
-  readonly lockedProvider?: ProviderKind | null;
+  /**
+   * Upstream's `boundProvider`: the provider a started thread runs on. The model picker
+   * still offers every provider; sending with another one hands the thread off first.
+   */
+  readonly boundProvider?: ProviderKind | null;
   /** "Add providers" in the model picker: Settings → Providers. */
   readonly onOpenProviderSettings?: () => void;
   /** Electron's thread composer placeholder (resolveChatComposerPlaceholder). */
@@ -389,7 +409,7 @@ export function Composer({
   draftId,
   workspaceRoot,
   emptyLanding = false,
-  lockedProvider,
+  boundProvider,
   onOpenProviderSettings,
   placeholder: placeholderProp,
   voiceInputEnabled = false,
@@ -547,7 +567,6 @@ export function Composer({
   const addPastedText = useComposerDraftStore((state) => state.addPastedText);
   const addFiles = useComposerDraftStore((state) => state.addFiles);
   const addImages = useComposerDraftStore((state) => state.addImages);
-  const clearDraft = useComposerDraftStore((state) => state.clearDraft);
   const removePastedText = useComposerDraftStore((state) => state.removePastedText);
   const removeFile = useComposerDraftStore((state) => state.removeFile);
   const removeImage = useComposerDraftStore((state) => state.removeImage);
@@ -562,10 +581,22 @@ export function Composer({
   const setTerminalContexts = useComposerDraftStore((state) => state.setTerminalContexts);
   const [focused, setFocused] = useState(false);
   const [nativeEditorFocusEpoch, setNativeEditorFocusEpoch] = useState(0);
-  const [isSending, setIsSending] = useState(false);
+  const [sendStartedHere, setIsSending] = useState(false);
+  // A send outlives the composer that started it (upstream's send ownership, by thread):
+  // a composer mounted while one is still running shows it and cannot start another.
+  const sendActiveForThread = useSyncExternalStore(
+    subscribeComposerSends,
+    () => hasActiveComposerSend(threadId as never),
+    () => false,
+  );
+  const isSending = sendStartedHere || sendActiveForThread;
   const sendInFlightRef = useRef(false);
   const [isStopping, setIsStopping] = useState(false);
   const [sendError, setSendError] = useState<string | null>(null);
+  const planProviderHandoffForSend = useComposerProviderHandoff({
+    threadId,
+    boundProvider: emptyLanding ? null : (boundProvider ?? null),
+  });
   const [expandedImage, setExpandedImage] = useState<NativeExpandedImagePreview | null>(null);
   const [composerTrigger, setComposerTrigger] = useState<ComposerTrigger | null>(null);
   const [composerHighlightedItemId, setComposerHighlightedItemId] = useState<string | null>(null);
@@ -1359,13 +1390,6 @@ export function Composer({
     }
   }
 
-  function clearDraftAfterSend() {
-    "background only";
-    clearDraft(brandedThreadId);
-    setNativeValue("");
-    setComposerTrigger(null);
-  }
-
   function removePastedTextFromDraft(pastedTextId: string) {
     "background only";
     recordEditorHistory();
@@ -1612,64 +1636,116 @@ export function Composer({
     if (
       (!text && files.length === 0 && images.length === 0 && fileComments.length === 0) ||
       sendInFlightRef.current ||
+      // An attempt started by an earlier mount of this composer is still running.
+      hasActiveComposerSend(threadId as never) ||
       !activeModelSelection ||
       !runtimeMode ||
       !interactionMode
     ) {
       return;
     }
+    // Upstream's in-thread handoff on send: refused up front while the thread is busy.
+    const providerHandoff = planProviderHandoffForSend(activeModelSelection);
+    if (providerHandoff.refusal) {
+      toastManager.add({ type: "error", ...providerHandoff.refusal });
+      setSendError(`${providerHandoff.refusal.title}. ${providerHandoff.refusal.description}`);
+      return;
+    }
 
     sendInFlightRef.current = true;
     setIsSending(true);
     setSendError(null);
+    let providerHandoffError: string | null = null;
+    let draftRestored = false;
+    const draftStore = useComposerDraftStore.getState();
     try {
       // Upstream's send ownership (lib/composerSendOwnership): the sidebar reads it to show
       // "Preparing worktree" on a worktree thread whose first send is still in flight.
       await runComposerSendOnce(threadId as never, async () => {
-        await runComposerSendTransaction({
-          prepare: () =>
-            onBeforeSend?.({
+        await runComposerOutgoingSend<LynxComposerDraftContent>({
+          // The outgoing draft leaves the composer before anything asynchronous, as
+          // upstream's does: what the user types while a handoff waits is a new draft.
+          take: () => {
+            const outgoing = draftStore.takeDraftContent(brandedThreadId);
+            if (outgoing) {
+              setNativeValue("");
+              setComposerTrigger(null);
+            }
+            return outgoing;
+          },
+          send: async (outgoing) => {
+            const outgoingText =
+              buildComposerSendText({
+                prompt: outgoing.prompt,
+                pastedTexts: outgoing.pastedTexts,
+                fileComments: outgoing.fileComments,
+                terminalContexts: outgoing.terminalContexts,
+              }) || "Review the attachment.";
+            const outgoingFiles = [...outgoing.images, ...outgoing.files];
+            await onBeforeSend?.({
               interactionMode,
               modelSelection: activeModelSelection,
               runtimeMode,
-              text: text || "Review the attachment.",
-            }),
-          dispatch: async () => {
-            const stagedFiles = await stageNativeComposerFiles({
-              files: [...images, ...files],
-              threadId,
+              text: outgoingText,
             });
             const assistantDeliveryMode = await resolveNativeAssistantDeliveryMode();
-            await stagedFiles.runWithDispatch((attachments) =>
-              ensureNativeApi().orchestration.dispatchCommand(
-                buildComposerTurnStartCommand({
-                  assistantDeliveryMode,
-                  attachments: [...attachments, ...assistantSelections],
-                  commandId: createComposerDispatchId("command"),
-                  createdAt: new Date().toISOString(),
-                  interactionMode,
-                  messageId: createComposerDispatchId("message"),
-                  modelSelection: activeModelSelection as never,
-                  runtimeMode,
-                  text: text || "Review the attachment.",
-                  threadId,
-                  mentions: projectedEditor.mentions,
-                  skills: projectedEditor.skills,
+            // Staged before the handoff, as upstream awaits attachments first: a file that
+            // cannot be uploaded must not leave the thread on another provider.
+            await dispatchComposerTurnAfterStaging({
+              stage: () => stageNativeComposerFiles({ files: outgoingFiles, threadId }),
+              // A failed handoff stops the send here, before it reaches the wrong provider.
+              handOff: () =>
+                providerHandoff.handOff().catch((error: unknown) => {
+                  providerHandoffError =
+                    error instanceof Error ? error.message : "Could not hand off this thread.";
+                  throw error;
                 }),
-              ),
-            );
-            await Promise.all(
-              [...images, ...files].map((file) => releasePickedComposerFile(file.token)),
-            );
+              dispatch: (attachments) =>
+                ensureNativeApi().orchestration.dispatchCommand(
+                  buildComposerTurnStartCommand({
+                    assistantDeliveryMode,
+                    attachments: [...attachments, ...outgoing.assistantSelections],
+                    commandId: createComposerDispatchId("command"),
+                    // After the handoff row when there was one.
+                    createdAt: providerHandoff.resolveCreatedAt(),
+                    interactionMode,
+                    messageId: createComposerDispatchId("message"),
+                    modelSelection: activeModelSelection as never,
+                    runtimeMode,
+                    text: outgoingText,
+                    threadId,
+                    mentions: outgoing.mentions,
+                    skills: outgoing.skills,
+                  }),
+                ),
+            });
+            await Promise.all(outgoingFiles.map((file) => releasePickedComposerFile(file.token)));
           },
-          clearDraft: clearDraftAfterSend,
+          // By thread id in the draft store, so it also reaches a composer that was
+          // remounted while the attempt ran; the editor follows the store.
+          restore: (outgoing) => {
+            draftRestored = draftStore.restoreDraftContent(brandedThreadId, outgoing);
+            return draftRestored;
+          },
+          // The user started a newer draft: the failed one's picked files have no owner left.
+          discard: (outgoing) =>
+            Promise.all(
+              [...outgoing.images, ...outgoing.files].map((file) =>
+                releasePickedComposerFile(file.token),
+              ),
+            ).then(() => undefined),
           onSucceeded: onSendSucceeded,
         });
         return true;
       });
     } catch (error) {
       console.error("[slice] failed to send composer turn", error);
-      setSendError("Unable to send. Your draft is still here.");
+      setSendError(
+        providerHandoffError ??
+          (draftRestored
+            ? "Unable to send. Your draft is still here."
+            : "Unable to send your previous message."),
+      );
     } finally {
       sendInFlightRef.current = false;
       setIsSending(false);
@@ -2064,7 +2140,9 @@ export function Composer({
                     hideModelLabel={!footerPlan.showModelLabel}
                     hideStatusLabel={!footerPlan.showTraitsLabel}
                     modelSelection={activeModelSelection as never}
-                    lockedProvider={emptyLanding ? null : (lockedProvider ?? null)}
+                    // Upstream's `lockedProvider` is null wherever a handoff is allowed,
+                    // which is every thread Lynx shows (no group coordinators).
+                    lockedProvider={null}
                     catalogProvider={discoveryProvider ?? activeModelSelection.provider}
                     rememberedSelectionFor={(provider) =>
                       draftModelSelectionByProvider?.[provider] as ModelSelection | undefined
@@ -2081,7 +2159,11 @@ export function Composer({
                     }}
                     onModelSelectionChange={(nextModelSelection) => {
                       "background only";
-                      setModelSelection(brandedThreadId, nextModelSelection);
+                      // Upstream's pick also becomes the provider's sticky selection, which
+                      // a later handoff to that provider defaults to.
+                      useComposerDraftStore
+                        .getState()
+                        .setModelSelectionAndSticky(brandedThreadId, nextModelSelection);
                       setModelCatalogProvider(null);
                     }}
                     onOpenProviderSettings={onOpenProviderSettings}

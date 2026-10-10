@@ -94,6 +94,7 @@ import {
   resolveUserMessageAttachments,
 } from "./transcriptRowCards.logic";
 import { ThreadErrorBanner } from "../components/ThreadErrorBanner.lynx";
+import { ProviderHandoffDivider } from "./ProviderHandoffDivider.lynx";
 import { useRuntimeSocketUrl } from "./useRuntimeSocketUrl.lynx";
 import {
   buildTranscriptScrollToBottomParams,
@@ -261,6 +262,10 @@ function TranscriptWorkEntry({
   if (entry.turnFailure) {
     // Upstream draws a failed turn as the error card, not as a work row.
     return <ThreadErrorBanner error={entry.turnFailure.message} inline title="Task interrupted" />;
+  }
+  if (entry.providerHandoff) {
+    // Upstream draws an in-place provider handoff as a transcript boundary, not as a work row.
+    return <ProviderHandoffDivider info={entry.providerHandoff} />;
   }
   if (isReasoningUpdateWorkEntry(entry)) {
     const reasoningText =
