@@ -61,12 +61,12 @@ export function EnvironmentEditableChecklistRow({
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const jumpClickTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const jumpClickTimeoutRef = useRef<number | null>(null);
   const suppressNextBlurCommitRef = useRef(false);
 
   const clearScheduledJump = () => {
     if (jumpClickTimeoutRef.current !== null) {
-      clearTimeout(jumpClickTimeoutRef.current);
+      window.clearTimeout(jumpClickTimeoutRef.current);
       jumpClickTimeoutRef.current = null;
     }
   };
@@ -124,7 +124,7 @@ export function EnvironmentEditableChecklistRow({
       return;
     }
     clearScheduledJump();
-    jumpClickTimeoutRef.current = setTimeout(() => {
+    jumpClickTimeoutRef.current = window.setTimeout(() => {
       jumpClickTimeoutRef.current = null;
       onJump();
     }, JUMP_CLICK_DELAY_MS);

@@ -84,16 +84,16 @@ function ChatThreadRouteContent() {
     // completion cannot stamp "done"); the state reset is deferred async setState.
     missingThreadRecoveryRunRef.current += 1;
     recoveryStartedRef.current = false;
-    const timer = setTimeout(() => setMissingThreadRecoveryState("idle"), 0);
-    return () => clearTimeout(timer);
+    const timer = window.setTimeout(() => setMissingThreadRecoveryState("idle"), 0);
+    return () => window.clearTimeout(timer);
   }, [threadId]);
 
   useEffect(() => {
     if (routeThreadExists && missingThreadRecoveryState !== "idle") {
       missingThreadRecoveryRunRef.current += 1;
       recoveryStartedRef.current = false;
-      const timer = setTimeout(() => setMissingThreadRecoveryState("idle"), 0);
-      return () => clearTimeout(timer);
+      const timer = window.setTimeout(() => setMissingThreadRecoveryState("idle"), 0);
+      return () => window.clearTimeout(timer);
     }
     return undefined;
   }, [missingThreadRecoveryState, routeThreadExists]);
@@ -117,7 +117,7 @@ function ChatThreadRouteContent() {
         // Defer the "pending" mark (async setState); the ref guard above prevents a
         // second start before it lands, and the run check skips it if the episode
         // was invalidated in the meantime.
-        const pendingTimer = setTimeout(() => {
+        const pendingTimer = window.setTimeout(() => {
           if (missingThreadRecoveryRunRef.current === recoveryRun) {
             setMissingThreadRecoveryState("pending");
           }
@@ -126,7 +126,7 @@ function ChatThreadRouteContent() {
           refreshEmptyRouteRestoreSnapshot(readNativeApi()).catch(() => false),
           waitForEmptyRouteRestoreFallbackDelay(),
         ]).finally(() => {
-          clearTimeout(pendingTimer);
+          window.clearTimeout(pendingTimer);
           if (mountedRef.current && missingThreadRecoveryRunRef.current === recoveryRun) {
             setMissingThreadRecoveryState("done");
           }

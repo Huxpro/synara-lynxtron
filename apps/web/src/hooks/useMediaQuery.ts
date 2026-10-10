@@ -1,19 +1,26 @@
 import { useSyncExternalStore } from "react";
 
-import { isBrowser, matchMediaSafe } from "~/platform/env";
-import { VIEWPORT_BREAKPOINTS } from "~/responsiveLayout.logic";
+const BREAKPOINTS = {
+  "2xl": 1536,
+  "3xl": 1600,
+  "4xl": 2000,
+  lg: 1024,
+  md: 768,
+  sm: 640,
+  xl: 1280,
+} as const;
 
-type Breakpoint = keyof typeof VIEWPORT_BREAKPOINTS;
+type Breakpoint = keyof typeof BREAKPOINTS;
 
 type BreakpointQuery = Breakpoint | `max-${Breakpoint}` | `${Breakpoint}:max-${Breakpoint}`;
 
 function resolveMin(value: Breakpoint | number): string {
-  const px = typeof value === "number" ? value : VIEWPORT_BREAKPOINTS[value];
+  const px = typeof value === "number" ? value : BREAKPOINTS[value];
   return `(min-width: ${px}px)`;
 }
 
 function resolveMax(value: Breakpoint | number): string {
-  const px = typeof value === "number" ? value : VIEWPORT_BREAKPOINTS[value];
+  const px = typeof value === "number" ? value : BREAKPOINTS[value];
   return `(max-width: ${px - 1}px)`;
 }
 
@@ -34,8 +41,8 @@ function parseQuery(query: BreakpointQuery | MediaQueryInput | (string & {})): s
   for (const segment of query.split(":")) {
     if (segment.startsWith("max-")) {
       const bp = segment.slice(4);
-      if (bp in VIEWPORT_BREAKPOINTS) parts.push(resolveMax(bp as Breakpoint));
-    } else if (segment in VIEWPORT_BREAKPOINTS) {
+      if (bp in BREAKPOINTS) parts.push(resolveMax(bp as Breakpoint));
+    } else if (segment in BREAKPOINTS) {
       parts.push(resolveMin(segment as Breakpoint));
     }
   }
@@ -58,16 +65,15 @@ export function useMediaQuery(query: BreakpointQuery | MediaQueryInput | (string
   const mediaQuery = parseQuery(query);
 
   const subscribe = (callback: () => void) => {
-    if (!isBrowser()) return () => {};
-    const mql = matchMediaSafe(mediaQuery);
-    if (!mql) return () => {};
+    if (typeof window === "undefined") return () => {};
+    const mql = window.matchMedia(mediaQuery);
     mql.addEventListener("change", callback);
     return () => mql.removeEventListener("change", callback);
   };
 
   const getSnapshot = () => {
-    if (!isBrowser()) return false;
-    return matchMediaSafe(mediaQuery)?.matches ?? false;
+    if (typeof window === "undefined") return false;
+    return window.matchMedia(mediaQuery).matches;
   };
 
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);

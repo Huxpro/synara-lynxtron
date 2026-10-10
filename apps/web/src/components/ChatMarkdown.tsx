@@ -46,10 +46,10 @@ import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
-import { copyTextToClipboard } from "~/platform/clipboard";
+import { copyTextToClipboard } from "../hooks/useCopyToClipboard";
 import { resolveDiffThemeName, type DiffThemeName } from "../lib/diffRendering";
 import { dedentCode, parseCodeFenceInfo, type CodeFenceInfo } from "../lib/codeFence";
-import { getFileIconName } from "../file-icons";
+import { getFileIconName, pathLooksLikeKnownFile } from "../file-icons";
 import { CentralIcon } from "~/lib/central-icons";
 import { isLocalImageMarkdownSrc } from "../lib/localImageUrls";
 import { repairMarkdownTableDelimiters } from "../lib/markdownTableRepair";
@@ -95,10 +95,6 @@ import {
   parseComposerChipSegment,
 } from "../lib/remarkComposerChips";
 import { IconButton } from "./ui/icon-button";
-import {
-  MARKDOWN_LINK_POSITION_SUFFIX_PATTERN,
-  resolveInlineCodeFilePath,
-} from "../lib/markdownFileReferences";
 import { applyActiveChatFindMatch, type ThreadFindRange } from "./chat/threadFind.logic";
 import {
   ChatFindRenderProvider,
@@ -110,6 +106,7 @@ import {
 const EXTERNAL_HTTP_HREF_PATTERN = /^https?:\/\//i;
 // Trailing `:line` / `:line:col` position suffix on a resolved file link. Kept on
 // the href (so opening jumps to the line) but stripped for icon/title resolution.
+const MARKDOWN_LINK_POSITION_SUFFIX_PATTERN = /:\d+(?::\d+)?$/;
 const MARKDOWN_EXTERNAL_LINK_CLASS_NAME =
   "inline font-medium text-[var(--info-foreground)] underline-offset-2 hover:underline";
 const MARKDOWN_EXTERNAL_LINK_ICON_CLASS_NAME = `${COMPOSER_INLINE_CHIP_TOKEN_ICON_CLASS_NAME} ${COMPOSER_INLINE_CHIP_ICON_LABEL_GAP_CLASS_NAME}`;
@@ -738,6 +735,32 @@ function extractCodeBlock(
   };
 }
 
+const INLINE_CODE_FILE_PATH_MAX_LENGTH = 120;
+
+// Decides whether an inline code span names a file/path that should render as a
+// mention chip (icon + medium label), matching how a file reads in the composer.
+// Conservative on purpose: requires a recognized filename/extension and rejects
+// whitespace and URLs so ordinary prose tokens stay plain inline code.
+function inlineCodeFilePath(raw: string): string | null {
+  // Strip a pair of surrounding quotes/backticks the author may have wrapped the
+  // path in (e.g. `'src/data/social-metrics.ts'`).
+  const value = raw.trim().replace(/^['"`]+|['"`]+$/g, "");
+  if (value.length === 0 || /\s/.test(value) || value.includes("://")) {
+    return null;
+  }
+  const withoutPosition = value.replace(MARKDOWN_LINK_POSITION_SUFFIX_PATTERN, "");
+  // Absolute local files and directories (`/Users/…/annotate-pr`) are chips
+  // even without a known filename extension. Relative names still need a
+  // recognizable file so ordinary tokens stay code.
+  if (resolveMarkdownFileLinkTarget(withoutPosition)) {
+    return value;
+  }
+  if (withoutPosition.length > INLINE_CODE_FILE_PATH_MAX_LENGTH) {
+    return null;
+  }
+  return pathLooksLikeKnownFile(withoutPosition) ? value : null;
+}
+
 function VerifiedWorkspaceFileChip(props: {
   rawReference: string;
   cwd: string;
@@ -1255,7 +1278,7 @@ const MARKDOWN_COMPONENTS: Components = {
     // mention chip. Absolute local paths chip immediately. Relative names
     // chip only when that file actually exists in the chat workspace.
     if (!className) {
-      const filePath = resolveInlineCodeFilePath(nodeToPlainText(children));
+      const filePath = inlineCodeFilePath(nodeToPlainText(children));
       if (filePath) {
         const nodeStart = node?.position?.start?.offset ?? 0;
         const filePathOffset = sourceText.indexOf(filePath, nodeStart);

@@ -37,7 +37,7 @@ export function useThreadNotesAutosave({
   const debounceMs = debounceMsProp ?? DEFAULT_NOTES_AUTOSAVE_DEBOUNCE_MS;
   const [value, setValue] = useState(notes);
   const [focused, setFocused] = useState(false);
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const debounceRef = useRef<number | null>(null);
   const saveInFlightRef = useRef(false);
   const retryAfterInFlightRef = useRef(false);
   const mountedRef = useRef(true);
@@ -60,16 +60,16 @@ export function useThreadNotesAutosave({
 
   const scheduleFlush = useCallback((delayMs: number) => {
     if (debounceRef.current !== null) {
-      clearTimeout(debounceRef.current);
+      window.clearTimeout(debounceRef.current);
     }
-    debounceRef.current = setTimeout(() => {
+    debounceRef.current = window.setTimeout(() => {
       void flushRef.current().catch(() => undefined);
     }, delayMs);
   }, []);
 
   const flush = useCallback((): Promise<void> => {
     if (debounceRef.current !== null) {
-      clearTimeout(debounceRef.current);
+      window.clearTimeout(debounceRef.current);
       debounceRef.current = null;
     }
     if (saveInFlightRef.current) {

@@ -5,6 +5,7 @@
 //
 // Rendered through the shared AnnouncementSheet.
 
+import { Schema } from "effect";
 import { useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 
@@ -14,18 +15,20 @@ import { CentralIcon } from "../lib/central-icons";
 import { useAnnouncementSheetSlotStore } from "./announcementSheetSlot";
 import { AnnouncementSheet } from "./AnnouncementSheet";
 
-import { getDesktopBridge } from "~/platform/desktopBridge";
-import {
-  APP_SNAP_WELCOME_STORAGE_KEY,
-  AppSnapWelcomeStorageSchema,
-  INITIAL_APP_SNAP_WELCOME_STORAGE,
-} from "./AppSnapWelcomeDialog.logic";
+const APP_SNAP_WELCOME_STORAGE_KEY = "synara:appsnap-welcome:v1";
+
+const AppSnapWelcomeStorageSchema = Schema.Struct({
+  acknowledged: Schema.Boolean,
+});
+type AppSnapWelcomeStorage = typeof AppSnapWelcomeStorageSchema.Type;
+
+const INITIAL_STORAGE: AppSnapWelcomeStorage = { acknowledged: false };
 
 export function AppSnapWelcomeDialog({ children }: { children?: ReactNode }) {
   const navigate = useNavigate();
   const [storage, setStorage] = useLocalStorage(
     APP_SNAP_WELCOME_STORAGE_KEY,
-    INITIAL_APP_SNAP_WELCOME_STORAGE,
+    INITIAL_STORAGE,
     AppSnapWelcomeStorageSchema,
   );
   const [open, setOpen] = useState(false);
@@ -42,7 +45,7 @@ export function AppSnapWelcomeDialog({ children }: { children?: ReactNode }) {
       return;
     }
 
-    const bridge = getDesktopBridge()?.appSnap;
+    const bridge = window.desktopBridge?.appSnap;
     if (!bridge) return;
 
     let disposed = false;

@@ -73,14 +73,14 @@ export interface TerminalRuntimeEntry {
   opened: boolean;
   disposed: boolean;
   resizeObserver: ResizeObserver | null;
-  resizeDispatchTimer: ReturnType<typeof setTimeout> | null;
+  resizeDispatchTimer: number | null;
   visualResizeFrame: number | null;
-  visualResizeTimer: ReturnType<typeof setTimeout> | null;
+  visualResizeTimer: number | null;
   lastVisualResizeAt: number;
   lastSentResize: { cols: number; rows: number } | null;
   pendingResize: { cols: number; rows: number } | null;
   writeRafHandle: number | null;
-  writeFlushTimeout: ReturnType<typeof setTimeout> | null;
+  writeFlushTimeout: number | null;
   pendingWrites: TerminalPendingWrite[];
   pendingWriteLength: number;
   pendingWriteBytes: number;
