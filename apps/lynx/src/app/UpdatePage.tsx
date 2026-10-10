@@ -1,5 +1,6 @@
 import { useEffect, useState } from "@lynx-js/react";
 
+import { LynxBrandMarks } from "../components/brand/LynxBrandMarks.lynx";
 import { Button } from "../components/ui/button";
 import type { UpdateCheckResult } from "../platform/updater";
 
@@ -64,7 +65,10 @@ export function UpdatePage() {
         <view className="UpdateMark">
           <text className="UpdateMarkText">S</text>
         </view>
-        <text className="FeatureEyebrow">LYNXTRON EDITION</text>
+        <view className="UpdateEdition">
+          <LynxBrandMarks className="UpdateEditionMarks" size={14} />
+          <text className="FeatureEyebrow">LYNXTRON EDITION</text>
+        </view>
         <text className="UpdateTitle">Synara updates</text>
         <text className="UpdateDescription">
           This lightweight shell checks the official GitHub release metadata. Installation stays in

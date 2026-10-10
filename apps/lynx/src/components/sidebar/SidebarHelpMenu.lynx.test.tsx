@@ -1,5 +1,5 @@
 import { fireEvent, render, waitFor } from "@lynx-js/react/testing-library";
-import { describe, expect, it, rs } from "@rstest/core";
+import { beforeEach, describe, expect, it, rs } from "@rstest/core";
 
 import {
   helpMenuReleaseTitle,
@@ -7,6 +7,27 @@ import {
 } from "@synara-web/components/SidebarHelpMenu.logic";
 
 import { SidebarHelpMenu } from "./SidebarHelpMenu.lynx";
+
+// The dialog primitive schedules its open transition and focus through these.
+beforeEach(() => {
+  Object.assign(lynx, {
+    requestAnimationFrame(callback: () => void) {
+      callback();
+      return 0;
+    },
+    createSelectorQuery() {
+      return {
+        select() {
+          return this;
+        },
+        invoke() {
+          return this;
+        },
+        exec() {},
+      };
+    },
+  });
+});
 
 async function openHelpMenu() {
   const handlers = { onOpenShortcuts: rs.fn(), onOpenFeedback: rs.fn(), onOpenDocs: rs.fn() };
@@ -33,6 +54,7 @@ describe("Lynx sidebar Help menu", () => {
       "Keybindings",
       "Send feedback",
       "Docs",
+      "About Synara for Lynx",
     ]);
   });
 
@@ -42,5 +64,33 @@ describe("Lynx sidebar Help menu", () => {
     fireEvent.tap(byLabel("Send feedback"));
     expect(handlers.onOpenFeedback).toHaveBeenCalledTimes(1);
     expect(handlers.onOpenShortcuts).not.toHaveBeenCalled();
+  });
+
+  it("opens the About dialog with both marks, and Close dismisses it", async () => {
+    const { items } = await openHelpMenu();
+    const labels = () =>
+      Array.from(elementTree.root?.querySelectorAll(".LynxBrandMarksMark") ?? []).map((mark) =>
+        mark.getAttribute("accessibility-label"),
+      );
+    expect(labels()).toEqual([]);
+    fireEvent.tap(items.find((item) => item.textContent === "About Synara for Lynx")!);
+    const dialog = await waitFor(() => {
+      const element = elementTree.root?.querySelector(".AboutLynxDialog");
+      if (!element) throw new Error("expected the About dialog");
+      return element;
+    });
+    expect(labels()).toEqual(["Lynx logo", "Lynxtron logo"]);
+    expect(dialog.textContent).toContain("Synara for Lynx");
+    expect(dialog.textContent).toContain("Rendered with Lynx on Lynxtron");
+    const close = Array.from(dialog.querySelectorAll(".LxButton")).find(
+      (button) => button.textContent === "Close",
+    );
+    if (!close) throw new Error("expected the Close button");
+    fireEvent.tap(close);
+    await waitFor(() => {
+      if (elementTree.root?.querySelector(".AboutLynxDialog")) {
+        throw new Error("expected the About dialog to close");
+      }
+    });
   });
 });
