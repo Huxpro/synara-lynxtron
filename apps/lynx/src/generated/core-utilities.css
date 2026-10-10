@@ -1200,6 +1200,9 @@
 .font-semibold {
   font-weight: 600;
 }
+.leading-4 {
+  line-height: 1rem;
+}
 .leading-\[1\.1\] {
   line-height: 1.1;
 }
@@ -2072,11 +2075,11 @@
 .space-y-0\.5 {
   gap: 2px;
 }
-.border-border\/60 {
-  border-color: rgba(0, 0, 0, 0.6);
-}
 .break-words {
   word-break: break-word;
+}
+.border-border\/60 {
+  border-color: rgba(0, 0, 0, 0.6);
 }
 .whitespace-pre-wrap {
   white-space: pre-wrap;
@@ -2226,6 +2229,9 @@
 }
 .sm\:min-h-7 {
   min-height: 1.75rem;
+}
+.text-destructive\/85 {
+  color: rgba(239, 68, 68, 0.85);
 }
 .bg-destructive\/8 {
   background-color: rgba(239, 68, 68, 0.08);

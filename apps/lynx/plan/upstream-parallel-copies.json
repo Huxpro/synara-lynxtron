@@ -50,12 +50,6 @@
       "sha256": "54996172dfbc72ccac69ade6430397dfb3bb359e0713973974a5c98450a566d3"
     },
     {
-      "upstream": "apps/web/src/components/WorkspaceFilePreview.tsx",
-      "symbols": ["MARKDOWN_PREVIEW_EXTENSIONS", "isMarkdownPreviewablePath"],
-      "copies": ["packages/shared/src/filePreviewMode.ts"],
-      "sha256": "7bee914aacbea4271883ddff6dfae977c7ef76c02f1c328aa6724df116e17ded"
-    },
-    {
       "upstream": "apps/web/src/components/chat/FileAttachmentChip.tsx",
       "symbols": ["MIME_TYPE_LABEL_BY_TYPE", "fileAttachmentTypeLabel"],
       "copies": ["apps/lynx/src/logic/fileAttachmentPresentation.ts"],

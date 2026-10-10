@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-10T12:34:52.460Z",
+  "generatedAt": "2026-10-10T13:00:04.982Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -13196,8 +13196,8 @@
       ],
       "lynxConceptualEntries": ["src/app/Transcript.tsx", "src/components/composer/Composer.tsx"],
       "graph": {
-        "modules": 1035,
-        "loc": 234194,
+        "modules": 1037,
+        "loc": 234261,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -13268,6 +13268,7 @@
           "@synara/shared/editorIcons",
           "@synara/shared/errorMessages",
           "@synara/shared/filePreviewBreadcrumb",
+          "@synara/shared/filePreviewMode",
           "@synara/shared/formatBytes",
           "@synara/shared/git",
           "@synara/shared/githubAvatar",
@@ -13368,8 +13369,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 957,
-          "loc": 217847
+          "modules": 959,
+          "loc": 217914
         },
         "PATCHED": {
           "modules": 1,
@@ -13385,15 +13386,15 @@
         }
       },
       "eligible": {
-        "modules": 1009,
-        "loc": 226222
+        "modules": 1011,
+        "loc": 226289
       },
       "currentReuse": {
-        "modules": 350,
-        "loc": 87360,
-        "modulePercent": 34.69,
-        "locPercent": 38.62,
-        "gatePercent": 34.69
+        "modules": 352,
+        "loc": 87421,
+        "modulePercent": 34.82,
+        "locPercent": 38.63,
+        "gatePercent": 34.82
       },
       "modules": [
         {
@@ -15209,7 +15210,7 @@
         },
         {
           "path": "apps/web/src/components/chat/DockFilePane.tsx",
-          "loc": 29,
+          "loc": 31,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -22058,7 +22059,7 @@
         },
         {
           "path": "apps/web/src/components/WorkspaceFilePreview.tsx",
-          "loc": 1258,
+          "loc": 1262,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -22067,6 +22068,7 @@
             "apps/web/src/components/DiffTruncationWarning.tsx",
             "apps/web/src/components/LocalImagePreview.tsx",
             "apps/web/src/components/PdfFilePreview.tsx",
+            "apps/web/src/components/WorkspaceFilePreviewErrorState.tsx",
             "apps/web/src/components/chat/FileLineCommentBox.tsx",
             "apps/web/src/components/chat/PanelStateMessage.tsx",
             "apps/web/src/components/chat/TranscriptSelectionAction.tsx",
@@ -22093,6 +22095,22 @@
             "apps/web/src/lib/workspaceFileEditor.ts",
             "apps/web/src/nativeApi.ts"
           ]
+        },
+        {
+          "path": "apps/web/src/components/WorkspaceFilePreviewErrorState.tsx",
+          "loc": 19,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": ["apps/web/src/components/WorkspaceFilePreviewErrorStateElements.tsx"]
+        },
+        {
+          "path": "apps/web/src/components/WorkspaceFilePreviewErrorStateElements.tsx",
+          "loc": 42,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": ["apps/web/src/components/ui/button.tsx"]
         },
         {
           "path": "apps/web/src/components/WorkspaceSearchPalette.logic.ts",
@@ -51566,8 +51584,8 @@
       ],
       "lynxConceptualEntries": ["src/app/FeatureListsPage.tsx"],
       "graph": {
-        "modules": 1005,
-        "loc": 228921,
+        "modules": 1007,
+        "loc": 228986,
         "externalImports": [
           "@base-ui/react/alert-dialog",
           "@base-ui/react/autocomplete",
@@ -51638,6 +51656,7 @@
           "@synara/shared/editorIcons",
           "@synara/shared/errorMessages",
           "@synara/shared/filePreviewBreadcrumb",
+          "@synara/shared/filePreviewMode",
           "@synara/shared/formatBytes",
           "@synara/shared/git",
           "@synara/shared/githubAvatar",
@@ -51737,8 +51756,8 @@
       },
       "targetClassification": {
         "SHARED": {
-          "modules": 927,
-          "loc": 212574
+          "modules": 929,
+          "loc": 212639
         },
         "PATCHED": {
           "modules": 1,
@@ -51754,15 +51773,15 @@
         }
       },
       "eligible": {
-        "modules": 979,
-        "loc": 220949
+        "modules": 981,
+        "loc": 221014
       },
       "currentReuse": {
-        "modules": 351,
-        "loc": 87806,
-        "modulePercent": 35.85,
-        "locPercent": 39.74,
-        "gatePercent": 35.85
+        "modules": 353,
+        "loc": 87867,
+        "modulePercent": 35.98,
+        "locPercent": 39.76,
+        "gatePercent": 35.98
       },
       "modules": [
         {
@@ -60149,7 +60168,7 @@
         },
         {
           "path": "apps/web/src/components/WorkspaceFilePreview.tsx",
-          "loc": 1258,
+          "loc": 1262,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
           "currentReuse": "UNMAPPED",
@@ -60158,6 +60177,7 @@
             "apps/web/src/components/DiffTruncationWarning.tsx",
             "apps/web/src/components/LocalImagePreview.tsx",
             "apps/web/src/components/PdfFilePreview.tsx",
+            "apps/web/src/components/WorkspaceFilePreviewErrorState.tsx",
             "apps/web/src/components/chat/FileLineCommentBox.tsx",
             "apps/web/src/components/chat/PanelStateMessage.tsx",
             "apps/web/src/components/chat/TranscriptSelectionAction.tsx",
@@ -60184,6 +60204,22 @@
             "apps/web/src/lib/workspaceFileEditor.ts",
             "apps/web/src/nativeApi.ts"
           ]
+        },
+        {
+          "path": "apps/web/src/components/WorkspaceFilePreviewErrorState.tsx",
+          "loc": 19,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": ["apps/web/src/components/WorkspaceFilePreviewErrorStateElements.tsx"]
+        },
+        {
+          "path": "apps/web/src/components/WorkspaceFilePreviewErrorStateElements.tsx",
+          "loc": 42,
+          "classification": "SHARED",
+          "reason": "ordinary feature composition/logic; adapter differences belong below this module",
+          "currentReuse": "SHARED",
+          "dependencies": ["apps/web/src/components/ui/button.tsx"]
         },
         {
           "path": "apps/web/src/composer-editor-mentions.ts",

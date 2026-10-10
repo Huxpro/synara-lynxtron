@@ -1,4 +1,5 @@
 import { renderToStaticMarkup } from "react-dom/server";
+import { readFileSync } from "node:fs";
 import { describe, expect, it, vi } from "vitest";
 import { WorkspaceFilePreviewErrorState } from "./WorkspaceFilePreviewErrorState";
 
@@ -25,5 +26,19 @@ describe("WorkspaceFilePreviewErrorState", () => {
     expect(markup).toContain("Retrying…");
     expect(markup).toContain("disabled");
     expect(markup).not.toContain("Close preview");
+  });
+
+  it("keeps the configured Open-in-editor header available above failures", () => {
+    const source = readFileSync(new URL("./WorkspaceFilePreview.tsx", import.meta.url), "utf8");
+    expect(source.indexOf("<WorkspaceFilePreviewHeader")).toBeGreaterThan(-1);
+    expect(source.indexOf("<WorkspaceFilePreviewHeader")).toBeLessThan(
+      source.indexOf("<WorkspaceFilePreviewErrorState"),
+    );
+    const header = readFileSync(
+      new URL("./chat/WorkspaceFilePreviewHeader.tsx", import.meta.url),
+      "utf8",
+    );
+    expect(header).toContain("<OpenInPicker");
+    expect(header).toContain("openInTarget={openTarget}");
   });
 });
