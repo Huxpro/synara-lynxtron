@@ -106,6 +106,70 @@ export async function scrollToBottomOffered(driver) {
   return (await driver.find({ label: "Scroll to bottom" })) !== null;
 }
 
+const NATIVE_TRANSCRIPT_END_ITEM_KEY = "transcript-bottom-inset";
+
+/**
+ * Where the end of the transcript's content is against the bottom of its viewport:
+ * `belowPx` is how far the end of the newest content sits below the viewport's bottom edge
+ * (0 or negative when it is in view). `rendered` is false when the renderer has not laid
+ * the end out at all (a Native list recycles rows that are off-screen), in which case
+ * `belowPx` is a lower bound taken from the lowest row that is laid out.
+ */
+export async function transcriptEndGap(driver) {
+  if (driver.kind === "electron") {
+    return driver.evaluate(`(() => {
+      const scroll = document.querySelector('[data-chat-scroll-container="true"]');
+      const rows = Array.from(document.querySelectorAll('[data-timeline-row-kind]'));
+      if (!scroll || rows.length === 0) return null;
+      const viewportBottom = scroll.getBoundingClientRect().bottom;
+      const contentBottom = Math.max(...rows.map((row) => row.getBoundingClientRect().bottom));
+      return {
+        rendered: true,
+        contentBottom,
+        viewportBottom,
+        belowPx: Math.round((contentBottom - viewportBottom) * 10) / 10,
+        scrollTop: scroll.scrollTop,
+        scrollMax: scroll.scrollHeight - scroll.clientHeight,
+      };
+    })()`);
+  }
+  const root = await driver.documentRoot();
+  const list = nativeNodesMatchingClasses(root, ".TranscriptList")[0];
+  if (!list) return null;
+  const box = async (nodeId) => {
+    const quad = (await driver.send("DOM.getBoxModel", { nodeId }))?.model?.border;
+    if (!quad) return null;
+    const xs = [quad[0], quad[2], quad[4], quad[6]];
+    const ys = [quad[1], quad[3], quad[5], quad[7]];
+    return { left: Math.min(...xs), top: Math.min(...ys), bottom: Math.max(...ys) };
+  };
+  const listBox = await box(list.nodeId);
+  if (!listBox) return null;
+  let end = null;
+  let lowest = null;
+  for (const node of nodesInDocumentOrder(list)) {
+    const key = nodeAttribute(node, "item-key");
+    if (key === null) continue;
+    const itemBox = await box(node.nodeId);
+    if (!itemBox || itemBox.bottom - itemBox.top <= 0) continue;
+    // A recycled (off-screen) list item keeps its size and reports it at the window's
+    // origin, not at a place in the list.
+    if (itemBox.left === 0 && itemBox.top === 0 && (listBox.left !== 0 || listBox.top !== 0))
+      continue;
+    if (key === NATIVE_TRANSCRIPT_END_ITEM_KEY) end = itemBox;
+    else lowest = lowest === null ? itemBox.bottom : Math.max(lowest, itemBox.bottom);
+  }
+  // The end item is the breathing room under the last row: content ends where it starts.
+  const contentBottom = end ? end.top : lowest;
+  if (contentBottom === null) return null;
+  return {
+    rendered: end !== null,
+    contentBottom,
+    viewportBottom: listBox.bottom,
+    belowPx: Math.round((contentBottom - listBox.bottom) * 10) / 10,
+  };
+}
+
 async function threadWithMessage(backend, token) {
   const snapshot = await backend.snapshot();
   return (
@@ -697,6 +761,12 @@ const FIRST_TEXT_TIMEOUT_MS = 180_000;
 // Fewest samples, taken while the turn is still running, that decide the detach check, and
 // how many of them must follow new text (the second lets the renderer have drawn the first).
 const MIN_STREAMING_DRIFT_SAMPLES = 4;
+// The follow check runs until the followed reply is this long: about 45 lines, more than
+// the 1280×820 transcript shows, so a list that does not move has lost the end by then.
+const FOLLOW_MIN_STREAMED_CHARS = 2_500;
+// How far under the viewport's bottom edge the end of the streaming reply may be when
+// sampled: two lines, for text that has arrived and is scrolled to on the next frame.
+const FOLLOW_END_TOLERANCE_PX = 56;
 const MIN_SAMPLES_WITH_NEW_OUTPUT = 2;
 
 /**
@@ -731,18 +801,57 @@ export async function workflowJ2(context) {
       streamTurnBefore = (await backend.thread(threadId)).latestTurn.turnId;
       await composeAndSend(driver, longPrompt("mountains", `${token}-follow`, FOLLOWED_TURN_LINES));
       await waitForStreamingText(backend, threadId, streamTurnBefore, 1, FIRST_TEXT_TIMEOUT_MS);
+      // "Following" is the end of the growing reply staying in view, not only the jump
+      // button staying away: a renderer that leaves the list where the turn started and
+      // snaps to the end when it settles never offers the button either. So this samples
+      // where the end of the content is while text arrives, for as long as it takes the
+      // reply to outgrow the viewport.
+      const startedAt = Date.now();
       const samples = [];
-      const deadline = Date.now() + 2_500;
-      while (Date.now() < deadline) {
-        samples.push(await scrollToBottomOffered(driver));
-        await sleep(250);
+      let streamedChars = 0;
+      const decided = () =>
+        Date.now() - startedAt >= 2_500 &&
+        streamedChars >= FOLLOW_MIN_STREAMED_CHARS &&
+        samples.length >= MIN_STREAMING_DRIFT_SAMPLES;
+      while (!decided()) {
+        const offered = await scrollToBottomOffered(driver);
+        const gap = await transcriptEndGap(driver);
+        const current = await backend.thread(threadId);
+        // A settled turn re-lays its rows out; only samples read while it streams count.
+        if (current.latestTurn.state !== "running") break;
+        if (!gap) throw new Error("The transcript's end could not be measured while following.");
+        streamedChars = current.messages.at(-1).text.length;
+        samples.push({
+          ms: Date.now() - startedAt,
+          chars: streamedChars,
+          offered,
+          belowPx: gap.belowPx,
+          rendered: gap.rendered,
+        });
+        await sleep(200);
       }
-      if (samples.some(Boolean)) {
+      const trace = samples.map((sample) => `${sample.ms}ms:${sample.chars}ch:${sample.belowPx}px`);
+      if (!decided()) {
         throw new Error(
-          `The transcript stopped following live output (${samples.filter(Boolean).length}/${samples.length} samples).`,
+          `The turn settled ${Date.now() - startedAt}ms into the follow check after ${streamedChars} chars and ${samples.length} samples; it needs ${FOLLOW_MIN_STREAMED_CHARS} chars and ${MIN_STREAMING_DRIFT_SAMPLES} samples.`,
         );
       }
-      return { samples: samples.length };
+      const offeredCount = samples.filter((sample) => sample.offered).length;
+      if (offeredCount > 0) {
+        throw new Error(
+          `The transcript stopped following live output (${offeredCount}/${samples.length} samples).`,
+        );
+      }
+      const hidden = samples.filter(
+        (sample) => !sample.rendered || sample.belowPx > FOLLOW_END_TOLERANCE_PX,
+      );
+      const maxBelowPx = Math.max(...samples.map((sample) => sample.belowPx));
+      if (hidden.length > 0) {
+        throw new Error(
+          `The end of the streaming reply left the viewport in ${hidden.length}/${samples.length} samples (up to ${maxBelowPx}px below its bottom edge; allowed ${FOLLOW_END_TOLERANCE_PX}px). Trace: ${trace.join(" ")}`,
+        );
+      }
+      return { samples: samples.length, streamedChars, maxBelowPx, trace };
     });
 
     await step("scroll away while output streams; the reader keeps their place", async () => {
