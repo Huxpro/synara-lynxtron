@@ -30,6 +30,7 @@ import {
   buildNativeKanbanStartCommand,
   resolveNativeKanbanMutationError,
 } from "./kanbanMutation.logic";
+import { scheduleArchiveWorktreeCleanup } from "./archiveWorktreeCleanup.lynx";
 
 interface KanbanMutationTarget {
   readonly action: KanbanMutationActionId;
@@ -118,7 +119,13 @@ export function useNativeKanbanCardActions(input: {
           threadId: card.threadId,
         });
       }
-      await ensureNativeApi().orchestration.dispatchCommand(command);
+      const receipt = await ensureNativeApi().orchestration.dispatchCommand(command);
+      if (command.type === "thread.archive") {
+        scheduleArchiveWorktreeCleanup({
+          threadId: card.threadId,
+          archiveSequence: receipt.sequence,
+        });
+      }
       setMutationNotice(KANBAN_MUTATION_COPY[action].success);
       setMutationTarget(null);
     } catch (error) {

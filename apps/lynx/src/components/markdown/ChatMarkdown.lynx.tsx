@@ -766,7 +766,19 @@ function renderNode(
             </view>
           ) : (
             <view className="MdListMarker">
-              <text className="MdListMarkerText">{marker}</text>
+              {marker === "◦" || marker === "▪" ? (
+                // The browser draws these markers as shapes. Native's text engine renders the
+                // glyphs as a small dot and a faint box, so they are drawn here; the invisible
+                // bullet gives the box the first line's height for the shape to centre on.
+                <view className="MdListMarkerShape">
+                  <text className="MdListMarkerStrut">•</text>
+                  <view
+                    className={`MdListBullet MdListBullet--${marker === "◦" ? "circle" : "square"}`}
+                  />
+                </view>
+              ) : (
+                <text className="MdListMarkerText">{marker}</text>
+              )}
             </view>
           )}
           <view className="MdListBody">{renderBlockChildren(node, key, itemContext)}</view>

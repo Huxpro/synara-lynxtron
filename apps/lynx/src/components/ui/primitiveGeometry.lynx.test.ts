@@ -74,8 +74,15 @@ describe("shared primitive geometry", () => {
     // (generated for the default pack, evaluated at run time for any other); App.css no
     // longer pins it to one pack's accent.
     expect(app).not.toContain("--control-focus-ring-color:");
-    expect(app).toContain("--control-input-focus-border: rgba(13, 13, 13, 0.3);");
-    expect(app).toContain("--control-input-focus-border: rgba(252, 252, 252, 0.3);");
+    // The input focus border comes from the root inline map, with the generated colour-mix
+    // stylesheet as the static fallback; App.css keeps no copy.
+    const colorMix = readFileSync(
+      new URL("../../generated/native-color-mix-variables.css", import.meta.url),
+      "utf8",
+    );
+    expect(app).not.toContain("--control-input-focus-border:");
+    expect(colorMix).toContain("--control-input-focus-border: rgba(13, 13, 13, 0.3);");
+    expect(colorMix).toContain("--control-input-focus-border: rgba(252, 252, 252, 0.3);");
     expect(css.match(/opacity:\s*var\(--control-disabled-opacity\);/g)).toHaveLength(6);
     expect(css).toMatch(
       /\.LxButton\.ui-focus\s*\{[^}]*box-shadow:[^;]*var\(--control-focus-ring-color\);/s,

@@ -18,6 +18,10 @@ import { useEffect, useMemo } from "@lynx-js/react";
 import { useStore } from "@synara-web/store";
 import { create } from "zustand";
 
+import {
+  getActiveComposerSendThreadIds,
+  subscribeComposerSends,
+} from "@synara-web/lib/composerSendOwnership";
 import { fetchSidebarSearchSnapshot, type SidebarSnapshot, type ThreadSummary } from "./queries";
 import { createShellBootstrapWatch, type ShellBootstrapWatch } from "./sessionShellBootstrap.logic";
 import {
@@ -56,6 +60,13 @@ function ensureSidebarSnapshotLocalInputs(): Promise<void> {
     useSidebarSnapshotLocalInputs.setState({
       ready: true,
       dismissedThreadStatusKeyByThreadId: readSidebarUiState().dismissedThreadStatusKeyByThreadId,
+      activeComposerSendThreadIds: getActiveComposerSendThreadIds(),
+    });
+    // Upstream's sidebar reads the same store with useSyncExternalStore.
+    subscribeComposerSends(() => {
+      useSidebarSnapshotLocalInputs.setState({
+        activeComposerSendThreadIds: getActiveComposerSendThreadIds(),
+      });
     });
   })().catch((error: unknown) => {
     // Dismissed status keys only hide pills the user already dismissed. Losing

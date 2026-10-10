@@ -371,9 +371,8 @@ async function main() {
       return geometry;
     };
 
-    // Both walks go from the end of the transcript to its start: a downward finger
-    // drag of more than ~200px sends the Native list back to its top under the DevTool's
-    // touch emulation, upward ones are exact.
+    // Both walks go from the end of the transcript to its start. Native does not travel by
+    // finger drag (a drag that starts on message text is a text selection, see below).
     const electronBottom = `(() => { const sc = ${ELECTRON_SCROLLER}; sc.scrollTop = sc.scrollHeight; return sc.scrollTop; })()`;
     if (clickText) {
       await electron.evaluate(electronBottom);
@@ -401,10 +400,10 @@ async function main() {
     }
 
     // Native: one stop per user message, reached through the message trail (the app's own
-    // "scroll to message"). Finger drags are not used to travel: on this thread a drag that
-    // brings an unmeasured tall row into range sends the list to its top (DevTool touch
-    // emulation; see the checklist). Short downward drags inside a mounted row only add
-    // the views of rows taller than the viewport.
+    // "scroll to message"). Finger drags are not used to travel: a DevTool drag that starts
+    // on selectable message text begins a text selection and sends the list to its top
+    // (see the checklist). Short downward drags inside a mounted row only add the views of
+    // rows taller than the viewport.
     let step = await nativeTree(native);
     const centre = () => ({ x: step.list.x + step.list.w / 2, y: step.list.y + step.list.h / 2 });
     const visible = () => step.rows.filter((row) => row.x >= step.list.x - 1 && row.w > 0);

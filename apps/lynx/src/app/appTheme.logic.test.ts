@@ -154,10 +154,25 @@ describe("slice root theme projection", () => {
     expect(variables["--secondary-button-state-surface"]).toBe("#f8f8f9");
     expect(variables["--subtle-button-state-surface"]).toBe("#f7f7f8");
     expect(variables["--outline-button-state-surface"]).toBe("#f5f5f6");
-    expect(appStyles).toContain("--primary-hover-fill: #252525;");
-    expect(appStyles).toContain("--primary-hover-fill: #e5e5e5;");
-    expect(appStyles).toContain("--destructive-hover-fill: #e33531;");
-    expect(appStyles).toContain("--destructive-hover-fill: #cc2b28;");
+    // The root inline map supplies the control-state tokens for every pack and the generated
+    // theme stylesheets are their static fallback; App.css keeps no third copy.
+    const generatedStyles = ["native-theme-variables.css", "native-color-mix-variables.css"]
+      .map((file) => readFileSync(new URL(`../generated/${file}`, import.meta.url), "utf8"))
+      .join("\n");
+    for (const token of [
+      "--control-input-focus-border",
+      "--primary-hover-fill",
+      "--destructive-hover-fill",
+      "--primary-outline-state-surface",
+      "--secondary-button-state-surface",
+      "--subtle-button-state-surface",
+      "--outline-button-state-surface",
+      "--textarea-invalid-focus-border",
+    ]) {
+      expect(variables[token as keyof typeof variables]).toBeDefined();
+      expect(generatedStyles).toContain(`${token}:`);
+      expect(appStyles).not.toContain(`${token}:`);
+    }
   });
 
   it("memoizes the root token map outside unrelated App rerenders", () => {
@@ -165,8 +180,8 @@ describe("slice root theme projection", () => {
     expect(appSource).toContain(
       "const themeVariables = useMemo(\n    () => resolveSliceThemeVariables(themeState, systemDark),",
     );
-    expect(appSource).toContain(
-      "const rootVariables = useMemo(\n    () => ({ ...themeVariables, ...typographyVariables }),",
+    expect(appSource).toMatch(
+      /const rootVariables = useMemo\(\s*\(\) => \(\{\s*\.\.\.themeVariables,\s*\.\.\.typographyVariables,[\s\S]*?\[chatWidth, themeVariables, typographyVariables\],/,
     );
     expect(appSource).toContain("style={rootVariables}");
     expect(appSource).not.toContain("style={resolveSliceThemeVariables(themeState, systemDark)}");

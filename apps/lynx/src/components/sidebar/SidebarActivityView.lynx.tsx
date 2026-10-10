@@ -30,8 +30,9 @@ import {
   type ActivityScopeOption,
   type ActivityScopeSelection,
 } from "@synara-web/components/SidebarActivityView.logic";
-import type { ThreadStatusPill } from "@synara-web/components/SidebarThreadStatus.logic";
+import type { ThreadStatusPill } from "@synara-web/components/Sidebar.logic";
 import { SidebarThreadTrailingCluster } from "@synara-web/components/SidebarThreadTrailingCluster";
+import { sidebarTrailingClusterStatus } from "./sidebarStatusGlyph.logic";
 import type { SidebarThreadSummary } from "@synara-web/types";
 
 import { SidebarThreadProviderIdentityIconElement } from "../../adapters/SidebarThreadProviderIdentityElements.lynx";
@@ -190,7 +191,7 @@ function ActivityThreadRow(props: {
       </view>
       {trailingStatus ? (
         <view className="AppSidebarActivityRowStatus">
-          <SidebarThreadTrailingCluster status={trailingStatus} />
+          <SidebarThreadTrailingCluster status={sidebarTrailingClusterStatus(trailingStatus)} />
         </view>
       ) : null}
     </SidebarNavigationRow>

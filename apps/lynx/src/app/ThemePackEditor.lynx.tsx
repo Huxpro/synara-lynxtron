@@ -8,7 +8,8 @@
 //   - The preview's colors are resolved in JS (`buildResolvedThemeTokens`): Lynx does not
 //     apply custom properties set on an element's `style`, so upstream's variables scoped
 //     to the preview box cannot paint it.
-//   - The code theme select is hidden: Native's highlighter has fixed GitHub themes.
+//   - The code theme select seeds the pack as upstream's does (`setThemeCodeThemeId`).
+//     Syntax colors follow light/dark only, on both renderers (`resolveDiffThemeName`).
 //   - Window material and its translucency rows edit the theme state Electron shares, and
 //     say that Lynxtron windows do not render it.
 
@@ -29,6 +30,7 @@ import {
 import { SettingsAppearanceSegmentedControlElement } from "../adapters/SettingsAppearanceCompositionElements.lynx";
 import {
   ThemePackBooleanControlElement,
+  ThemePackCodeThemeControlElement,
   ThemePackColorControlElement,
   ThemePackContextElement,
   ThemePackContrastControlElement,
@@ -65,6 +67,7 @@ export function ThemePackEditor(props: {
   readonly onImport: (value: string) => void;
   readonly onResetVariant: () => void;
   readonly onUseVariant: () => void;
+  readonly onSetCodeThemeId: (codeThemeId: string) => void;
   readonly onUpdateTheme: (patch: Partial<ChromeTheme>) => void;
   readonly onUpdateFonts: (patch: Partial<ThemeFonts>) => void;
   readonly onUpdateTranslucency: (patch: Partial<WindowTranslucency>) => void;
@@ -86,6 +89,14 @@ export function ThemePackEditor(props: {
         </ThemePackTitleElement>
         <ThemePackImportActionElement variant={props.variant} onImport={props.onImport} />
         <ThemePackCopyActionElement variant={props.variant} shareString={props.shareString} />
+        <ThemePackCodeThemeControlElement
+          ariaLabel={`${title} code theme`}
+          value={props.pack.codeThemeId}
+          label={model.codeThemeLabel}
+          theme={theme}
+          options={model.codeThemes}
+          onChange={props.onSetCodeThemeId}
+        />
       </ThemePackHeaderElement>
 
       <view className="SharedThemePackContextRow">

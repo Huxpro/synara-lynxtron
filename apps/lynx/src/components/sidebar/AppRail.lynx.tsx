@@ -6,10 +6,12 @@
 //   active item come from upstream's appRail.logic and railShellStore.
 
 import { useRouter, useRouterState } from "@tanstack/react-router";
-import checklistSvg from "@synara-central-icons/checklist.svg?raw";
-import inboxSvg from "@synara-central-icons/inbox-empty.svg?raw";
+import kanbanSvg from "@synara-central-icons/columns-3-wide.svg?raw";
 import moreSvg from "@synara-central-icons/dot-grid-1x3-horizontal.svg?raw";
 import settingsSvg from "@synara-central-icons/settings-gear-4.svg?raw";
+import kanbanFillSvg from "@synara-central-icons-fill/columns-3-wide.svg?raw";
+import moreFillSvg from "@synara-central-icons-fill/dot-grid-1x3-horizontal.svg?raw";
+import settingsFillSvg from "@synara-central-icons-fill/settings-gear-4.svg?raw";
 import { useEffect, type ReactNode } from "@lynx-js/react";
 
 import {
@@ -28,14 +30,13 @@ import { githubInboxReviewBadgeQueryOptions } from "@synara-web/lib/pullRequestR
 import { useQuery } from "@tanstack/react-query";
 import { useGitHubInboxSettings } from "../../app/githubInboxSettings.lynx";
 import { useTheme } from "../../adapters/useTheme.lynx";
-import { ClockIcon, FoldersIcon, HomeIcon } from "../../lib/icons.lynx";
+import { Hugeicon, type HugeiconName } from "../../lib/hugeicons.lynx";
 import { colorizeLynxSvg } from "../../lib/themedSvg.lynx";
 import { useLynxInteractiveState } from "../ui/interactive-state.lynx";
 import { Menu, MenuGroup, MenuGroupLabel, MenuItem, MenuPopup, MenuTrigger } from "../ui/menu.lynx";
 import { toastManager } from "../ui/toast.lynx";
 import { AppRailHelp } from "./AppRailHelp.lynx";
 import { AppRailUsage } from "./AppRailUsage.lynx";
-import { PullRequestCompareIcon } from "./PullRequestCompareIcon.lynx";
 import "./app-rail.css";
 
 /** Upstream's `sidebarNavDescriptors` labels for the rail's route items. */
@@ -78,32 +79,50 @@ export function railPanelShownForPathname(pathname: string): boolean {
   return item === null || railItemShowsPanel(item);
 }
 
+/**
+ * Upstream's `RAIL_HUGEICON_GLYPHS` (components/AppRail.tsx): the `~/lib/icons` name of each
+ * rail item's glyph at rest and while active. Only Hubs has a solid active twin.
+ */
+export const RAIL_HUGEICON_GLYPH_NAMES: Readonly<
+  Record<string, { readonly idle: HugeiconName; readonly active: HugeiconName }>
+> = {
+  home: { idle: "HomeIcon", active: "HomeIcon" },
+  inbox: { idle: "InboxIcon", active: "InboxIcon" },
+  pullRequests: { idle: "CodeReviewIcon", active: "CodeReviewIcon" },
+  automations: { idle: "ClockIcon", active: "ClockIcon" },
+  tasks: { idle: "TasksIcon", active: "TasksIcon" },
+  spaces: { idle: "FoldersIcon", active: "FoldersIcon" },
+  studio: { idle: "HubIcon", active: "HubActiveIcon" },
+};
+
+/**
+ * Upstream's `RAIL_ITEM_GLYPH_NAMES` and `RAIL_MORE_GLYPHS`: Central icons, outline at rest
+ * and the fill set while active (`railCentralGlyphs`).
+ */
+export const RAIL_CENTRAL_GLYPH_NAMES = {
+  kanban: "columns-3-wide",
+  settings: "settings-gear-4",
+  more: "dot-grid-1x3-horizontal",
+} as const;
+
+const RAIL_CENTRAL_GLYPH_SVG: Readonly<
+  Record<keyof typeof RAIL_CENTRAL_GLYPH_NAMES, { readonly idle: string; readonly active: string }>
+> = {
+  kanban: { idle: kanbanSvg, active: kanbanFillSvg },
+  settings: { idle: settingsSvg, active: settingsFillSvg },
+  more: { idle: moreSvg, active: moreFillSvg },
+};
+
 function RailGlyph(props: { readonly id: RailItemId | "more"; readonly active: boolean }) {
   // appRailButtonClassName: the active item takes `--sidebar-accent-foreground` (the
   // foreground), a resting one the section-label tone.
   const { svgColors } = useTheme();
   const color = props.active ? svgColors.foreground : svgColors.sectionLabelForeground;
-  const central = (content: string) => (
-    <svg className="AppRailGlyph" content={colorizeLynxSvg(content, color)} />
-  );
-  switch (props.id) {
-    case "home":
-      return <HomeIcon className="AppRailGlyph" color={color} size={20} strokeWidth={1.5} />;
-    case "spaces":
-      return <FoldersIcon className="AppRailGlyph" color={color} size={20} strokeWidth={1.5} />;
-    case "automations":
-      return <ClockIcon className="AppRailGlyph" color={color} size={20} strokeWidth={1.5} />;
-    case "pullRequests":
-      return <PullRequestCompareIcon className="AppRailGlyph" color={color} />;
-    case "inbox":
-      return central(inboxSvg);
-    case "settings":
-      return central(settingsSvg);
-    case "more":
-      return central(moreSvg);
-    default:
-      return central(checklistSvg);
-  }
+  const variant = props.active ? "active" : "idle";
+  const hugeicon = RAIL_HUGEICON_GLYPH_NAMES[props.id];
+  if (hugeicon) return <Hugeicon className="AppRailGlyph" name={hugeicon[variant]} color={color} />;
+  const central = RAIL_CENTRAL_GLYPH_SVG[props.id as keyof typeof RAIL_CENTRAL_GLYPH_SVG];
+  return <svg className="AppRailGlyph" content={colorizeLynxSvg(central[variant], color)} />;
 }
 
 export function appRailButtonClassName(active: boolean): string {

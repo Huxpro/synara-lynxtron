@@ -74,11 +74,6 @@ export const COVERAGE_EXEMPTIONS = Object.freeze([
       "Electron names its settings <nav> landmark; Lynx has no landmark role, and the section buttons it contains are exposed and compared directly",
   },
   {
-    label: /^(Dark|Light) theme code theme$/,
-    reason:
-      "Native's highlighter has fixed GitHub themes, so the code-theme select is hidden rather than offered as a no-op (39d4601c3; registered residual)",
-  },
-  {
     label: /^(Dark|Light) theme (accent|background|foreground) color$/,
     reason:
       "Electron's swatch button opens a 2D picker popover; Native edits the hex inline in the same swatch, named '<color> hex value' (registered residual)",

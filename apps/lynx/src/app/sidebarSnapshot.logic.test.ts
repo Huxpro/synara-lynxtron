@@ -286,6 +286,54 @@ describe("sidebar snapshot from the shared store", () => {
     ).toEqual(pending);
   });
 
+  it("resolves the statuses upstream's sidebar added: reminder and preparing worktree", () => {
+    const state = syncServerShellSnapshot(initialState, {
+      ...SHELL_SNAPSHOT,
+      threads: [
+        shellThread({ id: "local" }),
+        shellThread({
+          id: "reminder",
+          snoozedUntil: null,
+          snoozeReminderAt: "2026-08-15T00:00:00.000Z",
+        }),
+        shellThread({ id: "worktree-first-send", envMode: "worktree" }),
+        shellThread({ id: "worktree-idle", envMode: "worktree" }),
+      ],
+    } as unknown as OrchestrationShellSnapshot);
+    const statusById = (local: SidebarSnapshotLocalInputs) =>
+      Object.fromEntries(
+        projectSidebarSnapshot(state, local).threads.map((thread) => [
+          thread.id,
+          thread.status ?? null,
+        ]),
+      );
+
+    const idle = statusById(LOCAL);
+    expect(idle.reminder).toMatchObject({ label: "Reminder", dismissible: true });
+    expect(idle["worktree-first-send"]).toBeNull();
+
+    // A composer send in flight on a worktree thread with no turn and no session yet.
+    const sending = statusById({
+      ...LOCAL,
+      activeComposerSendThreadIds: new Set(["worktree-first-send", "local"]),
+    });
+    expect(sending["worktree-first-send"]).toMatchObject({
+      label: "Preparing worktree",
+      pulse: true,
+    });
+    expect(sending["worktree-idle"]).toBeNull();
+    // Not a worktree thread: the send does not change its status.
+    expect(sending.local).toBeNull();
+
+    // The reminder is dismissed by its own key, as upstream stores it.
+    expect(
+      statusById({
+        ...LOCAL,
+        dismissedThreadStatusKeyByThreadId: { reminder: "Reminder:2026-08-15T00:00:00.000Z" },
+      }).reminder,
+    ).toBeNull();
+  });
+
   it("takes message counts from the search snapshot until the store has the thread's messages", () => {
     const searchSnapshot = {
       snapshotSequence: 7,

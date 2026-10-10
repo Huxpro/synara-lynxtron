@@ -216,6 +216,53 @@
   white-space: nowrap;
 }
 
+/* Nested unordered markers (`list-style-type: circle`, then `square`) as shapes, centred
+   on the first line. 4px is the browser's symbol size at the chat sizes ((ascent × 2/3 + 1) / 2). */
+.MdListMarkerShape {
+  position: absolute;
+  top: 0;
+  right: 7px;
+  width: 4px;
+}
+
+.MdListMarkerStrut {
+  font-size: inherit;
+  line-height: inherit;
+  opacity: 0;
+}
+
+.MdListBullet {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  margin-top: -2px;
+}
+
+/* The browser's ring is a pixel wider than its square (measured on Electron: 5px and 4px,
+   both centred 9px before the text). */
+.MdListBullet--circle {
+  left: -0.5px;
+  width: 5px;
+  height: 5px;
+  margin-top: -2.5px;
+  border: 1px solid var(--foreground);
+  border-radius: 2.5px;
+}
+
+.MdListBullet--square {
+  background-color: var(--foreground);
+}
+
+.MdBlockquote .MdListBullet--circle {
+  border-color: var(--muted-foreground);
+}
+
+.MdBlockquote .MdListBullet--square {
+  background-color: var(--muted-foreground);
+}
+
 .MdListBody {
   display: flex;
   flex-direction: column;
@@ -545,7 +592,9 @@
   border-width: 0;
   background-color: transparent;
   color: var(--info-foreground);
-  font-size: inherit;
+  /* The surrounding text's size. Native does not take `inherit` as a value here (the
+     base rule's 11px stayed), and resolves `em` against the parent text as headings do. */
+  font-size: 1em;
   line-height: inherit;
 }
 

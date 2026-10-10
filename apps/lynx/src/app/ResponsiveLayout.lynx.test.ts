@@ -55,7 +55,7 @@ describe("Lynx responsive layout contract", () => {
     expect(composer).toContain("width: calc(100% - 24px)");
     expect(composer).toContain(".SliceRoot--viewport-medium");
     expect(tray).toContain("width: calc(100% - 24px)");
-    expect(tray).toContain("max-width: 736px");
+    expect(tray).toContain("max-width: var(--app-chat-max-width, 736px)");
     expect(rows).toContain(".SliceRoot--viewport-compact .SharedSettingsRowLayout");
     expect(rows).not.toContain("@media");
   });
