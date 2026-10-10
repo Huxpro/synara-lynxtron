@@ -13,13 +13,6 @@ describe("Settings Appearance fidelity", () => {
       new URL("./settings-appearance-composition-elements.css", import.meta.url),
       "utf8",
     );
-    const composition = readFileSync(
-      new URL(
-        "../../../web/src/components/settings/SettingsAppearanceComposition.tsx",
-        import.meta.url,
-      ),
-      "utf8",
-    );
     const appStyles = readFileSync(new URL("../app/App.css", import.meta.url), "utf8");
     const primitiveStyles = readFileSync(
       new URL("../components/ui/primitives.css", import.meta.url),
@@ -39,8 +32,6 @@ describe("Settings Appearance fidelity", () => {
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceRow--terminal\s*\{[^}]*border-bottom-width:\s*0;/s,
     );
-    expect(composition).toContain("terminal={terminal}");
-    expect(composition).toContain("!props.showFontSmoothing");
     expect(styles).toMatch(
       /\.SharedSettingsAppearanceRowTitle\s*\{[^}]*font-size:\s*var\(--type-settings-row-title-size\);[^}]*line-height:\s*var\(--type-settings-row-title-line-height\);/s,
     );

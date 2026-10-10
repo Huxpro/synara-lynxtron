@@ -225,21 +225,9 @@ export default defineConfig({
         __dirname,
         "src/adapters/SidebarPinnedSectionElements.lynx.tsx",
       ),
-      "~/components/SidebarSettingsEntryElements$": path.resolve(
-        __dirname,
-        "src/adapters/SidebarSettingsEntryElements.lynx.tsx",
-      ),
       "~/components/SidebarSurfaceContentElements$": path.resolve(
         __dirname,
         "src/adapters/SidebarSurfaceContentElements.lynx.tsx",
-      ),
-      "~/components/SidebarFooterSectionElements$": path.resolve(
-        __dirname,
-        "src/adapters/SidebarFooterSectionElements.lynx.tsx",
-      ),
-      "~/components/SidebarDesktopHeaderElements$": path.resolve(
-        __dirname,
-        "src/adapters/SidebarDesktopHeaderElements.lynx.tsx",
       ),
       "~/components/SidebarProjectsSectionElements$": path.resolve(
         __dirname,

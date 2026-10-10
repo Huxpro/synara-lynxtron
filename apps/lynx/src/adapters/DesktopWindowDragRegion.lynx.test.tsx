@@ -2,10 +2,6 @@ import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "@rstest/core";
 
-const sidebarHeaderSource = fs.readFileSync(
-  path.resolve(__dirname, "SidebarDesktopHeaderElements.lynx.tsx"),
-  "utf8",
-);
 const chatHeaderSource = fs.readFileSync(
   path.resolve(__dirname, "ChatSurfaceHeaderFrameElements.lynx.tsx"),
   "utf8",
@@ -26,8 +22,7 @@ const sidebarStyles = fs.readFileSync(
 );
 
 describe("desktop window drag regions", () => {
-  it("marks both shared top chrome frames as draggable", () => {
-    expect(sidebarHeaderSource).toContain('className="AppSidebarTitlebar AppWindowDragRegion"');
+  it("marks the shared chat header frame as draggable", () => {
     expect(chatHeaderSource).toContain("AppWindowDragRegion");
   });
 

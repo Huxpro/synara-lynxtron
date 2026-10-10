@@ -436,10 +436,6 @@
       "types": "./src/threadHeaderActions.ts",
       "import": "./src/threadHeaderActions.ts"
     },
-    "./threadHeaderIdentity": {
-      "types": "./src/threadHeaderIdentity.ts",
-      "import": "./src/threadHeaderIdentity.ts"
-    },
     "./projectActionScripts": {
       "types": "./src/projectActionScripts.ts",
       "import": "./src/projectActionScripts.ts"
