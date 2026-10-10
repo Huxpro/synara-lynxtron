@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+
 import { describe, expect, it, rs } from "@rstest/core";
 import { render, waitFor } from "@lynx-js/react/testing-library";
 
@@ -77,5 +79,34 @@ describe("Diff dock change markers", () => {
 
     await Promise.resolve();
     expect(elementTree.root?.querySelector(".DiffDockChangeMarkers")).toBeNull();
+  });
+
+  it("lets a tap outside the ticks through, as upstream's pointer-events-none strip does", async () => {
+    rects.viewport = { left: 0, top: 88, width: 484, height: 400 };
+    rects.content = { left: 0, top: 88, width: 484, height: 800 };
+    rects["file-0"] = { left: 8, top: 96, width: 468, height: 300 };
+    render(
+      <DiffDockChangeMarkers
+        viewportId="viewport"
+        contentId="content"
+        files={[{ path: "README.md", elementId: "file-0", changeType: "change" }]}
+        layoutRevision={0}
+        onSelectFilePath={() => {}}
+      />,
+    );
+    await waitFor(() => expect(markers()).toHaveLength(1));
+    const strip = elementTree.root?.querySelector(".DiffDockChangeMarkers");
+    // The strip refuses touch for its box; a tick inside it would be switched off with it.
+    expect(strip?.getAttribute("user-interaction-enabled")).toBe("false");
+    expect(strip?.querySelector(".DiffDockChangeMarker")).toBeNull();
+    const css = readFileSync(new URL("./diff-dock.css", import.meta.url), "utf8");
+    const rule = (selector: string) =>
+      new RegExp(`\\n\\.${selector} \\{([^}]*)\\}`).exec(css)?.[1] ?? "";
+    // Strip and ticks share the column: 6px wide, 10px from the right edge.
+    for (const selector of ["DiffDockChangeMarkers", "DiffDockChangeMarker"]) {
+      expect(rule(selector)).toMatch(/right:\s*10px/);
+      expect(rule(selector)).toMatch(/width:\s*6px/);
+    }
+    expect(rule("DiffDockChangeMarkers")).toMatch(/pointer-events:\s*none/);
   });
 });

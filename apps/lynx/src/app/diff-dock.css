@@ -772,7 +772,10 @@
   padding-bottom: 8px;
 }
 
-/* Upstream DiffPanelChangeMarkers: `absolute inset-y-0 right-[10px] w-[6px]`. */
+/* Upstream DiffPanelChangeMarkers: `pointer-events-none absolute inset-y-0 right-[10px] w-[6px]`.
+   The strip lies over the patch's right edge for its whole height, so only its ticks may
+   take a tap: the strip refuses touch (`user-interaction-enabled` in the component, and
+   `pointer-events` for the browser host) and the ticks are its siblings in the same column. */
 .DiffDockChangeMarkers {
   position: absolute;
   top: 0;
@@ -780,12 +783,14 @@
   bottom: 0;
   z-index: 10;
   width: 6px;
+  pointer-events: none;
 }
 
 .DiffDockChangeMarker {
   position: absolute;
-  left: 0;
-  width: 100%;
+  right: 10px;
+  z-index: 10;
+  width: 6px;
   border-radius: 9999px;
   opacity: 0.7;
 }
