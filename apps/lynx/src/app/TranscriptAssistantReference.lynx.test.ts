@@ -34,7 +34,9 @@ describe("Lynx assistant message actions", () => {
     expect(source).toContain('"thread.pinned-message.add"');
     expect(source).toContain('"thread.pinned-message.remove"');
     expect(source).toContain('import(/* webpackMode: "eager" */ "../platform/clipboard")');
-    expect(source).toContain("formatShortTimestamp(");
+    // Sent and settled messages both read "Friday 8:00 AM", as on the Web row.
+    expect(source).toContain("formatDayAwareTimestamp(message.createdAt, timestampFormat)");
+    expect(source).not.toContain("formatShortTimestamp(");
     expect(styles).toMatch(
       /\.TranscriptMessageHoverRegion\.ui-hover \.TranscriptMessageFooter,[\s\S]*?opacity:\s*1;/s,
     );
@@ -140,11 +142,14 @@ describe("Lynx assistant message actions", () => {
     expect(source).toContain("createMarkdownCodeFence(block.language, block.text)");
     expect(source).toContain('className="TranscriptToolDetailsMarkdown"');
     expect(source).toContain("getChatTranscriptLineHeightPx(props.chatFontSizePx)");
-    expect(source).toContain(
-      'displayText={row.kind === "working-header" ? "Working…" : "Thinking"}',
-    );
+    // The running turn's header counts up over a divider, as the Web row does.
+    expect(source).toContain("<TranscriptWorkingHeader startedAt={row.createdAt} />");
+    expect(source).toContain('displayText="Thinking"');
     expect(source).toContain('displayText={message.text || "System"}');
-    expect(source).toContain('displayText="Plan ready"');
+    // Plan and answered-question rows are cards, never a status line.
+    expect(source).not.toContain('displayText="Plan ready"');
+    expect(source).toContain("<TranscriptProposedPlanCard");
+    expect(source).toContain("<TranscriptUserInputExchange");
     expect(source.match(/fontSizePx=\{chatFontSizePx\}/g)).toHaveLength(4);
     expect(source).toContain("fontSizePx={chatFontSizePx}");
     expect(styles).toMatch(/\.TranscriptToolDetailsPanel\s*\{[^}]*padding-left:\s*20px;/s);

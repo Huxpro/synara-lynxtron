@@ -4,6 +4,8 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
+import { remarkGithubAlerts, type GithubAlertKind } from "@synara-web/lib/remarkGithubAlerts";
+import { remarkHtmlBreaks } from "@synara-web/lib/remarkHtmlBreaks";
 
 export interface MarkdownNode {
   readonly type: string;
@@ -18,15 +20,22 @@ export interface MarkdownNode {
   readonly url?: string;
   readonly alt?: string;
   readonly lang?: string | null;
+  /** Tables: one alignment per column (`null` is the default, start-aligned). */
+  readonly align?: ReadonlyArray<"left" | "right" | "center" | null>;
+  /** Blockquotes: the GitHub alert kind upstream's `remarkGithubAlerts` tagged. */
+  readonly alert?: GithubAlertKind;
   readonly children?: readonly MarkdownNode[];
 }
 
 export type MarkdownVariant = "assistant" | "user";
 
+// The plugin list of upstream's `MARKDOWN_REMARK_PLUGINS` (`ChatMarkdown.tsx`).
 const assistantProcessor = unified()
   .use(remarkParse)
   .use(remarkGfm)
-  .use(remarkMath, { singleDollarTextMath: true });
+  .use(remarkMath, { singleDollarTextMath: true })
+  .use(remarkGithubAlerts)
+  .use(remarkHtmlBreaks);
 
 // Sent prompts use GFM but intentionally skip math, matching Web: literal
 // `$50` and `$skill` tokens must survive for user-message chip rendering.
@@ -36,6 +45,9 @@ function toSerializableNode(node: Record<string, unknown>): MarkdownNode {
   const children = Array.isArray(node.children)
     ? node.children.map((child) => toSerializableNode(child as Record<string, unknown>))
     : undefined;
+  const alert = (node.data as { hProperties?: Record<string, unknown> } | undefined)?.hProperties?.[
+    "data-github-alert"
+  ];
   return {
     type: String(node.type),
     ...(typeof node.value === "string" ? { value: node.value } : {}),
@@ -51,13 +63,18 @@ function toSerializableNode(node: Record<string, unknown>): MarkdownNode {
     ...(typeof node.lang === "string" || node.lang === null
       ? { lang: node.lang as string | null }
       : {}),
+    ...(Array.isArray(node.align)
+      ? { align: node.align as NonNullable<MarkdownNode["align"]> }
+      : {}),
+    ...(typeof alert === "string" ? { alert: alert as GithubAlertKind } : {}),
     ...(children ? { children } : {}),
   };
 }
 
 export function parseMarkdown(text: string, variant: MarkdownVariant = "assistant"): MarkdownNode {
   const processor = variant === "user" ? userProcessor : assistantProcessor;
+  // The source goes along as the file: `remarkGithubAlerts` reads it.
   return toSerializableNode(
-    processor.runSync(processor.parse(text)) as unknown as Record<string, unknown>,
+    processor.runSync(processor.parse(text), text) as unknown as Record<string, unknown>,
   );
 }

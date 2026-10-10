@@ -36,7 +36,7 @@ import {
 } from "@synara-web/lib/terminalContext";
 import { resolveSelectionActionLayout } from "@synara/shared/selectionActionLayout";
 import { pinActionLabel } from "@synara-web/lib/pin.logic";
-import { formatDayAwareTimestamp, formatShortTimestamp } from "@synara-web/timestampFormat";
+import { formatDayAwareTimestamp } from "@synara-web/timestampFormat";
 import {
   createMarkdownCodeFence,
   formatShellTranscript,
@@ -81,6 +81,20 @@ import { bridgeCall } from "../platform/bridge";
 import { queryClient, type ThreadTranscriptRow } from "./queries";
 import { TranscriptUserMessageEditForm } from "./TranscriptUserMessageEditForm.lynx";
 import { TranscriptStatusIcon } from "./TranscriptStatusIcon.lynx";
+import {
+  TranscriptProposedPlanCard,
+  TranscriptTurnChangedFiles,
+  TranscriptUserAttachments,
+  TranscriptUserInputExchange,
+  TranscriptWorkingHeader,
+} from "./TranscriptRowCards.lynx";
+import {
+  resolveProposedPlanCardPresentation,
+  resolveTurnChangedFiles,
+  resolveUserMessageAttachments,
+} from "./transcriptRowCards.logic";
+import { ThreadErrorBanner } from "../components/ThreadErrorBanner.lynx";
+import { useRuntimeSocketUrl } from "./useRuntimeSocketUrl.lynx";
 import {
   buildTranscriptScrollToBottomParams,
   estimateTranscriptRowMainAxisSize,
@@ -244,17 +258,15 @@ function TranscriptWorkEntry({
   readonly markdownTree?: import("../components/markdown/markdownAst.lynx").MarkdownNode | null;
   readonly workspaceRoot: string | null;
 }) {
+  if (entry.turnFailure) {
+    // Upstream draws a failed turn as the error card, not as a work row.
+    return <ThreadErrorBanner error={entry.turnFailure.message} inline title="Task interrupted" />;
+  }
   if (isReasoningUpdateWorkEntry(entry)) {
     const reasoningText =
       formatAgentActivityEntryPreview(entry) ?? entry.preview ?? entry.detail ?? entry.label;
     return (
-      <view
-        className="TranscriptReasoningEntry"
-        style={{
-          fontSize: `${Math.max(11, chatFontSizePx - 1)}px`,
-          lineHeight: "19px",
-        }}
-      >
+      <view className="TranscriptReasoningEntry">
         <ChatMarkdown cwd={workspaceRoot} preparsedTree={markdownTree} text={reasoningText} />
       </view>
     );
@@ -748,7 +760,11 @@ function TranscriptMessage({
         );
     },
   });
-  const timestamp = formatShortTimestamp(message.createdAt, timestampFormat);
+  const timestamp = formatDayAwareTimestamp(message.createdAt, timestampFormat);
+  const runtimeSocketUrl = useRuntimeSocketUrl();
+  const userAttachments = isUser
+    ? resolveUserMessageAttachments({ attachments: message.attachments, runtimeSocketUrl })
+    : null;
   // Electron's footer rules: copy, fork and pin belong to a settled, persisted answer;
   // a pinned message keeps its pin so it can always be unpinned.
   const assistantCopyState = resolveAssistantMessageCopyState({
@@ -770,20 +786,6 @@ function TranscriptMessage({
   });
   const turnSummary = row.assistantTurnDiffSummary;
   const turnChangedFileCount = turnSummary?.files.length ?? 0;
-  const turnAdditions =
-    turnSummary?.files.reduce((sum, file) => sum + (file.additions ?? 0), 0) ?? 0;
-  const turnDeletions =
-    turnSummary?.files.reduce((sum, file) => sum + (file.deletions ?? 0), 0) ?? 0;
-  const reviewTurnChanges = useLynxInteractiveState({
-    baseClassName: "TranscriptTurnChangesCard",
-    accessibleLabel: turnSummary
-      ? `Review changes for turn ${turnSummary.turnId}`
-      : "Review changes",
-    disabled: !turnSummary || turnChangedFileCount === 0 || !onOpenTurnDiff,
-    onActivate: () => {
-      if (turnSummary) onOpenTurnDiff?.(turnSummary.turnId);
-    },
-  });
   function addSelectedTextToChat() {
     "background only";
     if (!activeTextSelection) return;
@@ -824,28 +826,41 @@ function TranscriptMessage({
             onSubmit={onSubmitEdit}
           />
         ) : (
-          <MessageUserBubbleComposition>
-            <view
-              className="TranscriptUserText"
-              style={
-                getChatTranscriptUserMessageTextStyle(chatFontSizePx) as Record<string, string>
-              }
-            >
-              <ChatMarkdown
-                cwd={workspaceRoot}
-                preparsedTree={row.markdownTree}
-                selectable
-                text={message.text}
-                variant="user"
-                mentionReferences={message.mentions ?? []}
-                onOpenFileReference={onOpenFileReference}
+          <>
+            {userAttachments ? (
+              <TranscriptUserAttachments
+                attachments={userAttachments}
+                hasText={(displayedUserMessage?.visibleText ?? message.text).trim().length > 0}
               />
-            </view>
-          </MessageUserBubbleComposition>
+            ) : null}
+            <MessageUserBubbleComposition>
+              <view
+                className="TranscriptUserText"
+                style={
+                  getChatTranscriptUserMessageTextStyle(chatFontSizePx) as Record<string, string>
+                }
+              >
+                <ChatMarkdown
+                  cwd={workspaceRoot}
+                  preparsedTree={row.markdownTree}
+                  selectable
+                  text={message.text}
+                  variant="user"
+                  mentionReferences={message.mentions ?? []}
+                  onOpenFileReference={onOpenFileReference}
+                />
+              </view>
+            </MessageUserBubbleComposition>
+          </>
         )}
         {editing ? null : (
           <view className="TranscriptMessageFooter TranscriptMessageFooter--user">
-            <text className="TranscriptMessageTimestamp">{timestamp}</text>
+            <text
+              className="TranscriptMessageTimestamp"
+              style={getChatMessageFooterTextStyle(chatFontSizePx) as Record<string, string>}
+            >
+              {timestamp}
+            </text>
             <MessageActionButtonLynx className={copy.className} eventProps={copy.eventProps}>
               <svg
                 className="TranscriptMessageActionIcon"
@@ -940,18 +955,10 @@ function TranscriptMessage({
           </view>
         )}
         {!row.assistantTurnInProgress && turnSummary && turnChangedFileCount > 0 ? (
-          <view className={reviewTurnChanges.className} {...reviewTurnChanges.eventProps}>
-            <view className="TranscriptTurnChangesSummary">
-              <text className="TranscriptTurnChangesLabel">
-                {`Edited ${turnChangedFileCount} ${turnChangedFileCount === 1 ? "file" : "files"}`}
-              </text>
-              <text className="TranscriptTurnChangesStats">
-                <text className="TranscriptTurnChangesAdditions">{`+${turnAdditions}`}</text>{" "}
-                <text className="TranscriptTurnChangesDeletions">{`-${turnDeletions}`}</text>
-              </text>
-            </view>
-            <text className="TranscriptTurnChangesReview">Review</text>
-          </view>
+          <TranscriptTurnChangedFiles
+            changes={resolveTurnChangedFiles(turnSummary.files)}
+            onReview={onOpenTurnDiff ? () => onOpenTurnDiff(turnSummary.turnId) : undefined}
+          />
         ) : null}
         <TranscriptWorkEntries
           chatFontSizePx={chatFontSizePx}
@@ -1124,11 +1131,18 @@ function TranscriptRowContent({
       </view>
     );
   }
-  if (row.kind === "working" || row.kind === "working-header") {
+  if (row.kind === "working-header") {
+    return (
+      <view className="TranscriptMessageRow TranscriptMessageRowAssistant">
+        <TranscriptWorkingHeader startedAt={row.createdAt} />
+      </view>
+    );
+  }
+  if (row.kind === "working") {
     return (
       <view className="TranscriptMessageRow TranscriptMessageRowStatus">
         <TimelineStatusRowComposition
-          displayText={row.kind === "working-header" ? "Working…" : "Thinking"}
+          displayText="Thinking"
           fontSizePx={chatFontSizePx}
           statusOnly
           tone="thinking"
@@ -1138,21 +1152,54 @@ function TranscriptRowContent({
   }
   if (row.kind === "proposed-plan") {
     return (
-      <view className="TranscriptMessageRow TranscriptMessageRowStatus">
-        <TimelineStatusRowComposition
-          displayText="Plan ready"
-          fontSizePx={chatFontSizePx}
-          statusOnly
-          tone="info"
+      <view className="TranscriptMessageRow TranscriptMessageRowCard">
+        <TranscriptProposedPlanCard
+          chatFontSizePx={chatFontSizePx}
+          collapsedPreviewTree={row.planPreviewMarkdownTree}
+          displayedTree={row.markdownTree}
+          onOpenFileReference={onOpenFileReference}
+          plan={resolveProposedPlanCardPresentation(row.proposedPlan.planMarkdown)}
+          workspaceRoot={workspaceRoot}
         />
       </view>
     );
   }
+  if (row.kind === "user-input") {
+    return (
+      <view className="TranscriptMessageRow TranscriptMessageRowCard">
+        <TranscriptUserInputExchange
+          chatFontSizePx={chatFontSizePx}
+          items={row.entry.userInputExchange}
+        />
+      </view>
+    );
+  }
+  if (row.kind === "message-segment") {
+    // One slice of a settled answer whose text was interleaved with tool rows.
+    const segmentText = row.message.textSegments?.[row.segmentIndex]?.text ?? row.message.text;
+    if (segmentText.trim().length === 0) return null;
+    return (
+      <view className="TranscriptMessageRow TranscriptMessageRowAssistant">
+        <view
+          className="TranscriptAssistantTypography"
+          style={getChatTranscriptTextStyle(chatFontSizePx) as Record<string, string>}
+        >
+          <ChatMarkdown
+            cwd={workspaceRoot}
+            onOpenFileReference={onOpenFileReference}
+            preparsedTree={row.markdownTree}
+            text={segmentText}
+          />
+        </view>
+      </view>
+    );
+  }
+  // `worktree-setup`: the transient first-send step card.
   return (
     <view className="TranscriptMessageRow TranscriptMessageRowStatus">
       <TimelineStatusRowComposition
         displayText="Preparing worktree…"
-        fontSizePx={12}
+        fontSizePx={chatFontSizePx}
         statusOnly
         tone="info"
       />

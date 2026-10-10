@@ -2018,16 +2018,23 @@
   padding-right: 8px;
 }
 
+/* `pb-4` under a sent message (the hover footer is part of the row above it). */
 .TranscriptMessageRowUser {
-  padding-bottom: 32px;
+  padding-bottom: 16px;
 }
 
 .TranscriptMessageRowAssistant {
   padding-bottom: 8px;
 }
 
+/* `pb-2` under a work row. */
 .TranscriptMessageRowStatus {
-  padding-bottom: 6px;
+  padding-bottom: 8px;
+}
+
+/* Plan and answered-question rows: `pb-4`, as every non-assistant row. */
+.TranscriptMessageRowCard {
+  padding-bottom: 16px;
 }
 
 .TranscriptStatusIcon {
@@ -2044,35 +2051,29 @@
   margin: 6px 0;
 }
 
+/* Narration inside the expanded work log is ordinary chat markdown. */
 .TranscriptCollapsedNarration {
-  color: var(--muted-foreground);
-  font-size: 12px;
-  line-height: 19px;
-}
-
-.TranscriptCollapsedNarration .MdHeading,
-.TranscriptCollapsedNarration .MdParagraph,
-.TranscriptCollapsedNarration .MdList,
-.TranscriptCollapsedNarration .MdBlockquote {
   color: var(--foreground);
-  font-size: 12px;
-  line-height: 19px;
-  font-weight: 400;
+  font-size: var(--app-font-size-chat, 13px);
+  line-height: calc(var(--app-font-size-chat, 13px) * 1.625);
 }
 
+/* A reasoning update is a tool-row line: chat size, `leading-5`, muted, `py-0.5`. */
 .TranscriptReasoningEntry {
   width: 100%;
   min-width: 0;
-  color: color-mix(in srgb, var(--muted-foreground) 72%, transparent);
-  font-size: 11px;
-  line-height: 19px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-chat, 13px);
+  line-height: 20px;
 }
 
 .TranscriptReasoningEntry .MdHeading,
 .TranscriptReasoningEntry .MdParagraph,
 .TranscriptReasoningEntry .MdList,
 .TranscriptReasoningEntry .MdBlockquote {
-  color: color-mix(in srgb, var(--muted-foreground) 72%, transparent);
+  color: var(--muted-foreground);
   font-size: inherit;
   line-height: inherit;
   font-weight: 400;
@@ -2124,8 +2125,11 @@
   line-height: var(--transcript-tool-details-line-height);
 }
 
+/* The Web trigger is an inline-flex button in a block: its line box is 24.8px
+   at the default chat size, 1.3px more than the button. */
 .TranscriptToolGroup {
   display: flex;
+  min-height: 24.8px;
   flex-direction: column;
 }
 
@@ -2135,15 +2139,16 @@
   align-items: center;
   min-width: 0;
   gap: 6px;
-  min-height: 20px;
+  padding-top: 2px;
+  padding-bottom: 2px;
   color: var(--muted-foreground);
 }
 
 .TranscriptToolGroupLabel {
   min-width: 0;
   color: inherit;
-  font-size: 12px;
-  line-height: 20px;
+  font-size: var(--app-font-size-chat, 13px);
+  line-height: calc(var(--app-font-size-chat, 13px) * 1.5);
 }
 
 .TranscriptToolGroupChevron {
@@ -2212,57 +2217,6 @@
   min-width: 0;
 }
 
-.TranscriptTurnChangesCard {
-  display: flex;
-  width: 100%;
-  min-height: 46px;
-  margin-top: 8px;
-  margin-bottom: 12px;
-  padding: 7px 10px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid var(--color-border-light);
-  border-radius: 10px;
-  background-color: var(--color-background-surface);
-}
-
-.TranscriptTurnChangesSummary {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-}
-
-.TranscriptTurnChangesLabel,
-.TranscriptTurnChangesStats,
-.TranscriptTurnChangesReview {
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.TranscriptTurnChangesLabel,
-.TranscriptTurnChangesReview {
-  color: var(--foreground);
-}
-
-.TranscriptTurnChangesStats {
-  font-family: var(--font-ui-family);
-}
-
-.TranscriptTurnChangesAdditions {
-  color: var(--color-editor-added);
-}
-
-.TranscriptTurnChangesDeletions {
-  color: var(--color-editor-deleted);
-}
-
-.TranscriptTurnChangesReview {
-  padding: 3px 8px;
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-}
-
 .TranscriptMessageFooter {
   display: flex;
   flex-direction: row;
@@ -2275,8 +2229,10 @@
   transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* The column's `gap-px` separates the bubble from its hover footer. */
 .TranscriptMessageFooter--user {
   justify-content: flex-end;
+  margin-top: 0;
   padding-right: 2px;
 }
 
@@ -2328,9 +2284,9 @@
   color: var(--color-icon-secondary);
 }
 
+/* Size comes from `getChatMessageFooterTextStyle` (inline), as on the Web row. */
 .TranscriptMessageTimestamp {
   color: var(--color-text-foreground-tertiary);
-  font-size: 10px;
   font-weight: 400;
 }
 

@@ -8,38 +8,40 @@
   word-break: break-word;
 }
 
+/* Vertical margins of every block come from `resolveMarkdownChildSpacing`
+   (inline style): `.chat-markdown` margins collapse, a flex column's add up.
+   Lengths written in rem upstream are px here at the Web app's 16px rem. */
 .MdHeading {
   display: block;
   color: var(--foreground);
   font-weight: 600;
   line-height: 1.25;
   letter-spacing: -0.01em;
-  margin-top: 15px;
-  margin-bottom: 5px;
 }
 
 .MdH1 {
-  font-size: 24px;
+  font-size: 1.75em;
 }
 
 .MdH2 {
-  font-size: 22px;
+  font-size: 1.55em;
 }
 
 .MdH3 {
-  font-size: 19px;
+  font-size: 1.35em;
 }
 
 .MdH4 {
-  font-size: 17px;
+  font-size: 1.2em;
 }
 
 .MdH5 {
-  font-size: 15px;
+  font-size: 1.1em;
 }
 
 .MdH6 {
-  font-size: 14px;
+  font-size: 1em;
+  color: var(--muted-foreground);
 }
 
 .MdParagraph {
@@ -47,21 +49,18 @@
   color: var(--foreground);
   font-size: inherit;
   line-height: inherit;
-  margin-top: 9px;
-  margin-bottom: 9px;
 }
 
 .MdRoot--user .MdParagraph {
   width: 100%;
   min-width: 0;
-  margin-top: 6px;
-  margin-bottom: 6px;
   white-space: pre-wrap;
   word-break: break-word;
 }
 
+/* `.chat-markdown strong { font-weight: 500 }`. */
 .MdStrong {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .MdEmphasis {
@@ -70,7 +69,6 @@
 
 .MdDeleted {
   text-decoration: line-through;
-  color: var(--muted-foreground);
 }
 
 .MdLink {
@@ -104,28 +102,95 @@
   border-left-width: 2px;
   border-left-style: solid;
   border-left-color: var(--border);
-  padding-left: 13px;
-  margin-top: 9px;
-  margin-bottom: 9px;
+  padding-left: 12.8px;
   color: var(--muted-foreground);
+}
+
+/* Blockquote text is muted; its blocks set their own color otherwise. */
+.MdBlockquote .MdParagraph,
+.MdBlockquote .MdListMarkerText {
+  color: var(--muted-foreground);
+}
+
+/* GitHub `> [!NOTE]` alerts: `.chat-markdown blockquote[data-github-alert]`. */
+.MdAlert {
+  border-left-width: 3px;
+  border-left-color: var(--info);
+  color: var(--foreground);
+}
+
+.MdAlert .MdParagraph,
+.MdAlert .MdListMarkerText {
+  color: var(--foreground);
+}
+
+.MdAlert--tip {
+  border-left-color: var(--success);
+}
+
+.MdAlert--important {
+  border-left-color: var(--status-merged);
+}
+
+.MdAlert--warning {
+  border-left-color: var(--warning);
+}
+
+.MdAlert--caution {
+  border-left-color: var(--destructive);
+}
+
+.MdAlertTitle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5em;
+  height: 1.625em;
+}
+
+.MdAlertIcon {
+  flex-shrink: 0;
+}
+
+.MdAlertTitleText {
+  color: var(--info);
+  font-size: inherit;
+  font-weight: 500;
+  line-height: inherit;
+}
+
+.MdAlert--tip .MdAlertTitleText {
+  color: var(--success);
+}
+
+.MdAlert--important .MdAlertTitleText {
+  color: var(--status-merged);
+}
+
+.MdAlert--warning .MdAlertTitleText {
+  color: var(--warning);
+}
+
+.MdAlert--caution .MdAlertTitleText {
+  color: var(--destructive);
+}
+
+/* The title paragraph's bottom margin, collapsed with the body's first block. */
+.MdAlertBody {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10.4px;
 }
 
 .MdList {
   display: flex;
   flex-direction: column;
-  margin-top: 9px;
-  margin-bottom: 9px;
 }
 
 .MdListItem {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-}
-
-/* `.chat-markdown li + li { margin-top: 0.25rem }`. */
-.MdListItem--following {
-  margin-top: 4px;
 }
 
 /* `padding-left: 1.25rem` with an outside marker: the marker is anchored to the gutter's
@@ -151,12 +216,6 @@
   white-space: nowrap;
 }
 
-/* Tight list items render their text flush, as react-markdown drops the <p>. */
-.MdParagraph--tight {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
 .MdListBody {
   display: flex;
   flex-direction: column;
@@ -170,34 +229,33 @@
   justify-content: flex-start;
 }
 
+/* `.chat-markdown-task-checkbox`: a disabled native checkbox, 0.95em square,
+   ending 0.4em before the item text. */
 .MdTaskCheckbox {
   display: flex;
-  width: 14px;
-  height: 14px;
+  width: 0.95em;
+  height: 0.95em;
+  margin-left: 0.14em;
   align-items: center;
   justify-content: center;
   border-width: 1px;
   border-style: solid;
-  border-top-color: var(--color-border);
-  border-right-color: var(--color-border);
-  border-bottom-color: var(--color-border);
-  border-left-color: var(--color-border);
+  border-top-color: var(--muted-foreground);
+  border-right-color: var(--muted-foreground);
+  border-bottom-color: var(--muted-foreground);
+  border-left-color: var(--muted-foreground);
   border-radius: 3px;
-  background-color: transparent;
+  background-color: color-mix(in srgb, var(--foreground) 7%, transparent);
+  opacity: 0.7;
 }
 
 .MdTaskCheckbox--checked {
-  border-top-color: var(--primary);
-  border-right-color: var(--primary);
-  border-bottom-color: var(--primary);
-  border-left-color: var(--primary);
-  background-color: var(--primary);
+  background-color: var(--muted-foreground);
 }
 
 .MdTaskCheckboxIcon {
   width: 10px;
   height: 10px;
-  color: var(--primary-foreground);
 }
 
 .MdCode {
@@ -205,38 +263,38 @@
   font-size: var(--app-font-size-chat-code, 11px);
 }
 
+/* `.chat-markdown :not(pre) > code`. */
 .MdInlineCode {
   color: var(--foreground);
-  font-family: var(--font-mono-family);
+  font-family: var(--font-chat-code-family);
   background-color: var(--app-user-message-background);
-  border-radius: 6px;
-  padding: 1px 5px;
+  border-radius: 6.4px;
+  padding: 1.6px 5.6px;
+}
+
+.MdRoot--user .MdInlineCode {
+  background-color: color-mix(in srgb, var(--foreground) 9%, transparent);
 }
 
 .MdCodeBlockShell {
   width: 100%;
-  margin-top: 9px;
-  margin-bottom: 9px;
-  border-radius: 10px;
+  border-radius: 10.4px;
   background-color: var(--app-chat-code-surface);
   overflow: hidden;
 }
 
 .MdRoot--user .MdCodeBlockShell {
-  margin-top: 6px;
-  margin-bottom: 6px;
   background-color: color-mix(in srgb, var(--foreground) 7%, transparent);
 }
 
 .MdCodeHeader {
   width: 100%;
-  min-height: 28px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 1px 6px 1px 10px;
+  padding: 1.6px 6.4px 1.6px 9.6px;
 }
 
 .MdCodeTitle {
@@ -253,15 +311,16 @@
 .MdCodeLineRange {
   min-width: 0;
   color: var(--muted-foreground);
-  font-family: var(--font-mono-family);
-  font-size: 11px;
-  line-height: 15px;
+  font-family: var(--font-chat-code-family);
+  font-size: 11.52px;
+  line-height: 16.128px;
   letter-spacing: 0.01em;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.MdCodeLanguage {
+/* `.chat-markdown-codeblock__file-name`: only a file fence's name is emphasized. */
+.MdCodeFileName {
   color: var(--foreground);
   font-weight: 500;
 }
@@ -326,13 +385,15 @@
 
 .MdCodeBlock {
   min-width: 100%;
-  padding: 8px 10px;
+  padding: 8px 9.6px;
 }
 
+/* The line box of `.chat-markdown pre`: `leading-relaxed` of the chat font
+   around the smaller code font. */
 .MdCodeBlockText {
   display: block;
   color: var(--foreground);
-  line-height: 16.5px;
+  line-height: calc(var(--app-font-size-chat, 13px) * 1.625);
   white-space: pre;
 }
 
@@ -357,7 +418,6 @@
 .MdMathBlockShell {
   width: 100%;
   padding: 10px 12px;
-  margin-bottom: 10px;
   border-left-width: 3px;
   border-left-style: solid;
   border-left-color: var(--primary);
@@ -367,8 +427,6 @@
 .MdTableScroller {
   width: 100%;
   min-width: 0;
-  margin-top: 9px;
-  margin-bottom: 9px;
   border-width: 1px;
   border-style: solid;
   border-top-color: var(--border);
@@ -400,19 +458,34 @@
   border-bottom-color: var(--border);
 }
 
+/* The scroller draws the outer border; the last row and column add none. */
+.MdTableRow--last {
+  border-bottom-width: 0;
+}
+
+/* `flex-grow` is the column's content weight (inline style). */
 .MdTableHeaderCell,
 .MdTableCell {
   width: 0;
   min-width: 0;
-  flex: 1;
-  padding: 5px 7px;
+  flex-basis: 0;
+  flex-shrink: 1;
+  padding: 5.6px 7.2px;
   border-right-width: 1px;
   border-right-style: solid;
   border-right-color: var(--border);
 }
 
-.MdTableHeaderCell {
-  background-color: var(--muted);
+.MdTableCell--last {
+  border-right-width: 0;
+}
+
+.MdTableText--center {
+  text-align: center;
+}
+
+.MdTableText--right {
+  text-align: right;
 }
 
 .MdTableHeaderText,
@@ -436,8 +509,6 @@
   height: 1px;
   width: 100%;
   background-color: var(--border);
-  margin-top: 21px;
-  margin-bottom: 21px;
 }
 
 .MdInlineToken {
@@ -458,6 +529,7 @@
   line-height: 15px;
 }
 
+/* Upstream's `InlineMentionChip`: `text-chat leading-relaxed font-medium`. */
 .MdInlineToken--mention,
 .MdInlineToken--skill,
 .MdInlineToken--slash-command,
@@ -466,6 +538,8 @@
   border-width: 0;
   background-color: transparent;
   color: var(--info-foreground);
+  font-size: inherit;
+  line-height: inherit;
 }
 
 .MdInlineToken--agent-mention {
@@ -485,7 +559,6 @@
 }
 
 .MdInlineTokenGlyph,
-.MdInlineTokenFileIcon,
 .MdInlineTokenIcon {
   margin-right: 3px;
 }
@@ -498,14 +571,6 @@
 .MdInlineTokenGlyph {
   color: var(--muted-foreground);
   font-size: 10px;
-}
-
-.MdInlineTokenFileIcon {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  vertical-align: middle;
-  opacity: 0.85;
 }
 
 .MdInlineTokenIcon {
@@ -530,14 +595,4 @@
   color: var(--muted-foreground);
   font-family: var(--font-mono-family);
   font-size: 11px;
-}
-
-/* Electron's `.chat-markdown > :first-child/:last-child`: the first and last root blocks
-   drop their outer margins. Last in the file so it wins over every block's own margins. */
-.MdRoot .MdEdge--first {
-  margin-top: 0;
-}
-
-.MdRoot .MdEdge--last {
-  margin-bottom: 0;
 }

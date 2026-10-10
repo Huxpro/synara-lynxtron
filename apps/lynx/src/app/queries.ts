@@ -208,6 +208,8 @@ export type ThreadTranscriptRow = MessagesTimelineRow & {
   readonly markdownTree?: MarkdownNode | null;
   readonly markdownTreesByMessageId?: Readonly<Record<string, MarkdownNode | null>>;
   readonly markdownTreesByWorkEntryId?: Readonly<Record<string, MarkdownNode | null>>;
+  /** Proposed-plan rows: the collapsed preview of a long plan (`markdownTree` is the full plan). */
+  readonly planPreviewMarkdownTree?: MarkdownNode | null;
 };
 
 // Directory listings are never truncated; only search results report it.

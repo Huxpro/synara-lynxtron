@@ -9,6 +9,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  /* `gap-px` between attachments, bubble and hover footer. */
+  gap: 1px;
   width: 80%;
   min-width: 0;
   max-width: 80%;
@@ -24,7 +26,14 @@
   width: max-content;
   max-width: 100%;
   min-width: 0;
-  padding: 6px 12px;
+  /* `px-3.5 py-2.5` inside a 1px transparent border (the temporary-chat outline's slot). */
+  padding: 10px 14px;
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
   border-radius: var(--radius-user-message);
   background-color: var(--app-user-message-background);
 }

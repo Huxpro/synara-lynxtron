@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-10T01:42:31.617Z",
+  "generatedAt": "2026-10-10T06:50:02.168Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -12,7 +12,7 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxGraph": {
     "entries": ["src/app/index.tsx"],
-    "modules": 900,
+    "modules": 906,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/checkbox",
@@ -487,11 +487,11 @@
         "loc": 135424
       },
       "currentReuse": {
-        "modules": 318,
-        "loc": 79900,
-        "modulePercent": 53,
-        "locPercent": 59,
-        "gatePercent": 53
+        "modules": 319,
+        "loc": 79934,
+        "modulePercent": 53.17,
+        "locPercent": 59.02,
+        "gatePercent": 53.17
       },
       "modules": [
         {
@@ -6223,7 +6223,7 @@
           "loc": 34,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -7935,11 +7935,11 @@
         "loc": 116837
       },
       "currentReuse": {
-        "modules": 288,
-        "loc": 72831,
-        "modulePercent": 59.63,
-        "locPercent": 62.34,
-        "gatePercent": 59.63
+        "modules": 289,
+        "loc": 72865,
+        "modulePercent": 59.83,
+        "locPercent": 62.36,
+        "gatePercent": 59.83
       },
       "modules": [
         {
@@ -12756,7 +12756,7 @@
           "loc": 34,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -13807,11 +13807,11 @@
         "loc": 226411
       },
       "currentReuse": {
-        "modules": 370,
-        "loc": 87341,
-        "modulePercent": 35.78,
-        "locPercent": 38.58,
-        "gatePercent": 35.78
+        "modules": 372,
+        "loc": 87537,
+        "modulePercent": 35.98,
+        "locPercent": 38.66,
+        "gatePercent": 35.98
       },
       "modules": [
         {
@@ -24811,7 +24811,7 @@
           "loc": 162,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/visibleInterval.ts",
             "apps/web/src/session-logic.ts",
@@ -25910,7 +25910,7 @@
           "loc": 34,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -27737,11 +27737,11 @@
         "loc": 149320
       },
       "currentReuse": {
-        "modules": 319,
-        "loc": 80038,
-        "modulePercent": 49.23,
-        "locPercent": 53.6,
-        "gatePercent": 49.23
+        "modules": 320,
+        "loc": 80072,
+        "modulePercent": 49.38,
+        "locPercent": 53.62,
+        "gatePercent": 49.38
       },
       "modules": [
         {
@@ -34189,7 +34189,7 @@
           "loc": 34,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -35948,11 +35948,11 @@
         "loc": 148974
       },
       "currentReuse": {
-        "modules": 333,
-        "loc": 82109,
-        "modulePercent": 49.78,
-        "locPercent": 55.12,
-        "gatePercent": 49.78
+        "modules": 334,
+        "loc": 82143,
+        "modulePercent": 49.93,
+        "locPercent": 55.14,
+        "gatePercent": 49.93
       },
       "modules": [
         {
@@ -42723,7 +42723,7 @@
           "loc": 34,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -44464,11 +44464,11 @@
         "loc": 148975
       },
       "currentReuse": {
-        "modules": 333,
-        "loc": 82109,
-        "modulePercent": 49.78,
-        "locPercent": 55.12,
-        "gatePercent": 49.78
+        "modules": 334,
+        "loc": 82143,
+        "modulePercent": 49.93,
+        "locPercent": 55.14,
+        "gatePercent": 49.93
       },
       "modules": [
         {
@@ -51239,7 +51239,7 @@
           "loc": 34,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -53002,11 +53002,11 @@
         "loc": 221136
       },
       "currentReuse": {
-        "modules": 371,
-        "loc": 87787,
-        "modulePercent": 36.95,
-        "locPercent": 39.7,
-        "gatePercent": 36.95
+        "modules": 373,
+        "loc": 87983,
+        "modulePercent": 37.15,
+        "locPercent": 39.79,
+        "gatePercent": 37.15
       },
       "modules": [
         {
@@ -63624,7 +63624,7 @@
           "loc": 162,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/lib/visibleInterval.ts",
             "apps/web/src/session-logic.ts",
@@ -64715,7 +64715,7 @@
           "loc": 34,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
