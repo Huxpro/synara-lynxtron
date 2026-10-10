@@ -272,6 +272,13 @@
   padding: 1.6px 5.6px;
 }
 
+/* A line holding inline code is 1px taller in Chromium (the code font's line box);
+   the Native text engine keeps the paragraph's line height. The web host undoes
+   this (webHostStyleOverrides.logic.ts). */
+.MdText--inline-code {
+  padding-bottom: 1px;
+}
+
 .MdRoot--user .MdInlineCode {
   background-color: color-mix(in srgb, var(--foreground) 9%, transparent);
 }

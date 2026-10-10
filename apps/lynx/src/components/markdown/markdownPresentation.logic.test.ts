@@ -5,6 +5,7 @@ import { parseMarkdown } from "./markdownAst.lynx";
 import {
   collapseMarkdownSoftBreaks,
   isMarkdownListLoose,
+  markdownNodeHasInlineCode,
   markdownSpacingStyle,
   resolveMarkdownChildSpacing,
   resolveMarkdownCodeBlockPresentation,
@@ -274,5 +275,12 @@ describe("markdown block spacing (collapsed margins of .chat-markdown)", () => {
       marginTop: "10.4px",
       marginBottom: "10.4px",
     });
+  });
+
+  it("finds an inline code run anywhere in a block's inline content", () => {
+    const paragraph = (source: string) => parseMarkdown(source)!.children![0]!;
+    expect(markdownNodeHasInlineCode(paragraph("plain **bold** text"))).toBe(false);
+    expect(markdownNodeHasInlineCode(paragraph("with `code` inside"))).toBe(true);
+    expect(markdownNodeHasInlineCode(paragraph("with **bold `code`** inside"))).toBe(true);
   });
 });

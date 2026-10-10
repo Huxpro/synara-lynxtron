@@ -310,6 +310,9 @@
 .TranscriptTurnChangesSummary {
   display: flex;
   min-width: 0;
+  /* Two 1.5 lines. Fixed, because the Native text engine rounds each 19.5px
+     line up to 20px. */
+  height: calc(var(--app-font-size-chat, 13px) * 3);
   flex-direction: column;
 }
 

@@ -15,6 +15,9 @@
   margin-left: -2px;
   padding-top: 4px;
   padding-bottom: 8px;
+  /* Upstream's box: 3.5px above a 1.5-line label and `pb-2`. Fixed, because the
+     Native text engine rounds the 19.5px label up to 20px. */
+  height: calc(var(--app-font-size-chat, 13px) * 1.5 + 11.5px);
 }
 
 .SharedCollapsedWorkTrigger.ui-focus {

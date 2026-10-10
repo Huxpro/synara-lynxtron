@@ -207,6 +207,17 @@ export function markdownNodePlainText(node: MarkdownSpacingNode & { value?: stri
 // margins add up, so the gap each block needs is resolved here and applied as
 // the only vertical margin.
 
+/**
+ * Whether a block's inline content holds an inline code run (a code span or the
+ * file chip drawn for one). Chromium grows such a line by 1px; the Native text
+ * engine does not, so the block carries a class that adds it there.
+ */
+export function markdownNodeHasInlineCode(node: MarkdownSpacingNode): boolean {
+  return (node.children ?? []).some(
+    (child) => child.type === "inlineCode" || markdownNodeHasInlineCode(child),
+  );
+}
+
 export interface MarkdownSpacingNode {
   readonly type: string;
   readonly depth?: number;
