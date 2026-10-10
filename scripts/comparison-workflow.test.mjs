@@ -91,6 +91,42 @@ describe("workflow table", () => {
   });
 });
 
+// J2's selection step finds the selection actions and the composer's selection chip by
+// upstream's attributes on Electron and by the Lynx renderer's on Native, and relies on
+// Native's selectable text sitting in a scroller of its own. A rename must fail here.
+describe("J2 selection targets", () => {
+  const workflows = source("scripts/comparison-workflows.mjs");
+
+  it("uses attributes both renderers' selection surfaces still carry", () => {
+    const action = source("apps/web/src/components/chat/TranscriptSelectionAction.tsx");
+    expect(action).toContain('data-transcript-selection-action="true"');
+    expect(action).toContain('label="Add to Chat"');
+    expect(action).toContain("aria-label={label}");
+    expect(source("apps/web/src/components/chat/AssistantSelectionsSummaryChip.tsx")).toContain(
+      'removeLabel="Remove selections"',
+    );
+    expect(workflows).toContain('[data-transcript-selection-action="true"]');
+    const transcript = source("apps/lynx/src/app/Transcript.tsx");
+    expect(transcript).toContain("className={`TranscriptSelectionToolbar ");
+    expect(transcript).toContain('label="Add to Chat"');
+    expect(
+      source("apps/lynx/src/adapters/ComposerReferenceAttachmentsCompositionElements.lynx.tsx"),
+    ).toContain('label="Remove selections"');
+    expect(workflows).toContain('".TranscriptSelectionToolbar"');
+    expect(workflows).toContain('{ label: "Add to Chat" }');
+    expect(workflows).toContain('{ label: "Remove selections" }');
+    expect(source("apps/lynx/src/components/markdown/ChatMarkdown.lynx.tsx")).toContain(
+      "text-selection={props.context.selectable}",
+    );
+    expect(workflows).toContain('nodeAttribute(node, "text-selection") === "true"');
+  });
+
+  it("scrolls a Native transcript from the gutter, where a drag is not a text selection", () => {
+    expect(workflows).toContain('driver.find({ className: ".TranscriptList" })');
+    expect(source("apps/lynx/src/app/Transcript.tsx")).toContain('className="TranscriptList"');
+  });
+});
+
 // J7 addresses the handoff surfaces by upstream's own attributes on Electron and by the
 // Lynx renderer's classes on Native. A rename on either side must fail here, not as a
 // timeout in a live run.

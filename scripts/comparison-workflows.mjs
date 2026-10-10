@@ -281,7 +281,122 @@ async function rowTop(driver, id) {
 async function transcriptViewport(driver) {
   const composer = await driver.find(pick(driver, COMPOSER_TARGET));
   // The transcript sits above the composer; 60px clears the header.
-  return { top: 60, bottom: composer.y - composer.height / 2 - 20, x: composer.x };
+  const viewport = { top: 60, bottom: composer.y - composer.height / 2 - 20, x: composer.x };
+  if (driver.kind === "electron") return viewport;
+  // `x` is where the scroll gesture starts. Native scrolls with an emulated finger, and a
+  // press and move that start on message text select it instead of panning, as a mouse drag
+  // does. The gutter between the list's edge and the message column has no text; the
+  // message trail sits at the list's very edge, so the gesture starts beside the column.
+  const list = await driver.find({ className: ".TranscriptList" });
+  if (!list) throw new Error("The Native transcript list is not on screen.");
+  const columnLeft = composer.x - composer.width / 2;
+  const gutter = columnLeft - (list.x - list.width / 2);
+  if (gutter < 32)
+    throw new Error(`The transcript gutter is ${Math.round(gutter)}px: no room to scroll from.`);
+  return { ...viewport, x: columnLeft - Math.min(40, gutter / 2) };
+}
+
+function nodeAttribute(node, name) {
+  const attributes = node?.attributes ?? [];
+  for (let index = 0; index + 1 < attributes.length; index += 2) {
+    if (attributes[index] === name) return String(attributes[index + 1]);
+  }
+  return null;
+}
+
+/** Depth-first, so the nodes come in reading order. */
+function nodesInDocumentOrder(root) {
+  const nodes = [];
+  const visit = (node) => {
+    nodes.push(node);
+    for (const child of node?.children ?? []) visit(child);
+  };
+  visit(root);
+  return nodes;
+}
+
+// A text drag this long selects several words on any line the step accepts.
+const SELECTION_DRAG_PX = 120;
+
+/**
+ * Where a reader would press to select text in message `messageId`: the start of the line
+ * of its text nearest the middle of the transcript viewport. Null when none is in view.
+ */
+async function messageTextLine(driver, messageId, viewport) {
+  const middle = (viewport.top + viewport.bottom) / 2;
+  if (driver.kind === "electron") {
+    return driver.evaluate(`(() => {
+      const row = Array.from(document.querySelectorAll('[data-timeline-row-kind="message"][data-message-id]')).find((node) => node.getAttribute('data-message-id') === ${JSON.stringify(messageId)});
+      if (!row) return null;
+      const walker = document.createTreeWalker(row, NodeFilter.SHOW_TEXT);
+      let best = null;
+      for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+        if ((node.textContent ?? '').trim().length < 20) continue;
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        for (const rect of range.getClientRects()) {
+          if (rect.width < ${SELECTION_DRAG_PX + 20} || rect.top < ${viewport.top + 20} || rect.bottom > ${viewport.bottom - 20}) continue;
+          const distance = Math.abs((rect.top + rect.bottom) / 2 - ${middle});
+          if (!best || distance < best.distance) best = { x: rect.left + 6, y: (rect.top + rect.bottom) / 2, distance };
+        }
+      }
+      return best && { x: best.x, y: best.y };
+    })()`);
+  }
+  const row = nodesInDocumentOrder(await driver.documentRoot()).find(
+    (node) => nodeAttribute(node, "item-key") === messageId,
+  );
+  if (!row) return null;
+  const texts = nodesInDocumentOrder(row).filter(
+    (node) =>
+      node.nodeName === "TEXT" &&
+      nodeAttribute(node, "text-selection") === "true" &&
+      nodesInDocumentOrder(node)
+        .map((child) => nodeAttribute(child, "text") ?? "")
+        .join("")
+        .trim().length >= 20,
+  );
+  const boxOf = async (node) => {
+    const quad = (await driver.send("DOM.getBoxModel", { nodeId: node.nodeId }))?.model?.border;
+    if (!quad) return null;
+    return {
+      left: Math.min(quad[0], quad[2], quad[4], quad[6]),
+      top: Math.min(quad[1], quad[3], quad[5], quad[7]),
+      bottom: Math.max(quad[1], quad[3], quad[5], quad[7]),
+    };
+  };
+  // The texts of a reply are stacked in reading order: find the first that ends below the
+  // middle by bisection (a long reply has hundreds), then take the first one fully in view.
+  let low = 0;
+  let high = texts.length;
+  while (low < high) {
+    const probe = Math.floor((low + high) / 2);
+    const box = await boxOf(texts[probe]);
+    if (box && box.bottom > middle) high = probe;
+    else low = probe + 1;
+  }
+  for (const text of texts.slice(Math.max(0, low - 2), low + 4)) {
+    const box = await boxOf(text);
+    if (!box || box.bottom - box.top <= 0) continue;
+    if (box.top < viewport.top + 20 || box.bottom > viewport.bottom - 20) continue;
+    // A paragraph's first line: half a line below its top, whatever it wraps to.
+    return { x: box.left + 6, y: box.top + Math.min(10, (box.bottom - box.top) / 2) };
+  }
+  return null;
+}
+
+/** What a text selection in the transcript shows: Electron's DOM range and the action strip. */
+async function transcriptSelection(driver) {
+  if (driver.kind === "electron") {
+    return driver.evaluate(
+      `({ toolbar: document.querySelectorAll('[data-transcript-selection-action="true"]').length > 0, selectedChars: (getSelection()?.toString() ?? '').trim().length })`,
+    );
+  }
+  // Native draws the strip only for a selection whose text the engine returned non-empty.
+  const toolbar =
+    nativeNodesMatchingClasses(await driver.documentRoot(), ".TranscriptSelectionToolbar").length >
+    0;
+  return { toolbar, selectedChars: null };
 }
 
 /** Deletes a thread a workflow created so later workflows see the canonical fixture. */
@@ -712,6 +827,64 @@ export async function workflowJ2(context) {
         lastRowBottom: lastRow ? Math.round(lastRow.bottom) : null,
         viewportBottom: Math.round(viewport.bottom),
       };
+    });
+
+    // Electron selects with real mouse events (a DOM range). The DevTool has no mouse, so
+    // Native gets the same press, move and release from an emulated finger, which the
+    // engine's text drag recognizer takes as it takes a mouse drag.
+    await step("select reply text by dragging; the transcript stays where it was", async () => {
+      const last = (await backend.thread(threadId)).messages.at(-1);
+      const viewport = await transcriptViewport(driver);
+      // A turn that has just settled still re-lays its row out (the turn-end actions appear
+      // under the reply), which moves a transcript that follows its end. That is not the
+      // selection moving it, so the row has to rest before the drag is judged.
+      let topBefore = await rowTop(driver, last.id);
+      await waitFor(
+        async () => {
+          await sleep(500);
+          const top = await rowTop(driver, last.id);
+          const rested = top !== null && topBefore !== null && Math.abs(top - topBefore) <= 0.5;
+          topBefore = top;
+          return rested;
+        },
+        { label: "the settled reply row to stop moving", timeoutMs: 10_000, intervalMs: 0 },
+      );
+      const line = await waitFor(() => messageTextLine(driver, last.id, viewport), {
+        label: "a line of the reply's text in the transcript viewport",
+      });
+      topBefore = await rowTop(driver, last.id);
+      if (topBefore === null) throw new Error("The reply row is not measurable before the drag.");
+      await driver.drag(line, { x: line.x + SELECTION_DRAG_PX, y: line.y });
+      const selection = await waitFor(
+        async () => {
+          const current = await transcriptSelection(driver);
+          return current.toolbar ? current : null;
+        },
+        { label: "the selection actions after the drag", timeoutMs: 5_000 },
+      );
+      if (selection.selectedChars === 0)
+        throw new Error("The drag showed selection actions without selecting any text.");
+      const topAfter = await rowTop(driver, last.id);
+      if (topAfter === null)
+        throw new Error("The reply row left the transcript when its text was selected.");
+      const movedPx = Math.round(Math.abs(topAfter - topBefore) * 10) / 10;
+      if (movedPx > 2) throw new Error(`Selecting text moved the transcript ${movedPx}px.`);
+      if (await scrollToBottomOffered(driver))
+        throw new Error("Selecting text detached the transcript from its end.");
+      // Add to Chat takes the selection into the composer; removing it restores the draft.
+      await driver.tap({ label: "Add to Chat" });
+      await waitFor(() => driver.find({ label: "Remove selections" }), {
+        label: "the selection in the composer",
+        timeoutMs: 5_000,
+      });
+      await driver.tap({ label: "Remove selections" });
+      await waitFor(async () => (await driver.find({ label: "Remove selections" })) === null, {
+        label: "the selection to leave the composer",
+        timeoutMs: 5_000,
+      });
+      if ((await transcriptSelection(driver)).toolbar)
+        throw new Error("The selection actions stayed after Add to Chat.");
+      return { movedPx, selectedChars: selection.selectedChars };
     });
 
     await step("tool activity does not snap a detached reader", async () => {
