@@ -128,13 +128,13 @@
         "<span className=\"shrink-0\">{failed ? \"Handoff failed\" : \"Context handoff\"}</span>"
       ],
       "copies": ["apps/lynx/src/app/ProviderHandoffDivider.lynx.tsx"],
-      "sha256": "39f801771880ae17cc506193dff2974d156f358965cdd526a5e260f1ac7ea842"
+      "sha256": "3bab584c3b99b32755f3147148ab4fb5c2cf8b8381923fa0f4801220c4f80205"
     },
     {
       "upstream": "apps/web/src/components/chat/TimelineWorkEntryRow.tsx",
       "symbols": ["providerModelLabel"],
       "copies": ["apps/lynx/src/app/ProviderHandoffDivider.lynx.tsx"],
-      "sha256": "d30f3b91deade7882aaf6a174f1f8e6b37acc8de163e8537bddb8ac365382651"
+      "sha256": "58628ab0f3e72a1d8cdc4d5bff823f66121548c3342919c79dd3a44406515daa"
     },
     {
       "upstream": "apps/web/src/components/chat/rightDockPaneMeta.tsx",

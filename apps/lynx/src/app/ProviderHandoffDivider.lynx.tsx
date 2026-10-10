@@ -25,29 +25,37 @@ import { Hugeicon } from "../lib/hugeicons.lynx";
 import { colorizeLynxSvg } from "../lib/themedSvg.lynx";
 import { disclosureContentClassName, useLynxDisclosurePresence } from "../platform/motion.lynx";
 
+import type { FastModeNotice } from "@synara-web/lib/fastModeState";
 import "./provider-handoff-divider.css";
 
 /**
  * `providerModelLabel` of upstream's `TimelineWorkEntryRow.tsx` (file-local there;
  * `plan/upstream-parallel-copies.json` fails the build when upstream changes it).
  */
-export function providerModelLabel(selection: ModelSelection): string {
+export function providerModelLabel(
+  selection: ModelSelection,
+  fastModeNotice?: FastModeNotice | null,
+): string {
   const displayName =
     PROVIDER_DESCRIPTORS.find((descriptor) => descriptor.kind === selection.provider)
       ?.displayName ?? selection.provider;
   const summary = resolveThreadModelSummary(selection);
   const modelLabel = summary
-    ? `${formatThreadModelSummaryLabel(summary)}${summary.fastMode ? " · Fast" : ""}`
+    ? `${formatThreadModelSummaryLabel(summary)}${summary.fastMode ? ` · ${fastModeNotice?.label ?? "Fast"}` : ""}`
     : selection.model;
   return `${displayName} · ${modelLabel}`;
 }
 
 /** What assistive tech reads for one side: upstream's button text, in its reading order. */
-function endpointAccessibleText(selection: ModelSelection): string {
+function endpointAccessibleText(
+  selection: ModelSelection,
+  fastModeNotice?: FastModeNotice | null,
+): string {
   const summary = resolveThreadModelSummary(selection);
   return [
     summary?.modelLabel ?? selection.model,
-    summary?.fastMode ? "Fast mode" : null,
+    // Upstream's `FastModeBadgeIcon`: a notice means fast mode was requested but is not serving.
+    summary?.fastMode ? (fastModeNotice?.label ?? "Fast mode") : null,
     summary?.statusLabel ?? null,
   ]
     .filter((part): part is string => part !== null)
@@ -57,8 +65,8 @@ function endpointAccessibleText(selection: ModelSelection): string {
 export function resolveProviderHandoffDividerLabel(info: ProviderHandoffInfo): string {
   return [
     info.status === "failed" ? "Handoff failed" : "Context handoff",
-    endpointAccessibleText(info.sourceModelSelection),
-    endpointAccessibleText(info.targetModelSelection),
+    endpointAccessibleText(info.sourceModelSelection, info.sourceFastModeNotice),
+    endpointAccessibleText(info.targetModelSelection, info.targetFastModeNotice),
   ].join(" ");
 }
 
@@ -66,6 +74,7 @@ export function resolveProviderHandoffDividerLabel(info: ProviderHandoffInfo): s
 // fast-mode bolt, then the effort label.
 function HandoffEndpoint(props: {
   readonly selection: ModelSelection;
+  readonly fastModeNotice?: FastModeNotice | null | undefined;
   readonly tone: "muted" | "target" | "failed";
   readonly struck?: boolean;
 }) {
@@ -83,8 +92,13 @@ function HandoffEndpoint(props: {
       </text>
       {summary?.fastMode ? (
         <svg
-          className="ProviderHandoffEndpointFast"
-          content={colorizeLynxSvg(fastModeSvg, semanticIconColor("secondary"))}
+          className={`ProviderHandoffEndpointFast${
+            props.fastModeNotice ? " ProviderHandoffEndpointFast--notice" : ""
+          }`}
+          content={colorizeLynxSvg(
+            fastModeSvg,
+            semanticIconColor(props.fastModeNotice ? "tertiary" : "secondary"),
+          )}
         />
       ) : null}
       {summary?.statusLabel ? (
@@ -98,8 +112,8 @@ export function ProviderHandoffDetails(props: { readonly info: ProviderHandoffIn
   const { info } = props;
   const failed = info.status === "failed";
   const rows: ReadonlyArray<readonly [string, string]> = [
-    ["From", providerModelLabel(info.sourceModelSelection)],
-    ["To", providerModelLabel(info.targetModelSelection)],
+    ["From", providerModelLabel(info.sourceModelSelection, info.sourceFastModeNotice)],
+    ["To", providerModelLabel(info.targetModelSelection, info.targetFastModeNotice)],
     failed
       ? ["Error", info.failureDetail ?? "The session did not start."]
       : [
@@ -169,6 +183,7 @@ export function ProviderHandoffDivider(props: { readonly info: ProviderHandoffIn
           </text>
           <HandoffEndpoint
             selection={info.sourceModelSelection}
+            fastModeNotice={info.sourceFastModeNotice}
             tone={failed ? "failed" : "muted"}
           />
           <ArrowRightIcon
@@ -178,6 +193,7 @@ export function ProviderHandoffDivider(props: { readonly info: ProviderHandoffIn
           />
           <HandoffEndpoint
             selection={info.targetModelSelection}
+            fastModeNotice={info.targetFastModeNotice}
             struck={failed}
             tone={failed ? "failed" : "target"}
           />
