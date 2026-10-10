@@ -5,6 +5,7 @@ import {
   createNativeComposerDraftProjection,
   displayOffsetForCanonicalOffset,
   NATIVE_COMPOSER_TOKEN_ANCHOR,
+  nativeComposerEditorNeedsSync,
 } from "./composerDraftProjection.logic";
 
 const mention = {
@@ -214,5 +215,38 @@ describe("native Composer draft projection", () => {
     expect(edit.displayText).toBe(`${NATIVE_COMPOSER_TOKEN_ANCHOR} 中文`);
     expect(edit.canonicalText).toBe("/review 中文");
     expect(edit.skills).toEqual([reviewSkill]);
+  });
+
+  it("does not write a typed edit back into the editor that already shows it", () => {
+    // The input handler records the typed value as applied before the draft
+    // store re-renders with the same text.
+    expect(
+      nativeComposerEditorNeedsSync({
+        appliedDisplayText: "abXcd",
+        nativeValue: "abXcd",
+        displayText: "abXcd",
+      }),
+    ).toBe(false);
+  });
+
+  it("syncs the editor on mount, on an external draft change and when the projection rewrites the text", () => {
+    expect(
+      nativeComposerEditorNeedsSync({ appliedDisplayText: null, nativeValue: "", displayText: "" }),
+    ).toBe(true);
+    expect(
+      nativeComposerEditorNeedsSync({
+        appliedDisplayText: "draft one",
+        nativeValue: "draft one",
+        displayText: "restored draft",
+      }),
+    ).toBe(true);
+    const collapsed = `${NATIVE_COMPOSER_TOKEN_ANCHOR} `;
+    expect(
+      nativeComposerEditorNeedsSync({
+        appliedDisplayText: "/review ",
+        nativeValue: "/review ",
+        displayText: collapsed,
+      }),
+    ).toBe(true);
   });
 });

@@ -136,6 +136,7 @@ import {
   applyNativeComposerDisplayEdit,
   createNativeComposerDraftProjection,
   displayOffsetForCanonicalOffset,
+  nativeComposerEditorNeedsSync,
   type NativeComposerDisplayToken,
 } from "./composerDraftProjection.logic";
 import {
@@ -984,8 +985,11 @@ export function Composer({
   useEffect(() => {
     "background only";
     if (
-      appliedDisplayProjectionRef.current === draftProjection.displayText &&
-      nativeEditorSnapshotRef.current.value === draftProjection.displayText
+      !nativeComposerEditorNeedsSync({
+        appliedDisplayText: appliedDisplayProjectionRef.current,
+        nativeValue: nativeEditorSnapshotRef.current.value,
+        displayText: draftProjection.displayText,
+      })
     ) {
       return;
     }
@@ -1895,6 +1899,11 @@ export function Composer({
                 selectionEnd: event.detail.selectionEnd,
                 isComposing: event.detail.isComposing ?? false,
               };
+              // The editor already shows what was typed. Recording it as applied
+              // keeps the draft sync effect from writing the same text back: that
+              // echo moved the caret to the end on every keystroke and, when the
+              // next key landed first, replaced it with the older text.
+              appliedDisplayProjectionRef.current = event.detail.value;
               if (pendingNativeValueRef.current !== null) {
                 const pendingNativeValue = pendingNativeValueRef.current;
                 pendingNativeValueRef.current = null;

@@ -3,6 +3,19 @@ export interface RelayPendingDiagnostic {
   readonly streaming: boolean;
 }
 
+/**
+ * A pending relay request is a stream when it buffers chunks (the legacy
+ * un-scoped stream) or relays items under a renderer stream id (the scoped
+ * streams every subscription uses). Classifying by `chunks` alone reported
+ * every scoped subscription as an unfinished unary request.
+ */
+export function isRelayPendingStream(request: {
+  readonly chunks?: unknown;
+  readonly onItem?: unknown;
+}): boolean {
+  return request.chunks !== undefined || request.onItem !== undefined;
+}
+
 export interface RelayPendingSummary {
   readonly activeStreamRequests: number;
   readonly activeStreamTags: readonly string[];
