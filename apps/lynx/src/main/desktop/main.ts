@@ -846,6 +846,8 @@ app.whenReady().then(() => {
     w.sendGlobalEvent("viewport:resize", bounds.width, bounds.height);
   });
   w.on("focus", () => systemAppearanceWatcher?.refresh());
+  w.on("focus", () => w.sendGlobalEvent("notification:window-active", true));
+  w.on("blur", () => w.sendGlobalEvent("notification:window-active", false));
   installApplicationMenu(w);
   if (hostInputProbeReportPath) {
     w.on("focus", () => {
@@ -865,6 +867,10 @@ app.whenReady().then(() => {
     }
 
     try {
+      if (name === "notificationWindowActive") {
+        callback.sendReply(JSON.stringify({ active: w.isFocused() }));
+        return;
+      }
       if (
         name === "synaraRpc" ||
         name === "synaraRpcStream" ||

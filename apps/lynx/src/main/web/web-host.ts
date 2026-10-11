@@ -745,6 +745,10 @@ async function handleBridgeCall(
       ? decodeBridgeRpcData(rawParams)
       : rawParams;
   try {
+    if (method === "notificationWindowActive")
+      return {
+        active: globalThis.document.hasFocus() && globalThis.document.visibilityState === "visible",
+      };
     if (method === "synaraRpc") {
       if (params.tag === NATIVE_SYNTAX_HIGHLIGHT_RPC_TAG) {
         syntaxHighlightCallCount += 1;
@@ -1379,3 +1383,11 @@ globalThis.addEventListener("pagehide", () => {
   safeClose(relaySocket);
   rejectPendingRequests(new Error("Synara relay page closed"));
 });
+
+const emitNotificationWindowActivity = () =>
+  lynxView.sendGlobalEvent?.("notification:window-active", [
+    globalThis.document.hasFocus() && globalThis.document.visibilityState === "visible",
+  ]);
+globalThis.addEventListener("focus", emitNotificationWindowActivity);
+globalThis.addEventListener("blur", emitNotificationWindowActivity);
+globalThis.document.addEventListener("visibilitychange", emitNotificationWindowActivity);

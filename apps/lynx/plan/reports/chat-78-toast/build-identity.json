@@ -1,0 +1,28 @@
+{
+  "runId": "2026-10-11T05-51-15-195Z-38362",
+  "options": {
+    "theme": "dark",
+    "width": 1440,
+    "height": 900,
+    "chatFontSize": 13
+  },
+  "source": {
+    "commit": "5865fa9bd85f6afc86be98c5ddad078f72add1ea",
+    "dirtyFiles": 12,
+    "fileCount": 2436,
+    "digest": "0d68e5530e859901da8a21afd76da4cef6a94a904c9066005cba61987f35f35b"
+  },
+  "bundles": {
+    "lynxBundle": "3247c5efdcdcc389f2942fcd5f8dec6a4453866e783601a966ff7c4dfef0c870",
+    "mainScript": "7a60ca0dd4065508561176ee41f4aa53c40ebf7f1217af8662fa4b05d87633bf"
+  },
+  "cleanup": {
+    "at": "2026-10-11T05:59:56.570Z",
+    "clean": true,
+    "leftovers": {
+      "lynxtron": [],
+      "electron": [],
+      "web": []
+    }
+  }
+}

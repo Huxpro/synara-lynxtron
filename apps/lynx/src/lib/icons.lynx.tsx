@@ -100,6 +100,10 @@ const ICON_CONTENT = {
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-heart" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /> </svg>',
   HomeIcon:
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-home" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M5 12l-2 0l9 -9l9 9l-2 0" /> <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /> <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /> </svg>',
+  InfoIcon:
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-info-circle" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /> <path d="M12 9h.01" /> <path d="M11 12h1v4h1" /> </svg>',
+  LoaderCircleIcon:
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-loader-2" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M12 3a9 9 0 1 0 9 9" /> </svg>',
   KanbanIcon:
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-layout-kanban" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M4 4l6 0" /> <path d="M14 4l6 0" /> <path d="M4 10a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2l0 -8" /> <path d="M14 10a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2l0 -2" /> </svg>',
   KeyboardIcon:
@@ -255,6 +259,8 @@ export const GlobeIcon: LynxIcon = createLynxIcon(ICON_CONTENT.GlobeIcon);
 export const HammerIcon: LynxIcon = createLynxIcon(ICON_CONTENT.HammerIcon);
 export const HeartIcon: LynxIcon = createLynxIcon(ICON_CONTENT.HeartIcon);
 export const HomeIcon: LynxIcon = createLynxIcon(ICON_CONTENT.HomeIcon);
+export const InfoIcon: LynxIcon = createLynxIcon(ICON_CONTENT.InfoIcon);
+export const LoaderCircleIcon: LynxIcon = createLynxIcon(ICON_CONTENT.LoaderCircleIcon);
 export const KanbanIcon: LynxIcon = createLynxIcon(ICON_CONTENT.KanbanIcon);
 export const KeyboardIcon: LynxIcon = createLynxIcon(ICON_CONTENT.KeyboardIcon);
 export const LayoutColumnsIcon: LynxIcon = createLynxIcon(ICON_CONTENT.LayoutColumnsIcon);

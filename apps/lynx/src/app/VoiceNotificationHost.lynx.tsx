@@ -5,6 +5,7 @@ import { Button } from "../components/ui/button.lynx";
 import { CircleAlertIcon } from "../lib/icons.lynx";
 import { useLynxVoiceNotificationStore } from "./voiceNotificationStore.lynx";
 import { NotificationDismissIcon } from "./NotificationDismissIcon.lynx";
+import { NotificationCard } from "./NotificationCard.lynx";
 
 const VOICE_NOTIFICATION_VISIBLE_MS = 8_000;
 
@@ -21,26 +22,28 @@ export function VoiceNotificationHost() {
 
   if (!notification) return null;
   return (
-    <view
+    <NotificationCard
       className="VoiceNotificationToast"
-      accessibility-element
-      accessibility-label={notification.title}
-    >
-      <CircleAlertIcon className="VoiceNotificationToastIcon" size={18} />
-      <view className="VoiceNotificationToastCopy">
-        <text className="VoiceNotificationToastTitle">{notification.title}</text>
-        {notification.description ? (
+      label={notification.title}
+      icon={<CircleAlertIcon className="VoiceNotificationToastIcon" size={18} />}
+      title={<text className="VoiceNotificationToastTitle">{notification.title}</text>}
+      description={
+        notification.description ? (
           <text className="VoiceNotificationToastDescription">{notification.description}</text>
-        ) : null}
-      </view>
-      {notification.actionLabel && notification.onAction ? (
-        <Button size="xs" variant="secondary" onClick={() => notification.onAction?.()}>
-          {notification.actionLabel}
-        </Button>
-      ) : null}
-      <IconButton label="Dismiss voice notification" onClick={dismiss}>
-        <NotificationDismissIcon />
-      </IconButton>
-    </view>
+        ) : null
+      }
+      close={
+        <>
+          {notification.actionLabel && notification.onAction ? (
+            <Button size="xs" variant="secondary" onClick={() => notification.onAction?.()}>
+              {notification.actionLabel}
+            </Button>
+          ) : null}
+          <IconButton label="Dismiss voice notification" onClick={dismiss}>
+            <NotificationDismissIcon />
+          </IconButton>
+        </>
+      }
+    />
   );
 }

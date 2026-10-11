@@ -1740,12 +1740,13 @@ export function Composer({
       });
     } catch (error) {
       console.error("[slice] failed to send composer turn", error);
-      setSendError(
+      const description =
         providerHandoffError ??
-          (draftRestored
-            ? "Unable to send. Your draft is still here."
-            : "Unable to send your previous message."),
-      );
+        (draftRestored
+          ? "Unable to send. Your draft is still here."
+          : "Unable to send your previous message.");
+      setSendError(description);
+      toastManager.add({ type: "error", title: "Unable to send message", description });
     } finally {
       sendInFlightRef.current = false;
       setIsSending(false);

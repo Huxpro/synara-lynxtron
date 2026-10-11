@@ -3,11 +3,10 @@
 //   shared state layer uses it: the imperative `toastManager` (`add`, `update`,
 //   `close`). The Web module is a Base UI toast surface (DOM, portals) and does
 //   not compile for Lynx.
-// Layer: L2 primitive (lynx implementation, sink only)
+// Layer: L2 primitive (Lynx manager; rendered by ToastHost.lynx)
 //
-// There is no Lynx toast surface yet, so a toast is kept in memory, logged, and
-// offered to subscribers; a future host can render `readLynxToasts()` without
-// changing any caller. Thread-neutral: no host calls, no timers.
+// The manager survives composer and route remounts. The app host owns visibility
+// and timed dismissal; callers remain independent of the mounted screen.
 
 export type LynxToastType = "error" | "info" | "loading" | "success" | "warning";
 

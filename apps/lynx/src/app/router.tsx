@@ -98,6 +98,7 @@ import {
   type ThreadTranscriptRow,
 } from "./queries";
 import { useThreadPageData } from "./threadPageStore.lynx";
+import { ToastHost } from "./ToastHost.lynx";
 import { resolveStudioRestoreRoute } from "./studioRoute.logic";
 import { buildThreadRelaunchUrl } from "./relaunchSurface.logic";
 import { parseSettingsRouteLocation, settingsRouteLocation } from "./settingsRoute.logic";
@@ -3573,6 +3574,12 @@ export function SliceRouter({
       {appSnapCoordinator}
       {appSnapWelcomeDialog}
       {appNotifications}
+      <ToastHost
+        activeThreadId={
+          route.pathname === "/thread/$threadId" ? (route.params.threadId ?? null) : null
+        }
+        rightDockRendered={!editorModeOpen}
+      />
     </>
   );
 }
