@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-11T10:26:28.125Z",
+  "generatedAt": "2026-10-11T12:17:59.634Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -12,7 +12,7 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxGraph": {
     "entries": ["src/app/index.tsx"],
-    "modules": 971,
+    "modules": 977,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/checkbox",
@@ -465,11 +465,11 @@
         "loc": 136025
       },
       "currentReuse": {
-        "modules": 312,
-        "loc": 80813,
-        "modulePercent": 53.15,
-        "locPercent": 59.41,
-        "gatePercent": 53.15
+        "modules": 317,
+        "loc": 82078,
+        "modulePercent": 54,
+        "locPercent": 60.34,
+        "gatePercent": 54
       },
       "modules": [
         {
@@ -1359,7 +1359,7 @@
           "loc": 12,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -1380,7 +1380,7 @@
           "loc": 287,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/project/projectAgentOverview.logic.ts",
             "apps/web/src/hooks/useRefreshOnWindowReturn.ts",
@@ -3838,7 +3838,7 @@
           "loc": 902,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -4404,7 +4404,7 @@
           "loc": 34,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -4827,7 +4827,7 @@
           "loc": 30,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -7784,11 +7784,11 @@
         "loc": 117385
       },
       "currentReuse": {
-        "modules": 282,
-        "loc": 73698,
-        "modulePercent": 60,
-        "locPercent": 62.78,
-        "gatePercent": 60
+        "modules": 287,
+        "loc": 74963,
+        "modulePercent": 61.06,
+        "locPercent": 63.86,
+        "gatePercent": 61.06
       },
       "modules": [
         {
@@ -8497,7 +8497,7 @@
           "loc": 12,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -8518,7 +8518,7 @@
           "loc": 287,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/project/projectAgentOverview.logic.ts",
             "apps/web/src/hooks/useRefreshOnWindowReturn.ts",
@@ -10637,7 +10637,7 @@
           "loc": 902,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -11048,7 +11048,7 @@
           "loc": 34,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -11415,7 +11415,7 @@
           "loc": 30,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -13526,11 +13526,11 @@
         "loc": 227860
       },
       "currentReuse": {
-        "modules": 366,
-        "loc": 88780,
-        "modulePercent": 35.88,
-        "locPercent": 38.96,
-        "gatePercent": 35.88
+        "modules": 371,
+        "loc": 90045,
+        "modulePercent": 36.37,
+        "locPercent": 39.52,
+        "gatePercent": 36.37
       },
       "modules": [
         {
@@ -16724,7 +16724,7 @@
           "loc": 12,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -16804,7 +16804,7 @@
           "loc": 287,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/project/projectAgentOverview.logic.ts",
             "apps/web/src/hooks/useRefreshOnWindowReturn.ts",
@@ -22422,7 +22422,7 @@
           "loc": 902,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -23285,7 +23285,7 @@
           "loc": 34,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -23928,7 +23928,7 @@
           "loc": 30,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -27344,11 +27344,11 @@
         "loc": 150109
       },
       "currentReuse": {
-        "modules": 314,
-        "loc": 81081,
-        "modulePercent": 49.37,
-        "locPercent": 54.01,
-        "gatePercent": 49.37
+        "modules": 319,
+        "loc": 82346,
+        "modulePercent": 50.16,
+        "locPercent": 54.86,
+        "gatePercent": 50.16
       },
       "modules": [
         {
@@ -28251,7 +28251,7 @@
           "loc": 12,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -28272,7 +28272,7 @@
           "loc": 287,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/project/projectAgentOverview.logic.ts",
             "apps/web/src/hooks/useRefreshOnWindowReturn.ts",
@@ -31357,7 +31357,7 @@
           "loc": 902,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -31943,7 +31943,7 @@
           "loc": 34,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -32399,7 +32399,7 @@
           "loc": 30,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -35434,11 +35434,11 @@
         "loc": 149732
       },
       "currentReuse": {
-        "modules": 328,
-        "loc": 83242,
-        "modulePercent": 49.92,
-        "locPercent": 55.59,
-        "gatePercent": 49.92
+        "modules": 333,
+        "loc": 84507,
+        "modulePercent": 50.68,
+        "locPercent": 56.44,
+        "gatePercent": 50.68
       },
       "modules": [
         {
@@ -36659,7 +36659,7 @@
           "loc": 12,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -36680,7 +36680,7 @@
           "loc": 287,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/project/projectAgentOverview.logic.ts",
             "apps/web/src/hooks/useRefreshOnWindowReturn.ts",
@@ -39710,7 +39710,7 @@
           "loc": 902,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -40322,7 +40322,7 @@
           "loc": 34,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -40791,7 +40791,7 @@
           "loc": 30,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -43831,11 +43831,11 @@
         "loc": 149733
       },
       "currentReuse": {
-        "modules": 328,
-        "loc": 83242,
-        "modulePercent": 49.92,
-        "locPercent": 55.59,
-        "gatePercent": 49.92
+        "modules": 333,
+        "loc": 84507,
+        "modulePercent": 50.68,
+        "locPercent": 56.44,
+        "gatePercent": 50.68
       },
       "modules": [
         {
@@ -45056,7 +45056,7 @@
           "loc": 12,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -45077,7 +45077,7 @@
           "loc": 287,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/project/projectAgentOverview.logic.ts",
             "apps/web/src/hooks/useRefreshOnWindowReturn.ts",
@@ -48107,7 +48107,7 @@
           "loc": 902,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -48719,7 +48719,7 @@
           "loc": 34,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -49188,7 +49188,7 @@
           "loc": 30,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -52248,11 +52248,11 @@
         "loc": 222546
       },
       "currentReuse": {
-        "modules": 367,
-        "loc": 89226,
-        "modulePercent": 37.07,
-        "locPercent": 40.09,
-        "gatePercent": 37.07
+        "modules": 372,
+        "loc": 90491,
+        "modulePercent": 37.58,
+        "locPercent": 40.66,
+        "gatePercent": 37.58
       },
       "modules": [
         {
@@ -55278,7 +55278,7 @@
           "loc": 12,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -55358,7 +55358,7 @@
           "loc": 287,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/components/chat/project/projectAgentOverview.logic.ts",
             "apps/web/src/hooks/useRefreshOnWindowReturn.ts",
@@ -60840,7 +60840,7 @@
           "loc": 902,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": [
             "apps/web/src/appSettings.ts",
             "apps/web/src/composerDraftDomain.ts",
@@ -61652,7 +61652,7 @@
           "loc": 34,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -62276,7 +62276,7 @@
           "loc": 30,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {

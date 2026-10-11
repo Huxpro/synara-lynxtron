@@ -1,3 +1,4 @@
+import { nativeProviderHandoffAvailable } from "../../app/threadHandoff.lynx";
 // FILE: components/composer/useComposerProviderHandoff.lynx.ts
 // Purpose: The composer's side of upstream's in-thread handoff on send: a model
 //   of another provider picked in a started thread hands the thread to that
@@ -56,7 +57,10 @@ export function useComposerProviderHandoff(input: {
     return {
       refusal: resolveProviderHandoffSendRefusal({
         providerHandoffPendingForSend,
-        handoffDisabled: threadForSend === undefined || isProviderHandoffDisabled(threadForSend),
+        handoffDisabled:
+          threadForSend === undefined ||
+          !nativeProviderHandoffAvailable(input.threadId) ||
+          isProviderHandoffDisabled(threadForSend),
         selectedProvider,
       }),
       handOff: async () => {

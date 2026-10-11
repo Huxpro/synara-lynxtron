@@ -1,0 +1,13 @@
+[J2:electron] ✓ build a long transcript with a real turn (21727ms)
+[J2:electron] ✓ follow live output to the end of the transcript (14501ms)
+[J2:electron] ✓ scroll away while output streams; the reader keeps their place (3339ms)
+[J2:electron] ✓ jump back to the latest output (34832ms)
+[J2:electron] ✓ select reply text by dragging; the transcript stays where it was (2192ms)
+[J2:electron] ✗ tool activity does not snap a detached reader: Anchor row assistant:msg_02d257a40c943ac8016acb89d1ae9087d18a2516fce86f56aa left the viewport while detached.
+[J2:native] ✓ build a long transcript with a real turn (13033ms)
+[J2:native] ✓ follow live output to the end of the transcript (6538ms)
+[J2:native] ✓ scroll away while output streams; the reader keeps their place (4176ms)
+[J2:native] ✓ jump back to the latest output (13307ms)
+[J2:native] ✓ select reply text by dragging; the transcript stays where it was (4523ms)
+[J2:native] ✓ tool activity does not snap a detached reader (12274ms)
+[J2:native] ✓ switch to another thread and back with the right content (2730ms)

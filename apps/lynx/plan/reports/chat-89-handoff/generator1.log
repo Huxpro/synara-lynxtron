@@ -1,0 +1,13 @@
+✔ extracts the hook with what it closes over and binds the window timers (216.529ms)
+✔ the committed artifact is the extraction of the upstream hook (285.61775ms)
+✔ the replaced specifiers are the ones lynx.config.ts aliases (0.204792ms)
+✔ --check fails when upstream's hook drifts from the generated file (820.925542ms)
+✔ stops when the hook is missing, reads another browser global, or drops a replaced import (336.037958ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1870.642084

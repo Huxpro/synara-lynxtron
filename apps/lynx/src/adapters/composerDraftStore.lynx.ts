@@ -6,6 +6,7 @@
 // transition here while the heavier graph remains a background split.
 
 import { create } from "zustand";
+import { normalizeModelSelection } from "@synara-web/composerDraftModels";
 import {
   MessageId,
   PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
@@ -45,6 +46,26 @@ import {
   type PendingUserInputRecoveryDraft,
 } from "@synara-web/pendingUserInputRecovery";
 import { webStorage } from "../platform/storage";
+
+export const LYNX_COMPOSER_STICKY_MODEL_STORAGE_KEY = "synara.lynx.composer-sticky-models:v1";
+
+export function parsePersistedLynxStickyModels(
+  raw: string | null,
+): Partial<Record<ProviderInstanceId, ModelSelection>> {
+  try {
+    const value: unknown = JSON.parse(raw ?? "null");
+    if (!isStringRecord(value)) return {};
+    const result: Partial<Record<ProviderInstanceId, ModelSelection>> = {};
+    for (const [key, rawSelection] of Object.entries(value)) {
+      const selection = normalizeModelSelection(rawSelection);
+      if (selection && key === (selection.instanceId ?? selection.provider))
+        result[key] = selection;
+    }
+    return result;
+  } catch {
+    return {};
+  }
+}
 
 export const LYNX_COMPOSER_DRAFT_STORAGE_KEY = "synara.lynx.composer-drafts:v1";
 
@@ -120,8 +141,7 @@ interface LynxComposerDraftStoreState {
   /**
    * Upstream's last picked selection per provider account, which a handoff
    * target defaults to (`resolveThreadHandoffModelSelection`). Lynx offers each
-   * provider's default account, whose id is the provider's; the map lives for
-   * the session and is fed by `setModelSelectionAndSticky`.
+   * provider's default account, whose id is the provider's; the map is persisted and is fed by `setModelSelectionAndSticky`.
    */
   readonly stickyModelSelectionByProvider: Partial<Record<ProviderInstanceId, ModelSelection>>;
   readonly addAssistantSelection: (
@@ -159,10 +179,10 @@ interface LynxComposerDraftStoreState {
   readonly setModelSelectionAndSticky: (threadId: string, modelSelection: ModelSelection) => void;
   /**
    * Upstream's action of the same name, for a new-thread handoff: the unsent
-   * draft follows the conversation. Lynx carries the text side (prompt,
+   * draft follows the conversation. Lynx carries picked files/images and the text side (prompt,
    * mentions, skills, pasted texts, file comments, assistant selections and
-   * terminal contexts). Picked images and files stay behind: each is a host
-   * token one draft owns and releases when it sends.
+   * terminal contexts). Shared host tokens stay alive while any draft or
+   * outgoing send still owns them.
    */
   readonly copyTransferableComposerState: (sourceThreadId: string, targetThreadId: string) => void;
   readonly setRuntimeMode: (threadId: string, runtimeMode: RuntimeMode) => void;
@@ -528,6 +548,9 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()((set,
       const nextDraft: LynxComposerDraft = {
         ...(state.draftsByThreadId[targetThreadId] ?? emptyDraft()),
         prompt: sourceDraft.prompt,
+        files: [...sourceDraft.files],
+        images: [...sourceDraft.images],
+        nonPersistedImageIds: [...sourceDraft.nonPersistedImageIds],
         assistantSelections: [...sourceDraft.assistantSelections],
         fileComments: [...sourceDraft.fileComments],
         mentions: [...sourceDraft.mentions],
@@ -977,11 +1000,22 @@ export async function hydrateLynxComposerDraftStore(): Promise<void> {
   const draftsByThreadId = parsePersistedLynxComposerDrafts(
     webStorage.getItem(LYNX_COMPOSER_DRAFT_STORAGE_KEY),
   );
-  useComposerDraftStore.setState({ draftsByThreadId });
+  useComposerDraftStore.setState({
+    draftsByThreadId,
+    stickyModelSelectionByProvider: parsePersistedLynxStickyModels(
+      webStorage.getItem(LYNX_COMPOSER_STICKY_MODEL_STORAGE_KEY),
+    ),
+  });
   draftStoreHydrated = true;
 }
 
 useComposerDraftStore.subscribe((state, previousState) => {
+  if (state.stickyModelSelectionByProvider !== previousState.stickyModelSelectionByProvider) {
+    webStorage.setItem(
+      LYNX_COMPOSER_STICKY_MODEL_STORAGE_KEY,
+      JSON.stringify(state.stickyModelSelectionByProvider),
+    );
+  }
   if (state.draftsByThreadId === previousState.draftsByThreadId) return;
   const persistedDrafts = Object.fromEntries(
     Object.entries(state.draftsByThreadId).map(([threadId, draft]) => [

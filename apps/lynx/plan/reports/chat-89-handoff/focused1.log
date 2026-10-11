@@ -1,0 +1,113 @@
+$ rstest src/adapters/composerDraftStore.lynx.test.ts src/app/threadHandoff.lynx.test.ts src/components/composer/composerAttachments.lynx.test.ts
+rootPath:  /Users/bytedance/github/synara-arch-sync/apps/lynx/src/assets
+rootPath:  /Users/bytedance/github/synara-arch-sync/apps/lynx/src/assets
+(node:26765) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+RSPEEDY_READY
+(node:26793) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:26792) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:26794) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+---
+tool: "@rstest/core@0.11.4"
+timestamp: "2026-10-11T12:15:16.583Z"
+runtime: {"node":"v26.0.0","platform":"darwin","cwd":"/Users/bytedance/github/synara-arch-sync/apps/lynx"}
+---
+
+# Rstest Test Execution Report
+
+## Summary
+
+```json
+{
+  "status": "pass",
+  "counts": {
+    "testFiles": 3,
+    "failedFiles": 0,
+    "tests": 51,
+    "failedTests": 0,
+    "passedTests": 51,
+    "skippedTests": 0,
+    "todoTests": 0
+  },
+  "durationMs": {
+    "total": 2021,
+    "build": 1119,
+    "tests": 902
+  },
+  "snapshot": {
+    "added": 0,
+    "updated": 0,
+    "unmatched": 0,
+    "removed": 0,
+    "unchecked": 0
+  }
+}
+```
+
+## Tests
+
+### Passed
+
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > persists question answers independently of ordinary composer clearing
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > keeps pasted text when the editable prompt is empty and removes an empty draft
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > clears prompt and attachment state together after a successful send
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > keeps the selected model while clearing sent prompt content
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > discards prompt and retained model for an abandoned scratch draft
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > persists, deduplicates, and removes whole-message assistant references
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > persists, deduplicates, normalizes, and removes file comments
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > persists terminal context metadata with one atomic prompt placeholder
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > drops malformed and oversized assistant references during hydration
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > normalizes runtime references and enforces the shared attachment limit
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > keeps picked-file capabilities until removal or successful clear
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > persists picked-image capabilities as non-persisted draft warnings
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > replaces a restarted AppSnap capability without duplicating its capture
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > updates and preserves options when a trait changes on the same model
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > remembers each provider selection while switching the active provider
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > persists pre-send runtime and interaction modes
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > migrates a legacy single provider selection into provider memory
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > keeps only structured mentions whose token remains in the prompt
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > keeps only structured skills whose canonical token remains in the prompt
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > persists canonical prompt and structured token references for restart
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft attachment subset > fails closed when persisted draft JSON is malformed
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft store as upstream session sync uses it > matches the upstream promotion helper signatures
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft store as upstream session sync uses it > has no client-side draft threads, so terminal cleanup retains none for them
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft store as upstream session sync uses it > leaves composer drafts untouched when server threads are promoted
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft store as upstream session sync uses it > remembers a handoff's selection as the draft's and as the provider's sticky one
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft store as upstream session sync uses it > ignores malformed or mismatched persisted model identities
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft store as upstream session sync uses it > copies unsent text and binary attachments into a handoff without changing the source
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft store as upstream session sync uses it > an outgoing send > takes the content and leaves the model selection and modes
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft store as upstream session sync uses it > an outgoing send > edit during the wait, then success: the newer draft is untouched
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft store as upstream session sync uses it > an outgoing send > edit during the wait, then failure: the newer draft wins over the failed one
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft store as upstream session sync uses it > an outgoing send > an attachment added during the wait also counts as a newer draft
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft store as upstream session sync uses it > an outgoing send > failure with an untouched composer: the whole draft comes back
+- src/adapters/composerDraftStore.lynx.test.ts :: Lynx composer draft store as upstream session sync uses it > an outgoing send > navigate away and back during the wait: the attempt settles against the store
+- src/app/threadHandoff.lynx.test.ts :: Native thread handoff service > waits for coordinator identity and blocks configured coordinators
+- src/app/threadHandoff.lynx.test.ts :: Native thread handoff service > uses the same eligibility and target-provider policy as the header and sidebar
+- src/app/threadHandoff.lynx.test.ts :: Native thread handoff service > leaves the handoff itself to upstream's generated hook
+- src/app/threadHandoff.lynx.test.ts :: Native thread handoff service > builds the thread menu's Handoff submenu as upstream's sidebar does
+- src/components/composer/composerAttachments.lynx.test.ts :: native composer picked-file intake > maps a validated host capability into the shared file-card shape
+- src/components/composer/composerAttachments.lynx.test.ts :: native composer picked-file intake > resolves image previews through the host capability
+- src/components/composer/composerAttachments.lynx.test.ts :: native composer picked-file intake > rejects oversized and malformed capabilities without losing valid files
+- src/components/composer/composerAttachments.lynx.test.ts :: native composer picked-file intake > enforces the shared eight-reference limit against existing draft items
+- src/components/composer/composerAttachments.lynx.test.ts :: native composer picked-file intake > cancels already staged uploads when a later upload fails
+- src/components/composer/composerAttachments.lynx.test.ts :: native composer picked-file intake > cancels every staged upload once when dispatch fails
+- src/components/composer/composerAttachments.lynx.test.ts :: native composer picked-file intake > does not cancel claimed uploads after dispatch succeeds
+- src/components/composer/composerAttachments.lynx.test.ts :: native composer picked-file intake > releases and acknowledges an AppSnap only after dispatch succeeds
+- src/components/composer/composerAttachments.lynx.test.ts :: native composer picked-file intake > retains the AppSnap capability and capture when dispatch fails
+- src/components/composer/composerAttachments.lynx.test.ts :: native composer picked-file intake > uploads image and file capabilities with matching server types
+- src/components/composer/composerAttachments.lynx.test.ts :: native composer picked-file intake > a send that hands the thread off > leaves the thread on its provider when an attachment cannot be staged
+- src/components/composer/composerAttachments.lynx.test.ts :: native composer picked-file intake > a send that hands the thread off > hands off only after every attachment is staged, then dispatches with them
+- src/components/composer/composerAttachments.lynx.test.ts :: native composer picked-file intake > a send that hands the thread off > cancels the staged uploads when the handoff fails, and never dispatches
+
+Note: list truncated (showing 50 of 51).
+
+### Skipped
+
+None.
+
+## Failures
+
+No test failures reported.

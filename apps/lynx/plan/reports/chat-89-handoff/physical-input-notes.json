@@ -1,0 +1,14 @@
+{
+  "runId": "2026-10-11T12-20-06-560Z-38466",
+  "appPath": "/Users/bytedance/github/synara-arch-sync/.synara-desktop-comparison/runtime/Synara Comparison Lynxtron.app",
+  "method": "Computer Use bound to the exact comparison app, background; no Raise, activate or regular-app launch",
+  "observations": [
+    "Two real Cocoa file selections: own /tmp text fixture and a copy of the repository Synara icon; no unrelated file selected.",
+    "Native sidebar has one Handoff parent with Claude/Pi choices for this thread and a new thread.",
+    "Disabled Claude after opening the menu: error visible, backend source remains Codex and source prompt is preserved.",
+    "First busy observation was invalid: the 250-line turn completed before the menu opened; not counted as a busy refusal pass.",
+    "Second busy observation used a normal provider shell tool running sleep 45; Handoff, Archive and Delete absent while the backend turn remained running.",
+    "Native runtime displayed ContextProxy::DispatchEvent called too frequently. 2 during the streamed stress turn; this is retained for #88 and is not a zero-warning claim.",
+    "A later get-console --level error returned no payload; it is unavailable, not proof of zero errors. The earlier bracketed thread cell returned an empty error array."
+  ]
+}

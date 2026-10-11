@@ -1,0 +1,17 @@
+{
+  "runId": "2026-10-11T12-20-06-560Z-38466",
+  "method": "background Computer Use secondary click; provider disabled via normal isolated RPC after menu opened",
+  "menu": [
+    "Handoff",
+    "Claude in this thread",
+    "Pi in this thread",
+    "Claude in a new thread",
+    "Pi in a new thread"
+  ],
+  "sourceProvider": "codex",
+  "sourceDraftPrompt": "Reply with exactly one line: CHAT89_ATTACHMENTS_TRANSFERRED.",
+  "errorTexts": [
+    "Could not hand off this thread: Claude could not start: Provider adapter validation failed (claudeAgent) in thread.turn.start: Claude is disabled in Settings > Providers. Re-enable it to continue this thread.",
+    "Provider is disabled in Synara settings."
+  ]
+}
