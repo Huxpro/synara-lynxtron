@@ -2573,3 +2573,128 @@
   line-height: var(--app-line-height-ui-sm-18, 18px);
   opacity: 0.58;
 }
+
+/* Upstream toast viewport: top-center, 16px inset, 384px maximum. */
+.LynxToastStack {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1002;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 384px;
+  max-width: calc(100vw - 32px);
+}
+.LynxToast {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 40px 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background-color: var(--popover);
+  box-shadow: 0 6px 20px -6px rgba(0, 0, 0, 0.1);
+}
+.LynxToast--compact {
+  width: auto;
+  max-width: 100%;
+  align-items: center;
+  padding: 6px 6px 6px 12px;
+  border-radius: 12px;
+}
+.LynxToast--error {
+  border-color: color-mix(in srgb, var(--destructive) 16%, transparent);
+  background-color: color-mix(in srgb, var(--destructive) 5%, var(--popover));
+}
+.SliceRoot--theme-dark .LynxToast--error {
+  border-color: color-mix(in srgb, var(--destructive) 13%, transparent);
+  background-color: color-mix(in srgb, var(--destructive) 8%, var(--popover));
+}
+.LynxToastCopy {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.LynxToastTitle,
+.LynxToastDescription {
+  color: var(--popover-foreground);
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: var(--app-line-height-ui-19p5, 19.5px);
+}
+.LynxToastDescription {
+  color: color-mix(in srgb, var(--popover-foreground) 72%, transparent);
+}
+.LynxToast--compact .LynxToastTitle {
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: var(--app-line-height-ui-sm-18, 18px);
+}
+.LynxToastIcon {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.LynxToastClose {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  min-height: 24px;
+}
+.LynxToast--compact .LynxToastClose {
+  position: relative;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  min-height: 20px;
+}
+.LynxToastActions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.LynxToastPosition {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  transform-origin: top center;
+}
+.LynxToastPosition--collapsed .LynxToastCopy,
+.LynxToastPosition--collapsed .LynxToastIcon,
+.LynxToastPosition--collapsed .LynxToastClose {
+  visibility: hidden;
+}
+
+.LynxToastPosition--front {
+  position: relative;
+}
+.LynxToast,
+.LynxToastTitle,
+.LynxToastDescription,
+.LynxToastActions {
+  flex-shrink: 0;
+}
+.LynxToastActions {
+  margin-left: -8px;
+  margin-top: 6px;
+  gap: 2px;
+}
+.LynxToastActions .LxButton {
+  padding-left: 7px;
+  padding-right: 7px;
+}
+.LynxToastActions .LxButton__text {
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: var(--app-line-height-ui-19p5, 19.5px);
+}

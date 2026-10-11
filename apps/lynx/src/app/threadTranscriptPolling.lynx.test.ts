@@ -24,7 +24,7 @@ describe("Lynx thread page read path", () => {
     expect(routerOwnerSource).not.toContain("refetchInterval");
     expect(routerSource).not.toContain('queryKey: ["threads"]');
     expect(routerSource).not.toContain('queryKey: ["sidebar-snapshot"]');
-    expect(routerOwnerSource).toContain("className={`AppNotificationStack${");
+    expect(routerOwnerSource).toContain("<AppNotificationStack");
     expect(routerOwnerSource).toContain('route.pathname === "/components-lab"');
 
     const storeReadSource = readFileSync(
