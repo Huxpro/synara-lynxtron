@@ -1,0 +1,34 @@
+[
+  {
+    "name": "baseline",
+    "runId": "2026-10-11T13-33-41-223Z-73498",
+    "rows": 202,
+    "fontSize": 13,
+    "parentRenders": 107,
+    "rowRenders": 21993,
+    "historyRenders": 21576,
+    "positiveFrameSamples": 1251,
+    "p50": 8,
+    "p95": 9,
+    "p99": 13,
+    "maximum": 342,
+    "messageCount": 202,
+    "deleted": true
+  },
+  {
+    "name": "optimized",
+    "runId": "2026-10-11T13-58-51-373Z-78878",
+    "rows": 203,
+    "fontSize": 13,
+    "parentRenders": 116,
+    "rowRenders": 714,
+    "historyRenders": 600,
+    "positiveFrameSamples": 1267,
+    "p50": 8,
+    "p95": 9,
+    "p99": 14,
+    "maximum": 44,
+    "messageCount": 202,
+    "deleted": true
+  }
+]

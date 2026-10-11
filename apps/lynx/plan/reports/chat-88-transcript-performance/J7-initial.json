@@ -1,0 +1,32 @@
+{
+  "workflow": "J7",
+  "runId": "2026-10-11T14-03-29-366Z-41965",
+  "startedAt": "2026-10-11T14:09:56.540Z",
+  "renderers": {
+    "electron": {
+      "ok": false,
+      "steps": [
+        {
+          "name": "both providers are installed and signed in",
+          "ok": false,
+          "ms": 17,
+          "error": "Claude's catalog has 0 models named \"Claude Sonnet 5.5\" (Default (recommended), Opus, Fable, Sonnet, Haiku)."
+        }
+      ],
+      "error": "Claude's catalog has 0 models named \"Claude Sonnet 5.5\" (Default (recommended), Opus, Fable, Sonnet, Haiku)."
+    },
+    "native": {
+      "ok": false,
+      "steps": [
+        {
+          "name": "both providers are installed and signed in",
+          "ok": false,
+          "ms": 19,
+          "error": "Claude's catalog has 0 models named \"Claude Sonnet 5.5\" (Default (recommended), Opus, Fable, Sonnet, Haiku)."
+        }
+      ],
+      "error": "Claude's catalog has 0 models named \"Claude Sonnet 5.5\" (Default (recommended), Opus, Fable, Sonnet, Haiku)."
+    }
+  },
+  "endedAt": "2026-10-11T14:09:56.701Z"
+}

@@ -32,10 +32,18 @@ createInterface({ input: process.stdin }).on("line", (line) => {
     const recovery = text.startsWith(
       "Continue the interrupted task from the existing conversation and working state.",
     );
-    if (!text.includes("CHAT-83") && !text.startsWith("CHAT-84") && !recovery) {
+    if (
+      !text.includes("CHAT-83") &&
+      !text.startsWith("CHAT-84") &&
+      !text.startsWith("CHAT-88") &&
+      !recovery
+    ) {
       output({
         id: request.id,
-        error: { code: -32602, message: "Only CHAT-83, CHAT-84 or continuation is supported" },
+        error: {
+          code: -32602,
+          message: "Only CHAT-83, CHAT-84, CHAT-88 or continuation is supported",
+        },
       });
       return;
     }
@@ -46,6 +54,47 @@ createInterface({ input: process.stdin }).on("line", (line) => {
       method: "turn/started",
       params: { threadId, turnId, turn: { id: turnId, status: "inProgress" } },
     });
+    if (text.startsWith("CHAT-88")) {
+      const item = { id: randomUUID(), type: "agentMessage", text: "" };
+      output({ method: "item/started", params: { threadId, turnId, item } });
+      const finish = () => {
+        output({ method: "item/completed", params: { threadId, turnId, item } });
+        output({
+          method: "turn/completed",
+          params: { threadId, turnId, turn: { id: turnId, status: "completed" } },
+        });
+      };
+      if (text.startsWith("CHAT-88 SEED")) {
+        item.text = "Completed history row " + text.slice("CHAT-88 SEED".length).trim() + ".";
+        output({
+          method: "item/agentMessage/delta",
+          params: { threadId, turnId, itemId: item.id, delta: item.text },
+        });
+        finish();
+      } else if (text === "CHAT-88 STREAM") {
+        let index = 0;
+        const timer = setInterval(() => {
+          const delta = `${++index}. Streaming fixture update remains ordered.\n`;
+          item.text += delta;
+          output({
+            method: "item/agentMessage/delta",
+            params: { threadId, turnId, itemId: item.id, delta },
+          });
+          if (index === 200) {
+            clearInterval(timer);
+            finish();
+          }
+        }, 50);
+      } else {
+        item.text = "Unsupported CHAT-88 fixture marker.";
+        output({
+          method: "item/agentMessage/delta",
+          params: { threadId, turnId, itemId: item.id, delta: item.text },
+        });
+        finish();
+      }
+      return;
+    }
     setTimeout(() => {
       if (text.includes("FAILURE")) {
         output({

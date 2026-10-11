@@ -1,0 +1,83 @@
+{
+  "runId": "2026-10-11T13-58-51-373Z-78878",
+  "fontSize": 13,
+  "rows": [
+    {
+      "id": "comparison-fixture-transcript-v2:user-1",
+      "kind": "message",
+      "estimate": 114.25,
+      "oldEstimate": 128,
+      "actualHeight": 105,
+      "productionHeight": 105,
+      "productionEstimateDelta": 9.25
+    },
+    {
+      "id": "assistant:msg_0ef8b734ca30bcf1016ac8cb7bb0048190a7f98358e01cb893",
+      "kind": "message",
+      "estimate": 214.75,
+      "oldEstimate": 340,
+      "actualHeight": 208,
+      "productionHeight": 208,
+      "productionEstimateDelta": 6.75
+    },
+    {
+      "id": "comparison-fixture-transcript-v2:user-2",
+      "kind": "message",
+      "estimate": 135.375,
+      "oldEstimate": 156,
+      "actualHeight": 127,
+      "productionHeight": 127,
+      "productionEstimateDelta": 8.375
+    },
+    {
+      "id": "assistant:msg_0ef8b734ca30bcf1016ac8cb8c90c481908572113270eaa523",
+      "kind": "message",
+      "estimate": 320.9,
+      "oldEstimate": 284,
+      "actualHeight": 332,
+      "productionHeight": 332,
+      "productionEstimateDelta": -11.1
+    },
+    {
+      "id": "comparison-fixture-transcript-v2:user-3",
+      "kind": "message",
+      "estimate": 135.375,
+      "oldEstimate": 156,
+      "actualHeight": null,
+      "productionHeight": 126,
+      "productionEstimateDelta": 9.375
+    },
+    {
+      "id": "assistant:msg_0ef8b734ca30bcf1016ac8cb97c3f081909115f85cdbffc909",
+      "kind": "message",
+      "estimate": 345.4,
+      "oldEstimate": 606,
+      "actualHeight": null,
+      "productionHeight": 357,
+      "productionEstimateDelta": -11.6
+    },
+    {
+      "id": "comparison-fixture-transcript-v2:user-4",
+      "kind": "message",
+      "estimate": 114.25,
+      "oldEstimate": 128,
+      "actualHeight": null,
+      "productionHeight": 105,
+      "productionEstimateDelta": 9.25
+    },
+    {
+      "id": "assistant:msg_0ef8b734ca30bcf1016ac8cba003188190875928c8f35e87e6",
+      "kind": "message",
+      "estimate": 1073,
+      "oldEstimate": 1894,
+      "actualHeight": 1081,
+      "productionHeight": 1081,
+      "productionEstimateDelta": -8
+    }
+  ],
+  "productionRunId": "2026-10-11T14-03-29-366Z-41965",
+  "productionViewport": {
+    "width": 1440,
+    "height": 900
+  }
+}

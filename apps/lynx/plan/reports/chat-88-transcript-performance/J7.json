@@ -1,0 +1,204 @@
+{
+  "workflow": "J7",
+  "runId": "2026-10-11T14-03-29-366Z-41965",
+  "startedAt": "2026-10-11T14:16:19.486Z",
+  "renderers": {
+    "electron": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "both providers are installed and signed in",
+          "ok": true,
+          "ms": 31,
+          "detail": {
+            "usable": ["codex", "claudeAgent"],
+            "sourceSlug": "gpt-5.6-luna",
+            "targetSlug": "claude-sonnet-5-5"
+          }
+        },
+        {
+          "name": "complete a real turn on Codex",
+          "ok": true,
+          "ms": 7358,
+          "detail": {
+            "threadId": "b18e6359-a693-43f2-961f-d21ab664d218",
+            "turnId": "f3759bdf-4195-4791-ad53-3d6913457355",
+            "assistantMessageId": "assistant:msg_090d4a4c1bc10808016acb9a3a943c87d1ad2a165f210661dc",
+            "sourceModel": "gpt-5.6-luna"
+          }
+        },
+        {
+          "name": "pick a Claude model in the started thread's picker",
+          "ok": true,
+          "ms": 1792,
+          "detail": {
+            "row": {
+              "width": 286,
+              "height": 26
+            }
+          }
+        },
+        {
+          "name": "send: the thread is handed off in place, then the turn runs",
+          "ok": true,
+          "ms": 4589,
+          "detail": {
+            "targetModel": "claude-sonnet-5-5",
+            "sessionProvider": "claudeAgent",
+            "typedDuringTheWait": true,
+            "contextCharacters": 417,
+            "userMessageId": "dc074362-5428-4ad4-a821-e02156b0327c",
+            "replyMessageId": "assistant:d3e78feb-c1cd-4b05-b3ef-a5f51d4d8907"
+          }
+        },
+        {
+          "name": "the transcript shows the handoff boundary between the two turns",
+          "ok": true,
+          "ms": 138,
+          "detail": {
+            "boundary": {
+              "x": 867.25,
+              "width": 403,
+              "height": 18,
+              "belowPreviousRow": 20.875,
+              "aboveNextRow": 29
+            }
+          }
+        },
+        {
+          "name": "header \"Hand off thread\": continue in this thread",
+          "ok": true,
+          "ms": 3575,
+          "detail": {
+            "targetModel": "gpt-5.6-luna",
+            "menu": {
+              "x": 1188,
+              "y": 131.375,
+              "width": 224,
+              "height": 182.75
+            },
+            "row": {
+              "x": 1188,
+              "y": 87.875,
+              "width": 214,
+              "height": 26
+            }
+          }
+        },
+        {
+          "name": "header \"Hand off thread\": continue in a new thread",
+          "ok": true,
+          "ms": 1344,
+          "detail": {
+            "handoffThreadId": "0566f495-baf6-45da-84ad-a4be43e41e08",
+            "importedMessages": 4
+          }
+        }
+      ],
+      "result": {
+        "threadId": "b18e6359-a693-43f2-961f-d21ab664d218",
+        "handoffThreadId": "0566f495-baf6-45da-84ad-a4be43e41e08",
+        "codeWord": "PLUMMV3WP3CB"
+      }
+    },
+    "native": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "both providers are installed and signed in",
+          "ok": true,
+          "ms": 16,
+          "detail": {
+            "usable": ["codex", "claudeAgent"],
+            "sourceSlug": "gpt-5.6-luna",
+            "targetSlug": "claude-sonnet-5-5"
+          }
+        },
+        {
+          "name": "complete a real turn on Codex",
+          "ok": true,
+          "ms": 6908,
+          "detail": {
+            "threadId": "lynx-landing-thread-1791728198726-9f44a7b8ac323",
+            "turnId": "7bddd72d-4741-43ef-8703-3bd58dfba755",
+            "assistantMessageId": "assistant:msg_0789c342c42ea110016acb9a4cae9c8193b7e9784aca78132f",
+            "sourceModel": "gpt-5.6-luna"
+          }
+        },
+        {
+          "name": "pick a Claude model in the started thread's picker",
+          "ok": true,
+          "ms": 1205,
+          "detail": {
+            "row": {
+              "width": 114,
+              "height": 20
+            }
+          }
+        },
+        {
+          "name": "send: the thread is handed off in place, then the turn runs",
+          "ok": true,
+          "ms": 4115,
+          "detail": {
+            "targetModel": "claude-sonnet-5-5",
+            "sessionProvider": "claudeAgent",
+            "typedDuringTheWait": true,
+            "contextCharacters": 386,
+            "userMessageId": "lynx-message-1791728207250-d8eb211a65a4",
+            "replyMessageId": "assistant:a1e37159-87cd-4509-8fa9-9da977fd4bb7"
+          }
+        },
+        {
+          "name": "the transcript shows the handoff boundary between the two turns",
+          "ok": true,
+          "ms": 473,
+          "detail": {
+            "boundary": {
+              "x": 867.5,
+              "width": 407,
+              "height": 18,
+              "belowPreviousRow": 21,
+              "aboveNextRow": 29
+            }
+          }
+        },
+        {
+          "name": "header \"Hand off thread\": continue in this thread",
+          "ok": true,
+          "ms": 3076,
+          "detail": {
+            "targetModel": "gpt-5.6-luna",
+            "menu": {
+              "x": 1188,
+              "y": 131.5,
+              "width": 224,
+              "height": 183
+            },
+            "row": {
+              "x": 1128,
+              "y": 88,
+              "width": 40,
+              "height": 20
+            }
+          }
+        },
+        {
+          "name": "header \"Hand off thread\": continue in a new thread",
+          "ok": true,
+          "ms": 1379,
+          "detail": {
+            "handoffThreadId": "59f3b7c5-a519-4187-859d-47bde50517c7",
+            "importedMessages": 4
+          }
+        }
+      ],
+      "result": {
+        "threadId": "lynx-landing-thread-1791728198726-9f44a7b8ac323",
+        "handoffThreadId": "59f3b7c5-a519-4187-859d-47bde50517c7",
+        "codeWord": "PLUMMV3WPI2W"
+      }
+    }
+  },
+  "endedAt": "2026-10-11T14:16:55.933Z"
+}

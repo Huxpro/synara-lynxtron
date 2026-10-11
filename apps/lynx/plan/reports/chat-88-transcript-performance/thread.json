@@ -1,0 +1,89 @@
+{
+  "runId": "2026-10-11T14-03-29-366Z-41965",
+  "theme": "dark",
+  "window": {
+    "width": 1440,
+    "height": 900
+  },
+  "tolerancePx": 2,
+  "cells": {
+    "thread": {
+      "surface": "thread",
+      "comparison": {
+        "compared": 45,
+        "matched": 41,
+        "exempt": [
+          {
+            "label": "Message 1: Look at this repository and summarize its layout as a short ",
+            "delta": {
+              "x": -14.5,
+              "y": -3.5,
+              "width": 50,
+              "height": 8
+            },
+            "exemption": "trail tick: Native labels the 56×10 hit row around the tick; the visible 6×2 tick is at the same x/y as Electron's"
+          },
+          {
+            "label": "Message 2: In src/math.ts add an exported `subtract(a: number, b: numbe",
+            "delta": {
+              "x": -14.5,
+              "y": -3.5,
+              "width": 50,
+              "height": 8
+            },
+            "exemption": "trail tick: Native labels the 56×10 hit row around the tick; the visible 6×2 tick is at the same x/y as Electron's"
+          },
+          {
+            "label": "Message 3: Without modifying files, reply with a markdown table listing",
+            "delta": {
+              "x": -14.5,
+              "y": -3.5,
+              "width": 50,
+              "height": 8
+            },
+            "exemption": "trail tick: Native labels the 56×10 hit row around the tick; the visible 6×2 tick is at the same x/y as Electron's"
+          },
+          {
+            "label": "Message 4: Without modifying files, write a numbered list of 40 short, ",
+            "delta": {
+              "x": -14.5,
+              "y": -3.5,
+              "width": 50,
+              "height": 8
+            },
+            "exemption": "trail tick: Native labels the 56×10 hit row around the tick; the visible 6×2 tick is at the same x/y as Electron's"
+          }
+        ],
+        "outside": [],
+        "electronOnly": ["Toggle Sidebar"],
+        "missing": [],
+        "nativeOnly": [
+          "Collapse changed files list",
+          "Collapse synara-fixture-app",
+          "Conversation transcript",
+          "Expand Worked for 12s",
+          "Expand Worked for 19s",
+          "Fixture transcript",
+          "Message composer",
+          "New thread",
+          "Open README.md",
+          "Open README.md options",
+          "Open a panel",
+          "Open src/math.ts",
+          "Open src/math.ts options",
+          "Resize panel",
+          "Revert to this message",
+          "Review changes",
+          "Review changes to README.md",
+          "Review changes to src/math.ts",
+          "Undo file changes"
+        ],
+        "repeated": 6
+      },
+      "pass": true,
+      "electronErrors": []
+    }
+  },
+  "increments": {},
+  "nativeConsoleErrors": []
+}

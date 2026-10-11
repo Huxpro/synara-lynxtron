@@ -2,6 +2,7 @@ import { describe, expect, it } from "@rstest/core";
 import { readFileSync } from "node:fs";
 
 import type { ThreadTranscriptRow } from "./queries";
+import { parseMarkdown } from "../components/markdown/markdownAst.lynx";
 import {
   buildTranscriptScrollToBottomParams,
   estimateTranscriptRowMainAxisSize,
@@ -313,15 +314,50 @@ describe("estimateTranscriptRowMainAxisSize", () => {
     ).toBe(100);
   });
 
-  it("gives long multiline Markdown enough virtual-list height", () => {
+  it("estimates tight Markdown lists without treating each item as a paragraph gap", () => {
     const text = Array.from(
       { length: 120 },
       (_, index) => `${index + 1}. **Streaming output stays ordered.**`,
     ).join("\n");
 
-    expect(
-      estimateTranscriptRowMainAxisSize(messageRow({ message: { ...messageRow().message, text } })),
-    ).toBeGreaterThan(5_000);
+    const tight = estimateTranscriptRowMainAxisSize(
+      messageRow({
+        message: { ...messageRow().message, text },
+        markdownTree: parseMarkdown(text),
+      }),
+    );
+    // 120 default-font lines plus four-pixel item gaps and row chrome, about 3.1k.
+    // The previous newline-as-block estimate exceeded 5.5k for this same list.
+    expect(tight).toBeGreaterThan(3_000);
+    expect(tight).toBeLessThan(3_200);
+    const looseText = text.replaceAll("\n", "\n\n");
+    const loose = estimateTranscriptRowMainAxisSize(
+      messageRow({
+        message: { ...messageRow().message, text: looseText },
+        markdownTree: parseMarkdown(looseText),
+      }),
+    );
+    expect(loose).toBeGreaterThan(tight + 500);
+  });
+
+  it("includes table rows, fenced-code controls and expanded changed files", () => {
+    const text =
+      "| Name | Value |\n|---|---|\n| one | 1 |\n| two | 2 |\n\n```ts\nconst one = 1;\nconst two = 2;\n```";
+    const row = messageRow({
+      message: { ...messageRow().message, text },
+      markdownTree: parseMarkdown(text),
+    });
+    const body = estimateTranscriptRowMainAxisSize(row);
+    expect(body).toBeGreaterThan(240);
+    expect(body).toBeLessThan(320);
+    const withFiles = {
+      ...row,
+      assistantTurnDiffSummary: { files: [{ path: "one.ts" }, { path: "two.ts" }] },
+    } as MessageTranscriptRow;
+    expect(estimateTranscriptRowMainAxisSize(withFiles)).toBeGreaterThan(body + 120);
+    expect(estimateTranscriptRowMainAxisSize({ ...withFiles, assistantTurnInProgress: true })).toBe(
+      body,
+    );
   });
 
   it("scales wrapping and line height with the configured chat font size", () => {

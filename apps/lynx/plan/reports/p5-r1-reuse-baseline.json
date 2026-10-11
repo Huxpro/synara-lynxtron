@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-11T12:17:59.634Z",
+  "generatedAt": "2026-10-11T13:59:30.740Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -12,7 +12,7 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxGraph": {
     "entries": ["src/app/index.tsx"],
-    "modules": 977,
+    "modules": 979,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/checkbox",
@@ -13526,11 +13526,11 @@
         "loc": 227860
       },
       "currentReuse": {
-        "modules": 371,
-        "loc": 90045,
-        "modulePercent": 36.37,
+        "modules": 372,
+        "loc": 90055,
+        "modulePercent": 36.47,
         "locPercent": 39.52,
-        "gatePercent": 36.37
+        "gatePercent": 36.47
       },
       "modules": [
         {
@@ -23365,7 +23365,7 @@
           "loc": 10,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -52248,11 +52248,11 @@
         "loc": 222546
       },
       "currentReuse": {
-        "modules": 372,
-        "loc": 90491,
-        "modulePercent": 37.58,
-        "locPercent": 40.66,
-        "gatePercent": 37.58
+        "modules": 373,
+        "loc": 90501,
+        "modulePercent": 37.68,
+        "locPercent": 40.67,
+        "gatePercent": 37.68
       },
       "modules": [
         {
@@ -61732,7 +61732,7 @@
           "loc": 10,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {

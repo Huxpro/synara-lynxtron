@@ -1,0 +1,29 @@
+$ node scripts/style-audit.mjs --check
+{
+  "mode": "check",
+  "classes": 2764,
+  "weighted": 20143,
+  "coveragePercent": 98.07,
+  "status": {
+    "GENERATED": {
+      "classes": 1351,
+      "weighted": 17026
+    },
+    "PATCHED": {
+      "classes": 649,
+      "weighted": 2728
+    },
+    "UNSUPPORTED": {
+      "classes": 500,
+      "weighted": 1287
+    },
+    "UNMAPPED": {
+      "classes": 264,
+      "weighted": 389
+    },
+    "CUSTOM": {
+      "classes": 111,
+      "weighted": 204
+    }
+  }
+}
