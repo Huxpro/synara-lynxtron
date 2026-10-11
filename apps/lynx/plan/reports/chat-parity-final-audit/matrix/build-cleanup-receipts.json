@@ -1,0 +1,442 @@
+[
+  {
+    "name": "dark-1280-13",
+    "runId": "2026-10-11T16-03-51-168Z-96982",
+    "options": {
+      "threadId": "comparison-fixture-transcript-v2",
+      "seed": "fixture",
+      "exitAfterCertify": false,
+      "route": null,
+      "width": 1280,
+      "height": 820,
+      "webPort": 8891,
+      "electronCdpPort": 9223,
+      "lynxDevtoolPort": 18902,
+      "theme": "dark",
+      "themePack": "codex",
+      "systemAppearanceSequence": null,
+      "systemAppearanceIntervalMs": null,
+      "terminal": "closed",
+      "dock": null,
+      "appSnap": "acknowledged",
+      "chatFontSize": 13,
+      "skipLynxDevtool": false,
+      "skipBuild": true,
+      "regularApp": false,
+      "messageFormats": false
+    },
+    "build": {
+      "skipped": true,
+      "stamp": {
+        "builtAt": "2026-10-11T16:03:04.646Z",
+        "source": {
+          "commit": "74c102442cb011e7b11051939209f81ba0abdc3d",
+          "dirtyFiles": 0,
+          "fileCount": 2454,
+          "digest": "7ead2f0920e8abb5d2fd3850fc39bb2dbea07e775ae7fa78aeee7d94d1b9e479"
+        },
+        "bundles": {
+          "lynxBundle": "51f634edacf63714d3f34fc59a94814ae6e4525913eb773903b2cd3b1d6ceaae",
+          "mainScript": "7a60ca0dd4065508561176ee41f4aa53c40ebf7f1217af8662fa4b05d87633bf"
+        }
+      },
+      "source": {
+        "commit": "74c102442cb011e7b11051939209f81ba0abdc3d",
+        "dirtyFiles": 0,
+        "fileCount": 2454,
+        "digest": "7ead2f0920e8abb5d2fd3850fc39bb2dbea07e775ae7fa78aeee7d94d1b9e479"
+      }
+    },
+    "cleanup": {
+      "lynxtron": [],
+      "electron": [],
+      "web": []
+    },
+    "consoleObservation": "cells first capture"
+  },
+  {
+    "name": "dark-1280-16",
+    "runId": "2026-10-11T16-06-01-431Z-6374",
+    "options": {
+      "threadId": "comparison-fixture-transcript-v2",
+      "seed": "fixture",
+      "exitAfterCertify": false,
+      "route": null,
+      "width": 1280,
+      "height": 820,
+      "webPort": 8891,
+      "electronCdpPort": 9223,
+      "lynxDevtoolPort": 18902,
+      "theme": "dark",
+      "themePack": "codex",
+      "systemAppearanceSequence": null,
+      "systemAppearanceIntervalMs": null,
+      "terminal": "closed",
+      "dock": null,
+      "appSnap": "acknowledged",
+      "chatFontSize": 16,
+      "skipLynxDevtool": false,
+      "skipBuild": true,
+      "regularApp": false,
+      "messageFormats": false
+    },
+    "build": {
+      "skipped": true,
+      "stamp": {
+        "builtAt": "2026-10-11T16:03:04.646Z",
+        "source": {
+          "commit": "74c102442cb011e7b11051939209f81ba0abdc3d",
+          "dirtyFiles": 0,
+          "fileCount": 2454,
+          "digest": "7ead2f0920e8abb5d2fd3850fc39bb2dbea07e775ae7fa78aeee7d94d1b9e479"
+        },
+        "bundles": {
+          "lynxBundle": "51f634edacf63714d3f34fc59a94814ae6e4525913eb773903b2cd3b1d6ceaae",
+          "mainScript": "7a60ca0dd4065508561176ee41f4aa53c40ebf7f1217af8662fa4b05d87633bf"
+        }
+      },
+      "source": {
+        "commit": "74c102442cb011e7b11051939209f81ba0abdc3d",
+        "dirtyFiles": 0,
+        "fileCount": 2454,
+        "digest": "7ead2f0920e8abb5d2fd3850fc39bb2dbea07e775ae7fa78aeee7d94d1b9e479"
+      }
+    },
+    "cleanup": {
+      "lynxtron": [],
+      "electron": [],
+      "web": []
+    },
+    "consoleObservation": "not collected for this format-only run"
+  },
+  {
+    "name": "dark-1440-13",
+    "runId": "2026-10-11T16-07-34-763Z-11650",
+    "options": {
+      "threadId": "comparison-fixture-transcript-v2",
+      "seed": "fixture",
+      "exitAfterCertify": false,
+      "route": null,
+      "width": 1440,
+      "height": 900,
+      "webPort": 8891,
+      "electronCdpPort": 9223,
+      "lynxDevtoolPort": 18902,
+      "theme": "dark",
+      "themePack": "codex",
+      "systemAppearanceSequence": null,
+      "systemAppearanceIntervalMs": null,
+      "terminal": "closed",
+      "dock": null,
+      "appSnap": "acknowledged",
+      "chatFontSize": 13,
+      "skipLynxDevtool": false,
+      "skipBuild": true,
+      "regularApp": false,
+      "messageFormats": false
+    },
+    "build": {
+      "skipped": true,
+      "stamp": {
+        "builtAt": "2026-10-11T16:03:04.646Z",
+        "source": {
+          "commit": "74c102442cb011e7b11051939209f81ba0abdc3d",
+          "dirtyFiles": 0,
+          "fileCount": 2454,
+          "digest": "7ead2f0920e8abb5d2fd3850fc39bb2dbea07e775ae7fa78aeee7d94d1b9e479"
+        },
+        "bundles": {
+          "lynxBundle": "51f634edacf63714d3f34fc59a94814ae6e4525913eb773903b2cd3b1d6ceaae",
+          "mainScript": "7a60ca0dd4065508561176ee41f4aa53c40ebf7f1217af8662fa4b05d87633bf"
+        }
+      },
+      "source": {
+        "commit": "74c102442cb011e7b11051939209f81ba0abdc3d",
+        "dirtyFiles": 0,
+        "fileCount": 2454,
+        "digest": "7ead2f0920e8abb5d2fd3850fc39bb2dbea07e775ae7fa78aeee7d94d1b9e479"
+      }
+    },
+    "cleanup": {
+      "lynxtron": [],
+      "electron": [],
+      "web": []
+    },
+    "consoleObservation": "cells first capture"
+  },
+  {
+    "name": "dark-1440-16",
+    "runId": "2026-10-11T16-09-46-256Z-20728",
+    "options": {
+      "threadId": "comparison-fixture-transcript-v2",
+      "seed": "fixture",
+      "exitAfterCertify": false,
+      "route": null,
+      "width": 1440,
+      "height": 900,
+      "webPort": 8891,
+      "electronCdpPort": 9223,
+      "lynxDevtoolPort": 18902,
+      "theme": "dark",
+      "themePack": "codex",
+      "systemAppearanceSequence": null,
+      "systemAppearanceIntervalMs": null,
+      "terminal": "closed",
+      "dock": null,
+      "appSnap": "acknowledged",
+      "chatFontSize": 16,
+      "skipLynxDevtool": false,
+      "skipBuild": true,
+      "regularApp": false,
+      "messageFormats": false
+    },
+    "build": {
+      "skipped": true,
+      "stamp": {
+        "builtAt": "2026-10-11T16:03:04.646Z",
+        "source": {
+          "commit": "74c102442cb011e7b11051939209f81ba0abdc3d",
+          "dirtyFiles": 0,
+          "fileCount": 2454,
+          "digest": "7ead2f0920e8abb5d2fd3850fc39bb2dbea07e775ae7fa78aeee7d94d1b9e479"
+        },
+        "bundles": {
+          "lynxBundle": "51f634edacf63714d3f34fc59a94814ae6e4525913eb773903b2cd3b1d6ceaae",
+          "mainScript": "7a60ca0dd4065508561176ee41f4aa53c40ebf7f1217af8662fa4b05d87633bf"
+        }
+      },
+      "source": {
+        "commit": "74c102442cb011e7b11051939209f81ba0abdc3d",
+        "dirtyFiles": 0,
+        "fileCount": 2454,
+        "digest": "7ead2f0920e8abb5d2fd3850fc39bb2dbea07e775ae7fa78aeee7d94d1b9e479"
+      }
+    },
+    "cleanup": {
+      "lynxtron": [],
+      "electron": [],
+      "web": []
+    },
+    "consoleObservation": "not collected for this format-only run"
+  },
+  {
+    "name": "light-1280-13",
+    "runId": "2026-10-11T16-11-18-787Z-25825",
+    "options": {
+      "threadId": "comparison-fixture-transcript-v2",
+      "seed": "fixture",
+      "exitAfterCertify": false,
+      "route": null,
+      "width": 1280,
+      "height": 820,
+      "webPort": 8891,
+      "electronCdpPort": 9223,
+      "lynxDevtoolPort": 18902,
+      "theme": "light",
+      "themePack": "codex",
+      "systemAppearanceSequence": null,
+      "systemAppearanceIntervalMs": null,
+      "terminal": "closed",
+      "dock": null,
+      "appSnap": "acknowledged",
+      "chatFontSize": 13,
+      "skipLynxDevtool": false,
+      "skipBuild": true,
+      "regularApp": false,
+      "messageFormats": false
+    },
+    "build": {
+      "skipped": true,
+      "stamp": {
+        "builtAt": "2026-10-11T16:03:04.646Z",
+        "source": {
+          "commit": "74c102442cb011e7b11051939209f81ba0abdc3d",
+          "dirtyFiles": 0,
+          "fileCount": 2454,
+          "digest": "7ead2f0920e8abb5d2fd3850fc39bb2dbea07e775ae7fa78aeee7d94d1b9e479"
+        },
+        "bundles": {
+          "lynxBundle": "51f634edacf63714d3f34fc59a94814ae6e4525913eb773903b2cd3b1d6ceaae",
+          "mainScript": "7a60ca0dd4065508561176ee41f4aa53c40ebf7f1217af8662fa4b05d87633bf"
+        }
+      },
+      "source": {
+        "commit": "74c102442cb011e7b11051939209f81ba0abdc3d",
+        "dirtyFiles": 0,
+        "fileCount": 2454,
+        "digest": "7ead2f0920e8abb5d2fd3850fc39bb2dbea07e775ae7fa78aeee7d94d1b9e479"
+      }
+    },
+    "cleanup": {
+      "lynxtron": [],
+      "electron": [],
+      "web": []
+    },
+    "consoleObservation": "cells first capture"
+  },
+  {
+    "name": "light-1280-16",
+    "runId": "2026-10-11T16-13-39-622Z-34822",
+    "options": {
+      "threadId": "comparison-fixture-transcript-v2",
+      "seed": "fixture",
+      "exitAfterCertify": false,
+      "route": null,
+      "width": 1280,
+      "height": 820,
+      "webPort": 8891,
+      "electronCdpPort": 9223,
+      "lynxDevtoolPort": 18902,
+      "theme": "light",
+      "themePack": "codex",
+      "systemAppearanceSequence": null,
+      "systemAppearanceIntervalMs": null,
+      "terminal": "closed",
+      "dock": null,
+      "appSnap": "acknowledged",
+      "chatFontSize": 16,
+      "skipLynxDevtool": false,
+      "skipBuild": true,
+      "regularApp": false,
+      "messageFormats": false
+    },
+    "build": {
+      "skipped": true,
+      "stamp": {
+        "builtAt": "2026-10-11T16:03:04.646Z",
+        "source": {
+          "commit": "74c102442cb011e7b11051939209f81ba0abdc3d",
+          "dirtyFiles": 0,
+          "fileCount": 2454,
+          "digest": "7ead2f0920e8abb5d2fd3850fc39bb2dbea07e775ae7fa78aeee7d94d1b9e479"
+        },
+        "bundles": {
+          "lynxBundle": "51f634edacf63714d3f34fc59a94814ae6e4525913eb773903b2cd3b1d6ceaae",
+          "mainScript": "7a60ca0dd4065508561176ee41f4aa53c40ebf7f1217af8662fa4b05d87633bf"
+        }
+      },
+      "source": {
+        "commit": "74c102442cb011e7b11051939209f81ba0abdc3d",
+        "dirtyFiles": 0,
+        "fileCount": 2454,
+        "digest": "7ead2f0920e8abb5d2fd3850fc39bb2dbea07e775ae7fa78aeee7d94d1b9e479"
+      }
+    },
+    "cleanup": {
+      "lynxtron": [],
+      "electron": [],
+      "web": []
+    },
+    "consoleObservation": "not collected for this format-only run"
+  },
+  {
+    "name": "light-1440-13",
+    "runId": "2026-10-11T16-15-12-280Z-40307",
+    "options": {
+      "threadId": "comparison-fixture-transcript-v2",
+      "seed": "fixture",
+      "exitAfterCertify": false,
+      "route": null,
+      "width": 1440,
+      "height": 900,
+      "webPort": 8891,
+      "electronCdpPort": 9223,
+      "lynxDevtoolPort": 18902,
+      "theme": "light",
+      "themePack": "codex",
+      "systemAppearanceSequence": null,
+      "systemAppearanceIntervalMs": null,
+      "terminal": "closed",
+      "dock": null,
+      "appSnap": "acknowledged",
+      "chatFontSize": 13,
+      "skipLynxDevtool": false,
+      "skipBuild": true,
+      "regularApp": false,
+      "messageFormats": false
+    },
+    "build": {
+      "skipped": true,
+      "stamp": {
+        "builtAt": "2026-10-11T16:03:04.646Z",
+        "source": {
+          "commit": "74c102442cb011e7b11051939209f81ba0abdc3d",
+          "dirtyFiles": 0,
+          "fileCount": 2454,
+          "digest": "7ead2f0920e8abb5d2fd3850fc39bb2dbea07e775ae7fa78aeee7d94d1b9e479"
+        },
+        "bundles": {
+          "lynxBundle": "51f634edacf63714d3f34fc59a94814ae6e4525913eb773903b2cd3b1d6ceaae",
+          "mainScript": "7a60ca0dd4065508561176ee41f4aa53c40ebf7f1217af8662fa4b05d87633bf"
+        }
+      },
+      "source": {
+        "commit": "74c102442cb011e7b11051939209f81ba0abdc3d",
+        "dirtyFiles": 0,
+        "fileCount": 2454,
+        "digest": "7ead2f0920e8abb5d2fd3850fc39bb2dbea07e775ae7fa78aeee7d94d1b9e479"
+      }
+    },
+    "cleanup": {
+      "lynxtron": [],
+      "electron": [],
+      "web": []
+    },
+    "consoleObservation": "cells first capture"
+  },
+  {
+    "name": "light-1440-16",
+    "runId": "2026-10-11T16-17-25-646Z-49450",
+    "options": {
+      "threadId": "comparison-fixture-transcript-v2",
+      "seed": "fixture",
+      "exitAfterCertify": false,
+      "route": null,
+      "width": 1440,
+      "height": 900,
+      "webPort": 8891,
+      "electronCdpPort": 9223,
+      "lynxDevtoolPort": 18902,
+      "theme": "light",
+      "themePack": "codex",
+      "systemAppearanceSequence": null,
+      "systemAppearanceIntervalMs": null,
+      "terminal": "closed",
+      "dock": null,
+      "appSnap": "acknowledged",
+      "chatFontSize": 16,
+      "skipLynxDevtool": false,
+      "skipBuild": true,
+      "regularApp": false,
+      "messageFormats": false
+    },
+    "build": {
+      "skipped": true,
+      "stamp": {
+        "builtAt": "2026-10-11T16:03:04.646Z",
+        "source": {
+          "commit": "74c102442cb011e7b11051939209f81ba0abdc3d",
+          "dirtyFiles": 0,
+          "fileCount": 2454,
+          "digest": "7ead2f0920e8abb5d2fd3850fc39bb2dbea07e775ae7fa78aeee7d94d1b9e479"
+        },
+        "bundles": {
+          "lynxBundle": "51f634edacf63714d3f34fc59a94814ae6e4525913eb773903b2cd3b1d6ceaae",
+          "mainScript": "7a60ca0dd4065508561176ee41f4aa53c40ebf7f1217af8662fa4b05d87633bf"
+        }
+      },
+      "source": {
+        "commit": "74c102442cb011e7b11051939209f81ba0abdc3d",
+        "dirtyFiles": 0,
+        "fileCount": 2454,
+        "digest": "7ead2f0920e8abb5d2fd3850fc39bb2dbea07e775ae7fa78aeee7d94d1b9e479"
+      }
+    },
+    "cleanup": {
+      "lynxtron": [],
+      "electron": [],
+      "web": []
+    },
+    "consoleObservation": "not collected for this format-only run"
+  }
+]

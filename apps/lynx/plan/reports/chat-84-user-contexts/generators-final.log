@@ -1,0 +1,33 @@
+✔ binds only the globals a file references, on the first line (55.822417ms)
+✔ covers typeof probes, called members, shorthand, JSX and several globals (4.21ms)
+✔ ignores comments, strings, member names, property keys and re-exports (5.681041ms)
+✔ ignores type positions, which type stripping removes (5.450542ms)
+✔ binds a value used through a cast, a non-null assertion or a class heritage (2.288917ms)
+✔ a nested declaration does not hide a module-level use of the global (0.853584ms)
+✔ a nested declaration alone needs no binding (9.968ms)
+✔ a renamed property or import is not a declaration of the global's name (12.000458ms)
+✔ a module-level declaration is never imported over (3.537625ms)
+✔ an ambient declaration names the global and is bound (21.352791ms)
+✔ finds globals inside template expressions, however nested (7.528167ms)
+✔ binds a global that only appears in a conditional branch (0.727667ms)
+✔ keeps the directive prologue a prologue (6.953584ms)
+✔ keeps a hashbang on the first line (0.859166ms)
+✔ a function-body directive is left where it is (0.327208ms)
+✔ without an incoming map, positions resolve to upstream's text (0.962125ms)
+✔ without directives, the first line's columns still resolve (0.554833ms)
+✔ with an incoming map, a thrown statement still resolves to the original file (7.642041ms)
+✔ the loader returns code and map through the callback (1.238375ms)
+✔ the environment module exports every name the loader binds (0.499583ms)
+✔ the collision check sees a second module-level declaration (1.491792ms)
+✔ upstream corpus: every browser value reference is bound, nothing collides, directives survive (5856.532375ms)
+✔ loader forwards scoped URL bindings without adding browser globals (1.283791ms)
+✔ derives upstream annotation limit and PR icon inventory (20.747625ms)
+✔ rejects unrecognized upstream rules (7.227708ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6298.141917

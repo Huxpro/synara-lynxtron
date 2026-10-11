@@ -1,0 +1,11 @@
+$ vitest run --passWithNoTests src/proposedPlan.test.ts src/components/chat/editedFilePathActions.test.ts src/components/ChatView.logic.test.ts src/lib/composerSendOwnership.test.ts
+(node:66687) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+ RUN  v4.1.10 /Users/bytedance/github/synara-arch-sync/apps/web
+
+
+ Test Files  4 passed (4)
+      Tests  187 passed (187)
+   Start at  05:11:04
+   Duration  1.13s (transform 1.05s, setup 0ms, import 1.69s, tests 30ms, environment 0ms)

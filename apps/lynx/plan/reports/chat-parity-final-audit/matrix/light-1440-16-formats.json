@@ -1,0 +1,551 @@
+{
+  "runId": "2026-10-11T16-17-25-646Z-49450",
+  "threadId": "comparison-fixture-transcript-v2",
+  "theme": "light",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "rows": [
+    {
+      "index": 0,
+      "electron": {
+        "key": "message:user",
+        "h": 115,
+        "text": "Look at this repository and summarize its layout as a short bulleted l"
+      },
+      "native": {
+        "key": "comparison-fixture-transcript-v2:user-1",
+        "h": 115,
+        "text": "Look at this repository and summarize its layout as a short bulleted l"
+      },
+      "delta": 0,
+      "match": true
+    },
+    {
+      "index": 1,
+      "electron": {
+        "key": "message:assistant",
+        "h": 231.5,
+        "text": "Worked for 12s Root contains README.md and package.json. src/ holds Ty"
+      },
+      "native": {
+        "key": "assistant:msg_0ef8b734ca30bcf1016ac8cb7bb0048190a7f98358e01cb893",
+        "h": 238,
+        "text": "Worked for 12s•Root contains README.md and package.json.•src/ holds Ty"
+      },
+      "delta": 6.5,
+      "match": false
+    },
+    {
+      "index": 2,
+      "electron": {
+        "key": "message:user",
+        "h": 142,
+        "text": "In src/math.ts add an exported subtract(a: number, b: number): number "
+      },
+      "native": {
+        "key": "comparison-fixture-transcript-v2:user-2",
+        "h": 142,
+        "text": "In src/math.ts add an exported subtract(a: number, b: number): number "
+      },
+      "delta": 0,
+      "match": true
+    },
+    {
+      "index": 3,
+      "electron": {
+        "key": "message:assistant",
+        "h": 367.9,
+        "text": "Worked for 19s Implemented the minimal changes: Added exported subtrac"
+      },
+      "native": {
+        "key": "assistant:msg_0ef8b734ca30bcf1016ac8cb8c90c481908572113270eaa523",
+        "h": 365,
+        "text": "Worked for 19sImplemented the minimal changes:•Added exported subtract"
+      },
+      "delta": -2.9,
+      "match": false
+    },
+    {
+      "index": 4,
+      "electron": {
+        "key": "message:user",
+        "h": 141,
+        "text": "Without modifying files, reply with a markdown table listing every exp"
+      },
+      "native": {
+        "key": "comparison-fixture-transcript-v2:user-3",
+        "h": 141,
+        "text": "Without modifying files, reply with a markdown table listing every exp"
+      },
+      "delta": 0,
+      "match": true
+    },
+    {
+      "index": 5,
+      "electron": {
+        "key": "message:assistant",
+        "h": 404.2,
+        "text": "Worked for 7.9s Name Parameters Return type add a: number, b: number n"
+      },
+      "native": {
+        "key": "assistant:msg_0ef8b734ca30bcf1016ac8cb97c3f081909115f85cdbffc909",
+        "h": 401,
+        "text": "Worked for 7.9sNameParametersReturn typeadda: number, b: numbernumbers"
+      },
+      "delta": -3.2,
+      "match": false
+    },
+    {
+      "index": 6,
+      "electron": {
+        "key": "message:user",
+        "h": 115,
+        "text": "Without modifying files, write a numbered list of 40 short, distinct o"
+      },
+      "native": {
+        "key": "comparison-fixture-transcript-v2:user-4",
+        "h": 115,
+        "text": "Without modifying files, write a numbered list of 40 short, distinct o"
+      },
+      "delta": 0,
+      "match": true
+    },
+    {
+      "index": 7,
+      "electron": {
+        "key": "message:assistant",
+        "h": 1280.5,
+        "text": "Worked for 8.6s Use descriptive names for variables and functions. Kee"
+      },
+      "native": {
+        "key": "assistant:msg_0ef8b734ca30bcf1016ac8cba003188190875928c8f35e87e6",
+        "h": 1286,
+        "text": "Worked for 8.6s1.Use descriptive names for variables and functions.2.K"
+      },
+      "delta": 5.5,
+      "match": false
+    }
+  ],
+  "blocks": [],
+  "controls": {
+    "compared": 30,
+    "matched": 14,
+    "exempt": [],
+    "outside": [
+      {
+        "label": "row 3: Open README.md",
+        "electron": {
+          "x": 864.8,
+          "y": 249.9,
+          "width": 50,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 865,
+          "y": 253,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": 0.2,
+          "y": 3.1,
+          "width": -26,
+          "height": 0
+        },
+        "worst": 26,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 3: Open src/math.ts",
+        "electron": {
+          "x": 864.8,
+          "y": 294.9,
+          "width": 50,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 865,
+          "y": 294,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": 0.2,
+          "y": -0.9,
+          "width": -26,
+          "height": 0
+        },
+        "worst": 26,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 1: Copy message",
+        "electron": {
+          "x": 188.8,
+          "y": 197.5,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 190,
+          "y": 204,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": 1.2,
+          "y": 6.5,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 6.5,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 1: Fork thread from this turn",
+        "electron": {
+          "x": 220.8,
+          "y": 197.5,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 222,
+          "y": 204,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": 1.2,
+          "y": 6.5,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 6.5,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 1: Pin message",
+        "electron": {
+          "x": 252.8,
+          "y": 197.5,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 254,
+          "y": 204,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": 1.2,
+          "y": 6.5,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 6.5,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 5: Enable soft wrap",
+        "electron": {
+          "x": 867.4,
+          "y": 214.2,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 868,
+          "y": 220,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": 0.6,
+          "y": 5.8,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 5.8,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 5: Copy code",
+        "electron": {
+          "x": 893.4,
+          "y": 214.2,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 894,
+          "y": 220,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": 0.6,
+          "y": 5.8,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 5.8,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 7: Copy message",
+        "electron": {
+          "x": 188.8,
+          "y": 1246.5,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 190,
+          "y": 1252,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": 1.2,
+          "y": 5.5,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 5.5,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 7: Fork thread from this turn",
+        "electron": {
+          "x": 220.8,
+          "y": 1246.5,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 222,
+          "y": 1252,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": 1.2,
+          "y": 5.5,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 5.5,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 7: Pin message",
+        "electron": {
+          "x": 252.8,
+          "y": 1246.5,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 254,
+          "y": 1252,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": 1.2,
+          "y": 5.5,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 5.5,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 3: Collapse changed files list",
+        "electron": {
+          "x": 888.8,
+          "y": 197.9,
+          "width": 22,
+          "height": 22,
+          "gutter": 10
+        },
+        "native": {
+          "x": 889,
+          "y": 203,
+          "width": 22,
+          "height": 22
+        },
+        "delta": {
+          "x": 0.2,
+          "y": 5.1,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 5.1,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 3: Review changes to README.md",
+        "electron": {
+          "x": 196.8,
+          "y": 245.9,
+          "width": 662,
+          "height": 32,
+          "gutter": 10
+        },
+        "native": {
+          "x": 197,
+          "y": 249,
+          "width": 662,
+          "height": 32
+        },
+        "delta": {
+          "x": 0.2,
+          "y": 3.1,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 3.1,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 3: Open README.md options",
+        "electron": {
+          "x": 890.8,
+          "y": 249.9,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 891,
+          "y": 253,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": 0.2,
+          "y": 3.1,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 3.1,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 5: Copy message",
+        "electron": {
+          "x": 188.8,
+          "y": 370.2,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 190,
+          "y": 368,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": 1.2,
+          "y": -2.2,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 2.2,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 5: Fork thread from this turn",
+        "electron": {
+          "x": 220.8,
+          "y": 370.2,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 222,
+          "y": 368,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": 1.2,
+          "y": -2.2,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 2.2,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 5: Pin message",
+        "electron": {
+          "x": 252.8,
+          "y": 370.2,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 254,
+          "y": 368,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": 1.2,
+          "y": -2.2,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 2.2,
+        "match": false,
+        "exemption": null
+      }
+    ],
+    "electronOnly": [],
+    "missing": [],
+    "nativeOnly": [
+      "row 1: Expand Worked for 12s",
+      "row 3: Expand Worked for 19s",
+      "row 3: Review changes",
+      "row 3: Undo file changes",
+      "row 5: Expand Worked for 7.9s",
+      "row 7: Expand Worked for 8.6s"
+    ],
+    "repeated": 0
+  },
+  "windowControls": null
+}

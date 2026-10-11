@@ -1,0 +1,311 @@
+{
+  "runId": "2026-10-11T15-48-14-775Z-38146",
+  "options": {
+    "threadId": "comparison-fixture-transcript-v2",
+    "seed": "fixture",
+    "exitAfterCertify": false,
+    "route": null,
+    "width": 1440,
+    "height": 900,
+    "webPort": 8891,
+    "electronCdpPort": 9223,
+    "lynxDevtoolPort": 18902,
+    "theme": "dark",
+    "themePack": "codex",
+    "systemAppearanceSequence": null,
+    "systemAppearanceIntervalMs": null,
+    "terminal": "closed",
+    "dock": null,
+    "appSnap": "acknowledged",
+    "chatFontSize": 13,
+    "skipLynxDevtool": false,
+    "skipBuild": false,
+    "regularApp": false,
+    "messageFormats": true
+  },
+  "cases": [
+    {
+      "renderer": "electron",
+      "threadId": "chat79-electron-1791733884214",
+      "messageId": "d868dd5a-075c-40f2-a555-1139ad95890e",
+      "samples": [
+        {
+          "ms": 250,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "d868dd5a-075c-40f2-a555-1139ad95890e",
+            "top": 60.5,
+            "bottom": 144.625
+          },
+          "offset": 16.5
+        },
+        {
+          "ms": 500,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "d868dd5a-075c-40f2-a555-1139ad95890e",
+            "top": 60.5,
+            "bottom": 144.625
+          },
+          "offset": 16.5
+        },
+        {
+          "ms": 750,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "d868dd5a-075c-40f2-a555-1139ad95890e",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        },
+        {
+          "ms": 1000,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "d868dd5a-075c-40f2-a555-1139ad95890e",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        },
+        {
+          "ms": 1250,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "d868dd5a-075c-40f2-a555-1139ad95890e",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        },
+        {
+          "ms": 1500,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "d868dd5a-075c-40f2-a555-1139ad95890e",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        },
+        {
+          "ms": 1750,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "d868dd5a-075c-40f2-a555-1139ad95890e",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        },
+        {
+          "ms": 2000,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "d868dd5a-075c-40f2-a555-1139ad95890e",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        }
+      ],
+      "pass": true
+    },
+    {
+      "renderer": "native",
+      "threadId": "chat79-native-1791733890187",
+      "messageId": "lynx-message-1791733892500-8cb23646419138",
+      "samples": [
+        {
+          "ms": 250,
+          "viewport": {
+            "top": 60,
+            "height": 743
+          },
+          "row": {
+            "id": "lynx-message-1791733892500-8cb23646419138",
+            "top": 103,
+            "bottom": 187
+          },
+          "offset": 43
+        },
+        {
+          "ms": 500,
+          "viewport": {
+            "top": 60,
+            "height": 743
+          },
+          "row": {
+            "id": "lynx-message-1791733892500-8cb23646419138",
+            "top": 103,
+            "bottom": 187
+          },
+          "offset": 43
+        },
+        {
+          "ms": 750,
+          "viewport": {
+            "top": 60,
+            "height": 743
+          },
+          "row": {
+            "id": "lynx-message-1791733892500-8cb23646419138",
+            "top": 103,
+            "bottom": 187
+          },
+          "offset": 43
+        },
+        {
+          "ms": 1000,
+          "viewport": {
+            "top": 60,
+            "height": 743
+          },
+          "row": {
+            "id": "lynx-message-1791733892500-8cb23646419138",
+            "top": 103,
+            "bottom": 187
+          },
+          "offset": 43
+        },
+        {
+          "ms": 1250,
+          "viewport": {
+            "top": 60,
+            "height": 743
+          },
+          "row": {
+            "id": "lynx-message-1791733892500-8cb23646419138",
+            "top": 103,
+            "bottom": 187
+          },
+          "offset": 43
+        },
+        {
+          "ms": 1500,
+          "viewport": {
+            "top": 60,
+            "height": 743
+          },
+          "row": {
+            "id": "lynx-message-1791733892500-8cb23646419138",
+            "top": 103,
+            "bottom": 187
+          },
+          "offset": 43
+        },
+        {
+          "ms": 1750,
+          "viewport": {
+            "top": 60,
+            "height": 743
+          },
+          "row": {
+            "id": "lynx-message-1791733892500-8cb23646419138",
+            "top": 103,
+            "bottom": 187
+          },
+          "offset": 43
+        },
+        {
+          "ms": 2000,
+          "viewport": {
+            "top": 60,
+            "height": 743
+          },
+          "row": {
+            "id": "lynx-message-1791733892500-8cb23646419138",
+            "top": 103,
+            "bottom": 187
+          },
+          "offset": 43
+        }
+      ],
+      "pass": false
+    }
+  ],
+  "pass": false,
+  "electronAnchorSetting": true,
+  "receiptNote": "Unrelated Electron settings omitted; geometry and errors unchanged."
+}

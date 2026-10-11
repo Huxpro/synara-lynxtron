@@ -1,0 +1,13 @@
+✔ adapts only the Sonnet display name while preserving every J7 step (5.462541ms)
+✔ refuses a different resolved model or ambiguous catalog (0.246042ms)
+✔ refuses an upstream seam change (0.148791ms)
+✔ adapts only the Stop/resend block of the current J1 and preserves later workflows (2.936292ms)
+✔ refuses changed, duplicated, or reversed boundaries (0.168667ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 174.795417

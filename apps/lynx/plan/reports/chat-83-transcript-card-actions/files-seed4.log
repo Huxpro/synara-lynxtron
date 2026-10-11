@@ -1,0 +1,9 @@
+file:///Users/bytedance/github/synara-arch-sync/scripts/comparison-workflow.mjs:32
+  throw new Error(`Timed out waiting for ${label}.`);
+        ^
+
+Error: Timed out waiting for fresh file checkpoints.
+    at waitFor (file:///Users/bytedance/github/synara-arch-sync/scripts/comparison-workflow.mjs:32:9)
+    at async file:///Users/bytedance/github/synara-arch-sync/apps/lynx/scripts/transcript-files-fixture.mjs:26:16
+
+Node.js v26.0.0

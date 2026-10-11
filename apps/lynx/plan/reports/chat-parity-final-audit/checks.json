@@ -1,0 +1,51 @@
+{
+  "fmt": {
+    "command": ["bun", "run", "fmt:check"],
+    "exitCode": 0
+  },
+  "lint": {
+    "command": ["bun", "run", "lint"],
+    "exitCode": 0
+  },
+  "typecheck": {
+    "command": ["bun", "run", "typecheck"],
+    "exitCode": 0
+  },
+  "native": {
+    "command": ["bun", "run", "--cwd", "apps/lynx", "test"],
+    "exitCode": 0
+  },
+  "vitest": {
+    "command": [
+      "bun",
+      "run",
+      "--cwd",
+      "apps/web",
+      "test",
+      "src/components/ChatMarkdown.test.tsx",
+      "src/components/chat/transcriptScroll.test.ts"
+    ],
+    "exitCode": 0
+  },
+  "guards": {
+    "command": [
+      "node",
+      "--test",
+      "apps/lynx/scripts/chat-workflow-without-stop.test.mjs",
+      "apps/lynx/scripts/chat-handoff-workflow.test.mjs"
+    ],
+    "exitCode": 0
+  },
+  "reuse": {
+    "command": ["bun", "run", "--cwd", "apps/lynx", "audit:reuse:check"],
+    "exitCode": 0
+  },
+  "style": {
+    "command": ["bun", "run", "--cwd", "apps/lynx", "audit:style:check"],
+    "exitCode": 0
+  },
+  "footprint": {
+    "command": ["bun", "run", "--cwd", "apps/lynx", "audit:upstream-footprint:check"],
+    "exitCode": 0
+  }
+}

@@ -1,0 +1,5 @@
+- [error/main-thread]: CHAT84_URL_PROBE_ERROR TypeError: cannot read property 'decode' of undefined
+    at file:///main-thread.js:0:0
+    at file:///main-thread.js:0:0
+- [error/background]: CHAT84_URL_PROBE_ERROR TypeError: Cannot read properties of undefined (reading 'decode')
+    at file://view2/.lynx/main/background.96a0ffcc.js:3:634

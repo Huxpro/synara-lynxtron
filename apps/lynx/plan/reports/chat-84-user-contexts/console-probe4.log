@@ -1,0 +1,5 @@
+- [error/main-thread]: CHAT84_URL_PROBE {"pathname":"/","protocol":"https:","href":"https://example.com/","params":[]}
+    at file:///main-thread.js:0:0
+    at file:///main-thread.js:0:0
+- [error/background]: CHAT84_URL_PROBE {"pathname":"/","protocol":"https:","href":"https://example.com/","params":[]}
+    at file://view2/.lynx/main/background.832f3e6b.js:3:500
