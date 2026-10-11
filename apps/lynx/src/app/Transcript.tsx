@@ -1480,20 +1480,19 @@ export function Transcript({
     handleScrollDetail(event.detail);
   }
 
-  function handleScrollToLower() {
+  function handleScrollToLower(event: { detail?: Parameters<typeof handleScrollDetail>[0] }) {
     "background only";
-    if (IS_WEB_RELAY_MODE) return;
-    if (pinnedRef.current) return;
-    pinnedRef.current = true;
-    setPinned(true);
+    // Reaching the threshold can also follow a content/layout change. Only a
+    // user scroll carrying authoritative metrics may reattach a detached reader.
+    handleScrollDetail(event.detail);
   }
 
   useEffect(() => {
     "background only";
     // Content never re-arms a reader who scrolled away: only their own scroll back to the
     // end, the jump button or entering a thread sets pinnedRef.
-    follow.contentChanged();
-  }, [follow, transcriptFollowVersion(rows)]);
+    follow.contentChanged({ turnActive: activeTurnId !== null });
+  }, [follow, activeTurnId, transcriptFollowVersion(rows)]);
 
   useEffect(() => {
     "background only";

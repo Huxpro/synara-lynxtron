@@ -240,6 +240,29 @@ describe("transcript follow controller", () => {
     expect(scrolls).toEqual(["follow", "settle"]);
   });
 
+  it("keeps streaming pauses immediate and settles only after the turn ends", () => {
+    const { controller, scrolls, advance, pending } = harness();
+    controller.contentChanged({ turnActive: true });
+    advance(TRANSCRIPT_FOLLOW_SETTLE_DELAY_MS * 4);
+    expect(scrolls).toEqual(["follow"]);
+    expect(pending()).toBe(0);
+    controller.contentChanged({ turnActive: true });
+    advance(TRANSCRIPT_FOLLOW_SETTLE_DELAY_MS * 4);
+    expect(scrolls).toEqual(["follow", "follow"]);
+    controller.contentChanged({ turnActive: false });
+    advance(TRANSCRIPT_FOLLOW_SETTLE_DELAY_MS);
+    expect(scrolls).toEqual(["follow", "follow", "follow", "settle"]);
+  });
+
+  it("cancels an old settle request when a new turn begins", () => {
+    const { controller, scrolls, advance, pending } = harness();
+    controller.contentChanged({ turnActive: false });
+    controller.contentChanged({ turnActive: true });
+    advance(TRANSCRIPT_FOLLOW_SETTLE_DELAY_MS * 4);
+    expect(scrolls).toEqual(["follow", "follow"]);
+    expect(pending()).toBe(0);
+  });
+
   it("drops a pending settle pass when cancelled", () => {
     const { controller, scrolls, advance, pending } = harness();
     controller.contentChanged();
@@ -255,7 +278,7 @@ describe("Transcript follow wiring", () => {
 
   it("follows the latest turn's content, not the last row", () => {
     expect(source).toMatch(
-      /follow\.contentChanged\(\);\s*\}, \[follow, transcriptFollowVersion\(rows\)\]\);/,
+      /follow\.contentChanged\(\{ turnActive: activeTurnId !== null \}\);\s*\}, \[follow, activeTurnId, transcriptFollowVersion\(rows\)\]\);/,
     );
     expect(source).not.toContain("transcriptRowVersion(rows[rows.length - 1])");
   });
@@ -263,6 +286,15 @@ describe("Transcript follow wiring", () => {
   it("asks the reader's pin when a scroll runs and cancels the settle pass on unmount", () => {
     expect(source).toContain("isFollowing: () => pinnedRef.current,");
     expect(source).toContain("return () => follow.cancel();");
+  });
+
+  it("routes lower-threshold events through the same user-scroll gate", () => {
+    const lower = source.slice(
+      source.indexOf("function handleScrollToLower"),
+      source.indexOf("follow.contentChanged"),
+    );
+    expect(lower).toContain("handleScrollDetail(event.detail)");
+    expect(lower).not.toContain("pinnedRef.current = true");
   });
 
   it("does not drive the follow from scroll or layout events", () => {

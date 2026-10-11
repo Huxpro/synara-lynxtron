@@ -1,0 +1,223 @@
+{
+  "runId": "2026-10-11T03-58-41-293Z-26915",
+  "theme": "dark",
+  "window": {
+    "width": 1440,
+    "height": 900
+  },
+  "tolerancePx": 2,
+  "cells": {
+    "thread": {
+      "surface": "thread",
+      "comparison": {
+        "compared": 45,
+        "matched": 41,
+        "exempt": [
+          {
+            "label": "Message 1: Look at this repository and summarize its layout as a short ",
+            "delta": {
+              "x": -14.5,
+              "y": -3.5,
+              "width": 50,
+              "height": 8
+            },
+            "exemption": "trail tick: Native labels the 56×10 hit row around the tick; the visible 6×2 tick is at the same x/y as Electron's"
+          },
+          {
+            "label": "Message 2: In src/math.ts add an exported `subtract(a: number, b: numbe",
+            "delta": {
+              "x": -14.5,
+              "y": -3.5,
+              "width": 50,
+              "height": 8
+            },
+            "exemption": "trail tick: Native labels the 56×10 hit row around the tick; the visible 6×2 tick is at the same x/y as Electron's"
+          },
+          {
+            "label": "Message 3: Without modifying files, reply with a markdown table listing",
+            "delta": {
+              "x": -14.5,
+              "y": -3.5,
+              "width": 50,
+              "height": 8
+            },
+            "exemption": "trail tick: Native labels the 56×10 hit row around the tick; the visible 6×2 tick is at the same x/y as Electron's"
+          },
+          {
+            "label": "Message 4: Without modifying files, write a numbered list of 40 short, ",
+            "delta": {
+              "x": -14.5,
+              "y": -3.5,
+              "width": 50,
+              "height": 8
+            },
+            "exemption": "trail tick: Native labels the 56×10 hit row around the tick; the visible 6×2 tick is at the same x/y as Electron's"
+          }
+        ],
+        "outside": [],
+        "electronOnly": ["Toggle Sidebar"],
+        "missing": [],
+        "nativeOnly": [
+          "Collapse synara-fixture-app",
+          "Conversation transcript",
+          "Expand Worked for 12s",
+          "Expand Worked for 19s",
+          "Fixture transcript",
+          "Message composer",
+          "New thread",
+          "Open a panel",
+          "Resize panel",
+          "Revert to this message",
+          "Review README.md",
+          "Review changes",
+          "Review src/math.ts"
+        ],
+        "repeated": 6
+      },
+      "pass": true,
+      "electronErrors": []
+    }
+  },
+  "increments": {
+    "settings-appearance": {
+      "increment": "settings-appearance",
+      "workflow": "J4",
+      "base": "settings",
+      "comparison": {
+        "compared": 26,
+        "matched": 17,
+        "exempt": [
+          {
+            "label": "Reset theme to default",
+            "delta": {
+              "x": 4.8,
+              "y": 0.1,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Theme preference",
+            "delta": {
+              "x": 4.8,
+              "y": 0.4,
+              "width": 0,
+              "height": 0.1
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Dark theme code theme",
+            "delta": {
+              "x": 4.8,
+              "y": 0.5,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Dark theme preview: Codex",
+            "delta": {
+              "x": 4.8,
+              "y": 0.5,
+              "width": 0,
+              "height": 0.1
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Reset Dark theme accent color",
+            "delta": {
+              "x": 4.8,
+              "y": 0.6,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Dark theme UI font",
+            "delta": {
+              "x": 4.8,
+              "y": 0.6,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Dark theme code font",
+            "delta": {
+              "x": 4.8,
+              "y": 0.6,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Dark theme translucent sidebar only",
+            "delta": {
+              "x": 4.8,
+              "y": 1.1,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Dark theme window material",
+            "delta": {
+              "x": 4.4,
+              "y": 0.6,
+              "width": 0.3,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          }
+        ],
+        "outside": [],
+        "electronOnly": [
+          "Dark theme accent color",
+          "Dark theme background color",
+          "Dark theme foreground color",
+          "Settings sections"
+        ],
+        "missing": [],
+        "nativeOnly": [
+          "Agent providers",
+          "Agent skills",
+          "AppSnap",
+          "Appearance",
+          "Archived threads",
+          "Chat behavior",
+          "Computer use",
+          "Dark theme accent color hex value",
+          "Dark theme background color hex value",
+          "Dark theme foreground color hex value",
+          "Dark theme window material: Solid",
+          "Dark theme window material: Translucent",
+          "General",
+          "Import theme",
+          "Keybindings",
+          "MCP connections",
+          "Managed worktrees",
+          "Models & writing",
+          "Notifications",
+          "Profile",
+          "System tools",
+          "Theme preference: Dark",
+          "Theme preference: Light",
+          "Theme preference: System",
+          "Usage & limits"
+        ],
+        "repeated": 0
+      },
+      "probes": [],
+      "pass": true
+    }
+  },
+  "nativeConsoleErrors": []
+}
