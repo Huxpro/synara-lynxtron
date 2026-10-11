@@ -1,0 +1,296 @@
+{
+  "runId": "2026-10-11T09-08-47-868Z-58185",
+  "options": {
+    "threadId": "comparison-fixture-transcript-v2",
+    "seed": "fixture",
+    "exitAfterCertify": false,
+    "route": null,
+    "width": 1440,
+    "height": 900,
+    "webPort": 8891,
+    "electronCdpPort": 9223,
+    "lynxDevtoolPort": 18902,
+    "theme": "dark",
+    "themePack": "codex",
+    "systemAppearanceSequence": null,
+    "systemAppearanceIntervalMs": null,
+    "terminal": "closed",
+    "dock": null,
+    "appSnap": "acknowledged",
+    "chatFontSize": 13,
+    "skipLynxDevtool": false,
+    "skipBuild": false,
+    "regularApp": false,
+    "messageFormats": false
+  },
+  "cases": [
+    {
+      "kind": "plan",
+      "electron": {
+        "panel": {
+          "x": 503.25,
+          "y": 146,
+          "width": 728,
+          "height": 153.375
+        },
+        "controls": {
+          "Download to .plan folder": {
+            "x": 627,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "Export markdown file": {
+            "x": 655,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "Copy as markdown": {
+            "x": 683,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          }
+        },
+        "text": "PlanCard action audit\nRead the existing code.\nApply the smallest safe change.\nRun focused tests.\n"
+      },
+      "native": {
+        "panel": {
+          "x": 503,
+          "y": 146,
+          "width": 728,
+          "height": 153
+        },
+        "controls": {
+          "Download to .plan folder": {
+            "x": 627,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "Export markdown file": {
+            "x": 655,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "Copy as markdown": {
+            "x": 683,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          }
+        }
+      },
+      "heightDelta": -0.375,
+      "compared": [
+        {
+          "label": "Download to .plan folder",
+          "electron": {
+            "x": 627,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "native": {
+            "x": 627,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "delta": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "label": "Export markdown file",
+          "electron": {
+            "x": 655,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "native": {
+            "x": 655,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "delta": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "label": "Copy as markdown",
+          "electron": {
+            "x": 683,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "native": {
+            "x": 683,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "delta": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        }
+      ]
+    },
+    {
+      "kind": "failure",
+      "electron": {
+        "panel": {
+          "x": 503.25,
+          "y": 144,
+          "width": 576,
+          "height": 97.75
+        },
+        "controls": {
+          "Copy error": {
+            "x": 39,
+            "y": 60.75,
+            "width": 89.125,
+            "height": 24
+          },
+          "Continue task": {
+            "x": 132.125,
+            "y": 60.75,
+            "width": 90.078125,
+            "height": 24
+          },
+          "Change model": {
+            "x": 226.203125,
+            "y": 60.75,
+            "width": 93.0234375,
+            "height": 24
+          }
+        },
+        "text": "Task interruptedThe task was interrupted because the model is at capacity. Work remains incomplete.Copy errorContinue taskChange model"
+      },
+      "native": {
+        "panel": {
+          "x": 503,
+          "y": 144,
+          "width": 576,
+          "height": 98
+        },
+        "controls": {
+          "Copy error": {
+            "x": 39,
+            "y": 61,
+            "width": 89,
+            "height": 24
+          },
+          "Continue task": {
+            "x": 132,
+            "y": 61,
+            "width": 90,
+            "height": 24
+          },
+          "Change model": {
+            "x": 226,
+            "y": 61,
+            "width": 93,
+            "height": 24
+          }
+        }
+      },
+      "heightDelta": 0.25,
+      "compared": [
+        {
+          "label": "Copy error",
+          "electron": {
+            "x": 39,
+            "y": 60.75,
+            "width": 89.125,
+            "height": 24
+          },
+          "native": {
+            "x": 39,
+            "y": 61,
+            "width": 89,
+            "height": 24
+          },
+          "delta": {
+            "x": 0,
+            "y": 0.25,
+            "width": -0.12,
+            "height": 0
+          }
+        },
+        {
+          "label": "Continue task",
+          "electron": {
+            "x": 132.125,
+            "y": 60.75,
+            "width": 90.078125,
+            "height": 24
+          },
+          "native": {
+            "x": 132,
+            "y": 61,
+            "width": 90,
+            "height": 24
+          },
+          "delta": {
+            "x": -0.12,
+            "y": 0.25,
+            "width": -0.08,
+            "height": 0
+          }
+        },
+        {
+          "label": "Change model",
+          "electron": {
+            "x": 226.203125,
+            "y": 60.75,
+            "width": 93.0234375,
+            "height": 24
+          },
+          "native": {
+            "x": 226,
+            "y": 61,
+            "width": 93,
+            "height": 24
+          },
+          "delta": {
+            "x": -0.2,
+            "y": 0.25,
+            "width": -0.02,
+            "height": 0
+          }
+        }
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "renderer": "electron",
+      "kind": "plan-copy-download",
+      "ok": true
+    },
+    {
+      "renderer": "native",
+      "kind": "plan-copy-download",
+      "ok": true
+    }
+  ],
+  "limitations": [
+    "OS save-file and confirmation dialogs are covered by Native port unit tests; physical system-dialog interaction is unverified under the no-foreground constraint."
+  ],
+  "error": "Error: Timed out waiting for electron continued turn.\n    at waitFor (file:///Users/bytedance/github/synara-arch-sync/scripts/comparison-workflow.mjs:32:9)\n    at async file:///Users/bytedance/github/synara-arch-sync/apps/lynx/scripts/transcript-cards-desktop.mjs:197:23"
+}

@@ -30,7 +30,10 @@ describe("Lynx Explorer dock", () => {
       new URL("./ExplorerPreviewHeader.lynx.tsx", import.meta.url),
       "utf8",
     );
-    expect(header).toContain("await ensureNativeApi().shell.openInEditor(openTarget, editor)");
+    expect(header).toContain("<EditorOpenControls openTarget={openTarget} />");
+    expect(
+      readFileSync(new URL("./EditorOpenControls.lynx.tsx", import.meta.url), "utf8"),
+    ).toContain("await ensureNativeApi().shell.openInEditor(props.openTarget, editor)");
     expect(routerSource).toContain("onExplorerRetryFile: explorerFileQuery.retry,");
     // Every mounted Explorer (dock and editor mode) must receive the retry handler,
     // and the page must forward it to the dock host.

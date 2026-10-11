@@ -1,0 +1,634 @@
+{
+  "runId": "2026-10-11T09-13-20-517Z-71638",
+  "options": {
+    "threadId": "comparison-fixture-transcript-v2",
+    "seed": "fixture",
+    "exitAfterCertify": false,
+    "route": null,
+    "width": 1440,
+    "height": 900,
+    "webPort": 8891,
+    "electronCdpPort": 9223,
+    "lynxDevtoolPort": 18902,
+    "theme": "dark",
+    "themePack": "codex",
+    "systemAppearanceSequence": null,
+    "systemAppearanceIntervalMs": null,
+    "terminal": "closed",
+    "dock": null,
+    "appSnap": "acknowledged",
+    "chatFontSize": 13,
+    "skipLynxDevtool": false,
+    "skipBuild": false,
+    "regularApp": false,
+    "messageFormats": false
+  },
+  "cases": [
+    {
+      "kind": "plan",
+      "electron": {
+        "panel": {
+          "x": 503.25,
+          "y": 146,
+          "width": 728,
+          "height": 153.375
+        },
+        "controls": {
+          "Download to .plan folder": {
+            "x": 627,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "Export markdown file": {
+            "x": 655,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "Copy as markdown": {
+            "x": 683,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          }
+        },
+        "text": "PlanCard action audit\nRead the existing code.\nApply the smallest safe change.\nRun focused tests.\n"
+      },
+      "native": {
+        "panel": {
+          "x": 503,
+          "y": 146,
+          "width": 728,
+          "height": 153
+        },
+        "controls": {
+          "Download to .plan folder": {
+            "x": 627,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "Export markdown file": {
+            "x": 655,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "Copy as markdown": {
+            "x": 683,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          }
+        }
+      },
+      "heightDelta": -0.375,
+      "compared": [
+        {
+          "label": "Download to .plan folder",
+          "electron": {
+            "x": 627,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "native": {
+            "x": 627,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "delta": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "label": "Export markdown file",
+          "electron": {
+            "x": 655,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "native": {
+            "x": 655,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "delta": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "label": "Copy as markdown",
+          "electron": {
+            "x": 683,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "native": {
+            "x": 683,
+            "y": 21,
+            "width": 24,
+            "height": 24
+          },
+          "delta": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        }
+      ]
+    },
+    {
+      "kind": "failure",
+      "electron": {
+        "panel": {
+          "x": 503.25,
+          "y": 144,
+          "width": 576,
+          "height": 97.75
+        },
+        "controls": {
+          "Copy error": {
+            "x": 39,
+            "y": 60.75,
+            "width": 89.125,
+            "height": 24
+          },
+          "Continue task": {
+            "x": 132.125,
+            "y": 60.75,
+            "width": 90.078125,
+            "height": 24
+          },
+          "Change model": {
+            "x": 226.203125,
+            "y": 60.75,
+            "width": 93.0234375,
+            "height": 24
+          }
+        },
+        "text": "Task interruptedThe task was interrupted because the model is at capacity. Work remains incomplete.Copy errorContinue taskChange model"
+      },
+      "native": {
+        "panel": {
+          "x": 503,
+          "y": 144,
+          "width": 576,
+          "height": 98
+        },
+        "controls": {
+          "Copy error": {
+            "x": 39,
+            "y": 61,
+            "width": 89,
+            "height": 24
+          },
+          "Continue task": {
+            "x": 132,
+            "y": 61,
+            "width": 90,
+            "height": 24
+          },
+          "Change model": {
+            "x": 226,
+            "y": 61,
+            "width": 93,
+            "height": 24
+          }
+        }
+      },
+      "heightDelta": 0.25,
+      "compared": [
+        {
+          "label": "Copy error",
+          "electron": {
+            "x": 39,
+            "y": 60.75,
+            "width": 89.125,
+            "height": 24
+          },
+          "native": {
+            "x": 39,
+            "y": 61,
+            "width": 89,
+            "height": 24
+          },
+          "delta": {
+            "x": 0,
+            "y": 0.25,
+            "width": -0.12,
+            "height": 0
+          }
+        },
+        {
+          "label": "Continue task",
+          "electron": {
+            "x": 132.125,
+            "y": 60.75,
+            "width": 90.078125,
+            "height": 24
+          },
+          "native": {
+            "x": 132,
+            "y": 61,
+            "width": 90,
+            "height": 24
+          },
+          "delta": {
+            "x": -0.12,
+            "y": 0.25,
+            "width": -0.08,
+            "height": 0
+          }
+        },
+        {
+          "label": "Change model",
+          "electron": {
+            "x": 226.203125,
+            "y": 60.75,
+            "width": 93.0234375,
+            "height": 24
+          },
+          "native": {
+            "x": 226,
+            "y": 61,
+            "width": 93,
+            "height": 24
+          },
+          "delta": {
+            "x": -0.2,
+            "y": 0.25,
+            "width": -0.02,
+            "height": 0
+          }
+        }
+      ]
+    },
+    {
+      "kind": "changes",
+      "electron": {
+        "panel": {
+          "x": 503.25,
+          "y": 143.8984375,
+          "width": 728,
+          "height": 134
+        },
+        "controls": {
+          "Undo": {
+            "x": 563.5625,
+            "y": 16.75,
+            "width": 48.5390625,
+            "height": 19.5
+          },
+          "Review": {
+            "x": 620.1015625,
+            "y": 13.75,
+            "width": 64.8984375,
+            "height": 25.5
+          },
+          "Collapse changed files list": {
+            "x": 693,
+            "y": 15.5,
+            "width": 22,
+            "height": 22
+          },
+          "Review changes to README.md": {
+            "x": 1,
+            "y": 59,
+            "width": 662,
+            "height": 27.5
+          },
+          "Review changes to src/math.ts": {
+            "x": 1,
+            "y": 99.5,
+            "width": 662,
+            "height": 27.5
+          },
+          "Open README.md": {
+            "x": 669,
+            "y": 60.75,
+            "width": 24,
+            "height": 24
+          },
+          "Open README.md options": {
+            "x": 695,
+            "y": 60.75,
+            "width": 24,
+            "height": 24
+          },
+          "Open src/math.ts": {
+            "x": 669,
+            "y": 101.25,
+            "width": 24,
+            "height": 24
+          },
+          "Open src/math.ts options": {
+            "x": 695,
+            "y": 101.25,
+            "width": 24,
+            "height": 24
+          }
+        },
+        "text": "Edited 2 files+5-0UndoReviewREADME.md+1-0Opensrc/math.ts+4-0Open"
+      },
+      "native": {
+        "panel": {
+          "x": 196,
+          "y": 158,
+          "width": 728,
+          "height": 134
+        },
+        "controls": {
+          "Undo": {
+            "x": 563,
+            "y": 17,
+            "width": 49,
+            "height": 20
+          },
+          "Review": {
+            "x": 620,
+            "y": 14,
+            "width": 65,
+            "height": 26
+          },
+          "Collapse changed files list": {
+            "x": 693,
+            "y": 16,
+            "width": 22,
+            "height": 22
+          },
+          "Review changes to README.md": {
+            "x": 1,
+            "y": 59,
+            "width": 662,
+            "height": 28
+          },
+          "Open README.md": {
+            "x": 669,
+            "y": 61,
+            "width": 24,
+            "height": 24
+          },
+          "Open README.md options": {
+            "x": 695,
+            "y": 61,
+            "width": 24,
+            "height": 24
+          },
+          "Review changes to src/math.ts": {
+            "x": 1,
+            "y": 100,
+            "width": 662,
+            "height": 28
+          },
+          "Open src/math.ts": {
+            "x": 669,
+            "y": 102,
+            "width": 24,
+            "height": 24
+          },
+          "Open src/math.ts options": {
+            "x": 695,
+            "y": 102,
+            "width": 24,
+            "height": 24
+          }
+        }
+      },
+      "heightDelta": 0,
+      "compared": [
+        {
+          "label": "Undo",
+          "electron": {
+            "x": 563.5625,
+            "y": 16.75,
+            "width": 48.5390625,
+            "height": 19.5
+          },
+          "native": {
+            "x": 563,
+            "y": 17,
+            "width": 49,
+            "height": 20
+          },
+          "delta": {
+            "x": -0.56,
+            "y": 0.25,
+            "width": 0.46,
+            "height": 0.5
+          }
+        },
+        {
+          "label": "Review",
+          "electron": {
+            "x": 620.1015625,
+            "y": 13.75,
+            "width": 64.8984375,
+            "height": 25.5
+          },
+          "native": {
+            "x": 620,
+            "y": 14,
+            "width": 65,
+            "height": 26
+          },
+          "delta": {
+            "x": -0.1,
+            "y": 0.25,
+            "width": 0.1,
+            "height": 0.5
+          }
+        },
+        {
+          "label": "Collapse changed files list",
+          "electron": {
+            "x": 693,
+            "y": 15.5,
+            "width": 22,
+            "height": 22
+          },
+          "native": {
+            "x": 693,
+            "y": 16,
+            "width": 22,
+            "height": 22
+          },
+          "delta": {
+            "x": 0,
+            "y": 0.5,
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "label": "Review changes to README.md",
+          "electron": {
+            "x": 1,
+            "y": 59,
+            "width": 662,
+            "height": 27.5
+          },
+          "native": {
+            "x": 1,
+            "y": 59,
+            "width": 662,
+            "height": 28
+          },
+          "delta": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0.5
+          }
+        },
+        {
+          "label": "Review changes to src/math.ts",
+          "electron": {
+            "x": 1,
+            "y": 99.5,
+            "width": 662,
+            "height": 27.5
+          },
+          "native": {
+            "x": 1,
+            "y": 100,
+            "width": 662,
+            "height": 28
+          },
+          "delta": {
+            "x": 0,
+            "y": 0.5,
+            "width": 0,
+            "height": 0.5
+          }
+        },
+        {
+          "label": "Open README.md",
+          "electron": {
+            "x": 669,
+            "y": 60.75,
+            "width": 24,
+            "height": 24
+          },
+          "native": {
+            "x": 669,
+            "y": 61,
+            "width": 24,
+            "height": 24
+          },
+          "delta": {
+            "x": 0,
+            "y": 0.25,
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "label": "Open README.md options",
+          "electron": {
+            "x": 695,
+            "y": 60.75,
+            "width": 24,
+            "height": 24
+          },
+          "native": {
+            "x": 695,
+            "y": 61,
+            "width": 24,
+            "height": 24
+          },
+          "delta": {
+            "x": 0,
+            "y": 0.25,
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "label": "Open src/math.ts",
+          "electron": {
+            "x": 669,
+            "y": 101.25,
+            "width": 24,
+            "height": 24
+          },
+          "native": {
+            "x": 669,
+            "y": 102,
+            "width": 24,
+            "height": 24
+          },
+          "delta": {
+            "x": 0,
+            "y": 0.75,
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "label": "Open src/math.ts options",
+          "electron": {
+            "x": 695,
+            "y": 101.25,
+            "width": 24,
+            "height": 24
+          },
+          "native": {
+            "x": 695,
+            "y": 102,
+            "width": 24,
+            "height": 24
+          },
+          "delta": {
+            "x": 0,
+            "y": 0.75,
+            "width": 0,
+            "height": 0
+          }
+        }
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "renderer": "electron",
+      "kind": "plan-copy-download",
+      "ok": true
+    },
+    {
+      "renderer": "native",
+      "kind": "plan-copy-download",
+      "ok": true
+    },
+    {
+      "renderer": "electron",
+      "kind": "continue-failed-preserves-draft",
+      "ok": true,
+      "turnId": "b1808d83-4f82-4029-b00e-ddbbb539d2c4",
+      "providerReceipt": "Recovery received: {\"text\":\"Continue the interrupted task from the existing conversation and working state. First verify which operations have already completed; avoid repeating them and resume the remaining work.\",\"model\":\"gpt-5.6-luna\",\"effort\":\"low\"}"
+    },
+    {
+      "renderer": "native",
+      "kind": "continue-failed-preserves-draft",
+      "ok": true,
+      "turnId": "3d233eeb-36b0-4afc-98b1-06a6bf80aa95",
+      "providerReceipt": "Recovery received: {\"text\":\"Continue the interrupted task from the existing conversation and working state. First verify which operations have already completed; avoid repeating them and resume the remaining work.\",\"model\":\"gpt-5.6-luna\",\"effort\":\"low\"}"
+    }
+  ],
+  "limitations": [
+    "OS save-file and confirmation dialogs are covered by Native port unit tests; physical system-dialog interaction is unverified under the no-foreground constraint."
+  ],
+  "error": "Error: Timed out waiting for electron review dock.\n    at waitFor (file:///Users/bytedance/github/synara-arch-sync/scripts/comparison-workflow.mjs:32:9)\n    at async file:///Users/bytedance/github/synara-arch-sync/apps/lynx/scripts/transcript-cards-desktop.mjs:265:7"
+}

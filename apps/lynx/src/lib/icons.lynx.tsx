@@ -22,6 +22,10 @@ const ICON_CONTENT = {
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-adjustments-horizontal" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M12 6a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /> <path d="M4 6l8 0" /> <path d="M16 6l4 0" /> <path d="M6 12a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /> <path d="M4 12l2 0" /> <path d="M10 12l10 0" /> <path d="M15 18a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /> <path d="M4 18l11 0" /> <path d="M19 18l1 0" /> </svg>',
   ArchiveIcon:
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-archive" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M3 6a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2" /> <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" /> <path d="M10 12l4 0" /> </svg>',
+  ArrowDownIcon:
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-down" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M12 5l0 14" /> <path d="M18 13l-6 6" /> <path d="M6 13l6 6" /> </svg>',
+  ArrowUpIcon:
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-up" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M12 5l0 14" /> <path d="M18 11l-6 -6" /> <path d="M6 11l6 -6" /> </svg>',
   ArrowDownToLineIcon:
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-arrow-down-to-arc" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M12 3v12" /> <path d="M16 11l-4 4l-4 -4" /> <path d="M3 12a9 9 0 0 0 18 0" /> </svg>',
   ArrowLeftIcon:
@@ -220,6 +224,8 @@ export const AdjustmentsHorizontalIcon: LynxIcon = createLynxIcon(
   ICON_CONTENT.AdjustmentsHorizontalIcon,
 );
 export const ArchiveIcon: LynxIcon = createLynxIcon(ICON_CONTENT.ArchiveIcon);
+export const ArrowDownIcon: LynxIcon = createLynxIcon(ICON_CONTENT.ArrowDownIcon);
+export const ArrowUpIcon: LynxIcon = createLynxIcon(ICON_CONTENT.ArrowUpIcon);
 export const ArrowDownToLineIcon: LynxIcon = createLynxIcon(ICON_CONTENT.ArrowDownToLineIcon);
 export const ArrowLeftIcon: LynxIcon = createLynxIcon(ICON_CONTENT.ArrowLeftIcon);
 export const ArrowRightIcon: LynxIcon = createLynxIcon(ICON_CONTENT.ArrowRightIcon);

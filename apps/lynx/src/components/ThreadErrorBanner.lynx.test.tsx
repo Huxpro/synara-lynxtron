@@ -34,6 +34,41 @@ describe("Lynx ThreadErrorBanner", () => {
     expect(onDismiss).toHaveBeenCalledTimes(1);
   });
 
+  it("routes recovery controls and refuses activation while disabled", () => {
+    const onContinue = rs.fn();
+    const onChangeModel = rs.fn();
+    const screen = render(
+      <ThreadErrorBanner
+        error="failed"
+        inline
+        onContinue={onContinue}
+        onChangeModel={onChangeModel}
+      />,
+    );
+    const control = (label: string) => {
+      const node = elementTree.root?.querySelector(`[accessibility-label="${label}"]`);
+      if (!node) throw new Error(`Missing ${label}`);
+      return node;
+    };
+    fireEvent.tap(control("Continue task"));
+    fireEvent.tap(control("Change model"));
+    expect(onContinue).toHaveBeenCalledTimes(1);
+    expect(onChangeModel).toHaveBeenCalledTimes(1);
+    screen.rerender(
+      <ThreadErrorBanner
+        error="failed"
+        inline
+        recoveryDisabled
+        onContinue={onContinue}
+        onChangeModel={onChangeModel}
+      />,
+    );
+    fireEvent.tap(control("Continue task"));
+    fireEvent.tap(control("Change model"));
+    expect(onContinue).toHaveBeenCalledTimes(1);
+    expect(onChangeModel).toHaveBeenCalledTimes(1);
+  });
+
   it("renders nothing without an error", () => {
     render(<ThreadErrorBanner error={null} />);
     expect(elementTree.root?.querySelector(".ThreadErrorBanner")).toBeNull();

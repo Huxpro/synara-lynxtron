@@ -16,6 +16,8 @@ const outputFile = path.join(projectRoot, "src/lib/icons.lynx.tsx");
 const icons = {
   AdjustmentsHorizontalIcon: "adjustments-horizontal",
   ArchiveIcon: "archive",
+  ArrowDownIcon: "arrow-down",
+  ArrowUpIcon: "arrow-up",
   ArrowDownToLineIcon: "arrow-down-to-arc",
   ArrowLeftIcon: "arrow-left",
   ArrowRightIcon: "arrow-right",

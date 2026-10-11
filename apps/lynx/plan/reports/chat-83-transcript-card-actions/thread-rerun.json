@@ -1,0 +1,1136 @@
+{
+  "runId": "2026-10-11T09-13-20-517Z-71638",
+  "theme": "dark",
+  "window": {
+    "width": 1440,
+    "height": 900
+  },
+  "tolerancePx": 2,
+  "cells": {
+    "thread": {
+      "surface": "thread",
+      "comparison": {
+        "compared": 41,
+        "matched": 31,
+        "exempt": [],
+        "outside": [
+          {
+            "label": "Open threads",
+            "electron": {
+              "x": 327.5,
+              "y": 6,
+              "width": 243.5,
+              "height": 32,
+              "gutter": 0
+            },
+            "native": {
+              "x": 327,
+              "y": 6,
+              "width": 372,
+              "height": 32
+            },
+            "delta": {
+              "x": -0.5,
+              "y": 0,
+              "width": 128.5,
+              "height": 0
+            },
+            "worst": 128.5,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Hand off thread",
+            "electron": {
+              "x": 579,
+              "y": 8,
+              "width": 28,
+              "height": 28,
+              "gutter": 0
+            },
+            "native": {
+              "x": 707,
+              "y": 8,
+              "width": 28,
+              "height": 28
+            },
+            "delta": {
+              "x": 128,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "worst": 128,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Add action",
+            "electron": {
+              "x": 615,
+              "y": 8,
+              "width": 28,
+              "height": 28,
+              "gutter": 0
+            },
+            "native": {
+              "x": 743,
+              "y": 8,
+              "width": 28,
+              "height": 28
+            },
+            "delta": {
+              "x": 128,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "worst": 128,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Toggle environment panel",
+            "electron": {
+              "x": 660,
+              "y": 8,
+              "width": 28,
+              "height": 28,
+              "gutter": 0
+            },
+            "native": {
+              "x": 788,
+              "y": 8,
+              "width": 28,
+              "height": 28
+            },
+            "delta": {
+              "x": 128,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "worst": 128,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Toggle right sidebar",
+            "electron": {
+              "x": 696,
+              "y": 8,
+              "width": 28,
+              "height": 28,
+              "gutter": 0
+            },
+            "native": {
+              "x": 824,
+              "y": 8,
+              "width": 28,
+              "height": 28
+            },
+            "delta": {
+              "x": 128,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "worst": 128,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Record voice note",
+            "electron": {
+              "x": 651,
+              "y": 846,
+              "width": 28,
+              "height": 28,
+              "gutter": 0
+            },
+            "native": {
+              "x": 779,
+              "y": 846,
+              "width": 28,
+              "height": 28
+            },
+            "delta": {
+              "x": 128,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "worst": 128,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Send message",
+            "electron": {
+              "x": 687,
+              "y": 846,
+              "width": 28,
+              "height": 28,
+              "gutter": 0
+            },
+            "native": {
+              "x": 815,
+              "y": 846,
+              "width": 28,
+              "height": 28
+            },
+            "delta": {
+              "x": 128,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "worst": 128,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Open panels",
+            "electron": {
+              "x": 751,
+              "y": 6,
+              "width": 584,
+              "height": 32,
+              "gutter": 0
+            },
+            "native": {
+              "x": 879,
+              "y": 6,
+              "width": 520,
+              "height": 32
+            },
+            "delta": {
+              "x": 128,
+              "y": 0,
+              "width": -64,
+              "height": 0
+            },
+            "worst": 128,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Context window 8.5% used",
+            "electron": {
+              "x": 448.796875,
+              "y": 850,
+              "width": 20,
+              "height": 20,
+              "gutter": 0
+            },
+            "native": {
+              "x": 576,
+              "y": 850,
+              "width": 20,
+              "height": 20
+            },
+            "delta": {
+              "x": 127.2,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "worst": 127.2,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Change model and reasoning",
+            "electron": {
+              "x": 476.796875,
+              "y": 846,
+              "width": 166.203125,
+              "height": 28,
+              "gutter": 0
+            },
+            "native": {
+              "x": 604,
+              "y": 846,
+              "width": 167,
+              "height": 28
+            },
+            "delta": {
+              "x": 127.2,
+              "y": 0,
+              "width": 0.8,
+              "height": 0
+            },
+            "worst": 127.2,
+            "match": false,
+            "exemption": null
+          }
+        ],
+        "electronOnly": [
+          "Add panel",
+          "Choose diff source",
+          "Choose turn diff",
+          "Close Diff",
+          "Close file view",
+          "Commit",
+          "Diff tools",
+          "Diff view options",
+          "Git action options",
+          "Git actions",
+          "Jump to file",
+          "Loading checkpoint diff...",
+          "Maximize panel",
+          "Next change",
+          "Panel",
+          "Previous change",
+          "Reload diff",
+          "Show file tree"
+        ],
+        "missing": [
+          "Add panel",
+          "Choose diff source",
+          "Choose turn diff",
+          "Close Diff",
+          "Close file view",
+          "Commit",
+          "Diff tools",
+          "Diff view options",
+          "Git action options",
+          "Jump to file",
+          "Loading checkpoint diff...",
+          "Maximize panel",
+          "Next change",
+          "Panel",
+          "Previous change",
+          "Reload diff",
+          "Show file tree"
+        ],
+        "nativeOnly": [
+          "Collapse changed files list",
+          "Collapse synara-fixture-app",
+          "Conversation transcript",
+          "Dismiss toast",
+          "Expand Worked for 12s",
+          "Expand Worked for 19s",
+          "Fixture transcript",
+          "Message composer",
+          "New thread",
+          "Open Browser",
+          "Open Files",
+          "Open README.md",
+          "Open README.md options",
+          "Open Review",
+          "Open Side chats",
+          "Open Source control",
+          "Open Terminal",
+          "Open a panel",
+          "Open iOS Simulator",
+          "Open src/math.ts",
+          "Open src/math.ts options",
+          "Plan copied as markdown",
+          "Plan downloaded",
+          "Resize panel",
+          "Revert to this message",
+          "Review changes",
+          "Review changes to README.md",
+          "Review changes to src/math.ts",
+          "Undo file changes"
+        ],
+        "repeated": 7
+      },
+      "pass": false,
+      "electronErrors": []
+    }
+  },
+  "increments": {
+    "landing-diff-dock": {
+      "increment": "landing-diff-dock",
+      "workflow": "J3",
+      "base": "landing",
+      "comparison": {
+        "compared": 50,
+        "matched": 50,
+        "exempt": [],
+        "outside": [],
+        "electronOnly": [],
+        "missing": [],
+        "nativeOnly": [
+          "Collapse synara-fixture-app",
+          "Dismiss toast",
+          "Fixture transcript",
+          "Message composer",
+          "New thread",
+          "Open panels",
+          "Plan copied as markdown",
+          "Plan downloaded",
+          "Resize panel",
+          "Support Synara. Explore sponsorships and help fund development",
+          "Worktree",
+          "synara-fixture-app"
+        ],
+        "repeated": 4
+      },
+      "probes": [],
+      "pass": true
+    },
+    "model-menu": {
+      "increment": "model-menu",
+      "workflow": "J1",
+      "base": "thread",
+      "comparison": {
+        "compared": 65,
+        "matched": 64,
+        "exempt": [],
+        "outside": [
+          {
+            "label": "Open panels",
+            "electron": {
+              "x": 879,
+              "y": 6,
+              "width": 456,
+              "height": 32,
+              "gutter": 0
+            },
+            "native": {
+              "x": 879,
+              "y": 6,
+              "width": 520,
+              "height": 32
+            },
+            "delta": {
+              "x": 0,
+              "y": 0,
+              "width": 64,
+              "height": 0
+            },
+            "worst": 64,
+            "match": false,
+            "exemption": null
+          }
+        ],
+        "electronOnly": [
+          "Add panel",
+          "Choose diff source",
+          "Choose turn diff",
+          "Close Diff",
+          "Close file view",
+          "Commit",
+          "Diff tools",
+          "Diff view options",
+          "Git action options",
+          "Git actions",
+          "Jump to file",
+          "Maximize panel",
+          "Next change",
+          "Panel",
+          "Previous change",
+          "Reload diff",
+          "Show file tree"
+        ],
+        "missing": [
+          "Add panel",
+          "Choose diff source",
+          "Choose turn diff",
+          "Close Diff",
+          "Close file view",
+          "Commit",
+          "Diff tools",
+          "Diff view options",
+          "Git action options",
+          "Jump to file",
+          "Maximize panel",
+          "Next change",
+          "Panel",
+          "Previous change",
+          "Reload diff",
+          "Show file tree"
+        ],
+        "nativeOnly": [
+          "Collapse changed files list",
+          "Collapse synara-fixture-app",
+          "Conversation transcript",
+          "Dismiss toast",
+          "Expand Worked for 12s",
+          "Expand Worked for 19s",
+          "Fixture transcript",
+          "Message composer",
+          "New thread",
+          "Open Browser",
+          "Open Files",
+          "Open README.md",
+          "Open README.md options",
+          "Open Review",
+          "Open Side chats",
+          "Open Source control",
+          "Open Terminal",
+          "Open a panel",
+          "Open iOS Simulator",
+          "Open src/math.ts",
+          "Open src/math.ts options",
+          "Plan copied as markdown",
+          "Plan downloaded",
+          "Resize panel",
+          "Revert to this message",
+          "Review changes",
+          "Review changes to README.md",
+          "Review changes to src/math.ts",
+          "Undo file changes"
+        ],
+        "repeated": 7
+      },
+      "probes": [
+        {
+          "name": "menu popup",
+          "electron": {
+            "x": 605,
+            "y": 503,
+            "width": 296,
+            "height": 339
+          },
+          "native": {
+            "x": 604,
+            "y": 503,
+            "width": 296,
+            "height": 339
+          },
+          "delta": {
+            "x": -1,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "worst": 1,
+          "match": true
+        }
+      ],
+      "pass": false
+    },
+    "add-panel-menu": {
+      "increment": "add-panel-menu",
+      "workflow": "J3",
+      "base": "thread",
+      "comparison": {
+        "compared": 57,
+        "matched": 46,
+        "exempt": [],
+        "outside": [
+          {
+            "label": "Choose diff source",
+            "electron": {
+              "x": 879,
+              "y": 50,
+              "width": 107.1171875,
+              "height": 32,
+              "gutter": 0
+            },
+            "native": {
+              "x": 879,
+              "y": 50,
+              "width": 160,
+              "height": 32
+            },
+            "delta": {
+              "x": 0,
+              "y": 0,
+              "width": 52.9,
+              "height": 0
+            },
+            "worst": 52.9,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Diff tools",
+            "electron": {
+              "x": 1042.4140625,
+              "y": 50,
+              "width": 177,
+              "height": 32,
+              "gutter": 0
+            },
+            "native": {
+              "x": 1047,
+              "y": 50,
+              "width": 177,
+              "height": 32
+            },
+            "delta": {
+              "x": 4.6,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "worst": 4.6,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Reload diff",
+            "electron": {
+              "x": 1044.4140625,
+              "y": 52,
+              "width": 28,
+              "height": 28,
+              "gutter": 0
+            },
+            "native": {
+              "x": 1049,
+              "y": 52,
+              "width": 28,
+              "height": 28
+            },
+            "delta": {
+              "x": 4.6,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "worst": 4.6,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Diff view options",
+            "electron": {
+              "x": 1073.4140625,
+              "y": 52,
+              "width": 28,
+              "height": 28,
+              "gutter": 0
+            },
+            "native": {
+              "x": 1078,
+              "y": 52,
+              "width": 28,
+              "height": 28
+            },
+            "delta": {
+              "x": 4.6,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "worst": 4.6,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Previous change",
+            "electron": {
+              "x": 1102.4140625,
+              "y": 52,
+              "width": 28,
+              "height": 28,
+              "gutter": 0
+            },
+            "native": {
+              "x": 1107,
+              "y": 52,
+              "width": 28,
+              "height": 28
+            },
+            "delta": {
+              "x": 4.6,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "worst": 4.6,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Next change",
+            "electron": {
+              "x": 1131.4140625,
+              "y": 52,
+              "width": 28,
+              "height": 28,
+              "gutter": 0
+            },
+            "native": {
+              "x": 1136,
+              "y": 52,
+              "width": 28,
+              "height": 28
+            },
+            "delta": {
+              "x": 4.6,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "worst": 4.6,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Jump to file",
+            "electron": {
+              "x": 1160.4140625,
+              "y": 52,
+              "width": 28,
+              "height": 28,
+              "gutter": 0
+            },
+            "native": {
+              "x": 1165,
+              "y": 52,
+              "width": 28,
+              "height": 28
+            },
+            "delta": {
+              "x": 4.6,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "worst": 4.6,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Show file tree",
+            "electron": {
+              "x": 1189.4140625,
+              "y": 52,
+              "width": 28,
+              "height": 28,
+              "gutter": 0
+            },
+            "native": {
+              "x": 1194,
+              "y": 52,
+              "width": 28,
+              "height": 28
+            },
+            "delta": {
+              "x": 4.6,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "worst": 4.6,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Commit",
+            "electron": {
+              "x": 1227.4140625,
+              "y": 52,
+              "width": 28,
+              "height": 28,
+              "gutter": 0
+            },
+            "native": {
+              "x": 1232,
+              "y": 52,
+              "width": 28,
+              "height": 28
+            },
+            "delta": {
+              "x": 4.6,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "worst": 4.6,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Git action options",
+            "electron": {
+              "x": 1262.4140625,
+              "y": 52,
+              "width": 28,
+              "height": 28,
+              "gutter": 0
+            },
+            "native": {
+              "x": 1267,
+              "y": 52,
+              "width": 28,
+              "height": 28
+            },
+            "delta": {
+              "x": 4.6,
+              "y": 0,
+              "width": 0,
+              "height": 0
+            },
+            "worst": 4.6,
+            "match": false,
+            "exemption": null
+          },
+          {
+            "label": "Choose turn diff",
+            "electron": {
+              "x": 1298.4140625,
+              "y": 50,
+              "width": 94.5859375,
+              "height": 32,
+              "gutter": 0
+            },
+            "native": {
+              "x": 1303,
+              "y": 50,
+              "width": 90,
+              "height": 32
+            },
+            "delta": {
+              "x": 4.6,
+              "y": 0,
+              "width": -4.6,
+              "height": 0
+            },
+            "worst": 4.6,
+            "match": false,
+            "exemption": null
+          }
+        ],
+        "electronOnly": ["Git actions"],
+        "missing": [],
+        "nativeOnly": [
+          "Change markers",
+          "Collapse README.md",
+          "Collapse changed files list",
+          "Collapse src/math.ts",
+          "Collapse synara-fixture-app",
+          "Conversation transcript",
+          "Diff",
+          "Dismiss toast",
+          "Expand Worked for 12s",
+          "Expand Worked for 19s",
+          "File actions",
+          "Fixture transcript",
+          "Message composer",
+          "Modified: README.md",
+          "Modified: src/math.ts",
+          "New thread",
+          "Open README.md",
+          "Open README.md options",
+          "Open src/math.ts",
+          "Open src/math.ts options",
+          "Plan copied as markdown",
+          "Plan downloaded",
+          "Resize panel",
+          "Revert to this message",
+          "Review changes",
+          "Review changes to README.md",
+          "Review changes to src/math.ts",
+          "Undo file changes"
+        ],
+        "repeated": 7
+      },
+      "probes": [
+        {
+          "name": "menu popup",
+          "electron": {
+            "x": 1191,
+            "y": 40,
+            "width": 176,
+            "height": 192
+          },
+          "native": {
+            "x": 1191,
+            "y": 40,
+            "width": 176,
+            "height": 192
+          },
+          "delta": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "worst": 0,
+          "match": true
+        }
+      ],
+      "pass": false
+    },
+    "settings-appearance": {
+      "increment": "settings-appearance",
+      "workflow": "J4",
+      "base": "settings",
+      "comparison": {
+        "compared": 26,
+        "matched": 17,
+        "exempt": [
+          {
+            "label": "Reset theme to default",
+            "delta": {
+              "x": 4.8,
+              "y": 0.1,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Theme preference",
+            "delta": {
+              "x": 4.8,
+              "y": 0.4,
+              "width": 0,
+              "height": 0.1
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Dark theme code theme",
+            "delta": {
+              "x": 4.8,
+              "y": 0.5,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Dark theme preview: Codex",
+            "delta": {
+              "x": 4.8,
+              "y": 0.5,
+              "width": 0,
+              "height": 0.1
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Reset Dark theme accent color",
+            "delta": {
+              "x": 4.8,
+              "y": 0.6,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Dark theme UI font",
+            "delta": {
+              "x": 4.8,
+              "y": 0.6,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Dark theme code font",
+            "delta": {
+              "x": 4.8,
+              "y": 0.6,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Dark theme translucent sidebar only",
+            "delta": {
+              "x": 4.8,
+              "y": 1.1,
+              "width": 0,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          },
+          {
+            "label": "Dark theme window material",
+            "delta": {
+              "x": 4.4,
+              "y": 0.6,
+              "width": 0.3,
+              "height": 0
+            },
+            "exemption": "scrollbar-gutter (10px)"
+          }
+        ],
+        "outside": [],
+        "electronOnly": [
+          "Dark theme accent color",
+          "Dark theme background color",
+          "Dark theme foreground color",
+          "Settings sections"
+        ],
+        "missing": [],
+        "nativeOnly": [
+          "Agent providers",
+          "Agent skills",
+          "AppSnap",
+          "Appearance",
+          "Archived threads",
+          "Chat behavior",
+          "Computer use",
+          "Dark theme accent color hex value",
+          "Dark theme background color hex value",
+          "Dark theme foreground color hex value",
+          "Dark theme window material: Solid",
+          "Dark theme window material: Translucent",
+          "Dismiss toast",
+          "General",
+          "Import theme",
+          "Keybindings",
+          "MCP connections",
+          "Managed worktrees",
+          "Models & writing",
+          "Notifications",
+          "Plan copied as markdown",
+          "Plan downloaded",
+          "Profile",
+          "System tools",
+          "Theme preference: Dark",
+          "Theme preference: Light",
+          "Theme preference: System",
+          "Usage & limits"
+        ],
+        "repeated": 0
+      },
+      "probes": [],
+      "pass": true
+    },
+    "automation-dialog": {
+      "increment": "automation-dialog",
+      "workflow": "J5",
+      "base": "automations",
+      "comparison": {
+        "compared": 6,
+        "matched": 6,
+        "exempt": [],
+        "outside": [],
+        "electronOnly": [],
+        "missing": [],
+        "nativeOnly": [
+          "Auto fallback may use local checkout. If Synara cannot create a worktree, runs may fall back to editing the active project checkout.",
+          "Change model and reasoning",
+          "Project Home",
+          "Runs in auto",
+          "Schedule Daily at 9:00",
+          "Use template",
+          "Worktree cleanup. Generated worktrees or branches are kept after archiving until you remove them."
+        ],
+        "repeated": 0
+      },
+      "probes": [
+        {
+          "name": "dialog popup",
+          "electron": {
+            "x": 336,
+            "y": 200.75,
+            "width": 768,
+            "height": 498.5
+          },
+          "native": {
+            "x": 336,
+            "y": 201,
+            "width": 768,
+            "height": 499
+          },
+          "delta": {
+            "x": 0,
+            "y": 0.3,
+            "width": 0,
+            "height": 0.5
+          },
+          "worst": 0.5,
+          "match": true
+        }
+      ],
+      "pass": true
+    },
+    "automation-model-menu": {
+      "increment": "automation-model-menu",
+      "workflow": "J5",
+      "base": "automations",
+      "comparison": {
+        "compared": 6,
+        "matched": 6,
+        "exempt": [],
+        "outside": [],
+        "electronOnly": [],
+        "missing": [],
+        "nativeOnly": [
+          "Auto fallback may use local checkout. If Synara cannot create a worktree, runs may fall back to editing the active project checkout.",
+          "Change model and reasoning",
+          "Project Home",
+          "Runs in auto",
+          "Schedule Daily at 9:00",
+          "Use template",
+          "Worktree cleanup. Generated worktrees or branches are kept after archiving until you remove them."
+        ],
+        "repeated": 0
+      },
+      "probes": [
+        {
+          "name": "menu popup",
+          "electron": {
+            "x": 541,
+            "y": 656.5,
+            "width": 232,
+            "height": 123
+          },
+          "native": {
+            "x": 541,
+            "y": 656,
+            "width": 232,
+            "height": 123
+          },
+          "delta": {
+            "x": 0,
+            "y": -0.5,
+            "width": 0,
+            "height": 0
+          },
+          "worst": 0.5,
+          "match": true
+        }
+      ],
+      "pass": true
+    },
+    "kanban-new-task": {
+      "increment": "kanban-new-task",
+      "workflow": "J6",
+      "base": "kanban",
+      "comparison": {
+        "compared": 6,
+        "matched": 6,
+        "exempt": [],
+        "outside": [],
+        "electronOnly": [],
+        "missing": [],
+        "nativeOnly": ["Change model and reasoning", "Send as draft", "Task prompt"],
+        "repeated": 0
+      },
+      "probes": [
+        {
+          "name": "dialog popup",
+          "electron": {
+            "x": 336,
+            "y": 322.5,
+            "width": 768,
+            "height": 255
+          },
+          "native": {
+            "x": 336,
+            "y": 323,
+            "width": 768,
+            "height": 255
+          },
+          "delta": {
+            "x": 0,
+            "y": 0.5,
+            "width": 0,
+            "height": 0
+          },
+          "worst": 0.5,
+          "match": true
+        }
+      ],
+      "pass": true
+    }
+  },
+  "nativeConsoleErrors": "unavailable: get-console did not capture the run's probes"
+}
