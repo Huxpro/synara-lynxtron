@@ -143,3 +143,9 @@ Still open on Native:
 
 - Streaming message (−2.2): upstream's code block keeps its 10.4px bottom margin as the last child of `.chat-markdown` (its rule comes after `> :last-child`), and its footer without actions is 17.9px; Lynx drops the margin and keeps the footer at 24px.
 - The user image thumbnail falls back to the file icon.
+
+## Chat follow acceptance (#76)
+
+The follow controller now reserves animated settling for inactive turns; provider pauses while a turn is running keep immediate end-follow. Lower-threshold events use the existing user-scroll and live-edge gate and cannot independently reattach a detached reader. See [the report and raw measurements](../plan/reports/chat-76-follow/README.md).
+
+The final dark 1440×900 / 13px run passed thread and appearance cells, J1 excluding only Stop, five consecutive paired J2 repetitions, and J7 on both renderers. #35 remains excluded and unfixed. The current real-provider fixture was measured row by row without database injection: four of eight rows are outside 2px (+2.4, +2.1, −8.7, −5px on assistant rows), and 12 of 23 paired controls are outside 2px. These remain open for #85/#86 and are not platform exemptions. This does not supersede the full eight-configuration format audit or the final matrices.

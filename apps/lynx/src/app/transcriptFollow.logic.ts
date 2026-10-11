@@ -43,7 +43,7 @@ export interface TranscriptFollowDeps<TimerHandle> {
 
 export interface TranscriptFollowController {
   /** The followed content changed (see transcriptFollowVersion). */
-  readonly contentChanged: () => void;
+  readonly contentChanged: (options?: { readonly turnActive: boolean }) => void;
   /** Drops a pending settle pass (unmount). */
   readonly cancel: () => void;
 }
@@ -78,10 +78,14 @@ export function createTranscriptFollowController<TimerHandle>(
     settleTimer = null;
   };
   return {
-    contentChanged() {
+    contentChanged(options) {
       cancel();
       if (!deps.isFollowing()) return;
       deps.scrollToEnd({ smooth: false });
+      // A pause between provider chunks is not a settled turn. Native animated
+      // scrolls report the same event source as gestures, so starting one while
+      // the tail still grows can incorrectly release end-follow mid-animation.
+      if (options?.turnActive) return;
       settleTimer = deps.setTimer(() => {
         settleTimer = null;
         if (deps.isFollowing()) deps.scrollToEnd({ smooth: true });
