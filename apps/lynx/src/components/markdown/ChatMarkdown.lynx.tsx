@@ -1,3 +1,5 @@
+import { userInlineChipSegments } from "./userInlineChips.logic";
+import type { ParsedTerminalContextEntry } from "@synara-web/lib/terminalContext";
 // P2-V5: unified/remark parses on the background thread; this module only
 // turns the serializable mdast subset into Lynx-native view/text elements.
 
@@ -5,10 +7,7 @@ import { useEffect, useRef, useState, type ReactNode } from "@lynx-js/react";
 import { getRectByRef } from "@lynx-js/lynx-ui";
 import type { NodesRef, SelectionChangeEvent } from "@lynx-js/types";
 import type { ProviderMentionReference } from "@synara/contracts";
-import {
-  splitPromptIntoDisplaySegments,
-  type ComposerPromptSegment,
-} from "@synara-web/composer-editor-mentions";
+import { type ComposerPromptSegment } from "@synara-web/composer-editor-mentions";
 
 import { useLynxInteractiveState } from "../ui/interactive-state.lynx";
 import {
@@ -59,6 +58,7 @@ export interface ChatMarkdownProps {
   readonly selectable?: boolean;
   readonly variant?: MarkdownVariant;
   readonly mentionReferences?: ReadonlyArray<ProviderMentionReference>;
+  readonly terminalContexts?: ReadonlyArray<ParsedTerminalContextEntry>;
   readonly onOpenFileReference?: (relativePath: string) => void;
   readonly onTextSelection?: (selection: MarkdownTextSelection | null) => void;
   readonly preparsedTree?: MarkdownNode | null;
@@ -76,6 +76,7 @@ interface MarkdownRenderContext {
   readonly allowComposerChips: boolean;
   readonly cwd: string | null;
   readonly mentionReferences: ReadonlyArray<ProviderMentionReference>;
+  readonly terminalContexts: ReadonlyArray<ParsedTerminalContextEntry>;
   readonly onOpenFileReference?: (relativePath: string) => void;
   readonly onTextSelection?: (selection: MarkdownTextSelection | null) => void;
   readonly selectable: boolean;
@@ -177,11 +178,14 @@ function SelectableMarkdownText(props: {
 function MarkdownInlineToken({
   context,
   segment,
+  terminalContext,
 }: {
+  readonly terminalContext?: ParsedTerminalContextEntry;
   readonly context: MarkdownRenderContext;
   readonly segment: MarkdownInlineTokenSegment;
 }) {
   const presentation = resolveMarkdownInlineTokenPresentation(segment);
+  const label = terminalContext?.header ?? presentation.label;
   const agentColor = segment.type === "agent-mention" ? resolveAgentChipColor(segment.color) : null;
   const externalTarget = presentation.openExternalUrl;
   const fileReference =
@@ -207,11 +211,13 @@ function MarkdownInlineToken({
     focusable: Boolean(activate),
     onActivate: activate,
     accessibilityTraits: activate ? "link" : "text",
-    accessibleLabel: externalTarget
-      ? `Open ${externalTarget}`
-      : fileReference
-        ? `Open ${fileReference}`
-        : presentation.label,
+    accessibleLabel: terminalContext
+      ? `${terminalContext.header}\n${terminalContext.body}`
+      : externalTarget
+        ? `Open ${externalTarget}`
+        : fileReference
+          ? `Open ${fileReference}`
+          : presentation.label,
   });
   return (
     <text
@@ -227,7 +233,7 @@ function MarkdownInlineToken({
       {...interaction.eventProps}
     >
       <MarkdownInlineTokenIcon segment={segment} color={agentColor?.text} />
-      {presentation.label}
+      {label}
     </text>
   );
 }
@@ -241,17 +247,28 @@ function renderUserText(
     return <text key={key}>{value}</text>;
   }
   const occurrences = new Map<string, number>();
-  return splitPromptIntoDisplaySegments(value, context.mentionReferences).map((segment) => {
-    const identity = JSON.stringify(segment);
-    const occurrence = occurrences.get(identity) ?? 0;
-    occurrences.set(identity, occurrence + 1);
-    const segmentKey = `${key}.${segment.type}.${identity}.${occurrence}`;
-    return segment.type === "text" ? (
-      <text key={segmentKey}>{segment.text}</text>
-    ) : (
-      <MarkdownInlineToken context={context} key={segmentKey} segment={segment} />
-    );
-  });
+  return userInlineChipSegments(value, context.mentionReferences, context.terminalContexts).map(
+    (segment) => {
+      const identity = JSON.stringify(segment);
+      const occurrence = occurrences.get(identity) ?? 0;
+      occurrences.set(identity, occurrence + 1);
+      const segmentKey = `${key}.${segment.type}.${identity}.${occurrence}`;
+      if (segment.type === "transcript-terminal")
+        return (
+          <MarkdownInlineToken
+            context={context}
+            key={segmentKey}
+            segment={{ type: "terminal-context", context: null }}
+            terminalContext={segment.context}
+          />
+        );
+      return segment.type === "text" ? (
+        <text key={segmentKey}>{segment.text}</text>
+      ) : (
+        <MarkdownInlineToken context={context} key={segmentKey} segment={segment} />
+      );
+    },
+  );
 }
 
 function renderInlineChildren(
@@ -833,6 +850,7 @@ export function ChatMarkdown({
   selectable = false,
   variant = "assistant",
   mentionReferences = [],
+  terminalContexts = [],
   onOpenFileReference,
   onTextSelection,
   preparsedTree,
@@ -855,6 +873,7 @@ export function ChatMarkdown({
     allowComposerChips: variant === "user",
     cwd,
     mentionReferences,
+    terminalContexts,
     onOpenFileReference,
     onTextSelection,
     selectable,

@@ -1,0 +1,121 @@
+{
+  "runId": "2026-10-11T10-15-26-718Z-24961",
+  "options": {
+    "threadId": "comparison-fixture-transcript-v2",
+    "seed": "fixture",
+    "exitAfterCertify": false,
+    "route": null,
+    "width": 1440,
+    "height": 900,
+    "webPort": 8891,
+    "electronCdpPort": 9223,
+    "lynxDevtoolPort": 18902,
+    "theme": "dark",
+    "themePack": "codex",
+    "systemAppearanceSequence": null,
+    "systemAppearanceIntervalMs": null,
+    "terminal": "closed",
+    "dock": null,
+    "appSnap": "acknowledged",
+    "chatFontSize": 13,
+    "skipLynxDevtool": false,
+    "skipBuild": false,
+    "regularApp": false,
+    "messageFormats": false
+  },
+  "cases": [
+    {
+      "kind": "terminal",
+      "label": "default",
+      "electron": {
+        "height": 85.078125,
+        "width": 736,
+        "text": "Terminal 1 lines 2-3\n CHAT-84 terminal: Inspect this context.\n\n6:18 AM",
+        "controls": [
+          [
+            "Copy message",
+            {
+              "x": 1141.25,
+              "y": 105.078125,
+              "width": 24,
+              "height": 24
+            }
+          ],
+          [
+            "Edit message",
+            {
+              "x": 1173.25,
+              "y": 105.078125,
+              "width": 24,
+              "height": 24
+            }
+          ],
+          [
+            "Revert to this message",
+            {
+              "x": 1205.25,
+              "y": 105.078125,
+              "width": 24,
+              "height": 24
+            }
+          ]
+        ]
+      },
+      "native": {
+        "height": 84,
+        "width": 1130,
+        "text": "Terminal 1 lines 2-3 CHAT-84 terminal: Inspect this context.6:18 AM",
+        "controls": [
+          [
+            "Copy message",
+            {
+              "x": 1142,
+              "y": 104,
+              "width": 24,
+              "height": 24
+            }
+          ],
+          [
+            "Edit message",
+            {
+              "x": 1174,
+              "y": 104,
+              "width": 24,
+              "height": 24
+            }
+          ],
+          [
+            "Revert to this message",
+            {
+              "x": 1206,
+              "y": 104,
+              "width": 24,
+              "height": 24
+            }
+          ]
+        ]
+      },
+      "heightDelta": -1.08,
+      "comparison": {
+        "compared": 3,
+        "matched": 3,
+        "exempt": [],
+        "outside": [],
+        "electronOnly": [],
+        "missing": [],
+        "nativeOnly": [],
+        "repeated": 0
+      },
+      "pass": true
+    }
+  ],
+  "workflows": [
+    {
+      "renderer": "electron",
+      "kind": "terminal",
+      "action": "copy-visible-prompt",
+      "ok": true
+    }
+  ],
+  "error": "Error: Timed out waiting for Electron {\"text\":\"Cancel\"}.\n    at waitFor (file:///Users/bytedance/github/synara-arch-sync/scripts/comparison-workflow.mjs:32:9)\n    at async Object.tap (file:///Users/bytedance/github/synara-arch-sync/scripts/comparison-workflow.mjs:192:19)\n    at async file:///Users/bytedance/github/synara-arch-sync/apps/lynx/scripts/user-contexts-desktop.mjs:130:9"
+}

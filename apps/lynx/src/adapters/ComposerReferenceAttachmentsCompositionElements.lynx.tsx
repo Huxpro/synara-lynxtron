@@ -1,3 +1,4 @@
+import { ReferenceAttachmentCard } from "./ReferenceAttachmentCard.lynx";
 import { type ReactNode } from "@lynx-js/react";
 
 import { formatPastedTextCountLabel, pastedTextTitle } from "@synara-web/lib/composerPastedText";
@@ -144,16 +145,17 @@ export function ComposerPastedTextAttachmentElement({
     onActivate: onShowInTextField,
   });
   return (
-    <view className="ComposerReferenceCardLynx ComposerReferencePastedTextLynx">
-      <view className="ComposerReferenceTileLynx">
+    <ReferenceAttachmentCard
+      className="ComposerReferencePastedTextLynx"
+      title={title}
+      icon={
         <FileIcon
           className="ComposerReferenceTileIconLynx"
           color={semanticIconColor("secondary")}
           size={16}
         />
-      </view>
-      <view className="ComposerReferenceCardCopyLynx">
-        <text className="ComposerReferenceCardTitleLynx">{title}</text>
+      }
+      subtitle={
         <view className={showInteraction.className} {...showInteraction.eventProps}>
           <text className="ComposerReferenceCardActionTextLynx">
             Show in text field · {formatPastedTextCountLabel(pastedText)}
@@ -164,12 +166,14 @@ export function ComposerPastedTextAttachmentElement({
             size={10}
           />
         </view>
-      </view>
-      <ComposerReferenceRemoveButton
-        label={`Remove pasted text (${formatPastedTextCountLabel(pastedText)})`}
-        onRemove={onRemove}
-      />
-    </view>
+      }
+      remove={
+        <ComposerReferenceRemoveButton
+          label={`Remove pasted text (${formatPastedTextCountLabel(pastedText)})`}
+          onRemove={onRemove}
+        />
+      }
+    />
   );
 }
 
@@ -181,8 +185,9 @@ export function ComposerFileAttachmentElement({
   readonly onRemove: (fileId: string) => void;
 }) {
   return (
-    <view className="ComposerReferenceCardLynx">
-      <view className="ComposerReferenceTileLynx">
+    <ReferenceAttachmentCard
+      title={file.name}
+      icon={
         <FileEntryIcon
           className="ComposerReferenceTileIconLynx"
           colorMode="inherit"
@@ -190,16 +195,17 @@ export function ComposerFileAttachmentElement({
           mimeType={file.mimeType}
           pathValue={file.name}
         />
-      </view>
-      <view className="ComposerReferenceCardCopyLynx">
-        <text className="ComposerReferenceCardTitleLynx">{file.name}</text>
+      }
+      subtitle={
         <text className="ComposerReferenceCardMetaLynx">{fileAttachmentTypeLabel(file)}</text>
-      </view>
-      <ComposerReferenceRemoveButton
-        label={`Remove ${file.name}`}
-        onRemove={() => onRemove(file.id)}
-      />
-    </view>
+      }
+      remove={
+        <ComposerReferenceRemoveButton
+          label={`Remove ${file.name}`}
+          onRemove={() => onRemove(file.id)}
+        />
+      }
+    />
   );
 }
 

@@ -32,10 +32,10 @@ createInterface({ input: process.stdin }).on("line", (line) => {
     const recovery = text.startsWith(
       "Continue the interrupted task from the existing conversation and working state.",
     );
-    if (!text.includes("CHAT-83") && !recovery) {
+    if (!text.includes("CHAT-83") && !text.startsWith("CHAT-84") && !recovery) {
       output({
         id: request.id,
-        error: { code: -32602, message: "Only CHAT-83 or continuation is supported" },
+        error: { code: -32602, message: "Only CHAT-83, CHAT-84 or continuation is supported" },
       });
       return;
     }
@@ -96,9 +96,14 @@ createInterface({ input: process.stdin }).on("line", (line) => {
         : {
             id: randomUUID(),
             type: "agentMessage",
-            text:
-              "Recovery received: " +
-              JSON.stringify({ text, model: request.params.model, effort: request.params.effort }),
+            text: text.startsWith("CHAT-84")
+              ? "Context fixture acknowledged."
+              : "Recovery received: " +
+                JSON.stringify({
+                  text,
+                  model: request.params.model,
+                  effort: request.params.effort,
+                }),
           };
       output({ method: "item/started", params: { threadId, turnId, item: { ...item, text: "" } } });
       output({

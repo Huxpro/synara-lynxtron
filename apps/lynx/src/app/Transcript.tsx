@@ -1,3 +1,5 @@
+import { TranscriptUserContexts } from "./TranscriptUserContexts.lynx";
+import { resolveTranscriptUserMessage } from "./transcriptUserMessage.logic";
 import {
   TranscriptCardActionsProvider,
   useTranscriptCardActions,
@@ -35,10 +37,7 @@ import {
   type ActiveTrailStore,
   type MessageTrailAnchor,
 } from "@synara-web/components/chat/messageTrail.logic";
-import {
-  appendOriginalComposerPromptBlocks,
-  deriveDisplayedUserMessageState,
-} from "@synara-web/lib/terminalContext";
+import { appendOriginalComposerPromptBlocks } from "@synara-web/lib/terminalContext";
 import { resolveSelectionActionLayout } from "../logic/selectionActionLayout";
 import { pinActionLabel } from "@synara-web/lib/pin.logic";
 import { formatDayAwareTimestamp } from "@synara-web/timestampFormat";
@@ -714,7 +713,9 @@ function TranscriptMessage({
     accessibleLabel: "Copy message",
     onActivate: () => {
       "background only";
-      const text = isUser ? message.text : assistantText;
+      const text = isUser
+        ? resolveTranscriptUserMessage(message).displayed.copyText
+        : assistantText;
       if (!text) return;
       void import(/* webpackMode: "eager" */ "../platform/clipboard").then(({ clipboard }) =>
         clipboard.writeText(text),
@@ -753,19 +754,8 @@ function TranscriptMessage({
       });
     },
   });
-  const displayedUserMessage = isUser
-    ? deriveDisplayedUserMessageState(message.text, {
-        // Same rule as Electron's MessagesTimeline: any image, file or quoted
-        // selection gives the bubble visible content, so the bootstrap prompt hides.
-        hideImageOnlyBootstrapPrompt: (message.attachments ?? []).some(
-          (attachment) =>
-            attachment.type === "image" ||
-            attachment.type === "file" ||
-            attachment.type === "assistant-selection",
-        ),
-        messageId: message.id,
-      })
-    : null;
+  const userDisplay = isUser ? resolveTranscriptUserMessage(message) : null;
+  const displayedUserMessage = userDisplay?.displayed;
   const edit = useLynxInteractiveState({
     baseClassName: "TranscriptMessageAction",
     accessibleLabel: "Edit message",
@@ -856,30 +846,36 @@ function TranscriptMessage({
           />
         ) : (
           <>
+            {userDisplay ? (
+              <TranscriptUserContexts display={userDisplay} fontSizePx={chatFontSizePx} />
+            ) : null}
             {userAttachments ? (
               <TranscriptUserAttachments
                 attachments={userAttachments}
                 hasText={(displayedUserMessage?.visibleText ?? message.text).trim().length > 0}
               />
             ) : null}
-            <MessageUserBubbleComposition>
-              <view
-                className="TranscriptUserText"
-                style={
-                  getChatTranscriptUserMessageTextStyle(chatFontSizePx) as Record<string, string>
-                }
-              >
-                <ChatMarkdown
-                  cwd={workspaceRoot}
-                  preparsedTree={row.markdownTree}
-                  selectable
-                  text={message.text}
-                  variant="user"
-                  mentionReferences={message.mentions ?? []}
-                  onOpenFileReference={onOpenFileReference}
-                />
-              </view>
-            </MessageUserBubbleComposition>
+            {userDisplay?.showText ? (
+              <MessageUserBubbleComposition>
+                <view
+                  className="TranscriptUserText"
+                  style={
+                    getChatTranscriptUserMessageTextStyle(chatFontSizePx) as Record<string, string>
+                  }
+                >
+                  <ChatMarkdown
+                    cwd={workspaceRoot}
+                    preparsedTree={row.markdownTree}
+                    selectable
+                    text={userDisplay?.markdownText ?? ""}
+                    variant="user"
+                    terminalContexts={displayedUserMessage?.contexts}
+                    mentionReferences={message.mentions ?? []}
+                    onOpenFileReference={onOpenFileReference}
+                  />
+                </view>
+              </MessageUserBubbleComposition>
+            ) : null}
           </>
         )}
         {editing ? null : (

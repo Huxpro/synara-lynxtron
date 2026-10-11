@@ -367,6 +367,7 @@ export function shiftSourceMap(map, insertion) {
 /** Rspack loader entry; `this` is the loader context. */
 function browserEnvironmentLoader(source, inputMap, meta) {
   const { code, plan, insertion } = transformBrowserEnvironment(source, {
+    ...(this.getOptions?.() ?? {}),
     fileName: this.resourcePath,
   });
   const tracePath = process.env.SYNARA_BROWSER_ENV_TRACE;
