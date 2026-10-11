@@ -206,6 +206,38 @@ export async function openElectronDriver(cdpPort, pageUrlPrefix = "http://127.0.
         deltaY,
       });
     },
+    /** Left-button press at `from`, move to `to`, release: how a reader selects text. */
+    async drag(from, to) {
+      const steps = 12;
+      const at = (index) => ({
+        x: Math.round(from.x + ((to.x - from.x) * index) / steps),
+        y: Math.round(from.y + ((to.y - from.y) * index) / steps),
+      });
+      await send("Input.dispatchMouseEvent", { type: "mouseMoved", ...at(0) });
+      await send("Input.dispatchMouseEvent", {
+        type: "mousePressed",
+        ...at(0),
+        button: "left",
+        buttons: 1,
+        clickCount: 1,
+      });
+      for (let index = 1; index <= steps; index += 1) {
+        await send("Input.dispatchMouseEvent", {
+          type: "mouseMoved",
+          ...at(index),
+          button: "left",
+          buttons: 1,
+        });
+        await sleep(16);
+      }
+      await sleep(120);
+      await send("Input.dispatchMouseEvent", {
+        type: "mouseReleased",
+        ...at(steps),
+        button: "left",
+        clickCount: 1,
+      });
+    },
     async press(key) {
       const keys = {
         Enter: { code: "Enter", windowsVirtualKeyCode: 13 },
@@ -337,6 +369,24 @@ export async function openNativeDriver(devtoolPort) {
       });
     }
   };
+  const fingerDrag = async (from, to) => {
+    const steps = 12;
+    const emit = (type, index) =>
+      send("Input.emulateTouchFromMouseEvent", {
+        type,
+        x: Math.round(from.x + ((to.x - from.x) * index) / steps),
+        y: Math.round(from.y + ((to.y - from.y) * index) / steps),
+        timestamp: Date.now() / 1000,
+        button: "left",
+      });
+    await emit("mousePressed", 0);
+    for (let index = 1; index <= steps; index += 1) {
+      await emit("mouseMoved", index);
+      await sleep(16);
+    }
+    await sleep(120);
+    await emit("mouseReleased", steps);
+  };
   return {
     kind: "native",
     send,
@@ -354,26 +404,17 @@ export async function openNativeDriver(devtoolPort) {
      * Finger drag at a point (the input a touch/trackpad user gives a Lynx
      * list); negative deltaY scrolls content toward the top.
      */
-    async scroll(point, deltaY) {
-      const steps = 12;
-      const x = Math.round(point.x);
-      const startY = Math.round(point.y);
-      const emit = (type, y) =>
-        send("Input.emulateTouchFromMouseEvent", {
-          type,
-          x,
-          y,
-          timestamp: Date.now() / 1000,
-          button: "left",
-        });
-      await emit("mousePressed", startY);
-      for (let index = 1; index <= steps; index += 1) {
-        await emit("mouseMoved", Math.round(startY - (deltaY * index) / steps));
-        await sleep(16);
-      }
-      await sleep(120);
-      await emit("mouseReleased", Math.round(startY - deltaY));
-    },
+    scroll: (point, deltaY) =>
+      fingerDrag(
+        { x: Math.round(point.x), y: Math.round(point.y) },
+        { x: Math.round(point.x), y: Math.round(point.y) - deltaY },
+      ),
+    /**
+     * Press at `from`, move to `to`, release. The DevTool has no mouse input, so this is the
+     * same emulated finger as `scroll`; on message text the desktop engine's text drag
+     * recognizer takes it, as it takes a mouse drag, and it selects instead of panning.
+     */
+    drag: (from, to) => fingerDrag(from, to),
     async press(key) {
       throw new Error(`Lynx DevTool cannot dispatch key "${key}"; drive the equivalent control.`);
     },
