@@ -70,6 +70,6 @@ This fork (`Huxpro/synara-lynxtron`) adds a second renderer, `apps/lynx` (ReactL
 - Verifying Lynx against Electron (`bun run compare:desktop`, cells, workflows, Computer Use): [verification-harness.md](apps/lynx/docs/verification-harness.md). Read it before running the harness. The short version: stop only processes you started, never bring an app forward, and a harness failure is not a product regression.
 - Never run unscoped `bun fmt` in this fork (the tree is large; format the files you changed with `bunx oxfmt <files>`).
 
-### Models
+### Delegation
 
-Opus 5.5 is the default and does the main work itself: design, code, merges, and the primary Computer Use pass. Codex (gpt-6.1-sol, through `codex exec`) is an optional helper for independent review, verification, a second Computer Use pass, and parallel bulk work. Never use Haiku. Details and CLI mechanics: [docs/agent-models.md](docs/agent-models.md).
+Whichever agent runs a session does the main work itself — design, code, merges and verification — and stays responsible for it. A second agent or model is optional: use one for an independent review, a verification run, or well-separated work in parallel, and review what it produced before committing it. Which agent or model fills either role is the operator's choice and is not set here.
