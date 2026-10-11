@@ -1,14 +1,16 @@
-import { describe, expect, it } from "@rstest/core";
+import { beforeEach, describe, expect, it } from "@rstest/core";
 import { readFileSync } from "node:fs";
 import { MessageId } from "@synara/contracts";
 import { DEFAULT_PROVIDER_ORDER } from "@synara-web/providerOrdering";
 
 import {
+  nativeProviderHandoffAvailable,
   buildNativeThreadHandoffMenuItems,
   resolveNativeContinueHandoffTargets,
   resolveNativeThreadHandoffMenuAction,
   resolveNativeThreadHandoffTargets,
 } from "./threadHandoff.lynx";
+import { useProjectAgentSummariesStore } from "@synara-web/components/chat/project/useProjectAgentSummaries";
 import type { ThreadHeaderSummary } from "./queries";
 
 const eligibleThread: ThreadHeaderSummary = {
@@ -61,6 +63,18 @@ const eligibleThread: ThreadHeaderSummary = {
 };
 
 describe("Native thread handoff service", () => {
+  beforeEach(() => useProjectAgentSummariesStore.getState().setSummaries([]));
+  it("waits for coordinator identity and blocks configured coordinators", () => {
+    useProjectAgentSummariesStore.setState({ loaded: false });
+    expect(nativeProviderHandoffAvailable("thread-1")).toBe(false);
+    useProjectAgentSummariesStore
+      .getState()
+      .setSummaries([
+        { projectId: "project-1", configured: true, coordinatorThreadId: "thread-1" } as never,
+      ]);
+    expect(nativeProviderHandoffAvailable("thread-1")).toBe(false);
+    expect(nativeProviderHandoffAvailable("ordinary-group")).toBe(true);
+  });
   it("uses the same eligibility and target-provider policy as the header and sidebar", () => {
     const disabledProviders = new Set(["grok"]);
     const providers = {

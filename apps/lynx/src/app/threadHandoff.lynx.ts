@@ -1,3 +1,8 @@
+import {
+  coordinatorThreadIdSet,
+  loadProjectAgentSummaries,
+  useProjectAgentSummariesStore,
+} from "@synara-web/components/chat/project/useProjectAgentSummaries";
 // FILE: app/threadHandoff.lynx.ts
 // Purpose: Which providers a thread can be handed to, for the Lynx surfaces
 //   that offer Hand off (thread header, sidebar thread menu, composer send).
@@ -11,6 +16,7 @@ import { isProviderKind } from "@synara-web/providerOrdering";
 import type { ContextMenuItem, ServerProviderStatus, ServerSettingsView } from "@synara/contracts";
 import { contextMenuGroup } from "@synara-web/lib/contextMenuGroup";
 import {
+  resolveThreadHandoffAvailability,
   canContinueThreadHandoff,
   canCreateThreadHandoff,
   resolveAvailableHandoffTargets,
@@ -25,6 +31,15 @@ import {
   refreshServerProviderStatuses,
 } from "./settingsServerData.lynx";
 
+export function nativeProviderHandoffAvailable(threadId: string): boolean {
+  const state = useProjectAgentSummariesStore.getState();
+  if (!state.loaded) return false;
+  return resolveThreadHandoffAvailability({
+    isGroupContainer: false,
+    isCoordinatorThread: coordinatorThreadIdSet(state.summariesByProjectId.values()).has(threadId),
+  }).providerHandoff;
+}
+
 /** Which providers can receive a handoff: enabled in settings and currently usable. */
 export interface NativeThreadHandoffProviderContext {
   readonly providerSettings: ServerSettingsView["providers"] | null | undefined;
@@ -38,6 +53,7 @@ export async function fetchNativeThreadHandoffProviderContext(options?: {
   const [config, settings] = await Promise.all([
     options?.fresh ? refreshServerProviderStatuses(queryClient) : readServerConfig(queryClient),
     readServerSettings(queryClient),
+    loadProjectAgentSummaries(),
   ]);
   return { providerSettings: settings.providers, providerStatuses: config.providers };
 }
@@ -48,6 +64,7 @@ export function resolveNativeThreadHandoffTargets(
 ): readonly ThreadHandoffTarget[] {
   if (
     !thread ||
+    !nativeProviderHandoffAvailable(thread.id) ||
     !canCreateThreadHandoff({
       thread: thread as never,
       isBusy:

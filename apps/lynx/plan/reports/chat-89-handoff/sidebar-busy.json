@@ -1,0 +1,23 @@
+{
+  "runId": "2026-10-11T12-20-06-560Z-38466",
+  "observedAt": "2026-10-11T12:34:12.665Z",
+  "method": "background Computer Use secondary click while a normal provider shell tool runs sleep 45",
+  "latestTurn": {
+    "turnId": "01a12af4-abef-7103-a922-be759ae91d7a",
+    "state": "running",
+    "requestedAt": "2026-10-11T12:34:00.063Z",
+    "startedAt": "2026-10-11T12:34:00.393Z",
+    "completedAt": null,
+    "assistantMessageId": null
+  },
+  "menu": [
+    "Rename thread",
+    "Pin thread",
+    "Mark unread",
+    "Copy Path",
+    "Open Path in Terminal",
+    "Copy Thread ID"
+  ],
+  "handoffAbsent": true,
+  "passed": true
+}

@@ -1,3 +1,5 @@
+import { useProjectAgentSummaries } from "@synara-web/components/chat/project/useProjectAgentSummaries";
+import { nativeProviderHandoffAvailable } from "./threadHandoff.lynx";
 import { useState } from "@lynx-js/react";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -110,6 +112,7 @@ export function ThreadHeaderActions(props: {
   const [editingKeybinding, setEditingKeybinding] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  useProjectAgentSummaries();
   const thread = props.thread;
   const project = props.project;
   // Upstream's config and settings queries; session sync invalidates both, so
@@ -282,7 +285,7 @@ export function ThreadHeaderActions(props: {
 
   return (
     <>
-      {props.actionState.showHandoff ? (
+      {props.actionState.showHandoff && (!thread || nativeProviderHandoffAvailable(thread.id)) ? (
         <Menu>
           <MenuTrigger
             ariaLabel="Hand off thread"

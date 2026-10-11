@@ -1,0 +1,56 @@
+{
+  "runId": "2026-10-11T12-20-06-560Z-38466",
+  "method": "background Computer Use file dialogs; normal header handoff and composer send",
+  "threadId": "chat89-attachments-1791721648280",
+  "targetThreadId": "65bb3d8d-659f-4997-91ef-cbfb7dcd0dd7",
+  "sourceDraft": {
+    "assistantSelections": [],
+    "files": [],
+    "images": [],
+    "nonPersistedImageIds": [],
+    "fileComments": [],
+    "mentions": [],
+    "pastedTexts": [],
+    "terminalContexts": [],
+    "prompt": "Reply with exactly one line: CHAT89_ATTACHMENTS_TRANSFERRED.",
+    "skills": []
+  },
+  "message": {
+    "id": "lynx-message-1791721859964-aeff724cca451",
+    "role": "user",
+    "text": "Reply with exactly one line: CHAT89_ATTACHMENTS_TRANSFERRED.",
+    "attachments": [
+      {
+        "type": "image",
+        "id": "att_v2_a6bca8a374ab4066a50b386c4e0d757f",
+        "name": "chat89-attachment.png",
+        "mimeType": "image/png",
+        "sizeBytes": 13880
+      },
+      {
+        "type": "file",
+        "id": "att_v2_3d41bce6bfd54b51b4db9f559a9cd6b9",
+        "name": "chat89-attachment.txt",
+        "mimeType": "text/plain",
+        "sizeBytes": 38
+      }
+    ],
+    "dispatchMode": "queue",
+    "dispatchOrigin": "user",
+    "startsNewTurn": true,
+    "turnId": null,
+    "streaming": false,
+    "source": "native",
+    "createdAt": "2026-10-11T12:30:59.964Z",
+    "updatedAt": "2026-10-11T12:30:59.964Z"
+  },
+  "latestTurn": {
+    "turnId": "e3bbe78d-87a9-4b43-bfa5-6b4f6d352d93",
+    "state": "completed",
+    "requestedAt": "2026-10-11T12:30:59.964Z",
+    "startedAt": "2026-10-11T12:31:01.238Z",
+    "completedAt": "2026-10-11T12:31:05.367Z",
+    "assistantMessageId": "assistant:1d876d5b-07b1-4549-b77b-cfaffbed6955"
+  },
+  "passed": true
+}

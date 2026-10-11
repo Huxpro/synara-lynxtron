@@ -1,11 +1,14 @@
 import { describe, expect, it } from "@rstest/core";
 
 import {
+  releasePickedComposerFile,
   resolvePickedComposerFiles,
   stageNativeComposerFiles,
   type NativeComposerFileAttachment,
   type NativeComposerImageAttachment,
 } from "./composerAttachments.lynx";
+import { useComposerDraftStore } from "../../adapters/composerDraftStore.lynx";
+import { retainComposerAttachmentSend } from "./composerAttachmentOwnership.lynx";
 import { dispatchComposerTurnAfterStaging } from "./composerDispatch.logic";
 
 const picked = (
@@ -399,5 +402,38 @@ describe("native composer picked-file intake", () => {
       ).rejects.toThrow("Claude could not start: signed out");
       expect(calls).toEqual(["upload:managed-1", "cancel:managed-1"]);
     });
+  });
+});
+
+describe("handoff attachment capability ownership", () => {
+  it("retains copied capabilities through removal, concurrent sends and failed-send restoration", async () => {
+    const token = "handoff-shared-token";
+    const released: string[] = [];
+    async function request<T>(_method: string, params: Record<string, unknown>): Promise<T> {
+      released.push(String(params.token));
+      return { ok: true } as T;
+    }
+    useComposerDraftStore.setState({ draftsByThreadId: {} });
+    const store = useComposerDraftStore.getState();
+    store.addFiles("source", [nativeFile(token)]);
+    store.copyTransferableComposerState("source", "target");
+    store.removeFile("source", `lynx-file-${token}`);
+    await releasePickedComposerFile(token, request);
+    expect(released).toEqual([]);
+    const first = store.takeDraftContent("target");
+    const releaseFirst = retainComposerAttachmentSend([token, token]);
+    const releaseSecond = retainComposerAttachmentSend([token]);
+    await releasePickedComposerFile(token, request);
+    releaseFirst();
+    releaseFirst();
+    await releasePickedComposerFile(token, request);
+    expect(released).toEqual([]);
+    store.restoreDraftContent("target", first!);
+    releaseSecond();
+    await releasePickedComposerFile(token, request);
+    expect(released).toEqual([]);
+    store.removeFile("target", `lynx-file-${token}`);
+    await releasePickedComposerFile(token, request);
+    expect(released).toEqual([token]);
   });
 });

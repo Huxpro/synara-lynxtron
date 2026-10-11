@@ -1,3 +1,4 @@
+import { useProjectAgentSummaries } from "@synara-web/components/chat/project/useProjectAgentSummaries";
 import { useLatestProjectStore } from "@synara-web/latestProjectStore";
 import { ensureNativeApi } from "~/nativeApi";
 import {
@@ -379,6 +380,7 @@ export function Sidebar({
   readonly onActivityViewEnabledChange?: (enabled: boolean) => void;
 }) {
   const { semanticIconColor } = useTheme();
+  useProjectAgentSummaries();
   const sidebarSecondaryIconColor = semanticIconColor("secondary");
   const initialSortSettings = readSettingsGeneralProjection(
     webStorage.getItem(APP_SETTINGS_STORAGE_KEY),

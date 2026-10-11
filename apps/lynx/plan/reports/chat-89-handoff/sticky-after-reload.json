@@ -1,0 +1,16 @@
+{
+  "runId": "2026-10-11T13-01-36-621Z-36259",
+  "observedAt": "2026-10-11T13:06:45.663Z",
+  "method": "Read only the sticky-selection key after the paired J1 renderer reload",
+  "selections": {
+    "codex": {
+      "provider": "codex",
+      "model": "gpt-5.6-luna",
+      "instanceId": "codex"
+    },
+    "claudeAgent": {
+      "provider": "claudeAgent",
+      "model": "claude-sonnet-5-5"
+    }
+  }
+}

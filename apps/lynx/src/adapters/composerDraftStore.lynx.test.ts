@@ -13,6 +13,8 @@ import type * as WebComposerDraftStore from "@synara-web/composerDraftStore";
 import {
   finalizePromotedDraftThreads,
   LYNX_COMPOSER_DRAFT_STORAGE_KEY,
+  LYNX_COMPOSER_STICKY_MODEL_STORAGE_KEY,
+  parsePersistedLynxStickyModels,
   markPromotedDraftThreads,
   parsePersistedLynxComposerDrafts,
   useComposerDraftStore,
@@ -34,7 +36,7 @@ const deferred = () => {
 describe("Lynx composer draft attachment subset", () => {
   beforeEach(() => {
     webStorage.clear();
-    useComposerDraftStore.setState({ draftsByThreadId: {} });
+    useComposerDraftStore.setState({ draftsByThreadId: {}, stickyModelSelectionByProvider: {} });
   });
 
   it("persists question answers independently of ordinary composer clearing", () => {
@@ -646,9 +648,26 @@ describe("Lynx composer draft store as upstream session sync uses it", () => {
     });
     // Keyed by the provider's default account, whose id is the provider's.
     expect(state.stickyModelSelectionByProvider).toEqual({ claudeAgent: claude });
+    expect(
+      parsePersistedLynxStickyModels(webStorage.getItem(LYNX_COMPOSER_STICKY_MODEL_STORAGE_KEY)),
+    ).toEqual({ claudeAgent: claude });
   });
 
-  it("carries the unsent text draft into a handoff thread and leaves host-owned files behind", () => {
+  it("ignores malformed or mismatched persisted model identities", () => {
+    for (const raw of [
+      null,
+      "bad JSON",
+      "[]",
+      "null",
+      '{"codex":{"provider":"claudeAgent","model":"m"}}',
+    ])
+      expect(parsePersistedLynxStickyModels(raw)).toEqual({});
+    expect(
+      parsePersistedLynxStickyModels('{"codex":{"provider":"codex","model":"gpt-6.1-sol"}}'),
+    ).toEqual({ codex: { provider: "codex", model: "gpt-6.1-sol" } });
+  });
+
+  it("copies unsent text and binary attachments into a handoff without changing the source", () => {
     const store = useComposerDraftStore.getState();
     store.setPrompt("thread-1", "unsent prompt");
     store.addPastedText(
@@ -658,14 +677,33 @@ describe("Lynx composer draft store as upstream session sync uses it", () => {
     store.addFiles("thread-1", [
       { id: "file-1", name: "a.txt", token: "token-1", sizeBytes: 1, mimeType: "text/plain" },
     ] as never);
+    store.addImages("thread-1", [
+      {
+        type: "image",
+        id: "image-1",
+        token: "image-token",
+        name: "a.png",
+        mimeType: "image/png",
+        sizeBytes: 12,
+        previewUrl: "data:image/png;base64,AA==",
+      },
+    ] as never);
     store.setModelSelection("thread-2", { provider: "claudeAgent", model: "m" } as never);
 
     store.copyTransferableComposerState("thread-1", "thread-2");
     const target = useComposerDraftStore.getState().draftsByThreadId["thread-2"];
     expect(target?.prompt).toBe("unsent prompt");
     expect(target?.pastedTexts.map((entry) => entry.id)).toEqual(["paste-1"]);
-    // A picked file is a host token one draft owns and releases when it sends.
-    expect(target?.files).toEqual([]);
+    expect(target?.files).toEqual(
+      useComposerDraftStore.getState().draftsByThreadId["thread-1"]?.files,
+    );
+    expect(target?.files).not.toBe(
+      useComposerDraftStore.getState().draftsByThreadId["thread-1"]?.files,
+    );
+    const source = useComposerDraftStore.getState().draftsByThreadId["thread-1"];
+    expect(target?.images).toEqual(source?.images);
+    expect(target?.images).not.toBe(source?.images);
+    expect(target?.nonPersistedImageIds).toEqual(source?.nonPersistedImageIds);
     // The target thread keeps its own model selection.
     expect(target?.modelSelection).toEqual({ provider: "claudeAgent", model: "m" });
     // The source draft is untouched; a missing source changes nothing.

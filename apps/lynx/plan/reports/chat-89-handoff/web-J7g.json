@@ -1,0 +1,304 @@
+{
+  "runId": "web-2026-10-11T12-57-09-077Z-dark-1440x900",
+  "anchors": {
+    "electron": {
+      "active": "comparison-fixture-transcript-v2",
+      "messages": [
+        "comparison-fixture-transcript-v2:user-1",
+        "assistant:msg_0ef8b734ca30bcf1016ac8cb7bb0048190a7f98358e01cb893",
+        "comparison-fixture-transcript-v2:user-2",
+        "assistant:msg_0ef8b734ca30bcf1016ac8cb8c90c481908572113270eaa523",
+        "comparison-fixture-transcript-v2:user-3",
+        "assistant:msg_0ef8b734ca30bcf1016ac8cb97c3f081909115f85cdbffc909",
+        "comparison-fixture-transcript-v2:user-4",
+        "assistant:msg_0ef8b734ca30bcf1016ac8cba003188190875928c8f35e87e6"
+      ]
+    },
+    "native": {
+      "active": "comparison-fixture-transcript-v2",
+      "messages": [
+        "comparison-fixture-transcript-v2:user-1",
+        "assistant:msg_0ef8b734ca30bcf1016ac8cb7bb0048190a7f98358e01cb893",
+        "comparison-fixture-transcript-v2:user-2",
+        "assistant:msg_0ef8b734ca30bcf1016ac8cb8c90c481908572113270eaa523",
+        "comparison-fixture-transcript-v2:user-3",
+        "assistant:msg_0ef8b734ca30bcf1016ac8cb97c3f081909115f85cdbffc909",
+        "comparison-fixture-transcript-v2:user-4",
+        "assistant:msg_0ef8b734ca30bcf1016ac8cba003188190875928c8f35e87e6",
+        "transcript-bottom-inset"
+      ]
+    }
+  },
+  "pair": "web-original ↔ lynx-for-web",
+  "configuration": {
+    "theme": "dark",
+    "themePack": "codex",
+    "width": 1440,
+    "height": 900,
+    "matrix": false,
+    "skipBuild": true,
+    "portOffset": 745,
+    "surfaces": ["landing", "thread", "settings", "kanban", "pr", "automations"],
+    "increments": [
+      "landing-diff-dock",
+      "model-menu",
+      "add-panel-menu",
+      "settings-appearance",
+      "automation-dialog",
+      "automation-model-menu",
+      "kanban-new-task"
+    ],
+    "fixtureRoot": null,
+    "out": "/tmp/synara-chat89-proof/web-J7g.json",
+    "markdown": null
+  },
+  "renderers": {
+    "electron": {
+      "ok": false,
+      "steps": [
+        {
+          "name": "both providers are installed and signed in",
+          "ok": true,
+          "ms": 4346,
+          "detail": {
+            "usable": ["codex", "claudeAgent"],
+            "sourceSlug": "gpt-5.6-luna",
+            "targetSlug": "claude-sonnet-5-5"
+          }
+        },
+        {
+          "name": "complete a real turn on Codex",
+          "diagnostic": {
+            "url": "http://localhost:6478/comparison-fixture-transcript-v2",
+            "composers": [
+              {
+                "text": "\n",
+                "rect": {
+                  "x": 517.5,
+                  "y": 795.75,
+                  "width": 708,
+                  "height": 42.25,
+                  "top": 795.75,
+                  "right": 1225.5,
+                  "bottom": 838,
+                  "left": 517.5
+                }
+              }
+            ],
+            "rows": [
+              {
+                "id": "comparison-fixture-transcript-v2:user-1",
+                "rect": {
+                  "x": 499.5,
+                  "y": -1714,
+                  "width": 736,
+                  "height": 105.25,
+                  "top": -1714,
+                  "right": 1235.5,
+                  "bottom": -1608.75,
+                  "left": 499.5
+                }
+              },
+              {
+                "id": "assistant:msg_0ef8b734ca30bcf1016ac8cb7bb0048190a7f98358e01cb893",
+                "rect": {
+                  "x": 499.5,
+                  "y": -1609,
+                  "width": 736,
+                  "height": 206.125,
+                  "top": -1609,
+                  "right": 1235.5,
+                  "bottom": -1402.875,
+                  "left": 499.5
+                }
+              },
+              {
+                "id": "comparison-fixture-transcript-v2:user-2",
+                "rect": {
+                  "x": 499.5,
+                  "y": -1403,
+                  "width": 736,
+                  "height": 128.375,
+                  "top": -1403,
+                  "right": 1235.5,
+                  "bottom": -1274.625,
+                  "left": 499.5
+                }
+              },
+              {
+                "id": "assistant:msg_0ef8b734ca30bcf1016ac8cb8c90c481908572113270eaa523",
+                "rect": {
+                  "x": 499.5,
+                  "y": -1275,
+                  "width": 736,
+                  "height": 330.390625,
+                  "top": -1275,
+                  "right": 1235.5,
+                  "bottom": -944.609375,
+                  "left": 499.5
+                }
+              },
+              {
+                "id": "comparison-fixture-transcript-v2:user-3",
+                "rect": {
+                  "x": 499.5,
+                  "y": -945,
+                  "width": 736,
+                  "height": 126.375,
+                  "top": -945,
+                  "right": 1235.5,
+                  "bottom": -818.625,
+                  "left": 499.5
+                }
+              },
+              {
+                "id": "assistant:msg_0ef8b734ca30bcf1016ac8cb97c3f081909115f85cdbffc909",
+                "rect": {
+                  "x": 499.5,
+                  "y": -819,
+                  "width": 736,
+                  "height": 366.21875,
+                  "top": -819,
+                  "right": 1235.5,
+                  "bottom": -452.78125,
+                  "left": 499.5
+                }
+              },
+              {
+                "id": "comparison-fixture-transcript-v2:user-4",
+                "rect": {
+                  "x": 499.5,
+                  "y": -453,
+                  "width": 736,
+                  "height": 105.25,
+                  "top": -453,
+                  "right": 1235.5,
+                  "bottom": -347.75,
+                  "left": 499.5
+                }
+              },
+              {
+                "id": "assistant:msg_0ef8b734ca30bcf1016ac8cba003188190875928c8f35e87e6",
+                "rect": {
+                  "x": 499.5,
+                  "y": -348,
+                  "width": 736,
+                  "height": 1086.5,
+                  "top": -348,
+                  "right": 1235.5,
+                  "bottom": 738.5,
+                  "left": 499.5
+                }
+              }
+            ],
+            "model": "GPT-5.6 Luna\nLow"
+          },
+          "ok": false,
+          "ms": 15134,
+          "error": "Timed out waiting for the new thread composer on an empty transcript."
+        }
+      ],
+      "error": "Timed out waiting for the new thread composer on an empty transcript."
+    },
+    "native": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "both providers are installed and signed in",
+          "ok": true,
+          "ms": 306,
+          "detail": {
+            "usable": ["codex", "claudeAgent"],
+            "sourceSlug": "gpt-5.6-luna",
+            "targetSlug": "claude-sonnet-5-5"
+          }
+        },
+        {
+          "name": "complete a real turn on Codex",
+          "ok": true,
+          "ms": 22426,
+          "detail": {
+            "threadId": "lynx-landing-thread-1791723459925-c63f86c906a64",
+            "turnId": "d7cfdfcf-319f-41f5-9ba5-897d310545b5",
+            "assistantMessageId": "assistant:msg_0e5ee9e261a8faa6016acb87d92894819685a5729a83cdb4da",
+            "sourceModel": "gpt-5.6-luna"
+          }
+        },
+        {
+          "name": "pick a Claude model in the started thread's picker",
+          "ok": true,
+          "ms": 12278,
+          "detail": {
+            "row": {
+              "width": 111.15625,
+              "height": 20
+            }
+          }
+        },
+        {
+          "name": "send: the thread is handed off in place, then the turn runs",
+          "ok": true,
+          "ms": 9972,
+          "detail": {
+            "targetModel": "claude-sonnet-5-5",
+            "sessionProvider": "claudeAgent",
+            "typedDuringTheWait": true,
+            "contextCharacters": 386,
+            "userMessageId": "lynx-message-1791723496291-57b2f2401c3aa8",
+            "replyMessageId": "assistant:c1633d59-eb45-4175-8b9b-e9fb35fda1af"
+          }
+        },
+        {
+          "name": "the transcript shows the handoff boundary between the two turns",
+          "ok": true,
+          "ms": 352,
+          "detail": {
+            "boundary": {
+              "x": 866.9921875,
+              "width": 403.015625,
+              "height": 18,
+              "belowPreviousRow": 21,
+              "aboveNextRow": 29
+            }
+          }
+        },
+        {
+          "name": "header \"Hand off thread\": continue in this thread",
+          "ok": true,
+          "ms": 3566,
+          "detail": {
+            "targetModel": "gpt-5.6-luna",
+            "menu": {
+              "x": 1188,
+              "y": 131.5,
+              "width": 224,
+              "height": 183
+            },
+            "row": {
+              "x": 1127.296875,
+              "y": 88,
+              "width": 38.59375,
+              "height": 19.5
+            }
+          }
+        },
+        {
+          "name": "header \"Hand off thread\": continue in a new thread",
+          "ok": true,
+          "ms": 1345,
+          "detail": {
+            "handoffThreadId": "0abc20b5-29c0-4d5e-97fb-873aecc267ab",
+            "importedMessages": 4
+          }
+        }
+      ],
+      "result": {
+        "threadId": "lynx-landing-thread-1791723459925-c63f86c906a64",
+        "handoffThreadId": "0abc20b5-29c0-4d5e-97fb-873aecc267ab",
+        "codeWord": "PLUMMV3TVXDB"
+      }
+    }
+  },
+  "lynxWebErrors": [],
+  "endedAt": "2026-10-11T12:58:30.539Z"
+}

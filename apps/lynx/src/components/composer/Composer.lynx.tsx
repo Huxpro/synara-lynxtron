@@ -1,3 +1,8 @@
+import {
+  useCoordinatorThreadIds,
+  useProjectAgentSummariesStore,
+} from "@synara-web/components/chat/project/useProjectAgentSummaries";
+import { retainComposerAttachmentSend } from "./composerAttachmentOwnership.lynx";
 import type { ComposerRecoveryActions } from "../../app/TranscriptCardActions.lynx";
 import { getThreadFromState } from "@synara-web/threadDerivation";
 import {
@@ -696,6 +701,8 @@ export function Composer({
     editorHistoryRef.current = createComposerEditorHistory<ComposerEditorHistoryContext>();
     compositionHistorySnapshotRef.current = null;
   }, [brandedThreadId]);
+  const coordinatorThreadIds = useCoordinatorThreadIds();
+  const projectAgentSummariesLoaded = useProjectAgentSummariesStore((state) => state.loaded);
   const activeModelSelection = draftModelSelection ?? modelSelection;
   const activeProvider = activeModelSelection?.provider as ProviderKind | undefined;
   const discoveryProvider = modelCatalogProvider ?? activeProvider;
@@ -1755,6 +1762,8 @@ export function Composer({
     setSendError(null);
     let providerHandoffError: string | null = null;
     let draftRestored = false;
+    let outgoingPickedTokens: string[] = [];
+    let releaseOutgoingLease: (() => void) | undefined;
     const draftStore = useComposerDraftStore.getState();
     try {
       // Upstream's send ownership (lib/composerSendOwnership): the sidebar reads it to show
@@ -1779,6 +1788,10 @@ export function Composer({
               };
             const outgoing = draftStore.takeDraftContent(brandedThreadId);
             if (outgoing) {
+              outgoingPickedTokens = [...outgoing.images, ...outgoing.files].map(
+                (file) => file.token,
+              );
+              releaseOutgoingLease = retainComposerAttachmentSend(outgoingPickedTokens);
               setNativeValue("");
               setComposerTrigger(null);
             }
@@ -1860,6 +1873,8 @@ export function Composer({
       setSendError(description);
       toastManager.add({ type: "error", title: "Unable to send message", description });
     } finally {
+      releaseOutgoingLease?.();
+      await Promise.all(outgoingPickedTokens.map((token) => releasePickedComposerFile(token)));
       sendInFlightRef.current = false;
       setIsSending(false);
     }
@@ -2317,9 +2332,12 @@ export function Composer({
                         hideModelLabel={!footerPlan.showModelLabel}
                         hideStatusLabel={!footerPlan.showTraitsLabel}
                         modelSelection={activeModelSelection as never}
-                        // Upstream's `lockedProvider` is null wherever a handoff is allowed,
-                        // which is every thread Lynx shows (no group coordinators).
-                        lockedProvider={null}
+                        // Wait for the shared coordinator summary before allowing a provider switch.
+                        lockedProvider={
+                          !projectAgentSummariesLoaded || coordinatorThreadIds.has(threadId)
+                            ? activeModelSelection.provider
+                            : null
+                        }
                         catalogProvider={discoveryProvider ?? activeModelSelection.provider}
                         rememberedSelectionFor={(provider) =>
                           draftModelSelectionByProvider?.[provider] as ModelSelection | undefined

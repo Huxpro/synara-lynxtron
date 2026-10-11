@@ -63,7 +63,7 @@ export function SidebarNavigationRow(props: {
         ref={rowRef}
         data-project-id={props.projectId}
         data-thread-id={props.threadId}
-        data-active={props.active}
+        data-active={props.active ? "true" : "false"}
         className={interaction.className}
         aria-label={props.label}
         aria-expanded={props.expanded}

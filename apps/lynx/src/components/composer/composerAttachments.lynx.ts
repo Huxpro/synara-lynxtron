@@ -1,3 +1,5 @@
+import { useComposerDraftStore } from "../../adapters/composerDraftStore.lynx";
+import { composerAttachmentSendOwns } from "./composerAttachmentOwnership.lynx";
 import "background-only";
 
 import type { ChatFileAttachment, ChatImageAttachment } from "@synara/contracts";
@@ -132,9 +134,19 @@ export async function resolvePickedComposerFiles(
   return { files, images, rejectedTokens, error };
 }
 
-export async function releasePickedComposerFile(token: string): Promise<void> {
+export async function releasePickedComposerFile(
+  token: string,
+  request: AttachmentBridgeCall = bridgeCall,
+): Promise<void> {
+  if (
+    composerAttachmentSendOwns(token) ||
+    Object.values(useComposerDraftStore.getState().draftsByThreadId).some((draft) =>
+      [...draft.files, ...draft.images].some((file) => file.token === token),
+    )
+  )
+    return;
   try {
-    await bridgeCall("attachmentsReleasePickedFile", { token });
+    await request("attachmentsReleasePickedFile", { token });
   } catch {
     // The host capability expires on its own; removal must stay best-effort.
   }
@@ -198,9 +210,7 @@ export async function stageNativeComposerFiles(
         pending = false;
         for (const file of input.files) {
           if (file.type !== "image" || !file.appSnapCaptureId) continue;
-          await request("attachmentsReleasePickedFile", {
-            token: file.token,
-          }).catch(() => undefined);
+          await releasePickedComposerFile(file.token, request);
           await request("appSnapAcknowledgeCapture", {
             captureId: file.appSnapCaptureId,
           }).catch(() => undefined);

@@ -46,7 +46,7 @@ describe("Lynx sidebar hover parity", () => {
       projectIdentityIndex,
     );
     const activeIdentityIndex = rowSource.indexOf(
-      "data-active={props.active}",
+      'data-active={props.active ? "true" : "false"}',
       threadIdentityIndex,
     );
     expect(projectIdentityIndex).toBeGreaterThanOrEqual(0);
