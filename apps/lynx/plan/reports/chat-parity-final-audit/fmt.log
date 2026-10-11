@@ -1,0 +1,5 @@
+$ oxfmt --check
+Checking formatting...
+
+All matched files use the correct format.
+Finished in 12238ms on 8867 files using 12 threads.

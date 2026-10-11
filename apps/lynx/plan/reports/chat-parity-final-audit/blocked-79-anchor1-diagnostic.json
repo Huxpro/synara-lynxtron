@@ -1,0 +1,551 @@
+{
+  "runId": "2026-10-11T15-52-39-502Z-57508",
+  "options": {
+    "threadId": "comparison-fixture-transcript-v2",
+    "seed": "fixture",
+    "exitAfterCertify": false,
+    "route": null,
+    "width": 1440,
+    "height": 900,
+    "webPort": 8891,
+    "electronCdpPort": 9223,
+    "lynxDevtoolPort": 18902,
+    "theme": "dark",
+    "themePack": "codex",
+    "systemAppearanceSequence": null,
+    "systemAppearanceIntervalMs": null,
+    "terminal": "closed",
+    "dock": null,
+    "appSnap": "acknowledged",
+    "chatFontSize": 13,
+    "skipLynxDevtool": false,
+    "skipBuild": false,
+    "regularApp": false,
+    "messageFormats": true
+  },
+  "cases": [
+    {
+      "renderer": "electron",
+      "threadId": "chat79-electron-1791734073024",
+      "messageId": "43920479-ad32-40d8-87f2-e6fcc7bcb163",
+      "samples": [
+        {
+          "ms": 250,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "43920479-ad32-40d8-87f2-e6fcc7bcb163",
+            "top": 145,
+            "bottom": 229.125
+          },
+          "offset": 101
+        },
+        {
+          "ms": 500,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "43920479-ad32-40d8-87f2-e6fcc7bcb163",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        },
+        {
+          "ms": 750,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "43920479-ad32-40d8-87f2-e6fcc7bcb163",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        },
+        {
+          "ms": 1000,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "43920479-ad32-40d8-87f2-e6fcc7bcb163",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        },
+        {
+          "ms": 1250,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "43920479-ad32-40d8-87f2-e6fcc7bcb163",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        },
+        {
+          "ms": 1500,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "43920479-ad32-40d8-87f2-e6fcc7bcb163",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        },
+        {
+          "ms": 1750,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "43920479-ad32-40d8-87f2-e6fcc7bcb163",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        },
+        {
+          "ms": 2000,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "43920479-ad32-40d8-87f2-e6fcc7bcb163",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        }
+      ],
+      "pass": false
+    },
+    {
+      "renderer": "native",
+      "threadId": "chat79-native-1791734079518",
+      "messageId": "lynx-message-1791734082646-a24f62026862",
+      "samples": [
+        {
+          "ms": 250,
+          "viewport": {
+            "top": 60,
+            "height": 743,
+            "anchorAttributes": [
+              "idSelector",
+              "transcript-63_68_61_74_37_39_2d_6e_61_74_69_76_65_2d_31_37_39_31_37_33_34_30_37_39_35_31_38",
+              "aria-label",
+              "Conversation transcript",
+              "accessibility-element",
+              "true",
+              "accessibility-label",
+              "Conversation transcript",
+              "focusable",
+              "true",
+              "scroll-orientation",
+              "vertical",
+              "need-visible-item-info",
+              "true",
+              "scroll-event-throttle",
+              "24",
+              "lower-threshold",
+              "30",
+              "update-list-info",
+              "",
+              "data-anchor-measure",
+              "{\"height\":743,\"scrollY\":2243,\"max\":2243,\"relative\":0,\"reserve\":547,\"tail\":196,\"position\":2}",
+              "bindscroll",
+              "1263:0:bindscroll",
+              "bindscrolltolower",
+              "1263:0:bindscrolltolower",
+              "class",
+              "TranscriptList"
+            ]
+          },
+          "row": {
+            "id": "lynx-message-1791734082646-a24f62026862",
+            "top": 70,
+            "bottom": 154
+          },
+          "offset": 10
+        },
+        {
+          "ms": 500,
+          "viewport": {
+            "top": 60,
+            "height": 743,
+            "anchorAttributes": [
+              "idSelector",
+              "transcript-63_68_61_74_37_39_2d_6e_61_74_69_76_65_2d_31_37_39_31_37_33_34_30_37_39_35_31_38",
+              "aria-label",
+              "Conversation transcript",
+              "accessibility-element",
+              "true",
+              "accessibility-label",
+              "Conversation transcript",
+              "focusable",
+              "true",
+              "scroll-orientation",
+              "vertical",
+              "need-visible-item-info",
+              "true",
+              "scroll-event-throttle",
+              "24",
+              "lower-threshold",
+              "30",
+              "update-list-info",
+              "",
+              "data-anchor-measure",
+              "{\"height\":743,\"scrollY\":2233,\"max\":2243,\"relative\":10,\"reserve\":488,\"tail\":255,\"position\":2}",
+              "bindscroll",
+              "1263:0:bindscroll",
+              "bindscrolltolower",
+              "1263:0:bindscrolltolower",
+              "class",
+              "TranscriptList"
+            ]
+          },
+          "row": {
+            "id": "lynx-message-1791734082646-a24f62026862",
+            "top": 92,
+            "bottom": 176
+          },
+          "offset": 32
+        },
+        {
+          "ms": 750,
+          "viewport": {
+            "top": 60,
+            "height": 743,
+            "anchorAttributes": [
+              "idSelector",
+              "transcript-63_68_61_74_37_39_2d_6e_61_74_69_76_65_2d_31_37_39_31_37_33_34_30_37_39_35_31_38",
+              "aria-label",
+              "Conversation transcript",
+              "accessibility-element",
+              "true",
+              "accessibility-label",
+              "Conversation transcript",
+              "focusable",
+              "true",
+              "scroll-orientation",
+              "vertical",
+              "need-visible-item-info",
+              "true",
+              "scroll-event-throttle",
+              "24",
+              "lower-threshold",
+              "30",
+              "update-list-info",
+              "",
+              "data-anchor-measure",
+              "{\"height\":743,\"scrollY\":2211,\"max\":2243,\"relative\":32,\"reserve\":520,\"tail\":223,\"position\":2}",
+              "bindscroll",
+              "1263:0:bindscroll",
+              "bindscrolltolower",
+              "1263:0:bindscrolltolower",
+              "class",
+              "TranscriptList"
+            ]
+          },
+          "row": {
+            "id": "lynx-message-1791734082646-a24f62026862",
+            "top": 92,
+            "bottom": 176
+          },
+          "offset": 32
+        },
+        {
+          "ms": 1000,
+          "viewport": {
+            "top": 60,
+            "height": 743,
+            "anchorAttributes": [
+              "idSelector",
+              "transcript-63_68_61_74_37_39_2d_6e_61_74_69_76_65_2d_31_37_39_31_37_33_34_30_37_39_35_31_38",
+              "aria-label",
+              "Conversation transcript",
+              "accessibility-element",
+              "true",
+              "accessibility-label",
+              "Conversation transcript",
+              "focusable",
+              "true",
+              "scroll-orientation",
+              "vertical",
+              "need-visible-item-info",
+              "true",
+              "scroll-event-throttle",
+              "24",
+              "lower-threshold",
+              "30",
+              "update-list-info",
+              "",
+              "data-anchor-measure",
+              "{\"height\":743,\"scrollY\":2211,\"max\":2243,\"relative\":32,\"reserve\":520,\"tail\":223,\"position\":2}",
+              "bindscroll",
+              "1263:0:bindscroll",
+              "bindscrolltolower",
+              "1263:0:bindscrolltolower",
+              "class",
+              "TranscriptList"
+            ]
+          },
+          "row": {
+            "id": "lynx-message-1791734082646-a24f62026862",
+            "top": 92,
+            "bottom": 176
+          },
+          "offset": 32
+        },
+        {
+          "ms": 1250,
+          "viewport": {
+            "top": 60,
+            "height": 743,
+            "anchorAttributes": [
+              "idSelector",
+              "transcript-63_68_61_74_37_39_2d_6e_61_74_69_76_65_2d_31_37_39_31_37_33_34_30_37_39_35_31_38",
+              "aria-label",
+              "Conversation transcript",
+              "accessibility-element",
+              "true",
+              "accessibility-label",
+              "Conversation transcript",
+              "focusable",
+              "true",
+              "scroll-orientation",
+              "vertical",
+              "need-visible-item-info",
+              "true",
+              "scroll-event-throttle",
+              "24",
+              "lower-threshold",
+              "30",
+              "update-list-info",
+              "",
+              "data-anchor-measure",
+              "{\"height\":743,\"scrollY\":2211,\"max\":2243,\"relative\":32,\"reserve\":520,\"tail\":223,\"position\":2}",
+              "bindscroll",
+              "1263:0:bindscroll",
+              "bindscrolltolower",
+              "1263:0:bindscrolltolower",
+              "class",
+              "TranscriptList"
+            ]
+          },
+          "row": {
+            "id": "lynx-message-1791734082646-a24f62026862",
+            "top": 92,
+            "bottom": 176
+          },
+          "offset": 32
+        },
+        {
+          "ms": 1500,
+          "viewport": {
+            "top": 60,
+            "height": 743,
+            "anchorAttributes": [
+              "idSelector",
+              "transcript-63_68_61_74_37_39_2d_6e_61_74_69_76_65_2d_31_37_39_31_37_33_34_30_37_39_35_31_38",
+              "aria-label",
+              "Conversation transcript",
+              "accessibility-element",
+              "true",
+              "accessibility-label",
+              "Conversation transcript",
+              "focusable",
+              "true",
+              "scroll-orientation",
+              "vertical",
+              "need-visible-item-info",
+              "true",
+              "scroll-event-throttle",
+              "24",
+              "lower-threshold",
+              "30",
+              "update-list-info",
+              "",
+              "data-anchor-measure",
+              "{\"height\":743,\"scrollY\":2211,\"max\":2243,\"relative\":32,\"reserve\":520,\"tail\":223,\"position\":2}",
+              "bindscroll",
+              "1263:0:bindscroll",
+              "bindscrolltolower",
+              "1263:0:bindscrolltolower",
+              "class",
+              "TranscriptList"
+            ]
+          },
+          "row": {
+            "id": "lynx-message-1791734082646-a24f62026862",
+            "top": 92,
+            "bottom": 176
+          },
+          "offset": 32
+        },
+        {
+          "ms": 1750,
+          "viewport": {
+            "top": 60,
+            "height": 743,
+            "anchorAttributes": [
+              "idSelector",
+              "transcript-63_68_61_74_37_39_2d_6e_61_74_69_76_65_2d_31_37_39_31_37_33_34_30_37_39_35_31_38",
+              "aria-label",
+              "Conversation transcript",
+              "accessibility-element",
+              "true",
+              "accessibility-label",
+              "Conversation transcript",
+              "focusable",
+              "true",
+              "scroll-orientation",
+              "vertical",
+              "need-visible-item-info",
+              "true",
+              "scroll-event-throttle",
+              "24",
+              "lower-threshold",
+              "30",
+              "update-list-info",
+              "",
+              "data-anchor-measure",
+              "{\"height\":743,\"scrollY\":2211,\"max\":2243,\"relative\":32,\"reserve\":520,\"tail\":223,\"position\":2}",
+              "bindscroll",
+              "1263:0:bindscroll",
+              "bindscrolltolower",
+              "1263:0:bindscrolltolower",
+              "class",
+              "TranscriptList"
+            ]
+          },
+          "row": {
+            "id": "lynx-message-1791734082646-a24f62026862",
+            "top": 92,
+            "bottom": 176
+          },
+          "offset": 32
+        },
+        {
+          "ms": 2000,
+          "viewport": {
+            "top": 60,
+            "height": 743,
+            "anchorAttributes": [
+              "idSelector",
+              "transcript-63_68_61_74_37_39_2d_6e_61_74_69_76_65_2d_31_37_39_31_37_33_34_30_37_39_35_31_38",
+              "aria-label",
+              "Conversation transcript",
+              "accessibility-element",
+              "true",
+              "accessibility-label",
+              "Conversation transcript",
+              "focusable",
+              "true",
+              "scroll-orientation",
+              "vertical",
+              "need-visible-item-info",
+              "true",
+              "scroll-event-throttle",
+              "24",
+              "lower-threshold",
+              "30",
+              "update-list-info",
+              "",
+              "data-anchor-measure",
+              "{\"height\":743,\"scrollY\":2211,\"max\":2243,\"relative\":32,\"reserve\":520,\"tail\":223,\"position\":2}",
+              "bindscroll",
+              "1263:0:bindscroll",
+              "bindscrolltolower",
+              "1263:0:bindscrolltolower",
+              "class",
+              "TranscriptList"
+            ]
+          },
+          "row": {
+            "id": "lynx-message-1791734082646-a24f62026862",
+            "top": 92,
+            "bottom": 176
+          },
+          "offset": 32
+        }
+      ],
+      "pass": false
+    }
+  ],
+  "pass": false,
+  "electronAnchorSetting": true,
+  "receiptNote": "Unrelated Electron settings omitted; geometry and errors unchanged."
+}

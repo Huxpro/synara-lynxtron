@@ -1,0 +1,114 @@
+$ rstest src/app/transcriptUserMessage.logic.test.ts
+rootPath:  /Users/bytedance/github/synara-arch-sync/apps/lynx/src/assets
+rootPath:  /Users/bytedance/github/synara-arch-sync/apps/lynx/src/assets
+(node:63831) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+RSPEEDY_READY
+(node:63923) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+---
+tool: "@rstest/core@0.11.4"
+timestamp: "2026-10-11T10:26:59.057Z"
+runtime: {"node":"v26.0.0","platform":"darwin","cwd":"/Users/bytedance/github/synara-arch-sync/apps/lynx"}
+---
+
+# Rstest Test Execution Report
+
+## Summary
+
+```json
+{
+  "status": "fail",
+  "counts": {
+    "testFiles": 1,
+    "failedFiles": 1,
+    "tests": 2,
+    "failedTests": 1,
+    "passedTests": 1,
+    "skippedTests": 0,
+    "todoTests": 0
+  },
+  "durationMs": {
+    "total": 2368,
+    "build": 1319,
+    "tests": 1049
+  },
+  "snapshot": {
+    "added": 0,
+    "updated": 0,
+    "unmatched": 0,
+    "removed": 0,
+    "unchecked": 0
+  }
+}
+```
+
+## Failures
+
+### [F01] src/app/transcriptUserMessage.logic.test.ts :: upstream visible user messages on Native > uses persisted selections over legacy embedded selections and hides attachment-only bootstrap text
+
+repro:
+
+```bash
+bun x rstest 'src/app/transcriptUserMessage.logic.test.ts' --testNamePattern 'upstream visible user messages on Native > uses persisted selections over legacy embedded selections and hides attachment-only bootstrap text'
+```
+
+details:
+
+```json
+{
+  "testPath": "src/app/transcriptUserMessage.logic.test.ts",
+  "project": "rstest",
+  "fullName": "upstream visible user messages on Native > uses persisted selections over legacy embedded selections and hides attachment-only bootstrap text",
+  "status": "fail",
+  "duration": 74,
+  "retryCount": 0,
+  "errors": [
+    {
+      "type": "AssertionError",
+      "message": "expected '(No Content)' to be '' // Object.is equality",
+      "topFrame": {
+        "file": "src/app/transcriptUserMessage.logic.test.ts",
+        "line": 109,
+        "column": 45,
+        "method": "<unknown>"
+      },
+      "stackFrames": []
+    }
+  ],
+  "candidateFiles": [
+    {
+      "path": "src/app/transcriptUserMessage.logic.test.ts",
+      "line": 109
+    }
+  ]
+}
+```
+
+diff:
+
+```diff
+- Expected
++ Received
+
++ (No Content)
+```
+
+codeFrame (error 1):
+
+```text
+107 |       attachments: selections,
+108 |     });
+109 |     expect(bootstrap.displayed.visibleText).toBe("");
+    |                                             ^
+110 |     expect(bootstrap.showText).toBe(false);
+111 |     expect(bootstrap.assistantSelections).toEqual(selections);
+```
+
+console:
+
+```text
+[stderr] warn: [storage] persist failed storageRemove ReferenceError: NativeModules is not defined
+```
+
+error: script "test" exited with code 1

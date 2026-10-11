@@ -1,0 +1,139 @@
+{
+  "workflow": "J2",
+  "runId": "2026-10-11T16-19-28-814Z-55478",
+  "startedAt": "2026-10-11T16:21:33.079Z",
+  "renderers": {
+    "electron": {
+      "ok": false,
+      "steps": [
+        {
+          "name": "build a long transcript with a real turn",
+          "ok": true,
+          "ms": 11888,
+          "detail": {
+            "threadId": "127b13eb-6b5b-40e1-8c81-aa820062688b",
+            "replyChars": 4139
+          }
+        },
+        {
+          "name": "follow live output to the end of the transcript",
+          "ok": true,
+          "ms": 6455,
+          "detail": {
+            "samples": 11,
+            "streamedChars": 2618,
+            "maxBelowPx": -142.5,
+            "trace": [
+              "126ms:575ch:-560.5px",
+              "359ms:803ch:-560.5px",
+              "581ms:985ch:-503.5px",
+              "795ms:1191ch:-327.5px",
+              "1252ms:1492ch:-177.5px",
+              "1474ms:1700ch:-142.5px",
+              "1727ms:1873ch:-142.5px",
+              "2084ms:2113ch:-142.5px",
+              "2415ms:2352ch:-142.5px",
+              "2628ms:2486ch:-142.5px",
+              "2857ms:2618ch:-142.5px"
+            ]
+          }
+        },
+        {
+          "name": "scroll away while output streams; the reader keeps their place",
+          "ok": false,
+          "ms": 5152,
+          "error": "The transcript never detached from the end after scrolling up."
+        }
+      ],
+      "error": "The transcript never detached from the end after scrolling up."
+    },
+    "native": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "build a long transcript with a real turn",
+          "ok": true,
+          "ms": 23844,
+          "detail": {
+            "threadId": "lynx-landing-thread-1791735716851-fe3a6afb66ed9",
+            "replyChars": 4386
+          }
+        },
+        {
+          "name": "follow live output to the end of the transcript",
+          "ok": true,
+          "ms": 7865,
+          "detail": {
+            "samples": 7,
+            "streamedChars": 2595,
+            "maxBelowPx": -80,
+            "trace": [
+              "220ms:500ch:-80px",
+              "667ms:987ch:-80px",
+              "1101ms:1311ch:-80px",
+              "1559ms:1660ch:-80px",
+              "2003ms:2003ch:-80px",
+              "2449ms:2320ch:-80px",
+              "2929ms:2595ch:-80px"
+            ]
+          }
+        },
+        {
+          "name": "scroll away while output streams; the reader keeps their place",
+          "ok": true,
+          "ms": 4216,
+          "detail": {
+            "anchor": "assistant:msg_0e3ceca5cf4d2791016acbb7abe3bc87d1a0b25282b6699a93",
+            "detachAttempts": 1,
+            "samples": 5,
+            "maxDriftPx": 0,
+            "grewChars": 2380
+          }
+        },
+        {
+          "name": "jump back to the latest output",
+          "ok": true,
+          "ms": 12815,
+          "detail": {
+            "lastRowBottom": 723,
+            "viewportBottom": 776
+          }
+        },
+        {
+          "name": "select reply text by dragging; the transcript stays where it was",
+          "ok": true,
+          "ms": 4719,
+          "detail": {
+            "movedPx": 0,
+            "selectedChars": null
+          }
+        },
+        {
+          "name": "tool activity does not snap a detached reader",
+          "ok": true,
+          "ms": 12559,
+          "detail": {
+            "detachAttempts": 1,
+            "samples": 11,
+            "maxDriftPx": 0,
+            "toolActivitiesWhileDetached": 7
+          }
+        },
+        {
+          "name": "switch to another thread and back with the right content",
+          "ok": true,
+          "ms": 2701,
+          "detail": {
+            "renderedRows": 6,
+            "atEnd": true
+          }
+        }
+      ],
+      "result": {
+        "threadId": "lynx-landing-thread-1791735716851-fe3a6afb66ed9",
+        "token": "J2-native-mv416n5n"
+      }
+    }
+  },
+  "endedAt": "2026-10-11T16:23:05.593Z"
+}

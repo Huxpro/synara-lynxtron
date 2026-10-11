@@ -1,0 +1,11 @@
+$ vitest run --passWithNoTests src/lib/pullRequestContext.test.ts src/lib/terminalContext.test.ts src/lib/composerPastedText.test.ts src/lib/browserAnnotations.test.ts src/components/chat/userMessageTerminalContexts.test.ts
+(node:26241) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+ RUN  v4.1.10 /Users/bytedance/github/synara-arch-sync/apps/web
+
+
+ Test Files  5 passed (5)
+      Tests  51 passed (51)
+   Start at  06:16:08
+   Duration  981ms (transform 1.33s, setup 0ms, import 2.35s, tests 28ms, environment 0ms)

@@ -1,0 +1,514 @@
+{
+  "runId": "2026-10-11T15-39-27-781Z-17294",
+  "options": {
+    "threadId": "comparison-fixture-transcript-v2",
+    "seed": "fixture",
+    "exitAfterCertify": false,
+    "route": null,
+    "width": 1280,
+    "height": 820,
+    "webPort": 8891,
+    "electronCdpPort": 9223,
+    "lynxDevtoolPort": 18902,
+    "theme": "dark",
+    "themePack": "codex",
+    "systemAppearanceSequence": null,
+    "systemAppearanceIntervalMs": null,
+    "terminal": "closed",
+    "dock": null,
+    "appSnap": "acknowledged",
+    "chatFontSize": 16,
+    "skipLynxDevtool": false,
+    "skipBuild": true,
+    "regularApp": false,
+    "messageFormats": true
+  },
+  "source": "deterministic provider protocol; actual row/KaTeX base/Native image geometry",
+  "expectedCases": ["inline", "integral", "nested-fraction", "root", "matrix", "price"],
+  "cases": [
+    {
+      "name": "inline",
+      "threadId": "chat80-1791733189152-0",
+      "assistantId": "assistant:f0be1016-6704-4d98-a25b-635e204c91b5",
+      "electron": {
+        "height": 64,
+        "katexBox": {
+          "x": 506.5703125,
+          "y": 155.5,
+          "width": 61.4375,
+          "height": 19,
+          "top": 155.5,
+          "right": 568.0078125,
+          "bottom": 174.5,
+          "left": 506.5703125
+        },
+        "markdownBox": {
+          "x": 423.25,
+          "y": 151,
+          "width": 728,
+          "height": 26,
+          "top": 151,
+          "right": 1151.25,
+          "bottom": 177,
+          "left": 423.25
+        },
+        "text": "Inline math \n𝐸\n=\n𝑚\n𝑐\n2\nE=mc\n2\n and a price of $5 that stays text.\n\n11:39 AM",
+        "fontSize": "16px",
+        "math": {
+          "x": 506.5703125,
+          "y": 156.9765625,
+          "width": 61.4375,
+          "height": 13.0234375
+        },
+        "relativeMath": {
+          "x": 87.3203125,
+          "y": 7.9765625
+        }
+      },
+      "native": {
+        "height": 64,
+        "contentBoxes": [],
+        "text": "Inline math and a price of $5 that stays text.11:39 AM",
+        "math": {
+          "x": 510.0703125,
+          "y": 157.02114868164062,
+          "width": 61.4398193359375,
+          "height": 13.025726318359375
+        },
+        "imageSource": "data:image/png;base64,iVBORw0KGgoAAAANSU",
+        "errors": 0,
+        "errorMessages": [],
+        "relativeMath": {
+          "x": 203.0703125,
+          "y": 8.021148681640625
+        }
+      },
+      "delta": {
+        "rowHeight": 0,
+        "mathX": 3.5,
+        "mathWidth": 0.0023193359375,
+        "mathHeight": 0.002288818359375,
+        "mathY": 0.044586181640625
+      },
+      "pass": false
+    },
+    {
+      "name": "integral",
+      "threadId": "chat80-1791733195430-1",
+      "assistantId": "assistant:d651381d-0198-4a05-8181-faf3ec5d8199",
+      "electron": {
+        "height": 109.984375,
+        "displayBox": {
+          "x": 423.25,
+          "y": 164.59375,
+          "width": 728,
+          "height": 46.796875,
+          "top": 164.59375,
+          "right": 1151.25,
+          "bottom": 211.390625,
+          "left": 423.25
+        },
+        "katexBox": {
+          "x": 739.4921875,
+          "y": 166.1875,
+          "width": 95.515625,
+          "height": 39.609375,
+          "top": 166.1875,
+          "right": 835.0078125,
+          "bottom": 205.796875,
+          "left": 739.4921875
+        },
+        "markdownBox": {
+          "x": 423.25,
+          "y": 164.59375,
+          "width": 728,
+          "height": 46.796875,
+          "top": 164.59375,
+          "right": 1151.25,
+          "bottom": 211.390625,
+          "left": 423.25
+        },
+        "text": "∫\n0\n1\n𝑥\n2\n \n𝑑\n𝑥\n=\n1\n3\n∫\n0\n1\n\t​\n\nx\n2\ndx=\n3\n1\n\t​\n\n\n11:39 AM",
+        "fontSize": "16px",
+        "math": {
+          "x": 740.2890625,
+          "y": 166.1875,
+          "width": 93.921875,
+          "height": 39.609375
+        },
+        "relativeMath": {
+          "x": 321.0390625,
+          "y": 17.1875
+        }
+      },
+      "native": {
+        "height": 111,
+        "contentBoxes": [
+          {
+            "cls": "MdMathBlockShell",
+            "box": {
+              "x": 423,
+              "y": 165,
+              "width": 728,
+              "height": 46
+            }
+          },
+          {
+            "cls": "MdMathContent",
+            "box": {
+              "x": 423,
+              "y": 165,
+              "width": 728,
+              "height": 46
+            }
+          }
+        ],
+        "text": "11:39 AM",
+        "math": {
+          "x": 740,
+          "y": 166.5,
+          "width": 94,
+          "height": 40
+        },
+        "imageSource": "data:image/png;base64,iVBORw0KGgoAAAANSU",
+        "errors": 0,
+        "errorMessages": [],
+        "relativeMath": {
+          "x": 433,
+          "y": 17.5
+        }
+      },
+      "delta": {
+        "rowHeight": 1.015625,
+        "mathX": -0.2890625,
+        "mathWidth": 0.078125,
+        "mathHeight": 0.390625,
+        "mathY": 0.3125
+      },
+      "pass": true
+    },
+    {
+      "name": "nested-fraction",
+      "threadId": "chat80-1791733200039-2",
+      "assistantId": "assistant:4ff8cfb3-9519-4442-ac10-e3d4b458fb2c",
+      "electron": {
+        "height": 110.7265625,
+        "displayBox": {
+          "x": 423.25,
+          "y": 164.59375,
+          "width": 728,
+          "height": 47.5390625,
+          "top": 164.59375,
+          "right": 1151.25,
+          "bottom": 212.1328125,
+          "left": 423.25
+        },
+        "katexBox": {
+          "x": 776.7578125,
+          "y": 166.1875,
+          "width": 20.9765625,
+          "height": 40.3515625,
+          "top": 166.1875,
+          "right": 797.734375,
+          "bottom": 206.5390625,
+          "left": 776.7578125
+        },
+        "markdownBox": {
+          "x": 423.25,
+          "y": 164.59375,
+          "width": 728,
+          "height": 47.5390625,
+          "top": 164.59375,
+          "right": 1151.25,
+          "bottom": 212.1328125,
+          "left": 423.25
+        },
+        "text": "𝑥\n1\n2\n𝑎\n𝑏\nb\na\n\t​\n\nx\n1\n2\n\t​\n\n\t​\n\n\n11:40 AM",
+        "fontSize": "16px",
+        "math": {
+          "x": 777.5546875,
+          "y": 166.1875,
+          "width": 19.3828125,
+          "height": 40.3515625
+        },
+        "relativeMath": {
+          "x": 358.3046875,
+          "y": 17.1875
+        }
+      },
+      "native": {
+        "height": 112,
+        "contentBoxes": [
+          {
+            "cls": "MdMathBlockShell",
+            "box": {
+              "x": 423,
+              "y": 165,
+              "width": 728,
+              "height": 47
+            }
+          },
+          {
+            "cls": "MdMathContent",
+            "box": {
+              "x": 423,
+              "y": 165,
+              "width": 728,
+              "height": 47
+            }
+          }
+        ],
+        "text": "11:40 AM",
+        "math": {
+          "x": 778,
+          "y": 166.5,
+          "width": 19,
+          "height": 41
+        },
+        "imageSource": "data:image/png;base64,iVBORw0KGgoAAAANSU",
+        "errors": 0,
+        "errorMessages": [],
+        "relativeMath": {
+          "x": 471,
+          "y": 17.5
+        }
+      },
+      "delta": {
+        "rowHeight": 1.2734375,
+        "mathX": 0.4453125,
+        "mathWidth": -0.3828125,
+        "mathHeight": 0.6484375,
+        "mathY": 0.3125
+      },
+      "pass": true
+    },
+    {
+      "name": "root",
+      "threadId": "chat80-1791733204277-3",
+      "assistantId": "assistant:f778c862-338f-44fd-bc3c-37a24a1442d8",
+      "electron": {
+        "height": 96.375,
+        "displayBox": {
+          "x": 423.25,
+          "y": 164.59375,
+          "width": 728,
+          "height": 33.1875,
+          "top": 164.59375,
+          "right": 1151.25,
+          "bottom": 197.78125,
+          "left": 423.25
+        },
+        "katexBox": {
+          "x": 756.890625,
+          "y": 168.1875,
+          "width": 60.7109375,
+          "height": 21.6953125,
+          "top": 168.1875,
+          "right": 817.6015625,
+          "bottom": 189.8828125,
+          "left": 756.890625
+        },
+        "markdownBox": {
+          "x": 423.25,
+          "y": 164.59375,
+          "width": 728,
+          "height": 33.1875,
+          "top": 164.59375,
+          "right": 1151.25,
+          "bottom": 197.78125,
+          "left": 423.25
+        },
+        "text": "𝑥\n2\n+\n1\nx\n2\n+1\n\t​\n\n\n11:40 AM",
+        "fontSize": "16px",
+        "math": {
+          "x": 757.6875,
+          "y": 168.1875,
+          "width": 59.1171875,
+          "height": 19.8359375
+        },
+        "relativeMath": {
+          "x": 338.4375,
+          "y": 19.1875
+        }
+      },
+      "native": {
+        "height": 97,
+        "contentBoxes": [
+          {
+            "cls": "MdMathBlockShell",
+            "box": {
+              "x": 423,
+              "y": 165,
+              "width": 728,
+              "height": 32
+            }
+          },
+          {
+            "cls": "MdMathContent",
+            "box": {
+              "x": 423,
+              "y": 165,
+              "width": 728,
+              "height": 32
+            }
+          }
+        ],
+        "text": "11:40 AM",
+        "math": {
+          "x": 758,
+          "y": 166.5,
+          "width": 59,
+          "height": 20
+        },
+        "imageSource": "data:image/png;base64,iVBORw0KGgoAAAANSU",
+        "errors": 0,
+        "errorMessages": [],
+        "relativeMath": {
+          "x": 451,
+          "y": 17.5
+        }
+      },
+      "delta": {
+        "rowHeight": 0.625,
+        "mathX": 0.3125,
+        "mathWidth": -0.1171875,
+        "mathHeight": 0.1640625,
+        "mathY": -1.6875
+      },
+      "pass": true
+    },
+    {
+      "name": "matrix",
+      "threadId": "chat80-1791733208568-4",
+      "assistantId": "assistant:b6a35a48-3243-44c7-9e3b-5002a80c843f",
+      "electron": {
+        "height": 108.7734375,
+        "displayBox": {
+          "x": 423.25,
+          "y": 164.59375,
+          "width": 728,
+          "height": 45.5859375,
+          "top": 164.59375,
+          "right": 1151.25,
+          "bottom": 210.1796875,
+          "left": 423.25
+        },
+        "katexBox": {
+          "x": 758.2734375,
+          "y": 166.1875,
+          "width": 57.9453125,
+          "height": 38.3984375,
+          "top": 166.1875,
+          "right": 816.21875,
+          "bottom": 204.5859375,
+          "left": 758.2734375
+        },
+        "markdownBox": {
+          "x": 423.25,
+          "y": 164.59375,
+          "width": 728,
+          "height": 45.5859375,
+          "top": 164.59375,
+          "right": 1151.25,
+          "bottom": 210.1796875,
+          "left": 423.25
+        },
+        "text": "(\n𝑎\n\t\n𝑏\n\n\n𝑐\n\t\n𝑑\n)\n(\na\nc\n\t​\n\nb\nd\n\t​\n\n)\n\n11:40 AM",
+        "fontSize": "16px",
+        "math": {
+          "x": 759.0703125,
+          "y": 166.1875,
+          "width": 56.3515625,
+          "height": 38.3984375
+        },
+        "relativeMath": {
+          "x": 339.8203125,
+          "y": 17.1875
+        }
+      },
+      "native": {
+        "height": 110,
+        "contentBoxes": [
+          {
+            "cls": "MdMathBlockShell",
+            "box": {
+              "x": 423,
+              "y": 165,
+              "width": 728,
+              "height": 45
+            }
+          },
+          {
+            "cls": "MdMathContent",
+            "box": {
+              "x": 423,
+              "y": 165,
+              "width": 728,
+              "height": 45
+            }
+          }
+        ],
+        "text": "11:40 AM",
+        "math": {
+          "x": 759,
+          "y": 166.5,
+          "width": 56,
+          "height": 39
+        },
+        "imageSource": "data:image/png;base64,iVBORw0KGgoAAAANSU",
+        "errors": 0,
+        "errorMessages": [],
+        "relativeMath": {
+          "x": 452,
+          "y": 17.5
+        }
+      },
+      "delta": {
+        "rowHeight": 1.2265625,
+        "mathX": -0.0703125,
+        "mathWidth": -0.3515625,
+        "mathHeight": 0.6015625,
+        "mathY": 0.3125
+      },
+      "pass": true
+    },
+    {
+      "name": "price",
+      "threadId": "chat80-1791733212832-5",
+      "assistantId": "assistant:18ac4cce-fb7d-4508-9dad-308108c3d3b4",
+      "electron": {
+        "height": 64,
+        "markdownBox": {
+          "x": 423.25,
+          "y": 151,
+          "width": 728,
+          "height": 26,
+          "top": 151,
+          "right": 1151.25,
+          "bottom": 177,
+          "left": 423.25
+        },
+        "text": "The price is $5 and stays ordinary text.\n\n11:40 AM",
+        "fontSize": "16px",
+        "math": null,
+        "relativeMath": null
+      },
+      "native": {
+        "height": 64,
+        "contentBoxes": [],
+        "text": "The price is $5 and stays ordinary text.11:40 AM",
+        "math": null,
+        "imageSource": null,
+        "errors": 0,
+        "errorMessages": []
+      },
+      "delta": {
+        "rowHeight": 0
+      },
+      "pass": true
+    }
+  ],
+  "pass": false,
+  "restoredProvider": true,
+  "deleted": [true, true, true, true, true, true]
+}

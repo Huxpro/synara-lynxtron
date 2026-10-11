@@ -1,0 +1,563 @@
+{
+  "runId": "2026-10-11T15-59-02-358Z-79095",
+  "options": {
+    "threadId": "comparison-fixture-transcript-v2",
+    "seed": "fixture",
+    "exitAfterCertify": false,
+    "route": null,
+    "width": 1440,
+    "height": 900,
+    "webPort": 8891,
+    "electronCdpPort": 9223,
+    "lynxDevtoolPort": 18902,
+    "theme": "dark",
+    "themePack": "codex",
+    "systemAppearanceSequence": null,
+    "systemAppearanceIntervalMs": null,
+    "terminal": "closed",
+    "dock": null,
+    "appSnap": "acknowledged",
+    "chatFontSize": 13,
+    "skipLynxDevtool": false,
+    "skipBuild": false,
+    "regularApp": false,
+    "messageFormats": true
+  },
+  "cases": [
+    {
+      "renderer": "electron",
+      "threadId": "chat79-electron-1791734415789",
+      "messageId": "2895a99b-5801-4121-b1b9-b70336257f99",
+      "samples": [
+        {
+          "ms": 250,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "2895a99b-5801-4121-b1b9-b70336257f99",
+            "top": 154,
+            "bottom": 238.125
+          },
+          "offset": 110
+        },
+        {
+          "ms": 500,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "2895a99b-5801-4121-b1b9-b70336257f99",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        },
+        {
+          "ms": 750,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "2895a99b-5801-4121-b1b9-b70336257f99",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        },
+        {
+          "ms": 1000,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "2895a99b-5801-4121-b1b9-b70336257f99",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        },
+        {
+          "ms": 1250,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "2895a99b-5801-4121-b1b9-b70336257f99",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        },
+        {
+          "ms": 1500,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "2895a99b-5801-4121-b1b9-b70336257f99",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        },
+        {
+          "ms": 1750,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "2895a99b-5801-4121-b1b9-b70336257f99",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        },
+        {
+          "ms": 2000,
+          "viewport": {
+            "x": 307.5,
+            "y": 44,
+            "width": 1129.5,
+            "height": 837,
+            "top": 44,
+            "right": 1437,
+            "bottom": 881,
+            "left": 307.5,
+            "inset": 16
+          },
+          "row": {
+            "id": "2895a99b-5801-4121-b1b9-b70336257f99",
+            "top": 60,
+            "bottom": 144.125
+          },
+          "offset": 16
+        }
+      ],
+      "pass": true
+    },
+    {
+      "renderer": "native",
+      "threadId": "chat79-native-1791734422082",
+      "messageId": "lynx-message-1791734425047-79299243b2f6e8",
+      "samples": [
+        {
+          "ms": 250,
+          "viewport": {
+            "top": 60,
+            "height": 743,
+            "anchorAttributes": [
+              "idSelector",
+              "transcript-63_68_61_74_37_39_2d_6e_61_74_69_76_65_2d_31_37_39_31_37_33_34_34_32_32_30_38_32",
+              "aria-label",
+              "Conversation transcript",
+              "accessibility-element",
+              "true",
+              "accessibility-label",
+              "Conversation transcript",
+              "focusable",
+              "true",
+              "scroll-orientation",
+              "vertical",
+              "need-visible-item-info",
+              "true",
+              "scroll-event-throttle",
+              "24",
+              "lower-threshold",
+              "30",
+              "update-list-info",
+              "",
+              "data-anchor-measure",
+              "{\"height\":743,\"scrollY\":2200,\"max\":2243,\"relative\":43,\"reserve\":520,\"tail\":223,\"position\":2}",
+              "bindscroll",
+              "1263:0:bindscroll",
+              "bindscrolltolower",
+              "1263:0:bindscrolltolower",
+              "class",
+              "TranscriptList"
+            ]
+          },
+          "row": {
+            "id": "lynx-message-1791734425047-79299243b2f6e8",
+            "top": 103,
+            "bottom": 187
+          },
+          "offset": 43
+        },
+        {
+          "ms": 500,
+          "viewport": {
+            "top": 60,
+            "height": 743,
+            "anchorAttributes": [
+              "idSelector",
+              "transcript-63_68_61_74_37_39_2d_6e_61_74_69_76_65_2d_31_37_39_31_37_33_34_34_32_32_30_38_32",
+              "aria-label",
+              "Conversation transcript",
+              "accessibility-element",
+              "true",
+              "accessibility-label",
+              "Conversation transcript",
+              "focusable",
+              "true",
+              "scroll-orientation",
+              "vertical",
+              "need-visible-item-info",
+              "true",
+              "scroll-event-throttle",
+              "24",
+              "lower-threshold",
+              "30",
+              "update-list-info",
+              "",
+              "data-anchor-measure",
+              "{\"height\":743,\"scrollY\":2200,\"max\":2243,\"relative\":43,\"reserve\":520,\"tail\":223,\"position\":2}",
+              "bindscroll",
+              "1263:0:bindscroll",
+              "bindscrolltolower",
+              "1263:0:bindscrolltolower",
+              "class",
+              "TranscriptList"
+            ]
+          },
+          "row": {
+            "id": "lynx-message-1791734425047-79299243b2f6e8",
+            "top": 103,
+            "bottom": 187
+          },
+          "offset": 43
+        },
+        {
+          "ms": 750,
+          "viewport": {
+            "top": 60,
+            "height": 743,
+            "anchorAttributes": [
+              "idSelector",
+              "transcript-63_68_61_74_37_39_2d_6e_61_74_69_76_65_2d_31_37_39_31_37_33_34_34_32_32_30_38_32",
+              "aria-label",
+              "Conversation transcript",
+              "accessibility-element",
+              "true",
+              "accessibility-label",
+              "Conversation transcript",
+              "focusable",
+              "true",
+              "scroll-orientation",
+              "vertical",
+              "need-visible-item-info",
+              "true",
+              "scroll-event-throttle",
+              "24",
+              "lower-threshold",
+              "30",
+              "update-list-info",
+              "",
+              "data-anchor-measure",
+              "{\"height\":743,\"scrollY\":2200,\"max\":2243,\"relative\":43,\"reserve\":520,\"tail\":223,\"position\":2}",
+              "data-anchor-error",
+              "Error: Anchor offset failed to converge",
+              "bindscroll",
+              "1263:0:bindscroll",
+              "bindscrolltolower",
+              "1263:0:bindscrolltolower",
+              "class",
+              "TranscriptList"
+            ]
+          },
+          "row": {
+            "id": "lynx-message-1791734425047-79299243b2f6e8",
+            "top": 103,
+            "bottom": 187
+          },
+          "offset": 43
+        },
+        {
+          "ms": 1000,
+          "viewport": {
+            "top": 60,
+            "height": 743,
+            "anchorAttributes": [
+              "idSelector",
+              "transcript-63_68_61_74_37_39_2d_6e_61_74_69_76_65_2d_31_37_39_31_37_33_34_34_32_32_30_38_32",
+              "aria-label",
+              "Conversation transcript",
+              "accessibility-element",
+              "true",
+              "accessibility-label",
+              "Conversation transcript",
+              "focusable",
+              "true",
+              "scroll-orientation",
+              "vertical",
+              "need-visible-item-info",
+              "true",
+              "scroll-event-throttle",
+              "24",
+              "lower-threshold",
+              "30",
+              "update-list-info",
+              "",
+              "data-anchor-measure",
+              "{\"height\":743,\"scrollY\":2200,\"max\":2243,\"relative\":43,\"reserve\":520,\"tail\":223,\"position\":2}",
+              "data-anchor-error",
+              "Error: Anchor offset failed to converge",
+              "bindscroll",
+              "1263:0:bindscroll",
+              "bindscrolltolower",
+              "1263:0:bindscrolltolower",
+              "class",
+              "TranscriptList"
+            ]
+          },
+          "row": {
+            "id": "lynx-message-1791734425047-79299243b2f6e8",
+            "top": 103,
+            "bottom": 187
+          },
+          "offset": 43
+        },
+        {
+          "ms": 1250,
+          "viewport": {
+            "top": 60,
+            "height": 743,
+            "anchorAttributes": [
+              "idSelector",
+              "transcript-63_68_61_74_37_39_2d_6e_61_74_69_76_65_2d_31_37_39_31_37_33_34_34_32_32_30_38_32",
+              "aria-label",
+              "Conversation transcript",
+              "accessibility-element",
+              "true",
+              "accessibility-label",
+              "Conversation transcript",
+              "focusable",
+              "true",
+              "scroll-orientation",
+              "vertical",
+              "need-visible-item-info",
+              "true",
+              "scroll-event-throttle",
+              "24",
+              "lower-threshold",
+              "30",
+              "update-list-info",
+              "",
+              "data-anchor-measure",
+              "{\"height\":743,\"scrollY\":2200,\"max\":2243,\"relative\":43,\"reserve\":520,\"tail\":223,\"position\":2}",
+              "data-anchor-error",
+              "Error: Anchor offset failed to converge",
+              "bindscroll",
+              "1263:0:bindscroll",
+              "bindscrolltolower",
+              "1263:0:bindscrolltolower",
+              "class",
+              "TranscriptList"
+            ]
+          },
+          "row": {
+            "id": "lynx-message-1791734425047-79299243b2f6e8",
+            "top": 103,
+            "bottom": 187
+          },
+          "offset": 43
+        },
+        {
+          "ms": 1500,
+          "viewport": {
+            "top": 60,
+            "height": 743,
+            "anchorAttributes": [
+              "idSelector",
+              "transcript-63_68_61_74_37_39_2d_6e_61_74_69_76_65_2d_31_37_39_31_37_33_34_34_32_32_30_38_32",
+              "aria-label",
+              "Conversation transcript",
+              "accessibility-element",
+              "true",
+              "accessibility-label",
+              "Conversation transcript",
+              "focusable",
+              "true",
+              "scroll-orientation",
+              "vertical",
+              "need-visible-item-info",
+              "true",
+              "scroll-event-throttle",
+              "24",
+              "lower-threshold",
+              "30",
+              "update-list-info",
+              "",
+              "data-anchor-measure",
+              "{\"height\":743,\"scrollY\":2200,\"max\":2243,\"relative\":43,\"reserve\":520,\"tail\":223,\"position\":2}",
+              "data-anchor-error",
+              "Error: Anchor offset failed to converge",
+              "bindscroll",
+              "1263:0:bindscroll",
+              "bindscrolltolower",
+              "1263:0:bindscrolltolower",
+              "class",
+              "TranscriptList"
+            ]
+          },
+          "row": {
+            "id": "lynx-message-1791734425047-79299243b2f6e8",
+            "top": 103,
+            "bottom": 187
+          },
+          "offset": 43
+        },
+        {
+          "ms": 1750,
+          "viewport": {
+            "top": 60,
+            "height": 743,
+            "anchorAttributes": [
+              "idSelector",
+              "transcript-63_68_61_74_37_39_2d_6e_61_74_69_76_65_2d_31_37_39_31_37_33_34_34_32_32_30_38_32",
+              "aria-label",
+              "Conversation transcript",
+              "accessibility-element",
+              "true",
+              "accessibility-label",
+              "Conversation transcript",
+              "focusable",
+              "true",
+              "scroll-orientation",
+              "vertical",
+              "need-visible-item-info",
+              "true",
+              "scroll-event-throttle",
+              "24",
+              "lower-threshold",
+              "30",
+              "update-list-info",
+              "",
+              "data-anchor-measure",
+              "{\"height\":743,\"scrollY\":2200,\"max\":2243,\"relative\":43,\"reserve\":520,\"tail\":223,\"position\":2}",
+              "data-anchor-error",
+              "Error: Anchor offset failed to converge",
+              "bindscroll",
+              "1263:0:bindscroll",
+              "bindscrolltolower",
+              "1263:0:bindscrolltolower",
+              "class",
+              "TranscriptList"
+            ]
+          },
+          "row": {
+            "id": "lynx-message-1791734425047-79299243b2f6e8",
+            "top": 103,
+            "bottom": 187
+          },
+          "offset": 43
+        },
+        {
+          "ms": 2000,
+          "viewport": {
+            "top": 60,
+            "height": 743,
+            "anchorAttributes": [
+              "idSelector",
+              "transcript-63_68_61_74_37_39_2d_6e_61_74_69_76_65_2d_31_37_39_31_37_33_34_34_32_32_30_38_32",
+              "aria-label",
+              "Conversation transcript",
+              "accessibility-element",
+              "true",
+              "accessibility-label",
+              "Conversation transcript",
+              "focusable",
+              "true",
+              "scroll-orientation",
+              "vertical",
+              "need-visible-item-info",
+              "true",
+              "scroll-event-throttle",
+              "24",
+              "lower-threshold",
+              "30",
+              "update-list-info",
+              "",
+              "data-anchor-measure",
+              "{\"height\":743,\"scrollY\":2200,\"max\":2243,\"relative\":43,\"reserve\":520,\"tail\":223,\"position\":2}",
+              "data-anchor-error",
+              "Error: Anchor offset failed to converge",
+              "bindscroll",
+              "1263:0:bindscroll",
+              "bindscrolltolower",
+              "1263:0:bindscrolltolower",
+              "class",
+              "TranscriptList"
+            ]
+          },
+          "row": {
+            "id": "lynx-message-1791734425047-79299243b2f6e8",
+            "top": 103,
+            "bottom": 187
+          },
+          "offset": 43
+        }
+      ],
+      "pass": false
+    }
+  ],
+  "pass": false,
+  "electronAnchorSetting": true,
+  "receiptNote": "Unrelated Electron settings omitted; geometry and errors unchanged."
+}

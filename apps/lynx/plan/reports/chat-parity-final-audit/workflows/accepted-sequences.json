@@ -1,0 +1,14 @@
+{
+  "accepted": {
+    "J1": ["J1-1", "J1-2", "J1-3"],
+    "J2": ["J2-retry1", "J2-2", "J2-3"],
+    "J7": ["J7-1", "J7-2", "J7-3"]
+  },
+  "initialFailure": "initial-failure-J2-1.json",
+  "console": "unavailable: reloads did not preserve both probes",
+  "ownedCleanup": {
+    "lynxtron": [],
+    "electron": [],
+    "web": []
+  }
+}

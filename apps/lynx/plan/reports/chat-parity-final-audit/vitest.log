@@ -1,0 +1,13 @@
+$ vitest run --passWithNoTests src/components/ChatMarkdown.test.tsx src/components/chat/transcriptScroll.test.ts
+(node:61198) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+ RUN  v4.1.10 /Users/bytedance/github/synara-arch-sync/apps/web
+
+(node:61289) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+ Test Files  2 passed (2)
+      Tests  68 passed (68)
+   Start at  12:36:14
+   Duration  5.84s (transform 3.49s, setup 0ms, import 218ms, tests 5.51s, environment 0ms)

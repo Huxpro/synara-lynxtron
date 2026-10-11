@@ -1,0 +1,5 @@
+
+Found 1304 warnings and 0 errors.
+Finished in 4.7s on 5499 files with 149 rules using 12 threads.
+$ node scripts/check-server-sync-fs.ts
+Server synchronous filesystem budget passed.

@@ -1,0 +1,59 @@
+$ rstest src/app/transcriptUserMessage.logic.test.ts
+rootPath:  /Users/bytedance/github/synara-arch-sync/apps/lynx/src/assets
+rootPath:  /Users/bytedance/github/synara-arch-sync/apps/lynx/src/assets
+(node:66227) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+RSPEEDY_READY
+(node:67777) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+---
+tool: "@rstest/core@0.11.4"
+timestamp: "2026-10-11T10:27:32.418Z"
+runtime: {"node":"v26.0.0","platform":"darwin","cwd":"/Users/bytedance/github/synara-arch-sync/apps/lynx"}
+---
+
+# Rstest Test Execution Report
+
+## Summary
+
+```json
+{
+  "status": "pass",
+  "counts": {
+    "testFiles": 1,
+    "failedFiles": 0,
+    "tests": 2,
+    "failedTests": 0,
+    "passedTests": 2,
+    "skippedTests": 0,
+    "todoTests": 0
+  },
+  "durationMs": {
+    "total": 2911,
+    "build": 1921,
+    "tests": 990
+  },
+  "snapshot": {
+    "added": 0,
+    "updated": 0,
+    "unmatched": 0,
+    "removed": 0,
+    "unchecked": 0
+  }
+}
+```
+
+## Tests
+
+### Passed
+
+- src/app/transcriptUserMessage.logic.test.ts :: upstream visible user messages on Native > strips all five context transports from the cached and rendered body while retaining their cards
+- src/app/transcriptUserMessage.logic.test.ts :: upstream visible user messages on Native > uses persisted selections over legacy embedded selections and hides attachment-only bootstrap text
+
+### Skipped
+
+None.
+
+## Failures
+
+No test failures reported.

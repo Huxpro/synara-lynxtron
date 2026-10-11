@@ -1,0 +1,46 @@
+[
+  {
+    "name": "dark-1280-13",
+    "runId": "2026-10-11T16-03-51-168Z-96982",
+    "formatsExit": 0,
+    "cellsExit": 0
+  },
+  {
+    "name": "dark-1280-16",
+    "runId": "2026-10-11T16-06-01-431Z-6374",
+    "formatsExit": 0
+  },
+  {
+    "name": "dark-1440-13",
+    "runId": "2026-10-11T16-07-34-763Z-11650",
+    "formatsExit": 0,
+    "cellsExit": 0
+  },
+  {
+    "name": "dark-1440-16",
+    "runId": "2026-10-11T16-09-46-256Z-20728",
+    "formatsExit": 0
+  },
+  {
+    "name": "light-1280-13",
+    "runId": "2026-10-11T16-11-18-787Z-25825",
+    "formatsExit": 0,
+    "cellsExit": 0
+  },
+  {
+    "name": "light-1280-16",
+    "runId": "2026-10-11T16-13-39-622Z-34822",
+    "formatsExit": 0
+  },
+  {
+    "name": "light-1440-13",
+    "runId": "2026-10-11T16-15-12-280Z-40307",
+    "formatsExit": 0,
+    "cellsExit": 0
+  },
+  {
+    "name": "light-1440-16",
+    "runId": "2026-10-11T16-17-25-646Z-49450",
+    "formatsExit": 0
+  }
+]

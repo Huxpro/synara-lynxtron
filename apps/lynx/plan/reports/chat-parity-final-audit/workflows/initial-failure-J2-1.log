@@ -1,0 +1,10 @@
+[J2:electron] ✓ build a long transcript with a real turn (11888ms)
+[J2:electron] ✓ follow live output to the end of the transcript (6455ms)
+[J2:electron] ✗ scroll away while output streams; the reader keeps their place: The transcript never detached from the end after scrolling up.
+[J2:native] ✓ build a long transcript with a real turn (23844ms)
+[J2:native] ✓ follow live output to the end of the transcript (7865ms)
+[J2:native] ✓ scroll away while output streams; the reader keeps their place (4216ms)
+[J2:native] ✓ jump back to the latest output (12815ms)
+[J2:native] ✓ select reply text by dragging; the transcript stays where it was (4719ms)
+[J2:native] ✓ tool activity does not snap a detached reader (12559ms)
+[J2:native] ✓ switch to another thread and back with the right content (2701ms)
