@@ -1,0 +1,12 @@
+[web] certified dark 1440×900: thread comparison-fixture-transcript-v2, sequence 813, server 4518, web 6478, run web-2026-10-11T12-57-09-077Z-dark-1440x900
+[J7:web] active conversation anchors certified
+[J7:web-electron] ✓ both providers are installed and signed in
+[J7:web-electron] ✗ complete a real turn on Codex: Timed out waiting for the new thread composer on an empty transcript.
+[J7:web-native] ✓ both providers are installed and signed in
+[J7:web-native] ✓ complete a real turn on Codex
+[J7:web-native] ✓ pick a Claude model in the started thread's picker
+[J7:web-native] ✓ send: the thread is handed off in place, then the turn runs
+[J7:web-native] ✓ the transcript shows the handoff boundary between the two turns
+[J7:web-native] ✓ header "Hand off thread": continue in this thread
+[J7:web-native] ✓ header "Hand off thread": continue in a new thread
+[web] Cleanup verified (web-2026-10-11T12-57-09-077Z-dark-1440x900)

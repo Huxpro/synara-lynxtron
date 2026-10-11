@@ -1,0 +1,60 @@
+$ node scripts/generate-event-router.mjs --check && node scripts/generate-diff-change-markers.mjs --check && node scripts/generate-automations-state.mjs --check && node scripts/generate-thread-handoff.mjs --check && node scripts/generate-pending-interactions.mjs --check && node scripts/generate-decision-panel-model.mjs --check && node scripts/generate-transcript-card-actions.mjs --check && node scripts/generate-user-message-cards.mjs --check && node scripts/generate-hugeicons.mjs --check && node scripts/upstream-parallel-copies.mjs --check && node scripts/reuse-audit.mjs --check
+generate-event-router: apps/lynx/src/generated/eventRouter.generated.tsx is up to date (24 declarations)
+generate-diff-change-markers: apps/lynx/src/generated/diffChangeMarkers.generated.ts is up to date (2 declarations)
+generate-automations-state: apps/lynx/src/generated/automationsState.generated.ts is up to date (16 declarations)
+generate-thread-handoff: apps/lynx/src/generated/threadHandoff.generated.ts is up to date (3 declarations)
+generate-pending-interactions: up to date
+generate-decision-panel-model: up to date
+generate-transcript-card-actions: up to date
+generate-user-message-cards: up to date
+generate-hugeicons: apps/lynx/src/generated/hugeicons.generated.ts is up to date (50 icons)
+upstream-parallel-copies: 34 entries match upstream
+{
+  "outputJson": "plan/reports/p5-r1-reuse-baseline.json",
+  "outputMarkdown": "plan/reports/p5-r1-reuse-baseline.md",
+  "mode": "check",
+  "screens": [
+    {
+      "id": "threads",
+      "modules": 603,
+      "eligible": 587,
+      "gatePercent": 54
+    },
+    {
+      "id": "threads-shell",
+      "modules": 479,
+      "eligible": 470,
+      "gatePercent": 61.06
+    },
+    {
+      "id": "thread",
+      "modules": 1046,
+      "eligible": 1020,
+      "gatePercent": 36.37
+    },
+    {
+      "id": "settings",
+      "modules": 652,
+      "eligible": 636,
+      "gatePercent": 50.16
+    },
+    {
+      "id": "projects",
+      "modules": 675,
+      "eligible": 657,
+      "gatePercent": 50.68
+    },
+    {
+      "id": "kanban",
+      "modules": 675,
+      "eligible": 657,
+      "gatePercent": 50.68
+    },
+    {
+      "id": "pull-requests",
+      "modules": 1016,
+      "eligible": 990,
+      "gatePercent": 37.58
+    }
+  ]
+}

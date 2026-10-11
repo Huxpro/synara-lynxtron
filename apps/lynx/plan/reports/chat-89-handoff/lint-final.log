@@ -1,0 +1,14 @@
+Tail of the successful lint run; full existing-warning output retained at /tmp/synara-chat89-lint-final.log on the verification machine.
+
+  ! Unused eslint-disable directive (no problems were reported).
+     ,-[apps/marketing/src/app/page.tsx:126:20]
+ 125 |                 />
+ 126 |                 {/* eslint-disable-next-line @next/next/no-img-element */}
+     :                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 127 |                 <img
+     `----
+
+Found 1305 warnings and 0 errors.
+Finished in 1.5s on 5493 files with 149 rules using 12 threads.
+$ node scripts/check-server-sync-fs.ts
+Server synchronous filesystem budget passed.

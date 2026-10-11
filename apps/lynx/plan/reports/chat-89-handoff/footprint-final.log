@@ -1,0 +1,5 @@
+$ node scripts/upstream-footprint.mjs --check
+Fork footprint in upstream-owned paths vs 70e935129:
+  modifiedUpstreamFiles: 98 (baseline 98)
+  changedLinesInUpstreamFiles: 3303 (baseline 3303)
+  forkFilesInUpstreamPaths: 324 (baseline 324)

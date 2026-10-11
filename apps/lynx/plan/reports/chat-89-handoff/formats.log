@@ -1,0 +1,33 @@
+   note: Native drag after stop 1 moved 264px (anchor before null); extra views skipped
+   note: Native drag after stop 2 moved 205.5px (anchor before null); extra views skipped
+   note: Native drag after stop 3 moved 123px (anchor before null); extra views skipped
+
+== ROWS comparison-fixture-transcript-v2 (dark, 1440x900)
+  # Electron   Native    Δ  result  kind / text
+  0    105.3      105  -0.3  ok      message:user       Look at this repository and summarize its layout
+  1    208.6      208  -0.6  ok      message:assistant  Worked for 12s Root contains README.md and packa
+  2    128.4      127  -1.4  ok      message:user       In src/math.ts add an exported subtract(a: numbe
+  3    329.9      332   2.1  DIFF    message:assistant  Worked for 19s Implemented the minimal changes: 
+  4    126.4      126  -0.4  ok      message:user       Without modifying files, reply with a markdown t
+  5    365.7      357  -8.7  DIFF    message:assistant  Worked for 7.9s Name Parameters Return type add 
+  6    105.3      105  -0.3  ok      message:user       Without modifying files, write a numbered list o
+  7     1086     1081    -5  DIFF    message:assistant  Worked for 8.6s Use descriptive names for variab
+
+== CONTROLS in rows: compared 30, within 2px 19, outside 11, repeated 0
+   DIFF row 3: Open src/math.ts  Δ {"x":0.2,"y":0.9,"width":-26,"height":0}
+   DIFF row 3: Open README.md  Δ {"x":0.2,"y":0.4,"width":-26,"height":0}
+   DIFF row 5: Copy message  Δ {"x":-0.1,"y":-8.7,"width":0,"height":0}
+   DIFF row 5: Fork thread from this turn  Δ {"x":-0.1,"y":-8.7,"width":0,"height":0}
+   DIFF row 5: Pin message  Δ {"x":-0.1,"y":-8.7,"width":0,"height":0}
+   DIFF row 7: Copy message  Δ {"x":-0.1,"y":-5,"width":0,"height":0}
+   DIFF row 7: Fork thread from this turn  Δ {"x":-0.1,"y":-5,"width":0,"height":0}
+   DIFF row 7: Pin message  Δ {"x":-0.1,"y":-5,"width":0,"height":0}
+   DIFF row 3: Copy message  Δ {"x":-0.1,"y":2.1,"width":0,"height":0}
+   DIFF row 3: Fork thread from this turn  Δ {"x":-0.1,"y":2.1,"width":0,"height":0}
+   DIFF row 3: Pin message  Δ {"x":-0.1,"y":2.1,"width":0,"height":0}
+   native-only   row 1: Expand Worked for 12s
+   native-only   row 3: Expand Worked for 19s
+   native-only   row 3: Review changes
+   native-only   row 3: Undo file changes
+   native-only   row 5: Expand Worked for 7.9s
+   native-only   row 7: Expand Worked for 8.6s
