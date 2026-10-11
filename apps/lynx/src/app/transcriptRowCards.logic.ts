@@ -111,6 +111,7 @@ export interface TurnChangedFilesPresentation {
     readonly path: string;
     readonly additions: number;
     readonly deletions: number;
+    readonly kind?: string | undefined;
   }>;
 }
 
@@ -118,12 +119,14 @@ export interface TurnChangedFilesPresentation {
 export function resolveTurnChangedFiles(
   files: ReadonlyArray<{
     readonly path: string;
+    readonly kind?: string | undefined;
     readonly additions?: number | undefined;
     readonly deletions?: number | undefined;
   }>,
 ): TurnChangedFilesPresentation {
   const rows = files.map((file) => ({
     path: file.path,
+    ...(file.kind ? { kind: file.kind } : {}),
     additions: file.additions ?? 0,
     deletions: file.deletions ?? 0,
   }));

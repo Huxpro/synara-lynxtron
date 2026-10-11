@@ -1,3 +1,4 @@
+import type { ComposerRecoveryActions } from "./TranscriptCardActions.lynx";
 // P2-V1: navigation on ReactLynx — TanStack *memory history* engine with a
 // Lynx-native render layer.
 //
@@ -1340,12 +1341,13 @@ function ThreadPage(props: ThreadPageProps) {
     [updateRightDockState],
   );
   const openTurnDiff = useCallback(
-    (turnId: string) => {
+    (turnId: string, filePath?: string) => {
       updateRightDockState((current) =>
         openPaneInState(current, {
           paneId: "diff",
           kind: "diff",
           diffTurnId: turnId as never,
+          diffFilePath: filePath ?? null,
         }),
       );
     },
@@ -1687,9 +1689,11 @@ function ThreadPage(props: ThreadPageProps) {
   const compactThreadHeader = threadHeaderAvailableWidth < 700;
   const activePendingApproval = currentThread?.pendingApprovals[0] ?? null;
   const activePendingUserInput = currentThread?.pendingUserInputs[0] ?? null;
+  const [composerRecovery, setComposerRecovery] = useState<ComposerRecoveryActions | null>(null);
   const composer = (
     <ComposerColumnFrameSurface>
       <Composer
+        onRecoveryActions={setComposerRecovery}
         activities={currentThread?.activities ?? []}
         availableWidth={threadHeaderAvailableWidth}
         chatFontSizePx={appearance.chatFontSizePx}
@@ -1809,6 +1813,7 @@ function ThreadPage(props: ThreadPageProps) {
             viewportHeight={viewportHeight}
             onController={registerTranscriptController}
             onOpenFileReference={openExplorerFileReference}
+            composerRecovery={composerRecovery}
             onOpenTurnDiff={openTurnDiff}
             onThreadError={setLocalThreadError}
             selectionHandlers={transcriptSelectionHandlers}

@@ -1,0 +1,369 @@
+{
+  "runId": "2026-10-11T09-13-20-517Z-71638",
+  "options": {
+    "threadId": "comparison-fixture-transcript-v2",
+    "seed": "fixture",
+    "exitAfterCertify": false,
+    "route": null,
+    "width": 1440,
+    "height": 900,
+    "webPort": 8891,
+    "electronCdpPort": 9223,
+    "lynxDevtoolPort": 18902,
+    "theme": "dark",
+    "themePack": "codex",
+    "systemAppearanceSequence": null,
+    "systemAppearanceIntervalMs": null,
+    "terminal": "closed",
+    "dock": null,
+    "appSnap": "acknowledged",
+    "chatFontSize": 13,
+    "skipLynxDevtool": false,
+    "skipBuild": false,
+    "regularApp": false,
+    "messageFormats": false
+  },
+  "cases": [
+    {
+      "kind": "changes",
+      "electron": {
+        "panel": {
+          "x": 331.5,
+          "y": 303.125,
+          "width": 506.5,
+          "height": 134
+        },
+        "controls": {
+          "Undo": {
+            "x": 342.0625,
+            "y": 16.75,
+            "width": 48.5390625,
+            "height": 19.5
+          },
+          "Review": {
+            "x": 398.6015625,
+            "y": 13.75,
+            "width": 64.8984375,
+            "height": 25.5
+          },
+          "Collapse changed files list": {
+            "x": 471.5,
+            "y": 15.5,
+            "width": 22,
+            "height": 22
+          },
+          "Review changes to README.md": {
+            "x": 1,
+            "y": 59,
+            "width": 440.5,
+            "height": 27.5
+          },
+          "Review changes to src/math.ts": {
+            "x": 1,
+            "y": 99.5,
+            "width": 440.5,
+            "height": 27.5
+          },
+          "Open README.md": {
+            "x": 447.5,
+            "y": 60.75,
+            "width": 24,
+            "height": 24
+          },
+          "Open README.md options": {
+            "x": 473.5,
+            "y": 60.75,
+            "width": 24,
+            "height": 24
+          },
+          "Open src/math.ts": {
+            "x": 447.5,
+            "y": 101.25,
+            "width": 24,
+            "height": 24
+          },
+          "Open src/math.ts options": {
+            "x": 473.5,
+            "y": 101.25,
+            "width": 24,
+            "height": 24
+          }
+        },
+        "text": "Edited 2 files+4-0UndoReviewREADME.md+2-0Opensrc/math.ts+2-0Open"
+      },
+      "native": {
+        "panel": {
+          "x": 326,
+          "y": 303,
+          "width": 517,
+          "height": 134
+        },
+        "controls": {
+          "Undo": {
+            "x": 352,
+            "y": 17,
+            "width": 49,
+            "height": 20
+          },
+          "Review": {
+            "x": 409,
+            "y": 14,
+            "width": 65,
+            "height": 26
+          },
+          "Collapse changed files list": {
+            "x": 482,
+            "y": 16,
+            "width": 22,
+            "height": 22
+          },
+          "Review changes to README.md": {
+            "x": 1,
+            "y": 59,
+            "width": 451,
+            "height": 28
+          },
+          "Open README.md": {
+            "x": 458,
+            "y": 61,
+            "width": 24,
+            "height": 24
+          },
+          "Open README.md options": {
+            "x": 484,
+            "y": 61,
+            "width": 24,
+            "height": 24
+          },
+          "Review changes to src/math.ts": {
+            "x": 1,
+            "y": 100,
+            "width": 451,
+            "height": 28
+          },
+          "Open src/math.ts": {
+            "x": 458,
+            "y": 102,
+            "width": 24,
+            "height": 24
+          },
+          "Open src/math.ts options": {
+            "x": 484,
+            "y": 102,
+            "width": 24,
+            "height": 24
+          }
+        }
+      },
+      "heightDelta": 0,
+      "compared": [
+        {
+          "label": "Undo",
+          "electron": {
+            "x": 342.0625,
+            "y": 16.75,
+            "width": 48.5390625,
+            "height": 19.5
+          },
+          "native": {
+            "x": 352,
+            "y": 17,
+            "width": 49,
+            "height": 20
+          },
+          "delta": {
+            "x": 9.94,
+            "y": 0.25,
+            "width": 0.46,
+            "height": 0.5
+          }
+        },
+        {
+          "label": "Review",
+          "electron": {
+            "x": 398.6015625,
+            "y": 13.75,
+            "width": 64.8984375,
+            "height": 25.5
+          },
+          "native": {
+            "x": 409,
+            "y": 14,
+            "width": 65,
+            "height": 26
+          },
+          "delta": {
+            "x": 10.4,
+            "y": 0.25,
+            "width": 0.1,
+            "height": 0.5
+          }
+        },
+        {
+          "label": "Collapse changed files list",
+          "electron": {
+            "x": 471.5,
+            "y": 15.5,
+            "width": 22,
+            "height": 22
+          },
+          "native": {
+            "x": 482,
+            "y": 16,
+            "width": 22,
+            "height": 22
+          },
+          "delta": {
+            "x": 10.5,
+            "y": 0.5,
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "label": "Review changes to README.md",
+          "electron": {
+            "x": 1,
+            "y": 59,
+            "width": 440.5,
+            "height": 27.5
+          },
+          "native": {
+            "x": 1,
+            "y": 59,
+            "width": 451,
+            "height": 28
+          },
+          "delta": {
+            "x": 0,
+            "y": 0,
+            "width": 10.5,
+            "height": 0.5
+          }
+        },
+        {
+          "label": "Review changes to src/math.ts",
+          "electron": {
+            "x": 1,
+            "y": 99.5,
+            "width": 440.5,
+            "height": 27.5
+          },
+          "native": {
+            "x": 1,
+            "y": 100,
+            "width": 451,
+            "height": 28
+          },
+          "delta": {
+            "x": 0,
+            "y": 0.5,
+            "width": 10.5,
+            "height": 0.5
+          }
+        },
+        {
+          "label": "Open README.md",
+          "electron": {
+            "x": 447.5,
+            "y": 60.75,
+            "width": 24,
+            "height": 24
+          },
+          "native": {
+            "x": 458,
+            "y": 61,
+            "width": 24,
+            "height": 24
+          },
+          "delta": {
+            "x": 10.5,
+            "y": 0.25,
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "label": "Open README.md options",
+          "electron": {
+            "x": 473.5,
+            "y": 60.75,
+            "width": 24,
+            "height": 24
+          },
+          "native": {
+            "x": 484,
+            "y": 61,
+            "width": 24,
+            "height": 24
+          },
+          "delta": {
+            "x": 10.5,
+            "y": 0.25,
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "label": "Open src/math.ts",
+          "electron": {
+            "x": 447.5,
+            "y": 101.25,
+            "width": 24,
+            "height": 24
+          },
+          "native": {
+            "x": 458,
+            "y": 102,
+            "width": 24,
+            "height": 24
+          },
+          "delta": {
+            "x": 10.5,
+            "y": 0.75,
+            "width": 0,
+            "height": 0
+          }
+        },
+        {
+          "label": "Open src/math.ts options",
+          "electron": {
+            "x": 473.5,
+            "y": 101.25,
+            "width": 24,
+            "height": 24
+          },
+          "native": {
+            "x": 484,
+            "y": 102,
+            "width": 24,
+            "height": 24
+          },
+          "delta": {
+            "x": 10.5,
+            "y": 0.75,
+            "width": 0,
+            "height": 0
+          }
+        }
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "renderer": "electron",
+      "kind": "collapse-expand-file-review",
+      "ok": true,
+      "loadedCheckpoint": true
+    },
+    {
+      "renderer": "native",
+      "kind": "collapse-expand-file-review",
+      "ok": true,
+      "loadedCheckpoint": true
+    }
+  ],
+  "limitations": [
+    "OS save-file and confirmation dialogs are covered by Native port unit tests; physical system-dialog interaction is unverified under the no-foreground constraint."
+  ]
+}

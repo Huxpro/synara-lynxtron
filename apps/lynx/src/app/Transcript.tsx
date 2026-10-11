@@ -1,3 +1,8 @@
+import {
+  TranscriptCardActionsProvider,
+  useTranscriptCardActions,
+  type ComposerRecoveryActions,
+} from "./TranscriptCardActions.lynx";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "@lynx-js/react";
 import { ensureNativeApi } from "~/nativeApi";
 import arrowDownSvg from "@tabler/icons/outline/arrow-down.svg?raw";
@@ -262,9 +267,25 @@ function TranscriptWorkEntry({
   readonly markdownTree?: import("../components/markdown/markdownAst.lynx").MarkdownNode | null;
   readonly workspaceRoot: string | null;
 }) {
+  const cards = useTranscriptCardActions();
   if (entry.turnFailure) {
     // Upstream draws a failed turn as the error card, not as a work row.
-    return <ThreadErrorBanner error={entry.turnFailure.message} inline title="Task interrupted" />;
+    return (
+      <ThreadErrorBanner
+        error={entry.turnFailure.message}
+        inline
+        title="Task interrupted"
+        onContinue={
+          entry.turnId && entry.turnId === cards.recoverableTurnId && cards.composer
+            ? () => void cards.composer!.continueFailedTurn(entry.turnId!)
+            : undefined
+        }
+        onChangeModel={
+          entry.turnId === cards.recoverableTurnId ? cards.composer?.openModelPicker : undefined
+        }
+        recoveryDisabled={cards.recoveryDisabled}
+      />
+    );
   }
   if (entry.providerHandoff) {
     // Upstream draws an in-place provider handoff as a transcript boundary, not as a work row.
@@ -654,7 +675,7 @@ function TranscriptMessage({
   readonly onTextSelectionChange: (selection: MarkdownTextSelection | null) => void;
   readonly onThreadError?: (error: string | null) => void;
   readonly onOpenFileReference?: (relativePath: string) => void;
-  readonly onOpenTurnDiff?: (turnId: string) => void;
+  readonly onOpenTurnDiff?: (turnId: string, filePath?: string) => void;
   readonly onForkFromMessage?: (messageId: string) => void;
   readonly selectionHandlers?: TranscriptSelectionHandlers;
   readonly pinnedMessageIds: ReadonlySet<string>;
@@ -966,6 +987,11 @@ function TranscriptMessage({
         {!row.assistantTurnInProgress && turnSummary && turnChangedFileCount > 0 ? (
           <TranscriptTurnChangedFiles
             changes={resolveTurnChangedFiles(turnSummary.files)}
+            turnSummary={turnSummary}
+            workspaceRoot={workspaceRoot}
+            onReviewFile={
+              onOpenTurnDiff ? (path) => onOpenTurnDiff(turnSummary.turnId, path) : undefined
+            }
             onReview={onOpenTurnDiff ? () => onOpenTurnDiff(turnSummary.turnId) : undefined}
           />
         ) : null}
@@ -1082,7 +1108,7 @@ function TranscriptRowContent({
   ) => void;
   readonly onThreadError?: (error: string | null) => void;
   readonly onOpenFileReference?: (relativePath: string) => void;
-  readonly onOpenTurnDiff?: (turnId: string) => void;
+  readonly onOpenTurnDiff?: (turnId: string, filePath?: string) => void;
   readonly onForkFromMessage?: (messageId: string) => void;
   readonly selectionHandlers?: TranscriptSelectionHandlers;
   readonly pinnedMessageIds: ReadonlySet<string>;
@@ -1169,6 +1195,7 @@ function TranscriptRowContent({
           displayedTree={row.markdownTree}
           onOpenFileReference={onOpenFileReference}
           plan={resolveProposedPlanCardPresentation(row.proposedPlan.planMarkdown)}
+          planMarkdown={row.proposedPlan.planMarkdown}
           workspaceRoot={workspaceRoot}
         />
       </view>
@@ -1234,6 +1261,7 @@ export function Transcript({
   rows,
   threadId,
   timestampFormat,
+  composerRecovery = null,
   onController,
   onThreadError,
   runtimeMode,
@@ -1248,13 +1276,14 @@ export function Transcript({
   readonly interactionMode: ProviderInteractionMode | null;
   readonly modelSelection: ModelSelection | null;
   readonly onOpenFileReference?: (relativePath: string) => void;
-  readonly onOpenTurnDiff?: (turnId: string) => void;
+  readonly onOpenTurnDiff?: (turnId: string, filePath?: string) => void;
   readonly onForkFromMessage?: (messageId: string) => void;
   readonly selectionHandlers?: TranscriptSelectionHandlers;
   readonly pinnedMessageIds: ReadonlySet<string>;
   readonly rows: readonly ThreadTranscriptRow[];
   readonly threadId: string;
   readonly timestampFormat: "locale" | "12-hour" | "24-hour";
+  readonly composerRecovery?: ComposerRecoveryActions | null;
   readonly onController?: (controller: TranscriptController | null) => void;
   readonly onThreadError?: (error: string | null) => void;
   readonly runtimeMode: RuntimeMode | null;
@@ -1573,101 +1602,108 @@ export function Transcript({
   });
 
   return (
-    <view
-      className="TranscriptShell"
-      bindlayoutchange={(event: {
-        readonly detail?: { left?: number; top?: number; width?: number; height?: number };
-      }) => {
-        "background only";
-        const detail = event.detail ?? {};
-        if (
-          typeof detail.left === "number" &&
-          typeof detail.top === "number" &&
-          typeof detail.width === "number" &&
-          typeof detail.height === "number"
-        ) {
-          setSelectionViewport({
-            left: viewportLeft + detail.left,
-            top: detail.top,
-            width: detail.width,
-            height: detail.height,
-          });
-        }
-      }}
+    <TranscriptCardActionsProvider
+      key={threadId}
+      threadId={threadId}
+      composer={composerRecovery}
+      onThreadError={onThreadError}
     >
-      <list
-        ref={listRef}
-        className="TranscriptList"
-        {...TRANSCRIPT_KEYBOARD_LANDMARK_PROPS}
-        scroll-orientation="vertical"
-        need-visible-item-info={true}
-        scroll-event-throttle={24}
-        bindscroll={handleScroll}
-        lower-threshold={BOTTOM_EPSILON}
-        bindscrolltolower={handleScrollToLower}
+      <view
+        className="TranscriptShell"
+        bindlayoutchange={(event: {
+          readonly detail?: { left?: number; top?: number; width?: number; height?: number };
+        }) => {
+          "background only";
+          const detail = event.detail ?? {};
+          if (
+            typeof detail.left === "number" &&
+            typeof detail.top === "number" &&
+            typeof detail.width === "number" &&
+            typeof detail.height === "number"
+          ) {
+            setSelectionViewport({
+              left: viewportLeft + detail.left,
+              top: detail.top,
+              width: detail.width,
+              height: detail.height,
+            });
+          }
+        }}
       >
-        {rows.map((row) => (
+        <list
+          ref={listRef}
+          className="TranscriptList"
+          {...TRANSCRIPT_KEYBOARD_LANDMARK_PROPS}
+          scroll-orientation="vertical"
+          need-visible-item-info={true}
+          scroll-event-throttle={24}
+          bindscroll={handleScroll}
+          lower-threshold={BOTTOM_EPSILON}
+          bindscrolltolower={handleScrollToLower}
+        >
+          {rows.map((row) => (
+            <list-item
+              item-key={row.id}
+              key={row.id}
+              className="TranscriptListItem"
+              estimated-main-axis-size-px={estimateTranscriptRowMainAxisSize(row, chatFontSizePx)}
+            >
+              <ComposerColumnFrameSurface className="TranscriptRowFrame">
+                <TranscriptRowContent
+                  editDraft={editDraft}
+                  editError={editError}
+                  editingMessageId={editingMessageId}
+                  editSubmitting={editSubmitting}
+                  editableMessageId={editableMessageId}
+                  selectedAssistantMessageId={selectedAssistantMessageId}
+                  textSelection={textSelection}
+                  chatFontSizePx={chatFontSizePx}
+                  onCancelEdit={cancelUserMessageEdit}
+                  onEditDraftChange={setEditDraft}
+                  onStartEdit={startUserMessageEdit}
+                  onSubmitEdit={() => void submitUserMessageEdit()}
+                  onTextSelectionChange={(messageId, selection) => {
+                    setSelectedAssistantMessageId(selection ? messageId : null);
+                    setTextSelection(selection);
+                  }}
+                  onThreadError={onThreadError}
+                  onOpenFileReference={onOpenFileReference}
+                  onOpenTurnDiff={onOpenTurnDiff}
+                  onForkFromMessage={onForkFromMessage}
+                  selectionHandlers={selectionHandlers}
+                  pinnedMessageIds={pinnedMessageIds}
+                  row={row}
+                  threadId={threadId}
+                  timestampFormat={timestampFormat}
+                  selectionViewport={selectionViewport}
+                  workspaceRoot={workspaceRoot}
+                />
+              </ComposerColumnFrameSurface>
+            </list-item>
+          ))}
           <list-item
-            item-key={row.id}
-            key={row.id}
-            className="TranscriptListItem"
-            estimated-main-axis-size-px={estimateTranscriptRowMainAxisSize(row, chatFontSizePx)}
+            item-key="transcript-bottom-inset"
+            estimated-main-axis-size-px={TRANSCRIPT_BOTTOM_CONTENT_INSET_PX}
           >
-            <ComposerColumnFrameSurface className="TranscriptRowFrame">
-              <TranscriptRowContent
-                editDraft={editDraft}
-                editError={editError}
-                editingMessageId={editingMessageId}
-                editSubmitting={editSubmitting}
-                editableMessageId={editableMessageId}
-                selectedAssistantMessageId={selectedAssistantMessageId}
-                textSelection={textSelection}
-                chatFontSizePx={chatFontSizePx}
-                onCancelEdit={cancelUserMessageEdit}
-                onEditDraftChange={setEditDraft}
-                onStartEdit={startUserMessageEdit}
-                onSubmitEdit={() => void submitUserMessageEdit()}
-                onTextSelectionChange={(messageId, selection) => {
-                  setSelectedAssistantMessageId(selection ? messageId : null);
-                  setTextSelection(selection);
-                }}
-                onThreadError={onThreadError}
-                onOpenFileReference={onOpenFileReference}
-                onOpenTurnDiff={onOpenTurnDiff}
-                onForkFromMessage={onForkFromMessage}
-                selectionHandlers={selectionHandlers}
-                pinnedMessageIds={pinnedMessageIds}
-                row={row}
-                threadId={threadId}
-                timestampFormat={timestampFormat}
-                selectionViewport={selectionViewport}
-                workspaceRoot={workspaceRoot}
-              />
-            </ComposerColumnFrameSurface>
+            <view className="TranscriptBottomInset" />
           </list-item>
-        ))}
-        <list-item
-          item-key="transcript-bottom-inset"
-          estimated-main-axis-size-px={TRANSCRIPT_BOTTOM_CONTENT_INSET_PX}
-        >
-          <view className="TranscriptBottomInset" />
-        </list-item>
-      </list>
-      <TranscriptMessageTrail
-        activeStore={activeTrailStore}
-        rows={rows}
-        viewportWidth={viewportWidth}
-        onSelect={scrollToMessage}
-      />
-      {!pinned ? (
-        <view
-          className={jumpInteraction.className}
-          aria-label="Scroll to bottom"
-          {...jumpInteraction.eventProps}
-        >
-          <TranscriptJumpIcon />
-        </view>
-      ) : null}
-    </view>
+        </list>
+        <TranscriptMessageTrail
+          activeStore={activeTrailStore}
+          rows={rows}
+          viewportWidth={viewportWidth}
+          onSelect={scrollToMessage}
+        />
+        {!pinned ? (
+          <view
+            className={jumpInteraction.className}
+            aria-label="Scroll to bottom"
+            {...jumpInteraction.eventProps}
+          >
+            <TranscriptJumpIcon />
+          </view>
+        ) : null}
+      </view>
+    </TranscriptCardActionsProvider>
   );
 }

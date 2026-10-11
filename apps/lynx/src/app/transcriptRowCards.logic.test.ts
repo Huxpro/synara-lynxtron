@@ -121,9 +121,7 @@ describe("transcript row kinds", () => {
       expect(source).toContain(`row.kind === "${kind}"`);
     }
     expect(source).toContain("<TranscriptUserAttachments");
-    expect(source).toContain(
-      '<ThreadErrorBanner error={entry.turnFailure.message} inline title="Task interrupted" />',
-    );
+    expect(source).toContain("error={entry.turnFailure.message}");
   });
 
   it("matches the Web sent-message bubble and row metrics", () => {

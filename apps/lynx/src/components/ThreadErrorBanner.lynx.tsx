@@ -1,3 +1,4 @@
+import { Button } from "./ui/button.lynx";
 import { CircleAlertIcon, CopyIcon, XIcon } from "../lib/icons.lynx";
 import { clipboard } from "../platform/clipboard";
 import { useTheme } from "../adapters/useTheme.lynx";
@@ -12,6 +13,9 @@ export function ThreadErrorBanner(props: {
    * card with a title, the muted message and a Copy error action.
    */
   readonly inline?: boolean;
+  readonly onContinue?: (() => void) | undefined;
+  readonly onChangeModel?: (() => void) | undefined;
+  readonly recoveryDisabled?: boolean;
   readonly onDismiss?: () => void;
   readonly title?: string;
 }) {
@@ -55,6 +59,28 @@ export function ThreadErrorBanner(props: {
               <CopyIcon color="var(--muted-foreground)" size={12} />
               <text className="ThreadErrorBannerActionText">Copy error</text>
             </view>
+            {props.onContinue ? (
+              <Button
+                aria-label="Continue task"
+                size="xs"
+                variant="destructive-outline"
+                disabled={props.recoveryDisabled}
+                onClick={props.onContinue}
+              >
+                Continue task
+              </Button>
+            ) : null}
+            {props.onContinue && props.onChangeModel ? (
+              <Button
+                aria-label="Change model"
+                size="xs"
+                variant="outline"
+                disabled={props.recoveryDisabled}
+                onClick={props.onChangeModel}
+              >
+                Change model
+              </Button>
+            ) : null}
           </view>
         </view>
       </view>

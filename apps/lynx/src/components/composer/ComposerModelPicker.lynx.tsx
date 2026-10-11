@@ -90,6 +90,7 @@ type ProviderTab = {
 };
 
 export interface ComposerModelPickerProps {
+  readonly openRequest?: number;
   /** Narrow composer: the model name moves to assistive text (provider icon stays). */
   readonly hideModelLabel?: boolean;
   readonly hideStatusLabel?: boolean;
@@ -124,6 +125,10 @@ export function ComposerModelPicker(props: ComposerModelPickerProps) {
   // The test renderer has no init data.
   const initData = (useInitData() ?? {}) as { readonly initialComposerModelMenuOpen?: unknown };
   const [open, setOpen] = useState(props.initialOpen ?? false);
+  useEffect(() => {
+    "background only";
+    if (props.openRequest) setOpen(true);
+  }, [props.openRequest]);
   useEffect(() => {
     if (props.initialOpen || initData.initialComposerModelMenuOpen === true) setOpen(true);
   }, [initData.initialComposerModelMenuOpen, props.initialOpen]);

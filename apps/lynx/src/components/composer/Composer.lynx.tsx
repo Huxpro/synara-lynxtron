@@ -1,3 +1,10 @@
+import type { ComposerRecoveryActions } from "../../app/TranscriptCardActions.lynx";
+import { getThreadFromState } from "@synara-web/threadDerivation";
+import {
+  canContinueFailedTurn,
+  FAILED_TURN_CONTINUATION_PROMPT,
+} from "../../generated/transcriptCardActions.generated";
+import type { TurnId } from "@synara/contracts";
 import {
   useEffect,
   useInitData,
@@ -348,6 +355,7 @@ function ComposerProjectedVisualContent({
 }
 
 interface ComposerProps {
+  readonly onRecoveryActions?: (actions: ComposerRecoveryActions | null) => void;
   readonly availableWidth?: number | null;
   readonly chatFontSizePx?: number;
   readonly activeTurnId: string | null;
@@ -404,6 +412,7 @@ const COMPOSER_EDITOR_LINE_HEIGHT_RATIO = 1.625;
 const SHARED_EMPTY_EDITOR_LINE_HEIGHT_PX = 19.5;
 
 export function Composer({
+  onRecoveryActions,
   availableWidth = null,
   chatFontSizePx = DEFAULT_CHAT_FONT_SIZE_PX,
   activeTurnId,
@@ -1620,8 +1629,38 @@ export function Composer({
     );
   }
 
-  async function activatePrimaryAction() {
+  const [recoveryModelOpenRequest, setRecoveryModelOpenRequest] = useState(0);
+  const recoveryActionsRef = useRef<ComposerRecoveryActions | null>(null);
+  recoveryActionsRef.current = {
+    continueFailedTurn: (turnId) => activatePrimaryAction(turnId),
+    openModelPicker: () => {
+      "background only";
+      setRecoveryModelOpenRequest((value) => value + 1);
+    },
+  };
+  useEffect(() => {
     "background only";
+    onRecoveryActions?.({
+      continueFailedTurn: async (turnId) => {
+        await recoveryActionsRef.current?.continueFailedTurn(turnId);
+      },
+      openModelPicker: () => recoveryActionsRef.current?.openModelPicker(),
+    });
+    return () => onRecoveryActions?.(null);
+  }, [threadId, onRecoveryActions]);
+
+  async function activatePrimaryAction(recoveryTurnId?: TurnId) {
+    "background only";
+    if (
+      recoveryTurnId &&
+      !canContinueFailedTurn(
+        getThreadFromState(useStore.getState(), threadId as never),
+        recoveryTurnId,
+        true,
+        true,
+      )
+    )
+      return;
     if (approvalPending) return;
     if (pendingProgress?.activeQuestion) {
       const editor = await readNativeEditorSnapshot(draft);
@@ -1657,38 +1696,41 @@ export function Composer({
       return;
     }
 
-    const nativeEditor = await readNativeEditorSnapshot(draft);
-    if (!nativeEditor) {
-      setSendError("Unable to read the current draft. Try again.");
-      return;
+    let text = FAILED_TURN_CONTINUATION_PROMPT;
+    if (!recoveryTurnId) {
+      const nativeEditor = await readNativeEditorSnapshot(draft);
+      if (!nativeEditor) {
+        setSendError("Unable to read the current draft. Try again.");
+        return;
+      }
+      if (nativeEditor.isComposing) {
+        setSendError("Finish the current text composition before sending.");
+        return;
+      }
+      nativeSelectionRef.current = {
+        selectionStart: nativeEditor.selectionStart,
+        selectionEnd: nativeEditor.selectionEnd,
+      };
+      nativeEditorSnapshotRef.current = nativeEditor;
+      const projectedEditor = applyNativeComposerDisplayEdit({
+        projection: draftProjectionRef.current,
+        displayText: nativeEditor.value,
+        displaySelectionStart: nativeEditor.selectionStart,
+        displaySelectionEnd: nativeEditor.selectionEnd,
+      });
+      if (projectedEditor.canonicalText !== draft) {
+        setPrompt(brandedThreadId, projectedEditor.canonicalText);
+        setMentions(brandedThreadId, projectedEditor.mentions);
+        setSkills(brandedThreadId, projectedEditor.skills);
+        setTerminalContexts(brandedThreadId, projectedEditor.terminalContexts);
+      }
+      text = buildComposerSendText({
+        prompt: projectedEditor.canonicalText,
+        pastedTexts,
+        fileComments,
+        terminalContexts: projectedEditor.terminalContexts,
+      });
     }
-    if (nativeEditor.isComposing) {
-      setSendError("Finish the current text composition before sending.");
-      return;
-    }
-    nativeSelectionRef.current = {
-      selectionStart: nativeEditor.selectionStart,
-      selectionEnd: nativeEditor.selectionEnd,
-    };
-    nativeEditorSnapshotRef.current = nativeEditor;
-    const projectedEditor = applyNativeComposerDisplayEdit({
-      projection: draftProjectionRef.current,
-      displayText: nativeEditor.value,
-      displaySelectionStart: nativeEditor.selectionStart,
-      displaySelectionEnd: nativeEditor.selectionEnd,
-    });
-    if (projectedEditor.canonicalText !== draft) {
-      setPrompt(brandedThreadId, projectedEditor.canonicalText);
-      setMentions(brandedThreadId, projectedEditor.mentions);
-      setSkills(brandedThreadId, projectedEditor.skills);
-      setTerminalContexts(brandedThreadId, projectedEditor.terminalContexts);
-    }
-    const text = buildComposerSendText({
-      prompt: projectedEditor.canonicalText,
-      pastedTexts,
-      fileComments,
-      terminalContexts: projectedEditor.terminalContexts,
-    });
     if (
       (!text && files.length === 0 && images.length === 0 && fileComments.length === 0) ||
       sendInFlightRef.current ||
@@ -1722,6 +1764,19 @@ export function Composer({
           // The outgoing draft leaves the composer before anything asynchronous, as
           // upstream's does: what the user types while a handoff waits is a new draft.
           take: () => {
+            if (recoveryTurnId)
+              return {
+                prompt: FAILED_TURN_CONTINUATION_PROMPT,
+                assistantSelections: [],
+                files: [],
+                images: [],
+                nonPersistedImageIds: [],
+                fileComments: [],
+                mentions: [],
+                pastedTexts: [],
+                terminalContexts: [],
+                skills: [],
+              };
             const outgoing = draftStore.takeDraftContent(brandedThreadId);
             if (outgoing) {
               setNativeValue("");
@@ -1780,6 +1835,7 @@ export function Composer({
           // By thread id in the draft store, so it also reaches a composer that was
           // remounted while the attempt ran; the editor follows the store.
           restore: (outgoing) => {
+            if (recoveryTurnId) return false;
             draftRestored = draftStore.restoreDraftContent(brandedThreadId, outgoing);
             return draftRestored;
           },
@@ -2257,6 +2313,7 @@ export function Composer({
                     ) : null}
                     {!isVoiceRecording && !isVoiceTranscribing && activeModelSelection ? (
                       <ComposerModelPicker
+                        openRequest={recoveryModelOpenRequest}
                         hideModelLabel={!footerPlan.showModelLabel}
                         hideStatusLabel={!footerPlan.showTraitsLabel}
                         modelSelection={activeModelSelection as never}

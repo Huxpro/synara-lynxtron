@@ -1,0 +1,146 @@
+{
+  "workflow": "J1",
+  "runId": "2026-10-11T09-13-20-517Z-71638",
+  "startedAt": "2026-10-11T09:34:36.627Z",
+  "renderers": {
+    "electron": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "open a new thread in the fixture project",
+          "ok": true,
+          "ms": 283
+        },
+        {
+          "name": "send and complete a real provider turn",
+          "ok": true,
+          "ms": 6078,
+          "detail": {
+            "threadId": "0a660c20-3bc5-4d66-b0fd-24d0d3f829fb",
+            "turnId": "01a12a50-9dd4-7e13-8afe-ae173ae17e76",
+            "assistantMessageId": "assistant:msg_04fdc9b4a05fe951016acb5832ff8087d1bb6845963937c3cd"
+          }
+        },
+        {
+          "name": "open and close the thread model picker",
+          "ok": true,
+          "ms": 574,
+          "detail": {
+            "menu": {
+              "width": 296,
+              "height": 339
+            }
+          }
+        },
+        {
+          "name": "mention a workspace file from the @ menu and send it",
+          "ok": true,
+          "ms": 3934,
+          "detail": {
+            "option": {
+              "width": 716,
+              "height": 28
+            },
+            "sentText": "@src/math.ts Reply with exactly one line: J1-electron-mv3mmtko-mention ok"
+          }
+        },
+        {
+          "name": "send again without Stop (#35 excluded)",
+          "ok": true,
+          "ms": 1957,
+          "detail": {
+            "excluded": "Stop (#35)",
+            "resentTurnId": "01a12a50-9dd4-7e13-8afe-ae173ae17e76"
+          }
+        },
+        {
+          "name": "reload the renderer, reopen the thread, and continue it",
+          "ok": true,
+          "ms": 14610,
+          "detail": {
+            "routeRestored": true,
+            "landedOn": "0a660c20-3bc5-4d66-b0fd-24d0d3f829fb",
+            "recoveredMs": 9053,
+            "messagesBefore": 6,
+            "messagesAfter": 8,
+            "userMessages": 4
+          }
+        }
+      ],
+      "result": {
+        "threadId": "0a660c20-3bc5-4d66-b0fd-24d0d3f829fb",
+        "token": "J1-electron-mv3mmtko"
+      }
+    },
+    "native": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "open a new thread in the fixture project",
+          "ok": true,
+          "ms": 545
+        },
+        {
+          "name": "send and complete a real provider turn",
+          "ok": true,
+          "ms": 5762,
+          "detail": {
+            "threadId": "lynx-landing-thread-1791711305812-72e02c0bb7b9f",
+            "turnId": "01a12a51-0a8c-73f1-9051-f5ccba04cad5",
+            "assistantMessageId": "assistant:msg_06ec44e0f2bed9eb016acb584ee66081978c4b018ac6e07c23"
+          }
+        },
+        {
+          "name": "open and close the thread model picker",
+          "ok": true,
+          "ms": 470,
+          "detail": {
+            "menu": {
+              "width": 1440,
+              "height": 900
+            }
+          }
+        },
+        {
+          "name": "mention a workspace file from the @ menu and send it",
+          "ok": true,
+          "ms": 3463,
+          "detail": {
+            "option": {
+              "width": 716,
+              "height": 28
+            },
+            "sentText": "@src/math.ts Reply with exactly one line: J1-native-mv3mnfem-mention ok"
+          }
+        },
+        {
+          "name": "send again without Stop (#35 excluded)",
+          "ok": true,
+          "ms": 2533,
+          "detail": {
+            "excluded": "Stop (#35)",
+            "resentTurnId": "01a12a51-0a8c-73f1-9051-f5ccba04cad5"
+          }
+        },
+        {
+          "name": "reload the renderer, reopen the thread, and continue it",
+          "ok": true,
+          "ms": 3754,
+          "detail": {
+            "routeRestored": false,
+            "landedOn": "comparison-fixture-transcript-v2",
+            "recoveredMs": 1781,
+            "messagesBefore": 6,
+            "messagesAfter": 8,
+            "userMessages": 4
+          }
+        }
+      ],
+      "result": {
+        "threadId": "lynx-landing-thread-1791711305812-72e02c0bb7b9f",
+        "token": "J1-native-mv3mnfem"
+      }
+    }
+  },
+  "endedAt": "2026-10-11T09:35:22.215Z"
+}

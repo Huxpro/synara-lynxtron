@@ -401,3 +401,136 @@
   min-width: 0;
   flex: 1;
 }
+
+.TranscriptPlanActions {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.TranscriptPlanActions .LxButton {
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  min-height: 24px;
+  padding: 0px;
+}
+
+.TranscriptTurnChangesSummaryGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.TranscriptTurnChangesHeaderIcon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+.TranscriptTurnChangesActions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.TranscriptTurnChangesUndo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+.TranscriptTurnChangesHeader--collapsed {
+  border-bottom-width: 0;
+}
+
+.TranscriptTurnChangesFile {
+  padding-left: 0;
+  padding-right: 8px;
+  gap: 6px;
+}
+.TranscriptTurnChangesFileReview {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 4px 0 4px 12px;
+  gap: 8px;
+}
+.TranscriptTurnChangesFileIcon {
+  width: 16px;
+  height: 16px;
+}
+.TranscriptTurnChangesFilePath {
+  flex: 0 1 auto;
+}
+.TranscriptFileOpenGroup {
+  flex-shrink: 0;
+}
+.TranscriptFileOpenGroup .LxButton.ExplorerDockOpenButton {
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  min-height: 24px;
+  padding: 4px;
+}
+.TranscriptFileOpenGroup .ExplorerDockOpenMenuTrigger {
+  width: 18px;
+  height: 24px;
+  padding: 0;
+}
+.TranscriptFileOpenGroup .ExplorerDockEditorIcon {
+  width: 12px;
+  height: 12px;
+}
+.TranscriptTurnChangesOverflow {
+  padding: 6px 12px;
+}
+
+.TranscriptPlanTitle {
+  flex: 1;
+}
+.TranscriptTurnChangesActions .LxButton--icon-xs {
+  width: 22px;
+  min-width: 22px;
+  height: 22px;
+  min-height: 22px;
+  padding: 4px;
+}
+.TranscriptTurnChangesReview {
+  padding-left: 9.5px;
+  padding-right: 9.5px;
+}
+.TranscriptTurnChangesFileReview {
+  height: calc(var(--app-font-size-chat, 13px) * 1.5 + 8px);
+}
+.TranscriptTurnChangesFilePath {
+  flex: 1;
+}
+.TranscriptFileOpenGroup {
+  height: 24px;
+  gap: 2px;
+}
+.TranscriptFileOpenGroup .LxButton.ExplorerDockOpenButton {
+  border-radius: 6px;
+}
+.TranscriptFileOpenGroup .LxMenuTrigger.ExplorerDockOpenMenuTrigger {
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  min-height: 24px;
+  padding: 0;
+  border-width: 0;
+  border-radius: 6px;
+}
+.TranscriptFileOpenGroup .ExplorerDockEditorIcon {
+  width: 14px;
+  height: 14px;
+}
+
+.TranscriptTurnChangesHeaderIcon {
+  opacity: 0.7;
+}

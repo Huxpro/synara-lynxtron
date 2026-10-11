@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-11T08:19:24.651Z",
+  "generatedAt": "2026-10-11T09:30:36.671Z",
   "config": "plan/reuse-audit.config.json",
   "metric": {
     "scope": "apps/web/src TS/TSX reachable from configured route/shell entries",
@@ -12,7 +12,7 @@
   "screenSet": ["threads", "thread", "settings", "projects", "kanban", "pull-requests"],
   "lynxGraph": {
     "entries": ["src/app/index.tsx"],
-    "modules": 961,
+    "modules": 966,
     "externalImports": [
       "@base-ui/react/autocomplete",
       "@base-ui/react/checkbox",
@@ -288,7 +288,7 @@
       "synaraClientImporters": 0,
       "useQueryCallSites": 13,
       "refetchIntervalSites": 1,
-      "routerTsxLines": 3500
+      "routerTsxLines": 3505
     }
   },
   "screens": [
@@ -13525,11 +13525,11 @@
         "loc": 227860
       },
       "currentReuse": {
-        "modules": 365,
-        "loc": 88747,
-        "modulePercent": 35.78,
-        "locPercent": 38.95,
-        "gatePercent": 35.78
+        "modules": 366,
+        "loc": 88780,
+        "modulePercent": 35.88,
+        "locPercent": 38.96,
+        "gatePercent": 35.88
       },
       "modules": [
         {
@@ -15413,7 +15413,7 @@
           "loc": 33,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
@@ -52247,11 +52247,11 @@
         "loc": 222546
       },
       "currentReuse": {
-        "modules": 366,
-        "loc": 89193,
-        "modulePercent": 36.97,
-        "locPercent": 40.08,
-        "gatePercent": 36.97
+        "modules": 367,
+        "loc": 89226,
+        "modulePercent": 37.07,
+        "locPercent": 40.09,
+        "gatePercent": 37.07
       },
       "modules": [
         {
@@ -54035,7 +54035,7 @@
           "loc": 33,
           "classification": "SHARED",
           "reason": "ordinary feature composition/logic; adapter differences belong below this module",
-          "currentReuse": "UNMAPPED",
+          "currentReuse": "SHARED",
           "dependencies": []
         },
         {
