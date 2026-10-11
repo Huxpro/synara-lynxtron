@@ -1,0 +1,818 @@
+{
+  "runId": "2026-10-11T08-19-32-858Z-39408",
+  "options": {
+    "threadId": "comparison-fixture-transcript-v2",
+    "seed": "fixture",
+    "exitAfterCertify": false,
+    "route": null,
+    "width": 1440,
+    "height": 900,
+    "webPort": 8891,
+    "electronCdpPort": 9223,
+    "lynxDevtoolPort": 18902,
+    "theme": "dark",
+    "themePack": "codex",
+    "systemAppearanceSequence": null,
+    "systemAppearanceIntervalMs": null,
+    "terminal": "closed",
+    "dock": null,
+    "appSnap": "acknowledged",
+    "chatFontSize": 13,
+    "skipLynxDevtool": false,
+    "skipBuild": false,
+    "regularApp": false,
+    "messageFormats": false
+  },
+  "cases": [
+    {
+      "kind": "approval",
+      "electron": {
+        "panel": {
+          "x": 504.25,
+          "y": 575,
+          "width": 736,
+          "height": 233.75
+        },
+        "controls": {
+          "Approve once": {
+            "x": 15,
+            "y": 78.75,
+            "width": 706,
+            "height": 34
+          },
+          "Always allow this session": {
+            "x": 15,
+            "y": 114.75,
+            "width": 706,
+            "height": 34
+          },
+          "Decline": {
+            "x": 15,
+            "y": 150.75,
+            "width": 706,
+            "height": 34
+          },
+          "Cancel turn": {
+            "x": 15,
+            "y": 186.75,
+            "width": 706,
+            "height": 34
+          }
+        },
+        "text": "Approve this command?",
+        "editorDisabled": true,
+        "footer": false,
+        "customInput": false,
+        "texts": [
+          {
+            "text": "Approve this command?",
+            "x": 15,
+            "y": 13,
+            "width": 159.453125,
+            "height": 19.25,
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "lineHeight": "19.25px"
+          },
+          {
+            "text": "git status --short",
+            "x": 15,
+            "y": 40.25,
+            "width": 706,
+            "height": 28.5,
+            "fontSize": "12px",
+            "fontWeight": "400",
+            "lineHeight": "16.5px"
+          },
+          {
+            "text": "1",
+            "x": 23,
+            "y": 84.75,
+            "width": 18,
+            "height": 18,
+            "fontSize": "12px",
+            "fontWeight": "500",
+            "lineHeight": "18px"
+          },
+          {
+            "text": "Approve onceAllow just this request",
+            "x": 51,
+            "y": 84.75,
+            "width": 662,
+            "height": 22,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "22px"
+          },
+          {
+            "text": "2",
+            "x": 23,
+            "y": 120.75,
+            "width": 18,
+            "height": 18,
+            "fontSize": "12px",
+            "fontWeight": "500",
+            "lineHeight": "18px"
+          },
+          {
+            "text": "Always allow this sessionDon't ask again this session",
+            "x": 51,
+            "y": 120.75,
+            "width": 662,
+            "height": 22,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "22px"
+          },
+          {
+            "text": "3",
+            "x": 23,
+            "y": 156.75,
+            "width": 18,
+            "height": 18,
+            "fontSize": "12px",
+            "fontWeight": "500",
+            "lineHeight": "18px"
+          },
+          {
+            "text": "DeclineReject and let the agent continue",
+            "x": 51,
+            "y": 156.75,
+            "width": 662,
+            "height": 22,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "22px"
+          },
+          {
+            "text": "4",
+            "x": 23,
+            "y": 192.75,
+            "width": 18,
+            "height": 18,
+            "fontSize": "12px",
+            "fontWeight": "500",
+            "lineHeight": "18px"
+          },
+          {
+            "text": "Cancel turnStop the current turn",
+            "x": 51,
+            "y": 192.75,
+            "width": 662,
+            "height": 22,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "22px"
+          }
+        ]
+      },
+      "native": {
+        "panel": {
+          "x": 504,
+          "y": 575,
+          "width": 736,
+          "height": 234
+        },
+        "controls": {
+          "Approve once": {
+            "x": 15,
+            "y": 79,
+            "width": 706,
+            "height": 34
+          },
+          "Always allow this session": {
+            "x": 15,
+            "y": 115,
+            "width": 706,
+            "height": 34
+          },
+          "Decline": {
+            "x": 15,
+            "y": 151,
+            "width": 706,
+            "height": 34
+          },
+          "Cancel turn": {
+            "x": 15,
+            "y": 187,
+            "width": 706,
+            "height": 34
+          }
+        },
+        "footer": false,
+        "customInput": false,
+        "texts": [
+          {
+            "text": "Approve this command?",
+            "x": 15,
+            "y": 13,
+            "width": 706,
+            "height": 19,
+            "className": "PendingApprovalHeadingLynx"
+          },
+          {
+            "text": "Approve this command?",
+            "x": 15,
+            "y": 13,
+            "width": 0,
+            "height": 0,
+            "className": "PendingApprovalTitleLynx"
+          },
+          {
+            "text": "git status --short",
+            "x": 25,
+            "y": 46,
+            "width": 686,
+            "height": 17,
+            "className": "PendingApprovalDetailTextLynx"
+          },
+          {
+            "text": "1",
+            "x": 23,
+            "y": 85,
+            "width": 18,
+            "height": 18,
+            "className": "ComposerChoiceShortcutLynx"
+          },
+          {
+            "text": "Approve once  Allow just this request",
+            "x": 51,
+            "y": 85,
+            "width": 662,
+            "height": 22,
+            "className": "ComposerChoiceCopyLynx"
+          },
+          {
+            "text": "Approve once",
+            "x": 51,
+            "y": 85,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceLabelLynx"
+          },
+          {
+            "text": "  Allow just this request",
+            "x": 51,
+            "y": 85,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceDescriptionLynx"
+          },
+          {
+            "text": "2",
+            "x": 23,
+            "y": 121,
+            "width": 18,
+            "height": 18,
+            "className": "ComposerChoiceShortcutLynx"
+          },
+          {
+            "text": "Always allow this session  Don't ask again this session",
+            "x": 51,
+            "y": 121,
+            "width": 662,
+            "height": 22,
+            "className": "ComposerChoiceCopyLynx"
+          },
+          {
+            "text": "Always allow this session",
+            "x": 51,
+            "y": 121,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceLabelLynx"
+          },
+          {
+            "text": "  Don't ask again this session",
+            "x": 51,
+            "y": 121,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceDescriptionLynx"
+          },
+          {
+            "text": "3",
+            "x": 23,
+            "y": 157,
+            "width": 18,
+            "height": 18,
+            "className": "ComposerChoiceShortcutLynx"
+          },
+          {
+            "text": "Decline  Reject and let the agent continue",
+            "x": 51,
+            "y": 157,
+            "width": 662,
+            "height": 22,
+            "className": "ComposerChoiceCopyLynx"
+          },
+          {
+            "text": "Decline",
+            "x": 51,
+            "y": 157,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceLabelLynx"
+          },
+          {
+            "text": "  Reject and let the agent continue",
+            "x": 51,
+            "y": 157,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceDescriptionLynx"
+          },
+          {
+            "text": "4",
+            "x": 23,
+            "y": 193,
+            "width": 18,
+            "height": 18,
+            "className": "ComposerChoiceShortcutLynx"
+          },
+          {
+            "text": "Cancel turn  Stop the current turn",
+            "x": 51,
+            "y": 193,
+            "width": 662,
+            "height": 22,
+            "className": "ComposerChoiceCopyLynx"
+          },
+          {
+            "text": "Cancel turn",
+            "x": 51,
+            "y": 193,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceLabelLynx"
+          },
+          {
+            "text": "  Stop the current turn",
+            "x": 51,
+            "y": 193,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceDescriptionLynx"
+          }
+        ]
+      },
+      "compared": [
+        {
+          "label": "Approve once",
+          "delta": {
+            "x": 0,
+            "y": 0.25,
+            "width": 0,
+            "height": 0
+          },
+          "pass": true
+        },
+        {
+          "label": "Always allow this session",
+          "delta": {
+            "x": 0,
+            "y": 0.25,
+            "width": 0,
+            "height": 0
+          },
+          "pass": true
+        },
+        {
+          "label": "Decline",
+          "delta": {
+            "x": 0,
+            "y": 0.25,
+            "width": 0,
+            "height": 0
+          },
+          "pass": true
+        },
+        {
+          "label": "Cancel turn",
+          "delta": {
+            "x": 0,
+            "y": 0.25,
+            "width": 0,
+            "height": 0
+          },
+          "pass": true
+        }
+      ],
+      "structurePass": true
+    },
+    {
+      "kind": "question",
+      "electron": {
+        "panel": {
+          "x": 504.25,
+          "y": 610.25,
+          "width": 736,
+          "height": 164.5
+        },
+        "controls": {
+          "Read only": {
+            "x": 15,
+            "y": 44,
+            "width": 706,
+            "height": 34
+          },
+          "Workspace write": {
+            "x": 15,
+            "y": 80,
+            "width": 706,
+            "height": 34
+          },
+          "Previous question": {
+            "x": 639.6875,
+            "y": 14,
+            "width": 20,
+            "height": 20
+          },
+          "Next question": {
+            "x": 701,
+            "y": 14,
+            "width": 20,
+            "height": 20
+          },
+          "Cancel": {
+            "x": 663.3984375,
+            "y": 124,
+            "width": 57.6015625,
+            "height": 27.5
+          }
+        },
+        "text": "Which mode should be used?",
+        "editorDisabled": false,
+        "footer": true,
+        "customInput": false,
+        "texts": [
+          {
+            "text": "Which mode should be used?",
+            "x": 15,
+            "y": 13,
+            "width": 193.7734375,
+            "height": 19.25,
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "lineHeight": "19.25px"
+          },
+          {
+            "text": "1",
+            "x": 23,
+            "y": 50,
+            "width": 18,
+            "height": 18,
+            "fontSize": "12px",
+            "fontWeight": "500",
+            "lineHeight": "18px"
+          },
+          {
+            "text": "Read onlyInspect files without changing them",
+            "x": 51,
+            "y": 50,
+            "width": 662,
+            "height": 22,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "22px"
+          },
+          {
+            "text": "2",
+            "x": 23,
+            "y": 86,
+            "width": 18,
+            "height": 18,
+            "fontSize": "12px",
+            "fontWeight": "500",
+            "lineHeight": "18px"
+          },
+          {
+            "text": "Workspace writeAllow changes in this workspace",
+            "x": 51,
+            "y": 86,
+            "width": 662,
+            "height": 22,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "22px"
+          }
+        ]
+      },
+      "native": {
+        "panel": {
+          "x": 504,
+          "y": 610,
+          "width": 736,
+          "height": 165
+        },
+        "controls": {
+          "Previous question": {
+            "x": 640,
+            "y": 14,
+            "width": 20,
+            "height": 20
+          },
+          "Next question": {
+            "x": 701,
+            "y": 14,
+            "width": 20,
+            "height": 20
+          },
+          "Read only": {
+            "x": 15,
+            "y": 44,
+            "width": 706,
+            "height": 34
+          },
+          "Workspace write": {
+            "x": 15,
+            "y": 80,
+            "width": 706,
+            "height": 34
+          },
+          "Cancel": {
+            "x": 662,
+            "y": 124,
+            "width": 59,
+            "height": 28
+          }
+        },
+        "footer": true,
+        "customInput": false,
+        "texts": [
+          {
+            "text": "Which mode should be used?",
+            "x": 15,
+            "y": 13,
+            "width": 625,
+            "height": 19,
+            "className": "PendingUserInputTitleLynx"
+          },
+          {
+            "text": "1 of 2",
+            "x": 662,
+            "y": 15,
+            "width": 37,
+            "height": 18,
+            "className": "PendingUserInputProgressLynx"
+          },
+          {
+            "text": "1",
+            "x": 23,
+            "y": 50,
+            "width": 18,
+            "height": 18,
+            "className": "ComposerChoiceShortcutLynx"
+          },
+          {
+            "text": "Read only  Inspect files without changing them",
+            "x": 51,
+            "y": 50,
+            "width": 662,
+            "height": 22,
+            "className": "ComposerChoiceCopyLynx"
+          },
+          {
+            "text": "Read only",
+            "x": 51,
+            "y": 50,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceLabelLynx"
+          },
+          {
+            "text": "  Inspect files without changing them",
+            "x": 51,
+            "y": 50,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceDescriptionLynx"
+          },
+          {
+            "text": "2",
+            "x": 23,
+            "y": 86,
+            "width": 18,
+            "height": 18,
+            "className": "ComposerChoiceShortcutLynx"
+          },
+          {
+            "text": "Workspace write  Allow changes in this workspace",
+            "x": 51,
+            "y": 86,
+            "width": 662,
+            "height": 22,
+            "className": "ComposerChoiceCopyLynx"
+          },
+          {
+            "text": "Workspace write",
+            "x": 51,
+            "y": 86,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceLabelLynx"
+          },
+          {
+            "text": "  Allow changes in this workspace",
+            "x": 51,
+            "y": 86,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceDescriptionLynx"
+          },
+          {
+            "text": "Cancel",
+            "x": 670,
+            "y": 128,
+            "width": 43,
+            "height": 20,
+            "className": "LxButton__text"
+          }
+        ]
+      },
+      "compared": [
+        {
+          "label": "Read only",
+          "delta": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "pass": true
+        },
+        {
+          "label": "Workspace write",
+          "delta": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "pass": true
+        },
+        {
+          "label": "Previous question",
+          "delta": {
+            "x": 0.31,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "pass": true
+        },
+        {
+          "label": "Next question",
+          "delta": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "pass": true
+        },
+        {
+          "label": "Cancel",
+          "delta": {
+            "x": -1.4,
+            "y": 0,
+            "width": 1.4,
+            "height": 0.5
+          },
+          "pass": true
+        }
+      ],
+      "structurePass": true
+    }
+  ],
+  "workflows": [
+    {
+      "received": "Decision received: {\"decision\":\"accept\"}",
+      "actor": "electron",
+      "kind": "approval",
+      "threadId": "chat-82-approval-electron",
+      "before": [
+        {
+          "interactionKind": "approval",
+          "requestId": "ff75d80b-b99f-4e88-8735-908095976be3",
+          "threadId": "chat-82-approval-electron",
+          "turnId": "d660d0d2-1818-40da-a18b-4bd3e0e19839",
+          "lifecycleGeneration": "6a9184d4-8473-465c-8d9e-d2ddddb0b8e9",
+          "status": "pending",
+          "decision": null,
+          "responseCommandId": null,
+          "responseRequestedAt": null,
+          "createdAt": "2026-10-11T08:21:12.785Z",
+          "resolvedAt": null
+        }
+      ],
+      "after": [],
+      "latestTurn": {
+        "turnId": "d660d0d2-1818-40da-a18b-4bd3e0e19839",
+        "state": "completed",
+        "requestedAt": "2026-10-11T08:21:12.070Z",
+        "startedAt": "2026-10-11T08:21:12.387Z",
+        "completedAt": "2026-10-11T08:21:27.522Z",
+        "assistantMessageId": "assistant:042dc055-5966-4e7c-a8d4-51cab656312a"
+      },
+      "messageCountBefore": 1,
+      "messageCountAfter": 2
+    },
+    {
+      "received": "Decision received: {\"answers\":{\"mode\":{\"answers\":[\"Read only\"]},\"notes\":{\"answers\":[\"Check the tests\"]}}}",
+      "actor": "electron",
+      "kind": "question",
+      "threadId": "chat-82-question-electron",
+      "before": [
+        {
+          "interactionKind": "userInput",
+          "requestId": "352ba4b8-291e-49d7-9c3f-e945906dde7a",
+          "threadId": "chat-82-question-electron",
+          "turnId": "8ab7ca4e-8606-4990-bda0-399616c797d7",
+          "lifecycleGeneration": "d8c39074-f4bf-43b8-bc15-49672747279c",
+          "status": "pending",
+          "decision": null,
+          "responseCommandId": null,
+          "responseRequestedAt": null,
+          "createdAt": "2026-10-11T08:21:13.553Z",
+          "resolvedAt": null
+        }
+      ],
+      "after": [],
+      "latestTurn": {
+        "turnId": "8ab7ca4e-8606-4990-bda0-399616c797d7",
+        "state": "completed",
+        "requestedAt": "2026-10-11T08:21:12.918Z",
+        "startedAt": "2026-10-11T08:21:13.152Z",
+        "completedAt": "2026-10-11T08:21:29.002Z",
+        "assistantMessageId": "assistant:63880221-4cdc-4738-ac72-53342288475c"
+      },
+      "messageCountBefore": 1,
+      "messageCountAfter": 2
+    },
+    {
+      "received": "Decision received: {\"decision\":\"accept\"}",
+      "actor": "native",
+      "kind": "approval",
+      "threadId": "chat-82-approval-native",
+      "before": [
+        {
+          "interactionKind": "approval",
+          "requestId": "b274d104-fc48-45a6-a833-39909d882d5a",
+          "threadId": "chat-82-approval-native",
+          "turnId": "ba751817-952d-4aae-aaed-ad5b1f39993a",
+          "lifecycleGeneration": "66969ce8-f8eb-4ca1-b8db-2c086adf93bf",
+          "status": "pending",
+          "decision": null,
+          "responseCommandId": null,
+          "responseRequestedAt": null,
+          "createdAt": "2026-10-11T08:21:14.150Z",
+          "resolvedAt": null
+        }
+      ],
+      "after": [],
+      "latestTurn": {
+        "turnId": "ba751817-952d-4aae-aaed-ad5b1f39993a",
+        "state": "completed",
+        "requestedAt": "2026-10-11T08:21:13.591Z",
+        "startedAt": "2026-10-11T08:21:13.753Z",
+        "completedAt": "2026-10-11T08:21:29.580Z",
+        "assistantMessageId": "assistant:0cce6c44-e299-48b9-b9e9-e12ffd6f1a10"
+      },
+      "messageCountBefore": 1,
+      "messageCountAfter": 2
+    },
+    {
+      "received": "Decision received: {\"answers\":{\"mode\":{\"answers\":[\"Read only\"]},\"notes\":{\"answers\":[\"Check the tests\"]}}}",
+      "actor": "native",
+      "kind": "question",
+      "threadId": "chat-82-question-native",
+      "before": [
+        {
+          "interactionKind": "userInput",
+          "requestId": "c625a294-5bf6-4ce0-a430-8d2da72785c7",
+          "threadId": "chat-82-question-native",
+          "turnId": "7d917efe-787d-4768-8a33-b68306b29e4a",
+          "lifecycleGeneration": "07ebf1cb-1b0c-4b57-aac4-6ccc20569db2",
+          "status": "pending",
+          "decision": null,
+          "responseCommandId": null,
+          "responseRequestedAt": null,
+          "createdAt": "2026-10-11T08:21:14.861Z",
+          "resolvedAt": null
+        }
+      ],
+      "after": [],
+      "latestTurn": {
+        "turnId": "7d917efe-787d-4768-8a33-b68306b29e4a",
+        "state": "completed",
+        "requestedAt": "2026-10-11T08:21:14.264Z",
+        "startedAt": "2026-10-11T08:21:14.460Z",
+        "completedAt": "2026-10-11T08:21:30.738Z",
+        "assistantMessageId": "assistant:374e7975-c4cf-47e5-aec6-624dc142989e"
+      },
+      "messageCountBefore": 1,
+      "messageCountAfter": 2
+    }
+  ]
+}

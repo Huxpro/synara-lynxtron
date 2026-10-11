@@ -25,19 +25,36 @@
   min-width: 0;
   flex: 1;
   color: var(--foreground);
-  font-size: var(--app-font-size-ui, 13px);
+  font-size: var(--app-font-size-ui-lg, 14px);
   font-weight: 500;
-  line-height: var(--app-line-height-ui-18, 18px);
+  line-height: 1.375;
   word-break: break-word;
 }
 
+.PendingUserInputNavigationLynx {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+  padding-top: 1px;
+}
+.PendingUserInputNavButtonLynx.LxButton {
+  width: 20px;
+  min-width: 20px;
+  height: 20px;
+  min-height: 20px;
+  padding: 0px;
+  border-width: 0px;
+}
 .PendingUserInputProgressLynx {
   flex-shrink: 0;
-  margin-left: 8px;
+  /* Native proportional digits are 2px narrower than the upstream tabular counter. */
+  padding-left: 3px;
+  padding-right: 3px;
   color: var(--muted-foreground);
-  font-size: var(--app-font-size-ui-xs, 11px);
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: var(--app-line-height-ui-sm-18, 18px);
 }
-
 .PendingUserInputHintLynx {
   margin-top: 4px;
   color: var(--muted-foreground);
@@ -49,18 +66,32 @@
   min-width: 0;
   flex-direction: column;
   margin-top: 10px;
-}
-
-.PendingUserInputCustomLynx {
-  margin-top: 8px;
+  gap: 2px;
 }
 
 .PendingUserInputFooterLynx {
   display: flex;
   min-width: 0;
-  margin-top: 8px;
+  margin-top: 10px;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 4px;
+}
+
+.PendingUserInputCancelLynx.LxButton {
+  min-height: 0px;
+  height: auto;
+  padding: 4px 8px;
+  border-width: 0px;
+}
+.PendingUserInputCancelLynx .LxButton__text {
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: 1.5;
+  font-weight: 400;
+}
+.ComposerPendingSubmitLynx.LxButton {
+  border-radius: 999px;
+  padding-left: 16px;
+  padding-right: 16px;
 }

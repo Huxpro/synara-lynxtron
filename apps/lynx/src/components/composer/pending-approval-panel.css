@@ -24,27 +24,29 @@
   min-width: 0;
   flex: 1;
   color: var(--foreground);
-  font-size: var(--app-font-size-ui, 13px);
-  line-height: var(--app-line-height-ui-18, 18px);
+  font-size: var(--app-font-size-ui-lg, 14px);
+  line-height: 1.375;
   word-break: break-word;
 }
 
 .PendingApprovalTitleLynx {
   color: var(--foreground);
-  font-size: var(--app-font-size-ui, 13px);
+  font-size: var(--app-font-size-ui-lg, 14px);
   font-weight: 500;
 }
 
 .PendingApprovalToolLynx {
   color: var(--muted-foreground);
-  font-size: var(--app-font-size-ui-xs, 11px);
+  font-size: var(--app-font-size-ui-sm, 12px);
   line-height: 18px;
   font-weight: 400;
 }
 
 .PendingApprovalCountLynx {
   flex-shrink: 0;
-  padding: 1px 4px;
+  padding: 0px 4px;
+  height: 16px;
+  line-height: 16px;
   border-radius: 4px;
   background-color: var(--muted);
   color: var(--muted-foreground);
@@ -62,7 +64,8 @@
 .PendingApprovalDetailTextLynx {
   color: var(--foreground);
   font-family: var(--font-mono-family);
-  font-size: 11.5px;
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 1.375;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -74,7 +77,8 @@
   overflow: hidden;
   color: var(--muted-foreground);
   font-family: var(--font-mono-family);
-  font-size: 10.5px;
+  font-size: var(--app-font-size-ui-xs, 11px);
+  line-height: 1.25;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -84,10 +88,65 @@
   min-width: 0;
   flex-direction: column;
   margin-top: 10px;
+  gap: 2px;
 }
 
-.PendingApprovalHintLynx {
+.PendingApprovalStructuredDetailLynx,
+.PendingApprovalFileDetailLynx {
   margin-top: 8px;
-  color: var(--muted-foreground);
+}
+.PendingApprovalFallbackLynx {
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 1.375;
+  color: color-mix(in srgb, var(--muted-foreground) 70%, transparent);
+}
+.PendingApprovalPermissionProfileLynx {
+  max-height: 144px;
+  padding: 8px 10px;
+  margin-top: 6px;
+  border-radius: 6px;
+  background-color: var(--color-background-elevated-secondary);
+}
+.PendingApprovalPermissionProfileTextLynx {
+  font-family: var(--font-mono-family);
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: 1.625;
+  color: color-mix(in srgb, var(--foreground) 85%, transparent);
+}
+.PendingApprovalParametersLynx {
+  margin-top: 8px;
+  padding: 8px 10px;
+  gap: 4px;
+  border-radius: 6px;
+  background-color: var(--color-background-elevated-secondary);
+}
+.PendingApprovalParameterLynx {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+.PendingApprovalParameterNameLynx {
+  flex-shrink: 0;
+  font-weight: 500;
+  color: color-mix(in srgb, var(--muted-foreground) 65%, transparent);
   font-size: var(--app-font-size-ui-xs, 11px);
+  line-height: 1.375;
+}
+.PendingApprovalParameterValueLynx {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-mono-family);
+  color: color-mix(in srgb, var(--foreground) 80%, transparent);
+  font-size: var(--app-font-size-ui-xs, 11px);
+  line-height: 1.375;
+  word-break: break-word;
+}
+.PendingApprovalFileNameLynx {
+  min-width: 0;
+  font-size: var(--app-font-size-ui-lg, 14px);
+  font-weight: 500;
+  line-height: 1.25;
+  color: color-mix(in srgb, var(--foreground) 85%, transparent);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

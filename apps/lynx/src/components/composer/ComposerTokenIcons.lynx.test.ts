@@ -142,8 +142,8 @@ describe("Composer token icon fidelity", () => {
     expect(source).toContain("deriveLatestContextWindowState(activities).snapshot");
     expect(source).toContain("deriveContextWindowMeterDisplay(contextWindow)");
     expect(source).toContain("<ComposerContextWindowMeterElement");
-    expect(source).toContain(
-      "!isVoiceTranscribing &&\n                footerPlan.showContextMeter &&\n                contextWindow &&\n                contextWindowDisplay",
+    expect(source).toMatch(
+      /!isVoiceTranscribing &&\s+footerPlan.showContextMeter &&\s+contextWindow &&\s+contextWindowDisplay/,
     );
     expect(source).toContain("usage={contextWindow}");
     expect(source).toContain("deriveCumulativeCostUsd(activities)");

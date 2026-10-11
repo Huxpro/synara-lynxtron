@@ -1,0 +1,4631 @@
+{
+  "runId": "2026-10-11T08-19-32-858Z-39408",
+  "threadId": "comparison-fixture-transcript-v2",
+  "theme": "dark",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "rows": [
+    {
+      "index": 0,
+      "electron": {
+        "key": "message:user",
+        "h": 105.3,
+        "text": "Look at this repository and summarize its layout as a short bulleted l"
+      },
+      "native": {
+        "key": "comparison-fixture-transcript-v2:user-1",
+        "h": 105,
+        "text": "Look at this repository and summarize its layout as a short bulleted l"
+      },
+      "delta": -0.3,
+      "match": true
+    },
+    {
+      "index": 1,
+      "electron": {
+        "key": "message:assistant",
+        "h": 205.6,
+        "text": "Worked for 12s Root contains README.md and package.json. src/ holds Ty"
+      },
+      "native": {
+        "key": "assistant:msg_0ef8b734ca30bcf1016ac8cb7bb0048190a7f98358e01cb893",
+        "h": 208,
+        "text": "Worked for 12s•Root contains README.md and package.json.•src/ holds Ty"
+      },
+      "delta": 2.4,
+      "match": false
+    },
+    {
+      "index": 2,
+      "electron": {
+        "key": "message:user",
+        "h": 128.4,
+        "text": "In src/math.ts add an exported subtract(a: number, b: number): number "
+      },
+      "native": {
+        "key": "comparison-fixture-transcript-v2:user-2",
+        "h": 127,
+        "text": "In src/math.ts add an exported subtract(a: number, b: number): number "
+      },
+      "delta": -1.4,
+      "match": true
+    },
+    {
+      "index": 3,
+      "electron": {
+        "key": "message:assistant",
+        "h": 329.9,
+        "text": "Worked for 19s Implemented the minimal changes: Added exported subtrac"
+      },
+      "native": {
+        "key": "assistant:msg_0ef8b734ca30bcf1016ac8cb8c90c481908572113270eaa523",
+        "h": 332,
+        "text": "Worked for 19sImplemented the minimal changes:•Added exported subtract"
+      },
+      "delta": 2.1,
+      "match": false
+    },
+    {
+      "index": 4,
+      "electron": {
+        "key": "message:user",
+        "h": 126.4,
+        "text": "Without modifying files, reply with a markdown table listing every exp"
+      },
+      "native": {
+        "key": "comparison-fixture-transcript-v2:user-3",
+        "h": 126,
+        "text": "Without modifying files, reply with a markdown table listing every exp"
+      },
+      "delta": -0.4,
+      "match": true
+    },
+    {
+      "index": 5,
+      "electron": {
+        "key": "message:assistant",
+        "h": 365.7,
+        "text": "Worked for 7.9s Name Parameters Return type add a: number, b: number n"
+      },
+      "native": {
+        "key": "assistant:msg_0ef8b734ca30bcf1016ac8cb97c3f081909115f85cdbffc909",
+        "h": 357,
+        "text": "Worked for 7.9sNameParametersReturn typeadda: number, b: numbernumbers"
+      },
+      "delta": -8.7,
+      "match": false
+    },
+    {
+      "index": 6,
+      "electron": {
+        "key": "message:user",
+        "h": 105.3,
+        "text": "Without modifying files, write a numbered list of 40 short, distinct o"
+      },
+      "native": {
+        "key": "comparison-fixture-transcript-v2:user-4",
+        "h": 105,
+        "text": "Without modifying files, write a numbered list of 40 short, distinct o"
+      },
+      "delta": -0.3,
+      "match": true
+    },
+    {
+      "index": 7,
+      "electron": {
+        "key": "message:assistant",
+        "h": 1086,
+        "text": "Worked for 8.6s Use descriptive names for variables and functions. Kee"
+      },
+      "native": {
+        "key": "assistant:msg_0ef8b734ca30bcf1016ac8cba003188190875928c8f35e87e6",
+        "h": 1081,
+        "text": "Worked for 8.6s1.Use descriptive names for variables and functions.2.K"
+      },
+      "delta": -5,
+      "match": false
+    }
+  ],
+  "blocks": [
+    {
+      "index": 0,
+      "lines": [
+        {
+          "kind": "paired",
+          "text": "Look at this repository and summarize its layout as a short ",
+          "delta": {
+            "dy": 0,
+            "dx": 193.4,
+            "w": -0.4,
+            "h": -0.3
+          },
+          "electron": {
+            "t": "Look at this repository and summarize its layout as a short bulleted list. Do not modify any files.",
+            "tag": "p",
+            "x": 356.4,
+            "y": 27,
+            "w": 552.4,
+            "h": 42.3,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Look at this repository and summarize its layout as a short bulleted list. Do not modify any files.",
+            "cls": "MdParagraph",
+            "x": 665,
+            "y": 71,
+            "w": 552,
+            "h": 42
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Friday 7:09 AM",
+          "delta": {
+            "dy": -0.3,
+            "dx": 194,
+            "w": -1,
+            "h": 0.1
+          },
+          "electron": {
+            "t": "Friday 7:09 AM",
+            "tag": "p",
+            "x": 777.8,
+            "y": 84.3,
+            "w": 80,
+            "h": 17.9,
+            "fs": "11px",
+            "fw": "400",
+            "color": "oklab(0.991063 0.0000452101 0.0000197887 / 0.261176)",
+            "ff": "-apple-system",
+            "lh": "17.875px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Friday 7:09 AM",
+            "cls": "TranscriptMessageTimestamp",
+            "x": 1087,
+            "y": 128,
+            "w": 79,
+            "h": 18
+          }
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "lines": [
+        {
+          "kind": "paired",
+          "text": "Worked for 12s",
+          "delta": {
+            "dy": 0.5,
+            "dx": 192,
+            "w": 1.3,
+            "h": 0.5
+          },
+          "electron": {
+            "t": "Worked for 12s",
+            "tag": "span",
+            "x": 193.8,
+            "y": 124.5,
+            "w": 90.7,
+            "h": 19.5,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgba(252, 252, 252, 0.58)",
+            "ff": "-apple-system",
+            "lh": "19.5px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Worked for 12s",
+            "cls": "SharedCollapsedWorkLabel",
+            "x": 501,
+            "y": 169,
+            "w": 92,
+            "h": 20
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Root contains README.md and package.json.",
+          "delta": {
+            "dy": 0,
+            "dx": 192,
+            "w": 20,
+            "h": 0.9
+          },
+          "electron": {
+            "t": "Root contains README.md and package.json.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 167,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "README.md",
+                "tag": "span",
+                "fs": "13px",
+                "fw": "500",
+                "color": "rgb(51, 134, 214)",
+                "ff": "-apple-system",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "package.json",
+                "tag": "span",
+                "fs": "13px",
+                "fw": "500",
+                "color": "rgb(51, 134, 214)",
+                "ff": "-apple-system",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "Root contains README.md and package.json.",
+            "cls": "MdParagraph MdText--inline-code",
+            "x": 523,
+            "y": 211,
+            "w": 708,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "src/ holds TypeScript implementation files: math.ts and gree",
+          "delta": {
+            "dy": 0.9,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "src/ holds TypeScript implementation files: math.ts and greeting.ts.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 192.1,
+            "w": 688,
+            "h": 22.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "src/",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "math.ts",
+                "tag": "span",
+                "fs": "13px",
+                "fw": "500",
+                "color": "rgb(51, 134, 214)",
+                "ff": "-apple-system",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "greeting.ts",
+                "tag": "span",
+                "fs": "13px",
+                "fw": "500",
+                "color": "rgb(51, 134, 214)",
+                "ff": "-apple-system",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "src/ holds TypeScript implementation files: math.ts and greeting.ts.",
+            "cls": "MdParagraph MdText--inline-code",
+            "x": 523,
+            "y": 237,
+            "w": 708,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "src/math.test.ts contains Node-based tests for the math func",
+          "delta": {
+            "dy": 0.7,
+            "dx": 192,
+            "w": 20,
+            "h": 0.9
+          },
+          "electron": {
+            "t": "src/math.test.ts contains Node-based tests for the math functions.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 218.3,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "src/math.test.ts",
+                "tag": "span",
+                "fs": "13px",
+                "fw": "500",
+                "color": "rgb(51, 134, 214)",
+                "ff": "-apple-system",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "src/math.test.ts contains Node-based tests for the math functions.",
+            "cls": "MdParagraph MdText--inline-code",
+            "x": 523,
+            "y": 263,
+            "w": 708,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "docs/notes.md contains development notes.",
+          "delta": {
+            "dy": 1.6,
+            "dx": 192,
+            "w": 20,
+            "h": 0.9
+          },
+          "electron": {
+            "t": "docs/notes.md contains development notes.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 243.4,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "docs/notes.md",
+                "tag": "span",
+                "fs": "13px",
+                "fw": "500",
+                "color": "rgb(51, 134, 214)",
+                "ff": "-apple-system",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "docs/notes.md contains development notes.",
+            "cls": "MdParagraph MdText--inline-code",
+            "x": 523,
+            "y": 289,
+            "w": 708,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "The project is a private, ESM TypeScript workspace with a si",
+          "delta": {
+            "dy": 2.5,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "The project is a private, ESM TypeScript workspace with a single npm test script.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 268.5,
+            "w": 688,
+            "h": 22.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "npm test",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "The project is a private, ESM TypeScript workspace with a single npm test script.",
+            "cls": "MdParagraph MdText--inline-code",
+            "x": 523,
+            "y": 315,
+            "w": 708,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Friday 7:09 AM",
+          "delta": {
+            "dy": 2.3,
+            "dx": 191.7,
+            "w": -1,
+            "h": 0.1
+          },
+          "electron": {
+            "t": "Friday 7:09 AM",
+            "tag": "p",
+            "x": 286.1,
+            "y": 295.7,
+            "w": 80,
+            "h": 17.9,
+            "fs": "11px",
+            "fw": "400",
+            "color": "rgba(252, 252, 252, 0.58)",
+            "ff": "-apple-system",
+            "lh": "17.875px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Friday 7:09 AM",
+            "cls": "TranscriptMessageMeta",
+            "x": 593,
+            "y": 342,
+            "w": 79,
+            "h": 18
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "•",
+          "native": {
+            "t": "•",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 211,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "•",
+          "native": {
+            "t": "•",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 237,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "•",
+          "native": {
+            "t": "•",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 263,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "•",
+          "native": {
+            "t": "•",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 289,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "•",
+          "native": {
+            "t": "•",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 315,
+            "w": 48,
+            "h": 21
+          }
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "lines": [
+        {
+          "kind": "paired",
+          "text": "In src/math.ts add an exported subtract(a: number, b: number",
+          "delta": {
+            "dy": 0,
+            "dx": 193.4,
+            "w": -0.4,
+            "h": -1.4
+          },
+          "electron": {
+            "t": "In src/math.ts add an exported subtract(a: number, b: number): number function directly below add, and add one bullet for it under the Functions section of README.md. Keep the change minimal.",
+            "tag": "p",
+            "x": 356.4,
+            "y": 338,
+            "w": 552.4,
+            "h": 65.4,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "subtract(a: number, b: number): number",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "add",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "In src/math.ts add an exported subtract(a: number, b: number): number function directly below add, and add one bullet for it under the Functions section of README.md. Keep the change minimal.",
+            "cls": "MdParagraph MdText--inline-code",
+            "x": 665,
+            "y": 384,
+            "w": 552,
+            "h": 64
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Friday 7:09 AM",
+          "delta": {
+            "dy": -1.4,
+            "dx": 194,
+            "w": -1,
+            "h": 0.1
+          },
+          "electron": {
+            "t": "Friday 7:09 AM",
+            "tag": "p",
+            "x": 777.8,
+            "y": 418.4,
+            "w": 80,
+            "h": 17.9,
+            "fs": "11px",
+            "fw": "400",
+            "color": "oklab(0.991063 0.0000452101 0.0000197887 / 0.261176)",
+            "ff": "-apple-system",
+            "lh": "17.875px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Friday 7:09 AM",
+            "cls": "TranscriptMessageTimestamp",
+            "x": 1087,
+            "y": 463,
+            "w": 79,
+            "h": 18
+          }
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "lines": [
+        {
+          "kind": "paired",
+          "text": "Worked for 19s",
+          "delta": {
+            "dy": 0.5,
+            "dx": 192,
+            "w": 0.9,
+            "h": 0.5
+          },
+          "electron": {
+            "t": "Worked for 19s",
+            "tag": "span",
+            "x": 193.8,
+            "y": 458.5,
+            "w": 91.1,
+            "h": 19.5,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgba(252, 252, 252, 0.58)",
+            "ff": "-apple-system",
+            "lh": "19.5px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Worked for 19s",
+            "cls": "SharedCollapsedWorkLabel",
+            "x": 501,
+            "y": 504,
+            "w": 92,
+            "h": 20
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Implemented the minimal changes:",
+          "delta": {
+            "dy": 0,
+            "dx": 192,
+            "w": 0,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Implemented the minimal changes:",
+            "tag": "p",
+            "x": 195.8,
+            "y": 501,
+            "w": 728,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Implemented the minimal changes:",
+            "cls": "MdParagraph",
+            "x": 503,
+            "y": 546,
+            "w": 728,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Added exported subtract(a, b) directly below add in src/math",
+          "delta": {
+            "dy": 0.5,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Added exported subtract(a, b) directly below add in src/math.ts.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 532.5,
+            "w": 688,
+            "h": 22.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "subtract(a, b)",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "add",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "src/math.ts",
+                "tag": "span",
+                "fs": "13px",
+                "fw": "500",
+                "color": "rgb(51, 134, 214)",
+                "ff": "-apple-system",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "Added exported subtract(a, b) directly below add in src/math.ts.",
+            "cls": "MdParagraph MdText--inline-code",
+            "x": 523,
+            "y": 578,
+            "w": 708,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Documented it under the README’s Functions section.",
+          "delta": {
+            "dy": 0.4,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Documented it under the README’s Functions section.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 558.6,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Documented it under the README’s Functions section.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 604,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Verified the resulting diff.",
+          "delta": {
+            "dy": 0.2,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Verified the resulting diff.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 583.8,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Verified the resulting diff.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 629,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Edited 2 files",
+          "delta": {
+            "dy": 0.1,
+            "dx": 168,
+            "w": 1.5,
+            "h": -0.5
+          },
+          "electron": {
+            "t": "Edited 2 files",
+            "tag": "div",
+            "x": 232.8,
+            "y": 619.9,
+            "w": 78.5,
+            "h": 19.5,
+            "fs": "13px",
+            "fw": "400",
+            "color": "oklab(0.991063 0.0000452101 0.0000197887 / 0.92)",
+            "ff": "-apple-system",
+            "lh": "19.5px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Edited 2 files",
+            "cls": "TranscriptTurnChangesLabel",
+            "x": 516,
+            "y": 665,
+            "w": 80,
+            "h": 19
+          }
+        },
+        {
+          "kind": "electron-only",
+          "text": "+5",
+          "electron": {
+            "t": "+5",
+            "tag": "span",
+            "x": 232.8,
+            "y": 639.4,
+            "w": 16.2,
+            "h": 19.5,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(0, 162, 64)",
+            "ff": "-apple-system",
+            "lh": "19.5px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          }
+        },
+        {
+          "kind": "electron-only",
+          "text": "-0",
+          "electron": {
+            "t": "-0",
+            "tag": "span",
+            "x": 255,
+            "y": 639.4,
+            "w": 14.2,
+            "h": 19.5,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(224, 46, 42)",
+            "ff": "-apple-system",
+            "lh": "19.5px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          }
+        },
+        {
+          "kind": "electron-only",
+          "text": "Undo",
+          "electron": {
+            "t": "Undo",
+            "tag": "button",
+            "x": 759.3,
+            "y": 629.6,
+            "w": 48.5,
+            "h": 19.5,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgba(252, 252, 252, 0.58)",
+            "ff": "-apple-system",
+            "lh": "19.5px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Review",
+          "delta": {
+            "dy": 3.4,
+            "dx": 231.9,
+            "w": -20.9,
+            "h": -5.5
+          },
+          "electron": {
+            "t": "Review",
+            "tag": "button",
+            "x": 815.9,
+            "y": 626.6,
+            "w": 64.9,
+            "h": 25.5,
+            "fs": "13px",
+            "fw": "400",
+            "color": "oklab(0.991063 0.0000452101 0.0000197887 / 0.9)",
+            "ff": "-apple-system",
+            "lh": "19.5px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Review",
+            "cls": "TranscriptTurnChangesReviewText",
+            "x": 1163,
+            "y": 675,
+            "w": 44,
+            "h": 20
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "README.md",
+          "delta": {
+            "dy": 0.1,
+            "dx": 192,
+            "w": 560,
+            "h": 0.5
+          },
+          "electron": {
+            "t": "README.md",
+            "tag": "span",
+            "x": 232.8,
+            "y": 675.9,
+            "w": 76,
+            "h": 19.5,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "19.5px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "README.md",
+            "cls": "TranscriptTurnChangesFilePath",
+            "x": 540,
+            "y": 721,
+            "w": 636,
+            "h": 20
+          }
+        },
+        {
+          "kind": "electron-only",
+          "text": "+1",
+          "electron": {
+            "t": "+1",
+            "tag": "span",
+            "x": 822.3,
+            "y": 675.9,
+            "w": 16.2,
+            "h": 19.5,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(0, 162, 64)",
+            "ff": "-apple-system",
+            "lh": "19.5px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          }
+        },
+        {
+          "kind": "electron-only",
+          "text": "-0",
+          "electron": {
+            "t": "-0",
+            "tag": "span",
+            "x": 844.6,
+            "y": 675.9,
+            "w": 14.2,
+            "h": 19.5,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(224, 46, 42)",
+            "ff": "-apple-system",
+            "lh": "19.5px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "src/math.ts",
+          "delta": {
+            "dy": 0.6,
+            "dx": 192,
+            "w": 565.2,
+            "h": 0.5
+          },
+          "electron": {
+            "t": "src/math.ts",
+            "tag": "span",
+            "x": 232.8,
+            "y": 716.4,
+            "w": 67.8,
+            "h": 19.5,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "19.5px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "src/math.ts",
+            "cls": "TranscriptTurnChangesFilePath",
+            "x": 540,
+            "y": 762,
+            "w": 633,
+            "h": 20
+          }
+        },
+        {
+          "kind": "electron-only",
+          "text": "+4",
+          "electron": {
+            "t": "+4",
+            "tag": "span",
+            "x": 822.3,
+            "y": 716.4,
+            "w": 16.2,
+            "h": 19.5,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(0, 162, 64)",
+            "ff": "-apple-system",
+            "lh": "19.5px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          }
+        },
+        {
+          "kind": "electron-only",
+          "text": "-0",
+          "electron": {
+            "t": "-0",
+            "tag": "span",
+            "x": 844.6,
+            "y": 716.4,
+            "w": 14.2,
+            "h": 19.5,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(224, 46, 42)",
+            "ff": "-apple-system",
+            "lh": "19.5px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Friday 7:10 AM",
+          "delta": {
+            "dy": 2,
+            "dx": 191.7,
+            "w": -3,
+            "h": 0.1
+          },
+          "electron": {
+            "t": "Friday 7:10 AM",
+            "tag": "p",
+            "x": 286.1,
+            "y": 754,
+            "w": 80,
+            "h": 17.9,
+            "fs": "11px",
+            "fw": "400",
+            "color": "rgba(252, 252, 252, 0.58)",
+            "ff": "-apple-system",
+            "lh": "17.875px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Friday 7:10 AM",
+            "cls": "TranscriptMessageMeta",
+            "x": 593,
+            "y": 801,
+            "w": 77,
+            "h": 18
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "•",
+          "native": {
+            "t": "•",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 578,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "•",
+          "native": {
+            "t": "•",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 604,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "•",
+          "native": {
+            "t": "•",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 629,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "+5 -0",
+          "native": {
+            "t": "+5 -0",
+            "cls": "TranscriptTurnChangesStats",
+            "x": 516,
+            "y": 684,
+            "w": 80,
+            "h": 20
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "+1 -0",
+          "native": {
+            "t": "+1 -0",
+            "cls": "TranscriptTurnChangesStats",
+            "x": 1186,
+            "y": 721,
+            "w": 32,
+            "h": 20
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "+4 -0",
+          "native": {
+            "t": "+4 -0",
+            "cls": "TranscriptTurnChangesStats",
+            "x": 1183,
+            "y": 762,
+            "w": 35,
+            "h": 20
+          }
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "lines": [
+        {
+          "kind": "paired",
+          "text": "Without modifying files, reply with a markdown table listing",
+          "delta": {
+            "dy": 0,
+            "dx": 193.4,
+            "w": -0.4,
+            "h": -0.4
+          },
+          "electron": {
+            "t": "Without modifying files, reply with a markdown table listing every exported function in src/math.ts (name, parameters, return type), followed by a fenced TypeScript example that calls two of them.",
+            "tag": "p",
+            "x": 356.4,
+            "y": 796,
+            "w": 552.4,
+            "h": 63.4,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Without modifying files, reply with a markdown table listing every exported function in src/math.ts (name, parameters, return type), followed by a fenced TypeScript example that calls two of them.",
+            "cls": "MdParagraph",
+            "x": 665,
+            "y": 443,
+            "w": 552,
+            "h": 63
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Friday 7:10 AM",
+          "delta": {
+            "dy": -0.4,
+            "dx": 196,
+            "w": -3,
+            "h": 0.1
+          },
+          "electron": {
+            "t": "Friday 7:10 AM",
+            "tag": "p",
+            "x": 777.8,
+            "y": 874.4,
+            "w": 80,
+            "h": 17.9,
+            "fs": "11px",
+            "fw": "400",
+            "color": "oklab(0.991063 0.0000452101 0.0000197887 / 0.261176)",
+            "ff": "-apple-system",
+            "lh": "17.875px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Friday 7:10 AM",
+            "cls": "TranscriptMessageTimestamp",
+            "x": 1089,
+            "y": 521,
+            "w": 77,
+            "h": 18
+          }
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "lines": [
+        {
+          "kind": "paired",
+          "text": "Worked for 7.9s",
+          "delta": {
+            "dy": 0.5,
+            "dx": 192,
+            "w": 2.6,
+            "h": 0.5
+          },
+          "electron": {
+            "t": "Worked for 7.9s",
+            "tag": "span",
+            "x": 193.8,
+            "y": 914.5,
+            "w": 94.4,
+            "h": 19.5,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgba(252, 252, 252, 0.58)",
+            "ff": "-apple-system",
+            "lh": "19.5px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Worked for 7.9s",
+            "cls": "SharedCollapsedWorkLabel",
+            "x": 501,
+            "y": 562,
+            "w": 97,
+            "h": 20
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Name",
+          "delta": {
+            "dy": 6.5,
+            "dx": 199.5,
+            "w": -41.7,
+            "h": -12.3
+          },
+          "electron": {
+            "t": "Name",
+            "tag": "th",
+            "x": 196.3,
+            "y": 957.5,
+            "w": 126.7,
+            "h": 33.3,
+            "fs": "13px",
+            "fw": "700",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Name",
+            "cls": "MdTableHeaderText MdTableText--left",
+            "x": 511,
+            "y": 611,
+            "w": 85,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Parameters",
+          "delta": {
+            "dy": 6.5,
+            "dx": 173.8,
+            "w": 10.2,
+            "h": -12.3
+          },
+          "electron": {
+            "t": "Parameters",
+            "tag": "th",
+            "x": 323,
+            "y": 957.5,
+            "w": 462.8,
+            "h": 33.3,
+            "fs": "13px",
+            "fw": "700",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Parameters",
+            "cls": "MdTableHeaderText MdTableText--left",
+            "x": 612,
+            "y": 611,
+            "w": 473,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Return type",
+          "delta": {
+            "dy": 6.5,
+            "dx": 199,
+            "w": -13.4,
+            "h": -12.3
+          },
+          "electron": {
+            "t": "Return type",
+            "tag": "th",
+            "x": 785.8,
+            "y": 957.5,
+            "w": 137.4,
+            "h": 33.3,
+            "fs": "13px",
+            "fw": "700",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Return type",
+            "cls": "MdTableHeaderText MdTableText--left",
+            "x": 1100,
+            "y": 611,
+            "w": 124,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "add",
+          "delta": {
+            "dy": 6.2,
+            "dx": 199.5,
+            "w": -41.7,
+            "h": -12.3
+          },
+          "electron": {
+            "t": "add",
+            "tag": "td",
+            "x": 196.3,
+            "y": 990.8,
+            "w": 126.7,
+            "h": 34.3,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "add",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "add",
+            "cls": "MdTableCellText MdTableText--left MdText--inline-code",
+            "x": 511,
+            "y": 644,
+            "w": 85,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "a: number, b: number",
+          "delta": {
+            "dy": 6.2,
+            "dx": 173.8,
+            "w": 10.2,
+            "h": -12.3
+          },
+          "electron": {
+            "t": "a: number, b: number",
+            "tag": "td",
+            "x": 323,
+            "y": 990.8,
+            "w": 462.8,
+            "h": 34.3,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "a: number, b: number",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "a: number, b: number",
+            "cls": "MdTableCellText MdTableText--left MdText--inline-code",
+            "x": 612,
+            "y": 644,
+            "w": 473,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "number",
+          "delta": {
+            "dy": 6.2,
+            "dx": 199,
+            "w": -13.4,
+            "h": -12.3
+          },
+          "electron": {
+            "t": "number",
+            "tag": "td",
+            "x": 785.8,
+            "y": 990.8,
+            "w": 137.4,
+            "h": 34.3,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "number",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "number",
+            "cls": "MdTableCellText MdTableText--left MdText--inline-code",
+            "x": 1100,
+            "y": 644,
+            "w": 124,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "subtract",
+          "delta": {
+            "dy": 6.9,
+            "dx": 199.5,
+            "w": -41.7,
+            "h": -12.3
+          },
+          "electron": {
+            "t": "subtract",
+            "tag": "td",
+            "x": 196.3,
+            "y": 1025.1,
+            "w": 126.7,
+            "h": 34.3,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "subtract",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "subtract",
+            "cls": "MdTableCellText MdTableText--left MdText--inline-code",
+            "x": 511,
+            "y": 679,
+            "w": 85,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "a: number, b: number",
+          "delta": {
+            "dy": 6.9,
+            "dx": 173.8,
+            "w": 10.2,
+            "h": -12.3
+          },
+          "electron": {
+            "t": "a: number, b: number",
+            "tag": "td",
+            "x": 323,
+            "y": 1025.1,
+            "w": 462.8,
+            "h": 34.3,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "a: number, b: number",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "a: number, b: number",
+            "cls": "MdTableCellText MdTableText--left MdText--inline-code",
+            "x": 612,
+            "y": 679,
+            "w": 473,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "number",
+          "delta": {
+            "dy": 6.9,
+            "dx": 199,
+            "w": -13.4,
+            "h": -12.3
+          },
+          "electron": {
+            "t": "number",
+            "tag": "td",
+            "x": 785.8,
+            "y": 1025.1,
+            "w": 137.4,
+            "h": 34.3,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "number",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "number",
+            "cls": "MdTableCellText MdTableText--left MdText--inline-code",
+            "x": 1100,
+            "y": 679,
+            "w": 124,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "clamp",
+          "delta": {
+            "dy": 6.6,
+            "dx": 199.5,
+            "w": -41.7,
+            "h": -12.3
+          },
+          "electron": {
+            "t": "clamp",
+            "tag": "td",
+            "x": 196.3,
+            "y": 1059.4,
+            "w": 126.7,
+            "h": 34.3,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "clamp",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "clamp",
+            "cls": "MdTableCellText MdTableText--left MdText--inline-code",
+            "x": 511,
+            "y": 713,
+            "w": 85,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "value: number, min: number, max: number",
+          "delta": {
+            "dy": 6.6,
+            "dx": 173.8,
+            "w": 10.2,
+            "h": -12.3
+          },
+          "electron": {
+            "t": "value: number, min: number, max: number",
+            "tag": "td",
+            "x": 323,
+            "y": 1059.4,
+            "w": 462.8,
+            "h": 34.3,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "value: number, min: number, max: number",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "value: number, min: number, max: number",
+            "cls": "MdTableCellText MdTableText--left MdText--inline-code",
+            "x": 612,
+            "y": 713,
+            "w": 473,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "number",
+          "delta": {
+            "dy": 6.6,
+            "dx": 199,
+            "w": -13.4,
+            "h": -12.3
+          },
+          "electron": {
+            "t": "number",
+            "tag": "td",
+            "x": 785.8,
+            "y": 1059.4,
+            "w": 137.4,
+            "h": 34.3,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "number",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "number",
+            "cls": "MdTableCellText MdTableText--left MdText--inline-code",
+            "x": 1100,
+            "y": 713,
+            "w": 124,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "typescript",
+          "delta": {
+            "dy": -0.2,
+            "dx": 192.5,
+            "w": 1.7,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "typescript",
+            "tag": "span",
+            "x": 205.3,
+            "y": 1110.2,
+            "w": 70.3,
+            "h": 16.1,
+            "fs": "11.52px",
+            "fw": "400",
+            "color": "rgba(252, 252, 252, 0.58)",
+            "ff": "\"JetBrains Mono Variable\"",
+            "lh": "16.128px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "typescript",
+            "cls": "MdCodeLanguage",
+            "x": 513,
+            "y": 757,
+            "w": 72,
+            "h": 16
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "import { add, clamp } from \"./math.ts\";const total = add(2, ",
+          "delta": {
+            "dy": 8.2,
+            "dx": 202,
+            "w": -447,
+            "h": -16.5
+          },
+          "electron": {
+            "t": "import { add, clamp } from \"./math.ts\";const total = add(2, 3);const bounded = clamp(total, 0, 10);",
+            "tag": "pre",
+            "x": 195.8,
+            "y": 1131.8,
+            "w": 728,
+            "h": 100.5,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(225, 228, 232)",
+            "ff": "\"JetBrains Mono Variable\"",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "import",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(249, 117, 131)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "{ add, clamp }",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(225, 228, 232)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "from",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(249, 117, 131)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "\"./math.ts\"",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(158, 203, 255)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": ";",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(225, 228, 232)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "const",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(249, 117, 131)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "total",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(121, 184, 255)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "=",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(249, 117, 131)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "add",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(179, 146, 240)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "(",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(225, 228, 232)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "2",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(121, 184, 255)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": ",",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(225, 228, 232)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "3",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(121, 184, 255)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": ");",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(225, 228, 232)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "const",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(249, 117, 131)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "bounded",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(121, 184, 255)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "=",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(249, 117, 131)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "clamp",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(179, 146, 240)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "(total,",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(225, 228, 232)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "0",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(121, 184, 255)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": ",",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(225, 228, 232)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": "10",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(121, 184, 255)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              },
+              {
+                "t": ");",
+                "tag": "span",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(225, 228, 232)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "18px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "import { add, clamp } from \"./math.ts\"; const total = add(2, 3); const bounded = clamp(total, 0, 10);",
+            "cls": "MdCode MdCodeBlockText",
+            "x": 513,
+            "y": 787,
+            "w": 281,
+            "h": 84
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Friday 7:10 AM",
+          "delta": {
+            "dy": -8.8,
+            "dx": 191.7,
+            "w": -3,
+            "h": 0.1
+          },
+          "electron": {
+            "t": "Friday 7:10 AM",
+            "tag": "p",
+            "x": 286.1,
+            "y": 1245.8,
+            "w": 80,
+            "h": 17.9,
+            "fs": "11px",
+            "fw": "400",
+            "color": "rgba(252, 252, 252, 0.58)",
+            "ff": "-apple-system",
+            "lh": "17.875px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Friday 7:10 AM",
+            "cls": "TranscriptMessageMeta",
+            "x": 593,
+            "y": 884,
+            "w": 77,
+            "h": 18
+          }
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "lines": [
+        {
+          "kind": "paired",
+          "text": "Without modifying files, write a numbered list of 40 short, ",
+          "delta": {
+            "dy": 0,
+            "dx": 194.4,
+            "w": -1.4,
+            "h": -0.3
+          },
+          "electron": {
+            "t": "Without modifying files, write a numbered list of 40 short, distinct one-line tips for writing readable TypeScript.",
+            "tag": "p",
+            "x": 356.4,
+            "y": 1288,
+            "w": 552.4,
+            "h": 42.3,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Without modifying files, write a numbered list of 40 short, distinct one-line tips for writing readable TypeScript.",
+            "cls": "MdParagraph",
+            "x": 666,
+            "y": 525,
+            "w": 551,
+            "h": 42
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Friday 7:10 AM",
+          "delta": {
+            "dy": -0.3,
+            "dx": 196,
+            "w": -3,
+            "h": 0.1
+          },
+          "electron": {
+            "t": "Friday 7:10 AM",
+            "tag": "p",
+            "x": 745.8,
+            "y": 1345.3,
+            "w": 80,
+            "h": 17.9,
+            "fs": "11px",
+            "fw": "400",
+            "color": "oklab(0.991063 0.0000452101 0.0000197887 / 0.261176)",
+            "ff": "-apple-system",
+            "lh": "17.875px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Friday 7:10 AM",
+            "cls": "TranscriptMessageTimestamp",
+            "x": 1057,
+            "y": 582,
+            "w": 77,
+            "h": 18
+          }
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "lines": [
+        {
+          "kind": "paired",
+          "text": "Worked for 8.6s",
+          "delta": {
+            "dy": 0.5,
+            "dx": 192,
+            "w": 1.7,
+            "h": 0.5
+          },
+          "electron": {
+            "t": "Worked for 8.6s",
+            "tag": "span",
+            "x": 193.8,
+            "y": 1385.5,
+            "w": 96.3,
+            "h": 19.5,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgba(252, 252, 252, 0.58)",
+            "ff": "-apple-system",
+            "lh": "19.5px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Worked for 8.6s",
+            "cls": "SharedCollapsedWorkLabel",
+            "x": 501,
+            "y": 623,
+            "w": 98,
+            "h": 20
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Use descriptive names for variables and functions.",
+          "delta": {
+            "dy": 0,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Use descriptive names for variables and functions.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1428,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Use descriptive names for variables and functions.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 665,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Keep functions focused on one task.",
+          "delta": {
+            "dy": -0.1,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Keep functions focused on one task.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1453.1,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Keep functions focused on one task.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 690,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Prefer explicit return types on exported functions.",
+          "delta": {
+            "dy": -0.3,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Prefer explicit return types on exported functions.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1478.3,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Prefer explicit return types on exported functions.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 715,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Use const unless reassignment is required.",
+          "delta": {
+            "dy": -0.4,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Use const unless reassignment is required.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1503.4,
+            "w": 688,
+            "h": 22.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "const",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "Use const unless reassignment is required.",
+            "cls": "MdParagraph MdText--inline-code",
+            "x": 523,
+            "y": 740,
+            "w": 708,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Avoid deeply nested conditionals.",
+          "delta": {
+            "dy": -0.5,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Avoid deeply nested conditionals.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1529.5,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Avoid deeply nested conditionals.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 766,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Use early returns to reduce indentation.",
+          "delta": {
+            "dy": -0.6,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Use early returns to reduce indentation.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1554.6,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Use early returns to reduce indentation.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 791,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Keep lines reasonably short.",
+          "delta": {
+            "dy": -0.8,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Keep lines reasonably short.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1579.8,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Keep lines reasonably short.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 816,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Group related code together.",
+          "delta": {
+            "dy": -0.9,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Group related code together.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1604.9,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Group related code together.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 841,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Use interfaces for clear object contracts.",
+          "delta": {
+            "dy": -1,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Use interfaces for clear object contracts.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1630,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Use interfaces for clear object contracts.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 866,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Use type aliases for reusable unions.",
+          "delta": {
+            "dy": -1.1,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Use type aliases for reusable unions.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1655.1,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Use type aliases for reusable unions.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 891,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Prefer narrow types over broad types.",
+          "delta": {
+            "dy": -1.3,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Prefer narrow types over broad types.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1680.3,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Prefer narrow types over broad types.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 916,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Avoid using any when possible.",
+          "delta": {
+            "dy": -1.4,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Avoid using any when possible.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1705.4,
+            "w": 688,
+            "h": 22.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "any",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "Avoid using any when possible.",
+            "cls": "MdParagraph MdText--inline-code",
+            "x": 523,
+            "y": 941,
+            "w": 708,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Use unknown for untrusted values.",
+          "delta": {
+            "dy": -1.5,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Use unknown for untrusted values.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1731.5,
+            "w": 688,
+            "h": 22.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": [
+              {
+                "t": "unknown",
+                "tag": "code",
+                "fs": "12px",
+                "fw": "400",
+                "color": "rgb(252, 252, 252)",
+                "ff": "\"JetBrains Mono Variable\"",
+                "lh": "21.125px",
+                "td": "none",
+                "fst": "normal"
+              }
+            ]
+          },
+          "native": {
+            "t": "Use unknown for untrusted values.",
+            "cls": "MdParagraph MdText--inline-code",
+            "x": 523,
+            "y": 967,
+            "w": 708,
+            "h": 22
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Enable strict TypeScript settings.",
+          "delta": {
+            "dy": -1.6,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Enable strict TypeScript settings.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1757.6,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Enable strict TypeScript settings.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 993,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Handle nullable values explicitly.",
+          "delta": {
+            "dy": -1.8,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Handle nullable values explicitly.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1782.8,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Handle nullable values explicitly.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1018,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Use optional chaining carefully.",
+          "delta": {
+            "dy": -1.9,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Use optional chaining carefully.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1807.9,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Use optional chaining carefully.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1043,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Use nullish coalescing for defaults.",
+          "delta": {
+            "dy": -2,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Use nullish coalescing for defaults.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1833,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Use nullish coalescing for defaults.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1068,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Prefer discriminated unions for state variants.",
+          "delta": {
+            "dy": -2.1,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Prefer discriminated unions for state variants.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1858.1,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Prefer discriminated unions for state variants.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1093,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Name boolean variables with question-like prefixes.",
+          "delta": {
+            "dy": -2.3,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Name boolean variables with question-like prefixes.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1883.3,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Name boolean variables with question-like prefixes.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1118,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Avoid cryptic abbreviations.",
+          "delta": {
+            "dy": -2.4,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Avoid cryptic abbreviations.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1908.4,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Avoid cryptic abbreviations.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1143,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Extract complex expressions into named variables.",
+          "delta": {
+            "dy": -2.5,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Extract complex expressions into named variables.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1933.5,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Extract complex expressions into named variables.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1168,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Use comments to explain intent, not syntax.",
+          "delta": {
+            "dy": -2.6,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Use comments to explain intent, not syntax.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1958.6,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Use comments to explain intent, not syntax.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1193,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Keep comments current with the code.",
+          "delta": {
+            "dy": -2.8,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Keep comments current with the code.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 1983.8,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Keep comments current with the code.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1218,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Remove dead code promptly.",
+          "delta": {
+            "dy": -2.9,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Remove dead code promptly.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 2008.9,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Remove dead code promptly.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1243,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Avoid unnecessary type assertions.",
+          "delta": {
+            "dy": -3,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Avoid unnecessary type assertions.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 2034,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Avoid unnecessary type assertions.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1268,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Validate external data at boundaries.",
+          "delta": {
+            "dy": -3.1,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Validate external data at boundaries.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 2059.1,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Validate external data at boundaries.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1293,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Use readonly properties when values should not change.",
+          "delta": {
+            "dy": -3.3,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Use readonly properties when values should not change.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 2084.3,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Use readonly properties when values should not change.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1318,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Prefer immutable update patterns.",
+          "delta": {
+            "dy": -3.4,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Prefer immutable update patterns.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 2109.4,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Prefer immutable update patterns.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1343,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Keep generic type parameters meaningful.",
+          "delta": {
+            "dy": -3.5,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Keep generic type parameters meaningful.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 2134.5,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Keep generic type parameters meaningful.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1368,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Avoid overly clever one-liners.",
+          "delta": {
+            "dy": -3.6,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Avoid overly clever one-liners.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 2159.6,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Avoid overly clever one-liners.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1393,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Use consistent formatting.",
+          "delta": {
+            "dy": -3.8,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Use consistent formatting.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 2184.8,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Use consistent formatting.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1418,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Use consistent import ordering.",
+          "delta": {
+            "dy": -3.9,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Use consistent import ordering.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 2209.9,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Use consistent import ordering.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1443,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Separate pure logic from side effects.",
+          "delta": {
+            "dy": -4,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Separate pure logic from side effects.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 2235,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Separate pure logic from side effects.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1468,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Keep files organized by responsibility.",
+          "delta": {
+            "dy": -4.1,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Keep files organized by responsibility.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 2260.1,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Keep files organized by responsibility.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1493,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Define constants for repeated values.",
+          "delta": {
+            "dy": -4.3,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Define constants for repeated values.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 2285.3,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Define constants for repeated values.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1518,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Use exhaustive checks for finite unions.",
+          "delta": {
+            "dy": -4.4,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Use exhaustive checks for finite unions.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 2310.4,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Use exhaustive checks for finite unions.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1543,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Give custom errors meaningful messages.",
+          "delta": {
+            "dy": -4.5,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Give custom errors meaningful messages.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 2335.5,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Give custom errors meaningful messages.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1568,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Write tests with descriptive names.",
+          "delta": {
+            "dy": -4.6,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Write tests with descriptive names.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 2360.6,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Write tests with descriptive names.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1593,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Keep public APIs small.",
+          "delta": {
+            "dy": -4.8,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Keep public APIs small.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 2385.8,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Keep public APIs small.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1618,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Run the formatter and type checker regularly.",
+          "delta": {
+            "dy": -4.9,
+            "dx": 192,
+            "w": 20,
+            "h": -0.1
+          },
+          "electron": {
+            "t": "Run the formatter and type checker regularly.",
+            "tag": "li",
+            "x": 215.8,
+            "y": 2410.9,
+            "w": 688,
+            "h": 21.1,
+            "fs": "13px",
+            "fw": "400",
+            "color": "rgb(252, 252, 252)",
+            "ff": "-apple-system",
+            "lh": "21.125px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Run the formatter and type checker regularly.",
+            "cls": "MdParagraph",
+            "x": 523,
+            "y": 1643,
+            "w": 708,
+            "h": 21
+          }
+        },
+        {
+          "kind": "paired",
+          "text": "Friday 7:10 AM",
+          "delta": {
+            "dy": -5.1,
+            "dx": 191.7,
+            "w": -3,
+            "h": 0.1
+          },
+          "electron": {
+            "t": "Friday 7:10 AM",
+            "tag": "p",
+            "x": 286.1,
+            "y": 2437.1,
+            "w": 80,
+            "h": 17.9,
+            "fs": "11px",
+            "fw": "400",
+            "color": "rgba(252, 252, 252, 0.58)",
+            "ff": "-apple-system",
+            "lh": "17.875px",
+            "td": "none",
+            "fst": "normal",
+            "inl": []
+          },
+          "native": {
+            "t": "Friday 7:10 AM",
+            "cls": "TranscriptMessageMeta",
+            "x": 593,
+            "y": 1669,
+            "w": 77,
+            "h": 18
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "1.",
+          "native": {
+            "t": "1.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 665,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "2.",
+          "native": {
+            "t": "2.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 690,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "3.",
+          "native": {
+            "t": "3.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 715,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "4.",
+          "native": {
+            "t": "4.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 740,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "5.",
+          "native": {
+            "t": "5.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 766,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "6.",
+          "native": {
+            "t": "6.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 791,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "7.",
+          "native": {
+            "t": "7.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 816,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "8.",
+          "native": {
+            "t": "8.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 841,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "9.",
+          "native": {
+            "t": "9.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 866,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "10.",
+          "native": {
+            "t": "10.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 891,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "11.",
+          "native": {
+            "t": "11.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 916,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "12.",
+          "native": {
+            "t": "12.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 941,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "13.",
+          "native": {
+            "t": "13.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 967,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "14.",
+          "native": {
+            "t": "14.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 993,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "15.",
+          "native": {
+            "t": "15.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1018,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "16.",
+          "native": {
+            "t": "16.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1043,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "17.",
+          "native": {
+            "t": "17.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1068,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "18.",
+          "native": {
+            "t": "18.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1093,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "19.",
+          "native": {
+            "t": "19.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1118,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "20.",
+          "native": {
+            "t": "20.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1143,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "21.",
+          "native": {
+            "t": "21.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1168,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "22.",
+          "native": {
+            "t": "22.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1193,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "23.",
+          "native": {
+            "t": "23.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1218,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "24.",
+          "native": {
+            "t": "24.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1243,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "25.",
+          "native": {
+            "t": "25.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1268,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "26.",
+          "native": {
+            "t": "26.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1293,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "27.",
+          "native": {
+            "t": "27.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1318,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "28.",
+          "native": {
+            "t": "28.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1343,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "29.",
+          "native": {
+            "t": "29.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1368,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "30.",
+          "native": {
+            "t": "30.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1393,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "31.",
+          "native": {
+            "t": "31.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1418,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "32.",
+          "native": {
+            "t": "32.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1443,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "33.",
+          "native": {
+            "t": "33.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1468,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "34.",
+          "native": {
+            "t": "34.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1493,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "35.",
+          "native": {
+            "t": "35.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1518,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "36.",
+          "native": {
+            "t": "36.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1543,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "37.",
+          "native": {
+            "t": "37.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1568,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "38.",
+          "native": {
+            "t": "38.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1593,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "39.",
+          "native": {
+            "t": "39.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1618,
+            "w": 48,
+            "h": 21
+          }
+        },
+        {
+          "kind": "native-only",
+          "text": "40.",
+          "native": {
+            "t": "40.",
+            "cls": "MdListMarkerText",
+            "x": 471,
+            "y": 1643,
+            "w": 48,
+            "h": 21
+          }
+        }
+      ]
+    }
+  ],
+  "controls": {
+    "compared": 23,
+    "matched": 11,
+    "exempt": [],
+    "outside": [
+      {
+        "label": "row 5: Copy message",
+        "electron": {
+          "x": 190.1,
+          "y": 331.7,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 190,
+          "y": 323,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": -0.1,
+          "y": -8.7,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 8.7,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 5: Fork thread from this turn",
+        "electron": {
+          "x": 222.1,
+          "y": 331.7,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 222,
+          "y": 323,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": -0.1,
+          "y": -8.7,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 8.7,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 5: Pin message",
+        "electron": {
+          "x": 254.1,
+          "y": 331.7,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 254,
+          "y": 323,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": -0.1,
+          "y": -8.7,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 8.7,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 7: Copy message",
+        "electron": {
+          "x": 190.1,
+          "y": 1052,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 190,
+          "y": 1047,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": -0.1,
+          "y": -5,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 5,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 7: Fork thread from this turn",
+        "electron": {
+          "x": 222.1,
+          "y": 1052,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 222,
+          "y": 1047,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": -0.1,
+          "y": -5,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 5,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 7: Pin message",
+        "electron": {
+          "x": 254.1,
+          "y": 1052,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 254,
+          "y": 1047,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": -0.1,
+          "y": -5,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 5,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 1: Copy message",
+        "electron": {
+          "x": 190.1,
+          "y": 171.6,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 190,
+          "y": 174,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": -0.1,
+          "y": 2.4,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 2.4,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 1: Fork thread from this turn",
+        "electron": {
+          "x": 222.1,
+          "y": 171.6,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 222,
+          "y": 174,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": -0.1,
+          "y": 2.4,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 2.4,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 1: Pin message",
+        "electron": {
+          "x": 254.1,
+          "y": 171.6,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 254,
+          "y": 174,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": -0.1,
+          "y": 2.4,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 2.4,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 3: Copy message",
+        "electron": {
+          "x": 190.1,
+          "y": 295.9,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 190,
+          "y": 298,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": -0.1,
+          "y": 2.1,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 2.1,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 3: Fork thread from this turn",
+        "electron": {
+          "x": 222.1,
+          "y": 295.9,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 222,
+          "y": 298,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": -0.1,
+          "y": 2.1,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 2.1,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 3: Pin message",
+        "electron": {
+          "x": 254.1,
+          "y": 295.9,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 254,
+          "y": 298,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": -0.1,
+          "y": 2.1,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 2.1,
+        "match": false,
+        "exemption": null
+      }
+    ],
+    "electronOnly": [
+      "row 3: Collapse changed files list",
+      "row 3: Open README.md",
+      "row 3: Open README.md options",
+      "row 3: Open src/math.ts",
+      "row 3: Open src/math.ts options",
+      "row 3: Review changes to README.md",
+      "row 3: Review changes to src/math.ts"
+    ],
+    "missing": [
+      "row 3: Collapse changed files list",
+      "row 3: Open README.md",
+      "row 3: Open README.md options",
+      "row 3: Open src/math.ts",
+      "row 3: Open src/math.ts options",
+      "row 3: Review changes to README.md",
+      "row 3: Review changes to src/math.ts"
+    ],
+    "nativeOnly": [
+      "row 1: Expand Worked for 12s",
+      "row 3: Expand Worked for 19s",
+      "row 3: Review README.md",
+      "row 3: Review changes",
+      "row 3: Review src/math.ts",
+      "row 5: Expand Worked for 7.9s",
+      "row 7: Expand Worked for 8.6s"
+    ],
+    "repeated": 0
+  },
+  "windowControls": null
+}

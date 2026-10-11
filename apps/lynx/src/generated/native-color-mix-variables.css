@@ -158,6 +158,8 @@
   --color-mix-82f0443d5f: rgba(13, 13, 13, 0.07);
   /* color-mix(in srgb, var(--foreground) 8%, transparent) */
   --color-mix-ee80755d7d: rgba(13, 13, 13, 0.08);
+  /* color-mix(in srgb, var(--foreground) 80%, transparent) */
+  --color-mix-7c08a9c87e: rgba(13, 13, 13, 0.8);
   /* color-mix(in srgb, var(--foreground) 82%, transparent) */
   --color-mix-92c0e05953: rgba(13, 13, 13, 0.82);
   /* color-mix(in srgb, var(--foreground) 85%, transparent) */
@@ -182,6 +184,10 @@
   --color-mix-2ef91307e1: rgba(13, 13, 13, 0.327843);
   /* color-mix(in srgb, var(--muted-foreground) 60%, transparent) */
   --color-mix-96f90b6e83: rgba(13, 13, 13, 0.357647);
+  /* color-mix(in srgb, var(--muted-foreground) 65%, transparent) */
+  --color-mix-38394f2053: rgba(13, 13, 13, 0.387451);
+  /* color-mix(in srgb, var(--muted-foreground) 70%, transparent) */
+  --color-mix-47f5126ce5: rgba(13, 13, 13, 0.417255);
   /* color-mix(in srgb, var(--muted-foreground) 80%, transparent) */
   --color-mix-27f972e4dc: rgba(13, 13, 13, 0.476863);
   /* color-mix(in srgb, var(--popover-foreground) 72%, transparent) */
@@ -371,6 +377,8 @@
   --color-mix-82f0443d5f: rgba(252, 252, 252, 0.07);
   /* color-mix(in srgb, var(--foreground) 8%, transparent) */
   --color-mix-ee80755d7d: rgba(252, 252, 252, 0.08);
+  /* color-mix(in srgb, var(--foreground) 80%, transparent) */
+  --color-mix-7c08a9c87e: rgba(252, 252, 252, 0.8);
   /* color-mix(in srgb, var(--foreground) 82%, transparent) */
   --color-mix-92c0e05953: rgba(252, 252, 252, 0.82);
   /* color-mix(in srgb, var(--foreground) 85%, transparent) */
@@ -395,6 +403,10 @@
   --color-mix-2ef91307e1: rgba(252, 252, 252, 0.319216);
   /* color-mix(in srgb, var(--muted-foreground) 60%, transparent) */
   --color-mix-96f90b6e83: rgba(252, 252, 252, 0.348235);
+  /* color-mix(in srgb, var(--muted-foreground) 65%, transparent) */
+  --color-mix-38394f2053: rgba(252, 252, 252, 0.377255);
+  /* color-mix(in srgb, var(--muted-foreground) 70%, transparent) */
+  --color-mix-47f5126ce5: rgba(252, 252, 252, 0.406275);
   /* color-mix(in srgb, var(--muted-foreground) 80%, transparent) */
   --color-mix-27f972e4dc: rgba(252, 252, 252, 0.464314);
   /* color-mix(in srgb, var(--popover-foreground) 72%, transparent) */

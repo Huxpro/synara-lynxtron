@@ -24,9 +24,7 @@ import type { InputRef } from "@lynx-js/lynx-ui";
 import { useQuery } from "@tanstack/react-query";
 import type {
   GitReadWorkingTreeDiffResult,
-  ProviderApprovalDecision,
   ProviderKind,
-  ProviderUserInputAnswers,
   ServerProviderStatus,
   TurnId,
 } from "@synara/contracts";
@@ -128,8 +126,6 @@ import { PluginLibraryPage } from "./PluginLibraryPage.lynx";
 import { resolveLandingRoutePresentation } from "./landingRoutePresentation.logic";
 import { RecentViewSwitcherLynx } from "./RecentViewSwitcher.lynx";
 import { Composer } from "../components/composer/Composer.lynx";
-import { PendingApprovalPanel } from "../components/composer/PendingApprovalPanel.lynx";
-import { PendingUserInputPanel } from "../components/composer/PendingUserInputPanel.lynx";
 import { Button } from "../components/ui/button";
 import type { TransportNoticeState } from "./transportRecovery.logic";
 import { Input } from "../components/ui/input.lynx";
@@ -1689,83 +1685,10 @@ function ThreadPage(props: ThreadPageProps) {
     (threadPageWidth || viewportWidth) - (effectiveRightDockWidth ?? 0),
   );
   const compactThreadHeader = threadHeaderAvailableWidth < 700;
-  const [respondingApprovalRequestId, setRespondingApprovalRequestId] = useState<string | null>(
-    null,
-  );
-  const [respondingUserInputRequestId, setRespondingUserInputRequestId] = useState<string | null>(
-    null,
-  );
   const activePendingApproval = currentThread?.pendingApprovals[0] ?? null;
   const activePendingUserInput = currentThread?.pendingUserInputs[0] ?? null;
-  const respondToApproval = async (
-    decision: ProviderApprovalDecision,
-    lifecycleGeneration?: string,
-  ) => {
-    "background only";
-    if (!activePendingApproval || respondingApprovalRequestId !== null) return;
-    setRespondingApprovalRequestId(activePendingApproval.requestId);
-    try {
-      await ensureNativeApi().orchestration.dispatchCommand({
-        type: "thread.approval.respond",
-        commandId: newCommandId(),
-        threadId: threadId as never,
-        requestId: activePendingApproval.requestId,
-        ...(lifecycleGeneration ? { lifecycleGeneration } : {}),
-        decision,
-        createdAt: new Date().toISOString(),
-      });
-    } finally {
-      setRespondingApprovalRequestId(null);
-    }
-  };
-  const respondToUserInput = async (
-    answers: ProviderUserInputAnswers,
-    lifecycleGeneration?: string,
-  ) => {
-    "background only";
-    if (!activePendingUserInput || respondingUserInputRequestId !== null) return;
-    setRespondingUserInputRequestId(activePendingUserInput.requestId);
-    try {
-      await ensureNativeApi().orchestration.dispatchCommand({
-        type: "thread.user-input.respond",
-        commandId: newCommandId(),
-        threadId: threadId as never,
-        requestId: activePendingUserInput.requestId,
-        ...(lifecycleGeneration ? { lifecycleGeneration } : {}),
-        answers,
-        createdAt: new Date().toISOString(),
-      });
-    } finally {
-      setRespondingUserInputRequestId(null);
-    }
-  };
   const composer = (
     <ComposerColumnFrameSurface>
-      {activePendingApproval ? (
-        <PendingApprovalPanel
-          approval={activePendingApproval}
-          pendingCount={currentThread?.pendingApprovals.length ?? 0}
-          responding={respondingApprovalRequestId === activePendingApproval.requestId}
-          onRespond={(decision, lifecycleGeneration) => {
-            "background only";
-            void respondToApproval(decision, lifecycleGeneration);
-          }}
-        />
-      ) : null}
-      {!activePendingApproval && activePendingUserInput ? (
-        <PendingUserInputPanel
-          key={`${activePendingUserInput.requestId}:${
-            activePendingUserInput.lifecycleGeneration ?? "legacy"
-          }`}
-          prompt={activePendingUserInput}
-          pendingCount={currentThread?.pendingUserInputs.length ?? 0}
-          responding={respondingUserInputRequestId === activePendingUserInput.requestId}
-          onRespond={(answers, lifecycleGeneration) => {
-            "background only";
-            void respondToUserInput(answers, lifecycleGeneration);
-          }}
-        />
-      ) : null}
       <Composer
         activities={currentThread?.activities ?? []}
         availableWidth={threadHeaderAvailableWidth}

@@ -14,6 +14,14 @@ describe("Lynx pending approval capability", () => {
     "utf8",
   );
   const querySource = readFileSync(new URL("./queries.ts", import.meta.url), "utf8");
+  const composerSource = readFileSync(
+    new URL("../components/composer/Composer.lynx.tsx", import.meta.url),
+    "utf8",
+  );
+  const hookSource = readFileSync(
+    new URL("../generated/pendingInteractions.generated.ts", import.meta.url),
+    "utf8",
+  );
   const routerSource = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
   const choiceRowSource = readFileSync(
     new URL("../components/composer/ComposerChoiceRow.lynx.tsx", import.meta.url),
@@ -69,10 +77,11 @@ describe("Lynx pending approval capability", () => {
   });
 
   it("dispatches the canonical response; session sync delivers the settled interaction", () => {
-    expect(routerSource).toContain('type: "thread.approval.respond"');
-    expect(routerSource).toContain("requestId: activePendingApproval.requestId");
-    expect(routerSource).toContain("decision,");
-    expect(routerSource).toContain("<PendingApprovalPanel");
+    expect(hookSource).toContain("await respondToThreadApproval({");
+    expect(composerSource).toContain("approval.requestId,");
+    expect(composerSource).toContain("decision,");
+    expect(composerSource).toContain("<PendingApprovalPanel");
+    expect(panelSource).not.toContain("PendingApprovalHintLynx");
     // The page reads the shared store, so there is no query to refresh.
     expect(routerSource).not.toContain('"thread-detail"');
   });

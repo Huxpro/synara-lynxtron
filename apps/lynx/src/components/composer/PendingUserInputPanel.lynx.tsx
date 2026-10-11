@@ -1,58 +1,63 @@
-import type { ProviderUserInputAnswers } from "@synara/contracts";
-import type { PendingUserInput } from "@synara-web/session-logic";
+import type { UserInputQuestion } from "@synara/contracts";
+import { useEffect, useRef } from "@lynx-js/react";
 import {
-  buildPendingUserInputAnswers,
   derivePendingUserInputProgress,
-  setPendingUserInputCustomAnswer,
-  togglePendingUserInputOptionSelection,
   type PendingUserInputDraftAnswer,
 } from "@synara-web/pendingUserInput";
-import { useState } from "@lynx-js/react";
-
+import { CheckIcon, ChevronLeftIcon, ChevronRightIcon } from "../../lib/icons.lynx";
 import { Button } from "../ui/button.lynx";
-import { Input } from "../ui/input.lynx";
 import { ComposerChoiceRow } from "./ComposerChoiceRow.lynx";
 import "./pending-user-input-panel.css";
 
+// Native presentation of UserInputQuestionForm. Answers and submission ownership
+// stay in upstream useChatPendingInteractions, shared with the composer editor.
 export function PendingUserInputPanel(props: {
-  readonly prompt: PendingUserInput;
-  readonly pendingCount: number;
-  readonly responding: boolean;
-  readonly onRespond: (answers: ProviderUserInputAnswers, lifecycleGeneration?: string) => void;
+  readonly questions: ReadonlyArray<UserInputQuestion>;
+  readonly submissionVersion: number;
+  readonly isResponding: boolean;
+  readonly answers: Record<string, PendingUserInputDraftAnswer>;
+  readonly questionIndex: number;
+  readonly onToggleOption: (
+    questionId: string,
+    label: string,
+  ) => PendingUserInputDraftAnswer | null;
+  readonly onAdvance: (overrides?: Record<string, PendingUserInputDraftAnswer>) => unknown;
+  readonly onPrevious: () => void;
+  readonly onCancel: () => void;
 }) {
-  const [answers, setAnswers] = useState<Record<string, PendingUserInputDraftAnswer>>({});
-  const [questionIndex, setQuestionIndex] = useState(0);
-  const progress = derivePendingUserInputProgress(props.prompt.questions, answers, questionIndex);
+  const progress = derivePendingUserInputProgress(
+    props.questions,
+    props.answers,
+    props.questionIndex,
+  );
   const question = progress.activeQuestion;
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const advance = useRef(props.onAdvance);
+  useEffect(() => {
+    "background only";
+    advance.current = props.onAdvance;
+  }, [props.onAdvance]);
+  const cancelAutoAdvance = () => {
+    "background only";
+    if (timer.current !== null) clearTimeout(timer.current);
+    timer.current = null;
+  };
+  useEffect(() => {
+    "background only";
+    return cancelAutoAdvance;
+  }, [question?.id, props.isResponding, props.submissionVersion]);
   if (!question) return null;
-
-  const submitAnswers = (nextAnswers: Record<string, PendingUserInputDraftAnswer>) => {
+  const selectOption = (label: string) => {
     "background only";
-    const resolved = buildPendingUserInputAnswers(props.prompt.questions, nextAnswers);
-    if (!resolved) return false;
-    props.onRespond(resolved, props.prompt.lifecycleGeneration);
-    return true;
-  };
-  const selectOption = (optionLabel: string) => {
-    "background only";
-    const nextAnswer = togglePendingUserInputOptionSelection(
-      question,
-      answers[question.id],
-      optionLabel,
-    );
-    const nextAnswers = {
-      ...answers,
-      [question.id]: nextAnswer,
-    };
-    setAnswers(nextAnswers);
+    if (props.isResponding) return;
+    const answer = props.onToggleOption(question.id, label);
     if (question.multiSelect) return;
-    if (progress.isLastQuestion) {
-      submitAnswers(nextAnswers);
-      return;
-    }
-    setQuestionIndex(progress.questionIndex + 1);
+    cancelAutoAdvance();
+    timer.current = setTimeout(() => {
+      timer.current = null;
+      advance.current(answer ? { [question.id]: answer } : undefined);
+    }, 200);
   };
-
   return (
     <scroll-view
       className="PendingUserInputPanelLynx ComposerDecisionPanelLynx"
@@ -62,12 +67,32 @@ export function PendingUserInputPanel(props: {
     >
       <view className="PendingUserInputHeaderLynx">
         <text className="PendingUserInputTitleLynx">{question.question}</text>
-        {props.prompt.questions.length > 1 ? (
-          <text className="PendingUserInputProgressLynx">
-            {progress.questionIndex + 1}/{props.prompt.questions.length}
-          </text>
-        ) : props.pendingCount > 1 ? (
-          <text className="PendingUserInputProgressLynx">1/{props.pendingCount}</text>
+        {props.questions.length > 1 ? (
+          <view className="PendingUserInputNavigationLynx">
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              className="PendingUserInputNavButtonLynx"
+              aria-label="Previous question"
+              disabled={progress.questionIndex === 0 || props.isResponding}
+              onClick={props.onPrevious}
+            >
+              <ChevronLeftIcon size={14} />
+            </Button>
+            <text className="PendingUserInputProgressLynx">
+              {progress.questionIndex + 1} of {props.questions.length}
+            </text>
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              className="PendingUserInputNavButtonLynx"
+              aria-label="Next question"
+              disabled={progress.isLastQuestion || !progress.canAdvance || props.isResponding}
+              onClick={() => props.onAdvance()}
+            >
+              <ChevronRightIcon size={14} />
+            </Button>
+          </view>
         ) : null}
       </view>
       {question.multiSelect ? (
@@ -75,75 +100,38 @@ export function PendingUserInputPanel(props: {
       ) : null}
       {question.options.length > 0 ? (
         <view className="PendingUserInputOptionsLynx">
-          {question.options.map((option, index) => {
-            const selected = progress.selectedOptionLabels.includes(option.label);
-            return (
-              <ComposerChoiceRow
-                key={`${question.id}:${option.label}`}
-                shortcut={index + 1}
-                label={option.label}
-                description={option.description}
-                selected={selected}
-                disabled={props.responding}
-                onSelect={() => selectOption(option.label)}
-              />
-            );
-          })}
+          {question.options.map((option, index) => (
+            <ComposerChoiceRow
+              key={`${question.id}:${option.label}`}
+              shortcut={index < 9 ? index + 1 : null}
+              label={option.label}
+              description={option.description}
+              selected={progress.selectedOptionLabels.includes(option.label)}
+              disabled={props.isResponding}
+              onSelect={() => selectOption(option.label)}
+              trailing={
+                progress.selectedOptionLabels.includes(option.label) ? (
+                  <CheckIcon size={14} color="var(--foreground)" />
+                ) : null
+              }
+            />
+          ))}
         </view>
       ) : null}
-      <Input
-        nativeInput
-        className="PendingUserInputCustomLynx"
-        accessibility-label="Type your own answer"
-        placeholder="Type your own answer"
-        disabled={props.responding}
-        value={progress.customAnswer}
-        onInput={(value) => {
-          "background only";
-          setAnswers((current) => ({
-            ...current,
-            [question.id]: setPendingUserInputCustomAnswer(current[question.id], value),
-          }));
-        }}
-      />
       <view className="PendingUserInputFooterLynx">
         <Button
           variant="ghost"
           size="sm"
-          disabled={props.responding}
-          onClick={() => props.onRespond({}, props.prompt.lifecycleGeneration)}
+          className="PendingUserInputCancelLynx"
+          aria-label="Cancel"
+          disabled={props.isResponding}
+          onClick={() => {
+            cancelAutoAdvance();
+            props.onCancel();
+          }}
         >
           Cancel
         </Button>
-        {progress.questionIndex > 0 ? (
-          <Button
-            variant="ghost"
-            size="sm"
-            disabled={props.responding}
-            onClick={() => setQuestionIndex(progress.questionIndex - 1)}
-          >
-            Previous
-          </Button>
-        ) : null}
-        {!progress.isLastQuestion ? (
-          <Button
-            variant="secondary"
-            size="sm"
-            disabled={props.responding || !progress.canAdvance}
-            onClick={() => setQuestionIndex(progress.questionIndex + 1)}
-          >
-            Next
-          </Button>
-        ) : (
-          <Button
-            variant="secondary"
-            size="sm"
-            disabled={props.responding || !progress.isComplete}
-            onClick={() => submitAnswers(answers)}
-          >
-            Submit answers
-          </Button>
-        )}
       </view>
     </scroll-view>
   );

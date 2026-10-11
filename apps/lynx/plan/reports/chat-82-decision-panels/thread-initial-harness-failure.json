@@ -1,0 +1,18 @@
+{
+  "runId": "2026-10-11T08-19-32-858Z-39408",
+  "theme": "dark",
+  "window": {
+    "width": 1440,
+    "height": 900
+  },
+  "tolerancePx": 2,
+  "cells": {
+    "thread": {
+      "surface": "thread",
+      "pass": false,
+      "error": "Timed out waiting for Electron {\"attribute\":[\"data-thread-id\",\"comparison-fixture-transcript-v2\"]}."
+    }
+  },
+  "increments": {},
+  "nativeConsoleErrors": []
+}

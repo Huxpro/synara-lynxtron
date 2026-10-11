@@ -40,11 +40,16 @@ import type {
   NativeComposerFileAttachment,
   NativeComposerImageAttachment,
 } from "../components/composer/composerAttachments.lynx";
+import {
+  normalizePendingUserInputDrafts,
+  type PendingUserInputRecoveryDraft,
+} from "@synara-web/pendingUserInputRecovery";
 import { webStorage } from "../platform/storage";
 
 export const LYNX_COMPOSER_DRAFT_STORAGE_KEY = "synara.lynx.composer-drafts:v1";
 
 interface LynxComposerDraft {
+  readonly pendingUserInputDrafts?: Record<string, PendingUserInputRecoveryDraft>;
   readonly assistantSelections: ReadonlyArray<ChatAssistantSelectionAttachment>;
   readonly files: ReadonlyArray<NativeComposerFileAttachment>;
   readonly images: ReadonlyArray<NativeComposerImageAttachment>;
@@ -99,6 +104,10 @@ export function isLynxComposerDraftContentEmpty(
 }
 
 interface LynxComposerDraftStoreState {
+  readonly setPendingUserInputDrafts: (
+    threadId: string,
+    drafts: Record<string, PendingUserInputRecoveryDraft>,
+  ) => void;
   readonly draftsByThreadId: Record<string, LynxComposerDraft>;
   /**
    * Upstream's registry of client-side draft threads (a thread the composer
@@ -387,6 +396,13 @@ export function parsePersistedLynxComposerDrafts(
             })
           : [],
         prompt: candidate.prompt,
+        ...(candidate.pendingUserInputDrafts
+          ? {
+              pendingUserInputDrafts: normalizePendingUserInputDrafts(
+                candidate.pendingUserInputDrafts,
+              ),
+            }
+          : {}),
         skills: Array.isArray(candidate.skills)
           ? (candidate.skills as ProviderSkillReference[])
           : [],
@@ -427,7 +443,8 @@ function shouldRemoveDraft(draft: LynxComposerDraft): boolean {
     draft.modelSelection === undefined &&
     Object.keys(draft.modelSelectionByProvider ?? {}).length === 0 &&
     draft.runtimeMode === undefined &&
-    draft.interactionMode === undefined
+    draft.interactionMode === undefined &&
+    Object.keys(draft.pendingUserInputDrafts ?? {}).length === 0
   );
 }
 
@@ -447,6 +464,17 @@ function modelSelectionsEqual(left: ModelSelection | undefined, right: ModelSele
 }
 
 export const useComposerDraftStore = create<LynxComposerDraftStoreState>()((set, get) => ({
+  setPendingUserInputDrafts: (threadId, pendingUserInputDrafts) =>
+    set((state) => {
+      const nextDraft = {
+        ...(state.draftsByThreadId[threadId] ?? emptyDraft()),
+        pendingUserInputDrafts,
+      };
+      const draftsByThreadId = { ...state.draftsByThreadId };
+      if (shouldRemoveDraft(nextDraft)) delete draftsByThreadId[threadId];
+      else draftsByThreadId[threadId] = nextDraft;
+      return { draftsByThreadId };
+    }),
   draftsByThreadId: {},
   draftThreadsByThreadId: {},
   stickyModelSelectionByProvider: {},
@@ -673,8 +701,11 @@ export const useComposerDraftStore = create<LynxComposerDraftStoreState>()((set,
       const current = state.draftsByThreadId[threadId];
       if (!current) return state;
       const draftsByThreadId = { ...state.draftsByThreadId };
-      if (current.modelSelection) {
+      if (current.modelSelection || Object.keys(current.pendingUserInputDrafts ?? {}).length > 0) {
         draftsByThreadId[threadId] = {
+          ...(current.pendingUserInputDrafts
+            ? { pendingUserInputDrafts: current.pendingUserInputDrafts }
+            : {}),
           assistantSelections: [],
           files: [],
           images: [],
@@ -963,3 +994,9 @@ useComposerDraftStore.subscribe((state, previousState) => {
   );
   webStorage.setItem(LYNX_COMPOSER_DRAFT_STORAGE_KEY, JSON.stringify(persistedDrafts));
 });
+
+// Upstream's pending-question hook reads the same hydrated facade as the editor.
+const EMPTY_THREAD_DRAFT = emptyDraft();
+export function useComposerThreadDraft(threadId: ThreadId): LynxComposerDraft {
+  return useComposerDraftStore((state) => state.draftsByThreadId[threadId] ?? EMPTY_THREAD_DRAFT);
+}
