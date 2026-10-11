@@ -11,6 +11,8 @@ import { withLynxConfig } from "@lynx-js/react/testing-library/rstest-config";
 import {
   createLynxResourceReplacementPlugin,
   lynxBrowserEnvironmentRule,
+  lynxAnnotationUrlRule,
+  lynxAnnotationPunycodeRule,
   lynxQueryCoreEnvironmentRule,
   lynxWindowMemberDefines,
 } from "./lynx.config";
@@ -54,6 +56,8 @@ export default defineConfig({
       // bind the same globals here so it is tested as it is compiled. (The test
       // runtime has jsdom's `window`, which the bundle does not.)
       config.module.rules.push(lynxBrowserEnvironmentRule);
+      config.module.rules.push(lynxAnnotationUrlRule);
+      config.module.rules.push(lynxAnnotationPunycodeRule);
       config.module.rules.push({
         test: /\.ts$/,
         include: [webSourceRoot],

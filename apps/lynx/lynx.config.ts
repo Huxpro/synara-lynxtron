@@ -159,6 +159,29 @@ export const lynxBrowserEnvironmentRule = {
   enforce: "pre" as const,
   loader: path.resolve(__dirname, "scripts/browser-environment-loader.mjs"),
 };
+export const lynxAnnotationUrlRule = {
+  test: /[\\/]browserAnnotations\.ts$/,
+  include: [path.resolve(rootPath, "../../packages/shared/src")],
+  enforce: "pre" as const,
+  loader: path.resolve(__dirname, "scripts/browser-environment-loader.mjs"),
+  options: {
+    globals: ["URL", "URLSearchParams"],
+    modulePath: path.resolve(rootPath, "src/platform/annotationUrl.lynx.ts"),
+  },
+};
+// Resolve the URL parser's npm punycode implementation, rather than the
+// unsupported Node builtin stub supplied by the Native bundler.
+export const lynxAnnotationPunycodeRule = {
+  test: /[\\/]url-state-machine\.js$/,
+  include: [path.dirname(requireFromApp.resolve("whatwg-url-without-unicode"))],
+  resolve: {
+    alias: {
+      punycode$: createRequire(requireFromApp.resolve("whatwg-url-without-unicode")).resolve(
+        "punycode/",
+      ),
+    },
+  },
+};
 console.log("rootPath: ", path.resolve(rootPath, "./src/assets"));
 export default defineConfig({
   server: {
@@ -528,6 +551,8 @@ export default defineConfig({
       config.module ??= {};
       config.module.rules ??= [];
       config.module.rules.push(lynxBrowserEnvironmentRule);
+      config.module.rules.push(lynxAnnotationUrlRule);
+      config.module.rules.push(lynxAnnotationPunycodeRule);
       // Lynx has no `localStorage` (the wrapper injects the name with no
       // value). Upstream stores that persist through the bare global, and are
       // now reached by session sync (`workspacePathsStore.ts`), get the Lynx

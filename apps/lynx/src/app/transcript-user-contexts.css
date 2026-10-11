@@ -1,0 +1,131 @@
+.TranscriptReferenceSummary {
+  align-self: flex-end;
+  margin-bottom: 4px;
+  max-width: 240px;
+}
+.TranscriptReferenceSummary .ComposerReferenceSummaryLynx {
+  height: 28px;
+  min-height: 28px;
+  padding: 0 7px 0 9px;
+  gap: 4px;
+}
+.TranscriptReferenceSummary .ComposerReferenceLabelLynx {
+  font-size: var(--app-font-size-ui-sm, 12px);
+}
+.TranscriptReferenceSummary .ComposerReferenceGlyphLynx {
+  width: 14px;
+  height: 14px;
+}
+.TranscriptContextAttachments {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  align-self: flex-end;
+  max-width: 100%;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.TranscriptContextAttachment {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  max-width: 100%;
+  gap: 4px;
+}
+.ComposerReferenceCardLynx.TranscriptPastedTextCard {
+  width: max-content;
+  max-width: 256px;
+  min-height: 0;
+  padding: 4px 8px 4px 4px;
+  border-radius: 8px;
+  gap: 8px;
+}
+.TranscriptPastedTextCard .ComposerReferenceTileLynx {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+}
+.TranscriptPastedTextCard .ComposerReferenceCardCopyLynx {
+  gap: 2px;
+}
+.TranscriptPastedTextCard .ComposerReferenceCardTitleLynx {
+  font-size: var(--app-font-size-ui, 13px);
+  line-height: var(--app-line-height-ui-17p875, 17.875px);
+}
+.TranscriptPastedTextCard .ComposerReferenceCardActionTextLynx {
+  font-size: var(--app-font-size-ui-sm, 12px);
+  text-decoration: underline;
+}
+.ComposerReferenceCardLynx.TranscriptPullRequestCard {
+  width: 256px;
+  height: 56px;
+  min-height: 56px;
+  padding: 8px 12px 8px 8px;
+}
+.TranscriptPullRequestCard .ComposerReferenceCardCopyLynx {
+  gap: 2px;
+}
+.TranscriptPullRequestCard .ComposerReferenceCardTitleLynx {
+  font-size: var(--app-font-size-ui-lg, 14px);
+}
+.TranscriptPullRequestCard .ComposerReferenceCardMetaLynx {
+  font-size: var(--app-font-size-ui-sm, 12px);
+}
+.TranscriptContextPrompt {
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background-color: var(--color-background-elevated-secondary);
+  padding: 8px;
+}
+.TranscriptContextPromptText {
+  color: var(--foreground);
+  font-family: var(--font-mono-family);
+  font-size: var(--app-font-size-ui-sm, 12px);
+  line-height: var(--app-line-height-ui-sm-16p5, 16.5px);
+  white-space: pre-wrap;
+}
+.TranscriptBrowserAnnotationStrip {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  align-self: flex-end;
+  max-width: 448px;
+  height: 28px;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.TranscriptBrowserAnnotation {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 26px;
+  max-width: 178px;
+  gap: 6px;
+  padding: 1px 9px;
+  border: 1px solid var(--border);
+  background-color: var(--composer-surface);
+  border-radius: 999px;
+}
+.TranscriptBrowserAnnotationOrdinal {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: var(--app-font-size-ui-xs, 11px);
+  font-weight: 600;
+}
+.TranscriptBrowserAnnotationLabel {
+  color: var(--foreground);
+  font-size: var(--app-font-size-ui-sm, 12px);
+  font-weight: 500;
+}
+
+.TranscriptPastedTextCard .ComposerReferenceCardActionLynx {
+  padding: 0;
+  align-self: flex-start;
+  width: max-content;
+}
+.TranscriptPastedTextCard .ComposerReferenceCardActionTextLynx {
+  line-height: calc(var(--app-font-size-ui-sm, 12px) * 1.25);
+}

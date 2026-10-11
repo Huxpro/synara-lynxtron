@@ -42,6 +42,7 @@ import { parseMarkdown, type MarkdownNode } from "../components/markdown/markdow
 import { RpcTransportError } from "../data/rpcTransport.logic";
 import type { ThreadHeaderSummary, ThreadTranscriptRow } from "./queries";
 import type { TransportNoticeState } from "./transportRecovery.logic";
+import { resolveTranscriptUserMessage } from "./transcriptUserMessage.logic";
 import { resolveProposedPlanCardPresentation } from "./transcriptRowCards.logic";
 
 /**
@@ -252,7 +253,11 @@ export function projectThreadTranscriptRows(
   const parsedTreeByMessageId = new Map(
     markdownMessages.map((message) => [
       message.id,
-      parse(`message:${message.id}`, message.text, message.role === "user" ? "user" : "assistant"),
+      parse(
+        `message:${message.id}`,
+        message.role === "user" ? resolveTranscriptUserMessage(message).markdownText : message.text,
+        message.role === "user" ? "user" : "assistant",
+      ),
     ]),
   );
   const parsedTreeByWorkEntryId = new Map(

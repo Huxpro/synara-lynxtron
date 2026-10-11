@@ -242,3 +242,14 @@ candidate removal:
 - Current fidelity ledger:
   `apps/lynx/plan/reports/fidelity-continuation-backlog-2026-09-06.md`
 - Upstream-ready reports: `apps/lynx/plan/issues/0001-*` through `0007-*`
+
+## Browser annotation URL fields (#84)
+
+The certified Native runtime lacked `URL.pathname`, which made the unchanged
+upstream browser-annotation sanitizer reject otherwise valid saved annotations.
+`lynxAnnotationUrlRule` binds only `packages/shared/src/browserAnnotations.ts` to
+`src/platform/annotationUrl.lynx.ts` (`whatwg-url-without-unicode@8.0.0-3`). It
+preserves the upstream credential, query and fragment removal; other modules
+retain their existing URL bindings. The parser alone resolves `punycode` to its npm dependency, because Native supplies an incomplete Node builtin stub. Rstest mounts both rules. Remove this
+port and dependency when a certified Native runtime exposes the WHATWG fields
+used by the sanitizer and the annotation fixture still passes.

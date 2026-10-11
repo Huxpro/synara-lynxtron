@@ -434,3 +434,20 @@ test("upstream corpus: every browser value reference is bound, nothing collides,
   assert.ok(injected > 100, `only ${injected} files received a binding`);
   assert.ok(withDirectives > 0, "no injected upstream file starts with a directive");
 });
+
+test("loader forwards scoped URL bindings without adding browser globals", () => {
+  let output;
+  browserEnvironmentLoader.call(
+    {
+      resourcePath: "/shared/browserAnnotations.ts",
+      getOptions: () => ({ globals: ["URL", "URLSearchParams"], modulePath: "/annotationUrl.ts" }),
+      callback: (error, code) => {
+        assert.equal(error, null);
+        output = code;
+      },
+    },
+    "const url = new URL(value); const params = new URLSearchParams(); window.keep();",
+  );
+  assert.match(output, /import \{ URL, URLSearchParams \} from "\/annotationUrl.ts"/);
+  assert.doesNotMatch(output, /import \{[^}]*window/);
+});

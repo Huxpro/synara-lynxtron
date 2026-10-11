@@ -150,7 +150,7 @@ describe("Lynx assistant message actions", () => {
     expect(source).not.toContain('displayText="Plan ready"');
     expect(source).toContain("<TranscriptProposedPlanCard");
     expect(source).toContain("<TranscriptUserInputExchange");
-    expect(source.match(/fontSizePx=\{chatFontSizePx\}/g)).toHaveLength(4);
+    expect(source.match(/fontSizePx=\{chatFontSizePx\}/g)).toHaveLength(5);
     expect(source).toContain("fontSizePx={chatFontSizePx}");
     expect(styles).toMatch(/\.TranscriptToolDetailsPanel\s*\{[^}]*padding-left:\s*20px;/s);
     expect(styles).toMatch(
