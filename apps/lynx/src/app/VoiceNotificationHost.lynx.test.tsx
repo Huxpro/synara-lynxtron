@@ -34,7 +34,7 @@ describe("Lynx voice notification presentation", () => {
     expect(voiceSource).toContain("resolveVoiceRecordingStartGuard({");
     expect(voiceSource).toContain("pendingUserInputCount: input.pendingUserInputCount,");
     expect(composerSource).toContain("useNativeComposerVoice({");
-    expect(composerSource).toContain("pendingUserInputCount,");
+    expect(composerSource).toContain("pendingUserInputCount: pending.pendingUserInputs.length,");
     expect(voiceSource).toContain("if (voiceState.canStartVoiceNotes || !isRecording) return;");
     expect(voiceSource).toContain('title: "Could not start recording"');
     expect(voiceSource).toContain('title: "No audio was captured."');

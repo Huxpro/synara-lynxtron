@@ -6,6 +6,12 @@ import {
   useState,
   useSyncExternalStore,
 } from "@lynx-js/react";
+import { pendingRequestInstanceKey } from "@synara/shared/threadSummary";
+import { useStore } from "@synara-web/store";
+import { createThreadSelector } from "@synara-web/storeSelectors";
+import { useChatPendingInteractions } from "../../generated/pendingInteractions.generated";
+import { PendingApprovalPanel } from "./PendingApprovalPanel.lynx";
+import { PendingUserInputPanel } from "./PendingUserInputPanel.lynx";
 import { serverConfigQueryOptions } from "@synara-web/lib/serverReactQuery";
 import { projectSearchEntriesQueryOptions } from "@synara-web/lib/projectReactQuery";
 import {
@@ -471,7 +477,7 @@ export function Composer({
   const cumulativeCostUsd = useMemo(() => deriveCumulativeCostUsd(activities), [activities]);
   const normalizedChatFontSizePx = normalizeChatFontSizePx(chatFontSizePx);
   // Hosts with more context (approvals, question options, subagents) pass their own.
-  const placeholder =
+  const basePlaceholder =
     placeholderProp ??
     (emptyLanding
       ? "Ask for follow-up changes or attach images"
@@ -485,14 +491,6 @@ export function Composer({
   // Upstream's editor is `text-chat leading-relaxed`: a 1.625 line box. The shared helper
   // still returns whole lines of its older 19.5px line, so only its line count is used.
   const editorLineHeightPx = normalizedChatFontSizePx * COMPOSER_EDITOR_LINE_HEIGHT_RATIO;
-  const emptyEditorMinHeightPx =
-    (resolveEmptyComposerEditorMinHeightPx({
-      availableWidthPx: availableWidth,
-      chatFontSizePx: normalizedChatFontSizePx,
-      placeholder,
-    }) /
-      SHARED_EMPTY_EDITOR_LINE_HEIGHT_PX) *
-    editorLineHeightPx;
   const initData = useInitData() as {
     readonly initialComposerModelProvider?: unknown;
   };
@@ -506,9 +504,42 @@ export function Composer({
   const editorRegionRef = useRef<NodesRef>(null);
   const nativeFocusRequestPendingRef = useRef(false);
   const brandedThreadId = (draftId ?? threadId) as never;
-  const draft = useComposerDraftStore(
+  const storedDraft = useComposerDraftStore(
     (state) => state.draftsByThreadId[brandedThreadId]?.prompt ?? "",
   );
+  const [composerTrigger, setComposerTrigger] = useState<ComposerTrigger | null>(null);
+  const [composerHighlightedItemId, setComposerHighlightedItemId] = useState<string | null>(null);
+  const [, setPendingCursor] = useState(0);
+  const pendingPromptRef = useRef(storedDraft);
+  const activeThread = useStore(useMemo(() => createThreadSelector(threadId as never), [threadId]));
+  const pending = useChatPendingInteractions({
+    threadId: threadId as never,
+    activeThread,
+    runtimeMode: runtimeMode ?? "approval-required",
+    promptRef: pendingPromptRef,
+    setPrompt: (value) => useComposerDraftStore.getState().setPrompt(brandedThreadId, value),
+    setComposerCursor: setPendingCursor,
+    setComposerTrigger,
+    setComposerHighlightedItemId,
+  });
+  const approvalPending = pending.activePendingApproval !== null;
+  const pendingProgress = pending.activePendingProgress;
+  const draft = approvalPending ? "" : pendingProgress ? pendingProgress.customAnswer : storedDraft;
+  const placeholder = approvalPending
+    ? "Resolve this approval request to continue"
+    : pendingProgress
+      ? pendingProgress.activeQuestion?.options.length === 0
+        ? "Type your answer to continue"
+        : "Type your own answer, or leave this blank to use the selected option"
+      : basePlaceholder;
+  const emptyEditorMinHeightPx =
+    (resolveEmptyComposerEditorMinHeightPx({
+      availableWidthPx: availableWidth,
+      chatFontSizePx: normalizedChatFontSizePx,
+      placeholder,
+    }) /
+      SHARED_EMPTY_EDITOR_LINE_HEIGHT_PX) *
+    editorLineHeightPx;
   const assistantSelections = useComposerDraftStore(
     (state) =>
       state.draftsByThreadId[brandedThreadId]?.assistantSelections ?? EMPTY_ASSISTANT_SELECTIONS,
@@ -547,11 +578,12 @@ export function Composer({
     () =>
       createNativeComposerDraftProjection({
         canonicalText: draft,
-        mentions,
-        skills,
-        terminalContexts,
+        mentions: pendingProgress || approvalPending ? EMPTY_MENTIONS : mentions,
+        skills: pendingProgress || approvalPending ? EMPTY_SKILLS : skills,
+        terminalContexts:
+          pendingProgress || approvalPending ? EMPTY_TERMINAL_CONTEXTS : terminalContexts,
       }),
-    [draft, mentions, skills, terminalContexts],
+    [draft, mentions, skills, terminalContexts, pendingProgress, approvalPending],
   );
   const nativeEditorMaxLines = resolveNativeComposerMaxLines({
     availableWidthPx: availableWidth,
@@ -574,7 +606,19 @@ export function Composer({
   const removeAssistantSelections = useComposerDraftStore(
     (state) => state.removeAssistantSelections,
   );
-  const setPrompt = useComposerDraftStore((state) => state.setPrompt);
+  const setStoredPrompt = useComposerDraftStore((state) => state.setPrompt);
+  const setPrompt = (key: string, value: string) => {
+    "background only";
+    if (pendingProgress?.activeQuestion && key === brandedThreadId) {
+      pending.onChangeActivePendingUserInputCustomAnswer(
+        pendingProgress.activeQuestion.id,
+        value,
+        value.length,
+        value.length,
+        true,
+      );
+    } else if (!approvalPending) setStoredPrompt(key, value);
+  };
   const setModelSelection = useComposerDraftStore((state) => state.setModelSelection);
   const setMentions = useComposerDraftStore((state) => state.setMentions);
   const setSkills = useComposerDraftStore((state) => state.setSkills);
@@ -598,8 +642,6 @@ export function Composer({
     boundProvider: emptyLanding ? null : (boundProvider ?? null),
   });
   const [expandedImage, setExpandedImage] = useState<NativeExpandedImagePreview | null>(null);
-  const [composerTrigger, setComposerTrigger] = useState<ComposerTrigger | null>(null);
-  const [composerHighlightedItemId, setComposerHighlightedItemId] = useState<string | null>(null);
   const [modelCatalogProvider, setModelCatalogProvider] = useState<ProviderKind | null>(
     initialModelMenuProvider,
   );
@@ -671,7 +713,7 @@ export function Composer({
     provider: activeProvider,
     providerStatuses: providerStatuses ?? serverConfig?.providers ?? [],
     workspaceRoot,
-    pendingUserInputCount,
+    pendingUserInputCount: pending.pendingUserInputs.length,
     readPrompt: (draftKey) =>
       useComposerDraftStore.getState().draftsByThreadId[draftKey]?.prompt ?? "",
     onTranscript: (draftKey, nextPrompt) => {
@@ -1580,6 +1622,20 @@ export function Composer({
 
   async function activatePrimaryAction() {
     "background only";
+    if (approvalPending) return;
+    if (pendingProgress?.activeQuestion) {
+      const editor = await readNativeEditorSnapshot(draft);
+      if (!editor || editor.isComposing || pending.activePendingIsResponding) return;
+      pending.onChangeActivePendingUserInputCustomAnswer(
+        pendingProgress.activeQuestion.id,
+        editor.value,
+        editor.selectionStart,
+        editor.selectionStart,
+        true,
+      );
+      pending.onAdvanceActivePendingUserInput();
+      return;
+    }
     if (isRunningComposerSession(sessionStatus)) {
       setSendError(null);
       setIsStopping(true);
@@ -1816,387 +1872,481 @@ export function Composer({
     !interactionMode;
 
   return (
-    <ComposerInputSurfaceComposition focused={focused}>
-      <ComposerEditorRegionComposition>
-        {composerTrigger?.kind === "slash-command" ? (
-          <ComposerCommandMenuComposition
-            items={composerMenuItems}
-            resolvedTheme={resolvedTheme}
-            isLoading={providerSkillsPending}
-            triggerKind="slash-command"
-            activeItemId={activeComposerMenuItemId}
-            onHighlightedItemChange={setComposerHighlightedItemId}
-            onSelect={(item) => {
-              "background only";
-              if (item.type === "skill") selectSkill(item);
-              else selectSlashCommand(item);
-            }}
-          />
-        ) : composerTrigger?.kind === "skill" ? (
-          <ComposerCommandMenuComposition
-            items={skillItems}
-            resolvedTheme={resolvedTheme}
-            isLoading={providerSkillsPending}
-            triggerKind="skill"
-            activeItemId={activeComposerMenuItemId}
-            onHighlightedItemChange={setComposerHighlightedItemId}
-            onSelect={(item) => {
-              "background only";
-              selectSkill(item);
-            }}
-          />
-        ) : composerTrigger?.kind === "mention" ? (
-          <ComposerCommandMenuComposition
-            items={composerMenuItems}
-            resolvedTheme={resolvedTheme}
-            isLoading={false}
-            triggerKind="mention"
-            activeItemId={activeComposerMenuItemId}
-            onHighlightedItemChange={setComposerHighlightedItemId}
-            onSelect={(item) => {
-              "background only";
-              if (item.type === "agent") selectAgentMention(item);
-              else if (item.type === "path") selectPathMention(item);
-              else selectThreadMention(item);
-            }}
-          />
-        ) : null}
-        <ComposerReferenceAttachmentsComposition
-          assistantSelections={assistantSelections}
-          fileComments={fileComments}
-          pastedTexts={pastedTexts}
-          files={files}
-          images={images}
-          nonPersistedImageIdSet={nonPersistedImageIdSet}
-          onExpandImage={setExpandedImage}
-          onRemoveAssistantSelections={() => removeAssistantSelections(brandedThreadId)}
-          onRemoveFileComments={() => removeFileComments(brandedThreadId)}
-          onRemovePastedText={(pastedTextId) => {
+    <>
+      {pending.activePendingApproval ? (
+        <PendingApprovalPanel
+          approval={pending.activePendingApproval}
+          pendingCount={pending.pendingApprovals.length}
+          responding={pending.respondingRequestKeys.includes(
+            pendingRequestInstanceKey(
+              pending.activePendingApproval.requestId,
+              pending.activePendingApproval.lifecycleGeneration,
+            ),
+          )}
+          onRespond={async (decision, generation) => {
             "background only";
-            removePastedTextFromDraft(pastedTextId);
+            const approval = pending.activePendingApproval;
+            if (!approval) return;
+            try {
+              await pending.onRespondToApproval(
+                approval.requestId,
+                decision,
+                generation,
+                approval.requestKind,
+              );
+            } catch (error) {
+              toastManager.add({
+                type: "error",
+                title: "Unable to submit approval",
+                description: String(error),
+              });
+              throw error;
+            }
           }}
-          onShowPastedTextInField={(pastedTextId) => {
-            "background only";
-            showPastedTextInField(pastedTextId);
-          }}
-          onRemoveFile={removeNativeComposerFile}
-          onRemoveImage={removeNativeComposerImage}
         />
-        <ExpandedImageOverlay
-          expandedImage={expandedImage}
-          onClose={() => {
-            "background only";
-            setExpandedImage(null);
-            restoreNativeFocus();
-          }}
-          onNavigate={navigateExpandedImage}
+      ) : pending.activePendingUserInput ? (
+        <PendingUserInputPanel
+          questions={pending.activePendingUserInput.questions}
+          submissionVersion={pending.userInputSubmissionVersion}
+          isResponding={pending.activePendingIsResponding}
+          answers={pending.activePendingDraftAnswers}
+          questionIndex={pending.activePendingQuestionIndex}
+          onToggleOption={pending.onToggleActivePendingUserInputOption}
+          onAdvance={pending.onAdvanceActivePendingUserInput}
+          onPrevious={pending.onPreviousActivePendingUserInputQuestion}
+          onCancel={pending.onCancelActivePendingUserInput}
         />
-        {auxiliaryTokens.length > 0 ? (
-          <scroll-view className="ComposerTokenPreview" scroll-orientation="horizontal">
-            <view className="ComposerTokenRow">
-              {auxiliaryTokens.map((segment, index) => (
-                <ComposerChip
-                  key={`${segment.type}:${segmentLabel(segment)}:${index}`}
-                  segment={segment}
-                />
-              ))}
-            </view>
-          </scroll-view>
-        ) : null}
-        <view
-          ref={editorRegionRef}
-          className={`ComposerProjectedEditorFlow${
-            draftProjection.displayText.length === 0 ? " ComposerProjectedEditorFlow--empty" : ""
-          }`}
-          style={
-            {
-              "--type-composer-editor-size": `${normalizedChatFontSizePx}px`,
-              "--composer-empty-editor-height": `${emptyEditorMinHeightPx}px`,
-              // Lynx drops custom properties set through `style`, so the empty editor's
-              // height (upstream `min-h-[2lh]`) is also set directly.
-              ...(draftProjection.displayText.length === 0
-                ? { minHeight: `${emptyEditorMinHeightPx}px` }
-                : {}),
-            } as Record<string, string>
-          }
-          capture-bindtap={restoreNativeFocus}
-          bindtap={restoreNativeFocus}
-        >
-          {draftProjection.displayTokens.length > 0 ? (
-            <ComposerProjectedVisualContent
-              fontSizePx={normalizedChatFontSizePx}
-              projection={draftProjection}
+      ) : null}
+      <ComposerInputSurfaceComposition focused={focused}>
+        <ComposerEditorRegionComposition>
+          {!pendingProgress && !approvalPending && composerTrigger?.kind === "slash-command" ? (
+            <ComposerCommandMenuComposition
+              items={composerMenuItems}
+              resolvedTheme={resolvedTheme}
+              isLoading={providerSkillsPending}
+              triggerKind="slash-command"
+              activeItemId={activeComposerMenuItemId}
+              onHighlightedItemChange={setComposerHighlightedItemId}
+              onSelect={(item) => {
+                "background only";
+                if (item.type === "skill") selectSkill(item);
+                else selectSlashCommand(item);
+              }}
+            />
+          ) : !pendingProgress && !approvalPending && composerTrigger?.kind === "skill" ? (
+            <ComposerCommandMenuComposition
+              items={skillItems}
+              resolvedTheme={resolvedTheme}
+              isLoading={providerSkillsPending}
+              triggerKind="skill"
+              activeItemId={activeComposerMenuItemId}
+              onHighlightedItemChange={setComposerHighlightedItemId}
+              onSelect={(item) => {
+                "background only";
+                selectSkill(item);
+              }}
+            />
+          ) : !pendingProgress && !approvalPending && composerTrigger?.kind === "mention" ? (
+            <ComposerCommandMenuComposition
+              items={composerMenuItems}
+              resolvedTheme={resolvedTheme}
+              isLoading={false}
+              triggerKind="mention"
+              activeItemId={activeComposerMenuItemId}
+              onHighlightedItemChange={setComposerHighlightedItemId}
+              onSelect={(item) => {
+                "background only";
+                if (item.type === "agent") selectAgentMention(item);
+                else if (item.type === "path") selectPathMention(item);
+                else selectThreadMention(item);
+              }}
             />
           ) : null}
-          <textarea
-            key={nativeEditorFocusEpoch}
-            ref={textareaRef}
-            className={`ComposerTextarea${
-              draftProjection.displayTokens.length > 0 ? " ComposerTextarea--projected" : ""
-            }${draftProjection.displayText.length === 0 ? " ComposerTextarea--empty" : ""}`}
-            style={{ fontSize: `${normalizedChatFontSizePx}px` }}
-            aria-label="Message composer"
-            accessibility-element={true}
-            accessibility-label="Message composer"
-            focusable={true}
-            default-value={draftProjection.displayText}
-            placeholder={placeholder}
-            maxlength={8000}
-            maxlines={nativeEditorMaxLines}
-            enable-scroll-bar={true}
-            confirm-type="send"
-            bindconfirm={() => {
+          {!pendingProgress && !approvalPending ? (
+            <ComposerReferenceAttachmentsComposition
+              assistantSelections={assistantSelections}
+              fileComments={fileComments}
+              pastedTexts={pastedTexts}
+              files={files}
+              images={images}
+              nonPersistedImageIdSet={nonPersistedImageIdSet}
+              onExpandImage={setExpandedImage}
+              onRemoveAssistantSelections={() => removeAssistantSelections(brandedThreadId)}
+              onRemoveFileComments={() => removeFileComments(brandedThreadId)}
+              onRemovePastedText={(pastedTextId) => {
+                "background only";
+                removePastedTextFromDraft(pastedTextId);
+              }}
+              onShowPastedTextInField={(pastedTextId) => {
+                "background only";
+                showPastedTextInField(pastedTextId);
+              }}
+              onRemoveFile={removeNativeComposerFile}
+              onRemoveImage={removeNativeComposerImage}
+            />
+          ) : null}
+          <ExpandedImageOverlay
+            expandedImage={expandedImage}
+            onClose={() => {
               "background only";
-              if (composerMenuItems.length === 0 && !nativeEditorSnapshotRef.current.isComposing) {
-                void activatePrimaryAction();
-              }
+              setExpandedImage(null);
+              restoreNativeFocus();
             }}
-            catchkeydown={hostKeyHandler(handleComposerMenuKey)}
-            bindfocus={() => {
-              "background only";
-              claimComposerInputOwnership();
-              setFocused(true);
-            }}
-            bindblur={() => {
-              "background only";
-              releaseComposerInputOwnership();
-              setFocused(false);
-            }}
-            bindselection={(event) => {
-              "background only";
-              nativeSelectionRef.current = {
-                selectionStart: event.detail.selectionStart,
-                selectionEnd: event.detail.selectionEnd,
-              };
-              nativeEditorSnapshotRef.current = {
-                ...nativeEditorSnapshotRef.current,
-                selectionStart: event.detail.selectionStart,
-                selectionEnd: event.detail.selectionEnd,
-              };
-            }}
-            bindinput={(event) => {
-              "background only";
-              const previousNativeEditor = nativeEditorSnapshotRef.current;
-              nativeEditorSnapshotRef.current = {
-                value: event.detail.value,
-                selectionStart: event.detail.selectionStart,
-                selectionEnd: event.detail.selectionEnd,
-                isComposing: event.detail.isComposing ?? false,
-              };
-              // The editor already shows what was typed. Recording it as applied
-              // keeps the draft sync effect from writing the same text back: that
-              // echo moved the caret to the end on every keystroke and, when the
-              // next key landed first, replaced it with the older text.
-              appliedDisplayProjectionRef.current = event.detail.value;
-              if (pendingNativeValueRef.current !== null) {
-                const pendingNativeValue = pendingNativeValueRef.current;
-                pendingNativeValueRef.current = null;
-                const nativeValueAck = consumeComposerNativeValueAck({
-                  eventValue: event.detail.value,
-                  pending: pendingNativeValue,
-                });
-                if (nativeValueAck.matched) {
-                  setComposerTrigger(nativeValueAck.triggerAfterAck);
+            onNavigate={navigateExpandedImage}
+          />
+          {!pendingProgress && !approvalPending && auxiliaryTokens.length > 0 ? (
+            <scroll-view className="ComposerTokenPreview" scroll-orientation="horizontal">
+              <view className="ComposerTokenRow">
+                {auxiliaryTokens.map((segment, index) => (
+                  <ComposerChip
+                    key={`${segment.type}:${segmentLabel(segment)}:${index}`}
+                    segment={segment}
+                  />
+                ))}
+              </view>
+            </scroll-view>
+          ) : null}
+          <view
+            ref={editorRegionRef}
+            className={`ComposerProjectedEditorFlow${
+              draftProjection.displayText.length === 0 ? " ComposerProjectedEditorFlow--empty" : ""
+            }`}
+            style={
+              {
+                "--type-composer-editor-size": `${normalizedChatFontSizePx}px`,
+                "--composer-empty-editor-height": `${emptyEditorMinHeightPx}px`,
+                // Lynx drops custom properties set through `style`, so the empty editor's
+                // height (upstream `min-h-[2lh]`) is also set directly.
+                ...(draftProjection.displayText.length === 0
+                  ? { minHeight: `${emptyEditorMinHeightPx}px` }
+                  : {}),
+              } as Record<string, string>
+            }
+            capture-bindtap={restoreNativeFocus}
+            bindtap={restoreNativeFocus}
+          >
+            {draftProjection.displayTokens.length > 0 ? (
+              <ComposerProjectedVisualContent
+                fontSizePx={normalizedChatFontSizePx}
+                projection={draftProjection}
+              />
+            ) : null}
+            <textarea
+              key={nativeEditorFocusEpoch}
+              ref={textareaRef}
+              className={`ComposerTextarea${
+                draftProjection.displayTokens.length > 0 ? " ComposerTextarea--projected" : ""
+              }${draftProjection.displayText.length === 0 ? " ComposerTextarea--empty" : ""}`}
+              style={{ fontSize: `${normalizedChatFontSizePx}px` }}
+              aria-label="Message composer"
+              accessibility-element={true}
+              accessibility-label="Message composer"
+              focusable={true}
+              disabled={approvalPending || pending.activePendingIsResponding}
+              default-value={draftProjection.displayText}
+              placeholder={placeholder}
+              maxlength={8000}
+              maxlines={nativeEditorMaxLines}
+              enable-scroll-bar={true}
+              confirm-type="send"
+              bindconfirm={() => {
+                "background only";
+                if (
+                  composerMenuItems.length === 0 &&
+                  !nativeEditorSnapshotRef.current.isComposing
+                ) {
+                  void activatePrimaryAction();
+                }
+              }}
+              catchkeydown={hostKeyHandler(handleComposerMenuKey)}
+              bindfocus={() => {
+                "background only";
+                claimComposerInputOwnership();
+                setFocused(true);
+              }}
+              bindblur={() => {
+                "background only";
+                releaseComposerInputOwnership();
+                setFocused(false);
+              }}
+              bindselection={(event) => {
+                "background only";
+                nativeSelectionRef.current = {
+                  selectionStart: event.detail.selectionStart,
+                  selectionEnd: event.detail.selectionEnd,
+                };
+                nativeEditorSnapshotRef.current = {
+                  ...nativeEditorSnapshotRef.current,
+                  selectionStart: event.detail.selectionStart,
+                  selectionEnd: event.detail.selectionEnd,
+                };
+              }}
+              bindinput={(event) => {
+                "background only";
+                const previousNativeEditor = nativeEditorSnapshotRef.current;
+                nativeEditorSnapshotRef.current = {
+                  value: event.detail.value,
+                  selectionStart: event.detail.selectionStart,
+                  selectionEnd: event.detail.selectionEnd,
+                  isComposing: event.detail.isComposing ?? false,
+                };
+                // The editor already shows what was typed. Recording it as applied
+                // keeps the draft sync effect from writing the same text back: that
+                // echo moved the caret to the end on every keystroke and, when the
+                // next key landed first, replaced it with the older text.
+                appliedDisplayProjectionRef.current = event.detail.value;
+                if (pendingNativeValueRef.current !== null) {
+                  const pendingNativeValue = pendingNativeValueRef.current;
+                  pendingNativeValueRef.current = null;
+                  const nativeValueAck = consumeComposerNativeValueAck({
+                    eventValue: event.detail.value,
+                    pending: pendingNativeValue,
+                  });
+                  if (nativeValueAck.matched) {
+                    setComposerTrigger(nativeValueAck.triggerAfterAck);
+                    return;
+                  }
+                }
+                if (pendingProgress?.activeQuestion) {
+                  pending.onChangeActivePendingUserInputCustomAnswer(
+                    pendingProgress.activeQuestion.id,
+                    event.detail.value,
+                    event.detail.selectionStart,
+                    event.detail.selectionStart,
+                    true,
+                  );
                   return;
                 }
-              }
-              if (event.detail.isComposing) {
-                compositionHistorySnapshotRef.current ??=
-                  captureEditorHistorySnapshot(previousNativeEditor);
-              } else if (compositionHistorySnapshotRef.current) {
-                editorHistoryRef.current = pushComposerEditorHistory({
-                  state: editorHistoryRef.current,
-                  snapshot: compositionHistorySnapshotRef.current,
+                if (approvalPending) return;
+                if (event.detail.isComposing) {
+                  compositionHistorySnapshotRef.current ??=
+                    captureEditorHistorySnapshot(previousNativeEditor);
+                } else if (compositionHistorySnapshotRef.current) {
+                  editorHistoryRef.current = pushComposerEditorHistory({
+                    state: editorHistoryRef.current,
+                    snapshot: compositionHistorySnapshotRef.current,
+                  });
+                  compositionHistorySnapshotRef.current = null;
+                } else {
+                  recordEditorHistory(previousNativeEditor);
+                }
+                nativeSelectionRef.current = {
+                  selectionStart: event.detail.selectionStart,
+                  selectionEnd: event.detail.selectionEnd,
+                };
+                const currentPrompt =
+                  useComposerDraftStore.getState().draftsByThreadId[brandedThreadId]?.prompt ?? "";
+                const projected = applyNativeComposerDisplayEdit({
+                  projection: draftProjectionRef.current,
+                  displayText: event.detail.value,
+                  displaySelectionStart: event.detail.selectionStart,
+                  displaySelectionEnd: event.detail.selectionEnd,
                 });
-                compositionHistorySnapshotRef.current = null;
-              } else {
-                recordEditorHistory(previousNativeEditor);
-              }
-              nativeSelectionRef.current = {
-                selectionStart: event.detail.selectionStart,
-                selectionEnd: event.detail.selectionEnd,
-              };
-              const currentPrompt =
-                useComposerDraftStore.getState().draftsByThreadId[brandedThreadId]?.prompt ?? "";
-              const projected = applyNativeComposerDisplayEdit({
-                projection: draftProjectionRef.current,
-                displayText: event.detail.value,
-                displaySelectionStart: event.detail.selectionStart,
-                displaySelectionEnd: event.detail.selectionEnd,
-              });
-              const transition = resolveComposerInputTransition({
-                previousPrompt: currentPrompt,
-                nextPrompt: projected.canonicalText,
-                selectionStart: projected.canonicalSelectionStart,
-                selectionEnd: projected.canonicalSelectionEnd,
-                isComposing: event.detail.isComposing,
-              });
-              setPrompt(brandedThreadId, transition.prompt);
-              setMentions(brandedThreadId, projected.mentions);
-              setSkills(brandedThreadId, projected.skills);
-              setTerminalContexts(brandedThreadId, projected.terminalContexts);
-              if (transition.kind === "collapsed-paste") {
-                addPastedText(
-                  brandedThreadId,
-                  createPastedTextDraft({
-                    id: `lynx-paste-${Date.now()}-${Math.random().toString(16).slice(2)}`,
-                    createdAt: new Date().toISOString(),
-                    text: transition.pastedText,
-                  }),
+                const transition = resolveComposerInputTransition({
+                  previousPrompt: currentPrompt,
+                  nextPrompt: projected.canonicalText,
+                  selectionStart: projected.canonicalSelectionStart,
+                  selectionEnd: projected.canonicalSelectionEnd,
+                  isComposing: event.detail.isComposing,
+                });
+                setPrompt(brandedThreadId, transition.prompt);
+                setMentions(brandedThreadId, projected.mentions);
+                setSkills(brandedThreadId, projected.skills);
+                setTerminalContexts(brandedThreadId, projected.terminalContexts);
+                if (transition.kind === "collapsed-paste") {
+                  addPastedText(
+                    brandedThreadId,
+                    createPastedTextDraft({
+                      id: `lynx-paste-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+                      createdAt: new Date().toISOString(),
+                      text: transition.pastedText,
+                    }),
+                  );
+                  setNativeValue(
+                    transition.prompt,
+                    transition.selectionStart,
+                    transition.selectionEnd,
+                  );
+                  setComposerTrigger(null);
+                  return;
+                }
+                setComposerTrigger(
+                  event.detail.isComposing
+                    ? null
+                    : detectComposerTrigger(transition.prompt, transition.selectionStart),
                 );
-                setNativeValue(
-                  transition.prompt,
-                  transition.selectionStart,
-                  transition.selectionEnd,
-                );
-                setComposerTrigger(null);
-                return;
-              }
-              setComposerTrigger(
-                event.detail.isComposing
-                  ? null
-                  : detectComposerTrigger(transition.prompt, transition.selectionStart),
-              );
-            }}
-          />
-        </view>
-      </ComposerEditorRegionComposition>
-      <ComposerFooterMeasureContext.Provider value={footerMeasure}>
-        <ComposerFooterRowComposition compact={compactFooter}>
-          <ComposerFooterContentComposition
-            compact={compactFooter}
-            voiceBusy={isVoiceRecording || isVoiceTranscribing}
-            leading={
-              <>
-                <ComposerExtrasMenuComposition
-                  interactionMode={interactionMode ?? "default"}
-                  supportsFastMode={supportsFastMode}
-                  fastModeEnabled={activeTraitSelection?.fastModeEnabled ?? false}
-                  imageAttachmentsAvailable={true}
-                  onPickAttachments={() => {
-                    "background only";
-                    void pickNativeComposerFiles();
-                  }}
-                  onAddPhotos={() => {
-                    "background only";
-                    void pickNativeComposerFiles();
-                  }}
-                  onToggleFastMode={toggleFastMode}
-                  onSetPlanMode={(enabled) => {
-                    "background only";
-                    void setPlanMode(enabled);
-                  }}
-                />
-                {!isVoiceRecording && !isVoiceTranscribing ? (
-                  <ComposerRuntimeModeControlComposition
-                    hideLabel={
-                      footerRowWidth > 0
-                        ? footerRowWidth <= COMPOSER_RUNTIME_LABEL_MIN_FOOTER_WIDTH_PX
-                        : compactFooter
-                    }
-                    runtimeMode={runtimeMode}
-                    onRuntimeModeChange={(nextRuntimeMode) => {
-                      "background only";
-                      void setRuntimeMode(nextRuntimeMode);
-                    }}
-                  />
-                ) : null}
-                {sendError ? <text className="ComposerSendError">{sendError}</text> : null}
-              </>
-            }
-            actions={
-              <>
-                {!isVoiceRecording &&
-                !isVoiceTranscribing &&
-                footerPlan.showContextMeter &&
-                contextWindow &&
-                contextWindowDisplay ? (
-                  <ComposerContextWindowMeterElement
-                    display={contextWindowDisplay}
-                    usage={contextWindow}
-                    cumulativeCostUsd={cumulativeCostUsd}
-                  />
-                ) : null}
-                {isVoiceRecording || isVoiceTranscribing ? (
-                  <ComposerVoiceRecorderBar
-                    durationLabel={`${Math.floor(voiceDurationMs / 60000)}:${Math.floor(
-                      (voiceDurationMs % 60000) / 1000,
-                    )
-                      .toString()
-                      .padStart(2, "0")}`}
-                    waveformLevels={voiceWaveformLevels}
-                    transcribing={isVoiceTranscribing}
-                    onCancel={() => {
-                      if (isVoiceRecording) {
-                        void submitVoiceRecording();
-                        return;
-                      }
-                      cancelVoiceRecording();
-                    }}
-                    onSubmit={() => void submitVoiceRecording()}
-                  />
-                ) : null}
-                {!isVoiceRecording && !isVoiceTranscribing && activeModelSelection ? (
-                  <ComposerModelPicker
-                    hideModelLabel={!footerPlan.showModelLabel}
-                    hideStatusLabel={!footerPlan.showTraitsLabel}
-                    modelSelection={activeModelSelection as never}
-                    // Upstream's `lockedProvider` is null wherever a handoff is allowed,
-                    // which is every thread Lynx shows (no group coordinators).
-                    lockedProvider={null}
-                    catalogProvider={discoveryProvider ?? activeModelSelection.provider}
-                    rememberedSelectionFor={(provider) =>
-                      draftModelSelectionByProvider?.[provider] as ModelSelection | undefined
-                    }
-                    initialOpen={Boolean(initialModelMenuProvider)}
-                    runtimeModels={runtimeModelCatalog?.models ?? []}
-                    modelsLoading={
-                      runtimeModelsPending || (runtimeModelsFetching && !runtimeModelCatalog)
-                    }
-                    providers={providerStatuses ?? serverConfig?.providers ?? []}
-                    onCatalogProviderChange={(provider) => {
-                      "background only";
-                      setModelCatalogProvider(provider);
-                    }}
-                    onModelSelectionChange={(nextModelSelection) => {
-                      "background only";
-                      // Upstream's pick also becomes the provider's sticky selection, which
-                      // a later handoff to that provider defaults to.
-                      useComposerDraftStore
-                        .getState()
-                        .setModelSelectionAndSticky(brandedThreadId, nextModelSelection);
-                      setModelCatalogProvider(null);
-                    }}
-                    onOpenProviderSettings={onOpenProviderSettings}
-                  />
-                ) : null}
-                {!isVoiceRecording && !isVoiceTranscribing && showVoiceNotesControl ? (
-                  <ComposerVoiceButton
-                    disabled={isSending || isConnecting || !workspaceRoot}
-                    onActivate={() => void startVoiceRecording()}
-                  />
-                ) : null}
-                {!isVoiceRecording && !isVoiceTranscribing ? (
-                  <ComposerPrimaryActionComposition
-                    mode={isRunning ? "stop" : isSending || isConnecting ? "sending" : "send"}
-                    accessibleLabel={isConnecting ? "Connecting" : undefined}
-                    disabled={!isRunning && sendDisabled}
-                    onActivate={() => {
-                      "background only";
-                      void activatePrimaryAction();
-                    }}
-                  />
-                ) : null}
-              </>
-            }
-          />
-        </ComposerFooterRowComposition>
-      </ComposerFooterMeasureContext.Provider>
-      <ComposerLifecycleStatus
-        operation={sendError ? "error" : isStopping ? "stopping" : isSending ? "sending" : "idle"}
-        sessionStatus={sessionStatus}
-        errorMessage={sendError}
-      />
-    </ComposerInputSurfaceComposition>
+              }}
+            />
+          </view>
+        </ComposerEditorRegionComposition>
+        {!approvalPending ? (
+          <ComposerFooterMeasureContext.Provider value={footerMeasure}>
+            <ComposerFooterRowComposition compact={compactFooter}>
+              <ComposerFooterContentComposition
+                compact={compactFooter}
+                voiceBusy={isVoiceRecording || isVoiceTranscribing}
+                leading={
+                  <>
+                    <ComposerExtrasMenuComposition
+                      interactionMode={interactionMode ?? "default"}
+                      supportsFastMode={supportsFastMode}
+                      fastModeEnabled={activeTraitSelection?.fastModeEnabled ?? false}
+                      imageAttachmentsAvailable={true}
+                      onPickAttachments={() => {
+                        "background only";
+                        void pickNativeComposerFiles();
+                      }}
+                      onAddPhotos={() => {
+                        "background only";
+                        void pickNativeComposerFiles();
+                      }}
+                      onToggleFastMode={toggleFastMode}
+                      onSetPlanMode={(enabled) => {
+                        "background only";
+                        void setPlanMode(enabled);
+                      }}
+                    />
+                    {!isVoiceRecording && !isVoiceTranscribing ? (
+                      <ComposerRuntimeModeControlComposition
+                        hideLabel={
+                          footerRowWidth > 0
+                            ? footerRowWidth <= COMPOSER_RUNTIME_LABEL_MIN_FOOTER_WIDTH_PX
+                            : compactFooter
+                        }
+                        runtimeMode={runtimeMode}
+                        onRuntimeModeChange={(nextRuntimeMode) => {
+                          "background only";
+                          void setRuntimeMode(nextRuntimeMode);
+                        }}
+                      />
+                    ) : null}
+                    {sendError ? <text className="ComposerSendError">{sendError}</text> : null}
+                  </>
+                }
+                actions={
+                  <>
+                    {!isVoiceRecording &&
+                    !isVoiceTranscribing &&
+                    footerPlan.showContextMeter &&
+                    contextWindow &&
+                    contextWindowDisplay ? (
+                      <ComposerContextWindowMeterElement
+                        display={contextWindowDisplay}
+                        usage={contextWindow}
+                        cumulativeCostUsd={cumulativeCostUsd}
+                      />
+                    ) : null}
+                    {isVoiceRecording || isVoiceTranscribing ? (
+                      <ComposerVoiceRecorderBar
+                        durationLabel={`${Math.floor(voiceDurationMs / 60000)}:${Math.floor(
+                          (voiceDurationMs % 60000) / 1000,
+                        )
+                          .toString()
+                          .padStart(2, "0")}`}
+                        waveformLevels={voiceWaveformLevels}
+                        transcribing={isVoiceTranscribing}
+                        onCancel={() => {
+                          if (isVoiceRecording) {
+                            void submitVoiceRecording();
+                            return;
+                          }
+                          cancelVoiceRecording();
+                        }}
+                        onSubmit={() => void submitVoiceRecording()}
+                      />
+                    ) : null}
+                    {!isVoiceRecording && !isVoiceTranscribing && activeModelSelection ? (
+                      <ComposerModelPicker
+                        hideModelLabel={!footerPlan.showModelLabel}
+                        hideStatusLabel={!footerPlan.showTraitsLabel}
+                        modelSelection={activeModelSelection as never}
+                        // Upstream's `lockedProvider` is null wherever a handoff is allowed,
+                        // which is every thread Lynx shows (no group coordinators).
+                        lockedProvider={null}
+                        catalogProvider={discoveryProvider ?? activeModelSelection.provider}
+                        rememberedSelectionFor={(provider) =>
+                          draftModelSelectionByProvider?.[provider] as ModelSelection | undefined
+                        }
+                        initialOpen={Boolean(initialModelMenuProvider)}
+                        runtimeModels={runtimeModelCatalog?.models ?? []}
+                        modelsLoading={
+                          runtimeModelsPending || (runtimeModelsFetching && !runtimeModelCatalog)
+                        }
+                        providers={providerStatuses ?? serverConfig?.providers ?? []}
+                        onCatalogProviderChange={(provider) => {
+                          "background only";
+                          setModelCatalogProvider(provider);
+                        }}
+                        onModelSelectionChange={(nextModelSelection) => {
+                          "background only";
+                          // Upstream's pick also becomes the provider's sticky selection, which
+                          // a later handoff to that provider defaults to.
+                          useComposerDraftStore
+                            .getState()
+                            .setModelSelectionAndSticky(brandedThreadId, nextModelSelection);
+                          setModelCatalogProvider(null);
+                        }}
+                        onOpenProviderSettings={onOpenProviderSettings}
+                      />
+                    ) : null}
+                    {!isVoiceRecording && !isVoiceTranscribing && showVoiceNotesControl ? (
+                      <ComposerVoiceButton
+                        disabled={isSending || isConnecting || !workspaceRoot}
+                        onActivate={() => void startVoiceRecording()}
+                      />
+                    ) : null}
+                    {pendingProgress ? (
+                      <Button
+                        variant="default"
+                        size="sm"
+                        className="ComposerPendingSubmitLynx"
+                        aria-label={
+                          pending.activePendingIsResponding
+                            ? "Submitting..."
+                            : pendingProgress.isLastQuestion
+                              ? "Submit answers"
+                              : "Next question"
+                        }
+                        disabled={
+                          pending.activePendingIsResponding ||
+                          (pendingProgress.isLastQuestion
+                            ? !pending.activePendingResolvedAnswers
+                            : !pendingProgress.canAdvance)
+                        }
+                        onClick={() => {
+                          "background only";
+                          void activatePrimaryAction();
+                        }}
+                      >
+                        {pending.activePendingIsResponding
+                          ? "Submitting..."
+                          : pendingProgress.isLastQuestion
+                            ? "Submit answers"
+                            : "Next question"}
+                      </Button>
+                    ) : !isVoiceRecording && !isVoiceTranscribing ? (
+                      <ComposerPrimaryActionComposition
+                        mode={isRunning ? "stop" : isSending || isConnecting ? "sending" : "send"}
+                        accessibleLabel={isConnecting ? "Connecting" : undefined}
+                        disabled={!isRunning && sendDisabled}
+                        onActivate={() => {
+                          "background only";
+                          void activatePrimaryAction();
+                        }}
+                      />
+                    ) : null}
+                  </>
+                }
+              />
+            </ComposerFooterRowComposition>
+          </ComposerFooterMeasureContext.Provider>
+        ) : null}
+        <ComposerLifecycleStatus
+          operation={sendError ? "error" : isStopping ? "stopping" : isSending ? "sending" : "idle"}
+          sessionStatus={sessionStatus}
+          errorMessage={sendError}
+        />
+      </ComposerInputSurfaceComposition>
+    </>
   );
 }

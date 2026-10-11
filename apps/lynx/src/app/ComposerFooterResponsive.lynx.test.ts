@@ -32,9 +32,7 @@ describe("Native composer footer responsiveness", () => {
 
   it("compacts the shared footer anatomy and hides verbose labels", () => {
     expect(composerSource).toContain("<ComposerFooterRowComposition compact={compactFooter}>");
-    expect(composerSource).toContain(
-      "<ComposerFooterContentComposition\n            compact={compactFooter}",
-    );
+    expect(composerSource).toMatch(/<ComposerFooterContentComposition\s+compact=\{compactFooter\}/);
     expect(composerSource).toContain("voiceBusy={isVoiceRecording || isVoiceTranscribing}");
     // The recording lifecycle lives in the composer's voice hook.
     expect(voiceHookSource).toContain(
@@ -42,9 +40,7 @@ describe("Native composer footer responsiveness", () => {
     );
     expect(voiceHookSource).toContain("}, 50);");
     expect(voiceHookSource).toContain("setIsTranscribing(true);\n    setDurationMs(0);");
-    expect(composerSource).toContain(
-      "if (isVoiceRecording) {\n                        void submitVoiceRecording();",
-    );
+    expect(composerSource).toMatch(/if \(isVoiceRecording\) \{\s+void submitVoiceRecording\(\);/);
     expect(css).toMatch(
       /\.ComposerFooterActionsLynx--voice-busy\s*\{[^}]*min-width:\s*0;[^}]*flex:\s*1;/s,
     );

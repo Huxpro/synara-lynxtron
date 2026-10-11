@@ -249,3 +249,42 @@ export function applyEventRouterPatches({ sourceText, sourcePath }) {
   }
   return { text, applied: [QUEUED_EVENT_PATCH], upstreamFixed: [] };
 }
+
+// Type-only compatibility port: React 19 RefObject.current is mutable; the
+// renderer's React 18 type package calls that shape MutableRefObject. Keep the
+// upstream hook body unchanged, and remove this port when the renderer types
+// adopt the React 19 ref contract.
+export function applyPendingInteractionRefTypePort({ sourceText, sourcePath }) {
+  if (sourcePath !== "apps/web/src/components/chat/useChatPendingInteractions.ts") {
+    throw new Error("Pending interaction ref port received an unexpected source");
+  }
+  const source = ts.createSourceFile(
+    sourcePath,
+    sourceText,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TS,
+  );
+  const bindings = source.statements
+    .filter(ts.isImportDeclaration)
+    .filter((node) => node.moduleSpecifier.text === "react")
+    .flatMap((node) =>
+      node.importClause?.namedBindings && ts.isNamedImports(node.importClause.namedBindings)
+        ? node.importClause.namedBindings.elements
+        : [],
+    );
+  const refs = bindings.filter((node) => node.name.text === "RefObject");
+  if (refs.length !== 1) throw new Error("Expected exactly one upstream RefObject binding");
+  const ref = refs[0];
+  if (ref.propertyName?.text === "MutableRefObject")
+    return { text: sourceText, applied: [], upstreamFixed: true };
+  if (ref.propertyName !== undefined) throw new Error("Upstream RefObject import changed shape");
+  return {
+    text:
+      sourceText.slice(0, ref.getStart(source)) +
+      "MutableRefObject as RefObject" +
+      sourceText.slice(ref.end),
+    applied: ["react18-mutable-prompt-ref-type"],
+    upstreamFixed: false,
+  };
+}

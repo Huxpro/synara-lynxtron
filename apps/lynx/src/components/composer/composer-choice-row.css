@@ -7,6 +7,7 @@
   width: 100%;
   min-width: 0;
   min-height: 34px;
+  border-width: 0px;
   padding: 6px 8px;
   align-items: flex-start;
   justify-content: flex-start;
@@ -46,21 +47,20 @@
   min-width: 0;
   flex: 1;
   color: var(--foreground);
-  font-size: var(--app-font-size-ui, 13px);
-  line-height: var(--app-line-height-ui-18, 18px);
+  /* The upstream copy div inherits the 16px body size and leading-snug. */
+  font-size: 16px;
+  line-height: 22px;
   word-break: break-word;
 }
 
 .ComposerChoiceLabelLynx {
   color: inherit;
-  font-size: var(--app-font-size-ui, 13px);
-  line-height: var(--app-line-height-ui-18, 18px);
+  font-size: var(--app-font-size-ui-lg, 14px);
   font-weight: 500;
 }
 
 .ComposerChoiceDescriptionLynx {
   color: var(--muted-foreground);
-  font-size: var(--app-font-size-ui-sm, 12px);
-  line-height: var(--app-line-height-ui-sm-18, 18px);
+  font-size: var(--app-font-size-ui, 13px);
   font-weight: 400;
 }

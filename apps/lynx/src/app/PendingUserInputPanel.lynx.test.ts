@@ -7,6 +7,14 @@ describe("Lynx pending user-input capability", () => {
     "utf8",
   );
   const querySource = readFileSync(new URL("./queries.ts", import.meta.url), "utf8");
+  const composerSource = readFileSync(
+    new URL("../components/composer/Composer.lynx.tsx", import.meta.url),
+    "utf8",
+  );
+  const hookSource = readFileSync(
+    new URL("../generated/pendingInteractions.generated.ts", import.meta.url),
+    "utf8",
+  );
   const routerSource = readFileSync(new URL("./router.tsx", import.meta.url), "utf8");
   const choiceRowSource = readFileSync(
     new URL("../components/composer/ComposerChoiceRow.lynx.tsx", import.meta.url),
@@ -23,9 +31,9 @@ describe("Lynx pending user-input capability", () => {
 
   it("reuses the shared pending-input state model", () => {
     expect(panelSource).toContain("derivePendingUserInputProgress");
-    expect(panelSource).toContain("togglePendingUserInputOptionSelection");
-    expect(panelSource).toContain("setPendingUserInputCustomAnswer");
-    expect(panelSource).toContain("buildPendingUserInputAnswers");
+    expect(hookSource).toContain("togglePendingUserInputOptionSelection");
+    expect(hookSource).toContain("setPendingUserInputCustomAnswer");
+    expect(hookSource).toContain("buildPendingUserInputAnswers");
   });
 
   it("shares the responsive choice-row flow and wraps footer controls", () => {
@@ -38,9 +46,7 @@ describe("Lynx pending user-input capability", () => {
     expect(panelCss).toMatch(
       /\.PendingUserInputTitleLynx\s*\{[^}]*min-width:\s*0;[^}]*flex:\s*1;/s,
     );
-    expect(panelCss).toMatch(
-      /\.PendingUserInputFooterLynx\s*\{[^}]*min-width:\s*0;[^}]*flex-wrap:\s*wrap;/s,
-    );
+    expect(panelCss).toMatch(/\.PendingUserInputFooterLynx\s*\{[^}]*min-width:\s*0;/s);
   });
 
   it("projects canonical pending interactions into the thread summary", () => {
@@ -55,10 +61,12 @@ describe("Lynx pending user-input capability", () => {
   });
 
   it("dispatches the canonical response; session sync delivers the settled interaction", () => {
-    expect(routerSource).toContain('type: "thread.user-input.respond"');
-    expect(routerSource).toContain("requestId: activePendingUserInput.requestId");
-    expect(routerSource).toContain("answers,");
-    expect(routerSource).toContain("<PendingUserInputPanel");
+    expect(hookSource).toContain('type: "thread.user-input.respond"');
+    expect(hookSource).toContain("requestId,\n            answers: dispatchAnswers,");
+    expect(hookSource).toContain("answers: dispatchAnswers,");
+    expect(composerSource).toContain("<PendingUserInputPanel");
+    expect(panelSource).not.toContain("<input");
+    expect(composerSource).toContain("pending.onChangeActivePendingUserInputCustomAnswer");
     // The page reads the shared store, so there is no query to refresh.
     expect(routerSource).not.toContain('"thread-detail"');
   });

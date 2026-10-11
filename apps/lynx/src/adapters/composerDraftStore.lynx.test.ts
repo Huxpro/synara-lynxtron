@@ -1,6 +1,12 @@
 import { beforeEach, describe, expect, it } from "@rstest/core";
 
-import { MessageId, PROVIDER_SEND_TURN_MAX_ATTACHMENTS, ThreadId } from "@synara/contracts";
+import {
+  ApprovalRequestId,
+  MessageId,
+  PROVIDER_SEND_TURN_MAX_ATTACHMENTS,
+  ThreadId,
+} from "@synara/contracts";
+import { pendingRequestInstanceKey } from "@synara/shared/threadSummary";
 import { createAssistantSelectionAttachment } from "@synara-web/lib/assistantSelections";
 import { createPastedTextDraft } from "@synara-web/lib/composerPastedText";
 import type * as WebComposerDraftStore from "@synara-web/composerDraftStore";
@@ -29,6 +35,36 @@ describe("Lynx composer draft attachment subset", () => {
   beforeEach(() => {
     webStorage.clear();
     useComposerDraftStore.setState({ draftsByThreadId: {} });
+  });
+
+  it("persists question answers independently of ordinary composer clearing", () => {
+    const saved = {
+      request: {
+        requestId: ApprovalRequestId.makeUnsafe("question"),
+        lifecycleGeneration: "one",
+        createdAt: "2026-10-11T08:00:00.000Z",
+        questions: [{ id: "notes", header: "Notes", question: "Anything else?", options: [] }],
+      },
+      answers: { notes: { customAnswer: "Check the tests" } },
+    };
+    const key = pendingRequestInstanceKey(
+      saved.request.requestId,
+      saved.request.lifecycleGeneration,
+    );
+    const store = useComposerDraftStore.getState();
+    store.setPendingUserInputDrafts("thread-1", { [key]: saved });
+    store.setPrompt("thread-1", "normal draft");
+    store.clearDraft("thread-1");
+    const draft = useComposerDraftStore.getState().draftsByThreadId["thread-1"];
+    expect(draft?.prompt).toBe("");
+    expect(draft?.pendingUserInputDrafts).toEqual({ [key]: saved });
+    const persisted = webStorage.getItem(LYNX_COMPOSER_DRAFT_STORAGE_KEY);
+    expect(persisted).not.toBeNull();
+    expect(parsePersistedLynxComposerDrafts(persisted)["thread-1"]?.pendingUserInputDrafts).toEqual(
+      { [key]: saved },
+    );
+    store.setPendingUserInputDrafts("thread-1", {});
+    expect(useComposerDraftStore.getState().draftsByThreadId["thread-1"]).toBeUndefined();
   });
 
   it("keeps pasted text when the editable prompt is empty and removes an empty draft", () => {

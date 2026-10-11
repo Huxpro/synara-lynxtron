@@ -1,0 +1,669 @@
+{
+  "runId": "2026-10-11T07-56-24-309Z-65033",
+  "options": {
+    "threadId": "comparison-fixture-transcript-v2",
+    "seed": "fixture",
+    "exitAfterCertify": false,
+    "route": null,
+    "width": 1440,
+    "height": 900,
+    "webPort": 8891,
+    "electronCdpPort": 9223,
+    "lynxDevtoolPort": 18902,
+    "theme": "dark",
+    "themePack": "codex",
+    "systemAppearanceSequence": null,
+    "systemAppearanceIntervalMs": null,
+    "terminal": "closed",
+    "dock": null,
+    "appSnap": "acknowledged",
+    "chatFontSize": 13,
+    "skipLynxDevtool": false,
+    "skipBuild": false,
+    "regularApp": false,
+    "messageFormats": false
+  },
+  "cases": [
+    {
+      "kind": "approval",
+      "electron": {
+        "panel": {
+          "x": 504.25,
+          "y": 575,
+          "width": 736,
+          "height": 233.75
+        },
+        "controls": {
+          "Approve once": {
+            "x": 15,
+            "y": 78.75,
+            "width": 706,
+            "height": 34
+          },
+          "Always allow this session": {
+            "x": 15,
+            "y": 114.75,
+            "width": 706,
+            "height": 34
+          },
+          "Decline": {
+            "x": 15,
+            "y": 150.75,
+            "width": 706,
+            "height": 34
+          },
+          "Cancel turn": {
+            "x": 15,
+            "y": 186.75,
+            "width": 706,
+            "height": 34
+          }
+        },
+        "text": "Approve this command?",
+        "editorDisabled": true,
+        "footer": false,
+        "customInput": false,
+        "texts": [
+          {
+            "text": "Approve this command?",
+            "x": 15,
+            "y": 13,
+            "width": 159.453125,
+            "height": 19.25,
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "lineHeight": "19.25px"
+          },
+          {
+            "text": "git status --short",
+            "x": 15,
+            "y": 40.25,
+            "width": 706,
+            "height": 28.5,
+            "fontSize": "12px",
+            "fontWeight": "400",
+            "lineHeight": "16.5px"
+          },
+          {
+            "text": "1",
+            "x": 23,
+            "y": 84.75,
+            "width": 18,
+            "height": 18,
+            "fontSize": "12px",
+            "fontWeight": "500",
+            "lineHeight": "18px"
+          },
+          {
+            "text": "Approve onceAllow just this request",
+            "x": 51,
+            "y": 84.75,
+            "width": 662,
+            "height": 22,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "22px"
+          },
+          {
+            "text": "2",
+            "x": 23,
+            "y": 120.75,
+            "width": 18,
+            "height": 18,
+            "fontSize": "12px",
+            "fontWeight": "500",
+            "lineHeight": "18px"
+          },
+          {
+            "text": "Always allow this sessionDon't ask again this session",
+            "x": 51,
+            "y": 120.75,
+            "width": 662,
+            "height": 22,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "22px"
+          },
+          {
+            "text": "3",
+            "x": 23,
+            "y": 156.75,
+            "width": 18,
+            "height": 18,
+            "fontSize": "12px",
+            "fontWeight": "500",
+            "lineHeight": "18px"
+          },
+          {
+            "text": "DeclineReject and let the agent continue",
+            "x": 51,
+            "y": 156.75,
+            "width": 662,
+            "height": 22,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "22px"
+          },
+          {
+            "text": "4",
+            "x": 23,
+            "y": 192.75,
+            "width": 18,
+            "height": 18,
+            "fontSize": "12px",
+            "fontWeight": "500",
+            "lineHeight": "18px"
+          },
+          {
+            "text": "Cancel turnStop the current turn",
+            "x": 51,
+            "y": 192.75,
+            "width": 662,
+            "height": 22,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "22px"
+          }
+        ]
+      },
+      "native": {
+        "panel": {
+          "x": 504,
+          "y": 528,
+          "width": 736,
+          "height": 247
+        },
+        "controls": {
+          "Approve once": {
+            "x": 15,
+            "y": 77,
+            "width": 706,
+            "height": 34
+          },
+          "Always allow this session": {
+            "x": 15,
+            "y": 111,
+            "width": 706,
+            "height": 34
+          },
+          "Decline": {
+            "x": 15,
+            "y": 145,
+            "width": 706,
+            "height": 34
+          },
+          "Cancel turn": {
+            "x": 15,
+            "y": 179,
+            "width": 706,
+            "height": 34
+          }
+        },
+        "footer": true,
+        "customInput": false,
+        "texts": [
+          {
+            "text": "Approve this command?",
+            "x": 15,
+            "y": 13,
+            "width": 706,
+            "height": 18,
+            "className": "PendingApprovalHeadingLynx"
+          },
+          {
+            "text": "Approve this command?",
+            "x": 15,
+            "y": 13,
+            "width": 0,
+            "height": 0,
+            "className": "PendingApprovalTitleLynx"
+          },
+          {
+            "text": "git status --short",
+            "x": 25,
+            "y": 45,
+            "width": 686,
+            "height": 16,
+            "className": "PendingApprovalDetailTextLynx"
+          },
+          {
+            "text": "1",
+            "x": 24,
+            "y": 84,
+            "width": 18,
+            "height": 18,
+            "className": "ComposerChoiceShortcutLynx"
+          },
+          {
+            "text": "Approve once  Allow just this request",
+            "x": 52,
+            "y": 84,
+            "width": 660,
+            "height": 18,
+            "className": "ComposerChoiceCopyLynx"
+          },
+          {
+            "text": "Approve once",
+            "x": 52,
+            "y": 84,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceLabelLynx"
+          },
+          {
+            "text": "  Allow just this request",
+            "x": 52,
+            "y": 84,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceDescriptionLynx"
+          },
+          {
+            "text": "2",
+            "x": 24,
+            "y": 118,
+            "width": 18,
+            "height": 18,
+            "className": "ComposerChoiceShortcutLynx"
+          },
+          {
+            "text": "Always allow this session  Don't ask again this session",
+            "x": 52,
+            "y": 118,
+            "width": 660,
+            "height": 18,
+            "className": "ComposerChoiceCopyLynx"
+          },
+          {
+            "text": "Always allow this session",
+            "x": 52,
+            "y": 118,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceLabelLynx"
+          },
+          {
+            "text": "  Don't ask again this session",
+            "x": 52,
+            "y": 118,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceDescriptionLynx"
+          },
+          {
+            "text": "3",
+            "x": 24,
+            "y": 152,
+            "width": 18,
+            "height": 18,
+            "className": "ComposerChoiceShortcutLynx"
+          },
+          {
+            "text": "Decline  Reject and let the agent continue",
+            "x": 52,
+            "y": 152,
+            "width": 660,
+            "height": 18,
+            "className": "ComposerChoiceCopyLynx"
+          },
+          {
+            "text": "Decline",
+            "x": 52,
+            "y": 152,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceLabelLynx"
+          },
+          {
+            "text": "  Reject and let the agent continue",
+            "x": 52,
+            "y": 152,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceDescriptionLynx"
+          },
+          {
+            "text": "4",
+            "x": 24,
+            "y": 186,
+            "width": 18,
+            "height": 18,
+            "className": "ComposerChoiceShortcutLynx"
+          },
+          {
+            "text": "Cancel turn  Stop the current turn",
+            "x": 52,
+            "y": 186,
+            "width": 660,
+            "height": 18,
+            "className": "ComposerChoiceCopyLynx"
+          },
+          {
+            "text": "Cancel turn",
+            "x": 52,
+            "y": 186,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceLabelLynx"
+          },
+          {
+            "text": "  Stop the current turn",
+            "x": 52,
+            "y": 186,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceDescriptionLynx"
+          },
+          {
+            "text": "Resolve this approval request to continue",
+            "x": 15,
+            "y": 221,
+            "width": 706,
+            "height": 13,
+            "className": "PendingApprovalHintLynx"
+          }
+        ]
+      },
+      "compared": [
+        {
+          "label": "Approve once",
+          "delta": {
+            "x": 0,
+            "y": -1.75,
+            "width": 0,
+            "height": 0
+          },
+          "pass": true
+        },
+        {
+          "label": "Always allow this session",
+          "delta": {
+            "x": 0,
+            "y": -3.75,
+            "width": 0,
+            "height": 0
+          },
+          "pass": false
+        },
+        {
+          "label": "Decline",
+          "delta": {
+            "x": 0,
+            "y": -5.75,
+            "width": 0,
+            "height": 0
+          },
+          "pass": false
+        },
+        {
+          "label": "Cancel turn",
+          "delta": {
+            "x": 0,
+            "y": -7.75,
+            "width": 0,
+            "height": 0
+          },
+          "pass": false
+        }
+      ]
+    },
+    {
+      "kind": "question",
+      "electron": {
+        "panel": {
+          "x": 504.25,
+          "y": 610.25,
+          "width": 736,
+          "height": 164.5
+        },
+        "controls": {
+          "Read only": {
+            "x": 15,
+            "y": 44,
+            "width": 706,
+            "height": 34
+          },
+          "Workspace write": {
+            "x": 15,
+            "y": 80,
+            "width": 706,
+            "height": 34
+          },
+          "Previous question": {
+            "x": 639.6875,
+            "y": 14,
+            "width": 20,
+            "height": 20
+          },
+          "Next question": {
+            "x": 701,
+            "y": 14,
+            "width": 20,
+            "height": 20
+          },
+          "Cancel": {
+            "x": 663.3984375,
+            "y": 124,
+            "width": 57.6015625,
+            "height": 27.5
+          }
+        },
+        "text": "Which mode should be used?",
+        "editorDisabled": false,
+        "footer": true,
+        "customInput": false,
+        "texts": [
+          {
+            "text": "Which mode should be used?",
+            "x": 15,
+            "y": 13,
+            "width": 193.7734375,
+            "height": 19.25,
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "lineHeight": "19.25px"
+          },
+          {
+            "text": "1",
+            "x": 23,
+            "y": 50,
+            "width": 18,
+            "height": 18,
+            "fontSize": "12px",
+            "fontWeight": "500",
+            "lineHeight": "18px"
+          },
+          {
+            "text": "Read onlyInspect files without changing them",
+            "x": 51,
+            "y": 50,
+            "width": 662,
+            "height": 22,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "22px"
+          },
+          {
+            "text": "2",
+            "x": 23,
+            "y": 86,
+            "width": 18,
+            "height": 18,
+            "fontSize": "12px",
+            "fontWeight": "500",
+            "lineHeight": "18px"
+          },
+          {
+            "text": "Workspace writeAllow changes in this workspace",
+            "x": 51,
+            "y": 86,
+            "width": 662,
+            "height": 22,
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "lineHeight": "22px"
+          }
+        ]
+      },
+      "native": {
+        "panel": {
+          "x": 504,
+          "y": 577,
+          "width": 736,
+          "height": 198
+        },
+        "controls": {
+          "Read only": {
+            "x": 15,
+            "y": 41,
+            "width": 706,
+            "height": 34
+          },
+          "Workspace write": {
+            "x": 15,
+            "y": 75,
+            "width": 706,
+            "height": 34
+          }
+        },
+        "footer": true,
+        "customInput": true,
+        "texts": [
+          {
+            "text": "Which mode should be used?",
+            "x": 15,
+            "y": 13,
+            "width": 682,
+            "height": 18,
+            "className": "PendingUserInputTitleLynx"
+          },
+          {
+            "text": "1/2",
+            "x": 705,
+            "y": 13,
+            "width": 16,
+            "height": 13,
+            "className": "PendingUserInputProgressLynx"
+          },
+          {
+            "text": "1",
+            "x": 24,
+            "y": 48,
+            "width": 18,
+            "height": 18,
+            "className": "ComposerChoiceShortcutLynx"
+          },
+          {
+            "text": "Read only  Inspect files without changing them",
+            "x": 52,
+            "y": 48,
+            "width": 660,
+            "height": 18,
+            "className": "ComposerChoiceCopyLynx"
+          },
+          {
+            "text": "Read only",
+            "x": 52,
+            "y": 48,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceLabelLynx"
+          },
+          {
+            "text": "  Inspect files without changing them",
+            "x": 52,
+            "y": 48,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceDescriptionLynx"
+          },
+          {
+            "text": "2",
+            "x": 24,
+            "y": 82,
+            "width": 18,
+            "height": 18,
+            "className": "ComposerChoiceShortcutLynx"
+          },
+          {
+            "text": "Workspace write  Allow changes in this workspace",
+            "x": 52,
+            "y": 82,
+            "width": 660,
+            "height": 18,
+            "className": "ComposerChoiceCopyLynx"
+          },
+          {
+            "text": "Workspace write",
+            "x": 52,
+            "y": 82,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceLabelLynx"
+          },
+          {
+            "text": "  Allow changes in this workspace",
+            "x": 52,
+            "y": 82,
+            "width": 0,
+            "height": 0,
+            "className": "ComposerChoiceDescriptionLynx"
+          },
+          {
+            "text": "Cancel",
+            "x": 619,
+            "y": 162,
+            "width": 40,
+            "height": 18,
+            "className": "LxButton__text"
+          },
+          {
+            "text": "Next",
+            "x": 683,
+            "y": 162,
+            "width": 28,
+            "height": 18,
+            "className": "LxButton__text"
+          }
+        ]
+      },
+      "compared": [
+        {
+          "label": "Read only",
+          "delta": {
+            "x": 0,
+            "y": -3,
+            "width": 0,
+            "height": 0
+          },
+          "pass": false
+        },
+        {
+          "label": "Workspace write",
+          "delta": {
+            "x": 0,
+            "y": -5,
+            "width": 0,
+            "height": 0
+          },
+          "pass": false
+        },
+        {
+          "label": "Previous question",
+          "pass": false,
+          "missing": "native"
+        },
+        {
+          "label": "Next question",
+          "pass": false,
+          "missing": "native"
+        },
+        {
+          "label": "Cancel",
+          "pass": false,
+          "missing": "native"
+        }
+      ]
+    }
+  ]
+}
