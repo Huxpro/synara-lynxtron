@@ -1,5 +1,5 @@
 {
-  "runId": "2026-10-11T05-51-15-195Z-38362",
+  "runId": "2026-10-11T06-07-27-750Z-91156",
   "threadId": "comparison-fixture-transcript-v2",
   "theme": "dark",
   "viewport": {
@@ -26,7 +26,7 @@
       "index": 1,
       "electron": {
         "key": "message:assistant",
-        "h": 208.6,
+        "h": 205.6,
         "text": "Worked for 12s Root contains README.md and package.json. src/ holds Ty"
       },
       "native": {
@@ -34,8 +34,8 @@
         "h": 208,
         "text": "Worked for 12s•Root contains README.md and package.json.•src/ holds Ty"
       },
-      "delta": -0.6,
-      "match": true
+      "delta": 2.4,
+      "match": false
     },
     {
       "index": 2,
@@ -131,7 +131,7 @@
   "blocks": [],
   "controls": {
     "compared": 23,
-    "matched": 14,
+    "matched": 11,
     "exempt": [],
     "outside": [
       {
@@ -281,6 +281,81 @@
           "height": 0
         },
         "worst": 5,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 1: Copy message",
+        "electron": {
+          "x": 190.1,
+          "y": 171.6,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 190,
+          "y": 174,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": -0.1,
+          "y": 2.4,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 2.4,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 1: Fork thread from this turn",
+        "electron": {
+          "x": 222.1,
+          "y": 171.6,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 222,
+          "y": 174,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": -0.1,
+          "y": 2.4,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 2.4,
+        "match": false,
+        "exemption": null
+      },
+      {
+        "label": "row 1: Pin message",
+        "electron": {
+          "x": 254.1,
+          "y": 171.6,
+          "width": 24,
+          "height": 24,
+          "gutter": 10
+        },
+        "native": {
+          "x": 254,
+          "y": 174,
+          "width": 24,
+          "height": 24
+        },
+        "delta": {
+          "x": -0.1,
+          "y": 2.4,
+          "width": 0,
+          "height": 0
+        },
+        "worst": 2.4,
         "match": false,
         "exemption": null
       },

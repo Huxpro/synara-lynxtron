@@ -126,7 +126,10 @@ describe("shared settings navigation projection", () => {
     expect(routerSource).toContain("history.push(settingsRouteLocation(section, target))");
     expect(routerSource).toContain("initialTarget={route.params.target ?? initialSettingsTarget}");
     expect(routerSource).toContain("setRoute(parseRoute(location.href))");
-    expect(routerSource).toContain("<TaskCompletionToastHost");
+    expect(routerSource).toContain("<AppNotificationStack");
+    expect(
+      readFileSync(new URL("./AppNotificationStack.lynx.tsx", import.meta.url), "utf8"),
+    ).toContain("<TaskCompletionToastHost");
     expect(routerSource).toContain("{appNotifications}");
     expect(source).toContain("includeDesktopShellShortcuts");
     expect(source).toContain(

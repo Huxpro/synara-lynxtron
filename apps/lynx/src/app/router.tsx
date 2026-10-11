@@ -232,10 +232,8 @@ import {
 import { resolveMemoryNavigationState, type MemoryNavigationState } from "./routerHistory.logic";
 import { readPersistedLastThreadRouteFallback } from "./routerPersistence.logic";
 import { resolveResponsiveSidebarOpen } from "./sidebarVisibility.logic";
-import { TaskCompletionToastHost } from "./TaskCompletionToastHost.lynx";
-import { VoiceNotificationHost } from "./VoiceNotificationHost.lynx";
+import { AppNotificationStack } from "./AppNotificationStack.lynx";
 import { ComponentsLabPageLynx } from "./ComponentsLabPage.lynx";
-import { ProviderUpdatePrompt } from "./ProviderUpdatePrompt.lynx";
 import { AppSnapCoordinator } from "./AppSnapCoordinator.lynx";
 import { AppSnapWelcomeDialogLynx } from "./AppSnapWelcomeDialog.lynx";
 import { EditorRailTabs } from "./EditorRailTabs.lynx";
@@ -2903,19 +2901,13 @@ export function SliceRouter({
     pruneRecentViewsStore(recentViewAvailability);
   }, [pruneRecentViewsStore, recentViewAvailability, routeThreadsPending, sessionShellHydrated]);
   const appNotifications = (
-    <view
-      className={`AppNotificationStack${
-        route.pathname === "/components-lab" ? " AppNotificationStack--hidden" : ""
-      }`}
-    >
-      <VoiceNotificationHost />
-      <TaskCompletionToastHost
-        activeThreadId={activeThreadId}
-        threads={routeThreads}
-        onOpenThread={(threadId) => history.push(`/thread/${threadId}`)}
-      />
-      <ProviderUpdatePrompt onReview={() => history.push("/settings/providers")} />
-    </view>
+    <AppNotificationStack
+      hidden={route.pathname === "/components-lab"}
+      activeThreadId={activeThreadId}
+      threads={routeThreads}
+      onOpenThread={(threadId) => history.push(`/thread/${threadId}`)}
+      onReviewProviders={() => history.push("/settings/providers")}
+    />
   );
   const transportNotice =
     !componentsLabRoute && (transportState === "reconnecting" || transportState === "offline") ? (

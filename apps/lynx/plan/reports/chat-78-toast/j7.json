@@ -1,7 +1,7 @@
 {
   "workflow": "J7",
-  "runId": "2026-10-11T05-51-15-195Z-38362",
-  "startedAt": "2026-10-11T05:58:11.033Z",
+  "runId": "2026-10-11T06-07-27-750Z-91156",
+  "startedAt": "2026-10-11T06:12:52.431Z",
   "renderers": {
     "electron": {
       "ok": true,
@@ -9,7 +9,7 @@
         {
           "name": "both providers are installed and signed in",
           "ok": true,
-          "ms": 32,
+          "ms": 23,
           "detail": {
             "usable": ["codex", "claudeAgent"],
             "sourceSlug": "gpt-5.6-luna",
@@ -19,18 +19,18 @@
         {
           "name": "complete a real turn on Codex",
           "ok": true,
-          "ms": 6339,
+          "ms": 7193,
           "detail": {
-            "threadId": "ae422f3c-7bf3-440b-bc93-bb3e6a5e797f",
-            "turnId": "fff1ffbb-db33-41fb-bb57-7f7db3612bc3",
-            "assistantMessageId": "assistant:msg_011ce47f95ee58db016acb25792b5081979a5a10aaf815325f",
+            "threadId": "e7060904-44c8-4283-82db-aba32e3a2edb",
+            "turnId": "c53b1d11-03b3-4b9d-9fe1-056fb7179faf",
+            "assistantMessageId": "assistant:msg_0a421c33a0ade437016acb28eb3c3c81979391a518576fb096",
             "sourceModel": "gpt-5.6-luna"
           }
         },
         {
           "name": "pick a Claude model in the started thread's picker",
           "ok": true,
-          "ms": 1458,
+          "ms": 1289,
           "detail": {
             "row": {
               "width": 286,
@@ -41,20 +41,20 @@
         {
           "name": "send: the thread is handed off in place, then the turn runs",
           "ok": true,
-          "ms": 5593,
+          "ms": 6741,
           "detail": {
             "targetModel": "claude-sonnet-5-5",
             "sessionProvider": "claudeAgent",
             "typedDuringTheWait": true,
             "contextCharacters": 417,
-            "userMessageId": "a31581c6-f850-4626-b4ad-c46b97a2a51c",
-            "replyMessageId": "assistant:778db167-4f15-49e7-a549-f34747896fe9"
+            "userMessageId": "60254db0-dc88-43aa-9c3a-71c6934c5672",
+            "replyMessageId": "assistant:f1857f23-43d5-4dc7-83f9-2135a715dfab"
           }
         },
         {
           "name": "the transcript shows the handoff boundary between the two turns",
           "ok": true,
-          "ms": 82,
+          "ms": 106,
           "detail": {
             "boundary": {
               "x": 867.25,
@@ -68,7 +68,7 @@
         {
           "name": "header \"Hand off thread\": continue in this thread",
           "ok": true,
-          "ms": 2741,
+          "ms": 3257,
           "detail": {
             "targetModel": "gpt-5.6-luna",
             "menu": {
@@ -88,17 +88,17 @@
         {
           "name": "header \"Hand off thread\": continue in a new thread",
           "ok": true,
-          "ms": 1416,
+          "ms": 1422,
           "detail": {
-            "handoffThreadId": "d0fcf8be-6b86-4b06-bc72-effa8eda72b2",
+            "handoffThreadId": "83bf8e67-5552-4f21-9d8a-e6712687af3d",
             "importedMessages": 4
           }
         }
       ],
       "result": {
-        "threadId": "ae422f3c-7bf3-440b-bc93-bb3e6a5e797f",
-        "handoffThreadId": "d0fcf8be-6b86-4b06-bc72-effa8eda72b2",
-        "codeWord": "PLUMMV3EWHAD"
+        "threadId": "e7060904-44c8-4283-82db-aba32e3a2edb",
+        "handoffThreadId": "83bf8e67-5552-4f21-9d8a-e6712687af3d",
+        "codeWord": "PLUMMV3FFDEV"
       }
     },
     "native": {
@@ -107,7 +107,7 @@
         {
           "name": "both providers are installed and signed in",
           "ok": true,
-          "ms": 65,
+          "ms": 93,
           "detail": {
             "usable": ["codex", "claudeAgent"],
             "sourceSlug": "gpt-5.6-luna",
@@ -117,18 +117,18 @@
         {
           "name": "complete a real turn on Codex",
           "ok": true,
-          "ms": 5854,
+          "ms": 6324,
           "detail": {
-            "threadId": "lynx-landing-thread-1791698308997-8af7830ee4795",
-            "turnId": "c719ef93-2d1d-4fbd-8f21-d36bf7edf3b7",
-            "assistantMessageId": "assistant:msg_00ac7da7ebb3493a016acb258a6fc487d19773ba2d795b3d8f",
+            "threadId": "lynx-landing-thread-1791699192839-461e6e5bac3d3",
+            "turnId": "b7b91913-81d7-4137-8fd7-938fcd3fdbf7",
+            "assistantMessageId": "assistant:msg_00c613e104553fd6016acb28fe2f0087d2bef3e83aac755580",
             "sourceModel": "gpt-5.6-luna"
           }
         },
         {
           "name": "pick a Claude model in the started thread's picker",
           "ok": true,
-          "ms": 3878,
+          "ms": 3669,
           "detail": {
             "row": {
               "width": 114,
@@ -139,20 +139,20 @@
         {
           "name": "send: the thread is handed off in place, then the turn runs",
           "ok": true,
-          "ms": 5352,
+          "ms": 4122,
           "detail": {
             "targetModel": "claude-sonnet-5-5",
             "sessionProvider": "claudeAgent",
             "typedDuringTheWait": true,
             "contextCharacters": 386,
-            "userMessageId": "lynx-message-1791698319379-469c86e01ffee",
-            "replyMessageId": "assistant:11afdbf9-c381-4db3-8777-1fc5b97b3145"
+            "userMessageId": "lynx-message-1791699203269-544be3a39bbf",
+            "replyMessageId": "assistant:13c78d1f-f377-470f-9d59-456b8d99c1ab"
           }
         },
         {
           "name": "the transcript shows the handoff boundary between the two turns",
           "ok": true,
-          "ms": 609,
+          "ms": 452,
           "detail": {
             "boundary": {
               "x": 867.5,
@@ -166,7 +166,7 @@
         {
           "name": "header \"Hand off thread\": continue in this thread",
           "ok": true,
-          "ms": 2457,
+          "ms": 2989,
           "detail": {
             "targetModel": "gpt-5.6-luna",
             "menu": {
@@ -186,19 +186,19 @@
         {
           "name": "header \"Hand off thread\": continue in a new thread",
           "ok": true,
-          "ms": 1330,
+          "ms": 1310,
           "detail": {
-            "handoffThreadId": "df6d05e5-b9a1-45d7-8129-3beb612775fd",
+            "handoffThreadId": "c7e91b3d-1b3d-495f-9933-9befe7dd5941",
             "importedMessages": 4
           }
         }
       ],
       "result": {
-        "threadId": "lynx-landing-thread-1791698308997-8af7830ee4795",
-        "handoffThreadId": "df6d05e5-b9a1-45d7-8129-3beb612775fd",
-        "codeWord": "PLUMMV3EWV0V"
+        "threadId": "lynx-landing-thread-1791699192839-461e6e5bac3d3",
+        "handoffThreadId": "c7e91b3d-1b3d-495f-9933-9befe7dd5941",
+        "codeWord": "PLUMMV3FFSZ6"
       }
     }
   },
-  "endedAt": "2026-10-11T05:58:48.439Z"
+  "endedAt": "2026-10-11T06:13:31.661Z"
 }

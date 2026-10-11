@@ -41,7 +41,10 @@ describe("Lynx voice notification presentation", () => {
     expect(composerSource).not.toContain(
       "sanitizedMessage.startsWith('Provider adapter request failed')",
     );
-    expect(routerSource).toContain("<VoiceNotificationHost />");
+    expect(routerSource).toContain("<AppNotificationStack");
+    expect(
+      readFileSync(new URL("./AppNotificationStack.lynx.tsx", import.meta.url), "utf8"),
+    ).toContain("<VoiceNotificationHost />");
     expect(routerSource).toContain(
       "pendingUserInputCount={currentThread?.pendingUserInputs.length ?? 0}",
     );

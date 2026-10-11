@@ -1,7 +1,7 @@
 {
   "workflow": "J2",
-  "runId": "2026-10-11T05-51-15-195Z-38362",
-  "startedAt": "2026-10-11T05:55:33.197Z",
+  "runId": "2026-10-11T06-07-27-750Z-91156",
+  "startedAt": "2026-10-11T06:11:12.731Z",
   "renderers": {
     "electron": {
       "ok": true,
@@ -9,53 +9,53 @@
         {
           "name": "build a long transcript with a real turn",
           "ok": true,
-          "ms": 13054,
+          "ms": 11237,
           "detail": {
-            "threadId": "9c04a527-3991-4a2f-8247-ec719a45f32d",
-            "replyChars": 4330
+            "threadId": "553d7ff6-c95b-4ca7-bf12-51c7be316010",
+            "replyChars": 3856
           }
         },
         {
           "name": "follow live output to the end of the transcript",
           "ok": true,
-          "ms": 6384,
+          "ms": 8057,
           "detail": {
             "samples": 13,
-            "streamedChars": 2581,
-            "maxBelowPx": -192.5,
+            "streamedChars": 2804,
+            "maxBelowPx": -185.5,
             "trace": [
-              "222ms:452ch:-594.5px",
-              "542ms:665ch:-594.5px",
-              "755ms:791ch:-573.5px",
-              "968ms:895ch:-488.5px",
-              "1313ms:1236ch:-467.5px",
-              "1543ms:1360ch:-425.5px",
-              "1772ms:1530ch:-404.5px",
-              "1985ms:1624ch:-340.5px",
-              "2418ms:1983ch:-319.5px",
-              "2639ms:2118ch:-298.5px",
-              "2857ms:2259ch:-256.5px",
-              "3071ms:2395ch:-192.5px",
-              "3364ms:2581ch:-192.5px"
+              "263ms:129ch:-594.5px",
+              "564ms:227ch:-594.5px",
+              "837ms:357ch:-512.5px",
+              "1148ms:410ch:-487.5px",
+              "1376ms:446ch:-487.5px",
+              "1619ms:549ch:-487.5px",
+              "1945ms:801ch:-487.5px",
+              "2194ms:1217ch:-487.5px",
+              "2438ms:1548ch:-311.5px",
+              "2675ms:1889ch:-185.5px",
+              "2891ms:2229ch:-185.5px",
+              "3110ms:2447ch:-185.5px",
+              "3391ms:2804ch:-185.5px"
             ]
           }
         },
         {
           "name": "scroll away while output streams; the reader keeps their place",
           "ok": true,
-          "ms": 4991,
+          "ms": 3411,
           "detail": {
-            "anchor": "assistant:msg_0c5e6ace6c8b03a1016acb24dbddec8190baf6760f9ccced09",
-            "detachAttempts": 2,
-            "samples": 7,
+            "anchor": "assistant:msg_0cc0ed772c91fb0d016acb28863a5881979b423273db27a0b1",
+            "detachAttempts": 1,
+            "samples": 8,
             "maxDriftPx": 0,
-            "grewChars": 1759
+            "grewChars": 2098
           }
         },
         {
           "name": "jump back to the latest output",
           "ok": true,
-          "ms": 8895,
+          "ms": 8119,
           "detail": {
             "lastRowBottom": 739,
             "viewportBottom": 776
@@ -64,27 +64,27 @@
         {
           "name": "select reply text by dragging; the transcript stays where it was",
           "ok": true,
-          "ms": 1560,
+          "ms": 1795,
           "detail": {
             "movedPx": 0,
-            "selectedChars": 20
+            "selectedChars": 21
           }
         },
         {
           "name": "tool activity does not snap a detached reader",
           "ok": true,
-          "ms": 10237,
+          "ms": 11863,
           "detail": {
             "detachAttempts": 1,
-            "samples": 21,
+            "samples": 24,
             "maxDriftPx": 0,
-            "toolActivitiesWhileDetached": 6
+            "toolActivitiesWhileDetached": 7
           }
         },
         {
           "name": "switch to another thread and back with the right content",
           "ok": true,
-          "ms": 1581,
+          "ms": 1983,
           "detail": {
             "renderedRows": 6,
             "atEnd": true
@@ -92,8 +92,8 @@
         }
       ],
       "result": {
-        "threadId": "9c04a527-3991-4a2f-8247-ec719a45f32d",
-        "token": "J2-electron-mv3et3h8"
+        "threadId": "553d7ff6-c95b-4ca7-bf12-51c7be316010",
+        "token": "J2-electron-mv3fd8gv"
       }
     },
     "native": {
@@ -102,64 +102,51 @@
         {
           "name": "build a long transcript with a real turn",
           "ok": true,
-          "ms": 22297,
+          "ms": 12498,
           "detail": {
-            "threadId": "lynx-landing-thread-1791698180163-74ef117e2ba1e",
-            "replyChars": 3260
+            "threadId": "lynx-landing-thread-1791699119522-269ff071d1bc8",
+            "replyChars": 4107
           }
         },
         {
           "name": "follow live output to the end of the transcript",
           "ok": true,
-          "ms": 13357,
+          "ms": 7725,
           "detail": {
-            "samples": 24,
-            "streamedChars": 2551,
-            "maxBelowPx": -55,
+            "samples": 11,
+            "streamedChars": 2633,
+            "maxBelowPx": -80,
             "trace": [
-              "212ms:177ch:-80px",
-              "629ms:269ch:-55px",
-              "1047ms:350ch:-80px",
-              "1458ms:483ch:-80px",
-              "1883ms:579ch:-80px",
-              "2307ms:699ch:-80px",
-              "2723ms:804ch:-80px",
-              "3141ms:870ch:-80px",
-              "3563ms:1000ch:-80px",
-              "3996ms:1085ch:-80px",
-              "4428ms:1184ch:-80px",
-              "4865ms:1284ch:-80px",
-              "5308ms:1371ch:-80px",
-              "5741ms:1451ch:-80px",
-              "6179ms:1539ch:-80px",
-              "6616ms:1622ch:-80px",
-              "7080ms:1730ch:-80px",
-              "7528ms:1837ch:-80px",
-              "7977ms:1961ch:-80px",
-              "8433ms:2089ch:-80px",
-              "8894ms:2193ch:-80px",
-              "9367ms:2347ch:-80px",
-              "9828ms:2448ch:-80px",
-              "10301ms:2551ch:-80px"
+              "214ms:390ch:-80px",
+              "622ms:653ch:-80px",
+              "1050ms:951ch:-80px",
+              "1540ms:1211ch:-80px",
+              "1990ms:1520ch:-80px",
+              "2430ms:1735ch:-80px",
+              "2857ms:1765ch:-80px",
+              "3296ms:1774ch:-80px",
+              "3742ms:1975ch:-80px",
+              "4194ms:2328ch:-80px",
+              "4663ms:2633ch:-80px"
             ]
           }
         },
         {
           "name": "scroll away while output streams; the reader keeps their place",
           "ok": true,
-          "ms": 4388,
+          "ms": 4291,
           "detail": {
-            "anchor": "assistant:msg_0d3890ef346b5400016acb250cb05887d1a3e5caf7f23899bb",
+            "anchor": "assistant:msg_09501a78e441d0aa016acb28b5579881958ff1bb99619cb500",
             "detachAttempts": 1,
             "samples": 5,
             "maxDriftPx": 0,
-            "grewChars": 757
+            "grewChars": 2034
           }
         },
         {
           "name": "jump back to the latest output",
           "ok": true,
-          "ms": 28789,
+          "ms": 10281,
           "detail": {
             "lastRowBottom": 724,
             "viewportBottom": 776
@@ -168,7 +155,7 @@
         {
           "name": "select reply text by dragging; the transcript stays where it was",
           "ok": true,
-          "ms": 4254,
+          "ms": 4150,
           "detail": {
             "movedPx": 0,
             "selectedChars": null
@@ -177,7 +164,7 @@
         {
           "name": "tool activity does not snap a detached reader",
           "ok": true,
-          "ms": 11187,
+          "ms": 10698,
           "detail": {
             "detachAttempts": 1,
             "samples": 9,
@@ -188,7 +175,7 @@
         {
           "name": "switch to another thread and back with the right content",
           "ok": true,
-          "ms": 1992,
+          "ms": 3037,
           "detail": {
             "renderedRows": 6,
             "atEnd": true
@@ -196,10 +183,10 @@
         }
       ],
       "result": {
-        "threadId": "lynx-landing-thread-1791698180163-74ef117e2ba1e",
-        "token": "J2-native-mv3eu3nv"
+        "threadId": "lynx-landing-thread-1791699119522-269ff071d1bc8",
+        "token": "J2-native-mv3fe8h9"
       }
     }
   },
-  "endedAt": "2026-10-11T05:57:46.455Z"
+  "endedAt": "2026-10-11T06:12:52.242Z"
 }

@@ -1,7 +1,7 @@
 {
   "workflow": "J1",
-  "runId": "2026-10-11T05-51-15-195Z-38362",
-  "startedAt": "2026-10-11T05:54:21.577Z",
+  "runId": "2026-10-11T06-07-27-750Z-91156",
+  "startedAt": "2026-10-11T06:10:33.202Z",
   "renderers": {
     "electron": {
       "ok": true,
@@ -9,22 +9,22 @@
         {
           "name": "open a new thread in the fixture project",
           "ok": true,
-          "ms": 709
+          "ms": 695
         },
         {
           "name": "send and complete a real provider turn",
           "ok": true,
-          "ms": 5260,
+          "ms": 5768,
           "detail": {
-            "threadId": "2312f520-5e90-4d02-a6f2-861febf32e3b",
-            "turnId": "01a12986-f30e-7752-91da-f83e7b0e7ca9",
-            "assistantMessageId": "assistant:msg_0347e1f00946e15a016acb2492b88c8196a3a19292a7c23cc2"
+            "threadId": "d830d430-4114-42ed-9f98-003a2a4375fe",
+            "turnId": "01a12995-c937-7c92-977b-f1247ef5d096",
+            "assistantMessageId": "assistant:msg_041d6e8a654c9ec6016acb285e9c648190872fbcb5d2aad19c"
           }
         },
         {
           "name": "open and close the thread model picker",
           "ok": true,
-          "ms": 756,
+          "ms": 704,
           "detail": {
             "menu": {
               "width": 296,
@@ -35,32 +35,32 @@
         {
           "name": "mention a workspace file from the @ menu and send it",
           "ok": true,
-          "ms": 3126,
+          "ms": 3555,
           "detail": {
             "option": {
               "width": 716,
               "height": 28
             },
-            "sentText": "@src/math.ts Reply with exactly one line: J1-electron-mv3erk7u-mention ok"
+            "sentText": "@src/math.ts Reply with exactly one line: J1-electron-mv3fcdxe-mention ok"
           }
         },
         {
           "name": "send again without Stop (#35 excluded)",
           "ok": true,
-          "ms": 3240,
+          "ms": 2636,
           "detail": {
             "excluded": "Stop (#35)",
-            "resentTurnId": "01a12986-f30e-7752-91da-f83e7b0e7ca9"
+            "resentTurnId": "01a12995-c937-7c92-977b-f1247ef5d096"
           }
         },
         {
           "name": "reload the renderer, reopen the thread, and continue it",
           "ok": true,
-          "ms": 7341,
+          "ms": 8000,
           "detail": {
             "routeRestored": true,
-            "landedOn": "2312f520-5e90-4d02-a6f2-861febf32e3b",
-            "recoveredMs": 4527,
+            "landedOn": "d830d430-4114-42ed-9f98-003a2a4375fe",
+            "recoveredMs": 5318,
             "messagesBefore": 6,
             "messagesAfter": 8,
             "userMessages": 4
@@ -68,8 +68,8 @@
         }
       ],
       "result": {
-        "threadId": "2312f520-5e90-4d02-a6f2-861febf32e3b",
-        "token": "J1-electron-mv3erk7u"
+        "threadId": "d830d430-4114-42ed-9f98-003a2a4375fe",
+        "token": "J1-electron-mv3fcdxe"
       }
     },
     "native": {
@@ -78,22 +78,22 @@
         {
           "name": "open a new thread in the fixture project",
           "ok": true,
-          "ms": 413
+          "ms": 432
         },
         {
           "name": "send and complete a real provider turn",
           "ok": true,
-          "ms": 4992,
+          "ms": 6021,
           "detail": {
-            "threadId": "lynx-landing-thread-1791698082478-2fd4eabf9b3a08",
-            "turnId": "01a12987-3c46-7ec1-8797-cd12cc958f69",
-            "assistantMessageId": "assistant:msg_02838efba37a6129016acb24a7234481958d2315aa8dd479bb"
+            "threadId": "lynx-landing-thread-1791699055121-f21e176194ba48",
+            "turnId": "01a12996-1b2d-7800-9b94-9fca61f214fe",
+            "assistantMessageId": "assistant:msg_0964f12c90215224016acb2874a6208195babb1288eb81ad9b"
           }
         },
         {
           "name": "open and close the thread model picker",
           "ok": true,
-          "ms": 477,
+          "ms": 480,
           "detail": {
             "menu": {
               "width": 1440,
@@ -104,32 +104,32 @@
         {
           "name": "mention a workspace file from the @ menu and send it",
           "ok": true,
-          "ms": 2163,
+          "ms": 3209,
           "detail": {
             "option": {
               "width": 716,
               "height": 28
             },
-            "sentText": "@src/math.ts Reply with exactly one line: J1-native-mv3es08u-mention ok"
+            "sentText": "@src/math.ts Reply with exactly one line: J1-native-mv3fcuph-mention ok"
           }
         },
         {
           "name": "send again without Stop (#35 excluded)",
           "ok": true,
-          "ms": 2502,
+          "ms": 2458,
           "detail": {
             "excluded": "Stop (#35)",
-            "resentTurnId": "01a12987-3c46-7ec1-8797-cd12cc958f69"
+            "resentTurnId": "01a12996-1b2d-7800-9b94-9fca61f214fe"
           }
         },
         {
           "name": "reload the renderer, reopen the thread, and continue it",
           "ok": true,
-          "ms": 3543,
+          "ms": 4106,
           "detail": {
             "routeRestored": false,
             "landedOn": "comparison-fixture-transcript-v2",
-            "recoveredMs": 1560,
+            "recoveredMs": 1600,
             "messagesBefore": 6,
             "messagesAfter": 8,
             "userMessages": 4
@@ -137,10 +137,10 @@
         }
       ],
       "result": {
-        "threadId": "lynx-landing-thread-1791698082478-2fd4eabf9b3a08",
-        "token": "J1-native-mv3es08u"
+        "threadId": "lynx-landing-thread-1791699055121-f21e176194ba48",
+        "token": "J1-native-mv3fcuph"
       }
     }
   },
-  "endedAt": "2026-10-11T05:54:56.576Z"
+  "endedAt": "2026-10-11T06:11:12.542Z"
 }

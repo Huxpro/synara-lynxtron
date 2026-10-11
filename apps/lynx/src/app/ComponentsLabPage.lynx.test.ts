@@ -324,7 +324,7 @@ describe("paired Components Lab route", () => {
       '<view className="AppNotificationStack AppNotificationStack--hidden" />',
     );
     expect(router).toContain('route.pathname === "/components-lab"');
-    expect(router).toContain('" AppNotificationStack--hidden"');
+    expect(router).toContain('hidden={route.pathname === "/components-lab"}');
     const appStyles = readFileSync(new URL("./App.css", import.meta.url), "utf8");
     expect(appStyles).toMatch(/\.AppNotificationStack--hidden\s*\{[^}]*display:\s*none;/s);
     expect(page).toContain("ComponentsLabSidebarHeader AppWindowDragRegion");
