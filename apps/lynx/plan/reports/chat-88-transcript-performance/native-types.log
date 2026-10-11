@@ -1,0 +1,11 @@
+$ node scripts/sync-tsconfig-paths.mjs --check && node scripts/generate-event-router.mjs --check && node scripts/generate-diff-change-markers.mjs --check && node scripts/generate-automations-state.mjs --check && node scripts/generate-thread-handoff.mjs --check && node scripts/generate-pending-interactions.mjs --check && node scripts/generate-decision-panel-model.mjs --check && node scripts/generate-transcript-card-actions.mjs --check && node scripts/generate-user-message-cards.mjs --check && node scripts/generate-hugeicons.mjs --check && node scripts/upstream-parallel-copies.mjs --check && tsc -p tsconfig.app.json && tsc -p src/main/desktop/tsconfig.json && tsc -p src/main/web/tsconfig.json && tsc -p tsconfig.tools.json
+generate-event-router: apps/lynx/src/generated/eventRouter.generated.tsx is up to date (24 declarations)
+generate-diff-change-markers: apps/lynx/src/generated/diffChangeMarkers.generated.ts is up to date (2 declarations)
+generate-automations-state: apps/lynx/src/generated/automationsState.generated.ts is up to date (16 declarations)
+generate-thread-handoff: apps/lynx/src/generated/threadHandoff.generated.ts is up to date (3 declarations)
+generate-pending-interactions: up to date
+generate-decision-panel-model: up to date
+generate-transcript-card-actions: up to date
+generate-user-message-cards: up to date
+generate-hugeicons: apps/lynx/src/generated/hugeicons.generated.ts is up to date (50 icons)
+upstream-parallel-copies: 34 entries match upstream

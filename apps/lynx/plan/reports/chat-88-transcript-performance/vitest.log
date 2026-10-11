@@ -1,0 +1,13 @@
+$ vitest run --passWithNoTests src/components/chat/MessagesTimeline.logic.test.ts src/storeTimelineSequence.test.ts
+(node:19353) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+ RUN  v4.1.10 /Users/bytedance/github/synara-arch-sync/apps/web
+
+(node:19371) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+ Test Files  2 passed (2)
+      Tests  69 passed (69)
+   Start at  09:54:42
+   Duration  1.42s (transform 1.23s, setup 0ms, import 2.08s, tests 34ms, environment 0ms)

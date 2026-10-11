@@ -1,3 +1,4 @@
+import { useStableCallback } from "@synara-web/hooks/useStableCallback";
 import {
   hasActiveComposerSend,
   subscribeComposerSends,
@@ -69,7 +70,7 @@ export function TranscriptCardActionsProvider(props: {
     sendBusy ||
     !recoverableTurnId ||
     !canContinueFailedTurn(thread, recoverableTurnId, props.composer, true);
-  const undo = async (counts: readonly number[]) => {
+  const undo = useStableCallback(async (counts: readonly number[]) => {
     "background only";
     if (undoClaim.current) return;
     undoClaim.current = true;
@@ -88,18 +89,16 @@ export function TranscriptCardActionsProvider(props: {
     } finally {
       undoClaim.current = false;
     }
-  };
-  return (
-    <Context.Provider
-      value={{
-        onUndoTurnFiles: undo,
-        isUndoing,
-        recoverableTurnId,
-        recoveryDisabled,
-        composer: props.composer,
-      }}
-    >
-      {props.children}
-    </Context.Provider>
+  });
+  const value = useMemo<CardActions>(
+    () => ({
+      onUndoTurnFiles: undo,
+      isUndoing,
+      recoverableTurnId,
+      recoveryDisabled,
+      composer: props.composer,
+    }),
+    [undo, isUndoing, recoverableTurnId, recoveryDisabled, props.composer],
   );
+  return <Context.Provider value={value}>{props.children}</Context.Provider>;
 }

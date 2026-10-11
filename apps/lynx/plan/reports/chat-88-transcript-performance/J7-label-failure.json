@@ -1,0 +1,139 @@
+{
+  "workflow": "J7",
+  "runId": "2026-10-11T14-03-29-366Z-41965",
+  "startedAt": "2026-10-11T14:11:42.479Z",
+  "renderers": {
+    "electron": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "both providers are installed and signed in",
+          "ok": true,
+          "ms": 24,
+          "detail": {
+            "usable": ["codex", "claudeAgent"],
+            "sourceSlug": "gpt-5.6-luna",
+            "targetSlug": "claude-sonnet-5-5"
+          }
+        },
+        {
+          "name": "complete a real turn on Codex",
+          "ok": true,
+          "ms": 7286,
+          "detail": {
+            "threadId": "2c1cfc31-f3ee-42f7-b146-86792e694819",
+            "turnId": "7347b5d1-0d7d-4175-aff7-6d07af6d112f",
+            "assistantMessageId": "assistant:msg_050bf0a17fc3e482016acb9924dca087d291943177008bd9b1",
+            "sourceModel": "gpt-5.6-luna"
+          }
+        },
+        {
+          "name": "pick a Claude model in the started thread's picker",
+          "ok": true,
+          "ms": 1444,
+          "detail": {
+            "row": {
+              "width": 286,
+              "height": 26
+            }
+          }
+        },
+        {
+          "name": "send: the thread is handed off in place, then the turn runs",
+          "ok": true,
+          "ms": 32977,
+          "detail": {
+            "targetModel": "claude-sonnet-5-5",
+            "sessionProvider": "claudeAgent",
+            "typedDuringTheWait": true,
+            "contextCharacters": 417,
+            "userMessageId": "8e0db3fc-599e-42ba-9197-9d9c943dafe0",
+            "replyMessageId": "assistant:fd27bf59-0f7d-45c9-b7c3-1b7dd77d252f"
+          }
+        },
+        {
+          "name": "the transcript shows the handoff boundary between the two turns",
+          "ok": true,
+          "ms": 282,
+          "detail": {
+            "boundary": {
+              "x": 867.25,
+              "width": 403,
+              "height": 18,
+              "belowPreviousRow": 20.875,
+              "aboveNextRow": 29
+            }
+          }
+        },
+        {
+          "name": "header \"Hand off thread\": continue in this thread",
+          "ok": true,
+          "ms": 3627,
+          "detail": {
+            "targetModel": "gpt-5.6-luna",
+            "menu": {
+              "x": 1188,
+              "y": 131.375,
+              "width": 224,
+              "height": 182.75
+            },
+            "row": {
+              "x": 1188,
+              "y": 87.875,
+              "width": 214,
+              "height": 26
+            }
+          }
+        },
+        {
+          "name": "header \"Hand off thread\": continue in a new thread",
+          "ok": true,
+          "ms": 1367,
+          "detail": {
+            "handoffThreadId": "fea81323-5d9e-49fe-8c44-04600c6b9c1d",
+            "importedMessages": 4
+          }
+        }
+      ],
+      "result": {
+        "threadId": "2c1cfc31-f3ee-42f7-b146-86792e694819",
+        "handoffThreadId": "fea81323-5d9e-49fe-8c44-04600c6b9c1d",
+        "codeWord": "PLUMMV3WJ5LM"
+      }
+    },
+    "native": {
+      "ok": false,
+      "steps": [
+        {
+          "name": "both providers are installed and signed in",
+          "ok": true,
+          "ms": 86,
+          "detail": {
+            "usable": ["codex", "claudeAgent"],
+            "sourceSlug": "gpt-5.6-luna",
+            "targetSlug": "claude-sonnet-5-5"
+          }
+        },
+        {
+          "name": "complete a real turn on Codex",
+          "ok": true,
+          "ms": 5964,
+          "detail": {
+            "threadId": "lynx-landing-thread-1791727949789-7e9b8e0dbc0ae",
+            "turnId": "01a12b4e-e382-79d3-85ef-882de5120d27",
+            "assistantMessageId": "assistant:msg_0f2458ee1606283b016acb99537f448190b85737e7c6684e8f",
+            "sourceModel": "gpt-5.6-luna"
+          }
+        },
+        {
+          "name": "pick a Claude model in the started thread's picker",
+          "ok": false,
+          "ms": 30886,
+          "error": "Timed out waiting for a Claude Sonnet row on the Claude tab."
+        }
+      ],
+      "error": "Timed out waiting for a Claude Sonnet row on the Claude tab."
+    }
+  },
+  "endedAt": "2026-10-11T14:13:06.672Z"
+}

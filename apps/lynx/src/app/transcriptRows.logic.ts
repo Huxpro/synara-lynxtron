@@ -1,4 +1,14 @@
 import type { ThreadTranscriptRow } from "./queries";
+import { MAX_VISIBLE_CHANGED_FILES } from "../generated/transcriptCardActions.generated";
+import { getChatTranscriptLineHeightPx } from "@synara-web/components/chat/chatTypography";
+import type { MarkdownNode } from "../components/markdown/markdownAst.lynx";
+import {
+  collapseMarkdownSoftBreaks,
+  markdownNodePlainText,
+  isMarkdownListLoose,
+  resolveMarkdownChildSpacing,
+  resolveMarkdownTableColumnWeights,
+} from "../components/markdown/markdownPresentation.logic";
 import { DEFAULT_CHAT_FONT_SIZE_PX, normalizeChatFontSizePx } from "@synara-web/chatFontSize";
 import {
   formatAgentActivityEntryPreview,
@@ -32,8 +42,8 @@ export function resolveTranscriptWorkEntryDisplayText(
 }
 
 const TRANSCRIPT_ESTIMATED_CHARS_PER_LINE = 72;
-const TRANSCRIPT_ESTIMATED_LINE_HEIGHT_PX = 28;
-const TRANSCRIPT_MARKDOWN_BLOCK_GAP_PX = 18;
+// Cached markdown trees already carry the renderer's tight/loose block structure.
+// This is a size hint, not measured layout or a scroll-follow feedback input.
 export interface TranscriptScrollToPositionParams {
   readonly position: number;
   readonly offset: number;
@@ -117,18 +127,82 @@ export function estimateTranscriptRowMainAxisSize(
   const normalizedChatFontSizePx = normalizeChatFontSizePx(chatFontSizePx);
   const typographyScale = normalizedChatFontSizePx / DEFAULT_CHAT_FONT_SIZE_PX;
   const estimatedCharsPerLine = TRANSCRIPT_ESTIMATED_CHARS_PER_LINE / typographyScale;
-  const text = row.message.text ?? "";
-  const physicalLines = text.split("\n");
-  const wrappedLineCount = physicalLines.reduce(
-    (count, line) => count + Math.max(1, Math.ceil(line.length / estimatedCharsPerLine)),
-    0,
-  );
-  const estimate =
-    72 +
-    wrappedLineCount * TRANSCRIPT_ESTIMATED_LINE_HEIGHT_PX * typographyScale +
-    Math.max(0, physicalLines.length - 1) * TRANSCRIPT_MARKDOWN_BLOCK_GAP_PX;
-
-  return Math.max(row.message.role === "user" ? 92 : 96, estimate);
+  const lineHeight = getChatTranscriptLineHeightPx(normalizedChatFontSizePx);
+  const variant = row.message.role === "user" ? "user" : "assistant";
+  const textHeight = (text: string) =>
+    text
+      .split("\n")
+      .reduce(
+        (height, line) =>
+          height + Math.max(1, Math.ceil(line.length / estimatedCharsPerLine)) * lineHeight,
+        0,
+      );
+  const nodeHeight = (node: MarkdownNode, tight = false): number => {
+    const children = node.children ?? [];
+    if (["root", "list", "listItem", "blockquote"].includes(node.type)) {
+      const spacing = resolveMarkdownChildSpacing({ parent: node, variant, tight });
+      return children.reduce((height, child, index) => {
+        const childTight =
+          node.type === "list" ? !isMarkdownListLoose(node) : node.type === "listItem" && tight;
+        const gap = spacing[index];
+        const pixels = (value: { value: number; unit: string } | undefined) =>
+          (value?.value ?? 0) * (value?.unit === "em" ? normalizedChatFontSizePx : 1);
+        return (
+          height +
+          nodeHeight(child, childTight) +
+          pixels(gap?.marginTop) +
+          pixels(gap?.marginBottom)
+        );
+      }, 0);
+    }
+    if (node.type === "table") {
+      const cells = children.map((row) => (row.children ?? []).map(markdownNodePlainText));
+      const weights = resolveMarkdownTableColumnWeights(cells);
+      const totalWeight = weights.reduce((sum, weight) => sum + weight, 0) || 1;
+      return (
+        2 +
+        cells.reduce(
+          (height, row) =>
+            height +
+            12.2 +
+            Math.max(
+              lineHeight,
+              ...row.map(
+                (cell, index) =>
+                  Math.ceil(
+                    cell.length /
+                      Math.max(1, (estimatedCharsPerLine * (weights[index] ?? 1)) / totalWeight),
+                  ) * lineHeight,
+              ),
+            ),
+          0,
+        )
+      );
+    }
+    if (node.type === "code") {
+      // The existing code header (24px control + 3.2px padding) and pre's 16px padding.
+      return 43.2 + textHeight(node.value ?? "");
+    }
+    const text = markdownNodePlainText(node);
+    return textHeight(
+      variant === "assistant" && node.type !== "code" ? collapseMarkdownSoftBreaks(text) : text,
+    );
+  };
+  // Missing trees are transient during derivation. Use line boxes without
+  // inventing a paragraph margin for every soft newline.
+  const bodyHeight = row.markdownTree
+    ? nodeHeight(row.markdownTree)
+    : textHeight(row.message.text ?? "");
+  const fileCount = row.assistantTurnInProgress
+    ? 0
+    : (row.assistantTurnDiffSummary?.files.length ?? 0);
+  // Default expanded changes card: 3em summary, header padding/border, outer
+  // margins/borders and its existing 40.5px file rows (last row omits a border).
+  const changesHeight =
+    fileCount > 0
+      ? normalizedChatFontSizePx * 3 + 26 + Math.min(fileCount, MAX_VISIBLE_CHANGED_FILES) * 40.5
+      : 0;
+  return Math.max(100, 72 + bodyHeight + changesHeight);
 }
 
 export function resolveMessageWorkPlacement(row: MessageTranscriptRow) {

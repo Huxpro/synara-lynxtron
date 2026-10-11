@@ -30,6 +30,7 @@ const appVersion = String(
   (requireFromApp("./package.json") as { readonly version?: string }).version ?? "0.0.0",
 );
 const configuredSynaraWsUrl = process.env.SYNARA_WS_URL?.trim() ?? "";
+const buildTranscriptProfile = process.env.SYNARA_TRANSCRIPT_PROFILE === "1";
 const buildHostInputProbe = process.env.SYNARA_HOST_INPUT_PROBE === "1";
 
 // `resolve.alias` only sees `~/…` specifiers. Upstream modules also import
@@ -574,6 +575,9 @@ export default defineConfig({
         preEntry: "./src/runtime-polyfills.ts",
         define: {
           ...lynxWindowMemberDefines,
+          "process.env.SYNARA_TRANSCRIPT_PROFILE": JSON.stringify(
+            buildTranscriptProfile ? "1" : "0",
+          ),
           "process.env.SYNARA_WS_URL": JSON.stringify(configuredSynaraWsUrl),
           "process.env.SYNARA_APP_VERSION": JSON.stringify(appVersion),
           "process.env.SYNARA_LYNX_WEB_RELAY": JSON.stringify(buildHostInputProbe ? "0" : "1"),
@@ -603,6 +607,9 @@ export default defineConfig({
         // reused bundle talk to a different server than its host.
         define: {
           ...lynxWindowMemberDefines,
+          "process.env.SYNARA_TRANSCRIPT_PROFILE": JSON.stringify(
+            buildTranscriptProfile ? "1" : "0",
+          ),
           "process.env.SYNARA_WS_URL": JSON.stringify(""),
           "process.env.SYNARA_APP_VERSION": JSON.stringify(appVersion),
           "process.env.SYNARA_LYNX_WEB_RELAY": JSON.stringify("0"),

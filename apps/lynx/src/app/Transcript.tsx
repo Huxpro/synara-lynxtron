@@ -1,3 +1,5 @@
+import { useStableCallback } from "@synara-web/hooks/useStableCallback";
+import { recordTranscriptProfileRow, useTranscriptProfile } from "./transcriptProfile.lynx";
 import { TranscriptUserContexts } from "./TranscriptUserContexts.lynx";
 import { resolveTranscriptUserMessage } from "./transcriptUserMessage.logic";
 import {
@@ -5,7 +7,7 @@ import {
   useTranscriptCardActions,
   type ComposerRecoveryActions,
 } from "./TranscriptCardActions.lynx";
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "@lynx-js/react";
+import { memo, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "@lynx-js/react";
 import { ensureNativeApi } from "~/nativeApi";
 import arrowDownSvg from "@tabler/icons/outline/arrow-down.svg?raw";
 
@@ -653,7 +655,7 @@ function TranscriptMessage({
   onOpenTurnDiff,
   onForkFromMessage,
   selectionHandlers,
-  pinnedMessageIds,
+  pinned,
   row,
   threadId,
   timestampFormat,
@@ -677,7 +679,7 @@ function TranscriptMessage({
   readonly onOpenTurnDiff?: (turnId: string, filePath?: string) => void;
   readonly onForkFromMessage?: (messageId: string) => void;
   readonly selectionHandlers?: TranscriptSelectionHandlers;
-  readonly pinnedMessageIds: ReadonlySet<string>;
+  readonly pinned: boolean;
   row: MessageTranscriptRow;
   threadId: string;
   readonly timestampFormat: "locale" | "12-hour" | "24-hour";
@@ -765,7 +767,6 @@ function TranscriptMessage({
       onStartEdit(message.id, displayedUserMessage.copyText);
     },
   });
-  const pinned = pinnedMessageIds.has(message.id);
   const pin = useLynxInteractiveState({
     baseClassName: `TranscriptMessageAction${pinned ? " TranscriptMessageAction--persistent" : ""}`,
     accessibleLabel: pinActionLabel("message", pinned),
@@ -1060,7 +1061,7 @@ function TranscriptMessage({
   );
 }
 
-function TranscriptRowContent({
+export const TranscriptRowContent = memo(function TranscriptRowContent({
   editDraft,
   editError,
   editingMessageId,
@@ -1079,7 +1080,7 @@ function TranscriptRowContent({
   onOpenTurnDiff,
   onForkFromMessage,
   selectionHandlers,
-  pinnedMessageIds,
+  pinned,
   row,
   threadId,
   timestampFormat,
@@ -1107,7 +1108,7 @@ function TranscriptRowContent({
   readonly onOpenTurnDiff?: (turnId: string, filePath?: string) => void;
   readonly onForkFromMessage?: (messageId: string) => void;
   readonly selectionHandlers?: TranscriptSelectionHandlers;
-  readonly pinnedMessageIds: ReadonlySet<string>;
+  readonly pinned: boolean;
   row: ThreadTranscriptRow;
   threadId: string;
   readonly timestampFormat: "locale" | "12-hour" | "24-hour";
@@ -1119,6 +1120,7 @@ function TranscriptRowContent({
   };
   readonly workspaceRoot: string | null;
 }) {
+  recordTranscriptProfileRow(threadId, row.id);
   if (row.kind === "message") {
     return (
       <TranscriptMessage
@@ -1139,7 +1141,7 @@ function TranscriptRowContent({
         onOpenTurnDiff={onOpenTurnDiff}
         onForkFromMessage={onForkFromMessage}
         selectionHandlers={selectionHandlers}
-        pinnedMessageIds={pinnedMessageIds}
+        pinned={pinned}
         row={row}
         threadId={threadId}
         timestampFormat={timestampFormat}
@@ -1238,7 +1240,7 @@ function TranscriptRowContent({
       />
     </view>
   );
-}
+});
 
 export interface TranscriptController {
   readonly scrollToMessage: (messageId: string) => void;
@@ -1289,6 +1291,7 @@ export function Transcript({
   readonly viewportWidth: number;
   readonly workspaceRoot: string | null;
 }) {
+  const profileFlag = useTranscriptProfile(threadId, rows, chatFontSizePx);
   const listRef = useRef<React.ElementRef<"list">>(null);
   const pinnedRef = useRef(true);
   const [pinned, setPinned] = useState(true);
@@ -1418,6 +1421,43 @@ export function Transcript({
       setEditSubmitting(false);
     }
   }
+
+  const stableCancelEdit = useStableCallback(cancelUserMessageEdit);
+  const stableStartEdit = useStableCallback(startUserMessageEdit);
+  const stableSubmitEdit = useStableCallback(() => void submitUserMessageEdit());
+  const stableTextSelectionChange = useStableCallback(
+    (messageId: string, selection: MarkdownTextSelection | null) => {
+      setSelectedAssistantMessageId(selection ? messageId : null);
+      setTextSelection(selection);
+    },
+  );
+  const stableThreadError = useStableCallback((error: string | null) => onThreadError?.(error));
+  const stableOpenFile = useStableCallback((path: string) => onOpenFileReference?.(path));
+  const stableOpenDiff = useStableCallback((turnId: string, path?: string) =>
+    onOpenTurnDiff?.(turnId, path),
+  );
+  const stableFork = useStableCallback((messageId: string) => onForkFromMessage?.(messageId));
+  const stableAddToSide = useStableCallback(
+    (selection: TranscriptAssistantSelection) =>
+      selectionHandlers?.onAddToSide(selection) ?? Promise.resolve(),
+  );
+  const stableAddToNewChat = useStableCallback(
+    (selection: TranscriptAssistantSelection, anchor: TranscriptSelectionAnchor) =>
+      selectionHandlers?.onAddToNewChat(selection, anchor),
+  );
+  const hasSelectionHandlers = selectionHandlers !== undefined;
+  const canAddToSide = selectionHandlers?.canAddToSide ?? false;
+  const stableSelectionHandlers = useMemo(
+    () =>
+      hasSelectionHandlers
+        ? {
+            canAddToSide,
+            onAddToSide: stableAddToSide,
+            onAddToNewChat: stableAddToNewChat,
+          }
+        : undefined,
+    [hasSelectionHandlers, canAddToSide, stableAddToSide, stableAddToNewChat],
+  );
 
   function scrollToBottom(smooth = false) {
     "background only";
@@ -1602,10 +1642,11 @@ export function Transcript({
       key={threadId}
       threadId={threadId}
       composer={composerRecovery}
-      onThreadError={onThreadError}
+      onThreadError={onThreadError ? stableThreadError : undefined}
     >
       <view
         className="TranscriptShell"
+        __lynx_timing_flag={profileFlag}
         bindlayoutchange={(event: {
           readonly detail?: { left?: number; top?: number; width?: number; height?: number };
         }) => {
@@ -1654,20 +1695,17 @@ export function Transcript({
                   selectedAssistantMessageId={selectedAssistantMessageId}
                   textSelection={textSelection}
                   chatFontSizePx={chatFontSizePx}
-                  onCancelEdit={cancelUserMessageEdit}
+                  onCancelEdit={stableCancelEdit}
                   onEditDraftChange={setEditDraft}
-                  onStartEdit={startUserMessageEdit}
-                  onSubmitEdit={() => void submitUserMessageEdit()}
-                  onTextSelectionChange={(messageId, selection) => {
-                    setSelectedAssistantMessageId(selection ? messageId : null);
-                    setTextSelection(selection);
-                  }}
-                  onThreadError={onThreadError}
-                  onOpenFileReference={onOpenFileReference}
-                  onOpenTurnDiff={onOpenTurnDiff}
-                  onForkFromMessage={onForkFromMessage}
-                  selectionHandlers={selectionHandlers}
-                  pinnedMessageIds={pinnedMessageIds}
+                  onStartEdit={stableStartEdit}
+                  onSubmitEdit={stableSubmitEdit}
+                  onTextSelectionChange={stableTextSelectionChange}
+                  onThreadError={onThreadError ? stableThreadError : undefined}
+                  onOpenFileReference={onOpenFileReference ? stableOpenFile : undefined}
+                  onOpenTurnDiff={onOpenTurnDiff ? stableOpenDiff : undefined}
+                  onForkFromMessage={onForkFromMessage ? stableFork : undefined}
+                  selectionHandlers={stableSelectionHandlers}
+                  pinned={row.kind === "message" && pinnedMessageIds.has(row.message.id)}
                   row={row}
                   threadId={threadId}
                   timestampFormat={timestampFormat}

@@ -1,0 +1,9 @@
+Tail of successful root lint; full log retained at /tmp/synara-chat88-root-lint-final2.log
+     :                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 127 |                 <img
+     `----
+
+Found 1304 warnings and 0 errors.
+Finished in 1.3s on 5498 files with 149 rules using 12 threads.
+$ node scripts/check-server-sync-fs.ts
+Server synchronous filesystem budget passed.

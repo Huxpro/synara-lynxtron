@@ -1,0 +1,187 @@
+{
+  "workflow": "J2",
+  "runId": "2026-10-11T14-03-29-366Z-41965",
+  "startedAt": "2026-10-11T14:08:10.510Z",
+  "renderers": {
+    "electron": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "build a long transcript with a real turn",
+          "ok": true,
+          "ms": 12406,
+          "detail": {
+            "threadId": "618ae054-f8b1-4778-b135-bf2ab882f847",
+            "replyChars": 3150
+          }
+        },
+        {
+          "name": "follow live output to the end of the transcript",
+          "ok": true,
+          "ms": 6382,
+          "detail": {
+            "samples": 11,
+            "streamedChars": 2543,
+            "maxBelowPx": -142.5,
+            "trace": [
+              "255ms:651ch:-560.5px",
+              "467ms:833ch:-478.5px",
+              "682ms:1019ch:-403.5px",
+              "894ms:1181ch:-202.5px",
+              "1310ms:1545ch:-177.5px",
+              "1524ms:1635ch:-142.5px",
+              "1764ms:1819ch:-142.5px",
+              "2151ms:2057ch:-142.5px",
+              "2391ms:2165ch:-142.5px",
+              "2617ms:2362ch:-142.5px",
+              "2894ms:2543ch:-142.5px"
+            ]
+          }
+        },
+        {
+          "name": "scroll away while output streams; the reader keeps their place",
+          "ok": true,
+          "ms": 3477,
+          "detail": {
+            "anchor": "assistant:msg_0c7c26a690fe980b016acb9859f9048190a42968b45dedf3ef",
+            "detachAttempts": 1,
+            "samples": 7,
+            "maxDriftPx": 0,
+            "grewChars": 1654
+          }
+        },
+        {
+          "name": "jump back to the latest output",
+          "ok": true,
+          "ms": 10197,
+          "detail": {
+            "lastRowBottom": 739,
+            "viewportBottom": 776
+          }
+        },
+        {
+          "name": "select reply text by dragging; the transcript stays where it was",
+          "ok": true,
+          "ms": 1939,
+          "detail": {
+            "movedPx": 0,
+            "selectedChars": 18
+          }
+        },
+        {
+          "name": "tool activity does not snap a detached reader",
+          "ok": true,
+          "ms": 10658,
+          "detail": {
+            "detachAttempts": 1,
+            "samples": 21,
+            "maxDriftPx": 0,
+            "toolActivitiesWhileDetached": 8
+          }
+        },
+        {
+          "name": "switch to another thread and back with the right content",
+          "ok": true,
+          "ms": 1905,
+          "detail": {
+            "renderedRows": 6,
+            "atEnd": true
+          }
+        }
+      ],
+      "result": {
+        "threadId": "618ae054-f8b1-4778-b135-bf2ab882f847",
+        "token": "J2-electron-mv3wem1p"
+      }
+    },
+    "native": {
+      "ok": true,
+      "steps": [
+        {
+          "name": "build a long transcript with a real turn",
+          "ok": true,
+          "ms": 10645,
+          "detail": {
+            "threadId": "lynx-landing-thread-1791727737778-4cc0fcfe983a1",
+            "replyChars": 3410
+          }
+        },
+        {
+          "name": "follow live output to the end of the transcript",
+          "ok": true,
+          "ms": 6041,
+          "detail": {
+            "samples": 8,
+            "streamedChars": 2665,
+            "maxBelowPx": -80,
+            "trace": [
+              "236ms:522ch:-80px",
+              "674ms:944ch:-80px",
+              "1108ms:1274ch:-80px",
+              "1545ms:1599ch:-80px",
+              "1997ms:1714ch:-80px",
+              "2450ms:2146ch:-80px",
+              "2914ms:2416ch:-80px",
+              "3428ms:2665ch:-80px"
+            ]
+          }
+        },
+        {
+          "name": "scroll away while output streams; the reader keeps their place",
+          "ok": true,
+          "ms": 4258,
+          "detail": {
+            "anchor": "assistant:msg_0af716be266f0085016acb987f46908195b795ed56e4a6cefa",
+            "detachAttempts": 1,
+            "samples": 5,
+            "maxDriftPx": 0,
+            "grewChars": 1657
+          }
+        },
+        {
+          "name": "jump back to the latest output",
+          "ok": true,
+          "ms": 11293,
+          "detail": {
+            "lastRowBottom": 724,
+            "viewportBottom": 776
+          }
+        },
+        {
+          "name": "select reply text by dragging; the transcript stays where it was",
+          "ok": true,
+          "ms": 4521,
+          "detail": {
+            "movedPx": 0,
+            "selectedChars": null
+          }
+        },
+        {
+          "name": "tool activity does not snap a detached reader",
+          "ok": true,
+          "ms": 13091,
+          "detail": {
+            "detachAttempts": 1,
+            "samples": 12,
+            "maxDriftPx": 0,
+            "toolActivitiesWhileDetached": 7
+          }
+        },
+        {
+          "name": "switch to another thread and back with the right content",
+          "ok": true,
+          "ms": 2727,
+          "detail": {
+            "renderedRows": 6,
+            "atEnd": true
+          }
+        }
+      ],
+      "result": {
+        "threadId": "lynx-landing-thread-1791727737778-4cc0fcfe983a1",
+        "token": "J2-native-mv3wfmgs"
+      }
+    }
+  },
+  "endedAt": "2026-10-11T14:09:50.377Z"
+}
